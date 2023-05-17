@@ -13,7 +13,7 @@ An in depth guide is documented at [TODO]().
 3. Install the
    [deno](https://deno.com/manual@v1.33.3/getting_started/setup_your_environment)
    extension for you preferred text editor or IDE
-4. Create a deno project (`deno init processListings`)
+4. Create a deno project (ex: `deno init processListings`)
 5. Import `artemis-api` into your project
 
 Basic example
