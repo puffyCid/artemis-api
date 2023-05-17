@@ -39,6 +39,7 @@ import {
 import { get_loginitems, LoginItems } from "./src/macos/loginitems.ts";
 import { get_macho, MachoInfo } from "./src/macos/macho.ts";
 import { get_plist } from "./src/macos/plist.ts";
+import { MacosProcessInfo } from "./src/macos/processes.ts";
 import { get_unified_log, UnifiedLog } from "./src/macos/unifiedlogs.ts";
 import { Cron, get_cron } from "./src/unix/cron.ts";
 import {
@@ -59,7 +60,7 @@ import {
   get_prefetch_path,
   Prefetch,
 } from "./src/windows/prefetch.ts";
-import { get_processes, WindowsProcessInfo } from "./src/windows/processes.ts";
+import { get_win_processes, WindowsProcessInfo } from "./src/windows/processes.ts";
 import { get_registry, Registry } from "./src/windows/registry.ts";
 import { get_search, SearchEntry } from "./src/windows/search.ts";
 import {
@@ -220,7 +221,7 @@ export function getSafariHistory(path: string): RawSafariHistory[] {
  * Get Safari downloads for all users on an endpoint
  * @returns Array of `SafariDownloads` entries for all users
  */
-export function getSafarUsersDownloads(): SafariDownloads[] {
+export function getSafariUsersDownloads(): SafariDownloads[] {
   return get_safari_users_downloads();
 }
 
@@ -231,6 +232,23 @@ export function getSafarUsersDownloads(): SafariDownloads[] {
  */
 export function getSafariDownloads(path: string): RawSafariDownloads[] {
   return get_safari_downloads(path);
+}
+
+/**
+ * Function to pull a process listing from Windows
+ * @param md5 MD5 hash the process binary
+ * @param sha1 SHA1 hash the process binary
+ * @param sha256 SHA256 hash the process binary
+ * @param macho_info Parse MACHO metadata from the process binary
+ * @returns Array of `MacosProcessInfo`
+ */
+export function get_mac_processes(
+  md5: boolean,
+  sha1: boolean,
+  sha256: boolean,
+  macho_info: boolean,
+): MacosProcessInfo[] {
+  return get_mac_processes(md5, sha1, sha256, macho_info);
 }
 
 /**
@@ -538,7 +556,7 @@ export function getProcesses(
   sha256: boolean,
   pe_info: boolean,
 ): WindowsProcessInfo[] {
-  return get_processes(md5, sha1, sha256, pe_info);
+  return get_win_processes(md5, sha1, sha256, pe_info);
 }
 
 /**
