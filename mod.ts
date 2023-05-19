@@ -39,7 +39,7 @@ import {
 import { get_loginitems, LoginItems } from "./src/macos/loginitems.ts";
 import { get_macho, MachoInfo } from "./src/macos/macho.ts";
 import { get_plist } from "./src/macos/plist.ts";
-import { MacosProcessInfo } from "./src/macos/processes.ts";
+import { get_mac_processes, MacosProcessInfo } from "./src/macos/processes.ts";
 import { get_unified_log, UnifiedLog } from "./src/macos/unifiedlogs.ts";
 import { Cron, get_cron } from "./src/unix/cron.ts";
 import {
@@ -242,7 +242,7 @@ export function getSafariDownloads(path: string): RawSafariDownloads[] {
  * @param macho_info Parse MACHO metadata from the process binary
  * @returns Array of `MacosProcessInfo`
  */
-export function get_mac_processes(
+export function getMacProcesses(
   md5: boolean,
   sha1: boolean,
   sha256: boolean,
@@ -550,7 +550,7 @@ export function getSrumNotifications(path: string): NotificationInfo[] {
  * @param pe_info Parse PE metadata from the process binary
  * @returns Array of `WindowsProcessInfo`
  */
-export function getProcesses(
+export function getWinProcesses(
   md5: boolean,
   sha1: boolean,
   sha256: boolean,
