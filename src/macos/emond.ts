@@ -87,7 +87,7 @@ interface SendEmailSms {
  * @returns Array of `Emond` rules
  */
 export function get_emond(): Emond[] {
-  const data = Deno[ Deno.internal ].core.ops.get_emond();
+  const data = Deno[Deno.internal].core.ops.get_emond();
 
   const emond: Emond[] = JSON.parse(data);
   return emond;

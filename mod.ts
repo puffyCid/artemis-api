@@ -30,6 +30,7 @@ import {
 } from "./src/applications/safari.ts";
 import { get_groups, get_users, Groups, Users } from "./src/macos/accounts.ts";
 import { Emond, get_emond } from "./src/macos/emond.ts";
+import { ExecPolicy, get_execpolicy } from "./src/macos/execpolicy.ts";
 import { Fsevents, get_fsevents } from "./src/macos/fsevents.ts";
 import {
   get_launchd_agents,
@@ -60,7 +61,10 @@ import {
   get_prefetch_path,
   Prefetch,
 } from "./src/windows/prefetch.ts";
-import { get_win_processes, WindowsProcessInfo } from "./src/windows/processes.ts";
+import {
+  get_win_processes,
+  WindowsProcessInfo,
+} from "./src/windows/processes.ts";
 import { get_registry, Registry } from "./src/windows/registry.ts";
 import { get_search, SearchEntry } from "./src/windows/search.ts";
 import {
@@ -232,6 +236,14 @@ export function getSafariUsersDownloads(): SafariDownloads[] {
  */
 export function getSafariDownloads(path: string): RawSafariDownloads[] {
   return get_safari_downloads(path);
+}
+
+/**
+ * Function to parse the `ExecPolicy` on a macOS system
+ * @returns Array of `ExecPolicy` records
+ */
+export function getExecPolicy(): ExecPolicy[] {
+  return get_execpolicy();
 }
 
 /**

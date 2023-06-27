@@ -1,7 +1,7 @@
 /**
- * Metadata associated with Access Control Lists on Windows  
- * 
- * References:  
+ * Metadata associated with Access Control Lists on Windows
+ *
+ * References:
  *  - https://github.com/libyal/libfwnt/blob/main/documentation/Security%20Descriptor.asciidoc
  */
 export interface AccessControl {

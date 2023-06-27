@@ -60,7 +60,7 @@ export function get_mac_processes(
     sha1,
     sha256,
   };
-  const data = Deno[ Deno.internal ].core.ops.get_processes(
+  const data = Deno[Deno.internal].core.ops.get_processes(
     hashes,
     macho_info,
   );

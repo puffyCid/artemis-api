@@ -60,7 +60,7 @@ export function get_win_processes(
     sha1,
     sha256,
   };
-  const data = Deno[ Deno.internal ].core.ops.get_processes(
+  const data = Deno[Deno.internal].core.ops.get_processes(
     JSON.stringify(hashes),
     pe_info,
   );
