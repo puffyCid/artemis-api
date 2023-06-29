@@ -22,6 +22,6 @@ export function getElf(path: string): ElfInfo | null {
     return null;
   }
 
-  const macho: ElfInfo = JSON.parse(data);
-  return macho;
+  const elf: ElfInfo = JSON.parse(data);
+  return elf;
 }
