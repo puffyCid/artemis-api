@@ -36,10 +36,9 @@ export interface PeInfo {
 }
 
 /**
- * Function to parse a `pe` executable. This function either returns a parsed `pe` binary
- * or null for no data
+ * Function to parse a `pe` executable.
  * @param path Full path to a `pe` file
- * @returns Basic `pe` structure or null
+ * @returns Basic `PeInfo` interface or null
  */
 export function get_pe(path: string): PeInfo | null {
   const data = Deno[Deno.internal].core.ops.get_pe(path);

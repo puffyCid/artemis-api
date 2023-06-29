@@ -1,10 +1,10 @@
-import { MachoInfo } from "./macho.ts";
+import { ElfInfo } from "./elf.ts";
 
 /**
- * `MacosProcessInfo` is an interface containing metadata on macOS processes.
+ * `LinuxProcessInfo` is an interface containing metadata on Linux processes.
  * `artemis` uses the `sysinfo` crate to pull process information
  */
-export interface MacosProcessInfo {
+export interface LinuxProcessInfo {
   /**Full path to the process binary */
   full_path: string;
   /**Name of process */
@@ -37,24 +37,24 @@ export interface MacosProcessInfo {
   sha1: string;
   /**SHA256 hash of process binary */
   sha256: string;
-  /**MACHO metadata asssociated with process binary */
-  binary_info: MachoInfo[];
+  /**ELF metadata asssociated with process binary */
+  binary_info: ElfInfo[];
 }
 
 /**
- * Function to pull a process listing from macOS
+ * Function to pull a process listing from Linux
  * @param md5 MD5 hash the process binary
  * @param sha1 SHA1 hash the process binary
  * @param sha256 SHA256 hash the process binary
- * @param macho_info Parse MACHO metadata from the process binary
- * @returns Array of `MacosProcessInfo`
+ * @param elf_info Parse ELF metadata from the process binary
+ * @returns Array of `LinuxProcessInfo`
  */
-export function get_macos_processes(
+export function getLinuxProcesses(
   md5: boolean,
   sha1: boolean,
   sha256: boolean,
-  macho_info: boolean,
-): MacosProcessInfo[] {
+  elf_info: boolean,
+): LinuxProcessInfo[] {
   const hashes = {
     md5,
     sha1,
@@ -62,7 +62,7 @@ export function get_macos_processes(
   };
   const data = Deno[Deno.internal].core.ops.get_processes(
     hashes,
-    macho_info,
+    elf_info,
   );
   const proc_array: MacosProcessInfo[] = JSON.parse(data);
 

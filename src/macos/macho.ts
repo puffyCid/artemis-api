@@ -100,10 +100,9 @@ export interface DylibCommand {
 }
 
 /**
- * Function to parse a `macho` executable. This function either returns a parsed `macho` binary
- * or null for no data
+ * Function to parse a `macho` executable.
  * @param path Full path to a `macho` file
- * @returns Basic `macho` structure or null
+ * @returns Basic `MachoInfo` interface array or null
  */
 export function get_macho(path: string): MachoInfo[] | null {
   const data = Deno[Deno.internal].core.ops.get_macho(path);

@@ -30,7 +30,6 @@ import {
 } from "./src/applications/safari.ts";
 import { get_groups, get_users, Groups, Users } from "./src/macos/accounts.ts";
 import { Emond, get_emond } from "./src/macos/emond.ts";
-import { ExecPolicy, get_execpolicy } from "./src/macos/execpolicy.ts";
 import { Fsevents, get_fsevents } from "./src/macos/fsevents.ts";
 import {
   get_launchd_agents,
@@ -40,7 +39,10 @@ import {
 import { get_loginitems, LoginItems } from "./src/macos/loginitems.ts";
 import { get_macho, MachoInfo } from "./src/macos/macho.ts";
 import { get_plist } from "./src/macos/plist.ts";
-import { get_mac_processes, MacosProcessInfo } from "./src/macos/processes.ts";
+import {
+  get_macos_processes,
+  MacosProcessInfo,
+} from "./src/macos/processes.ts";
 import { get_unified_log, UnifiedLog } from "./src/macos/unifiedlogs.ts";
 import { Cron, get_cron } from "./src/unix/cron.ts";
 import {
@@ -120,6 +122,12 @@ import {
 } from "./src/windows/usnjrnl.ts";
 
 /**
+ * Linux exported functions
+ */
+export { getElf } from "./src/linux/elf.ts";
+export { getLinuxProcesses } from "./src/linux/processes.ts";
+
+/**
  * Function to parse `Launchd agents` on a macOS system
  * @returns Array of `Launchd agents` parsed from a plist file
  */
@@ -163,10 +171,9 @@ export function getFsEvents(): Fsevents[] {
 }
 
 /**
- * Function to parse a `macho` executable. This function either returns a parsed `macho` binary
- * or null for no data
+ * Function to parse a `macho` executable.
  * @param path Full path to a `macho` file
- * @returns Basic `macho` structure or null
+ * @returns Basic `MachoInfo` interface array or null
  */
 export function getMacho(path: string): MachoInfo[] | null {
   return get_macho(path);
@@ -225,7 +232,7 @@ export function getSafariHistory(path: string): RawSafariHistory[] {
  * Get Safari downloads for all users on an endpoint
  * @returns Array of `SafariDownloads` entries for all users
  */
-export function getSafariUsersDownloads(): SafariDownloads[] {
+export function getSafarUsersDownloads(): SafariDownloads[] {
   return get_safari_users_downloads();
 }
 
@@ -239,28 +246,20 @@ export function getSafariDownloads(path: string): RawSafariDownloads[] {
 }
 
 /**
- * Function to parse the `ExecPolicy` on a macOS system
- * @returns Array of `ExecPolicy` records
- */
-export function getExecPolicy(): ExecPolicy[] {
-  return get_execpolicy();
-}
-
-/**
- * Function to pull a process listing from Windows
+ * Function to pull a process listing from macOS
  * @param md5 MD5 hash the process binary
  * @param sha1 SHA1 hash the process binary
  * @param sha256 SHA256 hash the process binary
- * @param macho_info Parse MACHO metadata from the process binary
+ * @param macho_info Parse `macho` metadata from the process binary
  * @returns Array of `MacosProcessInfo`
  */
-export function getMacProcesses(
+export function getMacosProcesses(
   md5: boolean,
   sha1: boolean,
   sha256: boolean,
   macho_info: boolean,
 ): MacosProcessInfo[] {
-  return get_mac_processes(md5, sha1, sha256, macho_info);
+  return get_macos_processes(md5, sha1, sha256, macho_info);
 }
 
 /**
@@ -375,10 +374,9 @@ export function readAdsData(path: string, ads_name: string): Uint8Array {
 }
 
 /**
- * Function to parse a `pe` executable. This function either returns a parsed `pe` binary
- * or null for no data
+ * Function to parse a `pe` executable.
  * @param path Full path to a `pe` file
- * @returns Basic `pe` structure or null
+ * @returns Basic `PeInfo` interface or null
  */
 export function getPe(path: string): PeInfo | null {
   return get_pe(path);
@@ -559,7 +557,7 @@ export function getSrumNotifications(path: string): NotificationInfo[] {
  * @param md5 MD5 hash the process binary
  * @param sha1 SHA1 hash the process binary
  * @param sha256 SHA256 hash the process binary
- * @param pe_info Parse PE metadata from the process binary
+ * @param pe_info Parse `pe` metadata from the process binary
  * @returns Array of `WindowsProcessInfo`
  */
 export function getWinProcesses(
