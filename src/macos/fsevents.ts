@@ -22,9 +22,12 @@ export interface Fsevents {
  * @param path Full path to a `fsevents` file
  * @returns Array of `FsEvent` records
  */
-export function get_fsevents(path: string): Fsevents[] {
+export function get_fsevents(path: string): Fsevents[] | null {
   const data = Deno[Deno.internal].core.ops.get_fsevents(path);
-
+  if (data === "") {
+    return null;
+  }
+  
   const fsevents: Fsevents[] = JSON.parse(data);
   return fsevents;
 }

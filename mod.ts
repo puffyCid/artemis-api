@@ -167,7 +167,7 @@ export function getPlist(path: string): Record<string, unknown> | null {
  * @param path Full path to a `fsevents` file
  * @returns Array of FsEvent records
  */
-export function getFsEvents(path: string): Fsevents[] {
+export function getFsEvents(path: string): Fsevents[] | null {
   return get_fsevents(path);
 }
 
