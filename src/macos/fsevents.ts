@@ -27,7 +27,7 @@ export function get_fsevents(path: string): Fsevents[] | null {
   if (data === "") {
     return null;
   }
-  
+
   const fsevents: Fsevents[] = JSON.parse(data);
   return fsevents;
 }
