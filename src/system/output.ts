@@ -4,7 +4,7 @@
  * References:
  *  - https://puffycid.github.io/artemis-book/collections/format.html
  */
-interface Output {
+export interface Output {
   /**Name of output directory */
   name: string;
   /**Target directory for output */
