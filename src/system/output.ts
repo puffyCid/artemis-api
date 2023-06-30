@@ -41,11 +41,21 @@ export enum OutputType {
 
 /**
  * Function to pass output data to `artemis`
+ * @param data JSON string of data
+ * @param data_name Name of the type of data. Ex: `processes`
  * @param output Output structure to pass to artemis
  * @returns True on success. False on failure
  */
-export function outputResults(output: Output): boolean {
+export function outputResults(
+  data: string,
+  data_name: string,
+  output: Output,
+): boolean {
   const output_string = JSON.stringify(output);
-  const data: boolean = Deno[Deno.internal].core.ops.output_results(output_string);
-  return data;
+  const status: boolean = Deno[Deno.internal].core.ops.output_results(
+    data,
+    data_name,
+    output_string,
+  );
+  return status;
 }
