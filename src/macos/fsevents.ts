@@ -19,10 +19,11 @@ export interface Fsevents {
 
 /**
  * Function to parse the `FsEvents` on a macOS system
+ * @param path Full path to a `fsevents` file
  * @returns Array of `FsEvent` records
  */
-export function get_fsevents(): Fsevents[] {
-  const data = Deno[Deno.internal].core.ops.get_fsevents();
+export function get_fsevents(path: string): Fsevents[] {
+  const data = Deno[Deno.internal].core.ops.get_fsevents(path);
 
   const fsevents: Fsevents[] = JSON.parse(data);
   return fsevents;
