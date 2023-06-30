@@ -45,6 +45,7 @@ export enum OutputType {
  * @returns True on success. False on failure
  */
 export function outputResults(output: Output): boolean {
-  const data: boolean = Deno[Deno.internal].core.ops.output_results(output);
+  const output_string = JSON.stringify(output);
+  const data: boolean = Deno[Deno.internal].core.ops.output_results(output_string);
   return data;
 }
