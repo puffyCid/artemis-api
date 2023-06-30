@@ -128,6 +128,11 @@ export { getElf } from "./src/linux/elf.ts";
 export { getLinuxProcesses } from "./src/linux/processes.ts";
 
 /**
+ * Cross platform exported functions
+ */
+export { outputResults } from "./src/system/output.ts";
+
+/**
  * Function to parse `Launchd agents` on a macOS system
  * @returns Array of `Launchd agents` parsed from a plist file
  */
