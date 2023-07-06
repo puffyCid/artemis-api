@@ -129,6 +129,11 @@ export { getLinuxProcesses } from "./src/linux/processes.ts";
 export { getJournal } from "./src/linux/journal.ts";
 
 /**
+ * Unix exported functions
+ */
+export { getLinuxSudoLogs, getMacosSudoLogs } from "./src/unix/sudologs.ts";
+
+/**
  * Cross platform exported functions
  */
 export { outputResults } from "./src/system/output.ts";
