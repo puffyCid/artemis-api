@@ -2,7 +2,7 @@
  * macOS `ExecPolicy` tracks application execution on a system.
  * It only tracks execution of applications that are tracked by GateKeeper
  *
- * Refefernces:
+ * References:
  *  - https://eclecticlight.co/2023/03/13/ventura-has-changed-app-quarantine-with-a-new-xattr/
  *  - https://knight.sc/reverse%20engineering/2019/02/20/syspolicyd-internals.html
  */
