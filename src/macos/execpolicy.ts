@@ -9,21 +9,21 @@
 export interface ExecPolicy {
   /**Is file signed */
   is_signed: number;
-  /**File ID name */
+  /**Name of executable */
   file_identifier: string;
-  /**App bundle ID */
+  /**App bundle ID for entry */
   bundle_identifier: string;
-  /**Bundle version */
+  /**Bundle version for entry */
   bundle_version: string;
-  /**Team ID */
+  /**Team ID for entry */
   team_identifier: string;
-  /**Signing ID */
+  /**Signing ID for entry */
   signing_identifier: string;
-  /**Code Directory hash*/
+  /**Code Directory hash if available otherwise SHA256 hash of executable*/
   cdhash: string;
-  /**SHA256 hash of application */
+  /**SHA256 hash of executable */
   main_executable_hash: string;
-  /**Executable timestamp in UNIXEPOCH seconds */
+  /**Timestamp when the executable was inserted in ExecPolicy database in UNIXEPOCH seconds */
   executable_timestamp: number;
   /**Size of file */
   file_size: number;
@@ -31,7 +31,7 @@ export interface ExecPolicy {
   is_library: number;
   /**Is file used */
   is_used: number;
-  /**File ID associated with entry */
+  /**Parent Application File ID associated with entry. This is often the Parent Process */
   responsible_file_identifier: string;
   /**Is valid entry */
   is_valid: number;
@@ -47,9 +47,9 @@ export interface ExecPolicy {
   volume_uuid: string;
   /**Object ID for entry */
   object_id: number;
-  /**Filesystem type */
+  /**Filesystem type. Typically APFS */
   fs_type_name: string;
-  /**App Bundle ID */
+  /**App Bundle ID. Should be same as `bundle_identifier` */
   bundle_id: string;
   /**Policy match for entry */
   policy_match: number;
@@ -74,7 +74,7 @@ export interface ExecPolicy {
  * @returns Array of `ExecPolicy` records
  */
 export function get_execpolicy(): ExecPolicy[] {
-  const data = Deno[Deno.internal].core.ops.get_execpolicy();
+  const data = Deno[ Deno.internal ].core.ops.get_execpolicy();
 
   const policy: ExecPolicy[] = JSON.parse(data);
   return policy;
