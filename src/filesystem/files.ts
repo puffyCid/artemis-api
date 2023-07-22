@@ -41,3 +41,14 @@ export function hash(
   const data: Hashes = fs.hash(path, md5, sha1, sha256);
   return data;
 }
+
+/**
+ * Read a text file. Currently only files less than 2GB in size can be read
+ * @param path Text file to read
+ * @returns String containing text of file
+ */
+export function readTextFile(path: string): string {
+  //@ts-ignore: Custom Artemis function
+  const data: string = fs.readTextFile(path);
+  return data;
+}
