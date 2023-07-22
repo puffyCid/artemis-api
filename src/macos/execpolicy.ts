@@ -74,7 +74,7 @@ export interface ExecPolicy {
  * @returns Array of `ExecPolicy` records
  */
 export function get_execpolicy(): ExecPolicy[] {
-  const data = Deno[ Deno.internal ].core.ops.get_execpolicy();
+  const data = Deno[Deno.internal].core.ops.get_execpolicy();
 
   const policy: ExecPolicy[] = JSON.parse(data);
   return policy;
