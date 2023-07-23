@@ -34,9 +34,10 @@ export interface UserInfo {
  */
 export function getUsersWin(): UserInfo[] {
   //@ts-ignore: Custom Artemis function
-  const data:UserInfo[] = Deno.core.ops.get_users();
+  const data: string = Deno.core.ops.get_users();
 
-  return data;
+  const results: UserInfo[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -46,7 +47,8 @@ export function getUsersWin(): UserInfo[] {
  */
 export function getAltUsersWin(drive: string): UserInfo[] {
   //@ts-ignore: Custom Artemis function
-  const data:UserInfo[] = Deno.core.ops.get_alt_users(drive);
+  const data: string = Deno.core.ops.get_alt_users(drive);
 
-  return data;
+  const results: UserInfo[] = JSON.parse(data);
+  return results;
 }

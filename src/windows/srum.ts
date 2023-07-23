@@ -290,9 +290,10 @@ export interface NotificationInfo {
 export function getSrumApplicationInfo(path: string): ApplicationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}";
   //@ts-ignore: Custom Artemis function
-  const data: ApplicationInfo[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
-  return data;
+  const results: ApplicationInfo[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -305,9 +306,10 @@ export function getSrumApplicationTimeline(
 ): ApplicationTimeline[] {
   const name = "{5C8CF1C7-7257-4F13-B223-970EF5939312}";
   //@ts-ignore: Custom Artemis function
-  const data: ApplicationTimeline[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
-  return data;
+  const results: ApplicationTimeline[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -318,9 +320,10 @@ export function getSrumApplicationTimeline(
 export function getSrumApplicationVfu(path: string): AppVfu[] {
   const name = "{7ACBBAA3-D029-4BE4-9A7A-0885927F1D8F}";
   //@ts-ignore: Custom Artemis function
-  const data: AppVfu[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
-  return data;
+  const results: AppVfu[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -331,9 +334,10 @@ export function getSrumApplicationVfu(path: string): AppVfu[] {
 export function getSrumEnergyInfo(path: string): EnergyInfo[] {
   const name = "{DA73FB89-2BEA-4DDC-86B8-6E048C6DA477}";
   //@ts-ignore: Custom Artemis function
-  const data: EnergyInfo[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
-  return data;
+  const results: EnergyInfo[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -344,12 +348,14 @@ export function getSrumEnergyInfo(path: string): EnergyInfo[] {
 export function getSrumEnergyUsage(path: string): EnergyUsage[] {
   let name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}";
   //@ts-ignore: Custom Artemis function
-  const data: EnergyUsage[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
   name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}LT";
   //@ts-ignore: Custom Artemis function
-  const data_lt: EnergyUsage[] = Deno.core.ops.get_srum(path, name);
-  const srum_all = data.concat(data_lt);
+  const data_lt: string = Deno.core.ops.get_srum(path, name);
+
+  const results: EnergyUsage[] = JSON.parse(data);
+  const srum_all = results.concat(JSON.parse(data_lt));
   return srum_all;
 }
 
@@ -361,9 +367,10 @@ export function getSrumEnergyUsage(path: string): EnergyUsage[] {
 export function getSrumNetworkInfo(path: string): NetworkInfo[] {
   const name = "{973F5D5C-1D90-4944-BE8E-24B94231A174}";
   //@ts-ignore: Custom Artemis function
-  const data: NetworkInfo[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
-  return data;
+  const results: NetworkInfo[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -376,9 +383,10 @@ export function getSrumNetworkConnectivity(
 ): NetworkConnectivityInfo[] {
   const name = "{DD6636C4-8929-4683-974E-22C046A43763}";
   //@ts-ignore: Custom Artemis function
-  const data: NetworkConnectivityInfo[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
-  return data;
+  const results: NetworkConnectivityInfo[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -389,7 +397,8 @@ export function getSrumNetworkConnectivity(
 export function getSrumNotifications(path: string): NotificationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA86}";
   //@ts-ignore: Custom Artemis function
-  const data: NotificationInfo[] = Deno.core.ops.get_srum(path, name);
+  const data: string = Deno.core.ops.get_srum(path, name);
 
-  return data;
+  const results: NotificationInfo[] = JSON.parse(data);
+  return results;
 }

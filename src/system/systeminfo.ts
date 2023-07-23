@@ -97,8 +97,8 @@ export interface LoadPerformance {
  * @returns `SystemInfo` object
  */
 export function getSysteminfo(): SystemInfo {
-    //@ts-ignore: Custom Artemis function
-  const data:SystemInfo = Deno.core.ops.get_systeminfo();
+  //@ts-ignore: Custom Artemis function
+  const data: SystemInfo = Deno.core.ops.get_systeminfo();
 
   return data;
 }

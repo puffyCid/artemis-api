@@ -52,7 +52,7 @@ export function outputResults(
   output: Output,
 ): boolean {
   const output_string = JSON.stringify(output);
-    //@ts-ignore: Custom Artemis function
+  //@ts-ignore: Custom Artemis function
   const status: boolean = Deno.core.ops.output_results(
     data,
     data_name,

@@ -51,8 +51,9 @@ export interface Amcache {
  */
 export function getAmcache(): Amcache[] {
   //@ts-ignore: Custom Artemis function
-  const data:Amcache[] = Deno.core.ops.get_amcache();
+  const results: string = Deno.core.ops.get_amcache();
 
+  const data: Amcache[] = JSON.parse(results);
   return data;
 }
 
@@ -63,7 +64,8 @@ export function getAmcache(): Amcache[] {
  */
 export function getAltAmcache(drive: string): Amcache[] {
   //@ts-ignore: Custom Artemis function
-  const data:Amcache[] = Deno.core.ops.get_alt_amcache(drive);
+  const results: string = Deno.core.ops.get_alt_amcache(drive);
 
+  const data: Amcache[] = JSON.parse(results);
   return data;
 }

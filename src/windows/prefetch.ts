@@ -54,7 +54,8 @@ export function getPrefetch(): Prefetch[] {
  */
 export function getPrefetchPath(path: string): Prefetch[] {
   //@ts-ignore: Custom Artemis function
-  const data:Prefetch[] = Deno.core.ops.get_prefetch_path(path);
+  const data: string = Deno.core.ops.get_prefetch_path(path);
 
-  return data;
+  const pf: Prefetch[] = JSON.parse(data);
+  return pf;
 }

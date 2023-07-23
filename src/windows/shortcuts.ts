@@ -80,7 +80,9 @@ export interface Shortcut {
  */
 export function getLnkFile(path: string): Shortcut {
   //@ts-ignore: Custom Artemis function
-  const data:Shortcut = Deno.core.ops.get_lnk_file(path);
+  const data: string = Deno.core.ops.get_lnk_file(path);
 
-  return data;
+  const results: Shortcut = JSON.parse(data);
+
+  return results;
 }

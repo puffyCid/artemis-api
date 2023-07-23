@@ -81,8 +81,9 @@ export interface SearchEntry {
  * @returns Array of `SearchEntry` entries
  */
 export function getSearch(path: string): SearchEntry[] {
-    //@ts-ignore: Custom Artemis function
-  const data:SearchEntry[] = Deno.core.ops.get_search(path);
+  //@ts-ignore: Custom Artemis function
+  const data: string = Deno.core.ops.get_search(path);
 
-  return data;
+  const result: SearchEntry[] = JSON.parse(data);
+  return result;
 }

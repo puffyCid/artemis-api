@@ -47,9 +47,10 @@ export interface Shellbags {
  */
 export function getShellbags(resolve_guids: boolean): Shellbags[] {
   //@ts-ignore: Custom Artemis function
-  const data:Shellbags[] = Deno.core.ops.get_shellbags(resolve_guids);
+  const data: string = Deno.core.ops.get_shellbags(resolve_guids);
 
-  return data;
+  const result: Shellbags[] = JSON.parse(data);
+  return result;
 }
 
 /**
@@ -63,10 +64,11 @@ export function getAltShellbags(
   drive: string,
 ): Shellbags[] {
   //@ts-ignore: Custom Artemis function
-  const data:Shellbags[] = Deno.core.ops.get_alt_shellbags(
+  const data: string = Deno.core.ops.get_alt_shellbags(
     resolve_guids,
     drive,
   );
 
-  return data;
+  const result: Shellbags[] = JSON.parse(data);
+  return result;
 }

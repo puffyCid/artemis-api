@@ -61,10 +61,11 @@ export function getWinProcesses(
     sha256,
   };
   //@ts-ignore: Custom Artemis function
-  const data:WindowsProcessInfo[] = Deno.core.ops.get_processes(
+  const data: string = Deno.core.ops.get_processes(
     JSON.stringify(hashes),
     pe_info,
   );
 
-  return data;
+  const results: WindowsProcessInfo[] = JSON.parse(data);
+  return results;
 }

@@ -43,9 +43,10 @@ export interface UsnJrnl {
  */
 export function getUsnjrnl(): UsnJrnl[] {
   //@ts-ignore: Custom Artemis function
-  const data:UsnJrnl[] = Deno.core.ops.get_usnjrnl();
+  const data: string = Deno.core.ops.get_usnjrnl();
 
-  return data;
+  const results: UsnJrnl[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -54,7 +55,8 @@ export function getUsnjrnl(): UsnJrnl[] {
  */
 export function getAltUsnjrnl(drive: string): UsnJrnl[] {
   //@ts-ignore: Custom Artemis function
-  const data:UsnJrnl[] = Deno.core.ops.get_alt_usnjrnl(drive);
+  const data: string = Deno.core.ops.get_alt_usnjrnl(drive);
 
-  return data;
+  const results: UsnJrnl[] = JSON.parse(data);
+  return results;
 }

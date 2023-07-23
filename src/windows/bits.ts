@@ -41,9 +41,9 @@ export interface BitsInfo {
   /**Files associated with the JOb */
   files_total: number;
   /**Number of bytes downloaded */
-  bytes_downloaded: number;
+  bytes_downloaded: number | bigint | string;
   /**Number of bytes transferred */
-  bytes_transferred: number;
+  bytes_transferred: number | bigint | string;
   /**Name associated with Job */
   job_name: string;
   /**Description associated with Job */
@@ -149,9 +149,9 @@ export interface Files {
   /**Files associated with the JOb */
   files_transferred: number;
   /**Number of bytes downloaded */
-  download_bytes_size: number;
+  download_bytes_size: number | bigint | string;
   /**Number of bytes transferred */
-  trasfer_bytes_size: number;
+  trasfer_bytes_size: number | bigint | string;
   /**Fulll file path associated with Job */
   full_path: string;
   /**Filename associated with Job */
@@ -171,8 +171,9 @@ export interface Files {
  */
 export function getBits(carve: boolean): Bits {
   //@ts-ignore: Custom Artemis function
-  const data:Bits = Deno.core.ops.get_bits(carve);
+  const results: string = Deno.core.ops.get_bits(carve);
 
+  const data: Bits = JSON.parse(results);
   return data;
 }
 
@@ -184,7 +185,8 @@ export function getBits(carve: boolean): Bits {
  */
 export function getBitsPath(path: string, carve: boolean): Bits {
   //@ts-ignore: Custom Artemis function
-  const data:Bits = Deno.core.ops.get_bits_path(path, carve);
+  const results: string = Deno.core.ops.get_bits_path(path, carve);
 
+  const data: Bits = JSON.parse(results);
   return data;
 }

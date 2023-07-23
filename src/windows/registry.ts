@@ -79,7 +79,8 @@ export interface Value {
  */
 export function getRegistry(path: string): Registry[] {
   //@ts-ignore: Custom Artemis function
-  const data:Registry[] = Deno.core.ops.get_registry(path);
+  const data: string = Deno.core.ops.get_registry(path);
 
-  return data;
+  const results: Registry[] = JSON.parse(data);
+  return results;
 }

@@ -80,9 +80,10 @@ export interface DatabaseData {
  */
 export function getShimdb(): Shimdb[] {
   //@ts-ignore: Custom Artemis function
-  const data:Shimdb[] = Deno.core.ops.get_shimdb();
+  const data: string = Deno.core.ops.get_shimdb();
 
-  return data;
+  const results: Shimdb[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -92,9 +93,10 @@ export function getShimdb(): Shimdb[] {
  */
 export function getAltShimdb(drive: string): Shimdb[] {
   //@ts-ignore: Custom Artemis function
-  const data:Shimdb[] = Deno.core.ops.get_alt_shimdb(drive);
+  const data: string = Deno.core.ops.get_alt_shimdb(drive);
 
-  return data;
+  const results: Shimdb[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -103,9 +105,13 @@ export function getAltShimdb(drive: string): Shimdb[] {
  * @param path full path to custom sdb file
  * @returns Shimdb info
  */
-export function getCustomShimdb(path: string): Shimdb {
+export function getCustomShimdb(path: string): Shimdb | null {
   //@ts-ignore: Custom Artemis function
-  const data:Shimdb = Deno.core.ops.get_custom_shimdb(path);
+  const data: string = Deno.core.ops.get_custom_shimdb(path);
+  if (data === "") {
+    return null;
+  }
 
-  return data;
+  const results: Shimdb = JSON.parse(data);
+  return results;
 }

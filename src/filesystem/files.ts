@@ -7,8 +7,10 @@ import { FileInfo } from "./directory.ts";
  */
 export function stat(path: string): FileInfo {
   //@ts-ignore: Custom Artemis function
-  const data: FileInfo = fs.stat(path);
-  return data;
+  const data: string = fs.stat(path);
+  const value: FileInfo = JSON.parse(data);
+
+  return value;
 }
 
 /**

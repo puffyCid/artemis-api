@@ -73,7 +73,8 @@ export interface EventLogRecord {
  */
 export function getEventlogs(path: string): EventLogRecord[] {
   //@ts-ignore: Custom Artemis function
-  const data:EventLogRecord[] = Deno.core.ops.get_eventlogs(path);
+  const results: string = Deno.core.ops.get_eventlogs(path);
 
+  const data: EventLogRecord[] = JSON.parse(results);
   return data;
 }

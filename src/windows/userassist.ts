@@ -26,9 +26,10 @@ export interface UserAssist {
  */
 export function getUserassist(): UserAssist[] {
   //@ts-ignore: Custom Artemis function
-  const data:UserAssist[] = Deno.core.ops.get_userassist();
+  const data: string = Deno.core.ops.get_userassist();
 
-  return data;
+  const results: UserAssist[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -38,7 +39,8 @@ export function getUserassist(): UserAssist[] {
  */
 export function getAltUserassist(drive: string): UserAssist[] {
   //@ts-ignore: Custom Artemis function
-  const data:UserAssist[] = Deno.core.ops.get_alt_userassist(drive);
+  const data: string = Deno.core.ops.get_alt_userassist(drive);
 
-  return data;
+  const results: UserAssist[] = JSON.parse(data);
+  return results;
 }

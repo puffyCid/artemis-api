@@ -10,7 +10,7 @@ export interface FileInfo {
   filename: string;
   /**Extension of file if any */
   extension: string;
-  /**Standard created timestamp of file in UNIXEPOCH seconds */
+  /**Standard created timestamp of file in UNIXEPOCH seconds. Its not available on Linux */
   created: number;
   /**Standard modified timestamp of file in UNIXEPOCH seconds */
   modified: number;
@@ -20,8 +20,8 @@ export interface FileInfo {
   accessed: number;
   /**Size of file */
   size: number;
-  /**Index node associated with file. Only available on Unix like systems. BigInt values are a string, everything else is number */
-  inode: bigint | number | string;
+  /**Index node associated with file. Only available on Unix like systems */
+  inode: number;
   /**Mode associated with file. Only available on Unix like systems */
   mode: number;
   /**User ID associated with file. Only available on Unix like systems */
@@ -43,6 +43,14 @@ export interface FileInfo {
  */
 export function readDir(path: string): AsyncIterable<FileInfo> {
   //@ts-ignore: Custom Artemis function
-  const data: AsyncIterable<FileInfo> = fs.readDir(path);
-  return data;
+  const data: AsyncIterable<string> = fs.readDir(path);
+
+  return {
+    async *[Symbol.asyncIterator]() {
+      for await (const info of data) {
+        const value: FileInfo = JSON.parse(info);
+        yield value;
+      }
+    },
+  };
 }

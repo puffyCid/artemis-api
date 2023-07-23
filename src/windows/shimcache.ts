@@ -23,9 +23,10 @@ export interface Shimcache {
  */
 export function getShimcache(): Shimcache[] {
   //@ts-ignore: Custom Artemis function
-  const data:Shimcache[] = Deno.core.ops.get_shimcache();
+  const data: string = Deno.core.ops.get_shimcache();
 
-  return data;
+  const results: Shimcache[] = JSON.parse(data);
+  return results;
 }
 
 /**
@@ -35,7 +36,8 @@ export function getShimcache(): Shimcache[] {
  */
 export function getAltShimcache(drive: string): Shimcache[] {
   //@ts-ignore: Custom Artemis function
-  const data:Shimcache[] = Deno.core.ops.get_alt_shimcache(drive);
+  const data: string = Deno.core.ops.get_alt_shimcache(drive);
 
-  return data;
+  const results: Shimcache[] = JSON.parse(data);
+  return results;
 }
