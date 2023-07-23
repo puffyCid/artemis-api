@@ -41,16 +41,9 @@ export interface FileInfo {
  * @param path Directory to read
  * @returns An array of files with basic metadata
  */
-export function readDir(path: string): AsyncIterable<FileInfo> {
+export async function readDir(path: string): Promise<FileInfo[]> {
   //@ts-ignore: Custom Artemis function
-  const data: AsyncIterable<string> = fs.readDir(path);
+  const data: FileInfo[] = await fs.readDir(path);
 
-  return {
-    async *[Symbol.asyncIterator]() {
-      for await (const info of data) {
-        const value: FileInfo = JSON.parse(info);
-        yield value;
-      }
-    },
-  };
+  return data;
 }
