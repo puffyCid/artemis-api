@@ -40,8 +40,8 @@ export interface Prefetch {
  * Function to parse default `Prefetch` directory
  * @returns `Array of Prefetch data`
  */
-export function get_prefetch(): Prefetch[] {
-  // Array of JSON objects
+export function getPrefetch(): Prefetch[] {
+  //@ts-ignore: Custom Artemis function
   const data = Deno.core.ops.get_prefetch();
   const pf: Prefetch[] = JSON.parse(data);
 
@@ -52,10 +52,9 @@ export function get_prefetch(): Prefetch[] {
  * Function to parse a directory containing `Prefetch` files (.pf)
  * @returns `Array of Prefetch data`
  */
-export function get_prefetch_path(path: string): Prefetch[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_prefetch_path(path);
-  const pf: Prefetch[] = JSON.parse(data);
+export function getPrefetchPath(path: string): Prefetch[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Prefetch[] = Deno.core.ops.get_prefetch_path(path);
 
-  return pf;
+  return data;
 }

@@ -49,12 +49,11 @@ export interface Amcache {
  * Function to parse `Amcache` entries on the systemdrive
  * @returns Array of `Amcache` entries parsed from the sysystemdrive letter
  */
-export function get_amcache(): Amcache[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_amcache();
-  const amcache_array: Amcache[] = JSON.parse(data);
+export function getAmcache(): Amcache[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Amcache[] = Deno.core.ops.get_amcache();
 
-  return amcache_array;
+  return data;
 }
 
 /**
@@ -62,10 +61,9 @@ export function get_amcache(): Amcache[] {
  * @param drive drive letter
  * @returns Array of `Amcache` entries parsed from a Windows drive letter
  */
-export function get_alt_amcache(drive: string): Amcache[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_alt_amcache(drive);
-  const amcache_array: Amcache[] = JSON.parse(data);
+export function getAltAmcache(drive: string): Amcache[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Amcache[] = Deno.core.ops.get_alt_amcache(drive);
 
-  return amcache_array;
+  return data;
 }

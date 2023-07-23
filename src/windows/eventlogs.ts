@@ -71,10 +71,9 @@ export interface EventLogRecord {
  * @param path Full path to `evtx` file
  * @returns Array of `event log` records
  */
-export function get_eventlogs(path: string): EventLogRecord[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_eventlogs(path);
-  const log_array: EventLogRecord[] = JSON.parse(data);
+export function getEventlogs(path: string): EventLogRecord[] {
+  //@ts-ignore: Custom Artemis function
+  const data:EventLogRecord[] = Deno.core.ops.get_eventlogs(path);
 
-  return log_array;
+  return data;
 }

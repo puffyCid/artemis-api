@@ -287,12 +287,12 @@ export interface NotificationInfo {
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `ApplicationInfo` entries
  */
-export function get_srum_application_info(path: string): ApplicationInfo[] {
+export function getSrumApplicationInfo(path: string): ApplicationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}";
-  const data = Deno.core.ops.get_srum(path, name);
-  const srum: ApplicationInfo[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: ApplicationInfo[] = Deno.core.ops.get_srum(path, name);
 
-  return srum;
+  return data;
 }
 
 /**
@@ -300,14 +300,14 @@ export function get_srum_application_info(path: string): ApplicationInfo[] {
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `ApplicationTimeline` entries
  */
-export function get_srum_application_timeline(
+export function getSrumApplicationTimeline(
   path: string,
 ): ApplicationTimeline[] {
   const name = "{5C8CF1C7-7257-4F13-B223-970EF5939312}";
-  const data = Deno.core.ops.get_srum(path, name);
-  const srum: ApplicationTimeline[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: ApplicationTimeline[] = Deno.core.ops.get_srum(path, name);
 
-  return srum;
+  return data;
 }
 
 /**
@@ -315,12 +315,12 @@ export function get_srum_application_timeline(
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `AppVfu` entries
  */
-export function get_srum_application_vfu(path: string): AppVfu[] {
+export function getSrumApplicationVfu(path: string): AppVfu[] {
   const name = "{7ACBBAA3-D029-4BE4-9A7A-0885927F1D8F}";
-  const data = Deno.core.ops.get_srum(path, name);
-  const srum: AppVfu[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: AppVfu[] = Deno.core.ops.get_srum(path, name);
 
-  return srum;
+  return data;
 }
 
 /**
@@ -328,12 +328,12 @@ export function get_srum_application_vfu(path: string): AppVfu[] {
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `EnergyInfo`
  */
-export function get_srum_energy_info(path: string): EnergyInfo[] {
+export function getSrumEnergyInfo(path: string): EnergyInfo[] {
   const name = "{DA73FB89-2BEA-4DDC-86B8-6E048C6DA477}";
-  const data = Deno.core.ops.get_srum(path, name);
-  const srum: EnergyInfo[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: EnergyInfo[] = Deno.core.ops.get_srum(path, name);
 
-  return srum;
+  return data;
 }
 
 /**
@@ -341,14 +341,15 @@ export function get_srum_energy_info(path: string): EnergyInfo[] {
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `EnergyUsage`
  */
-export function get_srum_energy_usage(path: string): EnergyUsage[] {
+export function getSrumEnergyUsage(path: string): EnergyUsage[] {
   let name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}";
-  let data = Deno.core.ops.get_srum(path, name);
-  const srum: EnergyUsage[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: EnergyUsage[] = Deno.core.ops.get_srum(path, name);
 
   name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}LT";
-  data = Deno.core.ops.get_srum(path, name);
-  const srum_all = srum.concat(JSON.parse(data));
+  //@ts-ignore: Custom Artemis function
+  const data_lt: EnergyUsage[] = Deno.core.ops.get_srum(path, name);
+  const srum_all = data.concat(data_lt);
   return srum_all;
 }
 
@@ -357,12 +358,12 @@ export function get_srum_energy_usage(path: string): EnergyUsage[] {
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `NetworkInfo`
  */
-export function get_srum_network_info(path: string): NetworkInfo[] {
+export function getSrumNetworkInfo(path: string): NetworkInfo[] {
   const name = "{973F5D5C-1D90-4944-BE8E-24B94231A174}";
-  const data = Deno.core.ops.get_srum(path, name);
-  const srum: NetworkInfo[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: NetworkInfo[] = Deno.core.ops.get_srum(path, name);
 
-  return srum;
+  return data;
 }
 
 /**
@@ -370,14 +371,14 @@ export function get_srum_network_info(path: string): NetworkInfo[] {
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `NetworkConnectivityInfo`
  */
-export function get_srum_network_connectivity(
+export function getSrumNetworkConnectivity(
   path: string,
 ): NetworkConnectivityInfo[] {
   const name = "{DD6636C4-8929-4683-974E-22C046A43763}";
-  const data = Deno.core.ops.get_srum(path, name);
-  const srum: NetworkConnectivityInfo[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: NetworkConnectivityInfo[] = Deno.core.ops.get_srum(path, name);
 
-  return srum;
+  return data;
 }
 
 /**
@@ -385,10 +386,10 @@ export function get_srum_network_connectivity(
  * @param path Path to `SRUDB.dat` file
  * @returns Array of `NotificationInfo`
  */
-export function get_srum_notifications(path: string): NotificationInfo[] {
+export function getSrumNotifications(path: string): NotificationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA86}";
-  const data = Deno.core.ops.get_srum(path, name);
-  const srum: NotificationInfo[] = JSON.parse(data);
+  //@ts-ignore: Custom Artemis function
+  const data: NotificationInfo[] = Deno.core.ops.get_srum(path, name);
 
-  return srum;
+  return data;
 }

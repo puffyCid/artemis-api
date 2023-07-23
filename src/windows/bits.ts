@@ -169,11 +169,11 @@ export interface Files {
  * @param carve Whether to carve additional jobs and files
  * @returns `BITS` object containing bits, carved jobs, carved files arrays
  */
-export function get_bits(carve: boolean): Bits {
-  const data = Deno.core.ops.get_bits(carve);
-  const bits: Bits = JSON.parse(data);
+export function getBits(carve: boolean): Bits {
+  //@ts-ignore: Custom Artemis function
+  const data:Bits = Deno.core.ops.get_bits(carve);
 
-  return bits;
+  return data;
 }
 
 /**
@@ -182,10 +182,9 @@ export function get_bits(carve: boolean): Bits {
  * @param carve Whether to carve additional jobs and files
  * @returns `BITS` object containing bits, carved jobs, carved files arrays
  */
-export function get_bits_path(path: string, carve: boolean): Bits {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_bits_path(path, carve);
-  const bits: Bits = JSON.parse(data);
+export function getBitsPath(path: string, carve: boolean): Bits {
+  //@ts-ignore: Custom Artemis function
+  const data:Bits = Deno.core.ops.get_bits_path(path, carve);
 
-  return bits;
+  return data;
 }

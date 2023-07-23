@@ -78,12 +78,11 @@ export interface DatabaseData {
  * Function to parse `ShimDB` entries on the systemdrive
  * @returns Array of `ShimDB` entries parsed from the sysystemdrive letter
  */
-export function get_shimdb(): Shimdb[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_shimdb();
-  const shim_array: Shimdb[] = JSON.parse(data);
+export function getShimdb(): Shimdb[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Shimdb[] = Deno.core.ops.get_shimdb();
 
-  return shim_array;
+  return data;
 }
 
 /**
@@ -91,27 +90,22 @@ export function get_shimdb(): Shimdb[] {
  * @param drive drive letter
  * @returns Array of `ShimDB` entries parsed from a Windows drive letter
  */
-export function get_alt_shimdb(drive: string): Shimdb[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_alt_shimdb(drive);
-  const shim_array: Shimdb[] = JSON.parse(data);
+export function getAltShimdb(drive: string): Shimdb[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Shimdb[] = Deno.core.ops.get_alt_shimdb(drive);
 
-  return shim_array;
+  return data;
 }
 
 /**
  * Function to parse a custom SDB file. SDB files can exist anywhere on a Windows system
  * Will only read files less than 10MB in size (SDB files are typically only 1-5KB in size)
  * @param path full path to custom sdb file
- * @returns Array of `ShimDB` entries from sdb file
+ * @returns Shimdb info
  */
-export function get_custom_shimdb(path: string): Shimdb | null {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_custom_shimdb(path);
-  if (data === "") {
-    return null;
-  }
-  const shim_array: Shimdb = JSON.parse(data);
+export function getCustomShimdb(path: string): Shimdb {
+  //@ts-ignore: Custom Artemis function
+  const data:Shimdb = Deno.core.ops.get_custom_shimdb(path);
 
-  return shim_array;
+  return data;
 }

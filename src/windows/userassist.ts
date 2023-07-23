@@ -24,12 +24,11 @@ export interface UserAssist {
  * Function to parse `UserAssist` entries on the systemdrive
  * @returns Array of `UserAssist` entries parsed from the sysystemdrive letter
  */
-export function get_userassist(): UserAssist[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_userassist();
-  const assist_array: UserAssist[] = JSON.parse(data);
+export function getUserassist(): UserAssist[] {
+  //@ts-ignore: Custom Artemis function
+  const data:UserAssist[] = Deno.core.ops.get_userassist();
 
-  return assist_array;
+  return data;
 }
 
 /**
@@ -37,10 +36,9 @@ export function get_userassist(): UserAssist[] {
  * @param drive drive letter
  * @returns Array of `UserAssist` entries parsed from a Windows drive letter
  */
-export function get_alt_userassist(drive: string): UserAssist[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_alt_userassist(drive);
-  const assist_array: UserAssist[] = JSON.parse(data);
+export function getAltUserassist(drive: string): UserAssist[] {
+  //@ts-ignore: Custom Artemis function
+  const data:UserAssist[] = Deno.core.ops.get_alt_userassist(drive);
 
-  return assist_array;
+  return data;
 }

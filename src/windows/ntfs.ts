@@ -97,7 +97,7 @@ export interface AdsInfo {
  * @param path Full path to file to read
  * @returns Bytes read
  */
-export function read_raw_file(path: string): Uint8Array {
+export function readRawFile(path: string): Uint8Array {
   //@ts-ignore: Custom Artemis function
   const data: string = Deno.core.ops.read_raw_file(path);
   return decode(data);
@@ -112,7 +112,7 @@ export function read_raw_file(path: string): Uint8Array {
  * @param ads_name Name of `Alternative data stream (ADS)` to read
  * @returns Bytes read
  */
-export function read_ads_data(path: string, ads_name: string): Uint8Array {
+export function readAdsData(path: string, ads_name: string): Uint8Array {
   //@ts-ignore: Custom Artemis function
   const data: string = Deno.core.ops.read_ads_data(
     path,

@@ -40,11 +40,9 @@ export interface PeInfo {
  * @param path Full path to a `pe` file
  * @returns Basic `PeInfo` interface or null
  */
-export function get_pe(path: string): PeInfo | null {
-  const data = Deno.core.ops.get_pe(path);
-  if (data === "") {
-    return null;
-  }
-  const pe: PeInfo = JSON.parse(data);
-  return pe;
+export function getPe(path: string): PeInfo {
+    //@ts-ignore: Custom Artemis function
+  const data:PeInfo = Deno.core.ops.get_pe(path);
+  
+  return data;
 }

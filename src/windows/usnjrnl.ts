@@ -41,22 +41,20 @@ export interface UsnJrnl {
  * Function to parse the `UsnJrnl` on the systemdrive
  * @returns Array of `UsnJrnl` entries from sysystemdrive letter
  */
-export function get_usnjrnl(): UsnJrnl[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_usnjrnl();
-  const jrnl_array: UsnJrnl[] = JSON.parse(data);
+export function getUsnjrnl(): UsnJrnl[] {
+  //@ts-ignore: Custom Artemis function
+  const data:UsnJrnl[] = Deno.core.ops.get_usnjrnl();
 
-  return jrnl_array;
+  return data;
 }
 
 /**
  * Function to parse the `UsnJrnl` on an alternative driver
  * @returns Array of `UsnJrnl` entries from a Windows driver letter
  */
-export function get_alt_usnjrnl(drive: string): UsnJrnl[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_alt_usnjrnl(drive);
-  const jrnl_array: UsnJrnl[] = JSON.parse(data);
+export function getAltUsnjrnl(drive: string): UsnJrnl[] {
+  //@ts-ignore: Custom Artemis function
+  const data:UsnJrnl[] = Deno.core.ops.get_alt_usnjrnl(drive);
 
-  return jrnl_array;
+  return data;
 }

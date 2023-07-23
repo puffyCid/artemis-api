@@ -77,10 +77,9 @@ export interface Value {
  * @param path Full path to a `Registry` file
  * @returns Array of `Registry` entries
  */
-export function get_registry(path: string): Registry[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_registry(path);
-  const reg_array: Registry[] = JSON.parse(data);
+export function getRegistry(path: string): Registry[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Registry[] = Deno.core.ops.get_registry(path);
 
-  return reg_array;
+  return data;
 }

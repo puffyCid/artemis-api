@@ -21,12 +21,11 @@ export interface Shimcache {
  * Function to parse `Shimcache` entries on the systemdrive
  * @returns Array of `Shimcache` entries parsed from the sysystemdrive letter
  */
-export function get_shimcache(): Shimcache[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_shimcache();
-  const shim_array: Shimcache[] = JSON.parse(data);
+export function getShimcache(): Shimcache[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Shimcache[] = Deno.core.ops.get_shimcache();
 
-  return shim_array;
+  return data;
 }
 
 /**
@@ -34,10 +33,9 @@ export function get_shimcache(): Shimcache[] {
  * @param drive drive letter
  * @returns Array of `Shimcache` entries parsed from a Windows drive letter
  */
-export function get_alt_shimcache(drive: string): Shimcache[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_alt_shimcache(drive);
-  const shim_array: Shimcache[] = JSON.parse(data);
+export function getAltShimcache(drive: string): Shimcache[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Shimcache[] = Deno.core.ops.get_alt_shimcache(drive);
 
-  return shim_array;
+  return data;
 }

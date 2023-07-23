@@ -78,10 +78,9 @@ export interface Shortcut {
  * @param path Full path to `lnk` file
  * @returns `Shortcut (lnk) info`
  */
-export function get_lnk_file(path: string): Shortcut {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_lnk_file(path);
-  const lnk: Shortcut = JSON.parse(data);
+export function getLnkFile(path: string): Shortcut {
+  //@ts-ignore: Custom Artemis function
+  const data:Shortcut = Deno.core.ops.get_lnk_file(path);
 
-  return lnk;
+  return data;
 }

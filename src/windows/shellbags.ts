@@ -45,12 +45,11 @@ export interface Shellbags {
  * @param resolve_guids Whether to lookup GUID values. Ex: Convert `20d04fe0-3aea-1069-a2d8-08002b30309d` to `This PC`
  * @returns Array of `Shellbag` entries from from systemdrive
  */
-export function get_shellbags(resolve_guids: boolean): Shellbags[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_shellbags(resolve_guids);
-  const bags_array: Shellbags[] = JSON.parse(data);
+export function getShellbags(resolve_guids: boolean): Shellbags[] {
+  //@ts-ignore: Custom Artemis function
+  const data:Shellbags[] = Deno.core.ops.get_shellbags(resolve_guids);
 
-  return bags_array;
+  return data;
 }
 
 /**
@@ -59,16 +58,15 @@ export function get_shellbags(resolve_guids: boolean): Shellbags[] {
  * @param drive Drive letter to use to parse the `shellbags`
  * @returns Array of `Shellbag` entries
  */
-export function get_alt_shellbags(
+export function getAltShellbags(
   resolve_guids: boolean,
   drive: string,
 ): Shellbags[] {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_alt_shellbags(
+  //@ts-ignore: Custom Artemis function
+  const data:Shellbags[] = Deno.core.ops.get_alt_shellbags(
     resolve_guids,
     drive,
   );
-  const bags_array: Shellbags[] = JSON.parse(data);
 
-  return bags_array;
+  return data;
 }

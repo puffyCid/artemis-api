@@ -80,9 +80,9 @@ export interface SearchEntry {
  * @param path Path to a Windows Search file. Supports `Windows.edb` or `Windows.db`
  * @returns Array of `SearchEntry` entries
  */
-export function get_search(path: string): SearchEntry[] {
-  const data = Deno.core.ops.get_search(path);
-  const search: SearchEntry[] = JSON.parse(data);
+export function getSearch(path: string): SearchEntry[] {
+    //@ts-ignore: Custom Artemis function
+  const data:SearchEntry[] = Deno.core.ops.get_search(path);
 
-  return search;
+  return data;
 }

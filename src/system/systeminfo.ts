@@ -96,10 +96,9 @@ export interface LoadPerformance {
  * Function to pull systeminfo
  * @returns `SystemInfo` object
  */
-export function get_systeminfo(): SystemInfo {
-  // Array of JSON objects
-  const data = Deno.core.ops.get_systeminfo();
-  const info: SystemInfo = JSON.parse(data);
+export function getSysteminfo(): SystemInfo {
+    //@ts-ignore: Custom Artemis function
+  const data:SystemInfo = Deno.core.ops.get_systeminfo();
 
-  return info;
+  return data;
 }
