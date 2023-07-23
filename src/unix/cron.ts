@@ -25,7 +25,7 @@ export interface Cron {
  * @returns Array of `Cron` entries
  */
 export function get_cron(): Cron[] {
-  const data = Deno[Deno.internal].core.ops.get_cron();
+  const data = Deno.core.ops.get_cron();
 
   const history: Cron[] = JSON.parse(data);
   return history;

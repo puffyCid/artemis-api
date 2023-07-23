@@ -54,8 +54,9 @@ export interface UnifiedLog {
  * @param path Full path to a Unified log file
  * @returns Array of `Unified log` entries
  */
-export function get_unified_log(path: string): UnifiedLog[] {
-  const data = Deno[Deno.internal].core.ops.get_unified_log(path);
+export function getUnifiedLog(path: string): UnifiedLog[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_unified_log(path);
 
   const log_data: UnifiedLog[] = JSON.parse(data);
   return log_data;

@@ -52,7 +52,7 @@ export function outputResults(
   output: Output,
 ): boolean {
   const output_string = JSON.stringify(output);
-  const status: boolean = Deno[Deno.internal].core.ops.output_results(
+  const status: boolean = Deno.core.ops.output_results(
     data,
     data_name,
     output_string,

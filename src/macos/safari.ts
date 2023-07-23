@@ -55,8 +55,9 @@ export interface RawSafariHistory {
  * Get Safari history for all users on a endpoint
  * @returns Array of `SafariHistory` entries for all users
  */
-export function get_safari_users_history(): SafariHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_safari_users_history();
+export function getSafariUsersHistory(): SafariHistory[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_safari_users_history();
 
   const history: SafariHistory[] = JSON.parse(data);
   return history;
@@ -67,8 +68,9 @@ export function get_safari_users_history(): SafariHistory[] {
  * @param path Full path to `History.db` file
  * @returns `RawSafariHistory` entries for file
  */
-export function get_safari_history(path: string): RawSafariHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_safari_history(path);
+export function getSafariHistory(path: string): RawSafariHistory[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_safari_history(path);
 
   const history: RawSafariHistory[] = JSON.parse(data);
   return history;
@@ -157,8 +159,9 @@ export interface RawSafariDownloads {
  * Get Safari downloads for all users on a endpoint
  * @returns Array of `SafariDownloads` entries for all users
  */
-export function get_safari_users_downloads(): SafariDownloads[] {
-  const data = Deno[Deno.internal].core.ops.get_safari_users_downloads();
+export function getSafariUsersDownloads(): SafariDownloads[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_safari_users_downloads();
 
   const downloads: SafariDownloads[] = JSON.parse(data);
   return downloads;
@@ -169,8 +172,9 @@ export function get_safari_users_downloads(): SafariDownloads[] {
  * @param path Full path to `History` file
  * @returns `RawSafariDownloads` entries for file
  */
-export function get_safari_downloads(path: string): RawSafariDownloads[] {
-  const data = Deno[Deno.internal].core.ops.get_safari_downloads(path);
+export function getSafariDownloads(path: string): RawSafariDownloads[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_safari_downloads(path);
 
   const downloads: RawSafariDownloads[] = JSON.parse(data);
   return downloads;

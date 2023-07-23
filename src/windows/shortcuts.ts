@@ -80,7 +80,7 @@ export interface Shortcut {
  */
 export function get_lnk_file(path: string): Shortcut {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_lnk_file(path);
+  const data = Deno.core.ops.get_lnk_file(path);
   const lnk: Shortcut = JSON.parse(data);
 
   return lnk;

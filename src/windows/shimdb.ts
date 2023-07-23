@@ -80,7 +80,7 @@ export interface DatabaseData {
  */
 export function get_shimdb(): Shimdb[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_shimdb();
+  const data = Deno.core.ops.get_shimdb();
   const shim_array: Shimdb[] = JSON.parse(data);
 
   return shim_array;
@@ -93,7 +93,7 @@ export function get_shimdb(): Shimdb[] {
  */
 export function get_alt_shimdb(drive: string): Shimdb[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_alt_shimdb(drive);
+  const data = Deno.core.ops.get_alt_shimdb(drive);
   const shim_array: Shimdb[] = JSON.parse(data);
 
   return shim_array;
@@ -107,7 +107,7 @@ export function get_alt_shimdb(drive: string): Shimdb[] {
  */
 export function get_custom_shimdb(path: string): Shimdb | null {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_custom_shimdb(path);
+  const data = Deno.core.ops.get_custom_shimdb(path);
   if (data === "") {
     return null;
   }

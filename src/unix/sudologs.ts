@@ -16,7 +16,7 @@ import { UnifiedLog } from "../macos/unifiedlogs.ts";
  * @returns Array of `sudo log` entries from the Unified Logs
  */
 export function getMacosSudoLogs(): UnifiedLog[] {
-  const data = Deno[Deno.internal].core.ops.get_sudologs();
+  const data = Deno.core.ops.get_sudologs();
 
   const log_data: UnifiedLog[] = JSON.parse(data);
   return log_data;
@@ -27,7 +27,7 @@ export function getMacosSudoLogs(): UnifiedLog[] {
  * @returns Array of `sudo log` entries from the Journal files
  */
 export function getLinuxSudoLogs(): Journal[] {
-  const data = Deno[Deno.internal].core.ops.get_sudologs();
+  const data = Deno.core.ops.get_sudologs();
 
   const log_data: Journal[] = JSON.parse(data);
   return log_data;

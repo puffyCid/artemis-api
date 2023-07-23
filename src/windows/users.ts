@@ -34,7 +34,7 @@ export interface UserInfo {
  */
 export function get_users_win(): UserInfo[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_users();
+  const data = Deno.core.ops.get_users();
   const user_array: UserInfo[] = JSON.parse(data);
 
   return user_array;
@@ -47,7 +47,7 @@ export function get_users_win(): UserInfo[] {
  */
 export function get_alt_users_win(drive: string): UserInfo[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_alt_users(drive);
+  const data = Deno.core.ops.get_alt_users(drive);
   const user_array: UserInfo[] = JSON.parse(data);
 
   return user_array;

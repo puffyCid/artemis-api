@@ -81,7 +81,7 @@ export interface SearchEntry {
  * @returns Array of `SearchEntry` entries
  */
 export function get_search(path: string): SearchEntry[] {
-  const data = Deno[Deno.internal].core.ops.get_search(path);
+  const data = Deno.core.ops.get_search(path);
   const search: SearchEntry[] = JSON.parse(data);
 
   return search;

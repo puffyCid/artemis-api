@@ -289,7 +289,7 @@ export interface NotificationInfo {
  */
 export function get_srum_application_info(path: string): ApplicationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}";
-  const data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  const data = Deno.core.ops.get_srum(path, name);
   const srum: ApplicationInfo[] = JSON.parse(data);
 
   return srum;
@@ -304,7 +304,7 @@ export function get_srum_application_timeline(
   path: string,
 ): ApplicationTimeline[] {
   const name = "{5C8CF1C7-7257-4F13-B223-970EF5939312}";
-  const data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  const data = Deno.core.ops.get_srum(path, name);
   const srum: ApplicationTimeline[] = JSON.parse(data);
 
   return srum;
@@ -317,7 +317,7 @@ export function get_srum_application_timeline(
  */
 export function get_srum_application_vfu(path: string): AppVfu[] {
   const name = "{7ACBBAA3-D029-4BE4-9A7A-0885927F1D8F}";
-  const data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  const data = Deno.core.ops.get_srum(path, name);
   const srum: AppVfu[] = JSON.parse(data);
 
   return srum;
@@ -330,7 +330,7 @@ export function get_srum_application_vfu(path: string): AppVfu[] {
  */
 export function get_srum_energy_info(path: string): EnergyInfo[] {
   const name = "{DA73FB89-2BEA-4DDC-86B8-6E048C6DA477}";
-  const data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  const data = Deno.core.ops.get_srum(path, name);
   const srum: EnergyInfo[] = JSON.parse(data);
 
   return srum;
@@ -343,11 +343,11 @@ export function get_srum_energy_info(path: string): EnergyInfo[] {
  */
 export function get_srum_energy_usage(path: string): EnergyUsage[] {
   let name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}";
-  let data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  let data = Deno.core.ops.get_srum(path, name);
   const srum: EnergyUsage[] = JSON.parse(data);
 
   name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}LT";
-  data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  data = Deno.core.ops.get_srum(path, name);
   const srum_all = srum.concat(JSON.parse(data));
   return srum_all;
 }
@@ -359,7 +359,7 @@ export function get_srum_energy_usage(path: string): EnergyUsage[] {
  */
 export function get_srum_network_info(path: string): NetworkInfo[] {
   const name = "{973F5D5C-1D90-4944-BE8E-24B94231A174}";
-  const data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  const data = Deno.core.ops.get_srum(path, name);
   const srum: NetworkInfo[] = JSON.parse(data);
 
   return srum;
@@ -374,7 +374,7 @@ export function get_srum_network_connectivity(
   path: string,
 ): NetworkConnectivityInfo[] {
   const name = "{DD6636C4-8929-4683-974E-22C046A43763}";
-  const data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  const data = Deno.core.ops.get_srum(path, name);
   const srum: NetworkConnectivityInfo[] = JSON.parse(data);
 
   return srum;
@@ -387,7 +387,7 @@ export function get_srum_network_connectivity(
  */
 export function get_srum_notifications(path: string): NotificationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA86}";
-  const data = Deno[Deno.internal].core.ops.get_srum(path, name);
+  const data = Deno.core.ops.get_srum(path, name);
   const srum: NotificationInfo[] = JSON.parse(data);
 
   return srum;

@@ -56,8 +56,9 @@ export interface RawFirefoxHistory {
  * Get Firefox history for all users on a endpoint
  * @returns Array of `FirefoxHistory` entries for all users
  */
-export function get_firefox_users_history(): FirefoxHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_firefox_users_history();
+export function getFirefoxUsersHistory(): FirefoxHistory[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_firefox_users_history();
 
   const history: FirefoxHistory[] = JSON.parse(data);
   return history;
@@ -68,8 +69,9 @@ export function get_firefox_users_history(): FirefoxHistory[] {
  * @param path Full path to `places.sqlite` file
  * @returns `RawFirefoxHistory` entries for file
  */
-export function get_firefox_history(path: string): RawFirefoxHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_firefox_history(path);
+export function getFirefoxHistory(path: string): RawFirefoxHistory[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_firefox_history(path);
 
   const history: RawFirefoxHistory[] = JSON.parse(data);
   return history;
@@ -123,8 +125,9 @@ export interface RawFirefoxDownloads {
  * Get Firefox downloads for all users on a endpoint
  * @returns Array of `FirefoxDownloads` entries for all users
  */
-export function get_firefox_users_downloads(): FirefoxDownloads[] {
-  const data = Deno[Deno.internal].core.ops.get_firefox_users_downloads();
+export function getFirefoxUsersDownloads(): FirefoxDownloads[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_firefox_users_downloads();
 
   const downloads: FirefoxDownloads[] = JSON.parse(data);
   return downloads;
@@ -135,8 +138,9 @@ export function get_firefox_users_downloads(): FirefoxDownloads[] {
  * @param path Full path to `places.sqlite` file
  * @returns `RawFirefoxDownloads` entries for file
  */
-export function get_firefox_downloads(path: string): RawFirefoxDownloads[] {
-  const data = Deno[Deno.internal].core.ops.get_firefox_downloads(path);
+export function getFirefoxDownloads(path: string): RawFirefoxDownloads[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_firefox_downloads(path);
 
   const downloads: RawFirefoxDownloads[] = JSON.parse(data);
   return downloads;

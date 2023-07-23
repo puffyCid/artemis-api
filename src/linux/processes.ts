@@ -60,7 +60,7 @@ export function getLinuxProcesses(
     sha1,
     sha256,
   };
-  const data = Deno[Deno.internal].core.ops.get_processes(
+  const data = Deno.core.ops.get_processes(
     hashes,
     elf_info,
   );

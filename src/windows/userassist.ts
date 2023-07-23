@@ -26,7 +26,7 @@ export interface UserAssist {
  */
 export function get_userassist(): UserAssist[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_userassist();
+  const data = Deno.core.ops.get_userassist();
   const assist_array: UserAssist[] = JSON.parse(data);
 
   return assist_array;
@@ -39,7 +39,7 @@ export function get_userassist(): UserAssist[] {
  */
 export function get_alt_userassist(drive: string): UserAssist[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_alt_userassist(drive);
+  const data = Deno.core.ops.get_alt_userassist(drive);
   const assist_array: UserAssist[] = JSON.parse(data);
 
   return assist_array;

@@ -101,7 +101,7 @@ export interface Journal {
  * @returns Array of `Journal` entries
  */
 export function getJournal(path: string): Journal[] | null {
-  const data = Deno[Deno.internal].core.ops.get_journal(path);
+  const data = Deno.core.ops.get_journal(path);
   if (data === "") {
     return null;
   }

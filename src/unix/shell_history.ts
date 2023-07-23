@@ -30,7 +30,7 @@ export interface BashData {
  * @returns Array of `BashHistory` for each user on the endpoint
  */
 export function get_bash_history(): BashHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_bash_history();
+  const data = Deno.core.ops.get_bash_history();
 
   const history: BashHistory[] = JSON.parse(data);
   return history;
@@ -70,7 +70,7 @@ export interface ZshData {
  * @returns Array of `ZshHistory` for each user on the endpoint
  */
 export function get_zsh_history(): ZshHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_zsh_history();
+  const data = Deno.core.ops.get_zsh_history();
 
   const history: ZshHistory[] = JSON.parse(data);
   return history;
@@ -106,7 +106,7 @@ export interface PythonData {
  * @returns Array of `BashHistory` for each user on the endpoint
  */
 export function get_python_history(): PythonHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_python_history();
+  const data = Deno.core.ops.get_python_history();
 
   const history: PythonHistory[] = JSON.parse(data);
   return history;

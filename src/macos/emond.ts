@@ -86,8 +86,9 @@ interface SendEmailSms {
  * Function to parse the `Emond` rules on a macOS system
  * @returns Array of `Emond` rules
  */
-export function get_emond(): Emond[] {
-  const data = Deno[Deno.internal].core.ops.get_emond();
+export function getEmond(): Emond[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_emond();
 
   const emond: Emond[] = JSON.parse(data);
   return emond;

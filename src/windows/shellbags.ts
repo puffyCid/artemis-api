@@ -47,7 +47,7 @@ export interface Shellbags {
  */
 export function get_shellbags(resolve_guids: boolean): Shellbags[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_shellbags(resolve_guids);
+  const data = Deno.core.ops.get_shellbags(resolve_guids);
   const bags_array: Shellbags[] = JSON.parse(data);
 
   return bags_array;
@@ -64,7 +64,7 @@ export function get_alt_shellbags(
   drive: string,
 ): Shellbags[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_alt_shellbags(
+  const data = Deno.core.ops.get_alt_shellbags(
     resolve_guids,
     drive,
   );

@@ -13,9 +13,9 @@ export interface Launchd {
  * Function to parse `Launchd daemons` on a macOS system
  * @returns Array of `Launchd daemons` parsed from a plist file
  */
-export function get_launchd_daemons(): Launchd[] {
-  // Array of JSON objections
-  const data = Deno[Deno.internal].core.ops.get_launchd_daemons();
+export function getLaunchdDaemons(): Launchd[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_launchd_daemons();
   const launchd_array: Launchd[] = JSON.parse(data);
 
   return launchd_array;
@@ -25,9 +25,9 @@ export function get_launchd_daemons(): Launchd[] {
  * Function to parse `Launchd agents` on a macOS system
  * @returns Array of `Launchd agents` parsed from a plist file
  */
-export function get_launchd_agents(): Launchd[] {
-  // Array of JSON objections
-  const data = Deno[Deno.internal].core.ops.get_launchd_agents();
+export function getLaunchdAgents(): Launchd[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_launchd_agents();
   const launchd_array: Launchd[] = JSON.parse(data);
 
   return launchd_array;

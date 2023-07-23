@@ -41,7 +41,7 @@ export interface PeInfo {
  * @returns Basic `PeInfo` interface or null
  */
 export function get_pe(path: string): PeInfo | null {
-  const data = Deno[Deno.internal].core.ops.get_pe(path);
+  const data = Deno.core.ops.get_pe(path);
   if (data === "") {
     return null;
   }

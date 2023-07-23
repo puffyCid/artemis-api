@@ -51,7 +51,7 @@ export interface Amcache {
  */
 export function get_amcache(): Amcache[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_amcache();
+  const data = Deno.core.ops.get_amcache();
   const amcache_array: Amcache[] = JSON.parse(data);
 
   return amcache_array;
@@ -64,7 +64,7 @@ export function get_amcache(): Amcache[] {
  */
 export function get_alt_amcache(drive: string): Amcache[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_alt_amcache(drive);
+  const data = Deno.core.ops.get_alt_amcache(drive);
   const amcache_array: Amcache[] = JSON.parse(data);
 
   return amcache_array;

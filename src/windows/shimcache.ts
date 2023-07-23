@@ -23,7 +23,7 @@ export interface Shimcache {
  */
 export function get_shimcache(): Shimcache[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_shimcache();
+  const data = Deno.core.ops.get_shimcache();
   const shim_array: Shimcache[] = JSON.parse(data);
 
   return shim_array;
@@ -36,7 +36,7 @@ export function get_shimcache(): Shimcache[] {
  */
 export function get_alt_shimcache(drive: string): Shimcache[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_alt_shimcache(drive);
+  const data = Deno.core.ops.get_alt_shimcache(drive);
   const shim_array: Shimcache[] = JSON.parse(data);
 
   return shim_array;

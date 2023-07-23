@@ -42,7 +42,7 @@ export interface Prefetch {
  */
 export function get_prefetch(): Prefetch[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_prefetch();
+  const data = Deno.core.ops.get_prefetch();
   const pf: Prefetch[] = JSON.parse(data);
 
   return pf;
@@ -54,7 +54,7 @@ export function get_prefetch(): Prefetch[] {
  */
 export function get_prefetch_path(path: string): Prefetch[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_prefetch_path(path);
+  const data = Deno.core.ops.get_prefetch_path(path);
   const pf: Prefetch[] = JSON.parse(data);
 
   return pf;

@@ -51,8 +51,9 @@ export interface RawChromiumHistory {
  * Get Chromium history for all users on a endpoint
  * @returns Array of `ChromiumHistory` entries for all users
  */
-export function get_chromium_users_history(): ChromiumHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_chromium_users_history();
+export function getChromiumUsersHistory(): ChromiumHistory[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_chromium_users_history();
 
   const history: ChromiumHistory[] = JSON.parse(data);
   return history;
@@ -63,8 +64,9 @@ export function get_chromium_users_history(): ChromiumHistory[] {
  * @param path Full path to `History` file
  * @returns `RawChromiumHistory` entries for file
  */
-export function get_chromium_history(path: string): RawChromiumHistory[] {
-  const data = Deno[Deno.internal].core.ops.get_chromium_history(path);
+export function getChromiumHistory(path: string): RawChromiumHistory[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_chromium_history(path);
 
   const history: RawChromiumHistory[] = JSON.parse(data);
   return history;
@@ -154,8 +156,9 @@ export interface RawChromiumDownloads {
  * Get Chromium downloads for all users on a endpoint
  * @returns Array of `ChromiumDownloads` entries for all users
  */
-export function get_chromium_users_downloads(): ChromiumDownloads[] {
-  const data = Deno[Deno.internal].core.ops.get_chromium_users_downloads();
+export function getChromiumUsersDownloads(): ChromiumDownloads[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_chromium_users_downloads();
 
   const downloads: ChromiumDownloads[] = JSON.parse(data);
   return downloads;
@@ -166,8 +169,9 @@ export function get_chromium_users_downloads(): ChromiumDownloads[] {
  * @param path Full path to `History` file
  * @returns `RawChromiumDownloads` entries for file
  */
-export function get_chromium_downloads(path: string): RawChromiumDownloads[] {
-  const data = Deno[Deno.internal].core.ops.get_chromium_downloads(path);
+export function getChromiumDownloads(path: string): RawChromiumDownloads[] {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_chromium_downloads(path);
 
   const downloads: RawChromiumDownloads[] = JSON.parse(data);
   return downloads;

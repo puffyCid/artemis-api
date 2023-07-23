@@ -73,7 +73,7 @@ export interface EventLogRecord {
  */
 export function get_eventlogs(path: string): EventLogRecord[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_eventlogs(path);
+  const data = Deno.core.ops.get_eventlogs(path);
   const log_array: EventLogRecord[] = JSON.parse(data);
 
   return log_array;

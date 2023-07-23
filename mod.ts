@@ -1,49 +1,3 @@
-import {
-  ChromiumDownloads,
-  ChromiumHistory,
-  get_chromium_downloads,
-  get_chromium_history,
-  get_chromium_users_downloads,
-  get_chromium_users_history,
-  RawChromiumDownloads,
-  RawChromiumHistory,
-} from "./src/applications/chromium.ts";
-import {
-  FirefoxDownloads,
-  FirefoxHistory,
-  get_firefox_downloads,
-  get_firefox_history,
-  get_firefox_users_downloads,
-  get_firefox_users_history,
-  RawFirefoxDownloads,
-  RawFirefoxHistory,
-} from "./src/applications/firefox.ts";
-import {
-  get_safari_downloads,
-  get_safari_history,
-  get_safari_users_downloads,
-  get_safari_users_history,
-  RawSafariDownloads,
-  RawSafariHistory,
-  SafariDownloads,
-  SafariHistory,
-} from "./src/applications/safari.ts";
-import { get_groups, get_users, Groups, Users } from "./src/macos/accounts.ts";
-import { Emond, get_emond } from "./src/macos/emond.ts";
-import { Fsevents, get_fsevents } from "./src/macos/fsevents.ts";
-import {
-  get_launchd_agents,
-  get_launchd_daemons,
-  Launchd,
-} from "./src/macos/launchd.ts";
-import { get_loginitems, LoginItems } from "./src/macos/loginitems.ts";
-import { get_macho, MachoInfo } from "./src/macos/macho.ts";
-import { get_plist } from "./src/macos/plist.ts";
-import {
-  get_macos_processes,
-  MacosProcessInfo,
-} from "./src/macos/processes.ts";
-import { get_unified_log, UnifiedLog } from "./src/macos/unifiedlogs.ts";
 import { Cron, get_cron } from "./src/unix/cron.ts";
 import {
   BashHistory,
@@ -129,6 +83,26 @@ export { getLinuxProcesses } from "./src/linux/processes.ts";
 export { getJournal } from "./src/linux/journal.ts";
 
 /**
+ * macOS exported functions
+ */
+export { getEmond } from "./src/macos/emond.ts";
+export { getLoginitems } from "./src/macos/loginitems.ts";
+export { getLaunchdAgents, getLaunchdDaemons } from "./src/macos/launchd.ts";
+export { getGroups, getUsers } from "./src/macos/accounts.ts";
+export { getExecpolicy } from "./src/macos/execpolicy.ts";
+export { getFsevents } from "./src/macos/fsevents.ts";
+export { getMacho } from "./src/macos/macho.ts";
+export { getPlist } from "./src/macos/plist.ts";
+export { getMacosProcesses } from "./src/macos/processes.ts";
+export { getUnifiedLog } from "./src/macos/unifiedlogs.ts";
+export {
+  getSafariDownloads,
+  getSafariHistory,
+  getSafariUsersDownloads,
+  getSafariUsersHistory,
+} from "./src/macos/safari.ts";
+
+/**
  * Unix exported functions
  */
 export { getLinuxSudoLogs, getMacosSudoLogs } from "./src/unix/sudologs.ts";
@@ -139,141 +113,20 @@ export { getLinuxSudoLogs, getMacosSudoLogs } from "./src/unix/sudologs.ts";
 export { outputResults } from "./src/system/output.ts";
 
 /**
- * Function to parse `Launchd agents` on a macOS system
- * @returns Array of `Launchd agents` parsed from a plist file
+ * Application exported functions
  */
-export function getLaunchdAgents(): Launchd[] {
-  return get_launchd_agents();
-}
-
-/**
- * Function to parse `Launchd daemons` on a macOS system
- * @returns Array of `Launchd daemons` parsed from a plist file
- */
-export function getLaunchdDaemons(): Launchd[] {
-  return get_launchd_daemons();
-}
-
-/**
- * Function to parse the `Unified logs` on a macOS system
- * @param path Full path to a Unified log file
- * @returns Array of Unified log entries
- */
-export function getUnifiedLog(path: string): UnifiedLog[] {
-  return get_unified_log(path);
-}
-
-/**
- * Function to parse a `plist` file. This function either returns a `plist` as a JSON struct
- * or null
- * @param path Full path to a `plist` file
- * @returns `plist` data represented as a JSON object or an object representing an error
- */
-export function getPlist(path: string): Record<string, unknown> | null {
-  return get_plist(path);
-}
-
-/**
- * Function to parse `FsEvents` records
- * @param path Full path to a `fsevents` file
- * @returns Array of FsEvent records
- */
-export function getFsEvents(path: string): Fsevents[] | null {
-  return get_fsevents(path);
-}
-
-/**
- * Function to parse a `macho` executable.
- * @param path Full path to a `macho` file
- * @returns Basic `MachoInfo` interface array or null
- */
-export function getMacho(path: string): MachoInfo[] | null {
-  return get_macho(path);
-}
-
-/**
- * Function to parse the `LoginItems` on a system
- * @returns Array of `LoginItems`
- */
-export function getLoginItems(): LoginItems[] {
-  return get_loginitems();
-}
-
-/**
- * Function to parse the local `Users` on a macOS system
- * @returns Array of `Users`
- */
-export function getUsers(): Users[] {
-  return get_users();
-}
-
-/**
- * Function to parse the local `Groups` on a macOS system
- * @returns Array of `Groups`
- */
-export function getGroups(): Groups[] {
-  return get_groups();
-}
-
-/**
- * Function to parse the `Emond` rules on a macOS system
- * @returns Array of `Emond` rules
- */
-export function getEmond(): Emond[] {
-  return get_emond();
-}
-
-/**
- * Get Safari history for all users on an endpoint
- * @returns Array of `SafariHistory` entries for all users
- */
-export function getSafariUsersHistory(): SafariHistory[] {
-  return get_safari_users_history();
-}
-
-/**
- * Get Safari history from provided `History.db` file
- * @param path Full path to `History.db` file
- * @returns `RawSafariHistory` entries for file
- */
-export function getSafariHistory(path: string): RawSafariHistory[] {
-  return get_safari_history(path);
-}
-
-/**
- * Get Safari downloads for all users on an endpoint
- * @returns Array of `SafariDownloads` entries for all users
- */
-export function getSafarUsersDownloads(): SafariDownloads[] {
-  return get_safari_users_downloads();
-}
-
-/**
- * Get Safari downloads from provided `Downloads.plist` file
- * @param path Full path to `History` file
- * @returns `RawSafariDownloads` entries for file
- */
-export function getSafariDownloads(path: string): RawSafariDownloads[] {
-  return get_safari_downloads(path);
-}
-
-/**
- * Function to pull a process listing from macOS
- * @param md5 MD5 hash the process binary
- * @param sha1 SHA1 hash the process binary
- * @param sha256 SHA256 hash the process binary
- * @param macho_info Parse `macho` metadata from the process binary
- * @returns Array of `MacosProcessInfo`
- */
-export function getMacosProcesses(
-  md5: boolean,
-  sha1: boolean,
-  sha256: boolean,
-  macho_info: boolean,
-): MacosProcessInfo[] {
-  return get_macos_processes(md5, sha1, sha256, macho_info);
-}
-
+export {
+  getChromiumDownloads,
+  getChromiumHistory,
+  getChromiumUsersDownloads,
+  getChromiumUsersHistory,
+} from "./src/applications/chromium.ts";
+export {
+  getFirefoxDownloads,
+  getFirefoxHistory,
+  getFirefoxUsersDownloads,
+  getFirefoxUsersHistory,
+} from "./src/applications/firefox.ts";
 /**
  * Windows functions start here
  */
@@ -620,74 +473,6 @@ export function getSearch(path: string): SearchEntry[] {
 /**
  * Application functions start here
  */
-
-/**
- * Get Firefox history for all users on an endpoint
- * @returns Array of `FirefoxHistory` entries for all users
- */
-export function getFirefoxUsersHistory(): FirefoxHistory[] {
-  return get_firefox_users_history();
-}
-
-/**
- * Get Firefox history from provided `places.sqlite` file
- * @param path Full path to `places.sqlite` file
- * @returns `RawFirefoxHistory` entries for file
- */
-export function getFirefoxHistory(path: string): RawFirefoxHistory[] {
-  return get_firefox_history(path);
-}
-
-/**
- * Get Firefox downloads for all users on an endpoint
- * @returns Array of `FirefoxDownloads` entries for all users
- */
-export function getFirefoxUsersDownloads(): FirefoxDownloads[] {
-  return get_firefox_users_downloads();
-}
-
-/**
- * Get Firefox downloads from provided `places.sqlite` file
- * @param path Full path to `places.sqlite` file
- * @returns `RawFirefoxDownloads` entries for file
- */
-export function getFirefoxDownloads(path: string): RawFirefoxDownloads[] {
-  return get_firefox_downloads(path);
-}
-
-/**
- * Get Chromium history for all users on an endpoint
- * @returns Array of `ChromiumHistory` entries for all users
- */
-export function getChromiumUsersHistory(): ChromiumHistory[] {
-  return get_chromium_users_history();
-}
-
-/**
- * Get Chromium history from provided `History` file
- * @param path Full path to `History` file
- * @returns `RawChromiumHistory` entries for file
- */
-export function getChromiumHistory(path: string): RawChromiumHistory[] {
-  return get_chromium_history(path);
-}
-
-/**
- * Get Chromium downloads for all users on an endpoint
- * @returns Array of `ChromiumDownloads` entries for all users
- */
-export function getChromiumUsersDownloads(): ChromiumDownloads[] {
-  return get_chromium_users_downloads();
-}
-
-/**
- * Get Chromium downloads from provided `History` file
- * @param path Full path to `History` file
- * @returns `RawChromiumDownloads` entries for file
- */
-export function getChromiumDownloads(path: string): RawChromiumDownloads[] {
-  return get_chromium_downloads(path);
-}
 
 /**
  * Unix functions start here

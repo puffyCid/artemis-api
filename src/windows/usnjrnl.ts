@@ -43,7 +43,7 @@ export interface UsnJrnl {
  */
 export function get_usnjrnl(): UsnJrnl[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_usnjrnl();
+  const data = Deno.core.ops.get_usnjrnl();
   const jrnl_array: UsnJrnl[] = JSON.parse(data);
 
   return jrnl_array;
@@ -55,7 +55,7 @@ export function get_usnjrnl(): UsnJrnl[] {
  */
 export function get_alt_usnjrnl(drive: string): UsnJrnl[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_alt_usnjrnl(drive);
+  const data = Deno.core.ops.get_alt_usnjrnl(drive);
   const jrnl_array: UsnJrnl[] = JSON.parse(data);
 
   return jrnl_array;

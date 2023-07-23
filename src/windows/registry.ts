@@ -79,7 +79,7 @@ export interface Value {
  */
 export function get_registry(path: string): Registry[] {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_registry(path);
+  const data = Deno.core.ops.get_registry(path);
   const reg_array: Registry[] = JSON.parse(data);
 
   return reg_array;

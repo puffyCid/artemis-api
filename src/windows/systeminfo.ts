@@ -98,7 +98,7 @@ export interface LoadPerformance {
  */
 export function get_systeminfo(): SystemInfo {
   // Array of JSON objects
-  const data = Deno[Deno.internal].core.ops.get_systeminfo();
+  const data = Deno.core.ops.get_systeminfo();
   const info: SystemInfo = JSON.parse(data);
 
   return info;

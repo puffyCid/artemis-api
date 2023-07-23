@@ -20,7 +20,7 @@ export interface ElfInfo {
  * @returns Basic `ElfInfo` interface or null
  */
 export function getElf(path: string): ElfInfo | null {
-  const data = Deno[Deno.internal].core.ops.get_elf(path);
+  const data = Deno.core.ops.get_elf(path);
   if (data === "") {
     return null;
   }

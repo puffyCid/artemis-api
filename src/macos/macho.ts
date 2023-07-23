@@ -104,8 +104,9 @@ export interface DylibCommand {
  * @param path Full path to a `macho` file
  * @returns Basic `MachoInfo` interface array or null
  */
-export function get_macho(path: string): MachoInfo[] | null {
-  const data = Deno[Deno.internal].core.ops.get_macho(path);
+export function getMacho(path: string): MachoInfo[] | null {
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_macho(path);
   if (data === "") {
     return null;
   }

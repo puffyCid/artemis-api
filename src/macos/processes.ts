@@ -49,7 +49,7 @@ export interface MacosProcessInfo {
  * @param macho_info Parse MACHO metadata from the process binary
  * @returns Array of `MacosProcessInfo`
  */
-export function get_macos_processes(
+export function getMacosProcesses(
   md5: boolean,
   sha1: boolean,
   sha256: boolean,
@@ -60,7 +60,8 @@ export function get_macos_processes(
     sha1,
     sha256,
   };
-  const data = Deno[Deno.internal].core.ops.get_processes(
+  //@ts-ignore: Custom Artemis function
+  const data = Deno.core.ops.get_processes(
     hashes,
     macho_info,
   );
