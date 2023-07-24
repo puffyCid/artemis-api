@@ -112,11 +112,7 @@ export function encode(data: ArrayBuffer | string): string {
  * @returns Raw decoded bytes as `Uint8Array`
  */
 export function decode(b64: string): Uint8Array {
-  const binString = atob(b64);
-  const size = binString.length;
-  const bytes = new Uint8Array(size);
-  for (let i = 0; i < size; i++) {
-    bytes[i] = binString.charCodeAt(i);
-  }
+  //@ts-ignore: Custom Artemis function
+  const bytes: Uint8Array = encoding.atob(b64);
   return bytes;
 }

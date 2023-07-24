@@ -118,5 +118,8 @@ export function readAdsData(path: string, ads_name: string): Uint8Array {
     path,
     ads_name,
   );
+  if (data === "") {
+    return new Uint8Array();
+  }
   return decode(data);
 }
