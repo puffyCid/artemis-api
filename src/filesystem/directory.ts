@@ -43,7 +43,7 @@ export interface FileInfo {
  */
 export async function readDir(path: string): Promise<FileInfo[]> {
   //@ts-ignore: Custom Artemis function
-  const data: FileInfo[] = await fs.readDir(path);
+  const data: FileInfo[] = JSON.parse(await fs.readDir(path));
 
   return data;
 }
