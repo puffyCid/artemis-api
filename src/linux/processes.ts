@@ -60,11 +60,12 @@ export function getLinuxProcesses(
     sha1,
     sha256,
   };
+  //@ts-ignore: Custom Artemis function
   const data = Deno.core.ops.get_processes(
     hashes,
     elf_info,
   );
-  const proc_array: MacosProcessInfo[] = JSON.parse(data);
+  const proc_array: LinuxProcessInfo[] = JSON.parse(data);
 
   return proc_array;
 }

@@ -101,6 +101,7 @@ export interface Journal {
  * @returns Array of `Journal` entries
  */
 export function getJournal(path: string): Journal[] | null {
+  //@ts-ignore: Custom Artemis function
   const data = Deno.core.ops.get_journal(path);
   if (data === "") {
     return null;

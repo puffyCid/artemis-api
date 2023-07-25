@@ -1,13 +1,3 @@
-import { Cron, get_cron } from "./src/unix/cron.ts";
-import {
-  BashHistory,
-  get_bash_history,
-  get_python_history,
-  get_zsh_history,
-  PythonHistory,
-  ZshHistory,
-} from "./src/unix/shell_history.ts";
-
 /**
  * Linux exported functions
  */
@@ -39,6 +29,12 @@ export {
  * Unix exported functions
  */
 export { getLinuxSudoLogs, getMacosSudoLogs } from "./src/unix/sudologs.ts";
+export { getCron } from "./src/unix/cron.ts";
+export {
+  getBashHistory,
+  getPythonHistory,
+  getZshHistory,
+} from "./src/unix/shell_history.ts";
 
 /**
  * Cross platform exported functions
@@ -95,43 +91,3 @@ export {
 export { getAltUserassist, getUserassist } from "./src/windows/userassist.ts";
 export { getAltUsersWin, getUsersWin } from "./src/windows/users.ts";
 export { getAltUsnjrnl, getUsnjrnl } from "./src/windows/usnjrnl.ts";
-
-/**
- * Application functions start here
- */
-
-/**
- * Unix functions start here
- */
-
-/**
- * Parse and get the contents of the `.bash_history` file for all users on an endpoint
- * @returns Array of `BashHistory` for each user on the endpoint
- */
-export function getBashHistory(): BashHistory[] {
-  return get_bash_history();
-}
-
-/**
- * Parse and get the contents of the `.zsh_history` file for all users on an endpoint
- * @returns Array of `ZshHistory` for each user on the endpoint
- */
-export function getZshHistory(): ZshHistory[] {
-  return get_zsh_history();
-}
-
-/**
- * Parse and get the contents of the `.bash_history` file for all users on an endpoint
- * @returns Array of `BashHistory` for each user on the endpoint
- */
-export function getPythonHistory(): PythonHistory[] {
-  return get_python_history();
-}
-
-/**
- * Parse `Cron` files on an endpoint
- * @returns Array of `Cron` entries
- */
-export function getCron(): Cron[] {
-  return get_cron();
-}
