@@ -1,4 +1,3 @@
-import { decode } from "../encoding/base64.ts";
 import { PeInfo } from "./pe.ts";
 
 /**
@@ -99,8 +98,8 @@ export interface AdsInfo {
  */
 export function readRawFile(path: string): Uint8Array {
   //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.read_raw_file(path);
-  return decode(data);
+  const data: Uint8Array = Deno.core.ops.read_raw_file(path);
+  return data;
 }
 
 /**
@@ -114,12 +113,10 @@ export function readRawFile(path: string): Uint8Array {
  */
 export function readAdsData(path: string, ads_name: string): Uint8Array {
   //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.read_ads_data(
+  const data: Uint8Array = Deno.core.ops.read_ads_data(
     path,
     ads_name,
   );
-  if (data === "") {
-    return new Uint8Array();
-  }
-  return decode(data);
+
+  return data;
 }
