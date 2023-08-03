@@ -1,3 +1,4 @@
+import { GlobInfo } from "../../types/filesystem/globs.d.ts";
 import { FileInfo } from "./directory.ts";
 
 /**
@@ -53,4 +54,17 @@ export function readTextFile(path: string): string {
   //@ts-ignore: Custom Artemis function
   const data: string = fs.readTextFile(path);
   return data;
+}
+
+/**
+ * Parse glob patterns based on Rust Glob support (https://docs.rs/glob/latest/glob/)
+ * @param pattern Glob pattern to parse. Ex: `C:\\*` to get all files and directories at Windows C directory
+ * @returns Array of `GlobInfo` or Error
+ */
+export function glob(pattern: string): GlobInfo[] | Error {
+  //@ts-ignore: Custom Artemis function
+  const data: string = fs.glob(pattern);
+
+  const result: GlobInfo[] | Error = JSON.parse(data);
+  return result;
 }
