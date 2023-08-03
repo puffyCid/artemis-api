@@ -1,2 +1,2 @@
 export { readDir } from "./directory.ts";
-export { hash, readTextFile, stat, glob } from "./files.ts";
+export { glob, hash, readTextFile, stat } from "./files.ts";
