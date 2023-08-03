@@ -91,3 +91,4 @@ export {
 export { getAltUserassist, getUserassist } from "./src/windows/userassist.ts";
 export { getAltUsersWin, getUsersWin } from "./src/windows/users.ts";
 export { getAltUsnjrnl, getUsnjrnl } from "./src/windows/usnjrnl.ts";
+export { getAltTasks, getTaskFile, getTasks } from "./src/windows/tasks.ts";
