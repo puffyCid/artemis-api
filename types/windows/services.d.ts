@@ -19,8 +19,8 @@ export interface Services {
   start_mode: string;
   /**Path to executable for Service */
   path: string;
-  /**Service type. Ex: KernelDriver */
-  service_type: string;
+  /**Service types. Ex: KernelDriver */
+  service_type: string[];
   /**Account associated with Service */
   account: string;
   /**Registry modified timestamp in UNIXEPOCH seconds. May be used to determine when the Service was created */
