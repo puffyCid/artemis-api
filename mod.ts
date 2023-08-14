@@ -97,3 +97,8 @@ export {
   getServiceFile,
   getServices,
 } from "./src/windows/services.ts";
+export {
+  getAltJumplists,
+  getJumplistPath,
+  getJumplists,
+} from "./src/windows/jumplists.ts";

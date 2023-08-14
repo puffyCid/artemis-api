@@ -38,7 +38,7 @@ export interface Prefetch {
 
 /**
  * Function to parse default `Prefetch` directory
- * @returns `Array of `Prefetch` data
+ * @returns Array of `Prefetch` data
  */
 export function getPrefetch(): Prefetch[] {
   //@ts-ignore: Custom Artemis function
@@ -63,7 +63,7 @@ export function getAltPrefetch(drive: string): Prefetch[] {
 
 /**
  * Function to parse a directory containing `Prefetch` files (.pf)
- * @returns `Array of Prefetch data`
+ * @returns Array of `Prefetch` data
  */
 export function getPrefetchPath(path: string): Prefetch[] {
   //@ts-ignore: Custom Artemis function
