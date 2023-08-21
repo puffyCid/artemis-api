@@ -32,4 +32,6 @@ export interface ShellItems {
   mft_entry: number;
   /**Sequence number in MFT. Only applicable for Directory `shell_type` */
   mft_sequence: number;
+  /**Array of Property Stores */
+  stores: Record<string, string | number | boolean | null>;
 }
