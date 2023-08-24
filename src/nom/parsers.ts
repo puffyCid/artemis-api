@@ -13,9 +13,9 @@ export function take(data: string | Uint8Array, input: number): Nom | Error {
   }
   if (typeof data === "string") {
     //@ts-ignore: Custom Artemis function
-    const result: string = Deno.core.ops.js_nom_take_string(data, input);
-    const nom: Nom = JSON.parse(result);
-    return nom;
+    const result_string: string = Deno.core.ops.js_nom_take_string(data, input);
+    const nom_string: Nom = JSON.parse(result);
+    return nom_string;
   }
 
   //@ts-ignore: Custom Artemis function
