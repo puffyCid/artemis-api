@@ -6,6 +6,7 @@ import { Disks } from "../../types/systeminfo/systeminfo.d.ts";
  */
 export function disks(): Disks[] {
   //@ts-ignore: Custom Artemis function
-  const data: Disks[] = systemInfo.disks();
-  return data;
+  const data: string = systemInfo.disks();
+  const disk: Disks[] = JSON.parse(data);
+  return disk;
 }

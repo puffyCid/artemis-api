@@ -6,6 +6,7 @@ import { Memory } from "../../types/systeminfo/systeminfo.d.ts";
  */
 export function memory(): Memory {
   //@ts-ignore: Custom Artemis function
-  const data: Memory = systemInfo.disks();
-  return data;
+  const data: string = systemInfo.disks();
+  const mem: Memory = JSON.parse(data);
+  return mem;
 }
