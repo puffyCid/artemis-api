@@ -40,7 +40,17 @@ export {
  * Cross platform exported functions
  */
 export { outputResults } from "./src/system/output.ts";
-export { getSysteminfo } from "./src/system/systeminfo.ts";
+export {
+  getSysteminfo,
+  hostname,
+  kernelVersion,
+  osVersion,
+  platform,
+  uptime,
+} from "./src/system/systeminfo.ts";
+export { disks } from "./src/system/disks.ts";
+export { cpus } from "./src/system/cpu.ts";
+export { memory } from "./src/system/memory.ts";
 
 /**
  * Application exported functions
