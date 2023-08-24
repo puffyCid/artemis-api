@@ -19,7 +19,6 @@ export function take(data: string | Uint8Array, input: number): Nom | Error {
   }
 
   //@ts-ignore: Custom Artemis function
-  const result: string = Deno.core.ops.js_nom_take_bytes(data, input);
-  const nom: Nom = JSON.parse(result);
-  return nom;
+  const result: Nom = Deno.core.ops.js_nom_take_bytes(data, input);
+  return result;
 }
