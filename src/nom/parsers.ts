@@ -26,7 +26,7 @@ export function take(data: string | Uint8Array, input: number): Nom | Error {
 /**
  * Nom data until provided input
  * @param data String or bytes to provide to nom
- * @param input Nom `data` until input
+ * @param input Nom `data` until input. Must be same type as `data`
  * @returns A `Nom` structure
  */
 export function take_until(
@@ -41,7 +41,7 @@ export function take_until(
     );
     const nom_string: Nom = JSON.parse(result_string);
     return nom_string;
-  } else if (typeof data === "number" && input instanceof Uint8Array) {
+  } else if (data instanceof Uint8Array && input instanceof Uint8Array) {
     //@ts-ignore: Custom Artemis function
     const result_string: string = Deno.core.ops.js_nom_take_until_bytes(
       data,
@@ -57,7 +57,7 @@ export function take_until(
 /**
  * Nom data while data is **NOT** equal to input
  * @param data String or bytes to provide to nom
- * @param input Nom `data` while `data` does **NOT** equal input. Must be a single character or <= 255
+ * @param input Nom `data` while `data` does **NOT** equal input. Must be a single character or <= 255. Must be same type as `data`
  * @returns A `Nom` structure
  */
 export function take_while(
@@ -80,7 +80,7 @@ export function take_while(
     );
     const nom_string: Nom = JSON.parse(result_string);
     return nom_string;
-  } else if (typeof data === "number" && typeof input === "number") {
+  } else if (data instanceof Uint8Array && typeof input === "number") {
     //@ts-ignore: Custom Artemis function
     const result_string: string = Deno.core.ops.js_nom_take_while_bytes(
       data,
