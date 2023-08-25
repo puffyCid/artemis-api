@@ -40,6 +40,10 @@ export function take_until(
       input,
     );
     const nom_string: Nom = JSON.parse(result_string);
+    if (nom_string.nommed.length === 0 && nom_string.remaining.length === 0) {
+      return new Error("failed to parse string data");
+    }
+
     return nom_string;
   } else if (data instanceof Uint8Array && input instanceof Uint8Array) {
     //@ts-ignore: Custom Artemis function
@@ -47,6 +51,10 @@ export function take_until(
       data,
       input,
     );
+    if (result.nommed.length === 0 && result.remaining.length === 0) {
+      return new Error("failed to parse bytes data");
+    }
+
     return result;
   }
 
@@ -78,6 +86,10 @@ export function take_while(
       input,
     );
     const nom_string: Nom = JSON.parse(result_string);
+    if (nom_string.nommed.length === 0 && nom_string.remaining.length === 0) {
+      return new Error("failed to parse string data");
+    }
+
     return nom_string;
   } else if (data instanceof Uint8Array && typeof input === "number") {
     //@ts-ignore: Custom Artemis function
@@ -85,6 +97,10 @@ export function take_while(
       data,
       input,
     );
+    if (result.nommed.length === 0 && result.remaining.length === 0) {
+      return new Error("failed to parse bytes data");
+    }
+
     return result;
   }
 
