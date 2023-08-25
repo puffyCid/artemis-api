@@ -43,12 +43,11 @@ export function take_until(
     return nom_string;
   } else if (data instanceof Uint8Array && input instanceof Uint8Array) {
     //@ts-ignore: Custom Artemis function
-    const result_string: string = Deno.core.ops.js_nom_take_until_bytes(
+    const result: Nom = Deno.core.ops.js_nom_take_until_bytes(
       data,
       input,
     );
-    const nom_string: Nom = JSON.parse(result_string);
-    return nom_string;
+    return result;
   }
 
   return new Error("provided unsupported data and/or input types");
@@ -82,12 +81,11 @@ export function take_while(
     return nom_string;
   } else if (data instanceof Uint8Array && typeof input === "number") {
     //@ts-ignore: Custom Artemis function
-    const result_string: string = Deno.core.ops.js_nom_take_while_bytes(
+    const result: Nom = Deno.core.ops.js_nom_take_until_bytes(
       data,
       input,
     );
-    const nom_string: Nom = JSON.parse(result_string);
-    return nom_string;
+    return result;
   }
 
   return new Error("provided unsupported data and/or input types");
