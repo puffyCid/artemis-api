@@ -54,9 +54,9 @@ export function take_until(
 }
 
 /**
- * Nom data while data is **NOT** equal to input
+ * Nom data while data **IS** equal to input
  * @param data String or bytes to provide to nom
- * @param input Nom `data` while `data` does **NOT** equal input. Must be a single character or <= 255. Must be same type as `data`
+ * @param input Nom `data` while `data` **IS** equal to input. Must be a single character or <= 255. Must be same type as `data`
  * @returns A `Nom` structure
  */
 export function take_while(

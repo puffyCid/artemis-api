@@ -1,4 +1,8 @@
-import { NomSigned, NomUnsigned } from "../../types/nom/nom.d.ts";
+import {
+  NomSigned,
+  NomUnsigned,
+  NomUnsignedLarge,
+} from "../../types/nom/nom.d.ts";
 
 /**
  * Determines Endian type to use when parsing bytes
@@ -103,13 +107,13 @@ export function nom_unsigned_one_bytes(
 export function nom_unsigned_sixteen_bytes(
   data: Uint8Array,
   endianess: Endian,
-): NomUnsigned | Error {
+): NomUnsignedLarge | Error {
   //@ts-ignore: Custom Artemis function
-  const result: NomUnsigned = Deno.core.ops.js_nom_unsigned_sixteen_bytes(
+  const result: NomUnsignedLarge = Deno.core.ops.js_nom_unsigned_sixteen_bytes(
     data,
     endianess,
   );
-  if (result.remaining.length === 0 && result.value === 0) {
+  if (result.remaining.length === 0 && result.value === "") {
     return new Error("nommed zero bytes");
   }
   return result;
