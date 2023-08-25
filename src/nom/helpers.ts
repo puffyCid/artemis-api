@@ -3,7 +3,7 @@ import { NomSigned, NomUnsigned } from "../../types/nom/nom.d.ts";
 /**
  * Determines Endian type to use when parsing bytes
  */
-enum Endian {
+export enum Endian {
   /**Big Endian */
   Be,
   /**Little Endian */

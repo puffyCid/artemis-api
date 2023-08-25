@@ -81,7 +81,7 @@ export function take_while(
     return nom_string;
   } else if (data instanceof Uint8Array && typeof input === "number") {
     //@ts-ignore: Custom Artemis function
-    const result: Nom = Deno.core.ops.js_nom_take_until_bytes(
+    const result: Nom = Deno.core.ops.js_nom_take_while_bytes(
       data,
       input,
     );
