@@ -102,3 +102,4 @@ export {
   getJumplistPath,
   getJumplists,
 } from "./src/windows/jumplists.ts";
+export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
