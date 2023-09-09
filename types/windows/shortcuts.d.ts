@@ -70,7 +70,7 @@ export interface Shortcut {
   /**Shellitems associated with shortcut (lnk) file */
   shellitems: ShellItems[];
   /**Array of property stores */
-  properties: Record<string, unknown>[];
+  properties: Record<string, string | number | boolean | null>[];
   /**Environmental variable data in shortcut */
   environment_variable: string;
   /**Console metadata in shortcut */
