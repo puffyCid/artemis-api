@@ -4,6 +4,7 @@
 export { getElf } from "./src/linux/elf.ts";
 export { getLinuxProcesses } from "./src/linux/processes.ts";
 export { getJournal } from "./src/linux/journal.ts";
+export { getLogon } from "./src/linux/logon.ts";
 
 /**
  * macOS exported functions
