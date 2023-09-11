@@ -4,6 +4,7 @@
 export { getElf } from "./src/linux/elf.ts";
 export { getLinuxProcesses } from "./src/linux/processes.ts";
 export { getJournal } from "./src/linux/journal.ts";
+export { getLogon } from "./src/linux/logon.ts";
 
 /**
  * macOS exported functions
@@ -112,3 +113,4 @@ export {
   getJumplistPath,
   getJumplists,
 } from "./src/windows/jumplists.ts";
+export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
