@@ -8,3 +8,14 @@ export function extractUtf8String(data: Uint8Array): string {
   const result: string = encoding.extract_utf8_string(data);
   return result;
 }
+
+/**
+ * Convert bytes to Hex string
+ * @param data Raw bytes to convert to hex
+ * @returns A hexadecimal string
+ */
+export function bytesToHexString(data: Uint8Array): string {
+  //@ts-ignore: Custom Artemis function
+  const result: string = encoding.bytes_to_hex_string(data);
+  return result;
+}

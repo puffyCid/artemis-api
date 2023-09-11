@@ -29,7 +29,7 @@ export function take(data: string | Uint8Array, input: number): Nom | Error {
  * @param input Nom `data` until input. Must be same type as `data`
  * @returns A `Nom` structure
  */
-export function take_until(
+export function takeUntil(
   data: string | Uint8Array,
   input: Uint8Array | string,
 ): Nom | Error {
@@ -67,7 +67,7 @@ export function take_until(
  * @param input Nom `data` while `data` **IS** equal to input. Must be a single character or <= 255. Must be same type as `data`
  * @returns A `Nom` structure
  */
-export function take_while(
+export function takeWhile(
   data: string | Uint8Array,
   input: number | string,
 ): Nom | Error {

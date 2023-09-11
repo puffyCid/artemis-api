@@ -20,7 +20,7 @@ export enum Endian {
  * @param endianess Endian type of `data`
  * @returns Unsigned four byte value
  */
-export function nom_unsigned_four_bytes(
+export function nomUnsignedFourBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomUnsigned | Error {
@@ -41,7 +41,7 @@ export function nom_unsigned_four_bytes(
  * @param endianess Endian type of `data`
  * @returns Unsigned eight byte value
  */
-export function nom_unsigned_eight_bytes(
+export function nomUnsignedEightBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomUnsigned | Error {
@@ -62,7 +62,7 @@ export function nom_unsigned_eight_bytes(
  * @param endianess Endian type of `data`
  * @returns Unsigned two byte value
  */
-export function nom_unsigned_two_bytes(
+export function nomUnsignedTwoBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomUnsigned | Error {
@@ -83,7 +83,7 @@ export function nom_unsigned_two_bytes(
  * @param endianess Endian type of `data`
  * @returns Unsigned one byte value
  */
-export function nom_unsigned_one_bytes(
+export function nomUnsignedOneBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomUnsigned | Error {
@@ -104,7 +104,7 @@ export function nom_unsigned_one_bytes(
  * @param endianess Endian type of `data`
  * @returns Unsigned sixteen byte value
  */
-export function nom_unsigned_sixteen_bytes(
+export function nomUnsignedSixteenBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomUnsignedLarge | Error {
@@ -125,7 +125,7 @@ export function nom_unsigned_sixteen_bytes(
  * @param endianess Endian type of `data`
  * @returns Signed four byte value
  */
-export function nom_signed_four_bytes(
+export function nomSignedFourBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomSigned | Error {
@@ -146,7 +146,7 @@ export function nom_signed_four_bytes(
  * @param endianess Endian type of `data`
  * @returns Signed eight byte value
  */
-export function nom_signed_eight_bytes(
+export function nomSignedEightBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomSigned | Error {
@@ -167,7 +167,7 @@ export function nom_signed_eight_bytes(
  * @param endianess Endian type of `data`
  * @returns Signed two byte value
  */
-export function nom_signed_two_bytes(
+export function nomSignedTwoBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomSigned | Error {

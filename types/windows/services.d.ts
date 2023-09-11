@@ -3,9 +3,9 @@
  * `Services` run with SYSTEM level privileges.
  *
  * References:
- * `https://forensafe.com/blogs/windowsservices.html`
- * `https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/System/Services.yaml`
- * `https://winreg-kb.readthedocs.io/en/latest/sources/system-keys/Services-and-drivers.html`
+ *  - https://forensafe.com/blogs/windowsservices.html
+ *  - https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/System/Services.yaml
+ *  - https://winreg-kb.readthedocs.io/en/latest/sources/system-keys/Services-and-drivers.html
  */
 export interface Services {
   /**Current State of the Service */
