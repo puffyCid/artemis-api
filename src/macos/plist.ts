@@ -15,15 +15,16 @@ export function getPlist(
       return data;
     }
 
-    const plist_data: Record<string, unknown> = JSON.parse(data);
+    const plist_data: Record<string, unknown> | number[] = JSON.parse(data);
     return plist_data;
   }
+
   //@ts-ignore: Custom Artemis function
   const data = Deno.core.ops.get_plist(path);
   if (data instanceof Error) {
     return data;
   }
 
-  const plist_data: Record<string, unknown> = JSON.parse(data);
+  const plist_data: Record<string, unknown> | number[] = JSON.parse(data);
   return plist_data;
 }
