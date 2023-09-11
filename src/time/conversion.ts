@@ -13,7 +13,7 @@ export function timeNow(): number {
  * @param filetime FILTIME timestamp
  * @returns UnixEpoch seconds
  */
-export function filetimeToUnixEpoch(filetime: number): number {
+export function filetimeToUnixEpoch(filetime: bigint): number {
   //@ts-ignore: Custom Artemis function
   const data: number = time.filetime_to_unixepoch(filetime);
   return data;
