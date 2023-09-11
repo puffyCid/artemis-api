@@ -2,6 +2,7 @@ import {
   Firewall,
   FirewallApplication,
   FirewallExceptions,
+  Services,
 } from "../../types/macos/firewall.d.ts";
 import { parseAlias } from "./alias.ts";
 import { parseRequirementBlob } from "./codesigning/blob.ts";
@@ -31,7 +32,8 @@ export function firewallStatus(): Firewall | Error {
     version: results["version"] as string,
     applications: [],
     exceptions: [],
-    explict_auths: results["explicitauths"] as string[],
+    explict_auths: [],
+    services: [],
   };
 
   const applications: Record<string, string | Uint8Array | number>[] =
@@ -44,6 +46,18 @@ export function firewallStatus(): Firewall | Error {
   const exceptions: Record<string, string | number>[] =
     results["exceptions"] as Record<string, string | number>[];
   firewall.exceptions = getExceptions(exceptions);
+
+  const services: Record<string, object> = results["firewall"] as Record<
+    string,
+    object
+  >;
+  firewall.services = getServices(services);
+
+  const auths: Record<string, string>[] = results["explicitauths"] as Record<
+    string,
+    string
+  >[];
+  firewall.explict_auths = getAuths(auths);
 
   return firewall;
 }
@@ -154,4 +168,38 @@ function getExceptions(
   }
 
   return results;
+}
+
+/**
+ * Grab macOS services associated with Firewall
+ * @param services Array of service objects
+ * @returns Array of `Services`
+ */
+function getServices(services: Record<string, object>): Services[] {
+  const service_entires = [];
+  for (const entry in services) {
+    const state = services[entry] as Record<string, string>;
+
+    const service: Services = {
+      name: entry,
+      allowed: !!state["state"],
+    };
+
+    service_entires.push(service);
+  }
+
+  return service_entires;
+}
+
+/**
+ * List of applications that require explicit auths (typically native code tools)
+ * @param auths List of explicit auth entries
+ * @returns Array of strings
+ */
+function getAuths(auths: Record<string, string>[]): string[] {
+  const entries = [];
+  for (const auth of auths) {
+    entries.push(auth["id"]);
+  }
+  return entries;
 }

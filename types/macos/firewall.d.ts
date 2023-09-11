@@ -15,11 +15,17 @@ interface Firewall {
   applications: FirewallApplication[];
   exceptions: FirewallExceptions[];
   explict_auths: string[];
+  services: Services[];
 }
 
 interface FirewallExceptions {
   path: string;
   state: number;
+}
+
+interface Services {
+  name: string;
+  allowed: boolean;
 }
 
 interface FirewallApplication {
