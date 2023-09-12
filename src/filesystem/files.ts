@@ -6,10 +6,13 @@ import { FileInfo } from "./directory.ts";
  * @param path File or directory to get metadata about
  * @returns `FileInfo` for provided `path`
  */
-export function stat(path: string): FileInfo {
+export function stat(path: string): FileInfo | Error {
   //@ts-ignore: Custom Artemis function
-  const data: string = fs.stat(path);
-  const value: FileInfo = JSON.parse(data);
+  const result = fs.stat(path);
+  if (result instanceof Error) {
+    return result;
+  }
+  const value: FileInfo = JSON.parse(result);
 
   return value;
 }
@@ -39,9 +42,13 @@ export function hash(
   md5: boolean,
   sha1: boolean,
   sha256: boolean,
-): Hashes {
+): Hashes | Error {
   //@ts-ignore: Custom Artemis function
-  const data: Hashes = fs.hash(path, md5, sha1, sha256);
+  const result = fs.hash(path, md5, sha1, sha256);
+  if (result instanceof Error) {
+    return result;
+  }
+  const data: Hashes = result;
   return data;
 }
 
@@ -50,9 +57,13 @@ export function hash(
  * @param path Text file to read
  * @returns String containing text of file
  */
-export function readTextFile(path: string): string {
+export function readTextFile(path: string): string | Error {
   //@ts-ignore: Custom Artemis function
-  const data: string = fs.readTextFile(path);
+  const result = fs.readTextFile(path);
+  if (result instanceof Error) {
+    return result;
+  }
+  const data: string = result;
   return data;
 }
 
@@ -63,8 +74,11 @@ export function readTextFile(path: string): string {
  */
 export function glob(pattern: string): GlobInfo[] | Error {
   //@ts-ignore: Custom Artemis function
-  const data: string = fs.glob(pattern);
+  const result = fs.glob(pattern);
+  if (result instanceof Error) {
+    return result;
+  }
 
-  const result: GlobInfo[] | Error = JSON.parse(data);
-  return result;
+  const data: GlobInfo[] = JSON.parse(result);
+  return data;
 }

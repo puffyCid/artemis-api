@@ -5,8 +5,11 @@
  */
 export function readXml(path: string): Record<string, unknown> | Error {
   //@ts-ignore: Custom Artemis function
-  const result: string = encoding.read_xml(path);
+  const result = encoding.read_xml(path);
+  if (result instanceof Error) {
+    return result;
+  }
 
-  const value: Record<string, unknown> | Error = JSON.parse(result);
+  const value: Record<string, unknown> = JSON.parse(result);
   return value;
 }
