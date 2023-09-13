@@ -2,7 +2,6 @@
  * Linux exported functions
  */
 export { getElf } from "./src/linux/elf.ts";
-export { getLinuxProcesses } from "./src/linux/processes.ts";
 export { getJournal } from "./src/linux/journal.ts";
 export { getLogon } from "./src/linux/logon.ts";
 
@@ -17,7 +16,6 @@ export { getExecpolicy } from "./src/macos/execpolicy.ts";
 export { getFsevents } from "./src/macos/fsevents.ts";
 export { getMacho } from "./src/macos/macho.ts";
 export { getPlist } from "./src/macos/plist.ts";
-export { getMacosProcesses } from "./src/macos/processes.ts";
 export { getUnifiedLog } from "./src/macos/unifiedlogs.ts";
 export {
   getSafariDownloads,
@@ -51,8 +49,7 @@ export {
 } from "./src/system/systeminfo.ts";
 export { disks } from "./src/system/disks.ts";
 export { cpus } from "./src/system/cpu.ts";
-export { memory } from "./src/system/memory.ts";
-
+export { memory, processListing } from "./src/system/memory.ts";
 /**
  * Application exported functions
  */
@@ -78,7 +75,6 @@ export { getEventlogs } from "./src/windows/eventlogs.ts";
 export { readAdsData, readRawFile } from "./src/windows/ntfs.ts";
 export { getPe } from "./src/windows/pe.ts";
 export { getPrefetch, getPrefetchPath } from "./src/windows/prefetch.ts";
-export { getWinProcesses } from "./src/windows/processes.ts";
 export { getRegistry } from "./src/windows/registry.ts";
 export { getSearch } from "./src/windows/search.ts";
 export { getAltShellbags, getShellbags } from "./src/windows/shellbags.ts";
