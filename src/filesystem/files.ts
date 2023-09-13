@@ -57,6 +57,21 @@ export function readTextFile(path: string): string | Error {
 }
 
 /**
+ * Read a file using regular OS APIs. Currently only files less than 2GB in size can be read
+ * @param path File to read
+ * @returns Bytes of file
+ */
+export function readFile(path: string): Uint8Array | Error {
+  //@ts-ignore: Custom Artemis function
+  const result = fs.readFile(path);
+  if (result instanceof Error) {
+    return result;
+  }
+  const data: Uint8Array = result;
+  return data;
+}
+
+/**
  * Parse glob patterns based on Rust Glob support (https://docs.rs/glob/latest/glob/)
  * @param pattern Glob pattern to parse. Ex: `C:\\*` to get all files and directories at Windows C directory
  * @returns Array of `GlobInfo` or Error
