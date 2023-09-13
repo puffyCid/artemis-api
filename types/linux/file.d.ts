@@ -1,11 +1,11 @@
-import { MachoInfo } from "./macho.ts";
+import { ElfInfo } from "./elf.d.ts";
 
 /**
- * `MacosFileInfo` is an interface containing metadata on macOS files and directories.
- * `artemis` uses the `walkdir` crate to walk the file system.
- * It does not parse the raw APFS.
+ * `LinuxFileInfo` is an interface containing metadata on Linux files and directories.
+ * `Artemis` uses the `walkdir` crate to walk the file system.
+ * It does not parse the raw filesystem
  */
-export interface MacosFileInfo {
+export interface WindowsFileInfo {
   /**Full path to file or directory */
   full_path: string;
   /**Directory path */
@@ -46,6 +46,6 @@ export interface MacosFileInfo {
   is_symlink: boolean;
   /**Depth the file from provided start point */
   depth: number;
-  /**Macho binary metadata */
-  binary_info: MachoInfo[];
+  /**PE binary metadata */
+  binary_info: ElfInfo[];
 }

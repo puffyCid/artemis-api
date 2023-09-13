@@ -1,4 +1,4 @@
-import { PeInfo } from "./pe.ts";
+import { PeInfo } from "./pe.d.ts";
 
 /**
  * `WindowsProcessInfo` is an interface containing metadata on Windows processes.
@@ -39,33 +39,4 @@ export interface WindowsProcessInfo {
   sha256: string;
   /**PE metadata asssociated with process binary */
   binary_info: PeInfo[];
-}
-
-/**
- * Function to pull a process listing from Windows
- * @param md5 MD5 hash the process binary
- * @param sha1 SHA1 hash the process binary
- * @param sha256 SHA256 hash the process binary
- * @param pe_info Parse PE metadata from the process binary
- * @returns Array of `WindowsProcessInfo`
- */
-export function getWinProcesses(
-  md5: boolean,
-  sha1: boolean,
-  sha256: boolean,
-  pe_info: boolean,
-): WindowsProcessInfo[] {
-  const hashes = {
-    md5,
-    sha1,
-    sha256,
-  };
-  //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.get_processes(
-    JSON.stringify(hashes),
-    pe_info,
-  );
-
-  const results: WindowsProcessInfo[] = JSON.parse(data);
-  return results;
 }

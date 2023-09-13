@@ -1,5 +1,6 @@
+import { FileInfo } from "../../types/filesystem/directory.d.ts";
+import { Hashes } from "../../types/filesystem/files.d.ts";
 import { GlobInfo } from "../../types/filesystem/globs.d.ts";
-import { FileInfo } from "./directory.ts";
 
 /**
  * Return basic metadata about a file or directory
@@ -15,18 +16,6 @@ export function stat(path: string): FileInfo | Error {
   const value: FileInfo = JSON.parse(result);
 
   return value;
-}
-
-/**
- * Hashing algorithms supported by the Runtime
- */
-export interface Hashes {
-  /**MD5 hash value */
-  md5: string;
-  /**SHA1 hash value */
-  sha1: string;
-  /**SHA256 value */
-  sha256: string;
 }
 
 /**

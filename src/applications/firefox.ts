@@ -1,56 +1,12 @@
-/**
- * Firefox history is stored in a SQLITE file.
- * `artemis` uses the `sqlite` crate to read the SQLITE file. It can even read the file if Firefox is running.
- *
- * References:
- *  - https://kb.mozillazine.org/Places.sqlite
- */
-export interface FirefoxHistory {
-  /**Array of history entries */
-  history: RawFirefoxHistory[];
-  /**Path associated with the history file */
-  path: string;
-  /**User associated with the history file */
-  user: string;
-}
-
-/**
- * An interface representing the Firefox SQLITE tables: `moz_places` and `moz_origins`
- */
-export interface RawFirefoxHistory {
-  /**SQLITE row id */
-  moz_places_id: number;
-  /**Page URL */
-  url: string;
-  /**Page title */
-  title: string;
-  /**URL in reverse */
-  rev_host: string;
-  /**Page visit count */
-  visit_count: number;
-  /**Hidden value */
-  hidden: number;
-  /**Typed value */
-  typed: number;
-  /**Frequency value */
-  frequency: number;
-  /**Last visit time in UNIXEPOCH seconds */
-  last_visit_date: number;
-  /**GUID for entry */
-  guid: string;
-  /**Foreign count value */
-  foreign_count: number;
-  /**Hash of URL */
-  url_hash: number;
-  /**Page description */
-  description: string;
-  /**Preview image URL value */
-  preview_image_url: string;
-  /**Prefix value (ex: https://) */
-  prefix: string;
-  /** Host value */
-  host: string;
-}
+import {
+  FirefoxDownloads,
+  FirefoxHistory,
+  RawFirefoxDownloads,
+  RawFirefoxHistory,
+} from "../../types/applications/firefox.d.ts";
+import { GlobInfo } from "../../types/filesystem/globs.d.ts";
+import { glob, readTextFile } from "../filesystem/mod.ts";
+import { PlatformType } from "../system/platform.ts";
 
 /**
  * Get Firefox history for all users on a endpoint
@@ -78,50 +34,6 @@ export function getFirefoxHistory(path: string): RawFirefoxHistory[] {
 }
 
 /**
- * Firefox downloads are stored in a SQLITE file
- * `Artemis` uses the `sqlite` crate to read the SQLITE file. It can even read the file if Firefox is running.
- *
- * References:
- * https://kb.mozillazine.org/Places.sqlite
- */
-export interface FirefoxDownloads {
-  /**Array of downloads entries */
-  downloads: RawFirefoxDownloads[];
-  /**Path associated with the downloads file */
-  path: string;
-  /**User associated with the downloads file */
-  user: string;
-}
-
-/**
- * An interface representing the Firefox SQLITE tables: `moz_places`, `moz_origins`, `moz_annos`, `moz_anno_attributes`
- */
-export interface RawFirefoxDownloads {
-  /**ID for SQLITE row */
-  id: number;
-  /**ID to history entry */
-  place_id: number;
-  /**ID to anno_attribute entry */
-  anno_attribute_id: number;
-  /**Content value */
-  content: string;
-  /**Flags value */
-  flags: number;
-  /**Expiration value */
-  expiration: number;
-  /**Download type value */
-  download_type: number;
-  /**Date added in UNIXEPOCH seconds */
-  date_added: number;
-  /**Last modified in UNIXEPOCH seconds */
-  last_modified: number;
-  /**Downloaded file name */
-  name: string;
-  /**History data associated with downloaded file */
-  history: RawFirefoxHistory;
-}
-
-/**
  * Get Firefox downloads for all users on a endpoint
  * @returns Array of `FirefoxDownloads` entries for all users
  */
@@ -144,4 +56,42 @@ export function getFirefoxDownloads(path: string): RawFirefoxDownloads[] {
 
   const downloads: RawFirefoxDownloads[] = JSON.parse(data);
   return downloads;
+}
+
+/**
+ * Get installed Firefox addons
+ * @param platform Platform to parse Firefox addons
+ * @returns Array of parsed addons
+ */
+export function firefoxAddons(
+  platform: PlatformType,
+): Record<string, object>[] | Error {
+  let paths: GlobInfo[] = [];
+  switch (platform) {
+    case PlatformType.Darwin: {
+      const mac_paths = glob(
+        "/Users/*/Library/Application Support/Firefox/Profiles/*/addons.json",
+      );
+      if (mac_paths instanceof Error) {
+        return mac_paths;
+      }
+      paths = mac_paths;
+      break;
+    }
+    default: {
+      return [];
+    }
+  }
+
+  let extensions: Record<string, object>[] = [];
+  for (const path of paths) {
+    const extension = readTextFile(path.full_path);
+    if (extension instanceof Error) {
+      continue;
+    }
+
+    extensions = extensions.concat(JSON.parse(extension)["addons"]);
+  }
+
+  return extensions;
 }

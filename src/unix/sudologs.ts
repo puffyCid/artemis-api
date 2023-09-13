@@ -8,8 +8,8 @@
  *  - https://www.mac4n6.com/blog/2020/4/22/analysis-of-apple-unified-logs-quarantine-edition-entry-2-sudo-make-me-a-sandwich
  */
 
-import { Journal } from "../linux/journal.ts";
-import { UnifiedLog } from "../macos/unifiedlogs.ts";
+import { Journal } from "../../types/linux/journal.d.ts";
+import { UnifiedLog } from "../../types/macos/unifiedlogs.d.ts";
 
 /**
  * Function to parse a `sudo logs` on a macOS system

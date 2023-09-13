@@ -1,4 +1,4 @@
-import { PeInfo } from "./pe.ts";
+import { PeInfo } from "./pe.d.ts";
 
 /**
  * `WindowsFileInfo` is an interface containing metadata on Windows files and directories.
