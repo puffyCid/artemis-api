@@ -5,6 +5,7 @@ import {
   RawChromiumHistory,
 } from "../../types/applications/chromium.d.ts";
 import { GlobInfo } from "../../types/filesystem/globs.d.ts";
+import { getEnvValue } from "../environment/env.ts";
 import { glob, readTextFile } from "../filesystem/files.ts";
 import { PlatformType } from "../system/platform.ts";
 
@@ -78,6 +79,23 @@ export function chromiumExtensions(
       paths = mac_paths;
       break;
     }
+    case PlatformType.Windows: {
+      let drive = getEnvValue("SystemDrive");
+      if (drive === "") {
+        drive = "C";
+      }
+      const win_paths = glob(
+        `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Extensions\\*\\*\\manifest.json`,
+      );
+      if (win_paths instanceof Error) {
+        console.error(`${win_paths}`);
+        return win_paths;
+      }
+      console.log(`paths: ${win_paths}`);
+      paths = win_paths;
+      break;
+    }
+    case PlatformType.Linux:
     default: {
       return [];
     }
