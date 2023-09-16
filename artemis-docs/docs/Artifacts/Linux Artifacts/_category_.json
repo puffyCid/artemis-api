@@ -1,0 +1,8 @@
+{
+    "label": "Linux Artifacts",
+    "position": 5,
+    "link": {
+        "type": "generated-index",
+        "description": "Forensic artifacts for Linux systems"
+    }
+}
