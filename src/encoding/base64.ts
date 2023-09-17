@@ -1,6 +1,6 @@
 /**
- * Base64 raw bytes or a string. The encoding is not URL safe
- * @param data Base64 encode raw bytes or a string
+ * Base64 encode raw bytes. The encoding is not URL safe
+ * @param data The raw bytes to encode
  * @returns Base64 encoded string
  */
 export function encode(data: ArrayBuffer): string {

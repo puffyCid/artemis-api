@@ -93,6 +93,12 @@ const config = {
             position: "left",
             label: "API",
           },
+          {
+            type: "docSidebar",
+            sidebarId: "artemisContributing",
+            position: "left",
+            label: "Contributing",
+          },
           { to: "/blog", label: "Blog", position: "left" },
           {
             href: "https://github.com/puffyCid/artemis",

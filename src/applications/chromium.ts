@@ -7,7 +7,7 @@ import {
 import { GlobInfo } from "../../types/filesystem/globs.d.ts";
 import { getEnvValue } from "../environment/env.ts";
 import { glob, readTextFile } from "../filesystem/files.ts";
-import { PlatformType } from "../system/platform.ts";
+import { PlatformType } from "../system/systeminfo.ts";
 
 /**
  * Get Chromium history for all users on a endpoint

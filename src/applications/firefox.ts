@@ -7,7 +7,7 @@ import {
 import { GlobInfo } from "../../types/filesystem/globs.d.ts";
 import { getEnvValue } from "../environment/env.ts";
 import { glob, readTextFile } from "../filesystem/mod.ts";
-import { PlatformType } from "../system/platform.ts";
+import { PlatformType } from "../system/systeminfo.ts";
 
 /**
  * Get Firefox history for all users on a endpoint
@@ -106,7 +106,7 @@ export function firefoxAddons(
       continue;
     }
 
-    extensions = extensions.concat(JSON.parse(extension)["addons"]);
+    extensions = extensions.concat(JSON.parse(extension)[ "addons" ]);
   }
 
   return extensions;
