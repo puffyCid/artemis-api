@@ -6,8 +6,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Artemis a cross platform digital forensic tool",
-  tagline: "Leave no artifact unreviewed",
+  title: "Artemis",
+  tagline: "A cross platform digital forensic parser!",
   favicon: "img/favicon.ico",
 
   markdown: {

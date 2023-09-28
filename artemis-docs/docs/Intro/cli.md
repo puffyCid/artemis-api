@@ -128,4 +128,4 @@ sudo ./artemis -j ../../artemis-core/tests/test_data/deno_scripts/vanilla.js
 [artemis] Finished artemis collection!
 ```
 
-See section on [Scripting](../scripting/deno.md) to learn more!
+See section on [Scripting](../Intro/Scripting/deno.md) to learn more!

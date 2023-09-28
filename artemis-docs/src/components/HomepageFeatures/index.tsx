@@ -14,28 +14,27 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        A major goal for Artemis is to be easily installed and
+        collect data with minimal system impact.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Collect large number of artifacts ',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Artemis supports over 30+ artficts across Linux, macOS, and Windows. 
+        You can collect this data locally or upload to cloud services such as AWS, Azure, or GCP.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Written in Rust with a JavaScript API',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Artemis is coded using Rust. However, it has an embedded JS runtime that can be used to script and filter collections.
       </>
     ),
   },

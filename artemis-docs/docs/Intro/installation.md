@@ -5,10 +5,12 @@ sidebar_position: 2
 # Installation
 
 Currently only Windows, macOS, and Linux binaries from
-[GitHub Releases](https://github.com/puffycid/artemis) are provided. For now
-these binaries are unsigned. Any other binaries from 3rd party services
+[GitHub Releases](https://github.com/puffyCid/artemis/releases) are provided.
+For now these binaries are unsigned. Any other binaries from 3rd party services
 (crates.io, Homebrew, Chocolatey, etc) are unofficial. Support for additional
 distribution services may be considered in the future.
+
+Download latest release [here](https://github.com/puffyCid/artemis/releases)
 
 ## Supported Systems
 
