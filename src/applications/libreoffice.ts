@@ -11,7 +11,6 @@ export function fileHistory(): History[] | Error {
     "/Users/*/Library/Application Support/LibreOffice/*/user/registrymodifications.xcu",
   );
   if (paths instanceof Error) {
-    console.error(`Could not glob paths: ${paths}`);
     return paths;
   }
 

@@ -15,7 +15,7 @@ most common.
 # TOML Collection
 
 There is no way to collect `plist` data with artemis instead it is an feature
-for scripting. See the [scripts](../../examples/scripts.md) chapter for
+for scripting. See the [scripts](../../Intro/Scripting/scripts.md) chapter for
 examples.
 
 # Configuration Optaions

@@ -91,7 +91,7 @@ All artifacts parsed by artemis will be formatted similar to the output above.
     - `avg_five_mine` Average load performance for five minutes
     - `avg_fifteen_min` Average load performance for fifteen minutes
 - `data` object that contains the artifact specific data. See the
-  [artifact](../artifacts/overview.md) chapter for output structure for each
+  [artifact](../../Artifacts/overview.md) chapter for output structure for each
   artifact. If you execute `JavaScript` you can control what the `data` value
   is. For example you can return a string instead of an object. artemis uses
   serde to serialize the final output

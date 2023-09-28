@@ -56,7 +56,7 @@ filter = true
     the default name `UnknownFilterName` is used
   - `filter_script` An advanced **optional** output option, will pass the
     results of each `[[artifacts]]` entry into a script. See
-    [scripting](../scripting/deno.md) section for detailed overview of this
+    [scripting](../Scripting/deno.md) section for detailed overview of this
     option.
   - `logging` Set the logging level for artemis. This is **optional** by default
     artemis will log errors and warnings. Valid options are:
@@ -146,8 +146,8 @@ path = "E:\\Users\\rust\\Downloads"
 ```
 
 However, providing the same artifact mutliple times can be repetitive. See the
-chapter on [scripting](../scripting/deno.md) to see how we can automate and
+chapter on [scripting](../Scripting/deno.md) to see how we can automate and
 enhance artifact collection using artemis and a tiny amount of `JavaScript`!
 
 Finally you can review the full list of all supported artifacts and their
-configuration under the [artifact](../artifacts/overview.md) chapter
+configuration under the [artifact](../../Artifacts/overview.md) chapter

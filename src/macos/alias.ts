@@ -259,7 +259,7 @@ function getTags(data: Uint8Array): AliasTags {
 
     tag = result.value;
 
-    // Parse data based on tag type. Only supporting carbon path tags for now
+    // Parse data based on tag type. Only supporting path like tags for now
     switch (tag) {
       case 0:
       case 2: {

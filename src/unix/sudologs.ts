@@ -12,25 +12,13 @@ import { Journal } from "../../types/linux/journal.d.ts";
 import { UnifiedLog } from "../../types/macos/unifiedlogs.d.ts";
 
 /**
- * Function to parse a `sudo logs` on a macOS system
- * @returns Array of `sudo log` entries from the Unified Logs
+ * Function to get `sudo logs`
+ * @returns Array of `sudo log` entries from Linux Journal files or macOS Unified Logs
  */
-export function getMacosSudoLogs(): UnifiedLog[] {
+export function getSudoLogs(): Journal[] | UnifiedLog[] {
   //@ts-ignore: Custom Artemis function
   const data = Deno.core.ops.get_sudologs();
 
-  const log_data: UnifiedLog[] = JSON.parse(data);
-  return log_data;
-}
-
-/**
- * Function to parse a `sudo logs` on a Linux system
- * @returns Array of `sudo log` entries from the Journal files
- */
-export function getLinuxSudoLogs(): Journal[] {
-  //@ts-ignore: Custom Artemis function
-  const data = Deno.core.ops.get_sudologs();
-
-  const log_data: Journal[] = JSON.parse(data);
+  const log_data: Journal[] | UnifiedLog[] = JSON.parse(data);
   return log_data;
 }

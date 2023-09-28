@@ -49,7 +49,7 @@ A list of all exported artemis functions can be found at
 are callable from `TypeScript`. The structured output produced by each
 `artifact` is listed in the respective `artifact` chapter. For example, the
 structured `Registry` data format return `getRegistry` is found in the
-[Registry chapter](../Artifacts/Windows%20Artfacts/registry.md)
+[Registry chapter](../../Artifacts/Windows%20Artfacts/registry.md)
 
 Once we have created and bundled our script. We just need to base64 encode
 before providing it to artemis.

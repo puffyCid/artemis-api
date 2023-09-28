@@ -27,7 +27,7 @@ References:
 There is no way to collect just `ELF` data with artemis instead it is an
 optional feature for the Linux `filelisting` and `processes` artifacts.\
 However, it is possible to directly parse `ELF` files by using `JavaScript`. See
-the [scripts](../../examples/scripts.md) chapter for examples.
+the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
 
 # Configuration Optaions
 

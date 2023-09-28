@@ -88,10 +88,8 @@ export function chromiumExtensions(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Extensions\\*\\*\\manifest.json`,
       );
       if (win_paths instanceof Error) {
-        console.error(`${win_paths}`);
         return win_paths;
       }
-      console.log(`paths: ${win_paths}`);
       paths = win_paths;
       break;
     }
@@ -108,7 +106,10 @@ export function chromiumExtensions(
       continue;
     }
 
-    extensions.push(JSON.parse(extension));
+    const data = JSON.parse(extension);
+    data["manifest_path"] = path.full_path;
+
+    extensions.push(data);
   }
 
   return extensions;

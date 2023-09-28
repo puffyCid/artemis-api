@@ -6,7 +6,7 @@
  */
 export function getPlist(
   path: string | Uint8Array,
-): Record<string, unknown> | number[] | Error {
+): Record<string, unknown> | Uint8Array | Error {
   if (path instanceof Uint8Array) {
     //@ts-ignore: Custom Artemis function
     const data = Deno.core.ops.get_plist_data(path);
@@ -15,7 +15,7 @@ export function getPlist(
       return data;
     }
 
-    const plist_data: Record<string, unknown> | number[] = JSON.parse(data);
+    const plist_data: Record<string, unknown> | Uint8Array = JSON.parse(data);
     return plist_data;
   }
 
@@ -25,6 +25,6 @@ export function getPlist(
     return data;
   }
 
-  const plist_data: Record<string, unknown> | number[] = JSON.parse(data);
+  const plist_data: Record<string, unknown> | Uint8Array = JSON.parse(data);
   return plist_data;
 }

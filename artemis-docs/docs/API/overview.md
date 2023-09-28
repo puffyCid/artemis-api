@@ -25,10 +25,10 @@ The API can be broken down into two broad groups of categories:
 
 2. Functions to directly parse OS artifacts
 
-| Category                          | Description                              |
-| --------------------------------- | ---------------------------------------- |
-| [Windows](./windows.md)           | Functions to parse Windows artifacts     |
-| [macOS](./maocs.md)               | Functions to parse macOS artifacts       |
-| [Linux](./linux.md)               | Functions to parse Linux artifacts       |
-| [Unix](./unix.md)                 | Functions to parse Unix artifacts        |
-| [Applications](./applications.md) | Functions to parse Application artifacts |
+| Category                                    | Description                              |
+| ------------------------------------------- | ---------------------------------------- |
+| [Windows](./Artifacts/windows.md)           | Functions to parse Windows artifacts     |
+| [macOS](./Artifacts/macos.md)               | Functions to parse macOS artifacts       |
+| [Linux](./Artifacts/linux.md)               | Functions to parse Linux artifacts       |
+| [Unix](./Artifacts/unix.md)                 | Functions to parse Unix artifacts        |
+| [Applications](./Artifacts/applications.md) | Functions to parse Application artifacts |

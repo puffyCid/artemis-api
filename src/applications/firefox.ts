@@ -106,7 +106,10 @@ export function firefoxAddons(
       continue;
     }
 
-    extensions = extensions.concat(JSON.parse(extension)[ "addons" ]);
+    const data = JSON.parse(extension)["addons"];
+    data["addons_path"] = path.full_path;
+
+    extensions = extensions.concat(data);
   }
 
   return extensions;

@@ -21,7 +21,7 @@ information. When collecting `Logon` information artemis will only parse: wtmp,
 utmp, and btmp files.
 
 If you want to check for logons in `Journal` files, you can try to apply a
-[filter](../../scripting/filterscripts.md) to the [Journal](./journals.md)
+[filter](../../Intro/Scripting/filterscripts.md) to the [Journal](./journals.md)
 artifact
 
 Other Parsers:

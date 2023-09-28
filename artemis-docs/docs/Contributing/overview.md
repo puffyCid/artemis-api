@@ -72,7 +72,7 @@ Currently all artifacts that artemis parses are statically coded in the binary
 (they are written in Rust). While this ok, it prevents us from dyanamically
 upating the parser if the artifact format changes (ex: new Windows release).
 
-Currently the [JS runtime](../scripting/deno.md) has minimal support for
+Currently the [JS runtime](../Intro/Scripting/deno.md) has minimal support for
 creating parsers. If you are interested in adding a small parser to artemis, it
 could be worth first trying to code it using the JS runtime.\
 An example JS runtime parser can be found in the
