@@ -9,11 +9,10 @@ artifacts can only be accessed with elevated privileges. If you try running
 artemis as a standard user, depending on what you want to collect you will
 encounter permission errors.
 
-The `artemis-core` library **does not** and **will never**
-_directly_<sup>*</sup> modify anything on disk. It only writes results to a file
-if specified in the TOML collection.
+The `artemis-core` library **does not** _directly_<sup>*</sup> modify anything
+on disk. It only writes results to a file if specified in the TOML collection.
 
-## <sup>*</sup> Modifying data
+## <sup>*</sup> Modifying Data
 
 The main goal of most endpoint based live forensic tools is to collect data and
 not change anything on the endpoint. By not directly modifying files on disk we

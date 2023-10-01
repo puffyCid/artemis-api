@@ -19,12 +19,12 @@ scripting for IR and forensic investigations.
 
 There are currently some additional limitations to scripting with artemis.
 
-1. All scripts executed through artemis must be in `JavaScript`. You **cannot**
-   execute `TypeScript` scripts directly. You **must** compile and bundle them
-   into one (1) `JavaScript` file.
-2. The `JavaScript` must be in common JS format (cjs). EMCAScript (ES) module
+1. All scripts executed through artemis must be in JavaScript. You **cannot**
+   execute TypeScrpt scripts directly. You **must** compile and bundle them into
+   one JavaScript file.
+2. The JavaScript must be in common JS format (cjs). EMCAScript (ES) module
    scripts are not supported. The example code below uses `esbuild` to bundle
-   the `main.ts` file to `JavaScript` using CJS format via `deno run build.ts`:
+   the `main.ts` file to JavaScript using CJS format via `deno run build.ts`:
 
 ```typescript
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";

@@ -28,7 +28,7 @@ References:
 There is no way to collect just `PE` data with artemis instead it is an optional
 feature for the Windows `filelisting`, `rawfilelisting`, and `processes`
 artifacts.\
-However, it is possible to directly parse `PE` files by using `JavaScript`. See
+However, it is possible to directly parse `PE` files by using JavaScript. See
 the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
 
 # Collection Optaions

@@ -11,9 +11,7 @@ and logic.
 - Artifact format documentation from the [libyal](https://github.com/libyal)
   project
 - [Deno](https://github.com/denoland/deno). See `runtime` and `core` for
-  examples on embedding `Deno`
-- See the [Deno API](https://deno.com/runtime) for examples and tutorials on
-  learning Deno
+  examples on embedding Deno
 
 Resources for learning Rust:
 

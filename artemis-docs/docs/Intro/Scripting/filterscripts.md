@@ -121,7 +121,7 @@ go through `filter_script`.
 
 :::
 
-The `TypeScript` code for a filter script would be something like below:
+The TypeScrpt code for a filter script would be something like below:
 
 ```typescript
 import { MacosFileInfo } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/macos/files.ts";

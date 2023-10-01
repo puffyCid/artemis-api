@@ -12,16 +12,14 @@ From the root of the artemis repo:
 
 - `/artemis-core` workspace containsthe library component of artemis. The bulk
   of the code is located here
-- `/cli` workspace contains the executable component artemis. This is very
-  small.
+- `/cli` workspace contains the executable component artemis.
 - `/server` workspace contains the experimental server component of artemis. Its
-  currently very bare bones
+  currently experimental
 
 From `/artemis-core` directory:
 
 - `/src` contains the source code of `artemis-core`.
 - `/tests` contains test data and integration tests
-- `/tmp` output directory for all tests (if you choose to run them)
 
 From the `artemis-core/src/` directory
 
@@ -74,7 +72,8 @@ upating the parser if the artifact format changes (ex: new Windows release).
 
 Currently the [JS runtime](../Intro/Scripting/deno.md) has minimal support for
 creating parsers. If you are interested in adding a small parser to artemis, it
-could be worth first trying to code it using the JS runtime.\
+could be worth first trying to code it using the JS runtime.
+
 An example JS runtime parser can be found in the
 [artemis API](https://github.com/puffyCid/artemis-api/blob/main/src/macos/alias.ts)
 repo.
@@ -100,8 +99,8 @@ implemented, some suggested ones to review are:
   - Parsing binary data
   - Decompressing data
   - Getting data flags
-    \
-    Fun fact: `FsEvents` was the first artifact created for artemis. Its the
+
+    Fun fact: `FsEvents` is the first artifact created for artemis. Its the
     oldest code in the project!
 
 ## Useful Helper Functions

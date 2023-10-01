@@ -147,7 +147,7 @@ path = "E:\\Users\\rust\\Downloads"
 
 However, providing the same artifact mutliple times can be repetitive. See the
 chapter on [scripting](../Scripting/deno.md) to see how we can automate and
-enhance artifact collection using artemis and a tiny amount of `JavaScript`!
+enhance artifact collection using artemis and a tiny amount of JavaScript!
 
 Finally you can review the full list of all supported artifacts and their
 configuration under the [artifact](../../Artifacts/overview.md) chapter

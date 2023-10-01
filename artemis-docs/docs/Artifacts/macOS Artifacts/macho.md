@@ -26,8 +26,8 @@ References:
 
 There is no way to collect just `macho` data with artemis instead it is an
 optional feature for the macOS `filelisting` and `processes` artifacts.\
-However, it is possible to directly parse `macho` files by using `JavaScript`.
-See the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
+However, it is possible to directly parse `macho` files by using JavaScript. See
+the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
 
 # Configuration Optaions
 

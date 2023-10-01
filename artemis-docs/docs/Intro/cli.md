@@ -4,11 +4,8 @@ sidebar_position: 3
 
 # CLI Options
 
-artemis is designed to have a very simple CLI menu. Almost all of the code is in
-the `artemis-core` library. In fact the only things the artemis binary does is:
-
-- Provide the TOML collection file/data to the `artemis-core` library.
-- Provide CLI args
+artemis is designed to have a very simple CLI menu. All of the complex data
+parsing is handle in the `artemis-core` library.
 
 # Running Artemis
 
@@ -17,7 +14,11 @@ menu with the command below:
 
 ```
 artemis -h
-Usage: artemis [OPTIONS]
+Usage: artemis [OPTIONS] [COMMAND]
+
+Commands:
+  acquire  Acquire forensic artifacts
+  help     Print this message or the help of the given subcommand(s)
 
 Options:
   -t, --toml <TOML>              Full path to TOML collector
@@ -27,9 +28,58 @@ Options:
   -V, --version                  Print version
 ```
 
-As mentioned, the artemis binary is really just a small wrapper that provides a
-TOML collection definition to `artemis-core`. There are two (2) ways to provided
-TOML collections:
+## Collecting Artifacts
+
+The easiest way to start collecting forensic artifacts is to use the `acquire`
+command. This will allow you to select specific artifacts.
+
+For example for macOS a user can acquire any of the artifacts below:
+
+```
+artemis acquire -h
+Acquire forensic artifacts
+
+Usage: artemis acquire [OPTIONS] [COMMAND]
+
+Commands:
+  processes          Collect processes
+  filelisting        Pull filelisting
+  systeminfo         Get systeminfo
+  firefoxhistory     Parse Firefox History
+  chromiumhistory    Parse Chromium History
+  firefoxdownloads   Parse Firefox Downloads
+  chromiumdownloads  Parse Chromium Downloads
+  shellhistory       Parse Shellhistory
+  cron               Parse Cron Jobs
+  sudologs           Grab Sudo logs
+  execpolicy         Parse ExecPolicy
+  users              Collect local users
+  fsevents           Parse FsEvents entries
+  emond              Parse Emond persistence. Removed in Ventura
+  loginitems         Parse LoginItems
+  launchd            Parse Launch Daemons and Agents
+  groups             Collect local groups
+  safarihistory      Collect Safari History
+  safaridownloads    Collect Safari Downloads
+  unifiedlogs        Parse the Unified Logs
+  help               Print this message or the help of the given subcommand(s)
+
+Options:
+      --format <FORMAT>  Output format. JSON or JSON [default: json]
+  -h, --help             Print help
+```
+
+To collect a process listing you would type:
+
+```
+artemis acquire processes
+```
+
+## TOML Collections
+
+If you want to collect multiple artifacts the easiest way to do that is to
+create a TOML file and provide the TOML file to artemis. There are two (2) ways
+to provide TOML collections:
 
 - Provide the full path the TOML file on disk
 - base64 encode a TOML file and provide that as an argument
@@ -86,13 +136,12 @@ artemis.exe -d c3lzdGVtID0gIndpbmRvd3MiCgpbb3V0cHV0XQpuYW1lID0gInByb2Nlc3Nlc19jb
 [artemis] Finished artemis collection!
 ```
 
-# JavaScript
+## JavaScript Collections
 
 You can also execute JavaScript code using artemis.
 
 ```javascript
-// https://raw.githubusercontent.com/puffycid/artemis-api/master/src/windows/processes.ts
-function getWinProcesses(md5, sha1, sha256, pe_info) {
+function getProcesses(md5, sha1, sha256, binary_info) {
   const hashes = {
     md5,
     sha1,
@@ -100,26 +149,25 @@ function getWinProcesses(md5, sha1, sha256, pe_info) {
   };
   const data = Deno.core.ops.get_processes(
     JSON.stringify(hashes),
-    pe_info,
+    binary_info,
   );
   const results = JSON.parse(data);
   return results;
 }
 
-// main.ts
 function main() {
   const md5 = false;
   const sha1 = false;
   const sha256 = false;
-  const pe_info = false;
-  const proc_list = getWinProcesses(md5, sha1, sha256, pe_info);
+  const binary_info = false;
+  const proc_list = getProcesses(md5, sha1, sha256, binary_info);
   console.log(proc_list[0].full_path);
   return proc_list;
 }
 main();
 ```
 
-Executing the above code
+To execute the above code
 
 ```
 sudo ./artemis -j ../../artemis-core/tests/test_data/deno_scripts/vanilla.js
@@ -128,4 +176,7 @@ sudo ./artemis -j ../../artemis-core/tests/test_data/deno_scripts/vanilla.js
 [artemis] Finished artemis collection!
 ```
 
-See section on [Scripting](../Intro/Scripting/deno.md) to learn more!
+Collecting data via JavaScript is a bit more complex than other methods. But it
+provides alot more flexiblity on what you can do with the data.
+
+See the section on [Scripting](../Intro/Scripting/deno.md) to learn more!

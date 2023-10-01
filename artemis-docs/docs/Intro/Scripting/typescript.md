@@ -5,8 +5,8 @@ description: Using TypeScript
 
 # TypeScript
 
-A `TypeScript` library is provided instead of `JavaScript` due to the enhanced
-features and ease of use `TypeScript` provides over plain `JavaScript`.
+A TypeScrpt library is provided instead of JavaScript due to the enhanced
+features and ease of use TypeScrpt provides over plain JavaScript.
 
 Continuing from `get_registry(registry_file_path)` example:
 
@@ -70,14 +70,14 @@ export function get_registry(path: string): Registry[] {
 }
 ```
 
-The above `TypeScript` code shows that we can access our registered
-`get_registry` function by calling it via `Deno.core.ops.get_registry(path);`\
+The above TypeScrpt code shows that we can access our registered `get_registry`
+function by calling it via `Deno.core.ops.get_registry(path);`\
 To make scripting even easier a simple `artemis-api` library is available to
 import into Deno scripts. This allows users to create scripts without needing to
 know what functions are registered.
 
-The example script below shows `TypeScript` code that imports the `artemis-api`
-library to parse the `SOFTWARE` `Registry` file to get a list of installed
+The example script below shows TypeScrpt code that imports the `artemis-api`
+library to parse the SOFTWARE `Registry` file to get a list of installed
 programs
 
 ```typescript
@@ -178,5 +178,5 @@ function main() {
 main();
 ```
 
-We can then compile and bundle this `TypeScript` code to `JavaScript` and
-execute using artemis!
+We can then compile and bundle this TypeScrpt code to JavaScript and execute
+using artemis!
