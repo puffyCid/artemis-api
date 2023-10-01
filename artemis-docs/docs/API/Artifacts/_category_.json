@@ -1,0 +1,8 @@
+{
+    "label": "Forensic Aritfacts",
+    "position": 3,
+    "link": {
+        "type": "generated-index",
+        "description": "Functions to interact with endpoint forensic artifacts"
+    }
+}

@@ -10,7 +10,7 @@ export function timeNow(): number {
 
 /**
  * Convert Windows FILETIME to UnixEpoch seconds
- * @param filetime FILTIME timestamp
+ * @param filetime FILETIME timestamp
  * @returns UnixEpoch seconds
  */
 export function filetimeToUnixEpoch(filetime: bigint): number {
@@ -20,8 +20,8 @@ export function filetimeToUnixEpoch(filetime: bigint): number {
 }
 
 /**
- * Convert macOS COCOA time to UnixEpoch seconds
- * @param cocoatime COCOA timestamp
+ * Convert macOS Cocoa time to UnixEpoch seconds
+ * @param cocoatime Cocoa timestamp
  * @returns UnixEpoch seconds
  */
 export function cocoatimeToUnixEpoch(cocoatime: number): number {
@@ -53,7 +53,7 @@ export function oleToUnixEpoch(oletime: number): number {
 }
 
 /**
- * Conver browser WebKit time to UnixEpoch
+ * Convert browser WebKit time to UnixEpoch
  * @param webkittime WebKit timestamp
  * @returns UnixEpoch seconds
  */
@@ -64,7 +64,7 @@ export function webkitToUnixEpoch(webkittime: number): number {
 }
 
 /**
- * Convert Windows FAT time byts to UnixEpoch
+ * Convert Windows FAT time bytes to UnixEpoch
  * @param fattime FAT timestamp bytes
  * @returns UnixEpoch seconds
  */

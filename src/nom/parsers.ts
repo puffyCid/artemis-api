@@ -30,7 +30,7 @@ export function take(data: string | Uint8Array, input: number): Nom | Error {
  * @returns A `Nom` structure
  */
 export function takeUntil(
-  data: string | Uint8Array,
+  data: Uint8Array | string,
   input: Uint8Array | string,
 ): Nom | Error {
   if (typeof data === "string" && typeof input === "string") {
@@ -69,7 +69,7 @@ export function takeUntil(
  */
 export function takeWhile(
   data: string | Uint8Array,
-  input: number | string,
+  input: string | number,
 ): Nom | Error {
   if (typeof input === "string" && input.length != 1) {
     const err = new Error("provided string length greater than 1");

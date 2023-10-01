@@ -29,8 +29,8 @@ export function getZshHistory(): ZshHistory[] {
 }
 
 /**
- * Parse and get the contents of the `.bash_history` file for all users on an endpoint
- * @returns Array of `BashHistory` for each user on the endpoint
+ * Parse and get the contents of the `.python_history` file for all users on an endpoint
+ * @returns Array of `PythonHistory` for each user on the endpoint
  */
 export function getPythonHistory(): PythonHistory[] {
   //@ts-ignore: Custom Artemis function

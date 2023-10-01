@@ -36,10 +36,10 @@ export function processListing(
   };
   //@ts-ignore: Custom Artemis function
   const data = Deno.core.ops.get_processes(
-    hashes,
+    JSON.stringify(hashes),
     binary,
   );
-  const proc_array: LinuxProcessInfo[] = JSON.parse(data);
+  const proc_array = JSON.parse(data);
 
   return proc_array;
 }

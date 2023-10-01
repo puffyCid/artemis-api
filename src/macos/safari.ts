@@ -44,7 +44,7 @@ export function getSafariUsersDownloads(): SafariDownloads[] {
 
 /**
  * Get Safari downloads from provided `Downloads.plist` file
- * @param path Full path to `History` file
+ * @param path Full path to `Downloads.plist` file
  * @returns `RawSafariDownloads` entries for file
  */
 export function getSafariDownloads(path: string): RawSafariDownloads[] {

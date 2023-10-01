@@ -42,13 +42,19 @@ export function osVersion(): string {
 }
 
 /**
- * Functoin to get kernel version information
+ * Function to get kernel version information
  * @returns Kernel version of the system
  */
 export function kernelVersion(): string {
   //@ts-ignore: Custom Artemis function
   const data: string = systemInfo.kernelVersion();
   return data;
+}
+
+export enum PlatformType {
+  Darwin,
+  Windows,
+  Linux,
 }
 
 /**
