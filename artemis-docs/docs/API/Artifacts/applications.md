@@ -76,7 +76,10 @@ objects.
 | -------- | -------------- | --------------------------------------------------------- |
 | platform | `PlatformType` | OS platform to parse. Supports Windows and macOS (Darwin) |
 
-### fileHistory() -> `History[] | Error`
+### fileHistory(platform) -> `History[] | Error`
 
-Return a list of files opened by LibreOffice for all users. Currently only macOS
-is supported
+Return a list of files opened by LibreOffice for all users.
+
+| Param    | Type           | Description          |
+| -------- | -------------- | -------------------- |
+| platform | `PlatformType` | OS platform to parse |

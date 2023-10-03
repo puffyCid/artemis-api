@@ -1,25 +1,44 @@
 import { readXml } from "../encoding/xml.ts";
 import { glob } from "../filesystem/files.ts";
+import { PlatformType } from "../system/systeminfo.ts";
 
 /**
  * Return a list of files opened by LibreOffice for all users
+ * @param platform OS Platform type to lookup
  * @returns Array of `History` entries
  */
-export function fileHistory(): History[] | Error {
+export function fileHistory(platform: PlatformType): History[] | Error {
   // Get all user paths
-  const paths = glob(
-    "/Users/*/Library/Application Support/LibreOffice/*/user/registrymodifications.xcu",
-  );
+  let path = "";
+  switch (platform) {
+    case PlatformType.Darwin: {
+      path =
+        "/Users/*/Library/Application Support/LibreOffice/*/user/registrymodifications.xcu";
+      break;
+    }
+    case PlatformType.Windows: {
+      path =
+        "C:\\Users\\*\\AppData\\Roaming\\LibreOffice\\*\\user\\registrymodifications.xcu";
+      break;
+    }
+    case PlatformType.Linux: {
+      path = "/home/*/.config/libreoffce/*/user/registrymodifications.xcu";
+    }
+  }
+
+  const paths = glob(path);
   if (paths instanceof Error) {
     return paths;
   }
 
   const entries = [];
+  // Loop through registrymodifications.xcu path for all users
   for (const path of paths) {
     if (!path.is_file) {
       continue;
     }
-    // Read XML into JSON
+
+    // Read XML into JSON. registrymodifications.xcu is an XML file
     const xml_result = readXml(path.full_path);
     if (xml_result instanceof Error) {
       console.error(`Could not parse xml at ${path}: ${xml_result}`);
@@ -75,6 +94,8 @@ export function fileHistory(): History[] | Error {
         thumbnail: "",
         source: path.full_path,
       };
+
+      // Finally at section containing data of interest
       for (const prop_entry of prop_data) {
         const meta_entry = prop_entry["$"] as Record<string, object>;
         if (meta_entry["oor:name"] as unknown as string === "Title") {
