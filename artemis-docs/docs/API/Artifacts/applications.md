@@ -76,9 +76,18 @@ objects.
 | -------- | -------------- | --------------------------------------------------------- |
 | platform | `PlatformType` | OS platform to parse. Supports Windows and macOS (Darwin) |
 
-### fileHistory(platform) -> `History[] | Error`
+### recentFiles(platform) -> `History[] | Error`
 
 Return a list of files opened by LibreOffice for all users.
+
+| Param    | Type           | Description          |
+| -------- | -------------- | -------------------- |
+| platform | `PlatformType` | OS platform to parse |
+
+### fileHistory(platform) -> `FileHistory[] | Error`
+
+Parse the local file history for VSCode. Returns list of history entries. Also
+supports VSCodium.
 
 | Param    | Type           | Description          |
 | -------- | -------------- | -------------------- |

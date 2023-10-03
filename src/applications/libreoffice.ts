@@ -7,7 +7,7 @@ import { PlatformType } from "../system/systeminfo.ts";
  * @param platform OS Platform type to lookup
  * @returns Array of `History` entries
  */
-export function fileHistory(platform: PlatformType): History[] | Error {
+export function recentFiles(platform: PlatformType): History[] | Error {
   // Get all user paths
   let path = "";
   switch (platform) {
