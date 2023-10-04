@@ -349,3 +349,11 @@ Parses Windows UsnJrnl data from alternative drive letter.
 | Param | Type     | Description                         |
 | ----- | -------- | ----------------------------------- |
 | drive | `string` | Drive letter to get Windows UsnJrnl |
+
+### logons(path) -> `Logons[]`
+
+Parse the Windows Security.evtx and try to correlate Logon and Logoff events.
+
+| Param | Type     | Description                        |
+| ----- | -------- | ---------------------------------- |
+| path  | `string` | Path to Windows Security.evtx file |

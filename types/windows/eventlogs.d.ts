@@ -4,9 +4,9 @@
  */
 export interface EventLogRecord {
   /**Event record number */
-  record_id: number;
+  event_record_id: number;
   /**Timestamp of eventlog message in UNIXEPOCH nanoseconds */
-  timestamp: number;
+  timestamp: bigint;
   /**
    * JSON object representation of the Eventlog message
    * Depending on the log the JSON object may have different types of keys
