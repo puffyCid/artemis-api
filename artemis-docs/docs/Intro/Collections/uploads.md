@@ -16,7 +16,7 @@ Uploading collections to a remote serivce requires three (3) steps:
 
 1. Name of remote service. Valid options are: `"gcp", "azure", "aws"`
 2. URL to the remote service
-3. A base64 encoded API key formatted based on the remote service select in
+3. A base64 encoded API key formatted based on the remote service selected in
    step 1.
 
 An example TOML Collection is below:
@@ -40,13 +40,15 @@ artifact_name = "shimcache"
 [artifacts.shimcache]
 ```
 
-# WARNING
+:::warning
 
 Currently artemis does not securely protect the remote API key. Make sure the
 account associated with the API has only permissions needed by artemis. The only
-permission(s) artemis requires is the ability create/write data to a bucket.\
+permissions artemis requires is the ability create/write data to a bucket.
+
 In addition, make sure the account only has access to a dedicated bucket for
-artemis.\
+artemis.
+
 For example:
 
 1. Create a bucket called `artemis-uploads`
@@ -57,6 +59,8 @@ For example:
 If you do not want to expose the remote API key, you can output the data to a
 local directory, network share, or external drive. Then upload the data using an
 alternative tool.
+
+:::
 
 # GCP
 

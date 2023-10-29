@@ -6,11 +6,13 @@ sidebar_position: 2
 
 Currently only Windows, macOS, and Linux binaries from
 [GitHub Releases](https://github.com/puffyCid/artemis/releases) are provided.
-Currently these binaries are unsigned. Nightly releases can also be
-[downloaded](https://github.com/puffyCid/artemis/releases/tag/nightly)
+Currently these binaries are **unsigned**.
 
-Grab the latest stable release
+Grab the latest **stable** release
 [here](https://github.com/puffyCid/artemis/releases)
+
+**Nightly** releases can be downloaded
+[here](https://github.com/puffyCid/artemis/releases/tag/nightly)
 
 ## Supported Systems
 

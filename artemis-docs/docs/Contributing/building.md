@@ -13,13 +13,12 @@ artemis.
 3. [Rust analzyer](https://rust-analyzer.github.io/)
 4. An IDE or text editor. [VSCode](https://code.visualstudio.com/) or
    [VSCodium](https://vscodium.com/) are great choices.
-   [IntelliJ](https://www.jetbrains.com/idea/) with the Rust plugin may also
-   works.
 
 artemis has been developed on:
 
 - macOS 12 (Monterey) and higher
 - Windows 10 and higher
+- Common popular Linux distros (Ubuntu, Arch Linux, Debian)
 
 # Building
 

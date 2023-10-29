@@ -23,8 +23,6 @@ To summarize:
 2. Compile TypeScript to JavaScript
 3. Execute JavaScript using artemis
 
-:::
-
 :::info
 
 Deno image from https://deno.land/artwork. The image is MIT licensed. Checkout

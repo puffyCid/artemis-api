@@ -54,7 +54,8 @@ are:
 
 If your new artifact has a timestamp, you will need to make sure the timestamp
 is in UNIXEPOCH seconds. Though exceptions may be allowed if needed, these
-exceptions will only be for the duration (ex: seconds vs nanoseconds).\
+exceptions will only be for the duration (ex: seconds vs nanoseconds).
+
 No other time formats such as Windows FILETIME, FATTIME, Chromium time, etc are
 allowed.
 
@@ -74,8 +75,8 @@ Currently the [JS runtime](../Intro/Scripting/deno.md) has minimal support for
 creating parsers. If you are interested in adding a small parser to artemis, it
 could be worth first trying to code it using the JS runtime.
 
-An example JS runtime parser can be found in the
-[artemis API](https://github.com/puffyCid/artemis-api/blob/main/src/macos/alias.ts)
+An simple JS parser can be found in the
+[artemis API](https://github.com/puffyCid/artemis-api/blob/main/src/images/icns.ts)
 repo.
 
 However, if you want to implement a new parser for parsing common Windows

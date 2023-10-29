@@ -68,6 +68,6 @@ guide prior to starting.
 # License
 
 [artemis](https://github.com/puffycid/artemis),
-[artemis-api](https://github.com/puffycid/artemis-api),
-[artemis-scripts](https://github.com/puffycid/artemis-scripts), and this book
-are released under the MIT License
+[artemis-api](https://github.com/puffycid/artemis-api), and
+[artemis-scripts](https://github.com/puffycid/artemis-scripts) are all released
+under the MIT License

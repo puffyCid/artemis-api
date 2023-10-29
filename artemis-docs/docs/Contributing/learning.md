@@ -21,6 +21,5 @@ Resources for learning Rust:
 # Nom
 
 Nom is a very popular binary parsing library. artemis makes extensive use of nom
-for parsing all different kinds of binary files. If nom did not exist artemis
-would not exist. If you familarize yourself with nom and how it works then the
-artemis code should be much easier to understand.
+for parsing all different kinds of binary files. If you familarize yourself with
+nom and how it works then the artemis code should be much easier to understand.

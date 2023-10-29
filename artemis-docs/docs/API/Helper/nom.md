@@ -149,14 +149,14 @@ console.log(sig.value);
 // Next 2 bytes are length of UTF8 string. Our sig object contains the remaining bytes
 let string_len = nomUnsignedTwoBytes(sig.remaining, endian.LE);
 if (string_len instanceof Error) {
-  return sig;
+  return string_len;
 }
 
 // string_len now contains the length of the string that is next
 // Take the length of the string
 let string_data = take(string_len.remaining, string_len.value);
 if (string_data instanceof Error) {
-  return sig;
+  return string_data;
 }
 
 // Extract the string from the raw bytes we consumed
