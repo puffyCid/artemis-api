@@ -16,7 +16,8 @@ For example, the artemis function `get_registry(registry_file_path)` can be used
 to parse a provided `Registry` file on disk. By registering this function with
 the Deno runtime we can call this function directly from JavaScript! In addition
 to JavaScript, [TypeScript](https://www.typescriptlang.org/) is also supported
-by Deno!\
+by Deno!
+
 To summarize:
 
 1. We can create a script using TypeScript and call Rust functions directly
