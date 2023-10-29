@@ -28,3 +28,4 @@ List of useful tools that could aid in development.
 - [scc](https://github.com/boyter/scc)
 - [clippy](https://github.com/rust-lang/rust-clippy)
 - [nextest](https://nexte.st/)
+- [just](https://github.com/casey/just)
