@@ -42,11 +42,7 @@ verification that the output of artemis is correct.
 
 If you looking are for free and open-source forensic tool to add to your
 forensic toolkit or to casually review forensic data or compare the results of
-other forensic tools then artemis is a great option.
-
-Over time as artemis matures, bugs are found and fixed, and feeback is given
-this statement will be updated when artemis ready to lead real world
-investigations.
+other forensic tools then artemis is a great option!
 
 # artemis vs artemis-core
 
