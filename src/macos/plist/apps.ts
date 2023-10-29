@@ -84,6 +84,11 @@ function getApps(path: string): Applications[] | Error {
   return apps;
 }
 
+/**
+ * Parse the `Info.plist` file
+ * @param path Path to `Info.plist`
+ * @returns `Applications` info or error
+ */
 function parsePlist(path: string): Applications | Error {
   const data = getPlist(path);
   if (data instanceof Error || data instanceof Uint8Array) {
