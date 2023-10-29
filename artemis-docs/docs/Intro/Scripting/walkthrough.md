@@ -179,7 +179,7 @@ aguments: `deno run -A build.ts`
 
    If we decide to run the JavaScript code directly, we would need to include
    code to tell artemis how to output the data. See the artemis
-   [API](../../API/) docs for scripting the output options.
+   [API](../../API/overview.md) docs for scripting the output options.
 
    For this example we will use a TOML collection file
 

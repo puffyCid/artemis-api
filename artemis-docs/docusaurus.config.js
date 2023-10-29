@@ -25,6 +25,7 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "puffyCid", // Usually your GitHub org/user name.
   projectName: "artemis-api", // Usually your repo name.
+  trailingSlash: false,
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",

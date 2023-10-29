@@ -15,7 +15,7 @@ Notable features _so far_:
 - Output to JSON or JSONL file(s)
 - Can output results to local system or upload to cloud services.
 - Embedded JavaScript runtime via [Deno](https://deno.land/)
-- Can be used as a library via [artemis-core](./Library/overview)
+- Can be used as a library via [artemis-core](./Library/overview.md)
 - MIT license
 
 The goal of this book is to provide a comprehensive guide on how to use artemis
