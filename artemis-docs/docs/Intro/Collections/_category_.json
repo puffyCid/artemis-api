@@ -1,8 +1,0 @@
-{
-    "label": "Collections",
-    "position": 5,
-    "link": {
-        "type": "generated-index",
-        "description": "How to collect data with artemis"
-    }
-}

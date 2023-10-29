@@ -1,8 +1,0 @@
-{
-    "label": "Application Artifacts",
-    "position": 4,
-    "link": {
-        "type": "generated-index",
-        "description": "Forensic artifacts for specific applications"
-    }
-}

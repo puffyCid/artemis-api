@@ -1,8 +1,0 @@
-{
-    "label": "macOS Artifacts",
-    "position": 5,
-    "link": {
-        "type": "generated-index",
-        "description": "Forensic artifacts for macOS systems"
-    }
-}
