@@ -119,3 +119,20 @@ files.
 | Param | Type         | Description                                |
 | ----- | ------------ | ------------------------------------------ |
 | data  | `Uint8Array` | Raw bytes associated with requirement blob |
+
+### listApps() -> `Applications[]`
+
+Return a simple Application listing. Searches user installed Apps, System Apps,
+default Homebrew paths (/usr/local/Cellar, /opt/homebrew/Cellar).
+
+Use `scanApps()` if you want to scan the entire filesystem for Apps
+
+### scanApps() -> `Applications[]`
+
+Scans the entire filesystem under /System/Volumes/Data and tries to parse all
+Applications.
+
+Includes embedded Apps, Frameworks, and any file that ends with
+`%/Contents/Info.plist`
+
+Use `listApps()` if you a simpler Application listing
