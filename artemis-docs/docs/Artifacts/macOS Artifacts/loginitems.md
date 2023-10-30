@@ -15,7 +15,7 @@ triggered when a user logs on to the system. They are located at:
 - `/Users/%/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm`
   (pre-Ventura)
 - `/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm` (Ventura+)
-  \
+
   Both are `plist` files, however the actual `LoginItem` data is in an
   additional binary format known as a `Bookmark` that needs to be parsed.
 

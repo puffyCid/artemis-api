@@ -9,11 +9,12 @@ keywords:
 # BITS
 
 Windows Background Intelligent Transfer Service (`BITS`) is a service that
-allows applications and users to register jobs to upload/download file(s).\
+allows applications and users to register jobs to upload/download file(s).
+
 It is commonly used by applications to download updates. Starting on Windows 10
 BITS data is stored in an ESE database. Pre-Windows 10 it is stored in a
-proprietary binary format\
-`BITS` data is stored at `C:\ProgramData\Microsoft\Network\Downloader\qmgr.db`
+proprietary binary format<br /> `BITS` data is stored at
+`C:\ProgramData\Microsoft\Network\Downloader\qmgr.db`
 
 Other Parsers:
 

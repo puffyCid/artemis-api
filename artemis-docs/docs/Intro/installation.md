@@ -32,8 +32,8 @@ archive and you should be able to start collecting forensic data!
 ## Build from Source
 
 You may also build artemis from [source](https://github.com/puffycid/artemis).
-In order build artemis you will need to install the Rust programming langague.\
-Instructions to install Rust can be found on the
+In order build artemis you will need to install the Rust programming
+langague.<br /> Instructions to install Rust can be found on the
 [Rust Homepage](https://www.rust-lang.org/).
 
 Once `Rust` is installed you can download the source code for artemis using

@@ -69,11 +69,11 @@ filter = true
     - `alt_drive` Use an alternative drive when collecting data. This parameter
       is optional
 
-The example above collects one (1) artifact (`Amcache`) on a Windows system and
+The example above collects one artifact (`Amcache`) on a Windows system and
 outputs the results the local system at the path `./tmp/amcache_collection`
 
-If we wanted to collect more than one (1) artifact we could use a collection
-like the one below:
+If we wanted to collect more than one artifact we could use a collection like
+the one below:
 
 ```toml
 system = "windows"
@@ -99,9 +99,9 @@ path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 
 The TOML collection above collects both `amcache` and `shortcuts` data on a
 Windows system and outputs the results to the local system at the path
-`./tmp/execution_collection`.\
-Notable changes:\
-`name` our collection is now named `execution_collection`
+`./tmp/execution_collection`.
+
+Notable changes:<br /> `name` our collection is now named `execution_collection`
 
 ```toml
 [[artifacts]]

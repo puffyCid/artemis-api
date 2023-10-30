@@ -9,7 +9,8 @@ keywords:
 
 Windows `Shellbags` are `Registry` entries that track what directories a user
 has browsed via Explorer GUI. These entries are stored in the undocumented
-`ShellItem` binary format.\
+`ShellItem` binary format.
+
 artemis supports parsing the most common types of `shellitems`, but if you
 encounter a `shellitem` entry that is not supported please open an issue!
 

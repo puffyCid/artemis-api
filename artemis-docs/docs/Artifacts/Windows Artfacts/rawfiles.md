@@ -11,7 +11,8 @@ A raw Windows filelisting by parsing the `NTFS` file system using the
 [ntfs](https://github.com/ColinFinck/ntfs) crate to recursively walk the files
 and directories on the system. If hashing or `PE` parsing is enabled this will
 also read the file contents. `Raw Files` also supports decompressing compressed
-files with the `WofCompression` alternative data stream (ADS) attribute.\
+files with the `WofCompression` alternative data stream (ADS) attribute.
+
 Since a filelisting can be extremely large every 100k entries artemis will
 output the data and then continue.
 

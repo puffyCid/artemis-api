@@ -9,11 +9,11 @@ keywords:
 # Sudo Logs
 
 Unix `SudoLogs` are the log files associated with sudo execution. Sudo ("super
-user do" or "substitute user") is used to run programs with elevated
-privileges.\
-macOS `SudoLogs` are stored in the Unified Log files.\
-Linux `SudoLogs` are stored in the Systemd Journal files.\
-The log entries show evidence of commands executed with elevated privileges
+user do" or "substitute user") is used to run programs with elevated privileges.
+
+macOS `SudoLogs` are stored in the Unified Log files.<br /> Linux `SudoLogs` are
+stored in the Systemd Journal files.<br /> The log entries show evidence of
+commands executed with elevated privileges
 
 Other Parsers:
 

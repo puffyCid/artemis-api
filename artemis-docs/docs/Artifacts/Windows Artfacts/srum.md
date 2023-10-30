@@ -9,8 +9,8 @@ keywords:
 
 Windows System Resource Utilization Monitor (`SRUM`) is a service that tracks
 application resource usage. The service tracks application data such as time
-running, bytes sent, bytes received, energy usage, and lots more.\
-This service was introduced in Windows 8 and is stored in an ESE database at
+running, bytes sent, bytes received, energy usage, and lots more.<br /> This
+service was introduced in Windows 8 and is stored in an ESE database at
 `C:\Windows\System32\sru\SRUDB.dat`. On Windows 8 some of the data can be found
 in the Registry too (temporary storage before writing to SRUDB.dat), but in
 later versions of Windows the data is no longer in the Registry.

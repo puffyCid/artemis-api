@@ -12,10 +12,12 @@ A regular Windows filelisting. artemis uses the
 and directories on the system. If hashing or `PE` parsing is enabled this will
 update the `Last Accessed` timestamps on files since the native OS APIs are used
 to access the files and it will fail on any locked files. Use
-[RawFiles](./rawfiles.md) to bypass locked files.\
+[RawFiles](./rawfiles.md) to bypass locked files.
+
 The standard Rust API does not support getting `Changed/Entry Modified`
 timestamp on Windows. Use [RawFiles](./rawfiles.md) to include the
-`Changed/Entry Modified` timestamp.\
+`Changed/Entry Modified` timestamp.
+
 Since a filelisting can be extremely large every 100k entries artemis will
 output the data and then continue.
 

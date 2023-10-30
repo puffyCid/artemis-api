@@ -9,7 +9,7 @@ keywords:
 # Services
 
 Windows `Services` are a common form of persistence and privilege escalation on
-Windows systems. Service data is stored in the SYSTEM Registry file.\
+Windows systems. Service data is stored in the SYSTEM Registry file.<br />
 `Services` run with SYSTEM level privileges.
 
 Other Parsers:

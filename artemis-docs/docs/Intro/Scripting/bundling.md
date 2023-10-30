@@ -114,7 +114,8 @@ main();
 ```
 
 Lets save this code to the file `main.ts`. Before we can compile the code to
-JavaScript we have to include (bundle) `mod.ts` and `registry.ts`.\
+JavaScript we have to include (bundle) `mod.ts` and `registry.ts`.
+
 There are multiple types of bundler applications that can help us with this
 task. Two (2) this book will focus on are:
 
@@ -130,9 +131,11 @@ console when bundling.
 ### `--no-check` Flag
 
 This flag tells `Deno` not to type check values. This flag is required due to:
-`Deno.core.ops.get_registry(path)`\
+`Deno.core.ops.get_registry(path)`
+
 The Deno binary is designed to support code written for the Deno platform.
-However, we are using a custom Deno runtime.\
+However, we are using a custom Deno runtime.
+
 The Deno binary has no idea what `get_registry` is because it is a custom
 function we have registered in our own runtime.
 
