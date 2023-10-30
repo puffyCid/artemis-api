@@ -9,7 +9,8 @@ keywords:
 # ELF
 
 Linux Executable Linkable Format (`ELF`) is the executable format for
-applications on Linux systems.\
+applications on Linux systems.
+
 artemis is able to parse basic metadata from `ELF` files.
 
 Other Parsers:
@@ -25,7 +26,8 @@ References:
 # TOML Collection
 
 There is no way to collect just `ELF` data with artemis instead it is an
-optional feature for the Linux `filelisting` and `processes` artifacts.\
+optional feature for the Linux `filelisting` and `processes` artifacts.
+
 However, it is possible to directly parse `ELF` files by using JavaScript. See
 the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
 
