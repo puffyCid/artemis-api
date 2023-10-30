@@ -9,4 +9,5 @@ interface Applications {
     display_name: string;
     copyright: string;
     icon: string;
+    info: string;
 }

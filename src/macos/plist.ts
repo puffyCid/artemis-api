@@ -7,6 +7,7 @@
 export function getPlist(
   path: string | Uint8Array,
 ): Record<string, unknown> | Uint8Array | Error {
+  // Parse bytes containing plist data
   if (path instanceof Uint8Array) {
     //@ts-ignore: Custom Artemis function
     const data = Deno.core.ops.get_plist_data(path);

@@ -129,10 +129,18 @@ Use `scanApps()` if you want to scan the entire filesystem for Apps
 
 ### scanApps() -> `Applications[]`
 
-Scans the entire filesystem under /System/Volumes/Data and tries to parse all
-Applications.
+Scans the entire filesystem under /System/ and tries to parse all Applications.
 
 Includes embedded Apps, Frameworks, and any file that ends with
 `%/Contents/Info.plist`
 
 Use `listApps()` if you a simpler Application listing
+
+### dockTiles() -> `Applications[]`
+
+Scans the entire filesystem under /System looking for Applications that use
+DockTile persistence. See https://theevilbit.github.io/beyond/beyond_0032/ for
+details on Dock Tile PlugIns
+
+Includes embedded Apps, Frameworks, and any file that ends with
+`%/Contents/Info.plist`

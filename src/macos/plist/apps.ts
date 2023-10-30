@@ -22,12 +22,12 @@ export function listApps(): Applications[] {
 }
 
 /**
- * Scans the entire filesystem under /System/Volumes/Data and tries to parse all Applications. Includes embedded Apps, Frameworks, and any file that ends with `%/Contents/Info.plist`
+ * Scans the entire filesystem under /System and tries to parse all Applications. Includes embedded Apps, Frameworks, and any file that ends with `%/Contents/Info.plist`
  * @returns Array of `Applications`
  */
 export async function scanApps(): Promise<Applications[]> {
   const apps: Applications[] = [];
-  await iterateVolumes("/System/Volumes/Data/", apps);
+  await iterateVolumes("/System", apps);
 
   return apps;
 }
@@ -95,6 +95,21 @@ function parsePlist(path: string): Applications | Error {
     console.error(`Failed to parse plist ${path}: ${data}`);
     return new Error(`Failed to parse plist ${path}`);
   }
+  let icon_file = "";
+  if (`${data["CFBundleIconFile"]}`.includes("/")) {
+    icon_file = `${data["CFBundleIconFile"]}`;
+  } else if (`${data["CFBundleIconFile"]}`.includes("icns")) {
+    icon_file = path.replace(
+      "Info.plist",
+      `Resources/${data["CFBundleIconFile"]}`,
+    );
+  } else {
+    icon_file = path.replace(
+      "Info.plist",
+      `Resources/${data["CFBundleIconFile"]}.icns`,
+    );
+  }
+
   const app: Applications = {
     filename: `${data["CFBundleName"]}.app`,
     full_path: path.replace("/Contents/Info.plist", ""),
@@ -105,12 +120,8 @@ function parsePlist(path: string): Applications | Error {
     bundle_version: `${data["CFBundleVersion"]}`,
     display_name: `${data["CFBundleExecutable"]}`,
     copyright: `${data["NSHumanReadableCopyright"]}`,
-    icon: readIcon(
-      path.replace(
-        "Info.plist",
-        `Resources / ${data["CFBundleIconFile"]}.icns`,
-      ),
-    ),
+    icon: readIcon(icon_file),
+    info: path,
   };
 
   return app;
@@ -125,14 +136,11 @@ function readIcon(path: string): string {
   if (path.includes("undefined")) {
     return "";
   }
-  // Sometimes Apps may include icns extensions. Some Apps do not
-  const icon_path = path.replace(".icns.icns", ".icns");
-  const data = readFile(icon_path);
-  if (data instanceof Error) {
+  const data = readFile(path);
+  if (!(data instanceof Uint8Array)) {
     console.error(`Could not read icns file at ${path}: ${data}`);
     return "";
   }
-
   const icons = parseIcon(data);
   if (icons instanceof Error) {
     console.error(`Could not parse icns file at ${path}: ${data}`);
