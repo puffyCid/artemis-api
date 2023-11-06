@@ -8,7 +8,7 @@ The artemis API allows a user to make HTTP network requests using the
 [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html) crate. It can be
 used to interact with external services or services that expose an API.
 
-## request(url, protocol, body, headers) -> `ClientResponse | Error`
+### request(url, protocol, body, headers) -> `ClientResponse | Error`
 
 Make a very simple GET or POST request to the provided URL. You may specify an
 optional body or headers. By default headers will use
