@@ -227,10 +227,10 @@ Nom data while data **IS** equal to input. This function exposes the nom
 [take_while](https://docs.rs/nom/latest/nom/bytes/complete/fn.take_while.html)
 function.
 
-| Param | Type                   | Description                                                                                                         |
-| ----- | ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| data  | `string OR Uint8Array` | String or bytes to provide to nom                                                                                   |
-| input | `string OR number`     | Nom `data` until input. Must be single character if `data` is `string` or a number <= 255 if `data` is `Uint8Array` |
+| Param | Type                   | Description                                                                                                          |
+| ----- | ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| data  | `string OR Uint8Array` | String or bytes to provide to nom                                                                                    |
+| input | `string OR number`     | Nom `data` until input. Must be single character if `data` is `string` or a number \<= 255 if `data` is `Uint8Array` |
 
 Psuedo-code example below:
 

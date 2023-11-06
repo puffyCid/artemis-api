@@ -49,13 +49,7 @@ script = "Ly8gaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B1ZmZ5Y2lkL2FydGVtaX
 
 High level overview of what happens:
 
-```mermaid
-graph LR;
-  tomlFile("TOML file");
-  artemis[(artemis)];
-
-  tomlFile-->|decode script|artemis-->|execute script|output;
-```
+toml file -> decode script -> execute script
 
 :::
 
@@ -103,13 +97,7 @@ The biggest differences are:
 
 High level overview of what happens:
 
-```mermaid
-graph LR;
-  tomlFile("TOML file");
-  artemis[(artemis)];
-
-  tomlFile-->|walkthrough artifacts list|artemis-->|pass data to filter script|output;
-```
+toml file -> walkthrough artifacts list-> pass data to filter script -> output
 
 :::
 
