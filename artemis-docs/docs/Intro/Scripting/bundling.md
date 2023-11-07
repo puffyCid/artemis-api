@@ -117,7 +117,7 @@ Lets save this code to the file `main.ts`. Before we can compile the code to
 JavaScript we have to include (bundle) `mod.ts` and `registry.ts`.
 
 There are multiple types of bundler applications that can help us with this
-task. Two (2) this book will focus on are:
+task. Two (2) we will focus on are:
 
 - The builtin bundler in Deno
 - [esbuild Deno loader](https://deno.land/x/esbuild_deno_loader@0.6.0)
