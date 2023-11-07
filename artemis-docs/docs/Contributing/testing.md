@@ -12,14 +12,19 @@ For example, if you open a pull request to add a new feature and create three
 new functions. Your should have a test for each new function (three tests
 total).
 
-To run tests
-
 :::tip
 
 Its recommended to run in release mode for tests. This will greatly speed up the
-tests.
+tests. Tests should be run with root or Administrator privileges.
 
 `cargo test --release`
+
+:::
+
+:::warning
+
+macOS and Linux users may need to increase the ulimit for open files.
+`ulimit -n 1024`
 
 :::
 
