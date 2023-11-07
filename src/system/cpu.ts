@@ -1,4 +1,4 @@
-import { Cpus } from "../../types/systeminfo/systeminfo.d.ts";
+import { Cpus } from "../../types/system/systeminfo.d.ts";
 
 /**
  * Function to get system CPU information
@@ -6,7 +6,7 @@ import { Cpus } from "../../types/systeminfo/systeminfo.d.ts";
  */
 export function cpus(): Cpus[] {
   //@ts-ignore: Custom Artemis function
-  const data: string = systemInfo.cpu();
+  const data: string = system.cpu();
   const cpu: Cpus[] = JSON.parse(data);
   return cpu;
 }

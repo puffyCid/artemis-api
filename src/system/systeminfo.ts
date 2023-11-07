@@ -1,4 +1,4 @@
-import { SystemInfo } from "../../types/systeminfo/systeminfo.d.ts";
+import { SystemInfo } from "../../types/system/systeminfo.d.ts";
 
 /**
  * Function to pull systeminfo
@@ -17,7 +17,7 @@ export function getSysteminfo(): SystemInfo {
  */
 export function uptime(): number {
   //@ts-ignore: Custom Artemis function
-  const data: number = systemInfo.uptime();
+  const data: number = system.uptime();
   return data;
 }
 
@@ -27,7 +27,7 @@ export function uptime(): number {
  */
 export function hostname(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = systemInfo.hostname();
+  const data: string = system.hostname();
   return data;
 }
 
@@ -37,7 +37,7 @@ export function hostname(): string {
  */
 export function osVersion(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = systemInfo.osVersion();
+  const data: string = system.osVersion();
   return data;
 }
 
@@ -47,7 +47,7 @@ export function osVersion(): string {
  */
 export function kernelVersion(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = systemInfo.kernelVersion();
+  const data: string = system.kernelVersion();
   return data;
 }
 
@@ -63,6 +63,6 @@ export enum PlatformType {
  */
 export function platform(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = systemInfo.platform();
+  const data: string = system.platform();
   return data;
 }

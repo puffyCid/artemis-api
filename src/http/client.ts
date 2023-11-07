@@ -16,7 +16,6 @@ export async function request(
   body: ArrayBuffer = new ArrayBuffer(0),
   headers: Record<string, string> = { "Content-Type": "application/json" },
 ): Promise<ClientResponse | Error> {
-
   //@ts-ignore: Custom Artemis function
   const result = await http.send(url, protocol, headers, body);
   if (result instanceof Error) {

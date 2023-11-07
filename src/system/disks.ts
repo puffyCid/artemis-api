@@ -1,4 +1,4 @@
-import { Disks } from "../../types/systeminfo/systeminfo.d.ts";
+import { Disks } from "../../types/system/systeminfo.d.ts";
 
 /**
  * Function to get disk information on the system
@@ -6,7 +6,7 @@ import { Disks } from "../../types/systeminfo/systeminfo.d.ts";
  */
 export function disks(): Disks[] {
   //@ts-ignore: Custom Artemis function
-  const data: string = systemInfo.disks();
+  const data: string = system.disks();
   const disk: Disks[] = JSON.parse(data);
   return disk;
 }

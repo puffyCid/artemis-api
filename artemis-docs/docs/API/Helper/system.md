@@ -63,3 +63,13 @@ Function to get kernel version information
 ### platform() -> `string`
 
 Function to get platform type of the system. Ex: `Darwin`
+
+### executeCommand(command, args) -> `CommandResult | Error`
+
+Execute a command on the system. If the command can be found via ENV variables
+then full path not needed. Args are optional.
+
+| Param   | Type       | Description                       |
+| ------- | ---------- | --------------------------------- |
+| command | `string`   | Command to execute                |
+| args    | `string[]` | Arguements to pass to the command |
