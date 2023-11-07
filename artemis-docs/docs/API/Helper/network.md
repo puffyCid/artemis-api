@@ -22,3 +22,25 @@ The body must be in raw bytes if provided. This function is `async`
 | protocol | `Protocol`               | `Protocol` to use. Currently only GET or POST                        |
 | body     | `ArrayBuffer`            | Optional body to send with request                                   |
 | headers  | `Record<string, string>` | Optional headers to use. Default is `Content-Type: application/json` |
+
+### VirusTotal Class
+
+A _very_ basic class to help interact with the VirusTotal API using the JS HTTP
+client. Can be used to check VT for any additional data on hashes. Requires an
+API key.
+
+:::warning
+
+**DO NOT** use this to lookup hashes for your entire filesystem!
+
+Your key or IP will be **blocked** if you do!
+
+:::
+
+#### lookupHash(hash) -> `VTResponse | Error`
+
+Lookup a MD5, SHA1, or SHA256 hash on VirusTotal. This function is `async`
+
+| Param | Type     | Description               |
+| ----- | -------- | ------------------------- |
+| hash  | `string` | MD5, SHA1, or SHA256 hash |
