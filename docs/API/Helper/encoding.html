@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.0.0">
 <title data-rh="true">Encoding APIs | Artemis</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://github.com/artemis-api/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://github.com/artemis-api/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://github.com/artemis-api/docs/API/Helper/encoding"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Encoding APIs | Artemis"><meta data-rh="true" name="description" content="Encoding bytes and strings"><meta data-rh="true" property="og:description" content="Encoding bytes and strings"><link data-rh="true" rel="icon" href="/artemis-api/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://github.com/artemis-api/docs/API/Helper/encoding"><link data-rh="true" rel="alternate" href="https://github.com/artemis-api/docs/API/Helper/encoding" hreflang="en"><link data-rh="true" rel="alternate" href="https://github.com/artemis-api/docs/API/Helper/encoding" hreflang="x-default"><link rel="stylesheet" href="/artemis-api/assets/css/styles.cd5721cb.css">
-<script src="/artemis-api/assets/js/runtime~main.0ecf1e43.js" defer="defer"></script>
+<script src="/artemis-api/assets/js/runtime~main.a5722a0e.js" defer="defer"></script>
 <script src="/artemis-api/assets/js/main.8574d4e0.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -12,7 +12,7 @@
 <p>These functions are related to encoding data</p>
 <h3 class="anchor anchorWithStickyNavbar_FNw8" id="encodedata---string">encode(data) -&gt; <code>string</code><a href="#encodedata---string" class="hash-link" aria-label="Direct link to encodedata---string" title="Direct link to encodedata---string">​</a></h3>
 <p>Base64 encode raw bytes. The encoding is not URL safe</p>
-<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>data</td><td><code>ArrayBuffer</code></td><td>The raw bytes to encode</td></tr></tbody></table>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>data</td><td><code>Uint8Array</code></td><td>The raw bytes to encode</td></tr></tbody></table>
 <h3 class="anchor anchorWithStickyNavbar_FNw8" id="decodeb64---uint8array">decode(b64) -&gt; <code>Uint8Array</code><a href="#decodeb64---uint8array" class="hash-link" aria-label="Direct link to decodeb64---uint8array" title="Direct link to decodeb64---uint8array">​</a></h3>
 <p>Decode a valid RFC4648 Base64 encoded string</p>
 <table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>b64</td><td><code>string</code></td><td>A base64 encoded string</td></tr></tbody></table>
