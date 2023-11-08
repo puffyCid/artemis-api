@@ -10,9 +10,9 @@ These functions are related to encoding data
 
 Base64 encode raw bytes. The encoding is not URL safe
 
-| Param | Type          | Description             |
-| ----- | ------------- | ----------------------- |
-| data  | `ArrayBuffer` | The raw bytes to encode |
+| Param | Type         | Description             |
+| ----- | ------------ | ----------------------- |
+| data  | `Uint8Array` | The raw bytes to encode |
 
 ### decode(b64) -> `Uint8Array`
 

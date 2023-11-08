@@ -3,7 +3,7 @@
  * @param data The raw bytes to encode
  * @returns Base64 encoded string
  */
-export function encode(data: ArrayBuffer): string {
+export function encode(data: Uint8Array): string {
   //@ts-ignore: Custom Artemis function
   const result = encoding.btoa(data);
   return result;

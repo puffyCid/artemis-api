@@ -13,7 +13,7 @@ export enum Protocol {
 export async function request(
   url: string,
   protocol: Protocol,
-  body: ArrayBuffer = new ArrayBuffer(0),
+  body: Uint8Array = new Uint8Array(0),
   headers: Record<string, string> = { "Content-Type": "application/json" },
 ): Promise<ClientResponse | Error> {
   //@ts-ignore: Custom Artemis function

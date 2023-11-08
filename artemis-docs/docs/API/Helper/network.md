@@ -20,7 +20,7 @@ The body must be in raw bytes if provided. This function is `async`
 | -------- | ------------------------ | -------------------------------------------------------------------- |
 | url      | `string`                 | URL to target                                                        |
 | protocol | `Protocol`               | `Protocol` to use. Currently only GET or POST                        |
-| body     | `ArrayBuffer`            | Optional body to send with request                                   |
+| body     | `Uint8Array`             | Optional body to send with request                                   |
 | headers  | `Record<string, string>` | Optional headers to use. Default is `Content-Type: application/json` |
 
 ### VirusTotal Class
@@ -44,3 +44,19 @@ Lookup a MD5, SHA1, or SHA256 hash on VirusTotal. This function is `async`
 | Param | Type     | Description               |
 | ----- | -------- | ------------------------- |
 | hash  | `string` | MD5, SHA1, or SHA256 hash |
+
+#### lookupDomain(domain) -> `VTResponse | Error`
+
+Lookup a domain on VirusTotal. This function is `async`
+
+| Param  | Type     | Description      |
+| ------ | -------- | ---------------- |
+| domain | `string` | Domain to submit |
+
+#### lookupIP(ip) -> `VTResponse | Error`
+
+Lookup an IP on VirusTotal. This function is `async`
+
+| Param | Type     | Description  |
+| ----- | -------- | ------------ |
+| ip    | `string` | IP to submit |

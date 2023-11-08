@@ -1,5 +1,4 @@
 import { VTResponse } from "../../types/http/vt.ts";
-import { encodeBytes } from "../encoding/bytes.ts";
 import { extractUtf8String } from "../encoding/strings.ts";
 import { Protocol, request } from "./client.ts";
 
@@ -27,25 +26,55 @@ export class VirusTotal {
    */
   public async lookupHash(hash: string): Promise<VTResponse | Error> {
     const url = `https://www.virustotal.com/api/v3/files/${hash}`;
+    return await this.send(url);
+  }
+
+  /**
+   * Function to lookup an IP address
+   * @param ip IP address
+   * @returns A `VTResponse`
+   */
+  public async lookupIP(ip: string): Promise<VTResponse | Error> {
+    const url = `https://www.virustotal.com/api/v3/ip_addresses/${ip}`;
+    return await this.send(url);
+  }
+
+  /**
+   * Function to lookup a domain
+   * @param domain Domain to lookup
+   * @returns A `VTResponse`
+   */
+  public async lookupDomain(domain: string): Promise<VTResponse | Error> {
+    const url = `https://www.virustotal.com/api/v3/domains/${domain}`;
+    return await this.send(url);
+  }
+
+  /**
+   * Function to send all network requests to VirusTotal
+   * @param url URL to make request to
+   * @returns A `VTResponse`
+   */
+  private async send(url: string): Promise<VTResponse | Error> {
     const headers = {
       "x-apikey": this.key,
     };
 
-    const response = await request(url, Protocol.GET, encodeBytes(""), headers);
+    const response = await request(
+      url,
+      Protocol.GET,
+      new Uint8Array(0),
+      headers,
+    );
     if (response instanceof Error) {
       return response;
     }
 
-    if (response.status != 200) {
-      console.warn(`Got non-OK response`);
-    }
-
-    const vtFile: VTResponse = {
+    const res: VTResponse = {
       status: response.status,
       url: response.url,
       body: JSON.parse(extractUtf8String(new Uint8Array(response.body))),
     };
 
-    return vtFile;
+    return res;
   }
 }
