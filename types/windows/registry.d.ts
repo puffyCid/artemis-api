@@ -1,3 +1,5 @@
+import { Descriptor } from "./acls.d.ts";
+
 /**
  * Windows `Registry` is a collection of binary files that store Windows configuration settings and OS information.
  * There are multiple `Registry` files on a system such as:
@@ -49,6 +51,8 @@ export interface Registry {
   last_modified: number;
   /**Depth of key name */
   depth: number;
+  /**Offset to the Security Key info for the key */
+  security_offset: number;
 }
 
 /**
@@ -70,4 +74,14 @@ export interface Value {
    * Full list of types at: https://learn.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types
    */
   data_type: string;
+}
+
+/**
+ * Security Key data associated with a Registry Key
+ */
+interface SecurityKey {
+  /**Number of references to the key */
+  reference_count: number;
+  /**Permissions and ACLs associated with the key */
+  info: Descriptor;
 }

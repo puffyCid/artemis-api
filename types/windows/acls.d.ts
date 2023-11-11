@@ -20,3 +20,19 @@ export interface AccessControl {
   /**Inherited Object GUID associated with ACL. Dependent on `object_flags` */
   inherited_object_type_guid: string;
 }
+
+/**
+ * Metadata associated with Security Descriptor information
+ */
+interface Descriptor {
+  /**Control flags associated with the data */
+  control_flags: string[];
+  /**SACL info associated with the data */
+  sacls: AccessControl[];
+  /**DACL info associated with the data */
+  dacls: AccessControl[];
+  /**Owner SID associated with the data */
+  owner_sid: string;
+  /**Group SID associated with the data */
+  group_sid: string;
+}

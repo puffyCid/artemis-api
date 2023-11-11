@@ -357,3 +357,16 @@ Parse the Windows Security.evtx and try to correlate Logon and Logoff events.
 | Param | Type     | Description                        |
 | ----- | -------- | ---------------------------------- |
 | path  | `string` | Path to Windows Security.evtx file |
+
+### lookupSecurityKey(path, offset) -> `SecurityKey`
+
+Parse Security Key data from Registry at provided Security Key offset. The offset must be a postive number greater than 0.
+You can use `getRegistry(path)` to pull a list of keys which contain Security Key offset data.
+
+It is not recommended to bulk lookup Security Key info due the amount of data.
+Security Keys contain information about Registry key permissions and ACLs. Its not super useful.
+
+| Param  | Type     | Description                   |
+| ------ | -------- | ----------------------------- |
+| path   | `string` | Path to Windows Registry file |
+| offset | `number` | Offset to Security Key        |
