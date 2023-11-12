@@ -46,14 +46,20 @@ cargo build
 cargo build --release
 ```
 
-# Advanced 
-If you want to build the entire artemis project, you will need additional prerequisites. These additional prerequisites are required to build the experimental server and webui. 
+# Advanced
+
+If you want to build the entire artemis project, you will need additional
+prerequisites. These additional prerequisites are required to build the
+experimental server and webui.
 
 ## Advanced Prerequisites
-1. Install [NodeJS](https://nodejs.org/en). Required to install TailWindCSS and DaisyUI
+
+1. Install [NodeJS](https://nodejs.org/en). Required to install TailWindCSS and
+   DaisyUI
 2. Add WASM support for Rust `rustup target add wasm32-unknown-unknown`
 3. Install TailWindCSS `npm install -D tailwindcss`
 4. Install DaisyUI `npm i -D daisyui@latest`
 5. Install Typography `npm install -D @tailwindcss/typography`
-6. Install [Trunk](https://trunkrs.dev/). Required to compile webui to web assembly
+6. Install [Trunk](https://trunkrs.dev/). Required to compile webui to web
+   assembly
 7. Build the entire project with `just build`

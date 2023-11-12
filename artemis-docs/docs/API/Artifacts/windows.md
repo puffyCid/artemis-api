@@ -360,13 +360,76 @@ Parse the Windows Security.evtx and try to correlate Logon and Logoff events.
 
 ### lookupSecurityKey(path, offset) -> `SecurityKey`
 
-Parse Security Key data from Registry at provided Security Key offset. The offset must be a postive number greater than 0.
-You can use `getRegistry(path)` to pull a list of keys which contain Security Key offset data.
+Parse Security Key data from Registry at provided Security Key offset. The
+offset must be a postive number greater than 0. You can use `getRegistry(path)`
+to pull a list of keys which contain Security Key offset data.
 
 It is not recommended to bulk lookup Security Key info due the amount of data.
-Security Keys contain information about Registry key permissions and ACLs. Its not super useful.
+Security Keys contain information about Registry key permissions and ACLs. Its
+not super useful.
 
 | Param  | Type     | Description                   |
 | ------ | -------- | ----------------------------- |
 | path   | `string` | Path to Windows Registry file |
 | offset | `number` | Offset to Security Key        |
+
+### parseTable(path, tables) -> `Record<string, EseTable[][]> | Error`
+
+Parse an ESE database table at provided path. Will return a HashMap of tables.
+Where there string key is the table name. Table rows are returned in double
+array where each row is an array. Will bypass locked files and works dirty or
+clean ESE databases.
+
+:::warning
+
+Larger ESE databases will consume more memory and resources
+
+:::
+
+Sample output for one table (SmTbleSmp) that has two rows:
+
+```typescript
+{
+    "SmTblSmp": [
+        [
+            {
+                "column_type": "Float64",
+                "column_name": "SectionID",
+                "column_data": "1"
+            },
+            {
+                "column_type": "LongBinary",
+                "column_name": "Name",
+                "column_data": "bABzAGEAYQBuAG8AbgB5AG0AbwB1AHMAbgBhAG0AZQBsAG8AbwBrAHUAcAA="
+            },
+            {
+                "column_type": "LongBinary",
+                "column_name": "Value",
+                "column_data": "MAAAAA=="
+            }
+        ],
+        [
+            {
+                "column_type": "Float64",
+                "column_name": "SectionID",
+                "column_data": "1"
+            },
+            {
+                "column_type": "LongBinary",
+                "column_name": "Name",
+                "column_data": "ZQBuAGEAYgBsAGUAZwB1AGUAcwB0AGEAYwBjAG8AdQBuAHQA"
+            },
+            {
+                "column_type": "LongBinary",
+                "column_name": "Value",
+                "column_data": "MAAAAA=="
+            }
+        ]
+    ]
+}
+```
+
+| Param  | Type       | Description                  |
+| ------ | ---------- | ---------------------------- |
+| path   | `string`   | Path to Windows ESE database |
+| tables | `string[]` | One or more tables to parse  |

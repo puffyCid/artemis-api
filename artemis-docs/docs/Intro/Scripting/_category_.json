@@ -1,8 +1,8 @@
 {
-    "label": "Artemis Scripting",
-    "position": 5,
-    "link": {
-        "type": "generated-index",
-        "description": "Scripting with JavaScript"
-    }
+  "label": "Artemis Scripting",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Scripting with JavaScript"
+  }
 }

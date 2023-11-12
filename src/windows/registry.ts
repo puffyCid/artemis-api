@@ -19,13 +19,16 @@ export function getRegistry(path: string): Registry[] {
  * @param offset Offset to Security Key to lookupSecurityKey
  * @returns `SecurityKey` object data
  */
-export function lookupSecurityKey(path: string, offset: number): SecurityKey | Error {
+export function lookupSecurityKey(
+  path: string,
+  offset: number,
+): SecurityKey | Error {
   if (offset <= 0) {
     return new Error("Cannot use negative offset or zero!");
   }
-    //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_sk_info(path, offset);
+  //@ts-ignore: Custom Artemis function
+  const data: string = Deno.core.ops.get_sk_info(path, offset);
 
-    const results: SecurityKey = JSON.parse(data);
-    return results;
+  const results: SecurityKey = JSON.parse(data);
+  return results;
 }
