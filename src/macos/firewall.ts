@@ -6,21 +6,24 @@ import {
 } from "../../types/macos/firewall.d.ts";
 import { parseAlias } from "./alias.ts";
 import { parseRequirementBlob } from "./codesigning/blob.ts";
+import { MacosError } from "./errors.ts";
 import { getPlist } from "./plist.ts";
 
 /**
  * Function to get the macOS Firewall status and metadata
  * @returns Firewall status or error
  */
-export function firewallStatus(): Firewall | Error {
+export function firewallStatus(): Firewall | MacosError {
   const path = "/Library/Preferences/com.apple.alf.plist";
 
-  const results = getPlist(path);
-  if (results instanceof Error) {
-    return results;
-  } else if (results instanceof Array) {
-    return new Error("Got raw bytes at root of Firewall this is unexpected");
+  const plist_results = getPlist(path);
+  if (plist_results instanceof Error) {
+    return new MacosError("FIREWALL", `failed to parse plist ${plist_results}`);
+  } else if (plist_results instanceof Array) {
+    return new MacosError("FIREWALL", `Got array of bytes for plist`);
   }
+
+  const results = plist_results as Record<string, string>;
 
   const firewall: Firewall = {
     allow_signed_enabled: !!results["allowsignedenabled"],
@@ -29,7 +32,7 @@ export function firewallStatus(): Firewall | Error {
     global_state: !!results["globalstate"],
     logging_option: !!results["loggingoption"],
     stealth_enabled: !!results["stealthenabled"],
-    version: results["version"] as string,
+    version: results["version"],
     applications: [],
     exceptions: [],
     explict_auths: [],
@@ -37,26 +40,31 @@ export function firewallStatus(): Firewall | Error {
   };
 
   const applications: Record<string, string | Uint8Array | number>[] =
-    results["applications"] as Record<string, string | Uint8Array | number>[];
+    results["applications"] as unknown as Record<
+      string,
+      string | Uint8Array | number
+    >[];
   for (const app of applications) {
     const entry = parseApplications(app);
     firewall.applications.push(entry);
   }
 
   const exceptions: Record<string, string | number>[] =
-    results["exceptions"] as Record<string, string | number>[];
+    results["exceptions"] as unknown as Record<string, string | number>[];
   firewall.exceptions = getExceptions(exceptions);
 
-  const services: Record<string, object> = results["firewall"] as Record<
-    string,
-    object
-  >;
+  const services: Record<string, object> =
+    results["firewall"] as unknown as Record<
+      string,
+      object
+    >;
   firewall.services = getServices(services);
 
-  const auths: Record<string, string>[] = results["explicitauths"] as Record<
-    string,
-    string
-  >[];
+  const auths: Record<string, string>[] =
+    results["explicitauths"] as unknown as Record<
+      string,
+      string
+    >[];
   firewall.explict_auths = getAuths(auths);
 
   return firewall;

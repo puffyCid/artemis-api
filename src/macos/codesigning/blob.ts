@@ -2,6 +2,7 @@ import { SingleRequirement } from "../../../types/macos/codesigning.d.ts";
 import { bytesToHexString, extractUtf8String } from "../../encoding/strings.ts";
 import { Endian, nomUnsignedFourBytes } from "../../nom/helpers.ts";
 import { take } from "../../nom/parsers.ts";
+import { SigningError } from "./errors.ts";
 
 /**
  * Function to parse a Single Requirement blob and extract data
@@ -10,16 +11,20 @@ import { take } from "../../nom/parsers.ts";
  */
 export function parseRequirementBlob(
   data: Uint8Array,
-): SingleRequirement | Error {
+): SingleRequirement | SigningError {
   // First four (4) bytes are signature
   let result = nomUnsignedFourBytes(data, Endian.Be);
   if (result instanceof Error) {
-    return result;
+    return new SigningError(
+      "BLOB",
+      `failed to parse signature bytes ${result}`,
+    );
   }
 
   const sig = 4208856064;
   if (result.value != sig) {
-    return new Error(
+    return new SigningError(
+      "BLOB",
       `Invalid sigature expected 4208856064 got: ${result.value}`,
     );
   }
@@ -27,7 +32,7 @@ export function parseRequirementBlob(
   // Size of data including the header and size itself
   result = nomUnsignedFourBytes(result.remaining, Endian.Be);
   if (result instanceof Error) {
-    return result;
+    return new SigningError("BLOB", `failed to parse size bytes ${result}`);
   }
 
   const data_size = result.value;
@@ -37,12 +42,18 @@ export function parseRequirementBlob(
   if (data_size === cdhash_size) {
     let cd_hash_data = take(data, data_size / 2);
     if (cd_hash_data instanceof Error) {
-      return cd_hash_data;
+      return new SigningError(
+        "BLOB",
+        `failed to parse hash data bytes ${cd_hash_data}`,
+      );
     }
 
     cd_hash_data = take(cd_hash_data.remaining, data_size / 2);
     if (cd_hash_data instanceof Error) {
-      return cd_hash_data;
+      return new SigningError(
+        "BLOB",
+        `failed to parse cd hash data bytes ${cd_hash_data}`,
+      );
     }
 
     const requirement: SingleRequirement = {
@@ -57,31 +68,43 @@ export function parseRequirementBlob(
   // Unknown
   result = nomUnsignedFourBytes(result.remaining, Endian.Be);
   if (result instanceof Error) {
-    return result;
+    return new SigningError(
+      "BLOB",
+      `failed to unknown signature bytes ${result}`,
+    );
   }
 
   // Unknown
   result = nomUnsignedFourBytes(result.remaining, Endian.Be);
   if (result instanceof Error) {
-    return result;
+    return new SigningError(
+      "BLOB",
+      `failed to parse unknown2 signature bytes ${result}`,
+    );
   }
 
   // Unknown
   result = nomUnsignedFourBytes(result.remaining, Endian.Be);
   if (result instanceof Error) {
-    return result;
+    return new SigningError("BLOB", `failed to parse unknown3 bytes ${result}`);
   }
 
   // Size of identifier string
   result = nomUnsignedFourBytes(result.remaining, Endian.Be);
   if (result instanceof Error) {
-    return result;
+    return new SigningError(
+      "BLOB",
+      `failed to parse id string bytes ${result}`,
+    );
   }
 
   // Now have nommed identifier
   let remaining = take(result.remaining, result.value);
   if (remaining instanceof Error) {
-    return remaining;
+    return new SigningError(
+      "BLOB",
+      `failed to parse remaining bytes ${remaining}`,
+    );
   }
 
   // We know its a `Uint8Array` value because thats what we have been parsing
@@ -109,13 +132,19 @@ export function parseRequirementBlob(
   // Go to start of Team ID data
   remaining = take(data, id_start);
   if (remaining instanceof Error) {
-    return remaining;
+    return new SigningError(
+      "BLOB",
+      `failed to parse start team id bytes ${remaining}`,
+    );
   }
 
   // Now nom the team id bytes
   remaining = take(remaining.remaining, id_size);
   if (remaining instanceof Error) {
-    return remaining;
+    return new SigningError(
+      "BLOB",
+      `failed to parse team id bytes ${remaining}`,
+    );
   }
 
   // We know its a `Uint8Array` value because thats what we have been parsing

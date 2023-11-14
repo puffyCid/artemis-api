@@ -2,24 +2,34 @@ import { Icon, OSType } from "../../types/images/icns.d.ts";
 import { encode, extractUtf8String } from "../encoding/mod.ts";
 import { Endian } from "../nom/helpers.ts";
 import { nomUnsignedFourBytes, take } from "../nom/mod.ts";
+import { ImageError } from "./errors.ts";
 
 /**
  * Parse a `icns` file and return all the icons in the file
  * @param data Raw icns bytes
  * @returns Array of `Icon` or error
  */
-export function parseIcon(data: Uint8Array): Icon[] | Error {
+export function parseIcon(data: Uint8Array): Icon[] | ImageError {
   const sig = nomUnsignedFourBytes(data, Endian.Be);
   if (sig instanceof Error) {
-    return sig;
+    return new ImageError(
+      "ICON_ICNS",
+      `failed to parse signature for icns: ${sig}`,
+    );
   }
   const header = 1768124019;
   if (sig.value != header) {
-    return new Error("Incorrect signature. Not icns file");
+    return new ImageError(
+      "ICON_ICNS",
+      `not icns file wanted 1768124019, got ${sig.value}`,
+    );
   }
   const file_len = nomUnsignedFourBytes(sig.remaining, Endian.Be);
   if (file_len instanceof Error) {
-    return file_len;
+    return new ImageError(
+      "ICON_ICNS",
+      `failed to parse file length for icns: ${file_len}`,
+    );
   }
 
   const icons: Icon[] = [];

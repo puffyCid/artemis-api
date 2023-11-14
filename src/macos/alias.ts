@@ -11,41 +11,43 @@ import {
 } from "../nom/helpers.ts";
 import { take } from "../nom/parsers.ts";
 import { hfsToUnixEpoch } from "../time/conversion.ts";
+import { MacosError } from "./errors.ts";
 
 /**
  * Function to parse macOS `alias` data
  * @param data Raw `alias` bytes to parse
  * @returns Parsed `alias` object or error
  */
-export function parseAlias(data: Uint8Array): Alias | Error {
+export function parseAlias(data: Uint8Array): Alias | MacosError {
   const sig = nomUnsignedFourBytes(data, Endian.Be);
   if (sig instanceof Error) {
-    return sig;
+    return new MacosError("ALIAS", `failed to parse signature: ${sig}`);
   }
 
   const min_size = 150;
   const size = nomUnsignedTwoBytes(sig.remaining, Endian.Be);
   if (size instanceof Error) {
-    return size;
+    return new MacosError("ALIAS", `failed to parse size: ${size}`);
   } else if (size.value < min_size) {
-    return new Error(`alias data too small ${size.value}`);
+    return new MacosError("ALIAS", `data too small: ${size.value}`);
   }
 
   const version = nomUnsignedTwoBytes(size.remaining, Endian.Be);
   if (version instanceof Error) {
-    return version;
+    return new MacosError("ALIAS", `failed to parse version: ${version}`);
   }
 
   const support = 2;
   if (version.value != support) {
-    return new Error(
-      `Unsupported alias version. Currently only ${support} is supported. Got ${version.value}`,
+    return new MacosError(
+      "ALIAS",
+      `unsupported alias version: ${version.value}`,
     );
   }
 
   const kind_data = nomUnsignedTwoBytes(version.remaining, Endian.Be);
   if (kind_data instanceof Error) {
-    return kind_data;
+    return new MacosError("ALIAS", `failed to parse kind data: ${kind_data}`);
   }
 
   let kind = "";
@@ -58,7 +60,7 @@ export function parseAlias(data: Uint8Array): Alias | Error {
   const volume_name_size = 28;
   let alias_data = take(kind_data.remaining as Uint8Array, volume_name_size);
   if (alias_data instanceof Error) {
-    return alias_data;
+    return new MacosError("ALIAS", `failed to parse alias data: ${alias_data}`);
   }
 
   // First byte is the length of volume name
@@ -67,13 +69,19 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (volume_data instanceof Error) {
-    return volume_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse volume data: ${volume_data}`,
+    );
   }
 
   // Now nom size of the volume name
   let string_data = take(volume_data.remaining, volume_data.value);
   if (string_data instanceof Error) {
-    return string_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse string data: ${string_data}`,
+    );
   }
 
   // Get the volume name
@@ -84,27 +92,30 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (created_data instanceof Error) {
-    return created_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse created data: ${created_data}`,
+    );
   }
 
   const volume_created = created_data.value;
 
   const type_data = nomUnsignedTwoBytes(created_data.remaining, Endian.Be);
   if (type_data instanceof Error) {
-    return type_data;
+    return new MacosError("ALIAS", `failed to parse type data: ${type_data}`);
   }
   const filesystem_type = type_data.value;
 
   const disk_data = nomUnsignedTwoBytes(type_data.remaining, Endian.Be);
   if (disk_data instanceof Error) {
-    return disk_data;
+    return new MacosError("ALIAS", `failed to parse disk data: ${disk_data}`);
   }
 
   const disk_type = disk_data.value;
 
   const cnid_data = nomSignedFourBytes(disk_data.remaining, Endian.Be);
   if (cnid_data instanceof Error) {
-    return cnid_data;
+    return new MacosError("ALIAS", `failed to cnid kind data: ${cnid_data}`);
   }
 
   const cnid = cnid_data.value;
@@ -112,7 +123,10 @@ export function parseAlias(data: Uint8Array): Alias | Error {
   const target_name_size = 64;
   alias_data = take(cnid_data.remaining, target_name_size);
   if (alias_data instanceof Error) {
-    return alias_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse name size data: ${alias_data}`,
+    );
   }
 
   // First byte of target name is the size of name
@@ -121,12 +135,18 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (target_size instanceof Error) {
-    return target_size;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse target size data: ${target_size}`,
+    );
   }
   // Now nom size of the target name
   string_data = take(target_size.remaining, target_size.value);
   if (string_data instanceof Error) {
-    return string_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse additional string data: ${string_data}`,
+    );
   }
 
   const target_name = extractUtf8String(string_data.nommed as Uint8Array);
@@ -136,7 +156,10 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (target_cnid_data instanceof Error) {
-    return target_cnid_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse target cnid data: ${target_cnid_data}`,
+    );
   }
 
   const target_cnid = target_cnid_data.value;
@@ -146,7 +169,10 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (target_created_data instanceof Error) {
-    return target_created_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse target created data: ${target_created_data}`,
+    );
   }
 
   const target_created = target_created_data.value;
@@ -156,14 +182,17 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (code_data instanceof Error) {
-    return code_data;
+    return new MacosError("ALIAS", `failed to parse code data: ${kind_data}`);
   }
 
   const target_creator_code = code_data.value;
 
   const type_code_data = nomUnsignedFourBytes(code_data.remaining, Endian.Be);
   if (type_code_data instanceof Error) {
-    return type_code_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse type code data: ${type_code_data}`,
+    );
   }
 
   const target_type_code = type_code_data.value;
@@ -173,7 +202,10 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (alias_root_data instanceof Error) {
-    return alias_root_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse alias root data: ${alias_root_data}`,
+    );
   }
 
   const number_directory_levels_from_alias_to_root = alias_root_data.value;
@@ -183,7 +215,10 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (root_target_data instanceof Error) {
-    return root_target_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse root data: ${root_target_data}`,
+    );
   }
 
   const number_directory_levels_from_root_to_target = root_target_data.value;
@@ -193,14 +228,17 @@ export function parseAlias(data: Uint8Array): Alias | Error {
     Endian.Be,
   );
   if (attributes_data instanceof Error) {
-    return attributes_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse attributes data: ${attributes_data}`,
+    );
   }
 
   const volume_attributes = attributes_data.value;
 
   const id_data = nomUnsignedTwoBytes(attributes_data.remaining, Endian.Be);
   if (id_data instanceof Error) {
-    return id_data;
+    return new MacosError("ALIAS", `failed to parse id data: ${id_data}`);
   }
 
   const volume_filesystem_id = id_data.value;
@@ -208,7 +246,10 @@ export function parseAlias(data: Uint8Array): Alias | Error {
   const reserved_size = 10;
   alias_data = take(id_data.remaining, reserved_size);
   if (alias_data instanceof Error) {
-    return alias_data;
+    return new MacosError(
+      "ALIAS",
+      `failed to parse additional alias data: ${alias_data}`,
+    );
   }
 
   const tags = getTags(alias_data.remaining as Uint8Array);

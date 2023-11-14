@@ -1,17 +1,19 @@
 import { PasswordPolicy } from "../../types/macos/policies.d.ts";
+import { MacosError } from "./errors.ts";
 import { getPlist } from "./plist.ts";
 
 /**
  * Get Password Policies on macOS. Will parse plist file at `/var/db/dslocal/nodes/Default/config/shadowhash.plist`
  * @returns Array of `PasswordPolicy`
  */
-export function passwordPolicy(): PasswordPolicy[] | Error {
+export function passwordPolicy(): PasswordPolicy[] | MacosError {
   const path = "/var/db/dslocal/nodes/Default/config/shadowhash.plist";
   const policy_data = getPlist(path);
   if (policy_data instanceof Error) {
     return policy_data;
   } else if (policy_data instanceof Array) {
-    return new Error(
+    return new MacosError(
+      "POLICY",
       "Got raw bytes at root of PasswordPolicy this is unexpected",
     );
   }
