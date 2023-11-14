@@ -1,3 +1,5 @@
+import { HttpError } from "./errors.ts";
+
 export enum Protocol {
   GET = "GET",
   POST = "POST",
@@ -15,13 +17,16 @@ export async function request(
   protocol: Protocol,
   body: Uint8Array = new Uint8Array(0),
   headers: Record<string, string> = { "Content-Type": "application/json" },
-): Promise<ClientResponse | Error> {
-  //@ts-ignore: Custom Artemis function
-  const result = await http.send(url, protocol, headers, body);
-  if (result instanceof Error) {
-    return result;
+): Promise<ClientResponse | HttpError> {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const result = await http.send(url, protocol, headers, body);
+    const res: ClientResponse = JSON.parse(result);
+    return res;
+  } catch (err) {
+    return new HttpError(
+      "REQUEST_ERROR",
+      `failed to make ${protocol} request to ${url}: ${err}`,
+    );
   }
-
-  const res: ClientResponse = JSON.parse(result);
-  return res;
 }

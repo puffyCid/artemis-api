@@ -1,6 +1,7 @@
 import { VTResponse } from "../../types/http/vt.ts";
 import { extractUtf8String } from "../encoding/strings.ts";
 import { Protocol, request } from "./client.ts";
+import { ErrorName, HttpError } from "./errors.ts";
 
 /**
  * @class Simple API class to help interact with VT
@@ -24,9 +25,9 @@ export class VirusTotal {
    * @param hash MD5, SHA1, or sha256
    * @returns A `VTResponse`
    */
-  public async lookupHash(hash: string): Promise<VTResponse | Error> {
+  public async lookupHash(hash: string): Promise<VTResponse | HttpError> {
     const url = `https://www.virustotal.com/api/v3/files/${hash}`;
-    return await this.send(url);
+    return await this.send(url, "LOOKUP_HASH");
   }
 
   /**
@@ -34,9 +35,9 @@ export class VirusTotal {
    * @param ip IP address
    * @returns A `VTResponse`
    */
-  public async lookupIP(ip: string): Promise<VTResponse | Error> {
+  public async lookupIP(ip: string): Promise<VTResponse | HttpError> {
     const url = `https://www.virustotal.com/api/v3/ip_addresses/${ip}`;
-    return await this.send(url);
+    return await this.send(url, "LOOKUP_IP");
   }
 
   /**
@@ -44,9 +45,9 @@ export class VirusTotal {
    * @param domain Domain to lookup
    * @returns A `VTResponse`
    */
-  public async lookupDomain(domain: string): Promise<VTResponse | Error> {
+  public async lookupDomain(domain: string): Promise<VTResponse | HttpError> {
     const url = `https://www.virustotal.com/api/v3/domains/${domain}`;
-    return await this.send(url);
+    return await this.send(url, "LOOKUP_DOMAIN");
   }
 
   /**
@@ -54,7 +55,10 @@ export class VirusTotal {
    * @param url URL to make request to
    * @returns A `VTResponse`
    */
-  private async send(url: string): Promise<VTResponse | Error> {
+  private async send(
+    url: string,
+    err: ErrorName,
+  ): Promise<VTResponse | HttpError> {
     const headers = {
       "x-apikey": this.key,
     };
@@ -65,7 +69,8 @@ export class VirusTotal {
       new Uint8Array(0),
       headers,
     );
-    if (response instanceof Error) {
+    if (response instanceof HttpError) {
+      response.name = err;
       return response;
     }
 
