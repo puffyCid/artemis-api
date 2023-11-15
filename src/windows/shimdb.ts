@@ -1,4 +1,5 @@
 import { Shimdb } from "../../types/windows/shimdb.d.ts";
+import { WindowsError } from "./errors.ts";
 
 /**
  * Function to parse `ShimDB` entries on the systemdrive
@@ -31,13 +32,13 @@ export function getAltShimdb(drive: string): Shimdb[] {
  * @param path full path to custom sdb file
  * @returns Shimdb info
  */
-export function getCustomShimdb(path: string): Shimdb | null {
-  //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.get_custom_shimdb(path);
-  if (data === "") {
-    return null;
+export function getCustomShimdb(path: string): Shimdb | WindowsError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data: string = Deno.core.ops.get_custom_shimdb(path);
+    const results: Shimdb = JSON.parse(data);
+    return results;
+  } catch (err) {
+    return new WindowsError('SHIMDB', `failed to parse sdb ${path}: ${err}`);
   }
-
-  const results: Shimdb = JSON.parse(data);
-  return results;
 }

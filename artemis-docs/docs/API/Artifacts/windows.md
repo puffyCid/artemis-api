@@ -203,7 +203,7 @@ Parse Windows ShimDB files at provided drive letter.
 | ----- | -------- | ---------------------------------- |
 | drive | `string` | Drive letter to get Windows ShimDB |
 
-### getCustomShimdb(path) -> `Shimdb[]`
+### getCustomShimdb(path) -> `Shimdb[] | WindowsError`
 
 Parse Windows ShimDB file at provided path.
 
