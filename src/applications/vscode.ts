@@ -2,13 +2,16 @@ import { encode } from "../encoding/base64.ts";
 import { encodeBytes } from "../encoding/bytes.ts";
 import { glob, readTextFile } from "../filesystem/files.ts";
 import { PlatformType } from "../system/systeminfo.ts";
+import { ApplicationError } from "./errors.ts";
 
 /**
  * Return the local file history for all VSCode files. Also supports VSCodium.
  * @param platform OS Platform type to lookup
  * @returns Array of `FileHistory` entries
  */
-export function fileHistory(platform: PlatformType): FileHistory[] | Error {
+export function fileHistory(
+  platform: PlatformType,
+): FileHistory[] | ApplicationError {
   // Get all user paths
   let path = "";
   switch (platform) {
@@ -29,7 +32,7 @@ export function fileHistory(platform: PlatformType): FileHistory[] | Error {
 
   const paths = glob(path);
   if (paths instanceof Error) {
-    return paths;
+    return new ApplicationError("VSCODE", `failed to glob paths: ${paths}`);
   }
 
   const entries = [];

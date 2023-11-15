@@ -18,7 +18,7 @@ Parse a single logon related file. Path end with one of the following:
 | ----- | -------- | ---------------------------------- |
 | path  | `string` | Path to `wtmp, utmp, or btmp` file |
 
-### getElf(path) -> `ElfInfo | null`
+### getElf(path) -> `ElfInfo | LinuxError`
 
 Parse an ELF executable file.
 
@@ -26,7 +26,7 @@ Parse an ELF executable file.
 | ----- | -------- | ---------------- |
 | path  | `string` | Path to ELF file |
 
-### getJournal(path) -> `Journal[] | null`
+### getJournal(path) -> `Journal[] | LinuxError`
 
 Parse a systemd [Journal](../../Artifacts/Linux%20Artifacts/journals.md) file.
 

@@ -1,13 +1,16 @@
 import { readXml } from "../encoding/xml.ts";
 import { glob } from "../filesystem/files.ts";
 import { PlatformType } from "../system/systeminfo.ts";
+import { ApplicationError } from "./errors.ts";
 
 /**
  * Return a list of files opened by LibreOffice for all users
  * @param platform OS Platform type to lookup
  * @returns Array of `History` entries
  */
-export function recentFiles(platform: PlatformType): History[] | Error {
+export function recentFiles(
+  platform: PlatformType,
+): History[] | ApplicationError {
   // Get all user paths
   let path = "";
   switch (platform) {
@@ -28,7 +31,10 @@ export function recentFiles(platform: PlatformType): History[] | Error {
 
   const paths = glob(path);
   if (paths instanceof Error) {
-    return paths;
+    return new ApplicationError(
+      "LIBREOFFICE",
+      `failed to glob paths: ${paths}`,
+    );
   }
 
   const entries = [];

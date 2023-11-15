@@ -4,6 +4,8 @@ export type ErrorName =
   | "ALIAS"
   | "PLIST"
   | "FIREWALL"
-  | "POLICY";
+  | "POLICY"
+  | "MACHO"
+  | "FSEVENTS";
 
 export class MacosError extends ErrorBase<ErrorName> {}

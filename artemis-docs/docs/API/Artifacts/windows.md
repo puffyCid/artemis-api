@@ -86,7 +86,7 @@ Read an Alternative Data Stream at provided file path.
 | path     | `string` | Path to file read |
 | ads_name | `string` | ADS data to read  |
 
-### getPe(path) -> `PeInfo | null`
+### getPe(path) -> `PeInfo | WindowsError`
 
 Parse PE file at provided path.
 

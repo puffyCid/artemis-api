@@ -2,7 +2,7 @@ import { MacosError } from "./errors.ts";
 
 /**
  * Function to parse a `plist` file. This function either returns a `plist` as a JSON struct
- * or null
+ * or MacosError
  * @param path Full path to a `plist` file or the raw bytes of `plist`
  * @returns `plist` data represented as a JSON object or an object representing an error
  */

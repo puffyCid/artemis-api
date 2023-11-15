@@ -14,7 +14,7 @@ Return all local users on macOS sysem
 
 Return all local groups on macOS sysem
 
-### parseAlias(data) -> `Alias | Error`
+### parseAlias(data) -> `Alias | MacosError`
 
 Parse macOS [alias](https://en.wikipedia.org/wiki/Alias_(Mac_OS)) data. Alias
 files are a legacy shortcut format. May be encountered in `plist` files such as
@@ -33,11 +33,11 @@ Emond was been removed on Ventura.
 
 Parse the ExecPolicy sqlite database on macOS
 
-### firewallStatus() -> `Firewall | Error`
+### firewallStatus() -> `Firewall | MacosError`
 
 Return firewall information and status on macOS
 
-### getFsevents() -> `Fsevents[] | null`
+### getFsevents() -> `Fsevents[] | MacosError`
 
 Parse macOS [FsEvents](../../Artifacts/macOS%20Artifacts/fsevents.md)
 
@@ -53,7 +53,7 @@ Return all Launch agents on macOS
 
 Return all LoginItems on macOS
 
-### getMacho(path) -> `MachoInfo[] | null`
+### getMacho(path) -> `MachoInfo[] | MacosError`
 
 Parse a macho file and return metadata about the binary.
 
@@ -61,7 +61,7 @@ Parse a macho file and return metadata about the binary.
 | ----- | -------- | -------------------- |
 | path  | `string` | Path to macho binary |
 
-### getPlist(path) -> `Record<string, unknown> | number[] | Error`
+### getPlist(path) -> `Record<string, unknown> | number[] | MacosError`
 
 Parse a plist file. Supports parsing a provide plist file path or the raw bytes
 of plist data. Sometimes a plist file may contain another base64 encoded plist.
@@ -71,7 +71,7 @@ This function can parse the raw plist bytes.
 | ----- | ------------------------------------- | ------------------------------------- |
 | path  | <code>string &#124; Uint8Array</code> | Path to plist file or raw plist bytes |
 
-### passwordPolicy() -> `PasswordPolicy[] | Error`
+### passwordPolicy() -> `PasswordPolicy[] | MacosError`
 
 Get password policies on macOS. Will parse plist file at
 `/var/db/dslocal/nodes/Default/config/shadowhash.plist`
@@ -110,7 +110,7 @@ Parse a single UnifiedLog file (.tracev3) on macOS. Typically found at
 | ----- | -------- | --------------------- |
 | path  | `string` | Path to .tracev3 file |
 
-### parseRequirementBlob(data) -> `SingleRequirement | Error`
+### parseRequirementBlob(data) -> `SingleRequirement | MacosError`
 
 Parse the Requirement Blob from raw codesigning bytes. This part of Apple's
 CodeSigning framework. This data can be found in macho binaries and also plist
