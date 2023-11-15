@@ -7,7 +7,7 @@ import { SigningError } from "./errors.ts";
 /**
  * Function to parse a Single Requirement blob and extract data
  * @param data Bytes containing a `Single Requirement` blob
- * @returns `SingleRequirement` object containing the `Team ID` and `Identifier`
+ * @returns `SingleRequirement` object or `SigningError`
  */
 export function parseRequirementBlob(
   data: Uint8Array,

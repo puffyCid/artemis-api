@@ -3,7 +3,7 @@ import { UserAssist } from "../../types/windows/userassist.d.ts";
 /**
  * Function to parse `UserAssist` entries on the systemdrive
  * @param resolve Enable folder description GUID lookups by parsing the SYSTEM Registry file before parsing UserAssist.
- * @returns Array of `UserAssist` entries parsed from the sysystemdrive letter
+ * @returns Array of `UserAssist` entries parsed from the sysystemdrive letter or `WindowsError`
  */
 export function getUserassist(resolve: boolean): UserAssist[] {
   //@ts-ignore: Custom Artemis function
@@ -17,7 +17,7 @@ export function getUserassist(resolve: boolean): UserAssist[] {
  * Function to parse `UserAssist` entries on an alternative drive
  * @param drive drive letter
  * @param resolve Enable folder description GUID lookups by parsing the SYSTEM Registry file before parsing UserAssist.
- * @returns Array of `UserAssist` entries parsed from a Windows drive letter
+ * @returns Array of `UserAssist` entries parsed from a Windows drive letter or `WindowsError`
  */
 export function getAltUserassist(
   drive: string,

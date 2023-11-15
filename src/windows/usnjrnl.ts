@@ -2,7 +2,7 @@ import { UsnJrnl } from "../../types/windows/usnjrnl.d.ts";
 
 /**
  * Function to parse the `UsnJrnl` on the systemdrive
- * @returns Array of `UsnJrnl` entries from sysystemdrive letter
+ * @returns Array of `UsnJrnl` entries from sysystemdrive letter or `WindowsError`
  */
 export function getUsnjrnl(): UsnJrnl[] {
   //@ts-ignore: Custom Artemis function
@@ -14,7 +14,7 @@ export function getUsnjrnl(): UsnJrnl[] {
 
 /**
  * Function to parse the `UsnJrnl` on an alternative driver
- * @returns Array of `UsnJrnl` entries from a Windows driver letter
+ * @returns Array of `UsnJrnl` entries from a Windows driver letter or `WindowsError`
  */
 export function getAltUsnjrnl(drive: string): UsnJrnl[] {
   //@ts-ignore: Custom Artemis function

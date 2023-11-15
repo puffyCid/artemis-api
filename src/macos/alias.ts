@@ -16,7 +16,7 @@ import { MacosError } from "./errors.ts";
 /**
  * Function to parse macOS `alias` data
  * @param data Raw `alias` bytes to parse
- * @returns Parsed `alias` object or error
+ * @returns Parsed `alias` object or MacosError
  */
 export function parseAlias(data: Uint8Array): Alias | MacosError {
   const sig = nomUnsignedFourBytes(data, Endian.Be);

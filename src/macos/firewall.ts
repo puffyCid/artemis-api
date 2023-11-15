@@ -11,7 +11,7 @@ import { getPlist } from "./plist.ts";
 
 /**
  * Function to get the macOS Firewall status and metadata
- * @returns Firewall status or error
+ * @returns `Firewall` status or `MacosError`
  */
 export function firewallStatus(): Firewall | MacosError {
   const path = "/Library/Preferences/com.apple.alf.plist";

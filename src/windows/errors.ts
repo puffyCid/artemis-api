@@ -1,7 +1,28 @@
 import { ErrorBase } from "../utils/error.ts";
 
 export type ErrorName =
-    | "PE"
-    | "SHIMDB";
+  | "PE"
+  | "SHIMDB"
+  | "AMCACHE"
+  | "BITS"
+  | "ESE"
+  | "EVENTLOG"
+  | "JUMPLIST"
+  | "NTFS"
+  | "PREFETCH"
+  | "RECYCLEBIN"
+  | "REGISTRY"
+  | "SEARCH"
+  | "SERVICES"
+  | "SHELLBAGS"
+  | "SHIMCACHE"
+  | "SHIMDB"
+  | "SHORTCUTS"
+  | "SRUM"
+  | "TASKS"
+  | "USERASSIST"
+  | "USERS"
+  | "USNJRNL"
+  | "LOGONCORRELATION";
 
-export class WindowsError extends ErrorBase<ErrorName> { }
+export class WindowsError extends ErrorBase<ErrorName> {}

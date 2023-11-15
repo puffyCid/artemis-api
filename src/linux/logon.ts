@@ -7,7 +7,7 @@ import { Logon } from "../../types/linux/logon.d.ts";
  */
 export function getLogon(path: string): Logon[] {
   if (
-    path.endsWith("btmp") && !path.endsWith("wtmp") && !path.endsWith("utmp")
+    !path.endsWith("btmp") && !path.endsWith("wtmp") && !path.endsWith("utmp")
   ) {
     console.error(`Provided non-logon file ${path}`);
     return [];

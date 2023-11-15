@@ -4,7 +4,7 @@ import { WindowsError } from "./errors.ts";
 /**
  * Function to parse a `pe` executable.
  * @param path Full path to a `pe` file
- * @returns Basic `PeInfo` interface or WindowsError
+ * @returns Basic `PeInfo` interface or `WindowsError`
  */
 export function getPe(path: string): PeInfo | WindowsError {
   try {

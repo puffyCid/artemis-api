@@ -2,6 +2,8 @@ import { ErrorBase } from "../utils/error.ts";
 
 export type ErrorName =
   | "LIBREOFFICE"
-  | "VSCODE";
+  | "VSCODE"
+  | "CHROMIUM"
+  | "FIREFOX";
 
 export class ApplicationError extends ErrorBase<ErrorName> {}

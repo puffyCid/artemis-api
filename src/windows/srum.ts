@@ -12,7 +12,7 @@ import {
 /**
  * Function to parse and get Application info from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `ApplicationInfo` entries
+ * @returns Array of `ApplicationInfo` entries or `WindowsError`
  */
 export function getSrumApplicationInfo(path: string): ApplicationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}";
@@ -26,7 +26,7 @@ export function getSrumApplicationInfo(path: string): ApplicationInfo[] {
 /**
  * Function to parse and get Application timeline info from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `ApplicationTimeline` entries
+ * @returns Array of `ApplicationTimeline` entries or `WindowsError`
  */
 export function getSrumApplicationTimeline(
   path: string,
@@ -42,7 +42,7 @@ export function getSrumApplicationTimeline(
 /**
  * Function to parse and get `AppVFU` info from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `AppVfu` entries
+ * @returns Array of `AppVfu` entries or `WindowsError`
  */
 export function getSrumApplicationVfu(path: string): AppVfu[] {
   const name = "{7ACBBAA3-D029-4BE4-9A7A-0885927F1D8F}";
@@ -56,7 +56,7 @@ export function getSrumApplicationVfu(path: string): AppVfu[] {
 /**
  * Function to parse and get `EnergyInfo` from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `EnergyInfo`
+ * @returns Array of `EnergyInfo` or `WindowsError`
  */
 export function getSrumEnergyInfo(path: string): EnergyInfo[] {
   const name = "{DA73FB89-2BEA-4DDC-86B8-6E048C6DA477}";
@@ -70,7 +70,7 @@ export function getSrumEnergyInfo(path: string): EnergyInfo[] {
 /**
  * Function to parse `EnergyUsage` info from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `EnergyUsage`
+ * @returns Array of `EnergyUsage` or `WindowsError`
  */
 export function getSrumEnergyUsage(path: string): EnergyUsage[] {
   let name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}";
@@ -89,7 +89,7 @@ export function getSrumEnergyUsage(path: string): EnergyUsage[] {
 /**
  * Function to parse `NetworkInfo` from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `NetworkInfo`
+ * @returns Array of `NetworkInfo` or `WindowsError`
  */
 export function getSrumNetworkInfo(path: string): NetworkInfo[] {
   const name = "{973F5D5C-1D90-4944-BE8E-24B94231A174}";
@@ -103,7 +103,7 @@ export function getSrumNetworkInfo(path: string): NetworkInfo[] {
 /**
  * Function to parse `NetworkConnectivityInfo` from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `NetworkConnectivityInfo`
+ * @returns Array of `NetworkConnectivityInfo` or `WindowsError`
  */
 export function getSrumNetworkConnectivity(
   path: string,
@@ -119,7 +119,7 @@ export function getSrumNetworkConnectivity(
 /**
  * Function to parse `NotificationInfo` from SRUM file
  * @param path Path to `SRUDB.dat` file
- * @returns Array of `NotificationInfo`
+ * @returns Array of `NotificationInfo` or `WindowsError`
  */
 export function getSrumNotifications(path: string): NotificationInfo[] {
   const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA86}";

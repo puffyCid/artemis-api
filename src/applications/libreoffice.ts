@@ -6,7 +6,7 @@ import { ApplicationError } from "./errors.ts";
 /**
  * Return a list of files opened by LibreOffice for all users
  * @param platform OS Platform type to lookup
- * @returns Array of `History` entries
+ * @returns Array of `History` entries or `ApplicationError`
  */
 export function recentFiles(
   platform: PlatformType,

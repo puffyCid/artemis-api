@@ -7,7 +7,7 @@ import { ApplicationError } from "./errors.ts";
 /**
  * Return the local file history for all VSCode files. Also supports VSCodium.
  * @param platform OS Platform type to lookup
- * @returns Array of `FileHistory` entries
+ * @returns Array of `FileHistory` entries or `ApplicationError`
  */
 export function fileHistory(
   platform: PlatformType,

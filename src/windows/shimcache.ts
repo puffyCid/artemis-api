@@ -2,7 +2,7 @@ import { Shimcache } from "../../types/windows/shimcache.d.ts";
 
 /**
  * Function to parse `Shimcache` entries on the systemdrive
- * @returns Array of `Shimcache` entries parsed from the sysystemdrive letter
+ * @returns Array of `Shimcache` entries parsed from the sysystemdrive letter or `WindowsError`
  */
 export function getShimcache(): Shimcache[] {
   //@ts-ignore: Custom Artemis function
@@ -15,7 +15,7 @@ export function getShimcache(): Shimcache[] {
 /**
  * Function to parse `Shimcache` entries on an alternative drive
  * @param drive drive letter
- * @returns Array of `Shimcache` entries parsed from a Windows drive letter
+ * @returns Array of `Shimcache` entries parsed from a Windows drive letter or `WindowsError`
  */
 export function getAltShimcache(drive: string): Shimcache[] {
   //@ts-ignore: Custom Artemis function

@@ -6,6 +6,13 @@ export type ErrorName =
   | "FIREWALL"
   | "POLICY"
   | "MACHO"
-  | "FSEVENTS";
+  | "FSEVENTS"
+  | "ACCOUNTS"
+  | "EMOND"
+  | "LAUNCHD"
+  | "LOGINITEMS"
+  | "SAFARI"
+  | "EXECPOLICY"
+  | "UNIFIEDLOGS";
 
 export class MacosError extends ErrorBase<ErrorName> {}
