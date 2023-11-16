@@ -6,7 +6,7 @@ description: Interact with Linux Artifacts
 
 These functions can be used to pull data related to Linux artifacts
 
-### getLogon(path) -> `Logon[]`
+### getLogon(path) -> `Logon[] | LinuxError`
 
 Parse a single logon related file. Path end with one of the following:
 

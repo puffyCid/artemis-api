@@ -46,7 +46,7 @@ Convert bytes to Hex string
 | ----- | ------------ | --------------------------- |
 | data  | `Uint8Array` | Raw bytes to convert to hex |
 
-### readXml(path) -> `Record<string, unknown> | Error`
+### readXml(path) -> `Record<string, unknown> | EncodingError`
 
 Read a XML file into a JSON object. Supports either UTF8 or UTF16 encoded XML
 files

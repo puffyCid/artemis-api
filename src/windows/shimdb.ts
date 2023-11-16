@@ -5,12 +5,16 @@ import { WindowsError } from "./errors.ts";
  * Function to parse `ShimDB` entries on the systemdrive
  * @returns Array of `ShimDB` entries parsed from the sysystemdrive letter or `WindowsError`
  */
-export function getShimdb(): Shimdb[] {
-  //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.get_shimdb();
+export function getShimdb(): Shimdb[] | WindowsError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data = Deno.core.ops.get_shimdb();
 
-  const results: Shimdb[] = JSON.parse(data);
-  return results;
+    const results: Shimdb[] = JSON.parse(data);
+    return results;
+  } catch (err) {
+    return new WindowsError("SHIMDB", `failed to parse shimdb: ${err}`);
+  }
 }
 
 /**
@@ -18,12 +22,19 @@ export function getShimdb(): Shimdb[] {
  * @param drive drive letter
  * @returns Array of `ShimDB` entries parsed from a Windows drive letter or `WindowsError`
  */
-export function getAltShimdb(drive: string): Shimdb[] {
-  //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.get_alt_shimdb(drive);
+export function getAltShimdb(drive: string): Shimdb[] | WindowsError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data = Deno.core.ops.get_alt_shimdb(drive);
 
-  const results: Shimdb[] = JSON.parse(data);
-  return results;
+    const results: Shimdb[] = JSON.parse(data);
+    return results;
+  } catch (err) {
+    return new WindowsError(
+      "SHIMDB",
+      `failed to parse shimdb at drive ${drive}: ${err}`,
+    );
+  }
 }
 
 /**
@@ -35,7 +46,7 @@ export function getAltShimdb(drive: string): Shimdb[] {
 export function getCustomShimdb(path: string): Shimdb | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_custom_shimdb(path);
+    const data = Deno.core.ops.get_custom_shimdb(path);
     const results: Shimdb = JSON.parse(data);
     return results;
   } catch (err) {

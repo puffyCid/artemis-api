@@ -7,7 +7,7 @@ description: Interacting with the Filesystem
 The artemis API contains several functions that can be used to interact with the
 filesystem.
 
-### stat(path) -> `FileInfo | Error`
+### stat(path) -> `FileInfo | FileError`
 
 Return basic metadata about a file or directory
 
@@ -15,7 +15,7 @@ Return basic metadata about a file or directory
 | ----- | -------- | --------------------------------------- |
 | path  | `string` | File or directory to get metadata about |
 
-### hash(path, md5, sha1, sha256) -> `Hashes | Error`
+### hash(path, md5, sha1, sha256) -> `Hashes | FileError`
 
 Return hashes for a single file
 
@@ -26,7 +26,7 @@ Return hashes for a single file
 | sha1   | `boolean` | Enable SHA1 hashing   |
 | sha256 | `boolean` | Enable SHA256 hashing |
 
-### readTextFile(path) -> `string | Error`
+### readTextFile(path) -> `string | FileError`
 
 Read a text file. Currently only files less than 2GB in size can be read
 
@@ -34,7 +34,7 @@ Read a text file. Currently only files less than 2GB in size can be read
 | ----- | -------- | ----------------- |
 | path  | `string` | Text file to read |
 
-### readFile(path) -> `Uint8Array | Error`
+### readFile(path) -> `Uint8Array | FileError`
 
 Read a file using regular OS APIs. Currently only files less than 2GB in size
 can be read
@@ -43,7 +43,7 @@ can be read
 | ----- | -------- | ------------ |
 | path  | `string` | File to read |
 
-### glob(pattern) -> `GlobInfo[] | Error`
+### glob(pattern) -> `GlobInfo[] | FileError`
 
 Parse glob patterns based on Rust [glob](https://docs.rs/glob/latest/glob/)
 support
@@ -52,7 +52,7 @@ support
 | ------- | -------- | ------------------------------------------------------------------------------------------ |
 | pattern | `string` | Glob pattern to parse. Ex: `C:\\*` to get all files and directories at Windows C directory |
 
-### readDir(path) -> `Promise<FileInfo[]> | Error`
+### readDir(path) -> `Promise<FileInfo[]> | FileError`
 
 Read a provided directory and get list of files. This function is `async`!
 

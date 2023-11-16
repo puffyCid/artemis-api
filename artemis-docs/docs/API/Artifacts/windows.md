@@ -6,11 +6,11 @@ description: Interact with Windows Artifacts
 
 These functions can be used to pull data related to Windows artifacts.
 
-### getAmcache() -> `Amcache[]`
+### getAmcache() -> `Amcache[] | WindowsError`
 
 Parse Amcache Registry file on the systemdrive.
 
-### getAltAmcache(drive) -> `Amcache[]`
+### getAltAmcache(drive) -> `Amcache[] | WindowsError`
 
 Parse Amcache Registry file on the provided drive letter.
 
@@ -18,7 +18,7 @@ Parse Amcache Registry file on the provided drive letter.
 | ----- | -------- | ---------------------------------------------------------- |
 | drive | `string` | Alternative drive letter to parse Amcache Registry file on |
 
-### getBits(carve) -> `Bits`
+### getBits(carve) -> `Bits | WindowsError`
 
 Parse Windows [BITS](../../Artifacts/Windows%20Artfacts/bits.md) data. Supports
 carving deleted entries.
@@ -27,7 +27,7 @@ carving deleted entries.
 | ----- | --------- | ------------------------------------- |
 | carve | `boolean` | Attempt to carve deleted BITS entries |
 
-### getBitsPath(path, carve) -> `Amcache[]`
+### getBitsPath(path, carve) -> `Amcache[] | WindowsError`
 
 Parse Windows [BITS](../../Artifacts/Windows%20Artfacts/bits.md) data at
 provided path. Supports carving deleted entries.
@@ -37,7 +37,7 @@ provided path. Supports carving deleted entries.
 | path  | `string`  | Path to Windows BITS file             |
 | carve | `boolean` | Attempt to carve deleted BITS entries |
 
-### getEventlogs(path) -> `EventLogRecord[]`
+### getEventlogs(path) -> `EventLogRecord[] | WindowsError`
 
 Parse Windows EventLog file at provided path.
 
@@ -45,12 +45,12 @@ Parse Windows EventLog file at provided path.
 | ----- | -------- | ----------------------------- |
 | path  | `string` | Path to Windows EventLog file |
 
-### getJumplists() -> `Jumplists[]`
+### getJumplists() -> `Jumplists[] | WindowsError`
 
 Get all [JumpLists](../../Artifacts/Windows%20Artfacts/jumplists.md) for all
 users at default systemdrive.
 
-### getAltJumplists(drive) -> `Jumplists[]`
+### getAltJumplists(drive) -> `Jumplists[] | WindowsError`
 
 Get all [JumpLists](../../Artifacts/Windows%20Artfacts/jumplists.md) for all
 users at provided drive.
@@ -59,7 +59,7 @@ users at provided drive.
 | ----- | -------- | ------------ |
 | drive | `string` | Drive letter |
 
-### getJumplistPath(path) -> `Jumplists[]`
+### getJumplistPath(path) -> `Jumplists[] | WindowsError`
 
 Parse [JumpLists](../../Artifacts/Windows%20Artfacts/jumplists.md) file at
 provided path.
@@ -68,7 +68,7 @@ provided path.
 | ----- | -------- | --------------------- |
 | path  | `string` | Path to Jumplist file |
 
-### readRawFile(path) -> `Uint8Array`
+### readRawFile(path) -> `Uint8Array | WindowsError`
 
 Read a file at provided path by parsing the NTFS. You can read locked files with
 this function.
@@ -77,7 +77,7 @@ this function.
 | ----- | -------- | ----------------- |
 | path  | `string` | Path to file read |
 
-### readAdsData(path, ads_name) -> `Uint8Array`
+### readAdsData(path, ads_name) -> `Uint8Array | WindowsError`
 
 Read an Alternative Data Stream at provided file path.
 
@@ -94,11 +94,11 @@ Parse PE file at provided path.
 | ----- | -------- | --------------- |
 | path  | `string` | Path to PE file |
 
-### getPrefetch() -> `Prefetch[]`
+### getPrefetch() -> `Prefetch[] | WindowsError`
 
 Parse all Prefetch files at default systemdrive.
 
-### getAltPrefetch(drive) -> `Prefetch[]`
+### getAltPrefetch(drive) -> `Prefetch[] | WindowsError`
 
 Parse all Prefetch files at provided drive letter.
 
@@ -106,7 +106,7 @@ Parse all Prefetch files at provided drive letter.
 | ----- | -------- | ------------------------------ |
 | drive | `string` | Drive letter to Prefetch files |
 
-### getPrefetchPath(path) -> `Prefetch[]`
+### getPrefetchPath(path) -> `Prefetch[] | WindowsError`
 
 Parse Prefetch files at provided directory.
 
@@ -114,7 +114,7 @@ Parse Prefetch files at provided directory.
 | ----- | -------- | -------------------------- |
 | path  | `string` | Path to Prefetch directory |
 
-### getRecycleBin(drive) -> `RecycleBin[]`
+### getRecycleBin(drive) -> `RecycleBin[] | WindowsError`
 
 Parse all RecycleBin files at provided drive (optional).
 
@@ -122,7 +122,7 @@ Parse all RecycleBin files at provided drive (optional).
 | ----- | -------- | --------------------------------------------------------- |
 | drive | `string` | Drive letter to RecycleBin files. Default is systemdrive. |
 
-### getRecycleBinFile(path) -> `RecycleBin[]`
+### getRecycleBinFile(path) -> `RecycleBin[] | WindowsError`
 
 Parse RecycleBin file at provided path.
 
@@ -130,7 +130,7 @@ Parse RecycleBin file at provided path.
 | ----- | -------- | ------------------------ |
 | path  | `string` | Path to RecycleBin file. |
 
-### getRegistry(path) -> `Registry[]`
+### getRegistry(path) -> `Registry[] | WindowsError`
 
 Parse Registry file at provided path.
 
@@ -138,7 +138,7 @@ Parse Registry file at provided path.
 | ----- | -------- | ---------------------- |
 | path  | `string` | Path to Registry file. |
 
-### getSearch(path) -> `SearchEntry[]`
+### getSearch(path) -> `SearchEntry[] | WindowsError`
 
 Parse Windows [Search](../../Artifacts/Windows%20Artfacts/search.md) database at
 provided path.
@@ -147,11 +147,11 @@ provided path.
 | ----- | -------- | -------------------------------- |
 | path  | `string` | Path to Windows Search database. |
 
-### getServices() -> `Services[] | Error`
+### getServices() -> `Services[] | WindowsError`
 
 Parse Windows Services at default systemdrive.
 
-### getAltServices(drive) -> `Services[] | Error`
+### getAltServices(drive) -> `Services[] | WindowsError`
 
 Parse Windows Services at provided drive letter.
 
@@ -167,11 +167,11 @@ Parse Windows Services (SYSTEM Registry) file at provided path.
 | ----- | -------- | ------------------------------------ |
 | path  | `string` | Path to Windows SYSTEM Registry file |
 
-### getShellbags() -> `Shellbags[]`
+### getShellbags() -> `Shellbags[] | WindowsError`
 
 Parse Windows Shellbags at default systemdrive.
 
-### getAltShellbags(drive) -> `Shellbags[]`
+### getAltShellbags(drive) -> `Shellbags[] | WindowsError`
 
 Parse Windows Shellbags at provided drive letter.
 
@@ -179,11 +179,11 @@ Parse Windows Shellbags at provided drive letter.
 | ----- | -------- | ------------------------------------- |
 | drive | `string` | Drive letter to get Windows Shellbags |
 
-### getShimcache() -> `Shimcache[]`
+### getShimcache() -> `Shimcache[] | WindowsError`
 
 Parse Windows Shimcache at default systemdrive.
 
-### getAltShimcache(drive) -> `Shimcache[]`
+### getAltShimcache(drive) -> `Shimcache[] | WindowsError`
 
 Parse Windows Shimcache at provided drive letter.
 
@@ -191,11 +191,11 @@ Parse Windows Shimcache at provided drive letter.
 | ----- | -------- | ------------------------------------- |
 | drive | `string` | Drive letter to get Windows Shimcache |
 
-### getShimdb() -> `Shimdb[]`
+### getShimdb() -> `Shimdb[] | WindowsError`
 
 Parse Windows ShimDB files at default systemdrive.
 
-### getAltShimdb(drive) -> `Shimdb[]`
+### getAltShimdb(drive) -> `Shimdb[] | WindowsError`
 
 Parse Windows ShimDB files at provided drive letter.
 
@@ -211,7 +211,7 @@ Parse Windows ShimDB file at provided path.
 | ----- | -------- | --------------------------- |
 | path  | `string` | Path to Windows ShimDB file |
 
-### getLnkFile(path) -> `Shortcut`
+### getLnkFile(path) -> `Shortcut | WindowsError`
 
 Parse Windows Shortcut file at provided path.
 
@@ -219,7 +219,7 @@ Parse Windows Shortcut file at provided path.
 | ----- | -------- | ----------------------------- |
 | path  | `string` | Path to Windows Shortcut file |
 
-### getSrumApplicationInfo(path) -> `ApplicationInfo[]`
+### getSrumApplicationInfo(path) -> `ApplicationInfo[] | WindowsError`
 
 Parse Application info from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -228,7 +228,7 @@ Parse Application info from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getSrumApplicationTimeline(path) -> `ApplicationTimeline[]`
+### getSrumApplicationTimeline(path) -> `ApplicationTimeline[] | WindowsError`
 
 Parse Application Timeline info from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -237,7 +237,7 @@ Parse Application Timeline info from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getSrumApplicationVfu(path) -> `AppVfu[]`
+### getSrumApplicationVfu(path) -> `AppVfu[] | WindowsError`
 
 Parse Application VFU info from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -246,7 +246,7 @@ Parse Application VFU info from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getSrumEnergyInfo(path) -> `EnergyInfo[]`
+### getSrumEnergyInfo(path) -> `EnergyInfo[] | WindowsError`
 
 Parse Energy info from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -255,7 +255,7 @@ Parse Energy info from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getSrumEnergyUsage(path) -> `EnergyUsage[]`
+### getSrumEnergyUsage(path) -> `EnergyUsage[] | WindowsError`
 
 Parse Energy usage from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -264,7 +264,7 @@ Parse Energy usage from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getSrumNetworkInfo(path) -> `NetworkInfo[]`
+### getSrumNetworkInfo(path) -> `NetworkInfo[] | WindowsError`
 
 Parse Network info from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -273,7 +273,7 @@ Parse Network info from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getSrumNetworkConnectivity(path) -> `NetworkConnectivityInfo[]`
+### getSrumNetworkConnectivity(path) -> `NetworkConnectivityInfo[] | WindowsError`
 
 Parse Network connectivity info from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -282,7 +282,7 @@ Parse Network connectivity info from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getSrumNotifications(path) -> `NotificationInfo[]`
+### getSrumNotifications(path) -> `NotificationInfo[] | WindowsError`
 
 Parse notification info from Windows
 [SRUM](../../Artifacts/Windows%20Artfacts/srum.md).
@@ -291,11 +291,11 @@ Parse notification info from Windows
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to Windows SRUM file |
 
-### getTasks() -> `TaskData | Error`
+### getTasks() -> `TaskData | WindowsError`
 
 Parse Windows Schedule Tasks at default systemdrive.
 
-### getAltTasks(drive) -> `TaskData | Error`
+### getAltTasks(drive) -> `TaskData | WindowsError`
 
 Parse Windows Schedule Tasks at provided drive letter.
 
@@ -303,7 +303,7 @@ Parse Windows Schedule Tasks at provided drive letter.
 | ----- | -------- | ------------------------------------------ |
 | drive | `string` | Drive letter to get Windows Schedule Tasks |
 
-### getTaskFile(path) -> `TaskXml | TaskJob | Error`
+### getTaskFile(path) -> `TaskXml | TaskJob | WindowsError`
 
 Parse Windows Schedule Task file at provided path. Supports XML and older binary
 Job files.
@@ -312,11 +312,11 @@ Job files.
 | ----- | -------- | ------------------------------------------------------------ |
 | path  | `string` | Path to Windows Schedule Task file. Can be either XML or Job |
 
-### getUserassist() -> `UserAssist[]`
+### getUserassist() -> `UserAssist[] | WindowsError`
 
 Parse Windows Userassist entries at default systemdrive.
 
-### getAltUserassist(drive) -> `UserAssist[]`
+### getAltUserassist(drive) -> `UserAssist[] | WindowsError`
 
 Parse Windows Userassist entries at provided drive letter.
 
@@ -324,12 +324,12 @@ Parse Windows Userassist entries at provided drive letter.
 | ----- | -------- | -------------------------------------- |
 | drive | `string` | Drive letter to get Windows Userassist |
 
-### getUsersWin() -> `UserInfo[]`
+### getUsersWin() -> `UserInfo[] | WindowsError`
 
 Get local Windows User accounts from SAM Registry file. Uses default systemdrive
 letter.
 
-### getAltUsersWin(drive) -> `UserInfo[]`
+### getAltUsersWin(drive) -> `UserInfo[] | WindowsError`
 
 Get local Windows User accounts from SAM Registry file from alternative drive
 letter.
@@ -338,11 +338,11 @@ letter.
 | ----- | -------- | --------------------------------- |
 | drive | `string` | Drive letter to get Windows Users |
 
-### getUsnjrnl() -> `UsnJrnl[]`
+### getUsnjrnl() -> `UsnJrnl[] | WindowsError`
 
 Parses Windows UsnJrnl data. Uses default systemdrive letter.
 
-### getAltUsnjrnl(drive) -> `UsnJrnl[]`
+### getAltUsnjrnl(drive) -> `UsnJrnl[] | WindowsError`
 
 Parses Windows UsnJrnl data from alternative drive letter.
 
@@ -350,7 +350,7 @@ Parses Windows UsnJrnl data from alternative drive letter.
 | ----- | -------- | ----------------------------------- |
 | drive | `string` | Drive letter to get Windows UsnJrnl |
 
-### logons(path) -> `Logons[]`
+### logons(path) -> `Logons[] | WindowsError`
 
 Parse the Windows Security.evtx and try to correlate Logon and Logoff events.
 
@@ -373,7 +373,7 @@ not super useful.
 | path   | `string` | Path to Windows Registry file |
 | offset | `number` | Offset to Security Key        |
 
-### parseTable(path, tables) -> `Record<string, EseTable[][]> | Error`
+### parseTable(path, tables) -> `Record<string, EseTable[][]> | WindowsError`
 
 Parse an ESE database table at provided path. Will return a HashMap of tables.
 Where there string key is the table name. Table rows are returned in double

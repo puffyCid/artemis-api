@@ -8,7 +8,7 @@ The artemis API allows a user to make HTTP network requests using the
 [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html) crate. It can be
 used to interact with external services or services that expose an API.
 
-### request(url, protocol, body, headers) -> `ClientResponse | Error`
+### request(url, protocol, body, headers) -> `ClientResponse | HttpError`
 
 Make a very simple GET or POST request to the provided URL. You may specify an
 optional body or headers. By default headers will use
@@ -37,7 +37,7 @@ Your key or IP will be **blocked** if you do!
 
 :::
 
-#### lookupHash(hash) -> `VTResponse | Error`
+#### lookupHash(hash) -> `VTResponse | HttpError`
 
 Lookup a MD5, SHA1, or SHA256 hash on VirusTotal. This function is `async`
 
@@ -45,7 +45,7 @@ Lookup a MD5, SHA1, or SHA256 hash on VirusTotal. This function is `async`
 | ----- | -------- | ------------------------- |
 | hash  | `string` | MD5, SHA1, or SHA256 hash |
 
-#### lookupDomain(domain) -> `VTResponse | Error`
+#### lookupDomain(domain) -> `VTResponse | HttpError`
 
 Lookup a domain on VirusTotal. This function is `async`
 
@@ -53,7 +53,7 @@ Lookup a domain on VirusTotal. This function is `async`
 | ------ | -------- | ---------------- |
 | domain | `string` | Domain to submit |
 
-#### lookupIP(ip) -> `VTResponse | Error`
+#### lookupIP(ip) -> `VTResponse | HttpError`
 
 Lookup an IP on VirusTotal. This function is `async`
 

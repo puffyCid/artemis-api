@@ -1,15 +1,19 @@
 import { Services } from "../../types/windows/services.d.ts";
+import { WindowsError } from "./errors.ts";
 
 /**
  * Parse Windows Services using the default systemdrive (typically C).
  * @returns Array of `Services` or `WindowsError`
  */
-export function getServices(): Services[] | Error {
-  //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.get_services();
-  const services: Services[] | Error = JSON.parse(data);
-
-  return services;
+export function getServices(): Services[] | WindowsError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data = Deno.core.ops.get_services();
+    const services: Services[] = JSON.parse(data);
+    return services;
+  } catch (err) {
+    return new WindowsError("SERVICES", `failed to parse services: ${err}`);
+  }
 }
 
 /**
@@ -17,12 +21,18 @@ export function getServices(): Services[] | Error {
  * @param drive Alternative drive letter to use
  * @returns Array of `Services` or `WindowsError`
  */
-export function getAltServices(drive: string): Services[] | Error {
-  //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.get_alt_services(drive);
-  const services: Services[] | Error = JSON.parse(data);
-
-  return services;
+export function getAltServices(drive: string): Services[] | WindowsError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data = Deno.core.ops.get_alt_services(drive);
+    const services: Services[] = JSON.parse(data);
+    return services;
+  } catch (err) {
+    return new WindowsError(
+      "SERVICES",
+      `failed to parse services with drive ${drive}: ${err}`,
+    );
+  }
 }
 
 /**
@@ -30,10 +40,16 @@ export function getAltServices(drive: string): Services[] | Error {
  * @param path Path to SYSTEM file
  * @returns Array of `Services` or `WindowsError`
  */
-export function getServiceFile(path: string): Services[] | Error {
-  //@ts-ignore: Custom Artemis function
-  const data: string = Deno.core.ops.get_alt_services(path);
-  const services: Services[] | Error = JSON.parse(data);
-
-  return services;
+export function getServiceFile(path: string): Services[] | WindowsError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data = Deno.core.ops.get_alt_services(path);
+    const services: Services[] = JSON.parse(data);
+    return services;
+  } catch (err) {
+    return new WindowsError(
+      "SERVICES",
+      `failed to parse services ${path}: ${err}`,
+    );
+  }
 }

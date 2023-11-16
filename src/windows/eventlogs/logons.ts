@@ -4,6 +4,7 @@ import {
   Raw4624Logons,
   Raw4634Logoffs,
 } from "../../../types/windows/eventlogs/logons.d.ts";
+import { WindowsError } from "../errors.ts";
 import { getEventlogs } from "../eventlogs.ts";
 
 /**
@@ -11,8 +12,16 @@ import { getEventlogs } from "../eventlogs.ts";
  * @param path Path to Security.evtx file
  * @returns Array of `Logon` entries
  */
-export function logons(path: string): Logons[] | Error {
-  const records = getEventlogs(path) as Raw4624Logons[] | Raw4634Logoffs[];
+export function logons(path: string): Logons[] | WindowsError {
+  const recordsData = getEventlogs(path);
+  if (recordsData instanceof WindowsError) {
+    return new WindowsError(
+      "LOGONCORRELATION",
+      `failed to parse eventlog ${path}: ${recordsData}`,
+    );
+  }
+
+  const records = recordsData as Raw4624Logons[] | Raw4634Logoffs[];
   const logon_eid = 4624;
   const logoff_eid = 4634;
   const logon_entries = [];

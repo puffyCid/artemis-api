@@ -5,7 +5,7 @@ import { WindowsError } from "./errors.ts";
  * Function to parse any ESE database and tables
  * @param path Path to ESE database
  * @param tables Tables that should be parsed
- * @returns HashMap of tables and their contents or `WindowsError`
+ * @returns HashMap of tables or `WindowsError`
  */
 export function parseTable(
   path: string,

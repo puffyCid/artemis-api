@@ -6,11 +6,11 @@ description: Interact with macOS Artifacts
 
 These functions can be used to pull data related to macOS artifacts
 
-### getUsers() -> `Users[]`
+### getUsers() -> `Users[] | MacosError`
 
 Return all local users on macOS sysem
 
-### getGroup() -> `Groups[]`
+### getGroup() -> `Groups[] | MacosError`
 
 Return all local groups on macOS sysem
 
@@ -24,12 +24,12 @@ the firewall `plist` file.
 | ----- | ------------ | --------------- |
 | data  | `Uint8Array` | Raw alias bytes |
 
-### getEmond() -> `Emond[]`
+### getEmond() -> `Emond[] | MacosError`
 
 Get all [Emond](../../Artifacts/macOS%20Artifacts/emond.md) rules on macOS.
 Emond was been removed on Ventura.
 
-### getExecpolicy() -> `ExecPolicy[]`
+### getExecpolicy() -> `ExecPolicy[] | MacosError`
 
 Parse the ExecPolicy sqlite database on macOS
 
@@ -41,15 +41,15 @@ Return firewall information and status on macOS
 
 Parse macOS [FsEvents](../../Artifacts/macOS%20Artifacts/fsevents.md)
 
-### getLaunchdDaemons() -> `Launchd[]`
+### getLaunchdDaemons() -> `Launchd[] | MacosError`
 
 Return all Launch daemons on macOS
 
-### getLaunchdAgents() -> `Launchd[]`
+### getLaunchdAgents() -> `Launchd[] | MacosError`
 
 Return all Launch agents on macOS
 
-### getLoginitems() -> `LoginItems[]`
+### getLoginitems() -> `LoginItems[] | MacosError`
 
 Return all LoginItems on macOS
 
@@ -76,11 +76,11 @@ This function can parse the raw plist bytes.
 Get password policies on macOS. Will parse plist file at
 `/var/db/dslocal/nodes/Default/config/shadowhash.plist`
 
-### getSafariUsersHistory() -> `SafariHistory[]`
+### getSafariUsersHistory() -> `SafariHistory[] | MacosError`
 
 Return Safari history for all users
 
-### getSafariHistory(path) -> `RawSafariHistory[]`
+### getSafariHistory(path) -> `RawSafariHistory[] | MacosError`
 
 Parse Safari history from provided `History.db` sqlite file. Supports locked
 files.
@@ -89,11 +89,11 @@ files.
 | ----- | -------- | ------------------------- |
 | path  | `string` | Path to `History.db` file |
 
-### getSafariUsersDownloads() -> `SafariDownloads[]`
+### getSafariUsersDownloads() -> `SafariDownloads[] | MacosError`
 
 Return Safari downloads for all users
 
-### getSafariDownloads(path) -> `RawSafariDownloads[]`
+### getSafariDownloads(path) -> `RawSafariDownloads[] | MacosError`
 
 Parse Safari history from provided `Downloads.plist` file.
 
@@ -101,7 +101,7 @@ Parse Safari history from provided `Downloads.plist` file.
 | ----- | -------- | ------------------------------ |
 | path  | `string` | Path to `Downloads.plist` file |
 
-### getUnifiedLog(path) -> `UnifiedLog[]`
+### getUnifiedLog(path) -> `UnifiedLog[] | MacosError`
 
 Parse a single UnifiedLog file (.tracev3) on macOS. Typically found at
 `/private/var/db/diagnostics/{Persist, Signpost, HighVolume, Special}`
@@ -120,14 +120,14 @@ files.
 | ----- | ------------ | ------------------------------------------ |
 | data  | `Uint8Array` | Raw bytes associated with requirement blob |
 
-### listApps() -> `Applications[]`
+### listApps() -> `Applications[] | MacosError`
 
 Return a simple Application listing. Searches user installed Apps, System Apps,
 default Homebrew paths (/usr/local/Cellar, /opt/homebrew/Cellar).
 
 Use `scanApps()` if you want to scan the entire filesystem for Apps
 
-### scanApps() -> `Applications[]`
+### scanApps() -> `Applications[] | MacosError`
 
 Scans the entire filesystem under /System/ and tries to parse all Applications.
 
@@ -136,7 +136,7 @@ Includes embedded Apps, Frameworks, and any file that ends with
 
 Use `listApps()` if you a simpler Application listing
 
-### dockTiles() -> `Applications[]`
+### dockTiles() -> `Applications[] | MacosError`
 
 Scans the entire filesystem under /System looking for Applications that use
 DockTile persistence. See https://theevilbit.github.io/beyond/beyond_0032/ for
