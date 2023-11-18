@@ -144,3 +144,32 @@ details on Dock Tile PlugIns
 
 Includes embedded Apps, Frameworks, and any file that ends with
 `%/Contents/Info.plist`
+
+### getPackages(glob_path) -> `HomebrewReceipt[]`
+
+Get Homebrew packages on the system. Does **not** include Casks.\
+Use getHomebrewInfo() to get all packages and Casks.
+
+By default this function will search for all packages at:
+`/opt/homebrew/Cellar/` and `/usr/local/Cellar`
+
+| Param     | Type     | Description                           |
+| --------- | -------- | ------------------------------------- |
+| glob_path | `string` | Optional alternative glob path to use |
+
+### getCasks(glob_path) -> `HomebrewFormula[]`
+
+Get Homebrew Casks on the system. Does **not** include packages.\
+Use getHomebrewInfo() to get all packages and Casks.
+
+By default this function will search for all packages at:
+`/opt/homebrew/Caskroom` and `/usr/local/Caskroom`
+
+| Param     | Type     | Description                           |
+| --------- | -------- | ------------------------------------- |
+| glob_path | `string` | Optional alternative glob path to use |
+
+### getHomebrewInfo() -> `HomebrewData`
+
+Get Homebrew packages and Casks on the system. Searches for Homebrew data at
+`/opt/homebrew` and `/usr/local`.

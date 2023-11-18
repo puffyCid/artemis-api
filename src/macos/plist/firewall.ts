@@ -3,11 +3,11 @@ import {
   FirewallApplication,
   FirewallExceptions,
   Services,
-} from "../../types/macos/firewall.d.ts";
-import { parseAlias } from "./alias.ts";
-import { parseRequirementBlob } from "./codesigning/blob.ts";
-import { MacosError } from "./errors.ts";
-import { getPlist } from "./plist.ts";
+} from "../../../types/macos/plist/firewall.d.ts";
+import { parseAlias } from "../alias.ts";
+import { parseRequirementBlob } from "../codesigning/blob.ts";
+import { MacosError } from "../errors.ts";
+import { getPlist } from "../plist.ts";
 
 /**
  * Function to get the macOS Firewall status and metadata
