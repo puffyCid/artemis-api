@@ -2,6 +2,8 @@ import { ErrorBase } from "../utils/error.ts";
 
 export type ErrorName =
   | "ELF"
-  | "JOURNAL";
+  | "JOURNAL"
+  | "LOGON"
+  | "DEBPACKAGES";
 
 export class LinuxError extends ErrorBase<ErrorName> {}

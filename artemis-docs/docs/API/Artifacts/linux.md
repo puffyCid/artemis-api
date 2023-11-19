@@ -33,3 +33,14 @@ Parse a systemd [Journal](../../Artifacts/Linux%20Artifacts/journals.md) file.
 | Param | Type     | Description          |
 | ----- | -------- | -------------------- |
 | path  | `string` | Path to Journal file |
+
+### getDebInfo(alt_path) -> `DebPackages[] | LinuxError`
+
+Get list of installed deb packages on the system. Can provide an alternative
+path to the dpkg `status`.
+
+Uses `/var/lib/dpkg/status` by default
+
+| Param    | Type     | Description                  |
+| -------- | -------- | ---------------------------- |
+| alt_path | `string` | Alt path to dpkg status file |
