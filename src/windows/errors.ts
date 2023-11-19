@@ -23,6 +23,7 @@ export type ErrorName =
   | "USERASSIST"
   | "USERS"
   | "USNJRNL"
-  | "LOGONCORRELATION";
+  | "LOGONCORRELATION"
+  | "CHOCOLATEYINFO";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

@@ -358,7 +358,7 @@ Parse the Windows Security.evtx and try to correlate Logon and Logoff events.
 | ----- | -------- | ---------------------------------- |
 | path  | `string` | Path to Windows Security.evtx file |
 
-### lookupSecurityKey(path, offset) -> `SecurityKey`
+### lookupSecurityKey(path, offset) -> `SecurityKey | WindowsError`
 
 Parse Security Key data from Registry at provided Security Key offset. The
 offset must be a postive number greater than 0. You can use `getRegistry(path)`
@@ -433,3 +433,13 @@ Sample output for one table (SmTbleSmp) that has two rows:
 | ------ | ---------- | ---------------------------- |
 | path   | `string`   | Path to Windows ESE database |
 | tables | `string[]` | One or more tables to parse  |
+
+### getChocolateyInfo(alt_base) -> `ChocolateyInfo[] | WindowsError`
+
+Return a list of installed Chocolatey packages. Will use the `ChocolateyInstall` ENV value by default (C:\ProgramData\chocolatey).
+
+An optional alternative base path can also be provided
+
+| Param    | Type     | Description                       |
+| -------- | -------- | --------------------------------- |
+| alt_base | `string` | Optional base path for Chocolatey |
