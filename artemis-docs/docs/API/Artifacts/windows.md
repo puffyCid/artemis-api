@@ -443,3 +443,13 @@ An optional alternative base path can also be provided
 | Param    | Type     | Description                       |
 | -------- | -------- | --------------------------------- |
 | alt_base | `string` | Optional base path for Chocolatey |
+
+### updateHistory(alt_path) -> `UpdateHistory[] | WindowsError`
+
+Return a list of Windows Updates by parsing the Windows `DataStore.edb` database. Will use the `SystemRoot` ENV value by default (C:\Windows).
+
+An optional alternative path to `DataStore.edb` can also be provided instead.
+
+| Param    | Type     | Description                         |
+| -------- | -------- | ----------------------------------- |
+| alt_path | `string` | Optional full path to DataStore.edb |

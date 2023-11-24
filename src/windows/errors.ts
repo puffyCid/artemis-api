@@ -24,6 +24,7 @@ export type ErrorName =
   | "USERS"
   | "USNJRNL"
   | "LOGONCORRELATION"
-  | "CHOCOLATEYINFO";
+  | "CHOCOLATEYINFO"
+  | "UPDATESHISTORY";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

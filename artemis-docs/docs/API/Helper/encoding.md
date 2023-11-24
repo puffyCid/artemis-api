@@ -14,7 +14,7 @@ Base64 encode raw bytes. The encoding is not URL safe
 | ----- | ------------ | ----------------------- |
 | data  | `Uint8Array` | The raw bytes to encode |
 
-### decode(b64) -> `Uint8Array`
+### decode(b64) -> `Uint8Array | EncodingError`
 
 Decode a valid RFC4648 Base64 encoded string
 
@@ -54,3 +54,17 @@ files
 | Param | Type     | Description              |
 | ----- | -------- | ------------------------ |
 | path  | `string` | Path to XML file to read |
+
+### generateUuid() -> `string`
+
+Generates a UUID v4 hyphenated string
+
+### formatGuid(format, data) -> `string`
+
+Format provided bytes into a GUID hyphenated string based on provided Endianess. Must provide exactly 16 bytes.
+Windows is commonly Little Endian. macOS is commonly Big Endian
+
+| Param  | Type         | Description                 |
+| ------ | ------------ | --------------------------- |
+| format | `Endian`     | Endianess type `LE` or `BE` |
+| data   | `Uint8Array` | Raw bytes to format to GUID |
