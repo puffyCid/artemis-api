@@ -1,8 +1,8 @@
 /**
- * Partial implementation of nuspec. Mainly for Chocolatey packages.  
- * 
+ * Partial implementation of nuspec. Mainly for Chocolatey packages.
+ *
  * https://learn.microsoft.com/en-us/nuget/reference/nuspec
- * 
+ *
  * Sample output:
  * ```json
  * {

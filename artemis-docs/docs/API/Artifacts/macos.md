@@ -173,3 +173,8 @@ By default this function will search for all packages at:
 
 Get Homebrew packages and Casks on the system. Searches for Homebrew data at
 `/opt/homebrew` and `/usr/local`.
+
+### wifiNetworks() -> `Wifi[]`
+
+Get list of joined Wifi networks on macOS. Supports macOS Catalina and higher.
+Requires root access
