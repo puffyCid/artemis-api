@@ -253,7 +253,6 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   }
 
   const tags = getTags(alias_data.remaining as Uint8Array);
-
   const alias: Alias = {
     kind,
     volume_name,

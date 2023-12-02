@@ -6,7 +6,7 @@ export interface VTResponse {
   url: string;
   /**Status code for response */
   status: number;
-  /**Body of the response. If 200 status code; will contain `VTFile`. Otherwise will contain non-200 response */
+  /**Body of the response. If 200 status code; will contain `VTData`. Otherwise will contain non-200 response */
   body: VTError | VTData;
 }
 
@@ -24,7 +24,7 @@ export interface VTData {
     links: Record<string, string>;
     type: string;
     /**Other attributes based on file types such as PDF; APK; deb; etc */
-    [key: string]: unknown;
+    [ key: string ]: unknown;
   };
 }
 
@@ -186,7 +186,7 @@ export interface VTFile {
     "Hash choices"?: string;
     VersionPlatform?: string;
     VersionSDK?: string;
-    [key: string]: unknown;
+    [ key: string ]: unknown;
   };
   known_distributors?: {
     filenames: string[];
@@ -347,7 +347,7 @@ export interface VTDomain {
   jarm: string;
   last_analysis_date: number;
   last_analysis_results: {
-    [key: string]: {
+    [ key: string ]: {
       category: string;
       engine_name: string;
       method: string;
@@ -381,7 +381,7 @@ export interface VTDomain {
   last_modification_date: number;
   last_update_date: number;
   popularity_ranks: {
-    [key: string]: {
+    [ key: string ]: {
       rank: number;
       timestamp: string;
     };
@@ -395,7 +395,7 @@ export interface VTDomain {
   };
   whois: string;
   whois_date: number;
-  [key: string]: unknown;
+  [ key: string ]: unknown;
 }
 
 /**
@@ -409,7 +409,7 @@ export interface VTIP {
   jarm: string;
   last_analysis_date: number;
   last_analysis_results: {
-    [key: string]: {
+    [ key: string ]: {
       category: string;
       engine_name: string;
       method: string;
@@ -434,7 +434,7 @@ export interface VTIP {
   tags: string[];
   whois: string;
   whois_date: string;
-  [key: string]: unknown;
+  [ key: string ]: unknown;
 }
 
 interface Analysis {
@@ -485,7 +485,7 @@ interface Ssl {
     subject_alternative_name: string[];
     subject_key_identifier: string;
     tags: string[];
-    [key: string]: unknown;
+    [ key: string ]: unknown;
   };
   first_seen_date: number;
   issuer: {
