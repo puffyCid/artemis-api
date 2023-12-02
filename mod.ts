@@ -27,7 +27,7 @@ export {
 /**
  * Unix exported functions
  */
-export { getLinuxSudoLogs, getMacosSudoLogs } from "./src/unix/sudologs.ts";
+export { getSudoLogs } from "./src/unix/sudologs.ts";
 export { getCron } from "./src/unix/cron.ts";
 export {
   getBashHistory,
