@@ -19,15 +19,15 @@ An in depth guide is documented at https://puffycid.github.io/artemis-api
 Basic example
 
 ```typescript
-import { processListing } from "https://github.com/puffycid/artemis-api/mod.ts";
+import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
 function main() {
   const md5 = true;
   const sha1 = false;
   const sha256 = false;
-  const pe_info = true;
+  const binary_info = true;
 
-  const proc_list = processListing(md5, sha1, sha256, pe_info);
+  const proc_list = processListing(md5, sha1, sha256, binary_info);
   return proc_list;
 }
 
