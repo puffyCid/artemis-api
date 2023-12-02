@@ -436,7 +436,8 @@ Sample output for one table (SmTbleSmp) that has two rows:
 
 ### getChocolateyInfo(alt_base) -> `ChocolateyInfo[] | WindowsError`
 
-Return a list of installed Chocolatey packages. Will use the `ChocolateyInstall` ENV value by default (C:\ProgramData\chocolatey).
+Return a list of installed Chocolatey packages. Will use the `ChocolateyInstall`
+ENV value by default (C:\ProgramData\chocolatey).
 
 An optional alternative base path can also be provided
 
@@ -446,10 +447,23 @@ An optional alternative base path can also be provided
 
 ### updateHistory(alt_path) -> `UpdateHistory[] | WindowsError`
 
-Return a list of Windows Updates by parsing the Windows `DataStore.edb` database. Will use the `SystemRoot` ENV value by default (C:\Windows).
+Return a list of Windows Updates by parsing the Windows `DataStore.edb`
+database. Will use the `SystemRoot` ENV value by default (C:\Windows).
 
 An optional alternative path to `DataStore.edb` can also be provided instead.
 
 | Param    | Type     | Description                         |
 | -------- | -------- | ----------------------------------- |
 | alt_path | `string` | Optional full path to DataStore.edb |
+
+### powershellHistory(alt_path) -> `History[] | History | WindowsError`
+
+Return PowerShell history entries for all users. Uses the systemdrive by
+default.
+
+An optional alternative path to `ConsoleHost_history.txt` can also be provided
+instead.
+
+| Param    | Type     | Description                                   |
+| -------- | -------- | --------------------------------------------- |
+| alt_path | `string` | Optional full path to ConsoleHost_history.txt |
