@@ -35,11 +35,16 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "execpolicy"
+[artifacts.execpolicy]
+# Optional
+# alt_file = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_file` Use an alternative file to the ExecPolicy database. This
+  configuration is **optional**. By default artemis will read the default
+  ExecPolicy database at `/var/db/SystemPolicyConfiguration/ExecPolicy`
 
 # Output Structure
 

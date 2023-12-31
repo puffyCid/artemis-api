@@ -6,13 +6,25 @@ description: Interact with macOS Artifacts
 
 These functions can be used to pull data related to macOS artifacts
 
-### getUsers() -> `Users[] | MacosError`
+### getUsers(path) -> `Users[] | MacosError`
 
-Return all local users on macOS sysem
+Return all local users on macOS sysem. Can provide an optional alternative path
+to directory containing users. Otherwise will use default path on system
+`/var/db/dslocal/nodes/Default/users`
+
+| Param | Type     | Description                                  |
+| ----- | -------- | -------------------------------------------- |
+| path  | `String` | Optional alternative path to users directory |
 
 ### getGroup() -> `Groups[] | MacosError`
 
-Return all local groups on macOS sysem
+Return all local groups on macOS sysem. Can provide an optional alternative path
+to directory containing groups. Otherwise will use default path on system
+`/var/db/dslocal/nodes/Default/groups`
+
+| Param | Type     | Description                                   |
+| ----- | -------- | --------------------------------------------- |
+| path  | `String` | Optional alternative path to groups directory |
 
 ### parseAlias(data) -> `Alias | MacosError`
 
@@ -24,14 +36,26 @@ the firewall `plist` file.
 | ----- | ------------ | --------------- |
 | data  | `Uint8Array` | Raw alias bytes |
 
-### getEmond() -> `Emond[] | MacosError`
+### getEmond(path) -> `Emond[] | MacosError`
 
-Get all [Emond](../../Artifacts/macOS%20Artifacts/emond.md) rules on macOS.
-Emond was been removed on Ventura.
+Get all [Emond](../../Artifacts/macOS%20Artifacts/emond.md) rules on macOS. FYI
+Emond was removed on Ventura. Can provide an optional alternative path to
+directory containing emond rules. Otherwise will parse emond config on system to
+try to find rules
+
+| Param | Type     | Description                              |
+| ----- | -------- | ---------------------------------------- |
+| path  | `String` | Optional alternative path to emond rules |
 
 ### getExecpolicy() -> `ExecPolicy[] | MacosError`
 
-Parse the ExecPolicy sqlite database on macOS
+Parse the ExecPolicy sqlite database on macOS. Can provide an optional
+alternative path to ExecPolicy database. Otherwise will parse default database
+on system at `/var/db/SystemPolicyConfiguration/ExecPolicy`
+
+| Param | Type     | Description                                      |
+| ----- | -------- | ------------------------------------------------ |
+| path  | `String` | Optional alternative path to ExecPolicy database |
 
 ### firewallStatus() -> `Firewall | MacosError`
 
@@ -49,9 +73,15 @@ Return all Launch daemons on macOS
 
 Return all Launch agents on macOS
 
-### getLoginitems() -> `LoginItems[] | MacosError`
+### getLoginitems(path) -> `LoginItems[] | MacosError`
 
-Return all LoginItems on macOS
+Return all LoginItems on macOS. Can provide an optional alternative path to a
+LoginItem file (.btm). Otherwise will parse default default locations for
+LoginItems
+
+| Param | Type     | Description                                 |
+| ----- | -------- | ------------------------------------------- |
+| path  | `String` | Optional alternative path to LoginItem file |
 
 ### getMacho(path) -> `MachoInfo[] | MacosError`
 
@@ -178,3 +208,7 @@ Get Homebrew packages and Casks on the system. Searches for Homebrew data at
 
 Get list of joined Wifi networks on macOS. Supports macOS Catalina and higher.
 Requires root access
+
+### getSudoLogs() -> `UnifiedLog[]`
+
+Parse the UnifiedLogs and extract entries related to sudo activity.

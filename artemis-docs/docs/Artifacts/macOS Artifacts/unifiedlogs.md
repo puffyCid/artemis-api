@@ -40,6 +40,8 @@ output = "local"
 artifact_name = "unifiedlogs"
 [artifacts.unifiedlogs]
 sources = ["Special"]
+# Optional
+# logarchive_path = ""
 ```
 
 # Collection Options
@@ -51,6 +53,8 @@ sources = ["Special"]
   - Special
   - Signpost
   - HighVolume
+- `logarchive_path` Path to a logarchive formatted directory. This configuration
+  is **optional**
 
 To parse all logs you would use
 `sources = ["Special", "Persist", "Signpost", "HighVolume"]`

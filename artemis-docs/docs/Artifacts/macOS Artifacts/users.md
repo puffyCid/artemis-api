@@ -35,11 +35,16 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "users"
+[artifacts.users]
+# Optional
+# alt_path = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_path` Use an alternative Users path. This configuration is **optional**.
+  By default artemis will read all Users at
+  `/var/db/dslocal/nodes/Default/users`
 
 # Output Structure
 

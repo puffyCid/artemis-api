@@ -13,6 +13,7 @@ export type ErrorName =
   | "LOGINITEMS"
   | "SAFARI"
   | "EXECPOLICY"
-  | "UNIFIEDLOGS";
+  | "UNIFIEDLOGS"
+  | "SUDOLOGS";
 
-export class MacosError extends ErrorBase<ErrorName> {}
+export class MacosError extends ErrorBase<ErrorName> { }

@@ -38,11 +38,16 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "emond"
+[artifacts.emond]
+# Optional
+# alt_path = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_path`Use an alternative path to the Emond files. This configuration is
+  **optional**. By default artemis will read the Emond config file to determine
+  file paths
 
 # Output Structure
 
