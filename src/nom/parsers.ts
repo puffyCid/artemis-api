@@ -1,4 +1,5 @@
 import { Nom } from "../../types/nom/nom.d.ts";
+import { NomError } from "./error.ts";
 
 /**
  * Nom string or bytes
@@ -6,21 +7,31 @@ import { Nom } from "../../types/nom/nom.d.ts";
  * @param input How much data to nom. It must be a postive number.
  * @returns A `Nom` structure
  */
-export function take(data: string | Uint8Array, input: number): Nom | Error {
+export function take(data: string | Uint8Array, input: number): Nom | NomError {
   if (input < 0) {
-    const err = new Error("provided negative number");
-    return err;
+    return new NomError("NOM", "provided negative number");
   }
   if (typeof data === "string") {
-    //@ts-ignore: Custom Artemis function
-    const result_string: string = Deno.core.ops.js_nom_take_string(data, input);
-    const nom_string: Nom = JSON.parse(result_string);
-    return nom_string;
+    try {
+      //@ts-ignore: Custom Artemis function
+      const result_string: string = Deno.core.ops.js_nom_take_string(
+        data,
+        input,
+      );
+      const nom_string: Nom = JSON.parse(result_string);
+      return nom_string;
+    } catch (err) {
+      return new NomError("NOM", `could not take string ${err}`);
+    }
   }
 
-  //@ts-ignore: Custom Artemis function
-  const result: Nom = Deno.core.ops.js_nom_take_bytes(data, input);
-  return result;
+  try {
+    //@ts-ignore: Custom Artemis function
+    const result: Nom = Deno.core.ops.js_nom_take_bytes(data, input);
+    return result;
+  } catch (err) {
+    return new NomError("NOM", `could not take bytes ${err}`);
+  }
 }
 
 /**
@@ -32,33 +43,34 @@ export function take(data: string | Uint8Array, input: number): Nom | Error {
 export function takeUntil(
   data: Uint8Array | string,
   input: Uint8Array | string,
-): Nom | Error {
-  if (typeof data === "string" && typeof input === "string") {
-    //@ts-ignore: Custom Artemis function
-    const result_string: string = Deno.core.ops.js_nom_take_until_string(
-      data,
-      input,
-    );
-    const nom_string: Nom = JSON.parse(result_string);
-    if (nom_string.nommed.length === 0 && nom_string.remaining.length === 0) {
-      return new Error("failed to parse string data");
-    }
+): Nom | NomError {
+  if (typeof data != typeof input) {
+    return new NomError("NOM", "data and input must be matching types");
+  }
 
-    return nom_string;
-  } else if (data instanceof Uint8Array && input instanceof Uint8Array) {
+  if (typeof data === "string" && typeof input === "string") {
+    try {
+      //@ts-ignore: Custom Artemis function
+      const result_string: string = Deno.core.ops.js_nom_take_until_string(
+        data,
+        input,
+      );
+      const nom_string: Nom = JSON.parse(result_string);
+      return nom_string;
+    } catch (err) {
+      return new NomError("NOM", `could not take until string ${err}`);
+    }
+  }
+  try {
     //@ts-ignore: Custom Artemis function
     const result: Nom = Deno.core.ops.js_nom_take_until_bytes(
       data,
       input,
     );
-    if (result.nommed.length === 0 && result.remaining.length === 0) {
-      return new Error("failed to parse bytes data");
-    }
-
     return result;
+  } catch (err) {
+    return new NomError("NOM", `could not take until bytes ${err}`);
   }
-
-  return new Error("provided unsupported data and/or input types");
 }
 
 /**
@@ -70,39 +82,38 @@ export function takeUntil(
 export function takeWhile(
   data: string | Uint8Array,
   input: string | number,
-): Nom | Error {
+): Nom | NomError {
+  if (typeof data != typeof input) {
+    return new NomError("NOM", "data and input must be matching types");
+  }
+
   if (typeof input === "string" && input.length != 1) {
-    const err = new Error("provided string length greater than 1");
-    return err;
+    return new NomError("NOM", "provided string length greater than 1");
   } else if (typeof input === "number" && input < 0) {
-    const err = new Error("provided negative number");
-    return err;
+    return new NomError("NOM", "provided negative number");
   }
 
   if (typeof data === "string" && typeof input === "string") {
-    //@ts-ignore: Custom Artemis function
-    const result_string: string = Deno.core.ops.js_nom_take_while_string(
-      data,
-      input,
-    );
-    const nom_string: Nom = JSON.parse(result_string);
-    if (nom_string.nommed.length === 0 && nom_string.remaining.length === 0) {
-      return new Error("failed to parse string data");
+    try {
+      //@ts-ignore: Custom Artemis function
+      const result_string: string = Deno.core.ops.js_nom_take_while_string(
+        data,
+        input,
+      );
+      const nom_string: Nom = JSON.parse(result_string);
+      return nom_string;
+    } catch (err) {
+      return new NomError("NOM", `could not take while string ${err}`);
     }
-
-    return nom_string;
-  } else if (data instanceof Uint8Array && typeof input === "number") {
+  }
+  try {
     //@ts-ignore: Custom Artemis function
     const result: Nom = Deno.core.ops.js_nom_take_while_bytes(
       data,
       input,
     );
-    if (result.nommed.length === 0 && result.remaining.length === 0) {
-      return new Error("failed to parse bytes data");
-    }
-
     return result;
+  } catch (err) {
+    return new NomError("NOM", `could not take while bytes ${err}`);
   }
-
-  return new Error("provided unsupported data and/or input types");
 }

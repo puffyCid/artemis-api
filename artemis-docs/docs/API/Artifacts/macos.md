@@ -212,3 +212,17 @@ Requires root access
 ### getSudoLogs() -> `UnifiedLog[]`
 
 Parse the UnifiedLogs and extract entries related to sudo activity.
+
+### parseBom(path) -> `Bom`
+
+Parse Bill of Materials (BOM) files. BOM files are created whenever the macOS
+Installer is used to install an application.\
+BOM files track what files were created by the Installer. It is commonly used to
+ensure files are removed when the application is uninstalled. This function will
+also parse the plist receipt associated with the BOM file.
+
+Located at `/var/db/receipts/*.bom`
+
+| Param | Type     | Description      |
+| ----- | -------- | ---------------- |
+| path  | `string` | Path to BOM file |

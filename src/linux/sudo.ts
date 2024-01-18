@@ -12,13 +12,13 @@ import { LinuxError } from "./errors.ts";
  * @returns Array of `sudo log` entries from Linux Journal files or `LinuxError`
  */
 export function getSudoLogs(): Journal[] | LinuxError {
-    try {
-        //@ts-ignore: Custom Artemis function
-        const data = Deno.core.ops.get_sudologs();
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data = Deno.core.ops.get_sudologs();
 
-        const log_data: Journal[] = JSON.parse(data);
-        return log_data;
-    } catch (err) {
-        return new LinuxError("SUDOLOGS", `failed to parse sudo logs: ${err}`);
-    }
+    const log_data: Journal[] = JSON.parse(data);
+    return log_data;
+  } catch (err) {
+    return new LinuxError("SUDOLOGS", `failed to parse sudo logs: ${err}`);
+  }
 }

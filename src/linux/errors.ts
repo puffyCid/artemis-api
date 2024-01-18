@@ -7,4 +7,4 @@ export type ErrorName =
   | "DEBPACKAGES"
   | "SUDOLOGS";
 
-export class LinuxError extends ErrorBase<ErrorName> { }
+export class LinuxError extends ErrorBase<ErrorName> {}
