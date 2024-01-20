@@ -226,3 +226,7 @@ Located at `/var/db/receipts/*.bom`
 | Param | Type     | Description      |
 | ----- | -------- | ---------------- |
 | path  | `string` | Path to BOM file |
+
+### systemExtensions() -> `SystemExtension[]`
+
+Get list of macOS System Extensions.

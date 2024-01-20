@@ -15,6 +15,7 @@ export type ErrorName =
   | "EXECPOLICY"
   | "UNIFIEDLOGS"
   | "SUDOLOGS"
-  | "BOM";
+  | "BOM"
+  | "SYSTEM_EXTENSION";
 
 export class MacosError extends ErrorBase<ErrorName> {}
