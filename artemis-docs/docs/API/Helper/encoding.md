@@ -38,6 +38,14 @@ Extract a UTF8 string from provided bytes
 | ----- | ------------ | ------------------------------------- |
 | data  | `Uint8Array` | Raw bytes to extract UTF8 string from |
 
+### extractUtf16String(data) -> `string`
+
+Extract a UTF16 string from provided bytes
+
+| Param | Type         | Description                           |
+| ----- | ------------ | ------------------------------------- |
+| data  | `Uint8Array` | Raw bytes to extract UTF16 string from |
+
 ### bytesToHexString(data) -> `string`
 
 Convert bytes to Hex string

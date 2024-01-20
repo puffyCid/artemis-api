@@ -467,3 +467,22 @@ instead.
 | Param    | Type     | Description                                   |
 | -------- | -------- | --------------------------------------------- |
 | alt_path | `string` | Optional full path to ConsoleHost_history.txt |
+
+### parseMru(ntuser_path) -> `Mru[] | WindowsError`
+
+Parse common Most Recently Used (MRU) locations in the Registry. Currently
+parses: OpenSave, LastVisited, and RecentDocs MRU keys
+
+| Param       | Type     | Description                  |
+| ----------- | -------- | ---------------------------- |
+| ntuser_path | `string` | Full path to NTUSER.DAT file |
+
+### getShellItem(data) -> `JsShellItem | WindowsError`
+
+Parse raw bytes that contain a ShellItem. Returns a JsShellItem that contains
+ShellItem and any remaining bytes. This function can be used to parse multiple
+shellitems.
+
+| Param | Type         | Description            |
+| ----- | ------------ | ---------------------- |
+| data  | `Uint8Array` | Raw bytes of shellitem |
