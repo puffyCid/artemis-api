@@ -1,4 +1,4 @@
 export interface History {
-    entries: string[];
-    path: string;
+  entries: string[];
+  path: string;
 }
