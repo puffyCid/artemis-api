@@ -28,6 +28,7 @@ export type ErrorName =
   | "UPDATESHISTORY"
   | "POWERSHELL"
   | "SHELLITEMS"
-  | "MRU";
+  | "MRU"
+  | "WMIPERSIST";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

@@ -42,8 +42,8 @@ Extract a UTF8 string from provided bytes
 
 Extract a UTF16 string from provided bytes
 
-| Param | Type         | Description                           |
-| ----- | ------------ | ------------------------------------- |
+| Param | Type         | Description                            |
+| ----- | ------------ | -------------------------------------- |
 | data  | `Uint8Array` | Raw bytes to extract UTF16 string from |
 
 ### bytesToHexString(data) -> `string`
@@ -69,8 +69,9 @@ Generates a UUID v4 hyphenated string
 
 ### formatGuid(format, data) -> `string`
 
-Format provided bytes into a GUID hyphenated string based on provided Endianess. Must provide exactly 16 bytes.
-Windows is commonly Little Endian. macOS is commonly Big Endian
+Format provided bytes into a GUID hyphenated string based on provided Endianess.
+Must provide exactly 16 bytes. Windows is commonly Little Endian. macOS is
+commonly Big Endian
 
 | Param  | Type         | Description                 |
 | ------ | ------------ | --------------------------- |
