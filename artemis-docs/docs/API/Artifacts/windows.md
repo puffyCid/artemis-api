@@ -486,3 +486,39 @@ shellitems.
 | Param | Type         | Description            |
 | ----- | ------------ | ---------------------- |
 | data  | `Uint8Array` | Raw bytes of shellitem |
+
+### userAccessLog(alt_dir) -> `UserAccessLog[] | WindowsError`
+
+Parse the User Access Log (UAL) database on Windows Servers. This database
+contains logon information for users on the system.\
+It is **not** related to M365 UAL (Unified Audit Logging)!
+
+By default it will parse the databases at `%SYSTEMROOT%\System32\LogFiles\Sum`.
+However, you may provided an optional alternative path if you want.
+
+| Param   | Type     | Description                                            |
+| ------- | -------- | ------------------------------------------------------ |
+| alt_dir | `string` | Alternative directory containing the UAL log databases |
+
+### getWmiPersist(alt_drive) -> `WmiPersist[] | WindowsError`
+
+Parse the WMI Repository and extract persistence information. You may provide an
+alternative drive letter otherwise it will use the default system drive
+(typically `C:`)
+
+| Param     | Type     | Description                                                                                    |
+| --------- | -------- | ---------------------------------------------------------------------------------------------- |
+| alt_drive | `string` | Use an alternative drive letter to parse WMI repo. Otherwise will default to the `SystemDrive` |
+
+### getWmiPersistPath(path) -> `WmiPersist[] | WindowsError`
+
+Parse the WMI Repository and extract persistence information at provided
+directory. The directory must contain:
+
+- MAPPING\*.MAP
+- OBJECTS.DATA
+- INDEX.BTR
+
+| Param | Type     | Description            |
+| ----- | -------- | ---------------------- |
+| path  | `string` | Path to WMI Repository |
