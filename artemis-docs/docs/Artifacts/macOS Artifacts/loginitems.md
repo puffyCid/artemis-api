@@ -44,11 +44,15 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "loginitems"
+[artifacts.loginitems]
+# Optional
+# alt_file = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_file` Use an alternative LoginItem file. This configuration is
+  **optional**. By default artemis will read default locations for LoginItems
 
 # Output Structure
 

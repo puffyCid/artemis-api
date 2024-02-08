@@ -35,11 +35,16 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "groups"
+[artifacts.groups]
+# Optional
+# alt_path = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_path` Use an alternative Groups path. This configuration is **optional**.
+  By default artemis will read all Groups at
+  `/var/db/dslocal/nodes/Default/groups`
 
 # Output Structure
 

@@ -26,6 +26,10 @@ export type ErrorName =
   | "LOGONCORRELATION"
   | "CHOCOLATEYINFO"
   | "UPDATESHISTORY"
-  | "POWERSHELL";
+  | "POWERSHELL"
+  | "SHELLITEMS"
+  | "MRU"
+  | "UAL"
+  | "WMIPERSIST";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

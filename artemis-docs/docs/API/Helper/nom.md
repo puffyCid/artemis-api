@@ -32,7 +32,18 @@ assert!(remaining, [2,3,4,5,6,7,8,9]); // our remaining bytes!
 assert!(consumed, [0,1]); // we consumed the first 2 bytes!
 ```
 
-### nomUnsignedFourBytes(data, endianess) -> NomUnsigned | Error
+:::warning
+
+Using nom might add additional overhead to your script. Everytime you nom
+artemis needs to seend JS data to Rust code. If your JS script is slow, try
+parsing the raw bytes using only JS (ex: .slice())
+
+An example can be found in macOS BOM parser. It uses both nom and native JS to
+parse some data.
+
+:::
+
+### nomUnsignedFourBytes(data, endianess) -> NomUnsigned | NomError
 
 Nom helper to parse four bytes into unsigned 32 bit integer
 
@@ -41,7 +52,7 @@ Nom helper to parse four bytes into unsigned 32 bit integer
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### nomUnsignedEightBytes(data, endianess) -> NomUnsigned | Error
+### nomUnsignedEightBytes(data, endianess) -> NomUnsigned | NomError
 
 Nom helper to parse eight bytes into unsigned 64 bit integer
 
@@ -50,7 +61,7 @@ Nom helper to parse eight bytes into unsigned 64 bit integer
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### nomUnsignedTwoBytes(data, endianess) -> NomUnsigned | Error
+### nomUnsignedTwoBytes(data, endianess) -> NomUnsigned | NomError
 
 Nom helper to parse two bytes into unsigned 16 bit integer
 
@@ -59,7 +70,7 @@ Nom helper to parse two bytes into unsigned 16 bit integer
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### nomUnsignedOneBytes(data, endianess) -> NomUnsigned | Error
+### nomUnsignedOneBytes(data, endianess) -> NomUnsigned | NomError
 
 Nom helper to parse one bytes into unsigned 8 bit integer
 
@@ -68,7 +79,7 @@ Nom helper to parse one bytes into unsigned 8 bit integer
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### nomUnsignedSixteenBytes(data, endianess) -> NomUnsignedLarge | Error
+### nomUnsignedSixteenBytes(data, endianess) -> NomUnsignedLarge | NomError
 
 Nom helper to parse sixteen bytes into unsigned 128 bit integer as a string
 
@@ -77,7 +88,7 @@ Nom helper to parse sixteen bytes into unsigned 128 bit integer as a string
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### nomSignedFourBytes(data, endianess) -> NomSigned | Error
+### nomSignedFourBytes(data, endianess) -> NomSigned | NomError
 
 Nom helper to parse four bytes into signed 32 bit integer
 
@@ -86,7 +97,7 @@ Nom helper to parse four bytes into signed 32 bit integer
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### nomSignedEightBytes(data, endianess) -> NomSigned | Error
+### nomSignedEightBytes(data, endianess) -> NomSigned | NomError
 
 Nom helper to parse eight bytes into signed 64 bit integer
 
@@ -95,7 +106,7 @@ Nom helper to parse eight bytes into signed 64 bit integer
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### nomSignedTwoBytes(data, endianess) -> NomSigned | Error
+### nomSignedTwoBytes(data, endianess) -> NomSigned | NomError
 
 Nom helper to parse two bytes into signed 16 bit integer
 
@@ -104,7 +115,7 @@ Nom helper to parse two bytes into signed 16 bit integer
 | data      | `Uint8Array` | Bytes to provide to nom |
 | endianess | `Endian`     | Endian type of `data`   |
 
-### take(data, input) -> Nom | Error
+### take(data, input) -> Nom | NomError
 
 Nom provided string or bytes based on input length. This function exposes the
 nom [take](https://docs.rs/nom/latest/nom/bytes/complete/fn.take.html) function.
@@ -118,8 +129,8 @@ nom [take](https://docs.rs/nom/latest/nom/bytes/complete/fn.take.html) function.
 function main() {
   let test = "Hello TypeScript!";
   let len = "Hello".length;
-  let nom_data: Nom | Error = take(test, len);
-  if (nom_data instanceof Error) {
+  let nom_data: Nom | NomError = take(test, len);
+  if (nom_data instanceof NomError) {
     console.error(`Error when parsing data ${nom_data}`);
     return nom_data;
   }
@@ -139,7 +150,7 @@ let data = read_file("file.bin");
 
 // First four bytes are the file signature
 let sig = nomUnsignedFourBytes(data, endian.LE);
-if (sig instanceof Error) {
+if (sig instanceof NomError) {
   return sig;
 }
 
@@ -148,14 +159,14 @@ console.log(sig.value);
 
 // Next 2 bytes are length of UTF8 string. Our sig object contains the remaining bytes
 let string_len = nomUnsignedTwoBytes(sig.remaining, endian.LE);
-if (string_len instanceof Error) {
+if (string_len instanceof NomError) {
   return string_len;
 }
 
 // string_len now contains the length of the string that is next
 // Take the length of the string
 let string_data = take(string_len.remaining, string_len.value);
-if (string_data instanceof Error) {
+if (string_data instanceof NomError) {
   return string_data;
 }
 
@@ -167,7 +178,7 @@ console.log(string_value);
 // Continue parsing remaining bytes with string_data.remaining
 ```
 
-### takeUntil(data, input) -> Nom | Error
+### takeUntil(data, input) -> Nom | NomError
 
 Nom data **until** provided input. This function exposes the nom
 [take_until](https://docs.rs/nom/latest/nom/bytes/complete/fn.take_until.html)
@@ -190,7 +201,7 @@ function main() {
 
   let first_sig = [1, 23, 33, 56];
   const first_data = takeUntil(data, first_sig);
-  if (first_data instanceof Error) {
+  if (first_data instanceof NomError) {
     console.error(`Got error searching for first_data ${first_data}`);
     return first_data;
   }
@@ -199,13 +210,13 @@ function main() {
   // We have **NOT** consumed the signature yet!
   const sig = nomUnsignedFourBytes(first_data.remaining, Endian.Le);
   // Could technically skip this since, `takUntil` has guaranteed that we have 4 bytes remaining. Since we searched for `[1, 23, 33, 56]`
-  if (sig instanceof Error) {
+  if (sig instanceof NomError) {
     return sig;
   }
 
   // Now lets get FILETIME timestamp
   const time_data = nomUnsignedEightBytes(sig.remaining, Endian.Le);
-  if (time_data instanceof Error) {
+  if (time_data instanceof NomError) {
     return time_data;
   }
 
@@ -221,7 +232,7 @@ function main() {
 }
 ```
 
-### takeWhile(data, input) -> Nom | Error
+### takeWhile(data, input) -> Nom | NomError
 
 Nom data while data **IS** equal to input. This function exposes the nom
 [take_while](https://docs.rs/nom/latest/nom/bytes/complete/fn.take_while.html)
@@ -240,7 +251,7 @@ function main() {
   const data = read_file("complexFile.bin");
 
   const sig = nomUnsignedTwoBytes(data, Endian.Be);
-  if (sig instanceof Error) {
+  if (sig instanceof NomError) {
     return sig;
   }
 
@@ -250,7 +261,7 @@ function main() {
 
   const pad = 0;
   const padding_data = takeWhile(sig.remaining, pad);
-  if (padding_data instanceof Error) {
+  if (padding_data instanceof NomError) {
     return padding_data;
   }
 

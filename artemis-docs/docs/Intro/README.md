@@ -34,7 +34,7 @@ investigation, two (2) great options are:
 
 - The cross platform forensic tool
   [Velociprator](https://docs.velociraptor.app/)
-- Windows only but still excellent
+- Windows artifacts only but still excellent
   [Zimmerman tools](https://ericzimmerman.github.io/#!index.md)
 
 During the development of artemis both of these tools were used to provide

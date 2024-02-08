@@ -44,3 +44,7 @@ Uses `/var/lib/dpkg/status` by default
 | Param    | Type     | Description                  |
 | -------- | -------- | ---------------------------- |
 | alt_path | `string` | Alt path to dpkg status file |
+
+### getSudoLogs() -> `Journal[]`
+
+Parse the Journal files and extract entries related to sudo activity.

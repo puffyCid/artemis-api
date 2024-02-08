@@ -35,3 +35,8 @@ export interface ShellItems {
   /**Array of Property Stores */
   stores: Record<string, string | number | boolean | null>;
 }
+
+export interface JsShellItem {
+  item: string;
+  remaining: Uint8Array;
+}

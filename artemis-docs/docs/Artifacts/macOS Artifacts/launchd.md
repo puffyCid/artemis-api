@@ -45,11 +45,15 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "launchd"
+[artifacts.launchd]
+# Optional
+# alt_file = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_file` Use an alternative Launchd file. This configuration is
+  **optional**. By default artemis will read all Launchd Daemons and Agents
 
 # Output Structure
 

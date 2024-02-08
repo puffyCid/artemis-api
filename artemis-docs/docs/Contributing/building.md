@@ -56,10 +56,18 @@ experimental server and webui.
 
 1. Install [NodeJS](https://nodejs.org/en). Required to install TailWindCSS and
    DaisyUI
-2. Add WASM support for Rust `rustup target add wasm32-unknown-unknown`
-3. Install TailWindCSS `npm install -D tailwindcss`
-4. Install DaisyUI `npm i -D daisyui@latest`
-5. Install Typography `npm install -D @tailwindcss/typography`
-6. Install [Trunk](https://trunkrs.dev/). Required to compile webui to web
+2. Install [Insomnia](https://github.com/Kong/insomnia). You do not need an
+   account. Local Scratch Pad works fine.
+3. Add WASM support for Rust `rustup target add wasm32-unknown-unknown`
+4. Install TailWindCSS `npm install -D tailwindcss`
+5. Install DaisyUI `npm i -D daisyui@latest`
+6. Install Typography `npm install -D @tailwindcss/typography`
+7. Install [Trunk](https://trunkrs.dev/). Required to compile the webui to web
    assembly
-7. Build the entire project with `just build`
+8. Build the entire project with `just build` or build only the server with
+   `just server`
+
+### Server Interaction
+
+Download and import the Insomnia config from the repository to interact with the
+server.
