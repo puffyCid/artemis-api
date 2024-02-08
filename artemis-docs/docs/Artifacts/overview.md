@@ -9,7 +9,7 @@ can be collected from a TOML collection or from simple JavaScript code.
 
 In addition, custom artifacts can be created using JavaScript by using the
 Artemis API. An example, of this is the macOS
-[Firewall](https://github.com/puffyCid/artemis-api/blob/main/src/macos/firewall.ts)
+[Firewall](https://github.com/puffyCid/artemis-api/blob/main/src/macos/plist/firewall.ts)
 API.
 
 See [API Overview](../API/overview.md) for more details.
