@@ -12,6 +12,10 @@ import { SigningError } from "./errors.ts";
 export function parseRequirementBlob(
   data: Uint8Array,
 ): SingleRequirement | SigningError {
+  /**
+   * The command `csreq -v -r- -t < bytes.raw`
+   * can be used to compare data
+   */
   // First four (4) bytes are signature
   let result = nomUnsignedFourBytes(data, Endian.Be);
   if (result instanceof Error) {
@@ -70,7 +74,7 @@ export function parseRequirementBlob(
   if (result instanceof Error) {
     return new SigningError(
       "BLOB",
-      `failed to unknown signature bytes ${result}`,
+      `failed to unknown bytes ${result}`,
     );
   }
 
@@ -79,7 +83,7 @@ export function parseRequirementBlob(
   if (result instanceof Error) {
     return new SigningError(
       "BLOB",
-      `failed to parse unknown2 signature bytes ${result}`,
+      `failed to parse unknown2 bytes ${result}`,
     );
   }
 
@@ -87,6 +91,25 @@ export function parseRequirementBlob(
   result = nomUnsignedFourBytes(result.remaining, Endian.Be);
   if (result instanceof Error) {
     return new SigningError("BLOB", `failed to parse unknown3 bytes ${result}`);
+  }
+
+  // If the 3rd Unknown value is 6. There are two more unknown files.
+  // This may be related to number of certs?
+  if (result.value === 6) {
+    result = nomUnsignedFourBytes(result.remaining, Endian.Be);
+    if (result instanceof Error) {
+      return new SigningError(
+        "BLOB",
+        `failed to parse unknown4 bytes ${result}`,
+      );
+    }
+    result = nomUnsignedFourBytes(result.remaining, Endian.Be);
+    if (result instanceof Error) {
+      return new SigningError(
+        "BLOB",
+        `failed to parse unknown5 bytes ${result}`,
+      );
+    }
   }
 
   // Size of identifier string

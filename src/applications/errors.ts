@@ -4,6 +4,7 @@ export type ErrorName =
   | "LIBREOFFICE"
   | "VSCODE"
   | "CHROMIUM"
-  | "FIREFOX";
+  | "FIREFOX"
+  | "SQLITE";
 
 export class ApplicationError extends ErrorBase<ErrorName> {}

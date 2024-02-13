@@ -92,3 +92,13 @@ supports VSCodium.
 | Param    | Type           | Description          |
 | -------- | -------------- | -------------------- |
 | platform | `PlatformType` | OS platform to parse |
+
+### querySqlite(path, query) -> `Record<string, unknown>[] | ApplicationError`
+
+Execute a SQLITe query against a provided database file. Databases are opened in
+read-only mode. In addition, this function will bypass locked SQLITE databases.
+
+| Param | Type     | Description                            |
+| ----- | -------- | -------------------------------------- |
+| path  | `string` | Path to the sqlite db                  |
+| query | `string` | Query to execute against the sqlite db |

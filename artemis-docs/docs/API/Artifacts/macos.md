@@ -231,3 +231,14 @@ BOM files are located at `/var/db/receipts/*.bom`
 ### systemExtensions() -> `SystemExtension[]`
 
 Get list of macOS System Extensions.
+
+### queryTccDb(path) -> `TccValues[] | MacosError`
+
+Query all TCC.db files on the system. TCC.db contains granted permissions for
+applications.\
+An optional path to the TCC.db can be provided. Otherwise will parse all user
+and System TCC.db files.
+
+| Param | Type     | Description                  |
+| ----- | -------- | ---------------------------- |
+| path  | `string` | Optional path to TCC.db file |
