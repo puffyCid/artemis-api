@@ -13,10 +13,9 @@ The [deno](https://deno.land/manual@v1.32.4/introduction) website contains the
 full documentation on a Deno project layout. By default the following files are
 created for a new project:
 
-- `deno.jsonc`
-- `main.ts`
-- `main_bench.ts`
-- `main_test.ts`
+- deno.jsonc
+- main.ts
+- main_test.ts
 
 Since we are using a runtime built specifically for forensics and IR none of the
 builtin Deno functions are available. All scripts must import the
@@ -28,7 +27,7 @@ vanilla
 [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
 API and the [artemis-api](https://github.com/puffyCid/artemis-api) for scripting
 
-To import artemis functions into your script, open `main.ts` and import the
+To import artemis functions into your script, open main.ts and import the
 function associated with the artifact you want to parse. For example, to parse
 the Windows `Registry` you would import:
 
@@ -80,5 +79,5 @@ script = "Ly8gaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B1ZmZ5Y2lkL2FydGVtaX
 
 # Collection Options
 
-- `name` Name for script
-- `script` Base64 encoded bundled script (JavaScript)
+- name: Name for script
+- script: Base64 encoded bundled script (JavaScript)

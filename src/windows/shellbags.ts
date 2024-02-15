@@ -21,20 +21,20 @@ export function getShellbags(
 }
 
 /**
- * Function to parse and reconstruct `Shellbags` on an alternative drive
+ * Function to parse and reconstruct `Shellbags` at alternative path
  * @param resolve_guids Whether to lookup GUID values. Ex: Convert `20d04fe0-3aea-1069-a2d8-08002b30309d` to `This PC`
- * @param drive Drive letter to use to parse the `shellbags`
+ * @param path Full path to NTUSER.DAT or UsrClass.dat file
  * @returns Array of `Shellbag` entries or `WindowsError`
  */
 export function getAltShellbags(
   resolve_guids: boolean,
-  drive: string,
+  path: string,
 ): Shellbags[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
     const data = Deno.core.ops.get_alt_shellbags(
       resolve_guids,
-      drive,
+      path,
     );
 
     const result: Shellbags[] = JSON.parse(data);
@@ -42,7 +42,7 @@ export function getAltShellbags(
   } catch (err) {
     return new WindowsError(
       "SHELLBAGS",
-      `failed to parse shellbags at drive ${drive}: ${err}`,
+      `failed to parse shellbags at path ${path}: ${err}`,
     );
   }
 }

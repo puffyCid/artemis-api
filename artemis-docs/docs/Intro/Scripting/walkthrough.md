@@ -17,10 +17,10 @@ deno init process_usage
 
 2. Deno created two extra files we do not need.
    `main_bench.ts and main_test.ts`. We can delete them. In addition, lets clear
-   the `main.ts` and make sure its empty.
+   the main.ts and make sure its empty.
 3. Now using a text editor or IDE we need to import the necessary functions to
    collect our data. Since we are only collecting a process listing we only need
-   to import one function. In the `main.ts` file add the following
+   to import one function. In the main.ts file add the following
 
 ```typescript
 import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/system/memory.ts";
@@ -53,11 +53,11 @@ four optional arguments:
 - Enable SHA256 hashing
 - Collect binary metadata
 
-All of these arguments are optional. The default values are `false`. In this
+All of these arguments are optional. The default values are false. In this
 example, we will provide arguments but will still set them to false.
 
 5. Now since we have called our function, we want to now filter the data to only
-   include processes using more than 200MB of memory. We can use a simple `for`
+   include processes using more than 200MB of memory. We can use a simple for
    loop to do this
 
 ```typescript
@@ -86,8 +86,7 @@ have memory usage above 200MB. Your IDE or text editor **should** provide
 auto-complete suggestions for the process listing. This should help make
 scripting less challenging!
 
-6. Now lets return our data and make sure artemis will call our `main()`
-   function.
+6. Now lets return our data and make sure artemis will call our main function.
 
 ```typescript
 import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/system/memory.ts";
@@ -118,7 +117,7 @@ Thats it! We now have a simple script that filters a process listing.
 
 7. Now before we run our script, we need to [bundle](./bundling.md) all of the
    code into one JavaScript file. Create the file `build.ts` in the same
-   directory as `main.ts`. And copy the following into `build.ts`:
+   directory as main.ts. And copy the following into build.ts:
 
 ```typescript
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
@@ -183,7 +182,7 @@ aguments: `deno run -A build.ts`
 
    For this example we will use a TOML collection file
 
-10. Base64 encode our `main.js` file.
+10. Base64 encode our main.js file.
     [CyberChef](https://gchq.github.io/CyberChef/) works great for this task.
     Then add our base64 blob to a TOML file with the following configuration:
 

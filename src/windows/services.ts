@@ -17,25 +17,6 @@ export function getServices(): Services[] | WindowsError {
 }
 
 /**
- * Parse Windows Services using an alternative dive letter
- * @param drive Alternative drive letter to use
- * @returns Array of `Services` or `WindowsError`
- */
-export function getAltServices(drive: string): Services[] | WindowsError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_services(drive);
-    const services: Services[] = JSON.parse(data);
-    return services;
-  } catch (err) {
-    return new WindowsError(
-      "SERVICES",
-      `failed to parse services with drive ${drive}: ${err}`,
-    );
-  }
-}
-
-/**
  * Parse Windows Services at provided path.
  * @param path Path to SYSTEM file
  * @returns Array of `Services` or `WindowsError`

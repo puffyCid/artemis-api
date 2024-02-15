@@ -38,14 +38,14 @@ output = "local"
 artifact_name = "eventlogs"
 [artifacts.eventlogs]
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\Security.evtx"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Event Logs`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to an Event Log file. This configuration is **optional**.
+  By default artemis will parse all Event Logs on the system under the default
+  path
 
 # Output Structure
 

@@ -103,7 +103,7 @@ export function getChromiumDownloads(
  */
 export function chromiumExtensions(
   platform: PlatformType,
-): Record<string, object>[] | ApplicationError {
+): Record<string, unknown>[] | ApplicationError {
   let paths: GlobInfo[] = [];
   switch (platform) {
     case PlatformType.Darwin: {

@@ -39,6 +39,6 @@ other artwork by the author at https://hashrock.studio.site/
 3. Deno language server extension. The extension in the VSCodium and VSCode
    marketplaces has been tested.
 4. A TypeScript to JavaScript bundler. There are multiple options:
-   - `Deno` includes a builtin bundler however it is schedule for depreciation.
+   - Deno includes a builtin bundler however it is schedule for depreciation.
    - [esbuild Deno loader](https://deno.land/x/esbuild_deno_loader@0.6.0). Will
      require a simple build script in order to bundle our artemis script

@@ -41,14 +41,13 @@ output = "local"
 artifact_name = "shimdb"
 [artifacts.shimdb]
 # Optional
-# alt_drive = 'D'
+# alt_file = "C:\\Artifacts\\bad.sdb"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `ShimDB`. This configuration is **optional**. By default
-  artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative ShimDB file. This configuration is
+  **optional**. By default artemis will ShimDB files at their default locations.
 
 # Output Structure
 

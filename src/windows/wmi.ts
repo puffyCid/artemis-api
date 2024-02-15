@@ -7,17 +7,10 @@ import { getEnvValue } from "../environment/env.ts";
  * @param alt_drive Use an alternative drive letter to parse WMI repo. Otherwise will default to the `SystemDrive`
  * @returns Array of `WmiPersist` entries or `WindowsError`
  */
-export function getWmiPersist(alt_drive?: string): WmiPersist[] | WindowsError {
-  let drive = getEnvValue("SystemDrive");
-  if (drive === "") {
-    return new WindowsError("WMIPERSIST", `failed get drive`);
-  } else if (alt_drive != undefined) {
-    drive = alt_drive;
-  }
-
+export function getWmiPersist(): WmiPersist[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_wmipersist(drive);
+    const data = Deno.core.ops.get_wmipersist();
 
     const results: WmiPersist[] = JSON.parse(data);
     return results;

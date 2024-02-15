@@ -124,12 +124,13 @@ import { MacosFileInfo } from "https://raw.githubusercontent.com/puffycid/artemi
 function main() {
   // Since this is a filter script our data will be passed as a Serde Value that is a string
   const args: string[] = STATIC_ARGS;
-  if (args.length === 0) {
+  if (args.length < 2) {
     return [];
   }
 
   // Parse the provide Serde Value (JSON string) as a MacosFileInfo[]
   const data: MacosFileInfo[] = JSON.parse(args[0]);
+  const artifact_name = args[1]; // Contains "files" string (aka the artifact name)
   const filter_files: MacosFileInfo[] = [];
 
   for (const entry of data) {
@@ -147,29 +148,33 @@ The key difference between a regular artemis script and a filter script is:
 
 ```typescript
 const args: string[] = STATIC_ARGS;
-if (args.length === 0) {
+if (args.length < 2) {
   return [];
 }
 
 // Parse the provide Serde Value (JSON string) as a MacosFileInfo[]
 const data: MacosFileInfo[] = JSON.parse(args[0]);
+const artifact_name = args[1]; // Contains "files" string (aka the artifact name)
 ```
 
 :::info
 
 When running scripts artemis assigns the variable `STATIC_ARGS` the data we want
 to filter. `STATIC_ARGS` is an array with the first index ([0]) holding the data
-to filer and second index ([1]) the type of the data, ex: `MacosFileInfo`.
+to filer and second index ([1]) the type of data (aka the artifact name), ex:
+`files` artifact.
 
 This data is **only** populated if you enable `filter = true` option in the
-TOML.
+collection TOML.
 
 :::
 
 Here we are taking the first argument provided to our script and parsing it as a
 JSON `MacosFileInfo` object array. As stated above, artemis will pass the
 results of each `[[artifacts]]` entry to our script using serde to serialize the
-data as a JSON formattted string.
+data as a JSON formattted string.\
+According to the macOS [files](../../Artifacts/macOS%20Artifacts/files.md)
+artifact this data is an array of `MacosFileInfo`.
 
 We then parse and filter the data based on our script
 

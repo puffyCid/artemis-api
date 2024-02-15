@@ -40,14 +40,14 @@ output = "local"
 artifact_name = "prefetch"
 [artifacts.prefetch]
 # Optional
-# alt_drive = 'D'
+# alt_dir = "C:\\Artifacts"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Prefetch`. This configuration is **optional**. By default
-  artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_dir` Full path to an alternative directory containing Prefetch files.
+  This configuration is **optional**. By default artemis parse all Prefetch
+  files on the system at the default location
 
 # Output Structure
 

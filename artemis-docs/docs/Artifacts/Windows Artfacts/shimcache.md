@@ -44,14 +44,14 @@ output = "local"
 artifact_name = "shimcache"
 [artifacts.shimcache]
 # Optional
-# alt_drive = 'D'
+# alt_file = "C:\\Artifacts\\SYSTEM"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Shimcache`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative SYSTEM Registry file. This configuration
+  is **optional**. By default artemis will parse the SYSTEM Registry file at the
+  default location.
 
 # Output Structure
 

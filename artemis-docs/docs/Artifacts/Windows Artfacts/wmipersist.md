@@ -46,14 +46,11 @@ output = "local"
 artifact_name = "wmipersist"
 [artifacts.wmipersist]
 # Optional
-# alt_drive = 'C'
 # alt_dir = "D:\\Evidence\\WMI"
 ```
 
 # Collection Options
 
-- `alt_drive` An alternative drive to use for the WMI Repository. By default
-  artemis will use the SystemDrive
 - `alt_dir` An alternative directory to use containing the WMI Repository. This
   directory needs to contain MAPPING\*.MAP, OBJECTS.DATA, INDEX.BTR files
 

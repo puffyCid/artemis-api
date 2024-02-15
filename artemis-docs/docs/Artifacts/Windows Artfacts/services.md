@@ -40,14 +40,14 @@ output = "local"
 [[artifacts]]
 artifact_name = "services"
 [artifacts.services]
-alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\SYSTEM"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Services`. This configuration is **optional**. By default
-  artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative SYSTEM Registry file. This configuration
+  is **optional**. By default artemis will parse the SYSTEM Registry at the
+  default location.
 
 # Output Structure
 

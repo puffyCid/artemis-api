@@ -42,14 +42,14 @@ artifact_name = "shellbags"
 [artifacts.shellbags]
 resolve_guids = true
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\UsrClass.dat"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Shellbags`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative UsrClass.dat or NTUSER.DAT Registry file.
+  This configuration is **optional**. By default artemis will parse Shellbags
+  for all users.
 - `resolve_guids` Boolean value whether to try to resolve GUIDS found when
   parsing `Shellbags`.
   - If **false**:
