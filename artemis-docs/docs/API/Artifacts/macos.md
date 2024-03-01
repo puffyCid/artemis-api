@@ -220,9 +220,15 @@ Get Homebrew packages and Casks on the system. Searches for Homebrew data at
 Get list of joined Wifi networks on macOS. Supports macOS Catalina and higher.
 Requires root access
 
-### getSudoLogs() -> UnifiedLog[]
+### getSudoLogs(path) -> UnifiedLog[]
 
-Parse the UnifiedLogs and extract entries related to sudo activity.
+Parse the UnifiedLogs and extract entries related to sudo activity. Can provide
+an alternative path to a directory containing the UnifiedLog data. The directory
+must be formatted like a logarchive collection.
+
+| Param | Type   | Description                                |
+| ----- | ------ | ------------------------------------------ |
+| path  | string | Optional path to logarchive like directory |
 
 ### parseBom(path) -> Bom
 

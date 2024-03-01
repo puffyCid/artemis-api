@@ -39,11 +39,14 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "sudologs"
+# Optional
+# logarchive_path = ""
 ```
 
 # Collection Options
 
-- N/A
+- `logarchive_path` Path to a logarchive formatted directory. This configuration
+  is **optional**
 
 # Output Structure
 

@@ -17,6 +17,7 @@ export type ErrorName =
   | "SUDOLOGS"
   | "BOM"
   | "SYSTEM_EXTENSION"
-  | "TCC";
+  | "TCC"
+  | "SPOTLIGHT";
 
 export class MacosError extends ErrorBase<ErrorName> {}
