@@ -7,7 +7,7 @@ keywords:
 
 # Files
 
-A regular Linux filelisting. artemis uses the
+A regular Linux filelisting. Artemis uses the
 [walkdir](https://crates.io/crates/walkdir) crate to recursively walk the files
 and directories on the system. Since a filelisting can be extremely large every
 100k entries artemis will output the data and then continue.

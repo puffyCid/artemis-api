@@ -6,7 +6,7 @@ import { MacosError } from "./errors.ts";
  * @param glob_path A glob path to the directory containing the Spotlight files (ex: `/tmp/*`)
  * @returns `StoreMeta` or `MacosError`
  */
-export function setup_spotlight_parser(
+export function setupSpotlightParser(
   glob_path: string,
 ): StoreMeta | MacosError {
   try {
@@ -34,11 +34,15 @@ export function setup_spotlight_parser(
  * @param offset Offset to start parsing the Spotlight database blocks in the `StoreMeta`
  * @returns Array of `Spotlight` entries or `MacosError`
  */
-export function get_spotlight(
+export function getSpotlight(
   meta: StoreMeta,
   store_file: string,
   offset: number,
 ): Spotlight[] | MacosError {
+  if (offset < 0) {
+    return new MacosError(`SPOTLIGHT`, `provided negative offset.`);
+  }
+
   try {
     //@ts-ignore: Custom Artemis function
     const data = Deno.core.ops.get_spotlight(

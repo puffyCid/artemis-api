@@ -47,7 +47,7 @@ artifact_name = "sudologs"
 
 # Output Structure
 
-On a Linux system `SudoLogs` return an array of `Journal` entries
+An array of `Journal` entries containing sudo activity
 
 ````typescript
 export interface Journal {

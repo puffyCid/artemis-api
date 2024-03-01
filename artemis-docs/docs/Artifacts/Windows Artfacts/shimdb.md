@@ -11,7 +11,7 @@ keywords:
 Windows Shimdatabase (`ShimDB`) can be used by Windows applications to provided
 compatability between Windows versions.
 
-It does this via `shims` that are inserted into the application that modifies
+It does this via shims that are inserted into the application that modifies
 function calls. Malicious custom shims can be created as a form of persistence.
 
 OtherParsers:

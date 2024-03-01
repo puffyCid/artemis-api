@@ -7,7 +7,7 @@ keywords:
 
 # Files
 
-A regular Windows filelisting. artemis uses the
+A regular Windows filelisting. Artemis uses the
 [walkdir](https://crates.io/crates/walkdir) crate to recursively walk the files
 and directories on the system. If hashing or `PE` parsing is enabled this will
 update the `Last Accessed` timestamps on files since the native OS APIs are used

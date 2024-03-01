@@ -220,15 +220,9 @@ Get Homebrew packages and Casks on the system. Searches for Homebrew data at
 Get list of joined Wifi networks on macOS. Supports macOS Catalina and higher.
 Requires root access
 
-### getSudoLogs(path) -> UnifiedLog[]
+### getSudoLogs() -> UnifiedLog[]
 
-Parse the UnifiedLogs and extract entries related to sudo activity. Can provide
-an alternative path to a directory containing the UnifiedLog data. The directory
-must be formatted like a logarchive collection.
-
-| Param | Type   | Description                                |
-| ----- | ------ | ------------------------------------------ |
-| path  | string | Optional path to logarchive like directory |
+Parse the UnifiedLogs and extract entries related to sudo activity.
 
 ### parseBom(path) -> Bom
 
@@ -259,3 +253,49 @@ and System TCC.db files.
 | Param | Type   | Description                  |
 | ----- | ------ | ---------------------------- |
 | path  | string | Optional path to TCC.db file |
+
+### setupSpotlightParser(glob_path) -> StoreMeta | MacosError
+
+Collect and setup the required data needed to parse the macOS Spotlight
+database.\
+This function must be called before a user can parse the Spotlight database
+using the JS API.
+
+The glob_path should point to the directory containing the Spotlight database
+files.\
+The primary Spotlight database can be found at:
+/System/Volumes/Data/.Spotlight-V100/Store-V\*/\*/\*\
+Would return something like:
+/System/Volumes/Data/.Spotlight-V100/Store-V3/123-445566-778-12384/*
+
+| Param     | Type   | Description                                                      |
+| --------- | ------ | ---------------------------------------------------------------- |
+| glob_path | string | Glob path to a directory containing the Spotlight Database files |
+
+### getSpotlight(meta, store_file, offset) -> StoreMeta | MacosError
+
+Parse the macOS Spotlight database. The database can potentially return a large
+amount of data (5+GBs).\
+To prevent excessive memory usage, this function will parse the database in
+blocks (chunks).
+
+It will parse **10** blocks at a time before returning the results. The
+`StoreMeta` value obtaind from setupSpotlightParser, contains the **TOTAL**
+amount of blocks in the Spotlight database! You must loop through the blocks and
+track what block offset the parser should start at!
+
+If you want to the parser to start at the beginning of the Spotlight database,
+provide an offset of zero (0). Once the parser returns data, your next offset
+will now be ten (10) because it parsed **10** blocks starting at zero (0-9).
+
+Finally, you must provide the full path to the Spotlight database file
+(store.db). This is typically found in in the directory provided to
+`setupSpotlightParser`\
+(ex:
+/System/Volumes/Data/.Spotlight-V100/Store-V3/123-445566-778-12384/store.db)
+
+| Param      | Type      | Description                                           |
+| ---------- | --------- | ----------------------------------------------------- |
+| meta       | StoreMeta | Spotlight metadata obtained from setupSpotlightParser |
+| store_file | string    | Full path to the store.db file                        |
+| offset     | number    | Offset to start parsing the Spotlight database        |

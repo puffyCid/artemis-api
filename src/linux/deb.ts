@@ -4,7 +4,7 @@ import { readTextFile } from "../filesystem/mod.ts";
 import { LinuxError } from "./errors.ts";
 
 /**
- * Function to get installed Deb packages. Will attempt to parse `/var/lib/dpkg/status` by default.
+ * Function to get installed DEB packages. Will attempt to parse `/var/lib/dpkg/status` by default.
  * @param alt_path Optional path to the dpkg status file
  * @returns Array of `DebPackages` or `LinuxError`
  */

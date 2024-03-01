@@ -47,14 +47,14 @@ sources = ["Special"]
 # Collection Options
 
 - `sources` List of directories that should be included when parsing the
-  `unifiedlogs`. These directories are found at `/var/db/diagnostics/`. Only the
+  `unifiedlogs` These directories are found at `/var/db/diagnostics/`. Only the
   following directories contain logs:
   - Persist
   - Special
   - Signpost
   - HighVolume
-- `logarchive_path` Path to a logarchive formatted directory. This configuration
-  is **optional**
+- `logarchive_path` Alternative path to a logarchive formatted directory. This
+  configuration is **optional**
 
 To parse all logs you would use
 `sources = ["Special", "Persist", "Signpost", "HighVolume"]`

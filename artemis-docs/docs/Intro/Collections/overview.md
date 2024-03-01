@@ -5,9 +5,10 @@ description: How to collect data
 
 # Overview
 
-In order to collect forensic data artemis needs a [TOML](https://toml.io/en/)
-collection that defines what data should be collected. This TOML collection can
-either be a file or a base64 encoded TOML file.
+In addition, to providing a basic CLI interface. Artemis can parse
+[TOML](https://toml.io/en/) collections that define what data should be
+collected. This TOML collection can either be a file or a base64 encoded TOML
+file.
 
 The core parts of a TOML collection are:
 

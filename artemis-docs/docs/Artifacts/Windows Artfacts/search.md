@@ -18,11 +18,13 @@ even index part of the contents of a file.
 `Search` can index large parts of the file system, so parsing the `Search`
 database can provide a partial file listing of the system. `Search` is disabled
 on Windows Servers and starting on newer versions of Windows 11 it can be stored
-in three (3) SQLITE databases (previously was a single ESE database)<br /> The
-`Search` database can get extremely large (4GB+ sizes have been seen). The
-larger the ESE database the more resources artemis needs to parse the
-data.<br /> Similar to the filelisting artifact, every 100k entries artemis will
-output the data and then continue.
+in three (3) SQLITE databases (previously was a single ESE database).
+
+The `Search` database can get extremely large (4GB+ sizes have been seen). The
+larger the ESE database the more resources artemis needs to parse the data.
+
+Similar to the filelisting artifact, every 100k entries artemis will output the
+data and then continue.
 
 Other parsers:
 

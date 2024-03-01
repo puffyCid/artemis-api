@@ -50,7 +50,7 @@ artifact_name = "sudologs"
 
 # Output Structure
 
-On a macOS system `sudologs` return an array of `UnifiedLog` entries
+An array of `UnifiedLog` entries associated with sudo activity
 
 ```typescript
 export interface UnifiedLog {

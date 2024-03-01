@@ -29,7 +29,7 @@ artifact_name = "amcache"
 filter = true
 [artifacts.amcache]
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\Amcache.hve"
 ```
 
 - `system` Defines what OS this collection targets. This example targets
@@ -46,16 +46,16 @@ filter = true
   - `endpoint_id` An ID assigned to the endpoint. This can be any string value
   - `collection_id` A number assigned to the collection. This can be any postive
     number
-  - `output` The output type. Supports: `local, gcp, aws, or azure`
-  - `url` The URL associated with either `gcp, aws, or azure`. This is required
-    only if using **remote upload** output
-  - `api_key` The API key associated with either `gcp, aws, or azure`. This is
+  - `output` The output type. Values can be: `local`, `aws`, `gcp`, or `azure`
+  - `url` The URL associated with either `aws`, `gcp`, or `azure`. This is
     required only if using **remote upload** output
+  - `api_key` The API key associated with either `aws`, `gcp`, or `azure`. This
+    is required only if using **remote upload** output
   - `filter_name` The name of the provided `filter_script`. This is **optional**
     but if you are using a `filter_script` you should provide a name. Otherwise
     the default name `UnknownFilterName` is used
-  - `filter_script` An advanced **optional** output option, will pass the
-    results of each `[[artifacts]]` entry into a script. See
+  - `filter_script` An advanced **optional** output option. Artemis will pass
+    the results of each `[[artifacts]]` entry into a script. See
     [scripting](../Scripting/deno.md) section for detailed overview of this
     option.
   - `logging` Set the logging level for artemis. This is **optional** by default
@@ -66,11 +66,11 @@ filter = true
   - `filter` Whether to filter the artifact data through the `filter_script`.
     This is **optional** by default nothing is filtered
   - `[aritfacts.amcache]` Artifact configuration parameters
-    - `alt_drive` Use an alternative drive when collecting data. This parameter
-      is optional
+    - `alt_file` Use an alternative `amcache` file when collecting data. This
+      configuration is **optional**
 
 The example above collects one artifact (`Amcache`) on a Windows system and
-outputs the results the local system at the path `./tmp/amcache_collection`
+outputs the results the local system at the path ./tmp/amcache_collection
 
 If we wanted to collect more than one artifact we could use a collection like
 the one below:
@@ -99,9 +99,10 @@ path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 
 The TOML collection above collects both `amcache` and `shortcuts` data on a
 Windows system and outputs the results to the local system at the path
-`./tmp/execution_collection`.
+./tmp/execution_collection.
 
-Notable changes:<br /> `name` our collection is now named `execution_collection`
+Notable changes:\
+`name` our collection is now named `execution_collection`
 
 ```toml
 [[artifacts]]
