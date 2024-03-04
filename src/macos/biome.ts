@@ -74,6 +74,7 @@ export function parseBiome(alt_file?: string) {
         const results = extractAppFocus(record.protobuf_bytes);
         if (results instanceof MacosError) {
           console.error(`Failed to parse all records for ${entry}: ${results}`);
+          return [];
           failed_records.push(encode(record.protobuf_bytes));
           continue;
         }
