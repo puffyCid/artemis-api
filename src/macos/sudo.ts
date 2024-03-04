@@ -1,4 +1,4 @@
-import { UnifiedLog } from "../../types/macos/unifiedlogs.d.ts";
+import { UnifiedLog } from "../../types/macos/unifiedlogs.ts";
 import { MacosError } from "./errors.ts";
 
 /**

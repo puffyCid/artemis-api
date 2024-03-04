@@ -4,6 +4,7 @@
 export { getElf } from "./src/linux/elf.ts";
 export { getJournal } from "./src/linux/journal.ts";
 export { getLogon } from "./src/linux/logon.ts";
+export { getSudoLogs } from "./src/linux/sudo.ts";
 
 /**
  * macOS exported functions
@@ -27,7 +28,6 @@ export {
 /**
  * Unix exported functions
  */
-export { getSudoLogs } from "./src/unix/sudologs.ts";
 export { getCron } from "./src/unix/cron.ts";
 export {
   getBashHistory,
@@ -79,11 +79,7 @@ export { getRegistry } from "./src/windows/registry.ts";
 export { getSearch } from "./src/windows/search.ts";
 export { getAltShellbags, getShellbags } from "./src/windows/shellbags.ts";
 export { getAltShimcache, getShimcache } from "./src/windows/shimcache.ts";
-export {
-  getAltShimdb,
-  getCustomShimdb,
-  getShimdb,
-} from "./src/windows/shimdb.ts";
+export { getCustomShimdb, getShimdb } from "./src/windows/shimdb.ts";
 export { getLnkFile } from "./src/windows/shortcuts.ts";
 export {
   getSrumApplicationInfo,
@@ -98,15 +94,7 @@ export {
 export { getAltUserassist, getUserassist } from "./src/windows/userassist.ts";
 export { getAltUsersWin, getUsersWin } from "./src/windows/users.ts";
 export { getAltUsnjrnl, getUsnjrnl } from "./src/windows/usnjrnl.ts";
-export { getAltTasks, getTaskFile, getTasks } from "./src/windows/tasks.ts";
-export {
-  getAltServices,
-  getServiceFile,
-  getServices,
-} from "./src/windows/services.ts";
-export {
-  getAltJumplists,
-  getJumplistPath,
-  getJumplists,
-} from "./src/windows/jumplists.ts";
+export { getTaskFile, getTasks } from "./src/windows/tasks.ts";
+export { getServiceFile, getServices } from "./src/windows/services.ts";
+export { getJumplistPath, getJumplists } from "./src/windows/jumplists.ts";
 export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
