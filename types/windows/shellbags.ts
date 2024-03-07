@@ -32,6 +32,8 @@ export interface Shellbags {
    * Ex: `20d04fe0-3aea-1069-a2d8-08002b30309d` to `This PC`
    */
   resolve_path: string;
+  /**Registry key last modified in UNIXEPOCH seconds */
+  reg_modified: number;
   /**User Registry file associated with `Shellbags` */
   reg_file: string;
   /**Registry key path to `Shellbags` data */
