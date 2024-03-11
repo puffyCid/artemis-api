@@ -8,7 +8,7 @@ import { WindowsError } from "./errors.ts";
 export function getUsersWin(): UserInfo[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_users();
+    const data = Deno.core.ops.get_users_windows();
 
     const results: UserInfo[] = JSON.parse(data);
     return results;
@@ -25,7 +25,7 @@ export function getUsersWin(): UserInfo[] | WindowsError {
 export function getAltUsersWin(path: string): UserInfo[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_users(path);
+    const data = Deno.core.ops.get_alt_users_windows(path);
 
     const results: UserInfo[] = JSON.parse(data);
     return results;

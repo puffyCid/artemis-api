@@ -16,7 +16,7 @@ export function getSudoLogs(
 
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_sudologs(path);
+    const data = Deno.core.ops.get_sudologs_macos(path);
 
     const log_data: UnifiedLog[] = JSON.parse(data);
     return log_data;

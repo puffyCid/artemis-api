@@ -14,7 +14,7 @@ export function getUsers(path?: string): Users[] | MacosError {
 
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_users(user_path);
+    const data = Deno.core.ops.get_users_macs(user_path);
 
     const users: Users[] = JSON.parse(data);
     return users;
@@ -35,7 +35,7 @@ export function getGroups(path?: string): Groups[] | MacosError {
   }
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_groups(group_path);
+    const data = Deno.core.ops.get_groups_macos(group_path);
 
     const groups: Groups[] = JSON.parse(data);
     return groups;
