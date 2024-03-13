@@ -11,9 +11,8 @@ keywords:
 Unix `SudoLogs` are the log files associated with sudo execution. Sudo ("super
 user do" or "substitute user") is used to run programs with elevated privileges.
 
-macOS `SudoLogs` are stored in the Unified Log files.<br /> Linux `SudoLogs` are
-stored in the Systemd Journal files.<br /> The log entries show evidence of
-commands executed with elevated privileges
+macOS `SudoLogs` are stored in the Unified Log files. The log entries show
+evidence of commands executed with elevated privileges
 
 Other Parsers:
 
@@ -26,7 +25,7 @@ References:
 # TOML Collection
 
 ```toml
-system = "maco" # or "linux"
+system = "macos"
 
 [output]
 name = "sudologs_collection"
@@ -38,7 +37,8 @@ collection_id = 1
 output = "local"
 
 [[artifacts]]
-artifact_name = "sudologs"
+artifact_name = "sudologs-macos"
+[artifacts.sudologs_macos]
 # Optional
 # logarchive_path = ""
 ```

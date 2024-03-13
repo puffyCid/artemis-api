@@ -34,7 +34,7 @@ collection_id = 1
 output = "local"
 
 [[artifacts]]
-artifact_name = "users"
+artifact_name = "user-macos"
 [artifacts.users]
 # Optional
 # alt_path = ""

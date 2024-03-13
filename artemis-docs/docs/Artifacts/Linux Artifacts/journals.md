@@ -37,11 +37,15 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "journals"
+[artifacts.journals]
+# Optional
+# alt_path = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_path` Path to a directory containing Journal files. This configuration is
+  **optional**
 
 # Output Structure
 

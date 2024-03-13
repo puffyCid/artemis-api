@@ -10,18 +10,15 @@ structure.
 
 From the root of the artemis repo:
 
-- `/artemis-core` workspace containsthe library component of artemis. The bulk
-  of the code is located here
-- `/cli` workspace contains the executable component artemis.
-- `/server` workspace contains the experimental server component of artemis. Its
+- `core/` workspace containsthe library component of artemis. The bulk of the
+  code is located here
+- `cli/` workspace contains the executable component artemis.
+- `server/` workspace contains the experimental server component of artemis. Its
   currently experimental
 
-From `/artemis-core` directory:
+From `core/` directory:
 
-- `/src` contains the source code of `artemis-core`.
-- `/tests` contains test data and integration tests
-
-From the `artemis-core/src/` directory
+From the `core/src/` directory
 
 | Directory  | Description                                                                                                                                                                                                            |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -31,7 +28,7 @@ From the `artemis-core/src/` directory
 | runtime    | Contains code related to the embedded Deno runtime                                                                                                                                                                     |
 | structs    | Contains code related to how TOML collection files are parsed. It <br/> tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
-| core.rs    | Contains the entry point to the `artemis_core` library.                                                                                                                                                                |
+| core.rs    | Contains the entry point to the `core` library.                                                                                                                                                                        |
 
 # Adding New Artifacts
 

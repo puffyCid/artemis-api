@@ -33,8 +33,8 @@ collection_id = 1
 output = "local"
 
 [[artifacts]]
-artifact_name = "users"
-[artifacts.users]
+artifact_name = "users-windows"
+[artifacts.users_windows]
 # Optional
 # alt_file = "C:\\Artifacts\\SAM"
 ```

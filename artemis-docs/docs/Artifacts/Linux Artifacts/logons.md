@@ -49,11 +49,15 @@ output = "local"
 
 [[artifacts]]
 artifact_name = "logon"
+[artifacts.logons]
+# Optional
+# alt_file = ""
 ```
 
 # Collection Options
 
-- N/A
+- `alt_file` An alternative path to a wtmp, utmp, or btmp file. This
+  configuration is **optional**
 
 # Output Structure
 

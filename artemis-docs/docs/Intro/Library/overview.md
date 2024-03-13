@@ -5,8 +5,8 @@ description: Import as a library
 
 # Library Usage
 
-`artemis-core` is a very simple Rust library. It currently only exposes two (2)
-functions:
+The `core` (also referred to as `artemis-core`) workspace is a very simple Rust
+library. It exposes two (2) primary functions:
 
 - `parse_toml_file(path: &str)` - Parse a TOML collection file at provided path
 - `parse_toml_data(data: &[u8])` - Parse bytes associated with a TOML collection
