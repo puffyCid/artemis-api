@@ -44,7 +44,7 @@ output = "local"
 artifact_name = "amcache"
 [artifacts.amcache]
 # Optional
-# alt_file = 'D'
+# alt_file = 'D:\\data\\Amcache.hve'
 ```
 
 # Collection Options
