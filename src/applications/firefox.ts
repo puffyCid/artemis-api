@@ -98,16 +98,45 @@ export function getFirefoxDownloads(
 /**
  * Get installed Firefox addons
  * @param platform Platform to parse Firefox addons
- * @returns Array of parsed addons or `ApplicationError`
+ * @returns Array of `Record<string, unknown>` or `ApplicationError`
  */
 export function firefoxAddons(
   platform: PlatformType,
 ): Record<string, unknown>[] | ApplicationError {
+  const paths = firefoxPaths(platform, "extensions.json");
+  if (paths instanceof ApplicationError) {
+    return paths;
+  }
+
+  let extensions: Record<string, object>[] = [];
+  for (const path of paths) {
+    const extension = readTextFile(path.full_path);
+    if (extension instanceof FileError) {
+      console.warn(`failed to read file ${path}: ${extension}`);
+      continue;
+    }
+
+    const data = JSON.parse(extension)[ "addons" ];
+    data[ "addons_path" ] = path.full_path;
+
+    extensions = extensions.concat(data);
+  }
+
+  return extensions;
+}
+
+/**
+ * Function to get paths associated with firefox
+ * @param platform OS platform types
+ * @param file Firefox related file to get
+ * @returns Array of `GlobInfo` or `ApplicationError`
+ */
+function firefoxPaths(platform: PlatformType, file: string): GlobInfo[] | ApplicationError {
   let paths: GlobInfo[] = [];
   switch (platform) {
     case PlatformType.Darwin: {
       const mac_paths = glob(
-        "/Users/*/Library/Application Support/Firefox/Profiles/*/addons.json",
+        `/Users/*/Library/Application Support/Firefox/Profiles/*/${file}`,
       );
       if (mac_paths instanceof FileError) {
         return new ApplicationError(
@@ -124,7 +153,7 @@ export function firefoxAddons(
         drive = "C";
       }
       const win_paths = glob(
-        `${drive}\\Users\\*\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\*\\addons.json`,
+        `${drive}\\Users\\*\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\*\\${file}`,
       );
       if (win_paths instanceof FileError) {
         return new ApplicationError(
@@ -140,20 +169,5 @@ export function firefoxAddons(
       return [];
     }
   }
-
-  let extensions: Record<string, object>[] = [];
-  for (const path of paths) {
-    const extension = readTextFile(path.full_path);
-    if (extension instanceof FileError) {
-      console.warn(`failed to read file ${path}: ${extension}`);
-      continue;
-    }
-
-    const data = JSON.parse(extension)["addons"];
-    data["addons_path"] = path.full_path;
-
-    extensions = extensions.concat(data);
-  }
-
-  return extensions;
+  return paths;
 }
