@@ -14,46 +14,46 @@ Return current time in UnixEpoch seconds
 
 Convert Windows FILETIME to UnixEpoch seconds
 
-| Param    | Type     | Description        |
-| -------- | -------- | ------------------ |
-| filetime | `bigint` | FILETIME timestamp |
+| Param    | Type   | Description        |
+| -------- | ------ | ------------------ |
+| filetime | bigint | FILETIME timestamp |
 
 ### cocoatimeToUnixEpoch(cocoatime) -> number
 
 Convert macOS Cocoa time to UnixEpoch seconds
 
-| Param     | Type     | Description     |
-| --------- | -------- | --------------- |
-| cocoatime | `number` | Cocoa timestamp |
+| Param     | Type   | Description     |
+| --------- | ------ | --------------- |
+| cocoatime | number | Cocoa timestamp |
 
 ### hfsToUnixEpoch(hfstime) -> number
 
 Convert macOS HFS+ time to UnixEpoch seconds
 
-| Param   | Type     | Description    |
-| ------- | -------- | -------------- |
-| hfstime | `number` | HFS+ timestamp |
+| Param   | Type   | Description    |
+| ------- | ------ | -------------- |
+| hfstime | number | HFS+ timestamp |
 
 ### oleToUnixEpoch(oletime) -> number
 
 Convert Windows OLE time to UnixEpoch seconds
 
-| Param   | Type     | Description   |
-| ------- | -------- | ------------- |
-| oletime | `number` | OLE timestamp |
+| Param   | Type   | Description   |
+| ------- | ------ | ------------- |
+| oletime | number | OLE timestamp |
 
 ### webkitToUnixEpoch(webkttime) -> number
 
 Convert browser WebKit time to UnixEpoch
 
-| Param      | Type     | Description      |
-| ---------- | -------- | ---------------- |
-| webkittime | `number` | WebKit timestamp |
+| Param      | Type   | Description      |
+| ---------- | ------ | ---------------- |
+| webkittime | number | WebKit timestamp |
 
 ### fatToUnixEpoch(fattime) -> number
 
 Convert Windows FAT time bytes to UnixEpoch
 
-| Param   | Type         | Description         |
-| ------- | ------------ | ------------------- |
-| oletime | `Uint8Array` | FAT timestamp bytes |
+| Param   | Type       | Description         |
+| ------- | ---------- | ------------------- |
+| oletime | Uint8Array | FAT timestamp bytes |

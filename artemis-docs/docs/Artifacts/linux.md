@@ -5,13 +5,13 @@ sidebar_position: 2
 # Linux
 
 Currently artemis has been tested on Ubuntu 18.04 and higher, Fedora, and Arch
-Linux. Similar to the Windows and macOS versions a main focus point of the
-library `artemis-core` is to make a best effort to not rely on the macOS APIs.
+Linux.
 
-Since `artemis-core` is a forensic focused library, we do not want to rely on
-APIs from a potentially compromised system.
+A main focus point of artemis is to make a best effort to not rely on the
+Windows APIs. Since artemis is a forensic focused tool, we do not want to rely
+on APIs from a potentially compromised system.
 
-However, `artemis-core` does use the Linux API for a handful of artifacts:
+However, artemis does use the Linux API for a handful of artifacts:
 
 - Processes - The [sysinfo](https://github.com/GuillaumeGomez/sysinfo) crate is
   used to pull a process listing using Linux APIs

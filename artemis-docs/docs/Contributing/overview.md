@@ -10,7 +10,8 @@ structure.
 
 :::tip
 
-Use the just command `just complex` to measure lines of Rust and complexity!
+Use the just command `just complex` to measure lines of Rust and complexity!\
+(requires [scc](https://github.com/boyter/scc))
 
 :::
 
@@ -21,8 +22,6 @@ From the root of the artemis repo:
 - `cli/` workspace contains the executable component artemis.
 - `server/` workspace contains the experimental server component of artemis. Its
   currently experimental
-
-From `core/` directory:
 
 From the `core/src/` directory
 
@@ -46,9 +45,8 @@ artifact.
 
 - Artifacts have their own subfolder. Ex: `src/artifacts/os/windows/prefetch`
 - The subfolder will probably have the following files at minimum:
-  - `parser.rs` - Contains the `pub(crate)` accessible functions for the
-    artifact
-  - `error.rs` - Artifact specific errors
+  - parser.rs - Contains `pub(crate)` accessible functions for the artifact
+  - error.rs - Artifact specific errors
 
 # Timestamps
 
@@ -120,9 +118,9 @@ For example the Windows `Registry` artifact exposes a helper function that other
 `Registry` based artifacts can leverage to help parse the `Registry`:
 
 - `pub(crate) fn get_registry_keys(start_path: &str, regex: &Regex, file_path: &str)`
-  will read a Registry file at provided `file_path` and filter to based on
-  `start_path` and `regex`. If `start_path` and `regex` are empty a full
-  `Registry` listing is returned. All Regex comparisons are done in lowercase.
+  will read a Registry file at provided file_path and filter to based on
+  start_path and regex. If start_path and regex are empty a full `Registry`
+  listing is returned. All Regex comparisons are done in lowercase.
 
 Some other examples listed below:
 
@@ -144,6 +142,6 @@ Some other examples listed below:
     needed to start reading them.
 
 - `/src/artifacts/os/macos/plist/property_list.rs` contains code help parse
-  `plist` files.
-  - `pub(crate) fn parse_plist_file(path: &str)` will parse a `plist` file and
+  plist files.
+  - `pub(crate) fn parse_plist_file(path: &str)` will parse a plist file and
     return it as a Serde Value

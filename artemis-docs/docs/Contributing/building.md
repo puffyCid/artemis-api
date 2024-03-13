@@ -40,7 +40,7 @@ Once you have the prerequisites installed you can build artemis.
 
 1. Clone artemis repo at
    [https://github.com/puffycid/artemis](https://github.com/puffycid/artemis)
-2. Navigate to the source code
+2. Navigate to the repo
 3. Run `just cli` or `just --shell pwsh.exe  --shell-arg -c cli` for Windows
 
 ```sh
@@ -55,7 +55,7 @@ just cli
 just core
 ```
 
-Full list of just commands
+Full list of just commands (via `just --list`)
 
 | Command    | Description                                      |
 | ---------- | ------------------------------------------------ |

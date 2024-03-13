@@ -312,8 +312,8 @@ function getPointers(data: Uint8Array): Table | MacosError {
     }
 
     // There can be over 900k pointers in a BOM file (seen in XCode BOM). Using nom to parse the data can take a very long time.
-    // In addition, the pointer data can by ~7MB in size. Sending that much data between JS and Rust increases runtime
-    // Instead we parse using on JS. Its only 8 bytes of data
+    // In addition, the pointer data can by ~7MB in size. Sending that much data between JS and Rust increases runtime by alot
+    // Instead we parse using only JS. Its only 8 bytes of data
     const address_bytes = pointer_data.slice(start, start + size);
     const length_bytes = pointer_data.slice(start + size, start + size + size);
 
@@ -423,7 +423,7 @@ function getBlock(
     return new MacosError("BOM", `pointer greater than data length`);
   }
 
-  // Instead of using we just use slice to get the block data. Avoids having to send large amounts bytes to Rust
+  // Instead of using nom we just use slice to get the block data. Avoids having to send large amounts bytes to Rust
   const block_data = data.buffer.slice(
     pointer.address,
     pointer.address + pointer.length,
@@ -829,7 +829,6 @@ interface BomData {
 /**
  * Assemble the file paths described in the BOM file
  * @param files Hashmap of `BomData`
- * @param path path to BOM file
  * @returns Array of `Bom`
  */
 function assembleBom(files: Map<number, BomData>): BomFiles[] {

@@ -6,74 +6,74 @@ description: Encoding bytes and strings
 
 These functions are related to encoding data
 
-### encode(data) -> `string`
+### encode(data) -> string
 
 Base64 encode raw bytes. The encoding is not URL safe
 
-| Param | Type         | Description             |
-| ----- | ------------ | ----------------------- |
-| data  | `Uint8Array` | The raw bytes to encode |
+| Param | Type       | Description             |
+| ----- | ---------- | ----------------------- |
+| data  | Uint8Array | The raw bytes to encode |
 
-### decode(b64) -> `Uint8Array | EncodingError`
+### decode(b64) -> Uint8Array | EncodingError
 
 Decode a valid RFC4648 Base64 encoded string
 
-| Param | Type     | Description             |
-| ----- | -------- | ----------------------- |
-| b64   | `string` | A base64 encoded string |
+| Param | Type   | Description             |
+| ----- | ------ | ----------------------- |
+| b64   | string | A base64 encoded string |
 
-### encodeBytes(data) -> `Uint8Array`
+### encodeBytes(data) -> Uint8Array
 
 Convert provided string to raw bytes
 
-| Param | Type     | Description                |
-| ----- | -------- | -------------------------- |
-| data  | `string` | String to convert to bytes |
+| Param | Type   | Description                |
+| ----- | ------ | -------------------------- |
+| data  | string | String to convert to bytes |
 
-### extractUtf8String(data) -> `string`
+### extractUtf8String(data) -> string
 
 Extract a UTF8 string from provided bytes
 
-| Param | Type         | Description                           |
-| ----- | ------------ | ------------------------------------- |
-| data  | `Uint8Array` | Raw bytes to extract UTF8 string from |
+| Param | Type       | Description                           |
+| ----- | ---------- | ------------------------------------- |
+| data  | Uint8Array | Raw bytes to extract UTF8 string from |
 
-### extractUtf16String(data) -> `string`
+### extractUtf16String(data) -> string
 
 Extract a UTF16 string from provided bytes
 
-| Param | Type         | Description                            |
-| ----- | ------------ | -------------------------------------- |
-| data  | `Uint8Array` | Raw bytes to extract UTF16 string from |
+| Param | Type       | Description                            |
+| ----- | ---------- | -------------------------------------- |
+| data  | Uint8Array | Raw bytes to extract UTF16 string from |
 
-### bytesToHexString(data) -> `string`
+### bytesToHexString(data) -> string
 
 Convert bytes to Hex string
 
-| Param | Type         | Description                 |
-| ----- | ------------ | --------------------------- |
-| data  | `Uint8Array` | Raw bytes to convert to hex |
+| Param | Type       | Description                 |
+| ----- | ---------- | --------------------------- |
+| data  | Uint8Array | Raw bytes to convert to hex |
 
-### readXml(path) -> `Record<string, unknown> | EncodingError`
+### readXml(path) -> Record&lt;string, unknown&gt; | EncodingError
 
 Read a XML file into a JSON object. Supports either UTF8 or UTF16 encoded XML
 files
 
-| Param | Type     | Description              |
-| ----- | -------- | ------------------------ |
-| path  | `string` | Path to XML file to read |
+| Param | Type   | Description              |
+| ----- | ------ | ------------------------ |
+| path  | string | Path to XML file to read |
 
-### generateUuid() -> `string`
+### generateUuid() -> string
 
 Generates a UUID v4 hyphenated string
 
-### formatGuid(format, data) -> `string`
+### formatGuid(format, data) -> string
 
 Format provided bytes into a GUID hyphenated string based on provided Endianess.
 Must provide exactly 16 bytes. Windows is commonly Little Endian. macOS is
 commonly Big Endian
 
-| Param  | Type         | Description                 |
-| ------ | ------------ | --------------------------- |
-| format | `Endian`     | Endianess type `LE` or `BE` |
-| data   | `Uint8Array` | Raw bytes to format to GUID |
+| Param  | Type       | Description                 |
+| ------ | ---------- | --------------------------- |
+| format | Endian     | Endianess type LE or BE     |
+| data   | Uint8Array | Raw bytes to format to GUID |

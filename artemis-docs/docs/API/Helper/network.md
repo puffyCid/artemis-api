@@ -8,20 +8,20 @@ The artemis API allows a user to make HTTP network requests using the
 [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html) crate. It can be
 used to interact with external services or services that expose an API.
 
-### request(url, protocol, body, headers) -> `ClientResponse | HttpError`
+### request(url, protocol, body, headers) -> ClientResponse | HttpError
 
 Make a very simple GET or POST request to the provided URL. You may specify an
 optional body or headers. By default headers will use
 `Content-Type: application/json`.
 
-The body must be in raw bytes if provided. This function is `async`
+The body must be in raw bytes if provided. This function is async
 
-| Param    | Type                     | Description                                                          |
-| -------- | ------------------------ | -------------------------------------------------------------------- |
-| url      | `string`                 | URL to target                                                        |
-| protocol | `Protocol`               | `Protocol` to use. Currently only GET or POST                        |
-| body     | `Uint8Array`             | Optional body to send with request                                   |
-| headers  | `Record<string, string>` | Optional headers to use. Default is `Content-Type: application/json` |
+| Param    | Type                         | Description                                                          |
+| -------- | ---------------------------- | -------------------------------------------------------------------- |
+| url      | string                       | URL to target                                                        |
+| protocol | Protocol                     | Protocol to use. Currently only GET or POST                          |
+| body     | Uint8Array                   | Optional body to send with request                                   |
+| headers  | Record&lt;string, string&gt; | Optional headers to use. Default is `Content-Type: application/json` |
 
 ### VirusTotal Class
 
@@ -37,26 +37,26 @@ Your key or IP will be **blocked** if you do!
 
 :::
 
-#### lookupHash(hash) -> `VTResponse | HttpError`
+#### lookupHash(hash) -> VTResponse | HttpError
 
-Lookup a MD5, SHA1, or SHA256 hash on VirusTotal. This function is `async`
+Lookup a MD5, SHA1, or SHA256 hash on VirusTotal. This function is async
 
-| Param | Type     | Description               |
-| ----- | -------- | ------------------------- |
-| hash  | `string` | MD5, SHA1, or SHA256 hash |
+| Param | Type   | Description               |
+| ----- | ------ | ------------------------- |
+| hash  | string | MD5, SHA1, or SHA256 hash |
 
-#### lookupDomain(domain) -> `VTResponse | HttpError`
+#### lookupDomain(domain) -> VTResponse | HttpError
 
-Lookup a domain on VirusTotal. This function is `async`
+Lookup a domain on VirusTotal. This function is async
 
-| Param  | Type     | Description      |
-| ------ | -------- | ---------------- |
-| domain | `string` | Domain to submit |
+| Param  | Type   | Description      |
+| ------ | ------ | ---------------- |
+| domain | string | Domain to submit |
 
-#### lookupIP(ip) -> `VTResponse | HttpError`
+#### lookupIP(ip) -> VTResponse | HttpError
 
-Lookup an IP on VirusTotal. This function is `async`
+Lookup an IP on VirusTotal. This function is async
 
-| Param | Type     | Description  |
-| ----- | -------- | ------------ |
-| ip    | `string` | IP to submit |
+| Param | Type   | Description  |
+| ----- | ------ | ------------ |
+| ip    | string | IP to submit |
