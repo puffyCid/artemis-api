@@ -102,3 +102,13 @@ read-only mode. In addition, this function will bypass locked SQLITE databases.
 | ----- | ------ | -------------------------------------- |
 | path  | string | Path to the sqlite db                  |
 | query | string | Query to execute against the sqlite db |
+
+### getFirefoxCookies(platform, path) -> FirefoxCookies[] | ApplicationError
+
+Get Firefox cookies for all users based on platform. Can also provide an
+optional alternative path to the Cookie sqlite database instead
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| path     | string       | Optional path to a Firefox cookie database                |

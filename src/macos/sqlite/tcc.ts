@@ -1,17 +1,14 @@
 import { MacosError } from "../errors.ts";
-import { TccData, TccValues } from "../../../types/macos/sqlite/tcc.ts";
+import { TccData, TccValues, ClientType, Reason, AuthValue } from "../../../types/macos/sqlite/tcc.ts";
 import { glob } from "../../filesystem/files.ts";
 import { FileError } from "../../filesystem/errors.ts";
 import { querySqlite } from "../../applications/sqlite.ts";
 import { ApplicationError } from "../../applications/errors.ts";
-import { ClientType } from "../../../types/macos/sqlite/tcc.ts";
-import { Reason } from "../../../types/macos/sqlite/tcc.ts";
 import { SingleRequirement } from "../../../types/macos/codesigning.d.ts";
 import { decode } from "../../encoding/base64.ts";
 import { EncodingError } from "../../encoding/errors.ts";
 import { parseRequirementBlob } from "../codesigning/blob.ts";
 import { SigningError } from "../codesigning/errors.ts";
-import { AuthValue } from "../../../types/macos/sqlite/tcc.ts";
 
 /**
  * Query all `TCC.db` files on the system. `TCC.db` contains granted permissions for applications.

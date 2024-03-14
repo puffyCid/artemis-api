@@ -1,15 +1,17 @@
+import { FirefoxCookies } from "../../types/applications/firefox.ts";
 import {
   FirefoxDownloads,
   FirefoxHistory,
   RawFirefoxDownloads,
   RawFirefoxHistory,
-} from "../../types/applications/firefox.d.ts";
+} from "../../types/applications/firefox.ts";
 import { GlobInfo } from "../../types/filesystem/globs.d.ts";
 import { getEnvValue } from "../environment/env.ts";
 import { FileError } from "../filesystem/errors.ts";
 import { glob, readTextFile } from "../filesystem/mod.ts";
 import { PlatformType } from "../system/systeminfo.ts";
 import { ApplicationError } from "./errors.ts";
+import { querySqlite } from "./sqlite.ts";
 
 /**
  * Get Firefox history for all users on a endpoint
@@ -116,8 +118,8 @@ export function firefoxAddons(
       continue;
     }
 
-    const data = JSON.parse(extension)[ "addons" ];
-    data[ "addons_path" ] = path.full_path;
+    const data = JSON.parse(extension)["addons"];
+    data["addons_path"] = path.full_path;
 
     extensions = extensions.concat(data);
   }
@@ -126,12 +128,103 @@ export function firefoxAddons(
 }
 
 /**
+ * Function to parse Firefox cookies. Can provide an alternative path to cookie database, otherwise will use default path
+ * @param platform OS platform to query for Firefox cookies
+ * @param path Alternative path to Firefox cookie database
+ * @returns Array of `FirefoxCookies` or `ApplicationError`
+ */
+export function getFirefoxCookies(
+  platform: PlatformType,
+  path?: string,
+): FirefoxCookies[] | ApplicationError {
+  let paths = [];
+
+  if (path != undefined) {
+    paths = [path];
+  } else {
+    const glob_paths = firefoxPaths(platform, "cookies.sqlite");
+    if (glob_paths instanceof ApplicationError) {
+      return glob_paths;
+    }
+
+    for (const glob_path of glob_paths) {
+      paths.push(glob_path.full_path);
+    }
+  }
+
+  const query = "select * from moz_cookies";
+
+  let cookies: FirefoxCookies[] = [];
+  for (const path of paths) {
+    const results = querySqlite(path, query);
+    if (results instanceof ApplicationError) {
+      console.warn(`Could not query cookies for ${path}: ${results}`);
+      continue;
+    }
+
+    cookies = cookies.concat(getCookies(results, path));
+  }
+  return cookies;
+}
+
+/**
+ * Function to extract cookie information from database
+ * @param data Array of sqlite data from cookie database
+ * @param path Path to the cookie database file
+ * @returns Array of `FirefoxCookies`
+ */
+function getCookies(
+  data: Record<string, unknown>[],
+  path: string,
+): FirefoxCookies[] {
+  const cookie_array = [];
+
+  const adjust_time: bigint = 1000000n;
+  for (const entry of data) {
+    const cookie_entry: FirefoxCookies = {
+      id: entry["id"] as number,
+      origin_attributes: entry["originAttributes"] as string,
+      in_browser_element: !!(entry["inBrowserElement"] as number),
+      same_site: !!(entry["sameSite"] as number),
+      raw_same_site: !!(entry["rawSameSite"] as number),
+      scheme_map: entry["rawSameSite"] as number,
+      name: entry["name"] as string | undefined,
+      value: entry["value"] as string | undefined,
+      path: entry["path"] as string | undefined,
+      expiry: entry["expiry"] as number | undefined,
+      is_secure: !!(entry["isSecure"] as number | undefined),
+      is_http_only: !!(entry["isSecure"] as number | undefined),
+      host: entry["host"] as string | undefined,
+      db_path: path,
+    };
+
+    if (entry["lastAccessed"] != undefined) {
+      cookie_entry.last_accessed = Number(
+        BigInt(entry["lastAccessed"] as bigint) / adjust_time,
+      );
+    }
+
+    if (entry["creationTime"] != undefined) {
+      cookie_entry.creation_time = Number(
+        BigInt(entry["creationTime"] as bigint) / adjust_time,
+      );
+    }
+
+    cookie_array.push(cookie_entry);
+  }
+  return cookie_array;
+}
+
+/**
  * Function to get paths associated with firefox
  * @param platform OS platform types
  * @param file Firefox related file to get
  * @returns Array of `GlobInfo` or `ApplicationError`
  */
-function firefoxPaths(platform: PlatformType, file: string): GlobInfo[] | ApplicationError {
+function firefoxPaths(
+  platform: PlatformType,
+  file: string,
+): GlobInfo[] | ApplicationError {
   let paths: GlobInfo[] = [];
   switch (platform) {
     case PlatformType.Darwin: {

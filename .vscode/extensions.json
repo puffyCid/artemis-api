@@ -1,6 +1,6 @@
 {
-    "recommendations": [
-        "denoland.vscode-deno",
-        "eamodio.gitlens",
-    ]
+  "recommendations": [
+    "denoland.vscode-deno",
+    "eamodio.gitlens"
+  ]
 }
