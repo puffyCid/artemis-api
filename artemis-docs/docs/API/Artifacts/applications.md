@@ -15,6 +15,8 @@ Return Chromium history for all users
 Parse the Chromium History sqlite file at provided path. Will parse locked
 sqlite files.
 
+All Chromium derived browsers should be supported.
+
 | Param | Type   | Description           |
 | ----- | ------ | --------------------- |
 | path  | string | Chromium History file |
@@ -27,6 +29,8 @@ Return Chromium downloads for all users
 
 Parse the Chromium History sqlite file at provided path for downloads. Will
 parse locked sqlite files.
+
+All Chromium derived browsers should be supported.
 
 | Param | Type   | Description           |
 | ----- | ------ | --------------------- |
@@ -112,3 +116,15 @@ optional alternative path to the Cookie sqlite database instead
 | -------- | ------------ | --------------------------------------------------------- |
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | path     | string       | Optional path to a Firefox cookie database                |
+
+### getChromiumCookies(platform, path) -> Chromium[] | ApplicationError
+
+Get Chromium cookies for all users based on platform. Can also provide an
+optional alternative path to the Cookie sqlite database instead.
+
+All Chromium derived browsers should be supported.
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| path     | string       | Optional path to a Chromium cookie database               |
