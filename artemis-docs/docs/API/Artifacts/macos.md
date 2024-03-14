@@ -61,9 +61,13 @@ on system at /var/db/SystemPolicyConfiguration/ExecPolicy
 
 Return firewall information and status on macOS
 
-### getFsevents() -> Fsevents[] | MacosError
+### getFsevents(path) -> Fsevents[] | MacosError
 
-Parse macOS [FsEvents](../../Artifacts/macOS%20Artifacts/fsevents.md)
+Parse macOS FsEvents from provided file.
+
+| Param | Type   | Description                    |
+| ----- | ------ | ------------------------------ |
+| path  | String | Full path to the FsEvents file |
 
 ### getLaunchdDaemons() -> Launchd[] | MacosError
 
@@ -159,10 +163,10 @@ Parse a single UnifiedLog file (.tracev3) on macOS. Typically found at:
 
 You must call `setupUnifiedLogParser` prior to parsing the .tracev3 files.
 
-| Param | Type       | Description                          |
-| ----- | ---------- | ------------------------------------ |
-| path  | string     | Path to .tracev3 file                |
-| meta  | Uint8Array | Raw bytes associated with UnifiedLog |
+| Param | Type       | Description                                                                   |
+| ----- | ---------- | ----------------------------------------------------------------------------- |
+| path  | string     | Path to .tracev3 file                                                         |
+| meta  | Uint8Array | Raw bytes associated with UnifiedLog. Obtained from `setupUnifiedLogParser()` |
 
 ### parseRequirementBlob(data) -> SingleRequirement | MacosError
 
