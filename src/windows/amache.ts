@@ -18,21 +18,21 @@ export function getAmcache(): Amcache[] | WindowsError {
 }
 
 /**
- * Function to parse `Amcache` entries on an alternative drive
- * @param drive drive letter
- * @returns Array of `Amcache` entries parsed from a Windows drive letter or `WindowsError`
+ * Function to parse `Amcache` entries at alternative path
+ * @param path Full path to Amcache.hve file
+ * @returns Array of `Amcache` entries or `WindowsError`
  */
-export function getAltAmcache(drive: string): Amcache[] | WindowsError {
+export function getAltAmcache(path: string): Amcache[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const results: string = Deno.core.ops.get_alt_amcache(drive);
+    const results: string = Deno.core.ops.get_alt_amcache(path);
 
     const data: Amcache[] = JSON.parse(results);
     return data;
   } catch (err) {
     return new WindowsError(
       "AMCACHE",
-      `failed to parse amcache at ${drive}: ${err}`,
+      `failed to parse amcache at ${path}: ${err}`,
     );
   }
 }

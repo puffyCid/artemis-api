@@ -44,14 +44,14 @@ output = "local"
 artifact_name = "jumplists"
 [artifacts.jumplists]
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\CustomJumplist"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Jumplists`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to an alternative Jumplist file. This configuration is
+  **optional**. By default artemis will parse all user Jumplist files on the
+  system.
 
 # Output Structure
 

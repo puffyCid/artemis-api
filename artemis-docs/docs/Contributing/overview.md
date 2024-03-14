@@ -4,24 +4,26 @@ sidebar_position: 2
 
 # Getting Started
 
-The artemis source code is about ~66k lines of Rust code across ~540 files as of
-September 2023 (this includes tests). However its organized in a pretty simple
+The artemis source code is about ~78k lines of Rust code across ~645 files as of
+March 2024 (this includes tests). However its organized in a pretty simple
 structure.
+
+:::tip
+
+Use the just command `just complex` to measure lines of Rust and complexity!\
+(requires [scc](https://github.com/boyter/scc))
+
+:::
 
 From the root of the artemis repo:
 
-- `/artemis-core` workspace containsthe library component of artemis. The bulk
-  of the code is located here
-- `/cli` workspace contains the executable component artemis.
-- `/server` workspace contains the experimental server component of artemis. Its
+- `core/` workspace containsthe library component of artemis. The bulk of the
+  code is located here
+- `cli/` workspace contains the executable component artemis.
+- `server/` workspace contains the experimental server component of artemis. Its
   currently experimental
 
-From `/artemis-core` directory:
-
-- `/src` contains the source code of `artemis-core`.
-- `/tests` contains test data and integration tests
-
-From the `artemis-core/src/` directory
+From the `core/src/` directory
 
 | Directory  | Description                                                                                                                                                                                                            |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -31,7 +33,10 @@ From the `artemis-core/src/` directory
 | runtime    | Contains code related to the embedded Deno runtime                                                                                                                                                                     |
 | structs    | Contains code related to how TOML collection files are parsed. It <br/> tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
-| core.rs    | Contains the entry point to the `artemis_core` library.                                                                                                                                                                |
+| core.rs    | Contains the entry point to the `core` library.                                                                                                                                                                        |
+
+A basic graph of the code structure can be found
+[here](../../static/img/core.svg)
 
 # Adding New Artifacts
 
@@ -40,9 +45,8 @@ artifact.
 
 - Artifacts have their own subfolder. Ex: `src/artifacts/os/windows/prefetch`
 - The subfolder will probably have the following files at minimum:
-  - `parser.rs` - Contains the `pub(crate)` accessible functions for the
-    artifact
-  - `error.rs` - Artifact specific errors
+  - parser.rs - Contains `pub(crate)` accessible functions for the artifact
+  - error.rs - Artifact specific errors
 
 # Timestamps
 
@@ -114,9 +118,9 @@ For example the Windows `Registry` artifact exposes a helper function that other
 `Registry` based artifacts can leverage to help parse the `Registry`:
 
 - `pub(crate) fn get_registry_keys(start_path: &str, regex: &Regex, file_path: &str)`
-  will read a Registry file at provided `file_path` and filter to based on
-  `start_path` and `regex`. If `start_path` and `regex` are empty a full
-  `Registry` listing is returned. All Regex comparisons are done in lowercase.
+  will read a Registry file at provided file_path and filter to based on
+  start_path and regex. If start_path and regex are empty a full `Registry`
+  listing is returned. All Regex comparisons are done in lowercase.
 
 Some other examples listed below:
 
@@ -138,6 +142,6 @@ Some other examples listed below:
     needed to start reading them.
 
 - `/src/artifacts/os/macos/plist/property_list.rs` contains code help parse
-  `plist` files.
-  - `pub(crate) fn parse_plist_file(path: &str)` will parse a `plist` file and
+  plist files.
+  - `pub(crate) fn parse_plist_file(path: &str)` will parse a plist file and
     return it as a Serde Value

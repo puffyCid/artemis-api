@@ -46,14 +46,13 @@ output = "local"
 [[artifacts]]
 artifact_name = "recyclebin"
 [artifacts.recyclebin]
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\$IAC12F"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `RecycleBin`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative RecycleBin file. This configuration is
+  **optional**. By default artemis will parse all RecycleBin files on the system
 
 # Output Structure
 

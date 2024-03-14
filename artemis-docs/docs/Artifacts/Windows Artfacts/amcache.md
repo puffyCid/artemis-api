@@ -44,14 +44,14 @@ output = "local"
 artifact_name = "amcache"
 [artifacts.amcache]
 # Optional
-# alt_drive = 'D'
+# alt_file = 'D:\\data\\Amcache.hve'
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Amcache`. This configuration is **optional**. By default
-  artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to an alternative Amcache.hve file. This configuration is
+  **optional**. By default artemis will parse the default Amcache.hve on the
+  system
 
 # Output Structure
 

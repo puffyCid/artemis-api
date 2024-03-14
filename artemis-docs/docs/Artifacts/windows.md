@@ -14,11 +14,11 @@ multiple complex binary artifacts on Windows such as:
 - Event Logs - artemis can parse Event Logs using the
   [evtx](https://github.com/omerbenamram/evtx) crate
 
-A main focus point of the library `artemis-core` is to make a best effort to not
-rely on the Windows APIs. Since `artemis-core` is a forensic focused library, we
-do not want to rely on APIs from a potentially compromised system.
+A main focus point of artemis is to make a best effort to not rely on the
+Windows APIs. Since artemis is a forensic focused tool, we do not want to rely
+on APIs from a potentially compromised system.
 
-However, `artemis-core` does use the Windows API for a handful of artifacts:
+However, artemis does use the Windows API for a handful of artifacts:
 
 - Processes - The [sysinfo](https://github.com/GuillaumeGomez/sysinfo) crate is
   used to pull a process listing using Windows APIs
@@ -28,3 +28,5 @@ However, `artemis-core` does use the Windows API for a handful of artifacts:
   algorithms.
   - Both Prefetch and some NTFS files may be compressed, `artemis-core` will
     attempt to use Windows API to decompress these files
+  - Artemis will try the Windows API to decompress the data. However, if the
+    decompression fails, it will also try to manually decompress the data

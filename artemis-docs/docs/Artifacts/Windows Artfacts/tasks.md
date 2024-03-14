@@ -47,14 +47,14 @@ output = "local"
 artifact_name = "tasks"
 [artifacts.tasks]
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\At1.job"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Scheduled Tasks`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative Schedule Task file. This configuration is
+  **optional**. By default artemis will parse all Schedule Task files at their
+  default location.
 
 # Output Structure
 

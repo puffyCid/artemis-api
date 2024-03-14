@@ -38,15 +38,15 @@ output = "local"
 artifact_name = "userassist"
 [artifacts.userassist]
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\NTUSER.DAT
 # resolve_descriptions = true
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `UserAssist`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative NTUSER.DAT Registry file. This
+  configuration is **optional**. By default artemis will parse UserAssist for
+  all users
 - `resolve_descriptions` Enable folder description GUID lookups. Artemis will
   attempt to parse the SYSTEM hive to lookup folder descriptions. This
   configuration is **optional**. Default is **false**.

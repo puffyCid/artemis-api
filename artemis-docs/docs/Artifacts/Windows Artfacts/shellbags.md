@@ -11,7 +11,7 @@ Windows `Shellbags` are `Registry` entries that track what directories a user
 has browsed via Explorer GUI. These entries are stored in the undocumented
 `ShellItem` binary format.
 
-artemis supports parsing the most common types of `shellitems`, but if you
+Artemis supports parsing the most common types of `shellitems`, but if you
 encounter a `shellitem` entry that is not supported please open an issue!
 
 Other parsers:
@@ -42,14 +42,14 @@ artifact_name = "shellbags"
 [artifacts.shellbags]
 resolve_guids = true
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\UsrClass.dat"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing `Shellbags`. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative UsrClass.dat or NTUSER.DAT Registry file.
+  This configuration is **optional**. By default artemis will parse Shellbags
+  for all users.
 - `resolve_guids` Boolean value whether to try to resolve GUIDS found when
   parsing `Shellbags`.
   - If **false**:
@@ -89,6 +89,8 @@ export interface Shellbags {
    * Ex: `20d04fe0-3aea-1069-a2d8-08002b30309d` to `This PC`
    */
   resolve_path: string;
+  /**Registry key last modified in UNIXEPOCH seconds */
+  reg_modified: number;
   /**User Registry file associated with `Shellbags` */
   reg_file: string;
   /**Registry key path to `Shellbags` data */

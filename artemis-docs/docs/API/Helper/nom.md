@@ -47,83 +47,83 @@ parse some data.
 
 Nom helper to parse four bytes into unsigned 32 bit integer
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### nomUnsignedEightBytes(data, endianess) -> NomUnsigned | NomError
 
 Nom helper to parse eight bytes into unsigned 64 bit integer
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### nomUnsignedTwoBytes(data, endianess) -> NomUnsigned | NomError
 
 Nom helper to parse two bytes into unsigned 16 bit integer
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### nomUnsignedOneBytes(data, endianess) -> NomUnsigned | NomError
 
 Nom helper to parse one bytes into unsigned 8 bit integer
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### nomUnsignedSixteenBytes(data, endianess) -> NomUnsignedLarge | NomError
 
 Nom helper to parse sixteen bytes into unsigned 128 bit integer as a string
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### nomSignedFourBytes(data, endianess) -> NomSigned | NomError
 
 Nom helper to parse four bytes into signed 32 bit integer
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### nomSignedEightBytes(data, endianess) -> NomSigned | NomError
 
 Nom helper to parse eight bytes into signed 64 bit integer
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### nomSignedTwoBytes(data, endianess) -> NomSigned | NomError
 
 Nom helper to parse two bytes into signed 16 bit integer
 
-| Param     | Type         | Description             |
-| --------- | ------------ | ----------------------- |
-| data      | `Uint8Array` | Bytes to provide to nom |
-| endianess | `Endian`     | Endian type of `data`   |
+| Param     | Type       | Description             |
+| --------- | ---------- | ----------------------- |
+| data      | Uint8Array | Bytes to provide to nom |
+| endianess | Endian     | Endian type of data     |
 
 ### take(data, input) -> Nom | NomError
 
 Nom provided string or bytes based on input length. This function exposes the
 nom [take](https://docs.rs/nom/latest/nom/bytes/complete/fn.take.html) function.
 
-| Param | Type                   | Description                                     |
-| ----- | ---------------------- | ----------------------------------------------- |
-| data  | `string OR Uint8Array` | String or bytes to provide to nom               |
-| input | `number`               | How many bytes or characters nom should consume |
+| Param | Type                 | Description                                     |
+| ----- | -------------------- | ----------------------------------------------- |
+| data  | string OR Uint8Array | String or bytes to provide to nom               |
+| input | number               | How many bytes or characters nom should consume |
 
 ```typescript
 function main() {
@@ -182,12 +182,12 @@ console.log(string_value);
 
 Nom data **until** provided input. This function exposes the nom
 [take_until](https://docs.rs/nom/latest/nom/bytes/complete/fn.take_until.html)
-function. If the `input` does not exist, we will get an error.
+function. If the `input` does not exist, you will get an error.
 
-| Param | Type                   | Description                                         |
-| ----- | ---------------------- | --------------------------------------------------- |
-| data  | `string OR Uint8Array` | String or bytes to provide to nom                   |
-| input | `string OR Uint8Array` | Nom `data` until input. Must be same type as `data` |
+| Param | Type                 | Description                                     |
+| ----- | -------------------- | ----------------------------------------------- |
+| data  | string OR Uint8Array | String or bytes to provide to nom               |
+| input | string OR Uint8Array | Nom data until input. Must be same type as data |
 
 Psuedo-code example below:
 
@@ -238,10 +238,10 @@ Nom data while data **IS** equal to input. This function exposes the nom
 [take_while](https://docs.rs/nom/latest/nom/bytes/complete/fn.take_while.html)
 function.
 
-| Param | Type                   | Description                                                                                                          |
-| ----- | ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| data  | `string OR Uint8Array` | String or bytes to provide to nom                                                                                    |
-| input | `string OR number`     | Nom `data` until input. Must be single character if `data` is `string` or a number \<= 255 if `data` is `Uint8Array` |
+| Param | Type                 | Description                                                                                                    |
+| ----- | -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| data  | string OR Uint8Array | String or bytes to provide to nom                                                                              |
+| input | string OR number     | Nom data until input. Must be single character if data is string or a number (&lt;= 255) if data is Uint8Array |
 
 Psuedo-code example below:
 

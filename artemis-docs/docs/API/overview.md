@@ -4,10 +4,12 @@ sidebar_position: 1
 
 # API Intro
 
-Currently the artemis API is very simplistic. It just exposes Rust functions
-that are callable from JavaScript. The
+Currently the artemis API is very basic. It mainly exposes Rust functions that
+are callable from JavaScript. The
 [artemis-api](https://github.com/puffyCid/artemis-api) contains TypeScript
-bindings to make it easier for users to script and call these functions.
+bindings to make it easier for users to script and call these functions. There
+also a handful of API functions for artifact parsers that are written in pure
+TypeScript.
 
 The API can be broken down into two broad groups of categories:
 

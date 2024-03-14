@@ -6,24 +6,17 @@ import { WindowsError } from "./errors.ts";
  * @param drive Optional altertnative drive. Will use the `SystemDrive` by default (typically C)
  * @returns Array of `RecycleBin` entries or `WindowsError`
  */
-export function getRecycleBin(drive?: string): RecycleBin[] | WindowsError {
+export function getRecycleBin(): RecycleBin[] | WindowsError {
   try {
-    if (drive === undefined) {
-      //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.get_recycle_bin();
-      const bin: RecycleBin[] = JSON.parse(data);
-
-      return bin;
-    }
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_recycle_bin(drive);
+    const data = Deno.core.ops.get_recycle_bin();
     const bin: RecycleBin[] = JSON.parse(data);
 
     return bin;
   } catch (err) {
     return new WindowsError(
       "RECYCLEBIN",
-      `failed to parse recyclebin ${drive}: ${err}`,
+      `failed to parse recyclebin: ${err}`,
     );
   }
 }

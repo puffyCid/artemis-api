@@ -5,6 +5,7 @@ export type ErrorName =
   | "JOURNAL"
   | "LOGON"
   | "DEBPACKAGES"
-  | "SUDOLOGS";
+  | "SUDOLOGS"
+  | "RPMPACKAGES";
 
 export class LinuxError extends ErrorBase<ErrorName> {}

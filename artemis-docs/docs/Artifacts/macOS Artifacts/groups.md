@@ -34,8 +34,8 @@ collection_id = 1
 output = "local"
 
 [[artifacts]]
-artifact_name = "groups"
-[artifacts.groups]
+artifact_name = "groups-macos"
+[artifacts.groups_macos]
 # Optional
 # alt_path = ""
 ```

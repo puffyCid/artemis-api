@@ -6,7 +6,7 @@ description: Current limitations
 # Limitations
 
 It is important to understand the JavaScript runtime for artemis is **not** like
-normal JavaScript runtimes like `nodejs`, `deno`, `bun`, etc. These runtimes are
+normal JavaScript runtimes like NodeJS, Deno, Bun, etc. These runtimes are
 primarily designed to create web apps.
 
 Therefore tutorials or example scripts created for other runtimes may not work
@@ -23,8 +23,8 @@ There are currently some additional limitations to scripting:
    execute TypeScrpt scripts directly. You **must** compile and bundle them into
    one JavaScript file.
 2. The JavaScript must be in common JS format (cjs). EMCAScript (ES) module
-   scripts are not supported. The example code below uses `esbuild` to bundle
-   the `main.ts` file to JavaScript using CJS format via `deno run build.ts`:
+   scripts are not supported. The example code below uses esbuild to bundle the
+   main.ts file to JavaScript using CJS format via `deno run build.ts`:
 
 ```typescript
 import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";

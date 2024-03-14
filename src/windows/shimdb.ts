@@ -18,26 +18,6 @@ export function getShimdb(): Shimdb[] | WindowsError {
 }
 
 /**
- * Function to parse `ShimDB` entries on an alternative drive
- * @param drive drive letter
- * @returns Array of `ShimDB` entries parsed from a Windows drive letter or `WindowsError`
- */
-export function getAltShimdb(drive: string): Shimdb[] | WindowsError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_shimdb(drive);
-
-    const results: Shimdb[] = JSON.parse(data);
-    return results;
-  } catch (err) {
-    return new WindowsError(
-      "SHIMDB",
-      `failed to parse shimdb at drive ${drive}: ${err}`,
-    );
-  }
-}
-
-/**
  * Function to parse a custom SDB file. SDB files can exist anywhere on a Windows system
  * Will only read files less than 10MB in size (SDB files are typically only 1-5KB in size)
  * @param path full path to custom sdb file

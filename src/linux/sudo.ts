@@ -14,7 +14,7 @@ import { LinuxError } from "./errors.ts";
 export function getSudoLogs(): Journal[] | LinuxError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_sudologs();
+    const data = Deno.core.ops.get_sudologs_linux();
 
     const log_data: Journal[] = JSON.parse(data);
     return log_data;

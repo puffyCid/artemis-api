@@ -5,7 +5,7 @@
  * References:
  *  - https://kb.mozillazine.org/Places.sqlite
  */
-interface FirefoxHistory {
+export interface FirefoxHistory {
   /**Array of history entries */
   history: RawFirefoxHistory[];
   /**Path associated with the history file */
@@ -17,7 +17,7 @@ interface FirefoxHistory {
 /**
  * An interface representing the Firefox SQLITE tables: `moz_places` and `moz_origins`
  */
-interface RawFirefoxHistory {
+export interface RawFirefoxHistory {
   /**SQLITE row id */
   moz_places_id: number;
   /**Page URL */
@@ -59,7 +59,7 @@ interface RawFirefoxHistory {
  * References:
  * https://kb.mozillazine.org/Places.sqlite
  */
-interface FirefoxDownloads {
+export interface FirefoxDownloads {
   /**Array of downloads entries */
   downloads: RawFirefoxDownloads[];
   /**Path associated with the downloads file */
@@ -71,7 +71,7 @@ interface FirefoxDownloads {
 /**
  * An interface representing the Firefox SQLITE tables: `moz_places`, `moz_origins`, `moz_annos`, `moz_anno_attributes`
  */
-interface RawFirefoxDownloads {
+export interface RawFirefoxDownloads {
   /**ID for SQLITE row */
   id: number;
   /**ID to history entry */
@@ -94,4 +94,23 @@ interface RawFirefoxDownloads {
   name: string;
   /**History data associated with downloaded file */
   history: RawFirefoxHistory;
+}
+
+export interface FirefoxCookies {
+  id: number;
+  origin_attributes: string;
+  name?: string;
+  value?: string;
+  host?: string;
+  path?: string;
+  expiry?: number;
+  last_accessed?: number;
+  creation_time?: number;
+  is_secure?: boolean;
+  is_http_only?: boolean;
+  in_browser_element: boolean;
+  same_site: boolean;
+  raw_same_site: boolean;
+  scheme_map: number;
+  db_path: string;
 }

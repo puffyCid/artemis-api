@@ -19,26 +19,6 @@ export function getTasks(): TaskData | WindowsError {
 }
 
 /**
- * Parse the Schedule Task files using an alternative dive letter
- * @param drive Alternative drive letter to use
- * @returns Parsed XML and Job Task files or `WindowsError`
- */
-export function getAltTasks(drive: string): TaskData | WindowsError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_tasks(drive);
-    const tasks: TaskData = JSON.parse(data);
-
-    return tasks;
-  } catch (err) {
-    return new WindowsError(
-      "TASKS",
-      `failed to parse tasks at drive ${drive}: ${err}`,
-    );
-  }
-}
-
-/**
  * Parse a single Task file at provided path. Supports Job and XML files.
  * @param path Path to Task file
  * @returns Return either a parsed XML or Job file or `WindowsError`

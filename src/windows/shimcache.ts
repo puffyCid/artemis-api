@@ -18,21 +18,21 @@ export function getShimcache(): Shimcache[] | WindowsError {
 }
 
 /**
- * Function to parse `Shimcache` entries on an alternative drive
- * @param drive drive letter
- * @returns Array of `Shimcache` entries parsed from a Windows drive letter or `WindowsError`
+ * Function to parse `Shimcache` entries on an alternative path
+ * @param path Full path to SYSTEM file
+ * @returns Array of `Shimcache` entries or `WindowsError`
  */
-export function getAltShimcache(drive: string): Shimcache[] | WindowsError {
+export function getAltShimcache(path: string): Shimcache[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_shimcache(drive);
+    const data = Deno.core.ops.get_alt_shimcache(path);
 
     const results: Shimcache[] = JSON.parse(data);
     return results;
   } catch (err) {
     return new WindowsError(
       "SHIMCACHE",
-      `failed to parse shimcache at drive ${drive}: ${err}`,
+      `failed to parse shimcache at path ${path}: ${err}`,
     );
   }
 }

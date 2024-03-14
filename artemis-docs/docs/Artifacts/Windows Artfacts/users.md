@@ -33,17 +33,17 @@ collection_id = 1
 output = "local"
 
 [[artifacts]]
-artifact_name = "users"
-[artifacts.users]
+artifact_name = "users-windows"
+[artifacts.users_windows]
 # Optional
-# alt_drive = 'C'
+# alt_file = "C:\\Artifacts\\SAM"
 ```
 
 # Collection Options
 
-- `alt_drive` Expects a single character value. Will use an alternative drive
-  letter when parsing the `SAM` file. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
+- `alt_file` Full path to alternative SAM Registry file. This configuration is
+  **optional**. By default artemis will parse the SAM Registry file at its
+  default location.
 
 # Output Structure
 

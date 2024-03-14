@@ -48,20 +48,20 @@ artifact_name = "registry" # Parses the whole Registry file
 user_hives = true # All NTUSER.DAT and UsrClass.dat
 system_hives = true # SYSTEM, SOFTWARE, SAM, SECURITY
 # Optional
-# alt_drive = 'D'
+# alt_file = "C:\\Artifacts\\SYSTEM"
 # Optional
 # path_regex = "" # Registry is converted to lowercase before all comparison operations. So any regex input will also be converted to lowercase
 ```
 
 # Collection Options
 
-- `user_hives` Parse all user `Registry` files `NTUSER.DAT` and `UsrClass.dat`.
+- `user_hives` Parse all user Registry files `NTUSER.DAT` and `UsrClass.dat`.
   This configuration is **required**
-- `system_hives` Parse all system `Registry` files `SYSTEM`, `SAM`, `SOFTWARE`,
+- `system_hives` Parse all system Registry files `SYSTEM`, `SAM`, `SOFTWARE`,
   `SECURITY`. This configuration is **required**
-- `alt_drive` Use an alternative driver. This configuration is **optional**. By
-  default artemis will use the `%systemdrive%` value (typically `C`)
-- `path_regex` Only return `Registry` keys that match provided `path_regex`. All
+- `alt_file` Full path to alternative Registry file. This configuration is
+  **optional**.
+- `path_regex` Only return Registry keys that match provided `path_regex`. All
   comparisons are first converted to lowercase. This configuration is
   **optional**. Default is no Regex
 

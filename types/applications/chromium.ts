@@ -6,7 +6,7 @@
  *  - https://en.wikiversity.org/wiki/Chromium_browsing_history_database
  *  - https://gist.github.com/dropmeaword/9372cbeb29e8390521c2
  */
-interface ChromiumHistory {
+export interface ChromiumHistory {
   /**Array of history entries */
   history: RawChromiumHistory[];
   /**Path associated with the history file */
@@ -18,7 +18,7 @@ interface ChromiumHistory {
 /**
  * An interface representing the Chromium SQLITE tables: `urls` and `visits`
  */
-interface RawChromiumHistory {
+export interface RawChromiumHistory {
   /**Row ID value */
   id: number;
   /**Page URL */
@@ -54,7 +54,7 @@ interface RawChromiumHistory {
  * References:
  * https://en.wikiversity.org/wiki/Chromium_browsing_history_database
  */
-interface ChromiumDownloads {
+export interface ChromiumDownloads {
   /**Array of downloads entries */
   downloads: RawChromiumDownloads[];
   /**Path associated with the downloads file */
@@ -66,7 +66,7 @@ interface ChromiumDownloads {
 /**
  * An interface representing the Chromium SQLITE tables: `downloads` and  `downloads_url_chains`
  */
-interface RawChromiumDownloads {
+export interface RawChromiumDownloads {
   /**Row ID */
   id: number;
   /**GUID for download */
@@ -125,4 +125,28 @@ interface RawChromiumDownloads {
   chain_index: number;
   /**URL for download */
   url: string;
+}
+
+export interface ChromiumCookies {
+  creation: number;
+  host_key: string;
+  top_frame_site_key: string;
+  name: string;
+  value: string;
+  /**This value is currently Base64 encoded */
+  encrypted_value: string;
+  path: string;
+  expires: number;
+  is_secure: boolean;
+  is_httponly: boolean;
+  last_access: number;
+  has_expires: boolean;
+  is_persistent: boolean;
+  priority: number;
+  samesite: number;
+  source_scheme: number;
+  source_port: number;
+  is_same_party: number;
+  last_update: number;
+  db_path: string;
 }

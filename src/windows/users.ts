@@ -3,12 +3,12 @@ import { WindowsError } from "./errors.ts";
 
 /**
  * Function to parse Windows user entries
- * @returns Array of `UserInfo` entries parsed from a Windows drive letter or `WindowsError`
+ * @returns Array of `UserInfo` entries or `WindowsError`
  */
 export function getUsersWin(): UserInfo[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_users();
+    const data = Deno.core.ops.get_users_windows();
 
     const results: UserInfo[] = JSON.parse(data);
     return results;
@@ -18,21 +18,21 @@ export function getUsersWin(): UserInfo[] | WindowsError {
 }
 
 /**
- * Function to parse Windows user entries on an alternative drive
- * @param drive drive letter
- * @returns Array of `UserInfo` entries parsed from a Windows drive letter or `WindowsError`
+ * Function to parse Windows user entries on an alternative path
+ * @param path Full path to SAM file
+ * @returns Array of `UserInfo` entries or `WindowsError`
  */
-export function getAltUsersWin(drive: string): UserInfo[] | WindowsError {
+export function getAltUsersWin(path: string): UserInfo[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_users(drive);
+    const data = Deno.core.ops.get_alt_users_windows(path);
 
     const results: UserInfo[] = JSON.parse(data);
     return results;
   } catch (err) {
     return new WindowsError(
       "USERS",
-      `failed to parse users at drive ${drive}: ${err}`,
+      `failed to parse users at path ${path}: ${err}`,
     );
   }
 }
