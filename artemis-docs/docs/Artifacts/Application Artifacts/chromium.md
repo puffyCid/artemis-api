@@ -7,15 +7,15 @@ keywords:
 
 # Chromium
 
-`Chromium` is a popular open source web browser created and maintained by
-Google. The `Chromium` codebase also used for multiple other browsers such as:
+Chromium is a popular open source web browser created and maintained by Google.
+The Chromium codebase also used for multiple other browsers such as:
 
 - Chrome
 - Microsoft Edge
 - Opera
 - Brave
 
-artemis supports parsing browsing history and downloads from `Chromium`. History
+Artemis supports parsing browsing history and downloads from Chromium. History
 and downloads data are stored in a SQLITE file.
 
 Other parsers:

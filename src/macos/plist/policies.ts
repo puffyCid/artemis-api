@@ -9,7 +9,7 @@ import { getPlist } from "../plist.ts";
 export function passwordPolicy(): PasswordPolicy[] | MacosError {
   const path = "/var/db/dslocal/nodes/Default/config/shadowhash.plist";
   const policy_data = getPlist(path);
-  if (policy_data instanceof Error) {
+  if (policy_data instanceof MacosError) {
     return policy_data;
   } else if (policy_data instanceof Array) {
     return new MacosError(
@@ -24,10 +24,10 @@ export function passwordPolicy(): PasswordPolicy[] | MacosError {
   const policy_entries = policy["accountPolicyData"] as number[][];
   for (const entry of policy_entries) {
     const result = getPlist(Uint8Array.from(entry));
-    if (policy_data instanceof Error) {
+    if (
+      policy_data instanceof MacosError || policy_data instanceof Uint8Array
+    ) {
       console.error(`Could not get embedded policy ${policy_data}`);
-      continue;
-    } else if (policy_data instanceof Array) {
       continue;
     }
 

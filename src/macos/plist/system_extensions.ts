@@ -8,8 +8,8 @@ import { getPlist } from "../plist.ts";
  */
 export function systemExtensions(): SystemExtension[] | MacosError {
   const path = "/Library/SystemExtensions/db.plist";
-  const plist_data = getPlist(path) as Record<string, unknown>;
-  if (plist_data instanceof MacosError) {
+  const plist_data = getPlist(path);
+  if (plist_data instanceof MacosError || plist_data instanceof Uint8Array) {
     console.warn(`failed to parse plist ${path}: ${plist_data}`);
     return new MacosError(
       "SYSTEM_EXTENSION",

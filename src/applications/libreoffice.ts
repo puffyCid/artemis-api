@@ -1,4 +1,7 @@
+import { EncodingError } from "../encoding/errors.ts";
 import { readXml } from "../encoding/xml.ts";
+import { getEnvValue } from "../environment/env.ts";
+import { FileError } from "../filesystem/errors.ts";
 import { glob } from "../filesystem/files.ts";
 import { PlatformType } from "../system/systeminfo.ts";
 import { ApplicationError } from "./errors.ts";
@@ -20,8 +23,12 @@ export function recentFiles(
       break;
     }
     case PlatformType.Windows: {
+      let drive = getEnvValue("SystemDrive");
+      if (drive === "") {
+        drive = "C";
+      }
       path =
-        "C:\\Users\\*\\AppData\\Roaming\\LibreOffice\\*\\user\\registrymodifications.xcu";
+        `${drive}:\\Users\\*\\AppData\\Roaming\\LibreOffice\\*\\user\\registrymodifications.xcu`;
       break;
     }
     case PlatformType.Linux: {
@@ -30,7 +37,7 @@ export function recentFiles(
   }
 
   const paths = glob(path);
-  if (paths instanceof Error) {
+  if (paths instanceof FileError) {
     return new ApplicationError(
       "LIBREOFFICE",
       `failed to glob paths: ${paths}`,
@@ -46,7 +53,7 @@ export function recentFiles(
 
     // Read XML into JSON. registrymodifications.xcu is an XML file
     const xml_result = readXml(path.full_path);
-    if (xml_result instanceof Error) {
+    if (xml_result instanceof EncodingError) {
       console.error(`Could not parse xml at ${path}: ${xml_result}`);
       continue;
     }

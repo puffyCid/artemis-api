@@ -1,4 +1,5 @@
 import { getPlist } from "../../../mod.ts";
+import { MacosError } from "../errors.ts";
 import { scanApps } from "./apps.ts";
 
 /**
@@ -26,7 +27,7 @@ function checkDockPersistence(apps: Applications[]): Applications[] {
     }
 
     const data = getPlist(app.info);
-    if (data instanceof Error || data instanceof Uint8Array) {
+    if (data instanceof MacosError || data instanceof Uint8Array) {
       console.error(`Failed to parse plist ${app.info}: ${data}`);
       continue;
     }

@@ -100,7 +100,7 @@ export function getChromiumDownloads(
 }
 
 /**
- * Fucntion to parse Chromium cookies. Can alternative path to cookie database, otherwise will use default path
+ * Function to parse Chromium cookies. Can alternative path to cookie database, otherwise will use default path
  * @param platform OS platform to query for Chromium cookies
  * @param path Alternative path to Chromium cookie database
  * @returns Array of `ChromiumCookies` or `ApplicationError`

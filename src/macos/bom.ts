@@ -9,7 +9,9 @@
  */
 import { Bom, BomFiles } from "../../types/macos/bom.ts";
 import { extractUtf8String } from "../encoding/mod.ts";
+import { FileError } from "../filesystem/errors.ts";
 import { readFile } from "../filesystem/files.ts";
+import { NomError } from "../nom/error.ts";
 import {
   Endian,
   nomUnsignedEightBytes,
@@ -27,32 +29,32 @@ import { getPlist } from "./plist.ts";
  */
 export function parseBom(path: string): Bom | MacosError {
   const data = readFile(path);
-  if (data instanceof Error) {
+  if (data instanceof FileError) {
     return new MacosError("BOM", `failed to read ${path}: ${data}`);
   }
 
   const header = parseHeader(data);
-  if (header instanceof Error) {
+  if (header instanceof MacosError) {
     return new MacosError("BOM", `failed to parse header: ${header}`);
   }
 
   const table_data = take(data, header.index_table_offset);
-  if (table_data instanceof Error) {
+  if (table_data instanceof NomError) {
     return new MacosError("BOM", `failed to get table data: ${table_data}`);
   }
 
   const table = getPointers(table_data.remaining as Uint8Array);
-  if (table instanceof Error) {
+  if (table instanceof MacosError) {
     return new MacosError("BOM", `failed to parse table: ${table_data}`);
   }
 
   const var_data = take(data, header.var_offset);
-  if (var_data instanceof Error) {
+  if (var_data instanceof NomError) {
     return new MacosError("BOM", `failed to get var data: ${table_data}`);
   }
 
   const vars = getVars(var_data.remaining as Uint8Array);
-  if (vars instanceof Error) {
+  if (vars instanceof MacosError) {
     return new MacosError("BOM", `failed to parse vars: ${table_data}`);
   }
 
@@ -64,7 +66,7 @@ export function parseBom(path: string): Bom | MacosError {
     }
 
     const tree_entry = parseTreeEntry(data, entry.index, table.pointers);
-    if (tree_entry instanceof Error) {
+    if (tree_entry instanceof MacosError) {
       return new MacosError("BOM", `failed to get tree entry: ${tree_entry}`);
     }
 
@@ -72,7 +74,7 @@ export function parseBom(path: string): Bom | MacosError {
     const index_list = [];
     while (forward != 0) {
       let tree = parseTree(data, forward, table.pointers);
-      if (tree instanceof Error) {
+      if (tree instanceof MacosError) {
         return new MacosError("BOM", `failed to get tree info: ${tree}`);
       }
       let index_data = tree.data;
@@ -80,12 +82,12 @@ export function parseBom(path: string): Bom | MacosError {
       // If entry is not a leaf get next Tree based on data
       while (!tree.is_leaf) {
         const index = parseTreeIndex(index_data);
-        if (index instanceof Error) {
+        if (index instanceof MacosError) {
           return new MacosError("BOM", `failed to get tree index: ${index}`);
         }
 
         tree = parseTree(data, index.tree_index.value_index, table.pointers);
-        if (tree instanceof Error) {
+        if (tree instanceof MacosError) {
           return new MacosError("BOM", `failed to get tree info: ${tree}`);
         }
         index_data = tree.data;
@@ -95,7 +97,7 @@ export function parseBom(path: string): Bom | MacosError {
 
       while (count < tree.count) {
         const index = parseTreeIndex(index_data);
-        if (index instanceof Error) {
+        if (index instanceof MacosError) {
           return new MacosError("BOM", `failed to get tree index: ${index}`);
         }
 
@@ -112,22 +114,22 @@ export function parseBom(path: string): Bom | MacosError {
     const bom_map = new Map<number, BomData>();
     for (const tree_index of index_list) {
       const key_data = getBlock(data, tree_index.key_index, table.pointers);
-      if (key_data instanceof Error) {
+      if (key_data instanceof MacosError) {
         return new MacosError("BOM", `failed to get key data: ${key_data}`);
       }
 
       const bom_file = getFile(key_data);
-      if (bom_file instanceof Error) {
+      if (bom_file instanceof MacosError) {
         return new MacosError("BOM", `failed to get file: ${bom_file}`);
       }
 
       const value_data = getBlock(data, tree_index.value_index, table.pointers);
-      if (value_data instanceof Error) {
+      if (value_data instanceof MacosError) {
         return new MacosError("BOM", `failed to get vale data: ${value_data}`);
       }
 
       const path = getPath(value_data);
-      if (path instanceof Error) {
+      if (path instanceof MacosError) {
         return new MacosError(
           "BOM",
           `failed to get path id and index: ${value_data}`,
@@ -135,7 +137,7 @@ export function parseBom(path: string): Bom | MacosError {
       }
 
       const bom_info = getPathInfo(data, path.index, table.pointers);
-      if (bom_info instanceof Error) {
+      if (bom_info instanceof MacosError) {
         return new MacosError("BOM", `failed to get path info: ${bom_info}`);
       }
       bom_info.parent = bom_file.parent;
@@ -152,7 +154,7 @@ export function parseBom(path: string): Bom | MacosError {
 
   const receipt_file = path.replace(".bom", ".plist");
   const bom = parseReceipt(receipt_file);
-  if (bom instanceof Error) {
+  if (bom instanceof MacosError) {
     return new MacosError("BOM", `failed to parse receipt: ${table_data}`);
   }
 
@@ -169,11 +171,11 @@ export function parseBom(path: string): Bom | MacosError {
  */
 export function parseReceipt(path: string): Bom | MacosError {
   const data = readFile(path);
-  if (data instanceof Error) {
+  if (data instanceof FileError) {
     return new MacosError("BOM", `failed to read ${path}: ${data}`);
   }
   const plist_data = getPlist(data);
-  if (data instanceof Error) {
+  if (data instanceof MacosError) {
     return new MacosError("BOM", `failed to parse ${path}: ${data}`);
   }
 
@@ -208,17 +210,17 @@ interface Header {
  */
 function parseHeader(data: Uint8Array): Header | MacosError {
   const sig = nomUnsignedEightBytes(data, Endian.Be);
-  if (sig instanceof Error) {
+  if (sig instanceof NomError) {
     return new MacosError("BOM", `failed to parse signature: ${sig}`);
   }
 
   const version = nomUnsignedFourBytes(sig.remaining, Endian.Be);
-  if (version instanceof Error) {
+  if (version instanceof NomError) {
     return new MacosError("BOM", `failed to parse version: ${version}`);
   }
 
   const number_blocks = nomUnsignedFourBytes(version.remaining, Endian.Be);
-  if (number_blocks instanceof Error) {
+  if (number_blocks instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse number blocks: ${number_blocks}`,
@@ -229,7 +231,7 @@ function parseHeader(data: Uint8Array): Header | MacosError {
     number_blocks.remaining,
     Endian.Be,
   );
-  if (index_table_offset instanceof Error) {
+  if (index_table_offset instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse index table offset: ${index_table_offset}`,
@@ -240,7 +242,7 @@ function parseHeader(data: Uint8Array): Header | MacosError {
     index_table_offset.remaining,
     Endian.Be,
   );
-  if (index_length instanceof Error) {
+  if (index_length instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse index length: ${index_length}`,
@@ -248,12 +250,12 @@ function parseHeader(data: Uint8Array): Header | MacosError {
   }
 
   const var_offset = nomUnsignedFourBytes(index_length.remaining, Endian.Be);
-  if (var_offset instanceof Error) {
+  if (var_offset instanceof NomError) {
     return new MacosError("BOM", `failed to parse var offset: ${var_offset}`);
   }
 
   const var_length = nomUnsignedFourBytes(var_offset.remaining, Endian.Be);
-  if (var_length instanceof Error) {
+  if (var_length instanceof NomError) {
     return new MacosError("BOM", `failed to parse var length: ${var_length}`);
   }
 
@@ -287,7 +289,7 @@ interface Pointer {
  */
 function getPointers(data: Uint8Array): Table | MacosError {
   const number_pointers = nomUnsignedFourBytes(data, Endian.Be);
-  if (number_pointers instanceof Error) {
+  if (number_pointers instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse number pointers: ${number_pointers}`,
@@ -353,7 +355,7 @@ interface Var {
  */
 function getVars(data: Uint8Array): Vars | MacosError {
   const count = nomUnsignedFourBytes(data, Endian.Be);
-  if (count instanceof Error) {
+  if (count instanceof NomError) {
     return new MacosError("BOM", `failed to parse vars count: ${count}`);
   }
 
@@ -366,17 +368,17 @@ function getVars(data: Uint8Array): Vars | MacosError {
   let var_data = count.remaining;
   while (var_count < vars.count) {
     const index = nomUnsignedFourBytes(var_data, Endian.Be);
-    if (index instanceof Error) {
+    if (index instanceof NomError) {
       return new MacosError("BOM", `failed to parse vars index: ${index}`);
     }
 
     const length = nomUnsignedOneBytes(index.remaining, Endian.Be);
-    if (length instanceof Error) {
+    if (length instanceof NomError) {
       return new MacosError("BOM", `failed to parse vars length: ${length}`);
     }
 
     const name_data = take(length.remaining, length.value);
-    if (name_data instanceof Error) {
+    if (name_data instanceof NomError) {
       return new MacosError(
         "BOM",
         `failed to get vars name length: ${name_data}`,
@@ -453,17 +455,17 @@ function parseTreeEntry(
   pointers: Pointer[],
 ): TreeEntry | MacosError {
   const tree_data = getBlock(data, index, pointers);
-  if (tree_data instanceof Error) {
+  if (tree_data instanceof MacosError) {
     return new MacosError("BOM", `failed to get tree entry data: ${tree_data}`);
   }
 
   const sig = nomUnsignedFourBytes(tree_data, Endian.Be);
-  if (sig instanceof Error) {
+  if (sig instanceof NomError) {
     return new MacosError("BOM", `failed to parse tree entry sig: ${sig}`);
   }
 
   const version = nomUnsignedFourBytes(sig.remaining, Endian.Be);
-  if (version instanceof Error) {
+  if (version instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree entry version: ${version}`,
@@ -471,7 +473,7 @@ function parseTreeEntry(
   }
 
   const tree_index = nomUnsignedFourBytes(version.remaining, Endian.Be);
-  if (tree_index instanceof Error) {
+  if (tree_index instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree entry index: ${tree_index}`,
@@ -479,7 +481,7 @@ function parseTreeEntry(
   }
 
   const block_size = nomUnsignedFourBytes(tree_index.remaining, Endian.Be);
-  if (block_size instanceof Error) {
+  if (block_size instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree entry block size: ${block_size}`,
@@ -487,7 +489,7 @@ function parseTreeEntry(
   }
 
   const path_count = nomUnsignedFourBytes(block_size.remaining, Endian.Be);
-  if (path_count instanceof Error) {
+  if (path_count instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree entry path count: ${path_count}`,
@@ -495,7 +497,7 @@ function parseTreeEntry(
   }
 
   const unknown = nomUnsignedOneBytes(block_size.remaining, Endian.Be);
-  if (unknown instanceof Error) {
+  if (unknown instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree entry unknown: ${unknown}`,
@@ -546,22 +548,22 @@ function parseTree(
   pointers: Pointer[],
 ): Tree | MacosError {
   const tree_data = getBlock(data, index, pointers);
-  if (tree_data instanceof Error) {
+  if (tree_data instanceof MacosError) {
     return new MacosError("BOM", `failed to get tree data: ${tree_data}`);
   }
 
   const leaf = nomUnsignedTwoBytes(tree_data, Endian.Be);
-  if (leaf instanceof Error) {
+  if (leaf instanceof NomError) {
     return new MacosError("BOM", `failed to parse tree leaf data: ${leaf}`);
   }
 
   const count = nomUnsignedTwoBytes(leaf.remaining, Endian.Be);
-  if (count instanceof Error) {
+  if (count instanceof NomError) {
     return new MacosError("BOM", `failed to parse tree count data: ${count}`);
   }
 
   const forward = nomUnsignedFourBytes(count.remaining, Endian.Be);
-  if (forward instanceof Error) {
+  if (forward instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree forward data: ${forward}`,
@@ -569,7 +571,7 @@ function parseTree(
   }
 
   const backward = nomUnsignedFourBytes(forward.remaining, Endian.Be);
-  if (backward instanceof Error) {
+  if (backward instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree backward data: ${backward}`,
@@ -595,7 +597,7 @@ function parseTree(
  */
 function parseTreeIndex(data: Uint8Array): Index | MacosError {
   const value_index = nomUnsignedFourBytes(data, Endian.Be);
-  if (value_index instanceof Error) {
+  if (value_index instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree value index: ${value_index}`,
@@ -603,7 +605,7 @@ function parseTreeIndex(data: Uint8Array): Index | MacosError {
   }
 
   const key_index = nomUnsignedFourBytes(value_index.remaining, Endian.Be);
-  if (key_index instanceof Error) {
+  if (key_index instanceof NomError) {
     return new MacosError(
       "BOM",
       `failed to parse tree key index: ${key_index}`,
@@ -635,7 +637,7 @@ interface BomFile {
  */
 function getFile(data: Uint8Array): BomFile | MacosError {
   const parent = nomUnsignedFourBytes(data, Endian.Be);
-  if (parent instanceof Error) {
+  if (parent instanceof NomError) {
     return new MacosError("BOM", `failed to parse bom file parent: ${parent}`);
   }
 
@@ -660,12 +662,12 @@ interface Path {
  */
 function getPath(data: Uint8Array): Path | MacosError {
   const id = nomUnsignedFourBytes(data, Endian.Be);
-  if (id instanceof Error) {
+  if (id instanceof NomError) {
     return new MacosError("BOM", `failed to parse path id: ${id}`);
   }
 
   const index = nomUnsignedFourBytes(id.remaining, Endian.Be);
-  if (index instanceof Error) {
+  if (index instanceof NomError) {
     return new MacosError("BOM", `failed to parse path index: ${index}`);
   }
 
@@ -712,54 +714,54 @@ function getPathInfo(
   pointers: Pointer[],
 ): PathInfo | MacosError {
   const path_data = getBlock(data, index, pointers);
-  if (path_data instanceof Error) {
+  if (path_data instanceof MacosError) {
     return new MacosError("BOM", `failed to get path data: ${path_data}`);
   }
 
   const type_data = nomUnsignedOneBytes(path_data, Endian.Be);
-  if (type_data instanceof Error) {
+  if (type_data instanceof NomError) {
     return new MacosError("BOM", `failed to parse path type: ${type_data}`);
   }
 
   const file_type = getType(type_data.value);
 
   const unknown = nomUnsignedOneBytes(type_data.remaining, Endian.Be);
-  if (unknown instanceof Error) {
+  if (unknown instanceof NomError) {
     return new MacosError("BOM", `failed to parse path unknown: ${unknown}`);
   }
 
   const arch = nomUnsignedTwoBytes(unknown.remaining, Endian.Be);
-  if (arch instanceof Error) {
+  if (arch instanceof NomError) {
     return new MacosError("BOM", `failed to parse path arch: ${arch}`);
   }
 
   const mode = nomUnsignedTwoBytes(arch.remaining, Endian.Be);
-  if (mode instanceof Error) {
+  if (mode instanceof NomError) {
     return new MacosError("BOM", `failed to parse path mode: ${mode}`);
   }
 
   const user = nomUnsignedFourBytes(mode.remaining, Endian.Be);
-  if (user instanceof Error) {
+  if (user instanceof NomError) {
     return new MacosError("BOM", `failed to parse path user: ${user}`);
   }
 
   const group = nomUnsignedFourBytes(user.remaining, Endian.Be);
-  if (group instanceof Error) {
+  if (group instanceof NomError) {
     return new MacosError("BOM", `failed to parse path group: ${group}`);
   }
 
   const modified = nomUnsignedFourBytes(group.remaining, Endian.Be);
-  if (modified instanceof Error) {
+  if (modified instanceof NomError) {
     return new MacosError("BOM", `failed to parse path modified: ${modified}`);
   }
 
   const size = nomUnsignedFourBytes(modified.remaining, Endian.Be);
-  if (size instanceof Error) {
+  if (size instanceof NomError) {
     return new MacosError("BOM", `failed to parse path size: ${size}`);
   }
 
   const unknown2 = nomUnsignedOneBytes(size.remaining, Endian.Be);
-  if (unknown2 instanceof Error) {
+  if (unknown2 instanceof NomError) {
     return new MacosError("BOM", `failed to parse path unknown2: ${unknown2}`);
   }
 
@@ -782,12 +784,12 @@ function getPathInfo(
   }
 
   const checksum = nomUnsignedFourBytes(unknown2.remaining, Endian.Be);
-  if (checksum instanceof Error) {
+  if (checksum instanceof NomError) {
     return new MacosError("BOM", `failed to parse path checksum: ${checksum}`);
   }
 
   const dev_type = nomUnsignedFourBytes(checksum.remaining, Endian.Be);
-  if (dev_type instanceof Error) {
+  if (dev_type instanceof NomError) {
     return new MacosError("BOM", `failed to parse path dev type: ${dev_type}`);
   }
 

@@ -1,4 +1,4 @@
-import { SingleRequirement } from "../../../types/macos/codesigning.d.ts";
+import { SingleRequirement } from "../../../types/macos/codesigning.ts";
 import { bytesToHexString, extractUtf8String } from "../../encoding/strings.ts";
 import { Endian, nomUnsignedFourBytes } from "../../nom/helpers.ts";
 import { take } from "../../nom/parsers.ts";

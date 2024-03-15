@@ -4,26 +4,39 @@
 export { getElf } from "./src/linux/elf.ts";
 export { getJournal } from "./src/linux/journal.ts";
 export { getLogon } from "./src/linux/logon.ts";
-export { getSudoLogs } from "./src/linux/sudo.ts";
+export { getSudoLogsLinux } from "./src/linux/sudo.ts";
 
 /**
  * macOS exported functions
  */
+export { parseAlias } from "./src/macos/alias.ts";
+export { parseBom } from "./src/macos/bom.ts";
 export { getEmond } from "./src/macos/emond.ts";
 export { getLoginitems } from "./src/macos/loginitems.ts";
 export { getLaunchdAgents, getLaunchdDaemons } from "./src/macos/launchd.ts";
 export { getGroups, getUsers } from "./src/macos/accounts.ts";
 export { getExecpolicy } from "./src/macos/execpolicy.ts";
 export { getFsevents } from "./src/macos/fsevents.ts";
+export { getHomebrewInfo } from "./src/macos/homebrew.ts";
 export { getMacho } from "./src/macos/macho.ts";
 export { getPlist } from "./src/macos/plist.ts";
-export { getUnifiedLog } from "./src/macos/unifiedlogs.ts";
+export { getUnifiedLog, setupUnifiedLogParser } from "./src/macos/unifiedlogs.ts";
 export {
   getSafariDownloads,
   getSafariHistory,
   getSafariUsersDownloads,
   getSafariUsersHistory,
 } from "./src/macos/safari.ts";
+export { setupSpotlightParser, getSpotlight } from "./src/macos/spotlight.ts";
+export { getSudoLogsMacos } from "./src/macos/sudo.ts";
+export { queryTccDb } from "./src/macos/sqlite/tcc.ts";
+export { scanApps, listApps } from "./src/macos/plist/apps.ts";
+export { dockTiles } from "./src/macos/plist/docktile.ts";
+export { firewallStatus } from "./src/macos/plist/firewall.ts";
+export { passwordPolicy } from "./src/macos/plist/policies.ts";
+export { systemExtensions } from "./src/macos/plist/system_extensions.ts";
+export { wifiNetworks } from "./src/macos/plist/wifi.ts";
+export { parseRequirementBlob } from "./src/macos/codesigning/blob.ts";
 
 /**
  * Unix exported functions
@@ -58,13 +71,16 @@ export {
   getChromiumHistory,
   getChromiumUsersDownloads,
   getChromiumUsersHistory,
+  getChromiumCookies,
 } from "./src/applications/chromium.ts";
 export {
   getFirefoxDownloads,
   getFirefoxHistory,
   getFirefoxUsersDownloads,
   getFirefoxUsersHistory,
+  getFirefoxCookies,
 } from "./src/applications/firefox.ts";
+export { fileHistory, getExtensions } from "./src/applications/vscode.ts";
 
 /**
  * Windows exported functions

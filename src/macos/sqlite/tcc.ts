@@ -1,10 +1,16 @@
 import { MacosError } from "../errors.ts";
-import { TccData, TccValues, ClientType, Reason, AuthValue } from "../../../types/macos/sqlite/tcc.ts";
+import {
+  AuthValue,
+  ClientType,
+  Reason,
+  TccData,
+  TccValues,
+} from "../../../types/macos/sqlite/tcc.ts";
 import { glob } from "../../filesystem/files.ts";
 import { FileError } from "../../filesystem/errors.ts";
 import { querySqlite } from "../../applications/sqlite.ts";
 import { ApplicationError } from "../../applications/errors.ts";
-import { SingleRequirement } from "../../../types/macos/codesigning.d.ts";
+import { SingleRequirement } from "../../../types/macos/codesigning.ts";
 import { decode } from "../../encoding/base64.ts";
 import { EncodingError } from "../../encoding/errors.ts";
 import { parseRequirementBlob } from "../codesigning/blob.ts";

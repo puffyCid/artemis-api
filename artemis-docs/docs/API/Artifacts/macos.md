@@ -16,7 +16,7 @@ to directory containing users. Otherwise will use default path on system
 | ----- | ------ | -------------------------------------------- |
 | path  | string | Optional alternative path to users directory |
 
-### getGroup() -> Groups[] | MacosError
+### getGroup(path) -> Groups[] | MacosError
 
 Return all local groups on macOS sysem. Can provide an optional alternative path
 to directory containing groups. Otherwise will use default path on system
@@ -47,7 +47,7 @@ try to find rules
 | ----- | ------ | ---------------------------------------- |
 | path  | String | Optional alternative path to emond rules |
 
-### getExecpolicy() -> ExecPolicy[] | MacosError
+### getExecpolicy(path) -> ExecPolicy[] | MacosError
 
 Parse the ExecPolicy sqlite database on macOS. Can provide an optional
 alternative path to ExecPolicy database. Otherwise will parse default database

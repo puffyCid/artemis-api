@@ -6,6 +6,7 @@ import {
 } from "../../../types/macos/plist/firewall.d.ts";
 import { parseAlias } from "../alias.ts";
 import { parseRequirementBlob } from "../codesigning/blob.ts";
+import { SigningError } from "../codesigning/errors.ts";
 import { MacosError } from "../errors.ts";
 import { getPlist } from "../plist.ts";
 
@@ -17,10 +18,10 @@ export function firewallStatus(): Firewall | MacosError {
   const path = "/Library/Preferences/com.apple.alf.plist";
 
   const plist_results = getPlist(path);
-  if (plist_results instanceof Error) {
+  if (
+    plist_results instanceof MacosError || plist_results instanceof Uint8Array
+  ) {
     return new MacosError("FIREWALL", `failed to parse plist ${plist_results}`);
-  } else if (plist_results instanceof Array) {
-    return new MacosError("FIREWALL", `Got array of bytes for plist`);
   }
 
   const results = plist_results as Record<string, string>;
@@ -112,8 +113,7 @@ function parseApplications(
   if (typeof (app["reqdata"]) === "object") {
     const app_data = Uint8Array.from(app["reqdata"]);
     const single_requirement = parseRequirementBlob(app_data);
-
-    if (single_requirement instanceof Error) {
+    if (single_requirement instanceof SigningError) {
       console.error(
         `Failed to get CodeSigning info for Firewall Application ${single_requirement}`,
       );
@@ -127,7 +127,7 @@ function parseApplications(
     const raw_plist = Uint8Array.from(app["alias"]);
     // Parse the embedded plist
     const embedded_plist = getPlist(raw_plist);
-    if (embedded_plist instanceof Error) {
+    if (embedded_plist instanceof MacosError) {
       return firewall;
     }
 
@@ -135,7 +135,7 @@ function parseApplications(
     if (embedded_plist instanceof Array) {
       const raw_bytes = Uint8Array.from(embedded_plist);
       const alias_result = parseAlias(raw_bytes);
-      if (alias_result instanceof Error) {
+      if (alias_result instanceof MacosError) {
         console.error(
           `Failed to get alias application info for Firewall Application ${alias_result}`,
         );

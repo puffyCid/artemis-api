@@ -11,7 +11,7 @@ import { LinuxError } from "./errors.ts";
  * Function to get `sudo logs`
  * @returns Array of `sudo log` entries from Linux Journal files or `LinuxError`
  */
-export function getSudoLogs(): Journal[] | LinuxError {
+export function getSudoLogsLinux(): Journal[] | LinuxError {
   try {
     //@ts-ignore: Custom Artemis function
     const data = Deno.core.ops.get_sudologs_linux();

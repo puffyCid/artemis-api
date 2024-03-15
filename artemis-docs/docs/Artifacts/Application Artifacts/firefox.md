@@ -7,9 +7,9 @@ keywords:
 
 # Firefox
 
-`Firefox` is a popular open source web browser created and maintained by
-Mozilla. artemis supports parsing browsing history and downloads from `Firefox`.
-History and downloads data are stored in a SQLITE file.
+Firefox is a popular open source web browser created and maintained by Mozilla.
+artemis supports parsing browsing history and downloads from Firefox. History
+and downloads data are stored in a SQLITE file.
 
 Other parsers:
 

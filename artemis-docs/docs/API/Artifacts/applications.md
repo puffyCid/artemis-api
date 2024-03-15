@@ -97,6 +97,16 @@ supports VSCodium.
 | -------- | ------------ | -------------------- |
 | platform | PlatformType | OS platform to parse |
 
+### getExtensions(platform, path) -> Extensions[] | ApplicationError
+
+Get installed VSCode or VSCodium extensions. Can also provide an optional
+alternative path to the extensions.json file. Otherwise will use default paths.
+
+| Param    | Type         | Description                             |
+| -------- | ------------ | --------------------------------------- |
+| platform | PlatformType | OS platform to parse)                   |
+| path     | string       | Optional path to a extensions.json file |
+
 ### querySqlite(path, query) -> Record&lt;string, unknown&gt;[] | ApplicationError
 
 Execute a SQLITe query against a provided database file. Databases are opened in
@@ -120,7 +130,7 @@ optional alternative path to the Cookie sqlite database instead
 ### getChromiumCookies(platform, path) -> Chromium[] | ApplicationError
 
 Get Chromium cookies for all users based on platform. Can also provide an
-optional alternative path to the Cookie sqlite database instead.
+optional alternative path to the Cookie sqlite database.
 
 All Chromium derived browsers should be supported.
 
