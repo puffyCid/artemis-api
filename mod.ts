@@ -121,3 +121,7 @@ export { getJumplistPath, getJumplists } from "./src/windows/jumplists.ts";
 export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
 export { getChocolateyInfo } from "./src/windows/chocolatey.ts";
 export { logons } from "./src/windows/eventlogs/logons.ts";
+export { getShellItem } from "./src/windows/shellitems.ts";
+export { userAccessLog } from "./src/windows/ese/ual.ts";
+export { parseTable } from "./src/windows/ese.ts";
+export { updateHistory } from "./src/windows/ese/updates.ts";
