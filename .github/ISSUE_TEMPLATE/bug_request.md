@@ -7,20 +7,24 @@ assignees: ''
 
 ---
 
-**Describe the bug** A clear and concise description of what the bug is.
+**Describe the bug**\
+A clear and concise description of what the bug is.
 
-**Steps to Reproduce** Steps to reproduce the behavior. Ex:
+**Steps to Reproduce**\
+Steps to reproduce the behavior. Ex:
 
 1. Executed artemis with provided toml file '...'
 2. Enabled json format and compression
 3. See error
 
-**Expected behavior** A clear and concise description of what you expected to
-happen.
+**Expected behavior**\
+A clear and concise description of what you expected to happen.
 
-**Current behavior** A clear and concise description of what happens instead.
+**Current behavior**\
+A clear and concise description of what happens instead.
 
-**Screenshots** If applicable, add screenshots to help explain your problem.
+**Screenshots**\
+If applicable, add screenshots to help explain your problem.
 
 **Environment**
 
@@ -28,4 +32,5 @@ happen.
 - Browser [e.g. chrome, safari]
 - artemis version
 
-**Additional context** Add any other context about the problem here.
+**Additional context**\
+Add any other context about the problem here.
