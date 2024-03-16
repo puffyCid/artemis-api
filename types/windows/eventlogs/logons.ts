@@ -1,4 +1,4 @@
-interface Logons {
+export interface Logons {
   logon_type: LogonType;
   sid: string;
   account_name: string;
@@ -13,7 +13,7 @@ interface Logons {
   duration: number;
 }
 
-interface Raw4624Logons {
+export interface Raw4624Logons {
   event_record_id: number;
   timestamp: bigint;
   data: {
@@ -82,7 +82,7 @@ interface Raw4624Logons {
   };
 }
 
-interface Raw4634Logoffs {
+export interface Raw4634Logoffs {
   event_record_id: number;
   timestamp: bigint;
   data: {

@@ -22,8 +22,8 @@ VSCode information.
 import {
   fileHistory,
   getExtensions,
+  PlatformType,
 } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
-import { PlatformType } from "../../Projects/Deno/artemis-api/src/system/systeminfo.ts";
 
 function main() {
   const results = fileHistory(PlatformType.Darwin);

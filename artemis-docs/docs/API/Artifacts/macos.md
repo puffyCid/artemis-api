@@ -57,9 +57,14 @@ on system at /var/db/SystemPolicyConfiguration/ExecPolicy
 | ----- | ------ | ------------------------------------------------ |
 | path  | String | Optional alternative path to ExecPolicy database |
 
-### firewallStatus() -> Firewall | MacosError
+### firewallStatus(alt_path) -> Firewall | MacosError
 
-Return firewall information and status on macOS
+Return firewall information and status on macOS. Can provide an optional path to
+com.apple.alf.plist, otherwise will use /Library/Preferences/com.apple.alf.plist
+
+| Param    | Type   | Description                                           |
+| -------- | ------ | ----------------------------------------------------- |
+| alt_path | String | Alternative full path to the com.apple.alf.plist file |
 
 ### getFsevents(path) -> Fsevents[] | MacosError
 
@@ -105,10 +110,15 @@ This function can parse the raw plist bytes.
 | ------------------ | -------------------- | ------------------------------------- |
 | path or Uint8Array | string or Uint8Array | Path to plist file or raw plist bytes |
 
-### passwordPolicy() -> PasswordPolicy[] | MacosError
+### passwordPolicy(alt_path) -> PasswordPolicy[] | MacosError
 
 Get password policies on macOS. Will parse plist file at
-/var/db/dslocal/nodes/Default/config/shadowhash.plist
+/var/db/dslocal/nodes/Default/config/shadowhash.plist. You may also provide an
+optional alternative path to the shadowhash.plist file.
+
+| Param    | Type   | Description                                        |
+| -------- | ------ | -------------------------------------------------- |
+| alt_path | String | Optional alternative path to shadowhash.plist file |
 
 ### getSafariUsersHistory() -> SafariHistory[] | MacosError
 
@@ -236,13 +246,24 @@ By default this function will search for all packages at:
 
 ### getHomebrewInfo() -> HomebrewData
 
-Get Homebrew packages and Casks on the system. Searches for Homebrew data at
-/opt/homebrew and /usr/local.
+Get Homebrew packages and Casks on the system. Searches for Homebrew data at:
+
+- /opt/homebrew
+- /usr/local
 
 ### wifiNetworks() -> Wifi[]
 
-Get list of joined Wifi networks on macOS. Supports macOS Catalina and higher.
-Requires root access
+Get list of joined Wifi networks on macOS. Requires root access.
+
+By default it will try to parse WiFi networks at
+/Library/Preferences/com.apple.wifi.known-networks.plist.
+
+You may also provide an optional alnternative path to
+com.apple.wifi.known-networks.plist.
+
+| Param    | Type   | Description                                                           |
+| -------- | ------ | --------------------------------------------------------------------- |
+| alt_path | String | Optional alternative path to com.apple.wifi.known-networks.plist file |
 
 ### getSudoLogs() -> UnifiedLog[]
 
@@ -263,20 +284,27 @@ BOM files are located at /var/db/receipts/*.bom
 | ----- | ------ | ---------------- |
 | path  | string | Path to BOM file |
 
-### systemExtensions() -> SystemExtension[]
+### systemExtensions(alt_path) -> SystemExtension[]
 
-Get list of macOS System Extensions.
+Get list of macOS System Extensions. By default artemis will try to extract
+installed extensions at /Library/SystemExtensions/db.plist.
 
-### queryTccDb(path) -> TccValues[] | MacosError
+However, you may also provide an optional alternative path to db.plist.
+
+| Param    | Type   | Description                                |
+| -------- | ------ | ------------------------------------------ |
+| alt_path | String | Optional alternative path to db.plist file |
+
+### queryTccDb(alt_db) -> TccValues[] | MacosError
 
 Query all TCC.db files on the system. TCC.db contains granted permissions for
 applications.\
 An optional path to the TCC.db can be provided. Otherwise will parse all user
 and System TCC.db files.
 
-| Param | Type   | Description                  |
-| ----- | ------ | ---------------------------- |
-| path  | string | Optional path to TCC.db file |
+| Param  | Type   | Description                  |
+| ------ | ------ | ---------------------------- |
+| alt_db | string | Optional path to TCC.db file |
 
 ### setupSpotlightParser(glob_path) -> StoreMeta | MacosError
 

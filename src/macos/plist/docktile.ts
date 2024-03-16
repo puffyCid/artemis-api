@@ -1,4 +1,5 @@
 import { getPlist } from "../../../mod.ts";
+import { Applications } from "../../../types/macos/plist/apps.ts";
 import { MacosError } from "../errors.ts";
 import { scanApps } from "./apps.ts";
 

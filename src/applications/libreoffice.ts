@@ -1,3 +1,4 @@
+import { RecentFilesLibreOffice } from "../../types/applications/libreoffice.ts";
 import { EncodingError } from "../encoding/errors.ts";
 import { readXml } from "../encoding/xml.ts";
 import { getEnvValue } from "../environment/env.ts";
@@ -13,7 +14,7 @@ import { ApplicationError } from "./errors.ts";
  */
 export function recentFiles(
   platform: PlatformType,
-): History[] | ApplicationError {
+): RecentFilesLibreOffice[] | ApplicationError {
   // Get all user paths
   let path = "";
   switch (platform) {
@@ -97,7 +98,7 @@ export function recentFiles(
       ) {
         continue;
       }
-      const office: History = {
+      const office: RecentFilesLibreOffice = {
         path: path_data["oor:name"],
         title: "",
         filter: "",

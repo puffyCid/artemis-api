@@ -15,8 +15,12 @@ The Chromium codebase also used for multiple other browsers such as:
 - Opera
 - Brave
 
-Artemis supports parsing browsing history and downloads from Chromium. History
-and downloads data are stored in a SQLITE file.
+Artemis supports parsing the list of artifacts below: from Chromium.
+
+- History
+- Downloads
+- Cookies (You have to use the artemis [api](../../API/overview.md) in order to
+  collect Cookies)
 
 Other parsers:
 
@@ -51,6 +55,21 @@ artifact_name = "chromium-downloads"
 # Collection Options
 
 - N/A
+
+# Sample API Script
+
+```typescript
+import {
+  getChromiumCookies,
+  PlatformType,
+} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+
+function main() {
+  const results = getChromiumCookies(PlatformType.Darwin);
+
+  console.log(results);
+}
+```
 
 # Output Structure
 
@@ -170,5 +189,29 @@ export interface RawChromiumDownloads {
   chain_index: number;
   /**URL for download */
   url: string;
+}
+
+export interface ChromiumCookies {
+  creation: number;
+  host_key: string;
+  top_frame_site_key: string;
+  name: string;
+  value: string;
+  /**This value is currently Base64 encoded */
+  encrypted_value: string;
+  path: string;
+  expires: number;
+  is_secure: boolean;
+  is_httponly: boolean;
+  last_access: number;
+  has_expires: boolean;
+  is_persistent: boolean;
+  priority: number;
+  samesite: number;
+  source_scheme: number;
+  source_port: number;
+  is_same_party: number;
+  last_update: number;
+  db_path: string;
 }
 ```

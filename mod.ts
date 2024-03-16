@@ -5,6 +5,8 @@ export { getElf } from "./src/linux/elf.ts";
 export { getJournal } from "./src/linux/journal.ts";
 export { getLogon } from "./src/linux/logon.ts";
 export { getSudoLogsLinux } from "./src/linux/sudo.ts";
+export { getDebInfo } from "./src/linux/deb.ts";
+export { getRpmInfo } from "./src/linux/rpm.ts";
 
 /**
  * macOS exported functions
@@ -17,7 +19,7 @@ export { getLaunchdAgents, getLaunchdDaemons } from "./src/macos/launchd.ts";
 export { getGroups, getUsers } from "./src/macos/accounts.ts";
 export { getExecpolicy } from "./src/macos/execpolicy.ts";
 export { getFsevents } from "./src/macos/fsevents.ts";
-export { getHomebrewInfo } from "./src/macos/homebrew.ts";
+export { getHomebrewInfo, getCasks, getPackages } from "./src/macos/homebrew.ts";
 export { getMacho } from "./src/macos/macho.ts";
 export { getPlist } from "./src/macos/plist.ts";
 export { getUnifiedLog, setupUnifiedLogParser } from "./src/macos/unifiedlogs.ts";
@@ -59,6 +61,7 @@ export {
   osVersion,
   platform,
   uptime,
+  PlatformType,
 } from "./src/system/systeminfo.ts";
 export { disks } from "./src/system/disks.ts";
 export { cpus } from "./src/system/cpu.ts";
@@ -81,6 +84,8 @@ export {
   getFirefoxCookies,
 } from "./src/applications/firefox.ts";
 export { fileHistory, getExtensions } from "./src/applications/vscode.ts";
+export { recentFiles } from "./src/applications/libreoffice.ts";
+export { querySqlite } from "./src/applications/sqlite.ts";
 
 /**
  * Windows exported functions
@@ -114,3 +119,5 @@ export { getTaskFile, getTasks } from "./src/windows/tasks.ts";
 export { getServiceFile, getServices } from "./src/windows/services.ts";
 export { getJumplistPath, getJumplists } from "./src/windows/jumplists.ts";
 export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
+export { getChocolateyInfo } from "./src/windows/chocolatey.ts";
+export { logons } from "./src/windows/eventlogs/logons.ts";

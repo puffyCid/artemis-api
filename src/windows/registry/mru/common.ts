@@ -25,7 +25,7 @@ export function openSaveMru(reg_data: Registry[]): MruValues[] | WindowsError {
   for (const entry of reg_data) {
     if (
       !entry.path.includes(
-        "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU",
+        "\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU",
       )
     ) {
       continue;
@@ -77,7 +77,7 @@ export function lastVisitMru(reg_data: Registry[]): MruValues[] | WindowsError {
   for (const entry of reg_data) {
     if (
       !entry.path.includes(
-        "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedPidlMRU",
+        "\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedPidlMRU",
       )
     ) {
       continue;

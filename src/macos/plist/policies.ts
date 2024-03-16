@@ -1,4 +1,4 @@
-import { PasswordPolicy } from "../../../types/macos/plist/policies.d.ts";
+import { PasswordPolicy } from "../../../types/macos/plist/policies.ts";
 import { MacosError } from "../errors.ts";
 import { getPlist } from "../plist.ts";
 
@@ -6,8 +6,14 @@ import { getPlist } from "../plist.ts";
  * Get Password Policies on macOS. Will parse plist file at `/var/db/dslocal/nodes/Default/config/shadowhash.plist`
  * @returns Array of `PasswordPolicy` or `MacosError`
  */
-export function passwordPolicy(): PasswordPolicy[] | MacosError {
-  const path = "/var/db/dslocal/nodes/Default/config/shadowhash.plist";
+export function passwordPolicy(
+  alt_path?: string,
+): PasswordPolicy[] | MacosError {
+  let path = "/var/db/dslocal/nodes/Default/config/shadowhash.plist";
+  if (alt_path != undefined) {
+    path = alt_path;
+  }
+
   const policy_data = getPlist(path);
   if (policy_data instanceof MacosError) {
     return policy_data;

@@ -15,11 +15,16 @@ import { takeUntil } from "../nom/parsers.ts";
 
 /**
  * Function to get installed RPM packages. This function only supports getting packages from the sqlite database. The historical Berkley database is not supported.
- * @param path Path to the RPM sqlite database. Typically `/var/lib/rpm/rpmdb.sqlite` (on Fedora distros)
+ * @param alt_path Optional path to the RPM sqlite database. Will default to `/var/lib/rpm/rpmdb.sqlite`
  * @returns Array of `RpmPackages` or `LinuxError`
  */
-export function getRpmInfo(path: string): RpmPackages[] | LinuxError {
+export function getRpmInfo(alt_path?: string): RpmPackages[] | LinuxError {
   const query = "select * from Packages";
+  let path = "/var/lib/rpm/rpmdb.sqlite";
+  if (alt_path != undefined) {
+    path = alt_path;
+  }
+
   const results = querySqlite(path, query);
   if (results instanceof ApplicationError) {
     return new LinuxError(

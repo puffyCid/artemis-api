@@ -32,7 +32,7 @@ function main() {
 
 # Output Structure
 
-An `SingleRequirement` object structure
+A `SingleRequirement` object structure
 
 ```typescript
 export interface SingleRequirement {

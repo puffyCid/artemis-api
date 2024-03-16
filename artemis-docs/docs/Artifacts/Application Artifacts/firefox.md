@@ -8,8 +8,12 @@ keywords:
 # Firefox
 
 Firefox is a popular open source web browser created and maintained by Mozilla.
-artemis supports parsing browsing history and downloads from Firefox. History
-and downloads data are stored in a SQLITE file.
+Artemis supports parsing the following artifacts from Firefox.
+
+- History
+- Downloads
+- Cookies (You have to use the artemis [api](../../API/overview.md) in order to
+  collect Cookie information.)
 
 Other parsers:
 
@@ -43,6 +47,21 @@ artifact_name = "firefox-downloads"
 # Collection Options
 
 - N/A
+
+# Sample API Script
+
+```typescript
+import {
+  getFirefoxCookies,
+  PlatformType,
+} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+
+function main() {
+  const results = getFirefoxCookies(PlatformType.Darwin);
+
+  console.log(results);
+}
+```
 
 # Output Structure
 
@@ -132,5 +151,24 @@ export interface RawFirefoxDownloads {
   name: string;
   /**History data associated with downloaded file */
   history: RawFirefoxHistory;
+}
+
+export interface FirefoxCookies {
+  id: number;
+  origin_attributes: string;
+  name?: string;
+  value?: string;
+  host?: string;
+  path?: string;
+  expiry?: number;
+  last_accessed?: number;
+  creation_time?: number;
+  is_secure?: boolean;
+  is_http_only?: boolean;
+  in_browser_element: boolean;
+  same_site: boolean;
+  raw_same_site: boolean;
+  scheme_map: number;
+  db_path: string;
 }
 ```

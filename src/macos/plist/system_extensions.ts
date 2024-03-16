@@ -6,8 +6,13 @@ import { getPlist } from "../plist.ts";
  * Get all System Extensions on the system
  * @returns Array of `SystemExtension` or `MacosError`
  */
-export function systemExtensions(): SystemExtension[] | MacosError {
-  const path = "/Library/SystemExtensions/db.plist";
+export function systemExtensions(
+  alt_path?: string,
+): SystemExtension[] | MacosError {
+  let path = "/Library/SystemExtensions/db.plist";
+  if (alt_path != undefined) {
+    path = alt_path;
+  }
   const plist_data = getPlist(path);
   if (plist_data instanceof MacosError || plist_data instanceof Uint8Array) {
     console.warn(`failed to parse plist ${path}: ${plist_data}`);

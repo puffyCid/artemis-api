@@ -3,6 +3,7 @@ description: Applications on macOS
 keywords:
   - macOS
   - file metadata
+  - plist
 ---
 
 # Applications
@@ -20,8 +21,8 @@ By default artemis will look for apps at:
 
 # Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to installed
-applications.
+You have to use the artemis [api](../../API/overview.md) in order to get
+installed applications.
 
 # Sample API Script
 
@@ -36,6 +37,8 @@ async function main() {
   const results = listApps();
   // Scans the entire filesystem looking for installed apps
   const data = await scanApps();
+
+  console.log(data);
 }
 ```
 

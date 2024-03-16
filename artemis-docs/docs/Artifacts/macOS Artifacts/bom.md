@@ -6,11 +6,11 @@ keywords:
   - binary
 ---
 
-# Bill of Materials (BOM)
+# Bill of Materials
 
-macOS `BOM` files are created when a user installs an application using the
-builtin package installer on macOS. BOM files contain metadata associated with
-the install application.
+macOS Bill of Materials (`BOM`) files are created when a user installs an
+application using the builtin package installer on macOS. BOM files contain
+metadata associated with the install application.
 
 # Collection
 
@@ -31,7 +31,7 @@ function main() {
 
 # Output Structure
 
-A BOM object structure
+A `BOM` object structure
 
 ```typescript
 export interface Bom {

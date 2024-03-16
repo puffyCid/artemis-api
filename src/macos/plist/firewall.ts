@@ -3,7 +3,7 @@ import {
   FirewallApplication,
   FirewallExceptions,
   Services,
-} from "../../../types/macos/plist/firewall.d.ts";
+} from "../../../types/macos/plist/firewall.ts";
 import { parseAlias } from "../alias.ts";
 import { parseRequirementBlob } from "../codesigning/blob.ts";
 import { SigningError } from "../codesigning/errors.ts";
@@ -12,10 +12,14 @@ import { getPlist } from "../plist.ts";
 
 /**
  * Function to get the macOS Firewall status and metadata
+ * @param alt_path Optional path to `com.apple.alf.plist`
  * @returns `Firewall` status or `MacosError`
  */
-export function firewallStatus(): Firewall | MacosError {
-  const path = "/Library/Preferences/com.apple.alf.plist";
+export function firewallStatus(alt_path?: string): Firewall | MacosError {
+  let path = "/Library/Preferences/com.apple.alf.plist";
+  if (alt_path != undefined) {
+    path = alt_path;
+  }
 
   const plist_results = getPlist(path);
   if (

@@ -13,7 +13,7 @@ and directories on the system. If hashing or `PE` parsing is enabled this will
 also read the file contents. `Raw Files` also supports decompressing compressed
 files with the `WofCompression` alternative data stream (ADS) attribute.
 
-Since a filelisting can be extremely large every 100k entries artemis will
+Since a filelisting can be extremely large, every 100k entries artemis will
 output the data and then continue.
 
 Other Parsers:
