@@ -170,7 +170,9 @@ export interface ChromiumBookmarks {
 }
 
 export interface ChromiumBookmarkChildren {
+  /**In UNIXEPOCH seconds */
   date_added: number;
+  /**In UNIXEPOCH seconds */
   date_last_used: number;
   guid: string;
   id: number;
