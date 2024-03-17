@@ -127,10 +127,11 @@ optional alternative path to the Cookie sqlite database instead
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | path     | string       | Optional path to a Firefox cookie database                |
 
-### getChromiumCookies(platform, path) -> Chromium[] | ApplicationError
+### getChromiumCookies(platform, path) -> ChromiumCookies[] | ApplicationError
 
 Get Chromium cookies for all users based on platform. Can also provide an
-optional alternative path to the Cookie sqlite database.
+optional alternative path to the Cookie sqlite database. May fail if Chromium is
+running due to Chromium process locking the file.
 
 All Chromium derived browsers should be supported.
 
@@ -138,3 +139,27 @@ All Chromium derived browsers should be supported.
 | -------- | ------------ | --------------------------------------------------------- |
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | path     | string       | Optional path to a Chromium cookie database               |
+
+### getChromiumAutofill(platform, path) -> ChromiumAutofill[] | ApplicationError
+
+Get Chromium autofill info for all users based on platform. Can also provide an
+optional alternative path to the Web Data sqlite database.
+
+All Chromium derived browsers should be supported.
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| path     | string       | Optional path to a Chromium Web Data database             |
+
+### getChromiumBookmarks(platform, path) -> ChromiumBookmarks[] | ApplicationError
+
+Try to get Chromium bookmarks for all users based on platform. Can also provide
+an optional alternative path to the Cookie sqlite database.
+
+All Chromium derived browsers should be supported.
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| path     | string       | Optional path to a Chromium bookmark file                 |

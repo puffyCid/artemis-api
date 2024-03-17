@@ -75,6 +75,8 @@ export {
   getChromiumUsersDownloads,
   getChromiumUsersHistory,
   getChromiumCookies,
+  getChromiumAutofill,
+  getChromiumBookmarks,
 } from "./src/applications/chromium.ts";
 export {
   getFirefoxDownloads,

@@ -15,12 +15,19 @@ The Chromium codebase also used for multiple other browsers such as:
 - Opera
 - Brave
 
-Artemis supports parsing the list of artifacts below: from Chromium.
+Artemis supports parsing the list of artifacts below:
 
 - History
 - Downloads
-- Cookies (You have to use the artemis [api](../../API/overview.md) in order to
-  collect Cookies)
+- Cookies
+- Autofill
+- Bookmarks
+
+You have to use the artemis [api](../../API/overview.md) in order to collect:
+
+- Cookies
+- Autofill
+- Bookmarks
 
 Other parsers:
 
@@ -61,6 +68,8 @@ artifact_name = "chromium-downloads"
 ```typescript
 import {
   getChromiumCookies,
+  getChromiumAutifill,
+  getChromiumBookmarks,
   PlatformType,
 } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
@@ -68,6 +77,8 @@ function main() {
   const results = getChromiumCookies(PlatformType.Darwin);
 
   console.log(results);
+  const books = getChromiumBookmarks(PlatformType.Darwin);
+  const fill = getChromiumAutifill(PlatformType.Darwin);
 }
 ```
 
@@ -213,5 +224,34 @@ export interface ChromiumCookies {
   is_same_party: number;
   last_update: number;
   db_path: string;
+}
+
+export interface ChromiumAutofill {
+  name?: string;
+  value?: string;
+  value_lower?: string;
+  date_created: number;
+  date_last_used: number;
+  /**Default is 1 */
+  count: number;
+  db_path: string;
+}
+
+export interface ChromiumBookmarks {
+  bookmark_bar: ChromiumBookmarkChildren[];
+  other: ChromiumBookmarkChildren[];
+  synced: ChromiumBookmarkChildren[];
+  path: string;
+}
+
+export interface ChromiumBookmarkChildren {
+  date_added: number;
+  date_last_used: number;
+  guid: string;
+  id: number;
+  name: string;
+  type: string;
+  url: string;
+  meta_info: Record<string, string>,
 }
 ```
