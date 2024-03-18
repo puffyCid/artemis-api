@@ -8,7 +8,11 @@ import { MacosError } from "./errors.ts";
  */
 export function getPlist(
   path: string | Uint8Array,
-): Record<string, unknown> | Uint8Array | MacosError {
+):
+  | Record<string, unknown>
+  | Uint8Array
+  | Record<string, unknown>[]
+  | MacosError {
   // Parse bytes containing plist data
   if (path instanceof Uint8Array) {
     try {

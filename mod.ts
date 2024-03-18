@@ -39,6 +39,7 @@ export { passwordPolicy } from "./src/macos/plist/policies.ts";
 export { systemExtensions } from "./src/macos/plist/system_extensions.ts";
 export { wifiNetworks } from "./src/macos/plist/wifi.ts";
 export { parseRequirementBlob } from "./src/macos/codesigning/blob.ts";
+export { getXprotectDefinitions } from "./src/macos/plist/xprotect.ts";
 
 /**
  * Unix exported functions

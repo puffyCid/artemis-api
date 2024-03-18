@@ -100,7 +100,7 @@ Parse a macho file and return metadata about the binary.
 | ----- | ------ | -------------------- |
 | path  | string | Path to macho binary |
 
-### getPlist(path or Uint8Array) -> Record&lt;string, unknown&gt; | number[] | MacosError
+### getPlist(path or Uint8Array) -> Record&lt;string, unknown&gt; | Uint8Array | Record&lt;string, unknown&gt;[] | MacosError
 
 Parse a plist file. Supports parsing a provide plist file path or the raw bytes
 of plist data. Sometimes a plist file may contain another base64 encoded plist.
@@ -351,3 +351,17 @@ Finally, you must provide the full path to the Spotlight database file
 | meta       | StoreMeta | Spotlight metadata obtained from setupSpotlightParser |
 | store_file | string    | Full path to the store.db file                        |
 | offset     | number    | Offset to start parsing the Spotlight database        |
+
+### getXprotectDefinitions(alt_path) -> XprotectEntries[] | MacosError
+
+Grab Xprotect definitions on macOS. By default artemis will check for
+Xprotect.plist files at:
+
+- /Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Resources/Xprotect.plist
+- /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Xprotect.plist
+
+You may also provide an optional alternative path to the Xprotect.plist file.
+
+| Param    | Type   | Description                          |
+| -------- | ------ | ------------------------------------ |
+| alt_path | string | Optional path to Xprotect.plist file |
