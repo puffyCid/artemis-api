@@ -1,10 +1,10 @@
-import { Alias } from "../alias.d.ts";
-import { SingleRequirement } from "../codesigning.d.ts";
+import { Alias } from "../alias.ts";
+import { SingleRequirement } from "../codesigning.ts";
 
 /**
  * Represents the current status of the macOS Firewall
  */
-interface Firewall {
+export interface Firewall {
   allow_signed_enabled: boolean;
   firewall_unload: boolean;
   logging_enabled: boolean;
@@ -18,17 +18,17 @@ interface Firewall {
   services: Services[];
 }
 
-interface FirewallExceptions {
+export interface FirewallExceptions {
   path: string;
   state: number;
 }
 
-interface Services {
+export interface Services {
   name: string;
   allowed: boolean;
 }
 
-interface FirewallApplication {
+export interface FirewallApplication {
   code_signing: SingleRequirement;
   application_info: Alias;
   block_incoming: boolean;

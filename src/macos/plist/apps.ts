@@ -1,4 +1,6 @@
 import { getPlist } from "../../../mod.ts";
+import { Applications } from "../../../types/macos/plist/apps.ts";
+import { FileError } from "../../filesystem/errors.ts";
 import { glob, readFile } from "../../filesystem/files.ts";
 import { readDir } from "../../filesystem/mod.ts";
 import { parseIcon } from "../../images/icns.ts";
@@ -39,7 +41,7 @@ export async function scanApps(): Promise<Applications[]> {
  */
 async function iterateVolumes(path: string, apps: Applications[]) {
   const entries = await readDir(path);
-  if (entries instanceof Error) {
+  if (entries instanceof FileError) {
     return;
   }
 
@@ -70,7 +72,7 @@ async function iterateVolumes(path: string, apps: Applications[]) {
  */
 function getApps(path: string): Applications[] | Error {
   const glob_paths = glob(path);
-  if (glob_paths instanceof Error) {
+  if (glob_paths instanceof FileError) {
     return glob_paths;
   }
   const apps: Applications[] = [];

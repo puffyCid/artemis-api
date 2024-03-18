@@ -7,16 +7,27 @@ keywords:
 
 # Chromium
 
-`Chromium` is a popular open source web browser created and maintained by
-Google. The `Chromium` codebase also used for multiple other browsers such as:
+Chromium is a popular open source web browser created and maintained by Google.
+The Chromium codebase also used for multiple other browsers such as:
 
 - Chrome
 - Microsoft Edge
 - Opera
 - Brave
 
-artemis supports parsing browsing history and downloads from `Chromium`. History
-and downloads data are stored in a SQLITE file.
+Artemis supports parsing the list of artifacts below:
+
+- History
+- Downloads
+- Cookies
+- Autofill
+- Bookmarks
+
+You have to use the artemis [api](../../API/overview.md) in order to collect:
+
+- Cookies
+- Autofill
+- Bookmarks
 
 Other parsers:
 
@@ -51,6 +62,25 @@ artifact_name = "chromium-downloads"
 # Collection Options
 
 - N/A
+
+# Sample API Script
+
+```typescript
+import {
+  getChromiumCookies,
+  getChromiumAutifill,
+  getChromiumBookmarks,
+  PlatformType,
+} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+
+function main() {
+  const results = getChromiumCookies(PlatformType.Darwin);
+
+  console.log(results);
+  const books = getChromiumBookmarks(PlatformType.Darwin);
+  const fill = getChromiumAutifill(PlatformType.Darwin);
+}
+```
 
 # Output Structure
 
@@ -170,5 +200,60 @@ export interface RawChromiumDownloads {
   chain_index: number;
   /**URL for download */
   url: string;
+}
+
+export interface ChromiumCookies {
+  creation: number;
+  host_key: string;
+  top_frame_site_key: string;
+  name: string;
+  value: string;
+  /**This value is currently Base64 encoded */
+  encrypted_value: string;
+  path: string;
+  expires: number;
+  is_secure: boolean;
+  is_httponly: boolean;
+  last_access: number;
+  has_expires: boolean;
+  is_persistent: boolean;
+  priority: number;
+  samesite: number;
+  source_scheme: number;
+  source_port: number;
+  is_same_party: number;
+  last_update: number;
+  db_path: string;
+}
+
+export interface ChromiumAutofill {
+  name?: string;
+  value?: string;
+  value_lower?: string;
+  date_created: number;
+  date_last_used: number;
+  /**Default is 1 */
+  count: number;
+  db_path: string;
+}
+
+export interface ChromiumBookmarks {
+  bookmark_bar: ChromiumBookmarkChildren[];
+  other: ChromiumBookmarkChildren[];
+  synced: ChromiumBookmarkChildren[];
+  path: string;
+}
+
+export interface ChromiumBookmarkChildren {
+  /**In UNIXEPOCH seconds */
+  date_added: number;
+  /**In UNIXEPOCH seconds */
+  date_last_used: number;
+  guid: string;
+  id: number;
+  name: string;
+  type: string;
+  url: string;
+  meta_info: Record<string, string>,
 }
 ```

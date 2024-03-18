@@ -10,7 +10,7 @@ keywords:
 
 Windows `Event Logs` are the primary files associated with logging system
 activity. They are stored in a binary format, typically at
-`C:\Windows\System32\winevt\Logs`
+C:\Windows\System32\winevt\Logs
 
 Other Parsers:
 

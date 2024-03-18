@@ -24,8 +24,8 @@ N/A
 
 # Output Structure
 
-A JSON representation of the `plist` contents
+A JSON representation of the `plist` contents or raw plist bytes.
 
 ```typescript
-Record<String, unknown>;
+Record<String, unknown> | Record < string, unknown > [] | Uint8Array;
 ```

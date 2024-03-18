@@ -1,7 +1,7 @@
 /**
  * List of files opened by LibreOffice
  */
-interface History {
+export interface RecentFilesLibreOffice {
   /**Path to file */
   path: string;
   /**Document title */

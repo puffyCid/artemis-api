@@ -1,4 +1,4 @@
-interface Applications {
+export interface Applications {
   filename: string;
   full_path: string;
   bundle_executable: string;
@@ -8,6 +8,7 @@ interface Applications {
   bundle_version: string;
   display_name: string;
   copyright: string;
+  /**Base64 encoded PNG file */
   icon: string;
   info: string;
 }

@@ -1,4 +1,9 @@
 import {
+  ChromiumAutofill,
+  ChromiumBookmarkChildren,
+} from "../../types/applications/chromium.ts";
+import {
+  ChromiumBookmarks,
   ChromiumCookies,
   ChromiumDownloads,
   ChromiumHistory,
@@ -100,7 +105,7 @@ export function getChromiumDownloads(
 }
 
 /**
- * Fucntion to parse Chromium cookies. Can alternative path to cookie database, otherwise will use default path
+ * Function to parse Chromium cookies. Can provide an optional alternative path to cookie database, otherwise will use default paths
  * @param platform OS platform to query for Chromium cookies
  * @param path Alternative path to Chromium cookie database
  * @returns Array of `ChromiumCookies` or `ApplicationError`
@@ -118,7 +123,7 @@ export function getChromiumCookies(
       if (mac_paths instanceof FileError) {
         return new ApplicationError(
           "CHROMIUM",
-          `failed to glob macos extension paths: ${mac_paths}`,
+          `failed to glob macos cookies paths: ${mac_paths}`,
         );
       }
       glob_paths = mac_paths;
@@ -135,7 +140,7 @@ export function getChromiumCookies(
       if (win_paths instanceof FileError) {
         return new ApplicationError(
           "CHROMIUM",
-          `failed to glob windows extension paths: ${win_paths}`,
+          `failed to glob windows cookies paths: ${win_paths}`,
         );
       }
       glob_paths = win_paths;
@@ -218,6 +223,245 @@ function getCookies(
     cookie_array.push(cookie_entry);
   }
   return cookie_array;
+}
+
+/**
+ * Function to parse Chromium AutoFill information. Can provide an optional alternative path to cookie database, otherwise will use default paths
+ * @param platform OS platform to query for Chromium Autofill information
+ * @param path Alternative path to Chromium Web Data file
+ * @returns Array of `ChromiumAutofill` or `ApplicationError`
+ */
+export function getChromiumAutofill(
+  platform: PlatformType,
+  path?: string,
+): ChromiumAutofill[] | ApplicationError {
+  let glob_paths: GlobInfo[] = [];
+  switch (platform) {
+    case PlatformType.Darwin: {
+      const mac_paths = glob(
+        "/Users/*/Library/Application Support/Chromium/*/Web Data",
+      );
+      if (mac_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob macos extension paths: ${mac_paths}`,
+        );
+      }
+      glob_paths = mac_paths;
+      break;
+    }
+    case PlatformType.Windows: {
+      let drive = getEnvValue("SystemDrive");
+      if (drive === "") {
+        drive = "C";
+      }
+      const win_paths = glob(
+        `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Web Data`,
+      );
+      if (win_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob windows autofill paths: ${win_paths}`,
+        );
+      }
+      glob_paths = win_paths;
+      break;
+    }
+    case PlatformType.Linux:
+    default: {
+      return [];
+    }
+  }
+
+  let paths = [];
+  if (path != undefined) {
+    paths = [path];
+  } else {
+    for (const glob_path of glob_paths) {
+      paths.push(glob_path.full_path);
+    }
+  }
+
+  const query = "select * from autofill";
+  let fill: ChromiumAutofill[] = [];
+  for (const path of paths) {
+    const results = querySqlite(path, query);
+    if (results instanceof ApplicationError) {
+      console.warn(`Could not query autofill for ${path}: ${results}`);
+      continue;
+    }
+
+    fill = fill.concat(getAutofill(results, path));
+  }
+
+  return fill;
+}
+
+/**
+ * Function to extract Autofill information from database
+ * @param data Array of sqlite data from Web Data database
+ * @param path Path to the Web Data database file
+ * @returns Array of `ChromiumAutofill`
+ */
+function getAutofill(
+  data: Record<string, unknown>[],
+  path: string,
+): ChromiumAutofill[] {
+  const fill_array = [];
+
+  for (const entry of data) {
+    const fill_entry: ChromiumAutofill = {
+      name: entry["name"] as string | undefined,
+      value: entry["value"] as string | undefined,
+      date_created: entry["date_created"] as number,
+      date_last_used: entry["date_last_used"] as number,
+      count: entry["count"] as number,
+      db_path: path,
+    };
+    fill_array.push(fill_entry);
+  }
+  return fill_array;
+}
+
+/**
+ * Function to try to parse Chromium bookmark info. Can provide an optional alternative path to bookmarks, otherwise will use default paths
+ * @param platform OS platform to parse Chromium bookmarks
+ * @param path Alternative path to Chromium Bookmarks file
+ * @returns Array of `ChromiumBookmarks` or `ApplicationError`
+ */
+export function getChromiumBookmarks(
+  platform: PlatformType,
+  path?: string,
+): ChromiumBookmarks[] | ApplicationError {
+  let glob_paths: GlobInfo[] = [];
+  switch (platform) {
+    case PlatformType.Darwin: {
+      const mac_paths = glob(
+        "/Users/*/Library/Application Support/Chromium/*/Bookmarks",
+      );
+      if (mac_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob macos bookmarks paths: ${mac_paths}`,
+        );
+      }
+      glob_paths = mac_paths;
+      break;
+    }
+    case PlatformType.Windows: {
+      let drive = getEnvValue("SystemDrive");
+      if (drive === "") {
+        drive = "C";
+      }
+      const win_paths = glob(
+        `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Bookmarks`,
+      );
+      if (win_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob windows bookmarks paths: ${win_paths}`,
+        );
+      }
+      glob_paths = win_paths;
+      break;
+    }
+    case PlatformType.Linux:
+    default: {
+      return [];
+    }
+  }
+
+  let paths = [];
+  if (path != undefined) {
+    paths = [path];
+  } else {
+    for (const glob_path of glob_paths) {
+      paths.push(glob_path.full_path);
+    }
+  }
+
+  const books_array: ChromiumBookmarks[] = [];
+  for (const path of paths) {
+    const results = readTextFile(path);
+    if (results instanceof FileError) {
+      console.warn(`Could not read bookmarks ${path}: ${results}`);
+      continue;
+    }
+
+    const books: ChromiumBookmarks = {
+      bookmark_bar: [],
+      other: [],
+      synced: [],
+      path,
+    };
+    const book_json = JSON.parse(results);
+    const bar = book_json["roots"]["bookmark_bar"]["children"] as Record<
+      string,
+      string | Record<string, string>[] | undefined
+    >[] | undefined;
+    books.bookmark_bar = getBookmarkChildren(bar);
+
+    const other = book_json["roots"]["other"]["children"] as Record<
+      string,
+      string | Record<string, string>[] | undefined
+    >[] | undefined;
+    books.other = getBookmarkChildren(other);
+
+    const synced = book_json["roots"]["other"]["synced"] as Record<
+      string,
+      string | Record<string, string>[] | undefined
+    >[] | undefined;
+    books.synced = getBookmarkChildren(synced);
+
+    books_array.push(books);
+  }
+
+  return books_array;
+}
+
+/**
+ * Function to try to get children bookmark info
+ * @param book Parsed Bookmark children
+ * @returns Extract array of `ChromiumBookmarkChildren`
+ */
+function getBookmarkChildren(
+  book:
+    | Record<string, string | Record<string, string>[] | undefined>[]
+    | undefined,
+): ChromiumBookmarkChildren[] {
+  let books: ChromiumBookmarkChildren[] = [];
+  if (typeof book === "undefined") {
+    return books;
+  }
+  const adjust_time = 1000000n;
+  for (const entry of book) {
+    if (typeof entry["children"] === "undefined") {
+      const book_entry: ChromiumBookmarkChildren = {
+        date_added: webkitToUnixEpoch(
+          Number(BigInt(entry["date_added"] as string) / adjust_time),
+        ),
+        date_last_used: webkitToUnixEpoch(
+          Number(BigInt(entry["date_last_used"] as string) / adjust_time),
+        ),
+        guid: entry["guid"] as string,
+        id: Number(entry["id"] as string),
+        name: entry["name"] as string,
+        type: entry["type"] as string,
+        url: entry["url"] as string,
+        meta_info: entry["meta_info"] as unknown as Record<string, string>,
+      };
+      books.push(book_entry);
+      continue;
+    }
+
+    books = books.concat(getBookmarkChildren(
+      entry["children"] as
+        | Record<string, string | Record<string, string>[] | undefined>[]
+        | undefined,
+    ));
+  }
+
+  return books;
 }
 
 /**

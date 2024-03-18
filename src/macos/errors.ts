@@ -18,6 +18,7 @@ export type ErrorName =
   | "BOM"
   | "SYSTEM_EXTENSION"
   | "TCC"
-  | "SPOTLIGHT";
+  | "SPOTLIGHT"
+  | "XPROTECT";
 
 export class MacosError extends ErrorBase<ErrorName> {}

@@ -18,7 +18,10 @@ export function getChocolateyInfo(
 ): ChocolateyInfo[] | WindowsError {
   let base_path = getEnvValue("ChocolateyInstall");
   if (base_path === "" && alt_base === undefined) {
-    return [];
+    return new WindowsError(
+      "CHOCOLATEYINFO",
+      `could not get chocolatey env variable`,
+    );
   } else if (alt_base != undefined) {
     base_path = alt_base;
   }

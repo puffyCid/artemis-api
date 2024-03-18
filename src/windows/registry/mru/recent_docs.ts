@@ -69,7 +69,7 @@ export function recentDocs(reg_data: Registry[]): MruValues[] | WindowsError {
           break;
         }
         item_data = item.remaining;
-        items.push(JSON.parse(item.item));
+        items.push(item.item);
       }
 
       const mru = assembleMru(items);

@@ -16,7 +16,7 @@ to directory containing users. Otherwise will use default path on system
 | ----- | ------ | -------------------------------------------- |
 | path  | string | Optional alternative path to users directory |
 
-### getGroup() -> Groups[] | MacosError
+### getGroup(path) -> Groups[] | MacosError
 
 Return all local groups on macOS sysem. Can provide an optional alternative path
 to directory containing groups. Otherwise will use default path on system
@@ -47,7 +47,7 @@ try to find rules
 | ----- | ------ | ---------------------------------------- |
 | path  | String | Optional alternative path to emond rules |
 
-### getExecpolicy() -> ExecPolicy[] | MacosError
+### getExecpolicy(path) -> ExecPolicy[] | MacosError
 
 Parse the ExecPolicy sqlite database on macOS. Can provide an optional
 alternative path to ExecPolicy database. Otherwise will parse default database
@@ -57,13 +57,22 @@ on system at /var/db/SystemPolicyConfiguration/ExecPolicy
 | ----- | ------ | ------------------------------------------------ |
 | path  | String | Optional alternative path to ExecPolicy database |
 
-### firewallStatus() -> Firewall | MacosError
+### firewallStatus(alt_path) -> Firewall | MacosError
 
-Return firewall information and status on macOS
+Return firewall information and status on macOS. Can provide an optional path to
+com.apple.alf.plist, otherwise will use /Library/Preferences/com.apple.alf.plist
 
-### getFsevents() -> Fsevents[] | MacosError
+| Param    | Type   | Description                                           |
+| -------- | ------ | ----------------------------------------------------- |
+| alt_path | String | Alternative full path to the com.apple.alf.plist file |
 
-Parse macOS [FsEvents](../../Artifacts/macOS%20Artifacts/fsevents.md)
+### getFsevents(path) -> Fsevents[] | MacosError
+
+Parse macOS FsEvents from provided file.
+
+| Param | Type   | Description                    |
+| ----- | ------ | ------------------------------ |
+| path  | String | Full path to the FsEvents file |
 
 ### getLaunchdDaemons() -> Launchd[] | MacosError
 
@@ -91,7 +100,7 @@ Parse a macho file and return metadata about the binary.
 | ----- | ------ | -------------------- |
 | path  | string | Path to macho binary |
 
-### getPlist(path or Uint8Array) -> Record&lt;string, unknown&gt; | number[] | MacosError
+### getPlist(path or Uint8Array) -> Record&lt;string, unknown&gt; | Uint8Array | Record&lt;string, unknown&gt;[] | MacosError
 
 Parse a plist file. Supports parsing a provide plist file path or the raw bytes
 of plist data. Sometimes a plist file may contain another base64 encoded plist.
@@ -101,10 +110,15 @@ This function can parse the raw plist bytes.
 | ------------------ | -------------------- | ------------------------------------- |
 | path or Uint8Array | string or Uint8Array | Path to plist file or raw plist bytes |
 
-### passwordPolicy() -> PasswordPolicy[] | MacosError
+### passwordPolicy(alt_path) -> PasswordPolicy[] | MacosError
 
 Get password policies on macOS. Will parse plist file at
-/var/db/dslocal/nodes/Default/config/shadowhash.plist
+/var/db/dslocal/nodes/Default/config/shadowhash.plist. You may also provide an
+optional alternative path to the shadowhash.plist file.
+
+| Param    | Type   | Description                                        |
+| -------- | ------ | -------------------------------------------------- |
+| alt_path | String | Optional alternative path to shadowhash.plist file |
 
 ### getSafariUsersHistory() -> SafariHistory[] | MacosError
 
@@ -159,10 +173,10 @@ Parse a single UnifiedLog file (.tracev3) on macOS. Typically found at:
 
 You must call `setupUnifiedLogParser` prior to parsing the .tracev3 files.
 
-| Param | Type       | Description                          |
-| ----- | ---------- | ------------------------------------ |
-| path  | string     | Path to .tracev3 file                |
-| meta  | Uint8Array | Raw bytes associated with UnifiedLog |
+| Param | Type       | Description                                                                   |
+| ----- | ---------- | ----------------------------------------------------------------------------- |
+| path  | string     | Path to .tracev3 file                                                         |
+| meta  | Uint8Array | Raw bytes associated with UnifiedLog. Obtained from `setupUnifiedLogParser()` |
 
 ### parseRequirementBlob(data) -> SingleRequirement | MacosError
 
@@ -232,13 +246,24 @@ By default this function will search for all packages at:
 
 ### getHomebrewInfo() -> HomebrewData
 
-Get Homebrew packages and Casks on the system. Searches for Homebrew data at
-/opt/homebrew and /usr/local.
+Get Homebrew packages and Casks on the system. Searches for Homebrew data at:
+
+- /opt/homebrew
+- /usr/local
 
 ### wifiNetworks() -> Wifi[]
 
-Get list of joined Wifi networks on macOS. Supports macOS Catalina and higher.
-Requires root access
+Get list of joined Wifi networks on macOS. Requires root access.
+
+By default it will try to parse WiFi networks at
+/Library/Preferences/com.apple.wifi.known-networks.plist.
+
+You may also provide an optional alnternative path to
+com.apple.wifi.known-networks.plist.
+
+| Param    | Type   | Description                                                           |
+| -------- | ------ | --------------------------------------------------------------------- |
+| alt_path | String | Optional alternative path to com.apple.wifi.known-networks.plist file |
 
 ### getSudoLogs() -> UnifiedLog[]
 
@@ -259,20 +284,27 @@ BOM files are located at /var/db/receipts/*.bom
 | ----- | ------ | ---------------- |
 | path  | string | Path to BOM file |
 
-### systemExtensions() -> SystemExtension[]
+### systemExtensions(alt_path) -> SystemExtension[]
 
-Get list of macOS System Extensions.
+Get list of macOS System Extensions. By default artemis will try to extract
+installed extensions at /Library/SystemExtensions/db.plist.
 
-### queryTccDb(path) -> TccValues[] | MacosError
+However, you may also provide an optional alternative path to db.plist.
+
+| Param    | Type   | Description                                |
+| -------- | ------ | ------------------------------------------ |
+| alt_path | String | Optional alternative path to db.plist file |
+
+### queryTccDb(alt_db) -> TccValues[] | MacosError
 
 Query all TCC.db files on the system. TCC.db contains granted permissions for
 applications.\
 An optional path to the TCC.db can be provided. Otherwise will parse all user
 and System TCC.db files.
 
-| Param | Type   | Description                  |
-| ----- | ------ | ---------------------------- |
-| path  | string | Optional path to TCC.db file |
+| Param  | Type   | Description                  |
+| ------ | ------ | ---------------------------- |
+| alt_db | string | Optional path to TCC.db file |
 
 ### setupSpotlightParser(glob_path) -> StoreMeta | MacosError
 
@@ -319,3 +351,17 @@ Finally, you must provide the full path to the Spotlight database file
 | meta       | StoreMeta | Spotlight metadata obtained from setupSpotlightParser |
 | store_file | string    | Full path to the store.db file                        |
 | offset     | number    | Offset to start parsing the Spotlight database        |
+
+### getXprotectDefinitions(alt_path) -> XprotectEntries[] | MacosError
+
+Grab Xprotect definitions on macOS. By default artemis will check for
+Xprotect.plist files at:
+
+- /Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Resources/Xprotect.plist
+- /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Xprotect.plist
+
+You may also provide an optional alternative path to the Xprotect.plist file.
+
+| Param    | Type   | Description                          |
+| -------- | ------ | ------------------------------------ |
+| alt_path | string | Optional path to Xprotect.plist file |

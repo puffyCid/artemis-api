@@ -86,7 +86,7 @@ include_additional = true
 
 An array of `Spotlight` entries
 
-```typescript
+````typescript
 export interface Spotlight {
   /**Inode number associated with indexed file */
   inode: bigint;
@@ -98,8 +98,213 @@ export interface Spotlight {
   store_id: number;
   /**Last time Spotlight entry was updated in UNIXEPOCH **microseconds** */
   last_updated: bigint;
-  /**Array of properties associated with the entry */
-  values: Record<string, SpotlightProperties>[];
+  /**
+   *  Properties associated with the entry
+   *
+   * * Example:
+   * ```
+   * "values": {
+        "kMDItemContentTypeTree": {
+            "attribute": "AttrList",
+            "value": [
+                "public.item",
+                "dyn.ah62d4rv4ge81g75mq34gk55d",
+                "public.data"
+            ]
+        },
+        "_kMDItemFileName": {
+            "attribute": "AttrString",
+            "value": "arm64e-apple-ios-macabi.swiftdoc"
+        },
+        "kMDItemContentCreationDate_Ranking": {
+            "attribute": "AttrDate",
+            "value": [
+                1619308800
+            ]
+        },
+        "kMDItemPhysicalSize": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                77824
+            ]
+        },
+        "_kMDItemDisplayNameWithExtensions": {
+            "attribute": "AttrString",
+            "value": "arm64e-apple-ios-macabi.swiftdoc\u0016\u0002"
+        },
+        "_kMDItemTypeCode": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                0
+            ]
+        },
+        "_kMDItemCreationDate": {
+            "attribute": "AttrDate",
+            "value": [
+                1619320292
+            ]
+        },
+        "kMDItemSupportFileType": {
+            "attribute": "AttrList",
+            "value": [
+                "MDSystemFile"
+            ]
+        },
+        "_kMDItemFinderLabel": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                0
+            ]
+        },
+        "kMDItemInterestingDate_Ranking": {
+            "attribute": "AttrDate",
+            "value": [
+                1619308800
+            ]
+        },
+        "kMDItemKind": {
+            "attribute": "AttrList",
+            "value": [
+                "Document\u0016\u0002",
+                "المستند\u0016\u0002ar",
+                "Document\u0016\u0002ca",
+                "Dokument\u0016\u0002cs",
+                "Dokument\u0016\u0002da",
+                "Dokument\u0016\u0002de",
+                "Έγγραφο\u0016\u0002el",
+                "Document\u0016\u0002en",
+                "Document\u0016\u0002en_AU",
+                "Document\u0016\u0002en_GB",
+                "Documento\u0016\u0002es",
+                "Documento\u0016\u0002es_419",
+                "Dokumentti\u0016\u0002fi",
+                "Document\u0016\u0002fr",
+                "Document\u0016\u0002fr_CA",
+                "מסמך\u0016\u0002he",
+                "दस्तावेज़\u0016\u0002hi",
+                "Dokument\u0016\u0002hr",
+                "Dokumentum\u0016\u0002hu",
+                "Dokumen\u0016\u0002id",
+                "Documento\u0016\u0002it",
+                "書類\u0016\u0002ja",
+                "문서\u0016\u0002ko",
+                "Dokumen\u0016\u0002ms",
+                "Document\u0016\u0002nl",
+                "Dokument\u0016\u0002no",
+                "dokument\u0016\u0002pl",
+                "Documento\u0016\u0002pt",
+                "Documento\u0016\u0002pt_PT",
+                "Document\u0016\u0002ro",
+                "Документ\u0016\u0002ru",
+                "Dokument\u0016\u0002sk",
+                "Dokument\u0016\u0002sv",
+                "เอกสาร\u0016\u0002th",
+                "Belge\u0016\u0002tr",
+                "Документ\u0016\u0002uk",
+                "Tài liệu\u0016\u0002vi",
+                "文稿\u0016\u0002zh_CN",
+                "文件\u0016\u0002zh_HK",
+                "文件\u0016\u0002zh_TW"
+            ]
+        },
+        "kMDItemContentCreationDate": {
+            "attribute": "AttrDate",
+            "value": [
+                1619320292
+            ]
+        },
+        "_kMDItemInterestingDate": {
+            "attribute": "AttrDate",
+            "value": [
+                1619320292
+            ]
+        },
+        "kMDItemDateAdded": {
+            "attribute": "AttrDate",
+            "value": [
+                1642305054
+            ]
+        },
+        "_kMDItemContentChangeDate": {
+            "attribute": "AttrDate",
+            "value": [
+                1619320292
+            ]
+        },
+        "kMDItemDisplayName": {
+            "attribute": "AttrString",
+            "value": "arm64e-apple-ios-macabi.swiftdoc\u0016\u0002"
+        },
+        "kMDItemContentModificationDate": {
+            "attribute": "AttrDate",
+            "value": [
+                1619320292
+            ]
+        },
+        "_kMDItemGroupId": {
+            "attribute": "AttrVariableSizeInt",
+            "value": 18
+        },
+        "kMDItemContentModificationDate_Ranking": {
+            "attribute": "AttrDate",
+            "value": [
+                1619308800
+            ]
+        },
+        "_kMDItemFinderFlags": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                0
+            ]
+        },
+        "kMDItemDateAdded_Ranking": {
+            "attribute": "AttrDate",
+            "value": [
+                1642291200
+            ]
+        },
+        "_kMDItemOwnerGroupID": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                0
+            ]
+        },
+        "kMDItemContentType": {
+            "attribute": "AttrList",
+            "value": "dyn.ah62d4rv4ge81g75mq34gk55d"
+        },
+        "kMDItemDocumentIdentifier": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                0
+            ]
+        },
+        "kMDItemLogicalSize": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                218460
+            ]
+        },
+        "_kMDItemOwnerUserID": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                0
+            ]
+        },
+        "_kMDItemCreatorCode": {
+            "attribute": "AttrVariableSizeIntMultiValue",
+            "value": [
+                0
+            ]
+        },
+        "_kMDItemIsExtensionHidden": {
+            "attribute": "AttrBool",
+            "value": false
+        }
+    }
+   * ```
+   */
+  values: Record<string, SpotlightProperties>;
   /**Location of the Spotlight database that was parsed */
   directory: string;
 }
@@ -135,4 +340,4 @@ interface SpotlightProperties {
    */
   value: unknown;
 }
-```
+````

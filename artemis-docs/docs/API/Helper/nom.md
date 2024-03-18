@@ -34,12 +34,12 @@ assert!(consumed, [0,1]); // we consumed the first 2 bytes!
 
 :::warning
 
-Using nom might add additional overhead to your script. Everytime you nom
-artemis needs to seend JS data to Rust code. If your JS script is slow, try
-parsing the raw bytes using only JS (ex: .slice())
+Using nom might add additional overhead to your script. Everytime you use nom,
+artemis needs to send JS data to Rust code. If your JS script is slow, try
+parsing the raw bytes using only JS (ex: .slice() or buffer.slice())
 
-An example can be found in macOS BOM parser. It uses both nom and native JS to
-parse some data.
+An example can be found in macOS BOM or Linux RPM parser. It uses both nom and
+native JS to parse some data.
 
 :::
 

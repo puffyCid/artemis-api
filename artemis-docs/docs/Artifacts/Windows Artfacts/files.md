@@ -18,7 +18,7 @@ The standard Rust API does not support getting `Changed/Entry Modified`
 timestamp on Windows. Use [RawFiles](./rawfiles.md) to include the
 `Changed/Entry Modified` timestamp.
 
-Since a filelisting can be extremely large every 100k entries artemis will
+Since a filelisting can be extremely large, every 100k entries artemis will
 output the data and then continue.
 
 Other Parsers:

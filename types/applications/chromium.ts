@@ -150,3 +150,34 @@ export interface ChromiumCookies {
   last_update: number;
   db_path: string;
 }
+
+export interface ChromiumAutofill {
+  name?: string;
+  value?: string;
+  value_lower?: string;
+  date_created: number;
+  date_last_used: number;
+  /**Default is 1 */
+  count: number;
+  db_path: string;
+}
+
+export interface ChromiumBookmarks {
+  bookmark_bar: ChromiumBookmarkChildren[];
+  other: ChromiumBookmarkChildren[];
+  synced: ChromiumBookmarkChildren[];
+  path: string;
+}
+
+export interface ChromiumBookmarkChildren {
+  /**In UNIXEPOCH seconds */
+  date_added: number;
+  /**In UNIXEPOCH seconds */
+  date_last_used: number;
+  guid: string;
+  id: number;
+  name: string;
+  type: string;
+  url: string;
+  meta_info: Record<string, string>,
+}

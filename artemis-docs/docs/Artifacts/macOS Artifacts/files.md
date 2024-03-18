@@ -10,8 +10,10 @@ keywords:
 A regular macOS filelisting. Artemis uses the
 [walkdir](https://crates.io/crates/walkdir) crate to recursively walk the files
 and directories on the system. This artifact will fail on any System Integrity
-Protection (SIP) protected files. Since a filelisting can be extremely large
-every 100k entries artemis will output the data and then continue.
+Protection (SIP) protected files.
+
+Since a filelisting can be extremely large, every 100k entries artemis will
+output the data and then continue.
 
 Other Parsers:
 

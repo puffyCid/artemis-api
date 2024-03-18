@@ -2,7 +2,7 @@
 description: macOS file change tracker
 keywords:
   - macos
-  - file meta
+  - file metadata
   - binary
 ---
 

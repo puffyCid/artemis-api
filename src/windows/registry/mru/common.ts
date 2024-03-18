@@ -25,7 +25,7 @@ export function openSaveMru(reg_data: Registry[]): MruValues[] | WindowsError {
   for (const entry of reg_data) {
     if (
       !entry.path.includes(
-        "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU",
+        "\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU",
       )
     ) {
       continue;
@@ -56,7 +56,7 @@ export function openSaveMru(reg_data: Registry[]): MruValues[] | WindowsError {
           break;
         }
         data = item.remaining;
-        items.push(JSON.parse(item.item));
+        items.push(item.item);
       }
 
       const mru = assembleMru(items);
@@ -77,7 +77,7 @@ export function lastVisitMru(reg_data: Registry[]): MruValues[] | WindowsError {
   for (const entry of reg_data) {
     if (
       !entry.path.includes(
-        "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedPidlMRU",
+        "\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedPidlMRU",
       )
     ) {
       continue;
@@ -128,7 +128,7 @@ export function lastVisitMru(reg_data: Registry[]): MruValues[] | WindowsError {
           break;
         }
         item_data = item.remaining;
-        items.push(JSON.parse(item.item));
+        items.push(item.item);
       }
 
       const mru = assembleMru(items);

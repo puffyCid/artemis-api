@@ -1,4 +1,4 @@
-import { SingleRequirement } from "../codesigning.d.ts";
+import { SingleRequirement } from "../codesigning.ts";
 
 export interface TccValues {
   db_path: string;

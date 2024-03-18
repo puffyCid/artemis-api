@@ -6,12 +6,16 @@ import { getPlist } from "../plist.ts";
  * Function to parse joined Wifi networks on macOS. Supports macOS Catalina+
  * @returns Array `Wifi` networks
  */
-export function wifiNetworks(): Wifi[] {
-  const paths = [
+export function wifiNetworks(alt_path?: string): Wifi[] {
+  let paths = [
     "/Library/Preferences/com.apple.wifi.known-networks.plist",
     // Pre-catalina
     // "/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist"
   ];
+
+  if (alt_path != undefined) {
+    paths = [alt_path];
+  }
 
   let wifis: Wifi[] = [];
   for (const path of paths) {

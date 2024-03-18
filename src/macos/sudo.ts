@@ -6,7 +6,7 @@ import { MacosError } from "./errors.ts";
  * @param logarchive_path Optional path to a directory containing unified log data. It should be formatted the same way as a logarchive
  * @returns Array of `sudo` entries from macOS Unified Logs or `MacosError`
  */
-export function getSudoLogs(
+export function getSudoLogsMacos(
   logarchive_path?: string,
 ): UnifiedLog[] | MacosError {
   let path = "";

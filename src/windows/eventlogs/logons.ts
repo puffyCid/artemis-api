@@ -3,7 +3,7 @@ import {
   LogonType,
   Raw4624Logons,
   Raw4634Logoffs,
-} from "../../../types/windows/eventlogs/logons.d.ts";
+} from "../../../types/windows/eventlogs/logons.ts";
 import { WindowsError } from "../errors.ts";
 import { getEventlogs } from "../eventlogs.ts";
 

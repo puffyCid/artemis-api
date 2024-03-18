@@ -1,5 +1,5 @@
 /**History of files in VSCode */
-interface FileHistory {
+export interface FileHistory {
   /**Version of History format */
   version: number;
   /**To source file */
@@ -20,4 +20,9 @@ interface Entries {
   timestamp: number;
   /**Based64 encoded file content */
   content: string;
+}
+
+export interface Extensions {
+  path: string;
+  data: Record<string, unknown>[];
 }
