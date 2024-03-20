@@ -183,7 +183,7 @@ function parseRuby(path: string): HomebrewFormula | FileError {
     return rubyText;
   }
 
-  const descriptoin = rubyText.match(desc);
+  const description = rubyText.match(desc);
   const receipt: HomebrewFormula = {
     description: "",
     homepage: "",
@@ -193,8 +193,8 @@ function parseRuby(path: string): HomebrewFormula | FileError {
     formulaPath: path,
     version: "",
   };
-  if (typeof descriptoin?.[0] === "string") {
-    receipt.description = descriptoin?.[0].replaceAll('"', "");
+  if (typeof description?.[0] === "string") {
+    receipt.description = description?.[0].replaceAll('"', "");
   }
 
   const homepage = rubyText.match(homepage_reg);

@@ -1,4 +1,4 @@
-import { Icon, OSType } from "../../types/images/icns.d.ts";
+import { Icon, OSType } from "../../types/images/icns.ts";
 import { encode, extractUtf8String } from "../encoding/mod.ts";
 import { Endian } from "../nom/helpers.ts";
 import { nomUnsignedFourBytes, take } from "../nom/mod.ts";

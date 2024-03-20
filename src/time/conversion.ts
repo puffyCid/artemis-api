@@ -73,3 +73,42 @@ export function fatToUnixEpoch(fattime: Uint8Array): number {
   const data: bigint = time.fattime_utc_to_unixepoch(fattime);
   return Number(data);
 }
+
+/**
+ * Function to convert UNIXEPOCH times to ISO8601
+ * @param timestamp Data timestamp. Should be UNIXEPOCH. Duration should either: Seconds, Milliseconds, Microseconds, or nanoseconds
+ * @returns ISO8601 timestamp
+ */
+export function unixEpochToISO(timestamp: number | bigint): string {
+  const milliseconds_len = 13;
+
+  const milliseconds = 1000;
+  if (
+    typeof timestamp === "number" &&
+    timestamp.toString().length < milliseconds_len
+  ) {
+    const js_date = new Date(timestamp * milliseconds);
+    return js_date.toISOString();
+  }
+  const microseconds_len = 16;
+  const nanoseconds_len = 19;
+  if (timestamp.toString().length === milliseconds_len) {
+    return new Date(Number(timestamp)).toISOString();
+  }
+
+  if (timestamp.toString().length === microseconds_len) {
+    const milli_time = BigInt(timestamp) / BigInt(milliseconds);
+    return new Date(Number(milli_time)).toISOString();
+  }
+
+  if (timestamp.toString().length === nanoseconds_len) {
+    const milli_time = BigInt(timestamp) / BigInt(milliseconds * milliseconds);
+    return new Date(Number(milli_time)).toISOString();
+  }
+
+  console.warn(
+    `Received very large number:  ${timestamp}. Converting to max Number type value`,
+  );
+  const milli_time = BigInt(timestamp) / BigInt(milliseconds);
+  return new Date(Number(milli_time)).toISOString();
+}

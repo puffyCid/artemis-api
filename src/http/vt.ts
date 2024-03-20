@@ -10,7 +10,7 @@ import { ErrorName, HttpError } from "./errors.ts";
  * Your key or IP will be **blocked** if you do!
  */
 export class VirusTotal {
-  key: string;
+  private key: string;
 
   /**
    * Provide the VT API key for you account

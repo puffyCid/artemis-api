@@ -1,4 +1,4 @@
-import { LoginItems } from "../../types/macos/loginitems.d.ts";
+import { LoginItems } from "../../types/macos/loginitems.ts";
 import { MacosError } from "./errors.ts";
 
 /**

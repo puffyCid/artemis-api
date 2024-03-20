@@ -1,4 +1,4 @@
-interface Icon {
+export interface Icon {
   /**Size in pixels. Ex: 128x128 */
   size: number;
   /**Base64 encoded */

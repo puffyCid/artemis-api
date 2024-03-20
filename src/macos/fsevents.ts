@@ -1,4 +1,4 @@
-import { Fsevents } from "../../types/macos/fsevents.d.ts";
+import { Fsevents } from "../../types/macos/fsevents.ts";
 import { MacosError } from "./errors.ts";
 
 /**

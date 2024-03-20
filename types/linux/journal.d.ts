@@ -57,9 +57,9 @@ export interface Journal {
   /**Runtime scope associated with entry */
   runtime_scope: string;
   /**Trused Timestamp associated with entry in UNIXEPOCH microseconds */
-  source_realtime: number;
+  source_realtime: bigint;
   /**Timestamp associated with entry in UNIXEPOCH microseconds */
-  realtime: number;
+  realtime: bigint;
   /**How entry was received by the Journal service */
   transport: string;
   /**Journal message entry */
