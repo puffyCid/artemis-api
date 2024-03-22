@@ -17,11 +17,12 @@ export function timelineUnifiedLogs(
   for (const item of data) {
     const entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.time),
-      timestamp_desc: "UnifiedLogEntryCreated",
+      timestamp_desc: "UnifiedLog Entry Created",
       message: item.message,
       hash: "",
       user: item.euid.toString(),
       artifact: "UnifiedLogs",
+      data_type: "macos:unifiedlog:event",
       _raw: include_raw ? item : "",
     };
 

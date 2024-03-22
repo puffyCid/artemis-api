@@ -1,4 +1,4 @@
-import { MachoInfo } from "../../types/macos/macho.d.ts";
+import { MachoInfo } from "../../types/macos/macho.ts";
 import { MacosError } from "./errors.ts";
 
 /**

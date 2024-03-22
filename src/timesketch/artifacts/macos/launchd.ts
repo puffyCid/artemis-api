@@ -1,14 +1,14 @@
-import { Fsevents } from "../../../../types/macos/fsevents.ts";
+import { Launchd } from "../../../../types/macos/launchd.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 
 /**
- * Function to timeline fsevents. (This artifact has no timestamp)
- * @param data Array of `Fsevents`
+ * Function to timeline Launchd. (This artifact has no timestamp)
+ * @param data Array of `Launchd`
  * @param include_raw Include raw data in timeline entry
- * @returns Array `TimesketchTimeline` of Fsevents
+ * @returns Array `TimesketchTimeline` of Launchd
  */
-export function timelineFsevents(
-  data: Fsevents[],
+export function timelineLaunchd(
+  data: Launchd[],
   include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
@@ -17,11 +17,11 @@ export function timelineFsevents(
     const entry: TimesketchTimeline = {
       datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
-      message: data[i].path,
+      message: data[i].plist_path,
       hash: "",
       user: "",
-      data_type: "macos:fsevents:entry",
-      artifact: "FsEvents",
+      data_type: "macos:plist:launchd:entry",
+      artifact: "Launchd",
       _raw: include_raw ? data[i] : "",
     };
 

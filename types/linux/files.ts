@@ -1,11 +1,11 @@
-import { PeInfo } from "./pe.d.ts";
+import { ElfInfo } from "./elf.ts";
 
 /**
- * `WindowsFileInfo` is an interface containing metadata on Windows files and directories.
+ * `LinuxFileInfo` is an interface containing metadata on Linux files and directories.
  * `Artemis` uses the `walkdir` crate to walk the file system.
- * It does not parse the raw NTFS
+ * It does not parse the raw filesystem
  */
-export interface WindowsFileInfo {
+export interface LinuxFileInfo {
   /**Full path to file or directory */
   full_path: string;
   /**Directory path */
@@ -47,5 +47,5 @@ export interface WindowsFileInfo {
   /**Depth the file from provided start point */
   depth: number;
   /**PE binary metadata */
-  binary_info: PeInfo[];
+  binary_info: ElfInfo[];
 }

@@ -22,6 +22,7 @@ export function timelineProcesses(
       hash: item.md5,
       user: item.uid,
       artifact: "Processes",
+      data_type: "system:processes:process",
       _raw: include_raw ? item : "",
     };
 

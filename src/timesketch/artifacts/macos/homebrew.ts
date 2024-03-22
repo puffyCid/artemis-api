@@ -17,10 +17,11 @@ export function timelineHomebrew(
   for (const item of data) {
     const entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.installTime),
-      timestamp_desc: "HomebrewPackageInstalled",
+      timestamp_desc: "Homebrew Package Installed",
       message: item.name,
       hash: "",
       user: "",
+      data_type: "macos:homebrew:package",
       artifact: "HomebrewPackages",
       _raw: include_raw ? item : "",
     };

@@ -1,4 +1,4 @@
-import { Emond } from "../../types/macos/emond.d.ts";
+import { Emond } from "../../types/macos/emond.ts";
 import { MacosError } from "./errors.ts";
 
 /**

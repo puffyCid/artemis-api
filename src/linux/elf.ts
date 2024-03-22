@@ -1,4 +1,4 @@
-import { ElfInfo } from "../../types/linux/elf.d.ts";
+import { ElfInfo } from "../../types/linux/elf.ts";
 import { LinuxError } from "./errors.ts";
 
 /**

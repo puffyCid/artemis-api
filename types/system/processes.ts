@@ -1,6 +1,6 @@
-import { ElfInfo } from "../linux/elf.d.ts";
-import { MachoInfo } from "../macos/macho.d.ts";
-import { PeInfo } from "../windows/pe.d.ts";
+import { ElfInfo } from "../linux/elf.ts";
+import { MachoInfo } from "../macos/macho.ts";
+import { PeInfo } from "../windows/pe.ts";
 
 /**
  * `ProcessInfo` is an interface containing metadata on system processes.

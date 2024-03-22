@@ -14,6 +14,13 @@ export interface TimesketchTimeline {
     user: string;
     /**The type of artifact that was timelined */
     artifact: string;
+    /**
+     * Artifact data type. Based on plaso defintion  
+     * (its kind of freeform, https://github.com/log2timeline/plaso/blob/main/docs/sources/user/Scribbles-about-events.md).  
+     * Looks like: `source:artifact:artifact:data`. With first artifact most generic and second one more specific  
+     * :artifact: can be nested. Ex: `windows:registry:explorer:programcache`
+     * */
+    data_type: string;
     /**The raw data associated with the entry */
     _raw: unknown;
 }
@@ -24,4 +31,14 @@ export enum TimesketchArtifact {
     UNIFIEDLOGS = "unifiedlogs",
     HOMEBREW = "homebrew",
     FSEVENTS = "fsevents",
+    USERS_MACOS = "users-macos",
+    GROUPS_MACOS = "groups-macos",
+    EXECPOLICY = "execpolicy",
+    FILES = "files",
+    SUDOLOGS_MACOS = "sudologs-macos",
+    EMOND = "emond",
+    SPOTLIGHT = "spotlight",
+    LAUNCHD = "launchd",
+    SAFARI_DOWNLOADS = "safari-downloads",
+    SAFARI_HISTORY = "safari-history"
 }

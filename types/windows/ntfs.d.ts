@@ -1,4 +1,4 @@
-import { PeInfo } from "./pe.d.ts";
+import { PeInfo } from "./pe.ts";
 
 /**
  * Windows NTFS is the default filesystem on Windows devices.

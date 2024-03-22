@@ -9,19 +9,30 @@ import {
 } from "../../types/timesketch/timeline.ts";
 import { encodeBytes } from "../encoding/bytes.ts";
 import { timelineArtifact } from "./timeline.ts";
-import { generateUuid } from "../encoding/uuid.ts";
 
 export class Timesketch {
   private timesketch_auth: TimesketchAuth;
   private token: string;
   private cookie: string;
+  private timeline_name;
 
-  constructor(auth: TimesketchAuth) {
+  /**
+   * @param auth `TimesketchAuth` object used to authenticate to Timesketch
+   * @param name The name that should used for the timeline. If none is provided the artifact name will be used. It is **recommended** to provide a name (ex: the hostname)
+   */
+  constructor(auth: TimesketchAuth, name = "") {
     this.timesketch_auth = auth;
     this.token = "";
     this.cookie = "";
+    this.timeline_name = name;
   }
 
+  /**
+   * Function to timeline and upload data to Timesketch
+   * @param data Artifact data to Timeline. Must be the type specified by `artifact`
+   * @param artifact The the artifact type that should be timeline
+   * @returns A `TimesketchError` if the data cannot be timeline or if it failed to upload to Timesketch
+   */
   public async timelineAndUpload(
     data: unknown,
     artifact: TimesketchArtifact,
@@ -30,6 +41,11 @@ export class Timesketch {
     if (timeline_data instanceof TimesketchError) {
       return timeline_data;
     }
+
+    if (timeline_data.length === 0) {
+      return new TimesketchError(`ARTIFACT`, `zero values for ${artifact}`);
+    }
+
     // If no token or cookie. We need to logon!
     if (this.token === "" || this.cookie === "") {
       const status = await this.authTimesketch();
@@ -61,6 +77,10 @@ export class Timesketch {
       "Cookie": this.cookie,
     };
 
+    if (this.timeline_name === "") {
+      this.timeline_name = artifact;
+    }
+
     const entries_strings = [];
     // We have to convert the TimesketchTimeline object to a string :/
     for (let i = 0; i < data.length; i++) {
@@ -69,11 +89,10 @@ export class Timesketch {
 
     // From: https://github.com/google/timesketch/blob/3c781e6bde4398e24cba7dd41c4f87ba4d6e5394/importer_client/python/timesketch_import_client/importer.py#L249
     const post_data = {
-      // Have unique name for all timelines
-      "name": `${artifact}-${generateUuid()}`,
+      "name": this.timeline_name,
       "sketch_id": this.timesketch_auth.sketch_id,
-      "data_label": "",
-      "enable_stream": "false",
+      "data_label": artifact,
+      "enable_stream": false,
       "provider": "artemis",
       "events": entries_strings.join("\n"),
     };
@@ -93,10 +112,10 @@ export class Timesketch {
       );
     }
 
-    if (response.status != 200) {
+    if (response.status != 201) {
       return new TimesketchError(
         `UPLOAD`,
-        `non-200 response for uploading data ${
+        `non-201 response for uploading data ${
           extractUtf8String(new Uint8Array(response.body))
         }`,
       );

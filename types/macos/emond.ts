@@ -15,7 +15,7 @@ export interface Emond {
   /**Event types associated with the rule */
   event_types: string[];
   /**Start time of the rule */
-  start_tiem: string;
+  start_time: string;
   /**If partial criteria match should trigger the rule */
   allow_partial_criterion_match: boolean;
   /**Array of commad actions if rule is triggered */

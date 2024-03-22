@@ -1,4 +1,4 @@
-import { ExecPolicy } from "../../types/macos/execpolicy.d.ts";
+import { ExecPolicy } from "../../types/macos/execpolicy.ts";
 import { MacosError } from "./errors.ts";
 
 /**

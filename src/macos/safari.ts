@@ -3,7 +3,7 @@ import {
   RawSafariHistory,
   SafariDownloads,
   SafariHistory,
-} from "../../types/macos/safari.d.ts";
+} from "../../types/macos/safari.ts";
 import { MacosError } from "./errors.ts";
 
 /**

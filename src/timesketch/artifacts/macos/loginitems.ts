@@ -17,13 +17,14 @@ export function timelineLoginItems(
   for (const item of data) {
     const entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.created),
-      timestamp_desc: "LoginItemCreated",
+      timestamp_desc: "LoginItem Created",
       message: item.path.length != 0
         ? `${item.volume_url}${item.path.join("/")}`
         : `${item.app_binary}`,
       hash: "",
       user: item.uid.toString(),
       artifact: "LoginItems",
+      data_type: "macos:plist:loginitems:entry",
       _raw: include_raw ? item : "",
     };
 
