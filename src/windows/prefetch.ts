@@ -1,4 +1,4 @@
-import { Prefetch } from "../../types/windows/prefetch.d.ts";
+import { Prefetch } from "../../types/windows/prefetch.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

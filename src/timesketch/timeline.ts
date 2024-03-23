@@ -17,6 +17,9 @@ import { SafariDownloads, SafariHistory } from "../../types/macos/safari.ts";
 import { Launchd } from "../../types/macos/launchd.ts";
 import { Emond } from "../../types/macos/emond.ts";
 import { Spotlight } from "../../types/macos/spotlight.ts";
+import { Prefetch } from "../../types/windows/prefetch.ts";
+import { Amcache } from "../../types/windows/amcache.ts";
+import { Shimcache } from "../../types/windows/shimcache.ts";
 
 /**
  * macOS artifact timelines
@@ -41,6 +44,13 @@ import { timelineEmond } from "./artifacts/macos/emond.ts";
  */
 import { timelineProcesses } from "./artifacts/processes.ts";
 import { timelineFiles } from "./artifacts/files.ts";
+
+/**
+ * Windows artifact timelines
+ */
+import { timelineAmcache } from "./artifacts/windows/amcache.ts";
+import { timelineShimcache } from "./artifacts/windows/shimcache.ts";
+import { timelinePrefetch } from "./artifacts/windows/prefetch.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -87,6 +97,12 @@ export function timelineArtifact(
       return timelineSafariDownloads(data as SafariDownloads[], include_raw);
     case TimesketchArtifact.SAFARI_HISTORY:
       return timelineSafariHistory(data as SafariHistory[], include_raw);
+    case TimesketchArtifact.AMCACHE:
+      return timelineAmcache(data as Amcache[], include_raw);
+    case TimesketchArtifact.SHIMCACHE:
+      return timelineShimcache(data as Shimcache[], include_raw);
+    case TimesketchArtifact.PREFETCH:
+      return timelinePrefetch(data as Prefetch[], include_raw);
     default:
       return new TimesketchError(`ARTIFACT`, `unkonwn artifact ${artifact}`);
   }

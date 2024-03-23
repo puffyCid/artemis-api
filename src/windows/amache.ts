@@ -1,4 +1,4 @@
-import { Amcache } from "../../types/windows/amcache.d.ts";
+import { Amcache } from "../../types/windows/amcache.ts";
 import { WindowsError } from "./errors.ts";
 
 /**
