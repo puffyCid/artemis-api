@@ -15,7 +15,7 @@ export function timelineAmcache(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item?.last_modified),
       timestamp_desc: "Amcache Registry Last Modified",
       message: item.path,
@@ -25,6 +25,8 @@ export function timelineAmcache(
       data_type: "windows:registry:amcache:entry",
       _raw: include_raw ? item : "",
     };
+
+    entry = { ...entry, ...item };
 
     entries.push(entry);
   }

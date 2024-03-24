@@ -1,4 +1,4 @@
-import { Bits } from "../../types/windows/bits.d.ts";
+import { Bits } from "../../types/windows/bits.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

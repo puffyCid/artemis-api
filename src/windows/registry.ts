@@ -1,4 +1,4 @@
-import { Registry, SecurityKey } from "../../types/windows/registry.d.ts";
+import { Registry, SecurityKey } from "../../types/windows/registry.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

@@ -24,7 +24,7 @@ export interface AccessControl {
 /**
  * Metadata associated with Security Descriptor information
  */
-interface Descriptor {
+export interface Descriptor {
   /**Control flags associated with the data */
   control_flags: string[];
   /**SACL info associated with the data */

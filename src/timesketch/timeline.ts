@@ -20,6 +20,8 @@ import { Spotlight } from "../../types/macos/spotlight.ts";
 import { Prefetch } from "../../types/windows/prefetch.ts";
 import { Amcache } from "../../types/windows/amcache.ts";
 import { Shimcache } from "../../types/windows/shimcache.ts";
+import { Bits } from "../../types/windows/bits.ts";
+import { EventLogRecord } from "../../types/windows/eventlogs.ts";
 
 /**
  * macOS artifact timelines
@@ -51,18 +53,20 @@ import { timelineFiles } from "./artifacts/files.ts";
 import { timelineAmcache } from "./artifacts/windows/amcache.ts";
 import { timelineShimcache } from "./artifacts/windows/shimcache.ts";
 import { timelinePrefetch } from "./artifacts/windows/prefetch.ts";
+import { timelineBits } from "./artifacts/windows/bits.ts";
+import { timelineEventLogs } from "./artifacts/windows/eventlogs.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
  * @param data Artifact data to timeline. Must be a supported artifact defined by `TimesketchArtifact`
  * @param artifact A `TimesketchArtifact` artifact to timeline
- * @param include_raw Boolean value to indicate if the raw artifact should be included in timeline. Defaults to true
+ * @param include_raw Boolean value to indicate if the raw artifact should be included as a dedicated value. Defaults to false
  * @returns Array of `TimesketchTimeline` or `TimesketchError`
  */
 export function timelineArtifact(
   data: unknown,
   artifact: TimesketchArtifact,
-  include_raw = true,
+  include_raw = false,
 ): TimesketchTimeline[] | TimesketchError {
   switch (artifact) {
     case TimesketchArtifact.PROCESSESS:
@@ -103,6 +107,10 @@ export function timelineArtifact(
       return timelineShimcache(data as Shimcache[], include_raw);
     case TimesketchArtifact.PREFETCH:
       return timelinePrefetch(data as Prefetch[], include_raw);
+    case TimesketchArtifact.BITS:
+      return timelineBits(data as Bits, include_raw);
+    case TimesketchArtifact.EVENTLOGS:
+      return timelineEventLogs(data as EventLogRecord[], include_raw);
     default:
       return new TimesketchError(`ARTIFACT`, `unkonwn artifact ${artifact}`);
   }

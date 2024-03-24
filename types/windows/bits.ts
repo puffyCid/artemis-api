@@ -1,4 +1,4 @@
-import { AccessControl } from "./acls.d.ts";
+import { AccessControl } from "./acls.ts";
 
 /**
  * Windows Background Intelligent Transfer Service (`BITS`) is a service that allows applications and users to register jobs to upload/download files.
@@ -30,6 +30,8 @@ export interface BitsInfo {
   file_id: string;
   /**SID associated with the Job */
   owner_sid: string;
+  /**Username associated with SID */
+  username: string;
   /**Timestamp when the Job was created in UNIXEPOCH seconds */
   created: number;
   /**Timestamp when the Job was modified in UNIXEPOCH seconds */
@@ -100,6 +102,8 @@ export interface Jobs {
   file_id: string;
   /**SID associated with the Job */
   owner_sid: string;
+  /**Username associated with SID */
+  username: string;
   /**Timestamp when the Job was created in UNIXEPOCH seconds */
   created: number;
   /**Timestamp when the Job was modified in UNIXEPOCH seconds */

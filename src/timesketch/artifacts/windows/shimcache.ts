@@ -15,7 +15,7 @@ export function timelineShimcache(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.last_modified),
       timestamp_desc: "Shimcache Last Modified",
       message: item.path,
@@ -25,7 +25,7 @@ export function timelineShimcache(
       data_type: "windows:registry:shimcache:entry",
       _raw: include_raw ? item : "",
     };
-
+    entry = { ...entry, ...item };
     entries.push(entry);
   }
 

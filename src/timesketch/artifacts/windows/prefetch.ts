@@ -15,7 +15,7 @@ export function timelinePrefetch(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.last_run_time),
       timestamp_desc: "Prefetch Last Execution",
       message: item.path,
@@ -25,11 +25,12 @@ export function timelinePrefetch(
       data_type: "windows:prefetch:execution",
       _raw: include_raw ? item : "",
     };
+    entry = { ...entry, ...item };
 
     entries.push(entry);
-    for (const old_runs of item.all_run_times) {
+    for (let i = 0; i < item.all_run_times.length; i++) {
       const old_run = Object.assign({}, entry);
-      old_run.datetime = unixEpochToISO(old_runs);
+      old_run.datetime = unixEpochToISO(item.all_run_times[i]);
       old_run.timestamp_desc = "Prefetch Execution";
       entries.push(old_run);
     }

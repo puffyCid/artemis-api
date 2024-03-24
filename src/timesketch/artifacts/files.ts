@@ -47,7 +47,7 @@ interface TimeEntries {
 }
 
 /**
- * Function to extrat timestamps from file info
+ * Function to extract timestamps from file info
  * @param entry A file info object. Can be `MacosFileInfo` or `WindowsFileInfo` or `LinuxFileInfo`
  * @returns Array of `TimeEntries`
  */
@@ -103,7 +103,7 @@ function extractApiTimes(
     return entries;
   }
 
-  if (entry.accessed === entry.modified && entry.created === entry.changed) {
+  if (entry.accessed === entry.modified && entry.accessed === entry.changed) {
     time_entry.datetime = entry.created;
     time_entry.desc = "Created";
     entries.push(Object.assign({}, time_entry));

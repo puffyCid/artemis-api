@@ -1,4 +1,4 @@
-import { Descriptor } from "./acls.d.ts";
+import { Descriptor } from "./acls.ts";
 
 /**
  * Windows `Registry` is a collection of binary files that store Windows configuration settings and OS information.
@@ -79,7 +79,7 @@ export interface Value {
 /**
  * Security Key data associated with a Registry Key
  */
-interface SecurityKey {
+export interface SecurityKey {
   /**Number of references to the key */
   reference_count: number;
   /**Permissions and ACLs associated with the key */

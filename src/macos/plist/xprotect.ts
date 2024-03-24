@@ -39,9 +39,7 @@ export function getXprotectDefinitions(
     );
   }
 
-  console.log(entries);
-
-  return [];
+  return entries;
 }
 
 /**
