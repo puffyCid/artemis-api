@@ -15,7 +15,7 @@ export function timelineGroupsMacos(
 
   for (const item of data) {
     const entry: TimesketchTimeline = {
-      datetime: "1970-01-01T00:00:00.000Z",
+      datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.name.join(""),
       hash: "",

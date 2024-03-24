@@ -14,17 +14,19 @@ export function timelineUnifiedLogs(
 ): TimesketchTimeline[] {
   const entries = [];
 
-  for (const item of data) {
-    const entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.time),
+  for (let i = 0; i < data.length; i++) {
+    let entry: TimesketchTimeline = {
+      datetime: unixEpochToISO(data[i].time),
       timestamp_desc: "UnifiedLog Entry Created",
-      message: item.message,
+      message: "",
       hash: "",
-      user: item.euid.toString(),
+      user: data[i].euid.toString(),
       artifact: "UnifiedLogs",
       data_type: "macos:unifiedlog:event",
-      _raw: include_raw ? item : "",
+      _raw: include_raw ? data[i] : "",
     };
+
+    entry = { ...entry, ...data[i] };
 
     entries.push(entry);
   }

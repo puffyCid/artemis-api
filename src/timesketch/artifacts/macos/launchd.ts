@@ -15,7 +15,7 @@ export function timelineLaunchd(
 
   for (let i = 0; i < data.length; i++) {
     const entry: TimesketchTimeline = {
-      datetime: "1970-01-01T00:00:00.000Z",
+      datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: data[i].plist_path,
       hash: "",

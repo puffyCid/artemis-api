@@ -15,7 +15,7 @@ export function timelineProcesses(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.start_time),
       timestamp_desc: "ProcessStart",
       message: `${item.full_path} ${item.arguments}`,
@@ -26,6 +26,7 @@ export function timelineProcesses(
       _raw: include_raw ? item : "",
     };
 
+    entry = { ...entry, ...item };
     entries.push(entry);
   }
 
