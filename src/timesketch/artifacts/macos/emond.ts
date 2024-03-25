@@ -14,7 +14,7 @@ export function timelineEmond(
   const entries = [];
 
   for (let i = 0; i < data.length; i++) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: data[i].name,
@@ -24,6 +24,7 @@ export function timelineEmond(
       artifact: "Emond",
       _raw: include_raw ? data[i] : "",
     };
+    entry = { ...entry, ...data[i] };
 
     entries.push(entry);
   }

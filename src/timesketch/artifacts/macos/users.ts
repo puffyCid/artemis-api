@@ -15,7 +15,7 @@ export function timelineUsersMacos(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.account_created),
       timestamp_desc: "User Created",
       message: item.home_path.join(" "),
@@ -25,6 +25,7 @@ export function timelineUsersMacos(
       data_type: "macos:plist:accounts:user",
       _raw: include_raw ? item : "",
     };
+    entry = { ...entry, ...item };
 
     entries.push(entry);
   }

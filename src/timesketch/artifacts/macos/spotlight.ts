@@ -15,7 +15,7 @@ export function timelineSpotlight(
   const entries = [];
 
   for (let i = 0; i < data.length; i++) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(data[i].last_updated),
       timestamp_desc: "Spotlight Entry Last Updated",
       message: data[i].values["_kMDItemFileName"]?.value as string ??
@@ -26,6 +26,7 @@ export function timelineSpotlight(
       data_type: "macos:spotlight:entry",
       _raw: include_raw ? data[i] : "",
     };
+    entry = { ...entry, ...data[i] };
 
     entries.push(entry);
   }

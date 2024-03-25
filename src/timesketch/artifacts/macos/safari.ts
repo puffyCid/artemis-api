@@ -19,7 +19,7 @@ export function timelineSafariHistory(
 
   for (const value of data) {
     for (let i = 0; i < value.history.length; i++) {
-      const entry: TimesketchTimeline = {
+      let entry: TimesketchTimeline = {
         datetime: unixEpochToISO(value.history[i].visit_time),
         timestamp_desc: "Safari Visit Time",
         message: `${value.history[i].url} - ${value.history[i].title}`,
@@ -29,6 +29,7 @@ export function timelineSafariHistory(
         artifact: "SafariHistory",
         _raw: include_raw ? data[i] : "",
       };
+      entry = { ...entry, ...data[i] };
 
       entries.push(entry);
     }
@@ -50,7 +51,7 @@ export function timelineSafariDownloads(
 
   for (const value of data) {
     for (let i = 0; i < value.downloads.length; i++) {
-      const entry: TimesketchTimeline = {
+      let entry: TimesketchTimeline = {
         datetime: unixEpochToISO(value.downloads[i].created),
         timestamp_desc: "Safari Download File Created",
         message: `${value.downloads[i].source_url} - ${
@@ -62,6 +63,7 @@ export function timelineSafariDownloads(
         artifact: "SafariDownloads",
         _raw: include_raw ? data[i] : "",
       };
+      entry = { ...entry, ...data[i] };
 
       entries.push(entry);
     }

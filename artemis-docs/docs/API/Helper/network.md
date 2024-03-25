@@ -16,12 +16,14 @@ optional body or headers. By default headers will use
 
 The body must be in raw bytes if provided. This function is async
 
-| Param    | Type                         | Description                                                          |
-| -------- | ---------------------------- | -------------------------------------------------------------------- |
-| url      | string                       | URL to target                                                        |
-| protocol | Protocol                     | Protocol to use. Currently only GET or POST                          |
-| body     | Uint8Array                   | Optional body to send with request                                   |
-| headers  | Record&lt;string, string&gt; | Optional headers to use. Default is `Content-Type: application/json` |
+| Param           | Type                         | Description                                                                                                    |
+| --------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| url             | string                       | URL to target                                                                                                  |
+| protocol        | Protocol                     | Protocol to use. Currently only GET or POST                                                                    |
+| body            | Uint8Array                   | Optional body to send with request                                                                             |
+| headers         | Record&lt;string, string&gt; | Optional headers to use. Default is `Content-Type: application/json`                                           |
+| body_type       | BodyType                     | Optional value to set the body type of the POST request. Ex: FORM                                              |
+| follow_redirect | FollowRedirect               | Optional value to set if the HTTP client should follow redirects. By default HTTP client will follow redirects |
 
 ### VirusTotal Class
 

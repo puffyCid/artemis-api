@@ -9,7 +9,6 @@ import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
  */
 export function timelineLaunchd(
   data: Launchd[],
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -22,7 +21,7 @@ export function timelineLaunchd(
       user: "",
       data_type: "macos:plist:launchd:entry",
       artifact: "Launchd",
-      _raw: include_raw ? data[i] : "",
+      _raw: JSON.stringify(data[i]),
     };
 
     entries.push(entry);

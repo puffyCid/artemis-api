@@ -18,7 +18,7 @@ export function timelineFiles(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: "",
       timestamp_desc: "",
       message: `${item.full_path}`,
@@ -28,6 +28,8 @@ export function timelineFiles(
       data_type: "system:fs:file",
       _raw: include_raw ? item : "",
     };
+
+    entry = { ...entry, ...item };
 
     // Extract each unique timestamp to their own entry
     const time_entries = extractApiTimes(item);

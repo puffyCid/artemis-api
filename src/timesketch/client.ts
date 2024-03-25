@@ -9,22 +9,26 @@ import {
 } from "../../types/timesketch/timeline.ts";
 import { encodeBytes } from "../encoding/bytes.ts";
 import { timelineArtifact } from "./timeline.ts";
+import { TimelineResponse } from "../../types/timesketch/client.ts";
 
 export class Timesketch {
   private timesketch_auth: TimesketchAuth;
   private token: string;
   private cookie: string;
   private timeline_name;
+  private opensearch_index: string;
 
   /**
    * @param auth `TimesketchAuth` object used to authenticate to Timesketch
    * @param name The name that should used for the timeline. If none is provided the artifact name will be used. It is **recommended** to provide a name (ex: the hostname)
+   * @param index The OpenSearch index that should be used when uploading data. If none is provided a new index will be created
    */
-  constructor(auth: TimesketchAuth, name = "") {
+  constructor(auth: TimesketchAuth, name = "", index = "") {
     this.timesketch_auth = auth;
     this.token = "";
     this.cookie = "";
     this.timeline_name = name;
+    this.opensearch_index = index;
   }
 
   /**
@@ -55,7 +59,7 @@ export class Timesketch {
     }
 
     if (this.timesketch_auth.sketch_id === undefined) {
-      console.log("TODO");
+      console.log("TODO: Creat Sketch");
       return;
     }
 
@@ -88,7 +92,7 @@ export class Timesketch {
     }
 
     // From: https://github.com/google/timesketch/blob/3c781e6bde4398e24cba7dd41c4f87ba4d6e5394/importer_client/python/timesketch_import_client/importer.py#L249
-    const post_data = {
+    const post_data: Record<string, string | number | boolean | undefined> = {
       "name": this.timeline_name,
       "sketch_id": this.timesketch_auth.sketch_id,
       "data_label": artifact,
@@ -96,6 +100,10 @@ export class Timesketch {
       "provider": "artemis",
       "events": entries_strings.join("\n"),
     };
+
+    if (this.opensearch_index != "") {
+      post_data["index_name"] = this.opensearch_index;
+    }
 
     const bytes = encodeBytes(JSON.stringify(post_data));
     const response = await request(
@@ -120,6 +128,12 @@ export class Timesketch {
         }`,
       );
     }
+
+    const task_info: TimelineResponse = JSON.parse(
+      extractUtf8String(new Uint8Array(response.body)),
+    );
+    this.opensearch_index = task_info.objects.at(0)?.searchindex.index_name ??
+      "";
   }
 
   /**

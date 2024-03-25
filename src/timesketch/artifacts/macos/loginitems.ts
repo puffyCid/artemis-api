@@ -15,7 +15,7 @@ export function timelineLoginItems(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.created),
       timestamp_desc: "LoginItem Created",
       message: item.path.length != 0
@@ -27,6 +27,7 @@ export function timelineLoginItems(
       data_type: "macos:plist:loginitems:entry",
       _raw: include_raw ? item : "",
     };
+    entry = { ...entry, ...item };
 
     entries.push(entry);
   }

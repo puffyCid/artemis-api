@@ -110,7 +110,7 @@ export function timelineArtifact(
     case TimesketchArtifact.BITS:
       return timelineBits(data as Bits, include_raw);
     case TimesketchArtifact.EVENTLOGS:
-      return timelineEventLogs(data as EventLogRecord[], include_raw);
+      return timelineEventLogs(data as EventLogRecord[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unkonwn artifact ${artifact}`);
   }

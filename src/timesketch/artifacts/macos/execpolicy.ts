@@ -15,7 +15,7 @@ export function timelineExecpolicy(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.executable_timestamp),
       timestamp_desc: "ExecPolicy Entry Created",
       message: item.file_identifier,
@@ -25,6 +25,7 @@ export function timelineExecpolicy(
       data_type: "macos:sqlite:execpolicy:entry",
       _raw: include_raw ? item : "",
     };
+    entry = { ...entry, ...item };
 
     entries.push(entry);
   }

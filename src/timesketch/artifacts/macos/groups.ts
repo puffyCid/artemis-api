@@ -14,7 +14,7 @@ export function timelineGroupsMacos(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
+    let entry: TimesketchTimeline = {
       datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.name.join(""),
@@ -24,6 +24,7 @@ export function timelineGroupsMacos(
       data_type: "macos:plist:accounts:group",
       _raw: include_raw ? item : "",
     };
+    entry = { ...entry, ...item };
 
     entries.push(entry);
   }

@@ -1,4 +1,4 @@
-import { Jumplists } from "../../types/windows/jumplists.d.ts";
+import { Jumplists } from "../../types/windows/jumplists.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

@@ -22,3 +22,32 @@ export enum TimesketchAuthType {
     OAUTH,
     CREDS,
 }
+
+/**
+ * Basic response object from uploading Timeline
+ */
+export interface TimelineResponse {
+    meta: {
+        task_id: string;
+    };
+    objects: ResponseObject[];
+}
+
+/**
+ * Basic Response object from uploading timeline
+ */
+interface ResponseObject {
+    color: string;
+    created_at: string;
+    description: string;
+    id: number;
+    name: string;
+    searchindex: {
+        created_at: string;
+        description: string;
+        name: string;
+        index_name: string;
+        label_string: string;
+        status: Record<string, string | number>;
+    };
+}
