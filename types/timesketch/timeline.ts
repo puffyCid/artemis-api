@@ -50,4 +50,6 @@ export enum TimesketchArtifact {
   EVENTLOGS = "eventlogs",
   JUMPLISTS = "jumplists",
   SHORTCUTS = "shortcuts",
+  RECYCLEBIN = "recyclebin",
+  REGISTRY = "registry",
 }

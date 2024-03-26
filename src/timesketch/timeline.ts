@@ -24,6 +24,8 @@ import { Bits } from "../../types/windows/bits.ts";
 import { EventLogRecord } from "../../types/windows/eventlogs.ts";
 import { Jumplists } from "../../types/windows/jumplists.ts";
 import { Shortcut } from "../../types/windows/shortcuts.ts";
+import { RecycleBin } from "../../types/windows/recyclebin.ts";
+import { RegistryData } from "../../types/windows/registry.ts";
 
 /**
  * macOS artifact timelines
@@ -59,6 +61,8 @@ import { timelineBits } from "./artifacts/windows/bits.ts";
 import { timelineEventLogs } from "./artifacts/windows/eventlogs.ts";
 import { timelineJumplists } from "./artifacts/windows/jumplists.ts";
 import { timelineShortcuts } from "./artifacts/windows/shortcuts.ts";
+import { timelineRecycleBin } from "./artifacts/windows/recyclebin.ts";
+import { timelineRegistry } from "./artifacts/windows/registry.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -116,10 +120,14 @@ export function timelineArtifact(
     case TimesketchArtifact.EVENTLOGS:
       return timelineEventLogs(data as EventLogRecord[]);
     case TimesketchArtifact.JUMPLISTS:
-      return timelineJumplists(data as Jumplists[], include_raw);
+      return timelineJumplists(data as Jumplists[]);
     case TimesketchArtifact.SHORTCUTS:
       return timelineShortcuts(data as Shortcut[], include_raw);
+    case TimesketchArtifact.RECYCLEBIN:
+      return timelineRecycleBin(data as RecycleBin[], include_raw);
+    case TimesketchArtifact.REGISTRY:
+      return timelineRegistry(data as RegistryData);
     default:
-      return new TimesketchError(`ARTIFACT`, `unkonwn artifact ${artifact}`);
+      return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }
 }

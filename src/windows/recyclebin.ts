@@ -1,9 +1,8 @@
-import { RecycleBin } from "../../types/windows/recyclebin.d.ts";
+import { RecycleBin } from "../../types/windows/recyclebin.ts";
 import { WindowsError } from "./errors.ts";
 
 /**
- * Function to parse Recycle Bin files at either `SystemDrive` or an alternative drive
- * @param drive Optional altertnative drive. Will use the `SystemDrive` by default (typically C)
+ * Function to parse Recycle Bin files at `SystemDrive`
  * @returns Array of `RecycleBin` entries or `WindowsError`
  */
 export function getRecycleBin(): RecycleBin[] | WindowsError {

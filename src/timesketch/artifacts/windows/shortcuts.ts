@@ -16,15 +16,21 @@ export function timelineShortcuts(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: "",
-      timestamp_desc: "",
+      datetime: "1601-01-01T00:00:00.000Z",
+      timestamp_desc: "N/A",
       message: item.path,
       hash: "",
       user: "",
       artifact: "Shortcut",
-      data_type: "windows:shortcut:entry",
+      data_type: "windows:shortcut:lnk",
       _raw: include_raw ? item : "",
     };
+
+    if (entry.message === "") {
+      for (const shell of item.shellitems) {
+        entry.message += `${shell.value}\\`;
+      }
+    }
 
     entry = { ...entry, ...item };
     // Extract each unique timestamp to their own entry
@@ -44,15 +50,13 @@ interface TimeEntries {
   desc: string;
 }
 export function extractShortcutTimes(entry: Shortcut): TimeEntries[] {
-  const desc = "Shortcut Created Modified Accessed";
+  const desc = "Shortcut Target Created Modified Accessed";
   const time_entry: TimeEntries = {
     datetime: 0,
     desc,
   };
 
-  if (
-    entry.created === entry.modified && entry.created === entry.accessed
-  ) {
+  if (entry.created === entry.modified && entry.created === entry.accessed) {
     time_entry.datetime = entry.created;
     return [time_entry];
   }
@@ -97,8 +101,7 @@ export function extractShortcutTimes(entry: Shortcut): TimeEntries[] {
   // Every timestamp is unique
   time_entry.datetime = entry.created;
   time_entry.desc = "Shortcut Target Created";
-  const test = Object.assign({}, time_entry);
-  entries.push(test);
+  entries.push(Object.assign({}, time_entry));
 
   time_entry.datetime = entry.modified;
   time_entry.desc = "Shortcut Target Modified";

@@ -59,11 +59,11 @@ export class Timesketch {
     }
 
     if (this.timesketch_auth.sketch_id === undefined) {
-      console.log("TODO: Creat Sketch");
+      console.log("TODO: Create Sketch");
       return;
     }
 
-    // Verify user provied a valid Sketch ID
+    // Verify user provived a valid Sketch ID
     const id_status = await this.verifySketchId();
     if (id_status instanceof TimesketchError) {
       return id_status;

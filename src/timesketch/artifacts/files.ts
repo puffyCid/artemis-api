@@ -62,7 +62,8 @@ function extractApiTimes(
     desc,
   };
   if (
-    entry.created === entry.accessed && entry.created === entry.modified &&
+    entry.created === entry.accessed &&
+    entry.created === entry.modified &&
     entry.created === entry.changed
   ) {
     time_entry.datetime = entry.created;
@@ -232,8 +233,7 @@ function extractApiTimes(
   // Every timestamp is unique
   time_entry.datetime = entry.created;
   time_entry.desc = "Created";
-  const test = Object.assign({}, time_entry);
-  entries.push(test);
+  entries.push(Object.assign({}, time_entry));
 
   time_entry.datetime = entry.accessed;
   time_entry.desc = "Accessed";
