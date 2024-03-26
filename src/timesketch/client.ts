@@ -78,7 +78,7 @@ export class Timesketch {
   ): Promise<void | TimesketchError> {
     const headers = {
       "X-Csrftoken": this.token,
-      "Cookie": this.cookie,
+      Cookie: this.cookie,
     };
 
     if (this.timeline_name === "") {
@@ -91,49 +91,56 @@ export class Timesketch {
       entries_strings.push(JSON.stringify(data[i]));
     }
 
-    // From: https://github.com/google/timesketch/blob/3c781e6bde4398e24cba7dd41c4f87ba4d6e5394/importer_client/python/timesketch_import_client/importer.py#L249
-    const post_data: Record<string, string | number | boolean | undefined> = {
-      "name": this.timeline_name,
-      "sketch_id": this.timesketch_auth.sketch_id,
-      "data_label": artifact,
-      "enable_stream": false,
-      "provider": "artemis",
-      "events": entries_strings.join("\n"),
-    };
+    const chunk_size = 10000;
+    // Split data into chunks so Timesketch does not keel over
+    for (let i = 0; i < entries_strings.length; i += chunk_size) {
+      const chunk = entries_strings.slice(i, i + chunk_size);
+      // From: https://github.com/google/timesketch/blob/3c781e6bde4398e24cba7dd41c4f87ba4d6e5394/importer_client/python/timesketch_import_client/importer.py#L249
+      const post_data: Record<string, string | number | boolean | undefined> = {
+        name: this.timeline_name,
+        sketch_id: this.timesketch_auth.sketch_id,
+        data_label: artifact,
+        enable_stream: false,
+        provider: "artemis",
+        events: chunk.join("\n"),
+      };
 
-    if (this.opensearch_index != "") {
-      post_data["index_name"] = this.opensearch_index;
-    }
+      if (this.opensearch_index != "") {
+        post_data["index_name"] = this.opensearch_index;
+      }
 
-    const bytes = encodeBytes(JSON.stringify(post_data));
-    const response = await request(
-      `${this.timesketch_auth.url}/api/v1/upload/`,
-      Protocol.POST,
-      bytes,
-      headers,
-      BodyType.FORM,
-    );
-    if (response instanceof HttpError) {
-      return new TimesketchError(
-        `UPLOAD`,
-        `failed to upload to Timesketch ${response}`,
+      const bytes = encodeBytes(JSON.stringify(post_data));
+      const response = await request(
+        `${this.timesketch_auth.url}/api/v1/upload/`,
+        Protocol.POST,
+        bytes,
+        headers,
+        BodyType.FORM,
       );
-    }
+      if (response instanceof HttpError) {
+        return new TimesketchError(
+          `UPLOAD`,
+          `failed to upload to Timesketch ${response}`,
+        );
+      }
 
-    if (response.status != 201) {
-      return new TimesketchError(
-        `UPLOAD`,
-        `non-201 response for uploading data ${
-          extractUtf8String(new Uint8Array(response.body))
-        }`,
+      if (response.status != 201) {
+        return new TimesketchError(
+          `UPLOAD`,
+          `non-201 response for uploading data ${
+            extractUtf8String(
+              new Uint8Array(response.body),
+            )
+          }`,
+        );
+      }
+
+      const task_info: TimelineResponse = JSON.parse(
+        extractUtf8String(new Uint8Array(response.body)),
       );
+      this.opensearch_index = task_info.objects.at(0)?.searchindex.index_name ??
+        "";
     }
-
-    const task_info: TimelineResponse = JSON.parse(
-      extractUtf8String(new Uint8Array(response.body)),
-    );
-    this.opensearch_index = task_info.objects.at(0)?.searchindex.index_name ??
-      "";
   }
 
   /**
@@ -143,7 +150,7 @@ export class Timesketch {
   private async verifySketchId(): Promise<void | TimesketchError> {
     const headers = {
       "X-Csrftoken": this.token,
-      "Cookie": this.cookie,
+      Cookie: this.cookie,
     };
 
     const response = await request(
@@ -163,7 +170,9 @@ export class Timesketch {
       return new TimesketchError(
         `SKETCH_ID`,
         `non-200 response for verifying Sketch ID ${
-          extractUtf8String(new Uint8Array(response.body))
+          extractUtf8String(
+            new Uint8Array(response.body),
+          )
         }`,
       );
     }
@@ -200,10 +209,9 @@ export class Timesketch {
 
     // Extract the CSRF Token
     if (typeof value_token?.[0] === "string" && value_token?.[0].length > 50) {
-      this.token = value_token?.[0].replaceAll("value=", "").replaceAll(
-        '"',
-        "",
-      );
+      this.token = value_token?.[0]
+        .replaceAll("value=", "")
+        .replaceAll('"', "");
     }
 
     // Also need first cookie
@@ -217,14 +225,14 @@ export class Timesketch {
 
     // We should be able to auth to Timesketch now!
     const form = {
-      "username": this.timesketch_auth.username,
-      "password": this.timesketch_auth.password,
-      "csrf_token": this.token,
+      username: this.timesketch_auth.username,
+      password: this.timesketch_auth.password,
+      csrf_token: this.token,
     };
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
-      "referer": this.timesketch_auth.url,
-      "Cookie": this.cookie,
+      referer: this.timesketch_auth.url,
+      Cookie: this.cookie,
     };
     const form_string = JSON.stringify(form);
     const bytes = encodeBytes(form_string);
@@ -249,7 +257,9 @@ export class Timesketch {
       return new TimesketchError(
         `AUTH`,
         `non-302 response for auth to Timesketch ${
-          extractUtf8String(new Uint8Array(auth_response.body))
+          extractUtf8String(
+            new Uint8Array(auth_response.body),
+          )
         }`,
       );
     }
