@@ -22,6 +22,8 @@ import { Amcache } from "../../types/windows/amcache.ts";
 import { Shimcache } from "../../types/windows/shimcache.ts";
 import { Bits } from "../../types/windows/bits.ts";
 import { EventLogRecord } from "../../types/windows/eventlogs.ts";
+import { Jumplists } from "../../types/windows/jumplists.ts";
+import { Shortcut } from "../../types/windows/shortcuts.ts";
 
 /**
  * macOS artifact timelines
@@ -55,6 +57,8 @@ import { timelineShimcache } from "./artifacts/windows/shimcache.ts";
 import { timelinePrefetch } from "./artifacts/windows/prefetch.ts";
 import { timelineBits } from "./artifacts/windows/bits.ts";
 import { timelineEventLogs } from "./artifacts/windows/eventlogs.ts";
+import { timelineJumplists } from "./artifacts/windows/jumplists.ts";
+import { timelineShortcuts } from "./artifacts/windows/shortcuts.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -96,7 +100,7 @@ export function timelineArtifact(
     case TimesketchArtifact.SPOTLIGHT:
       return timelineSpotlight(data as Spotlight[], include_raw);
     case TimesketchArtifact.LAUNCHD:
-      return timelineLaunchd(data as Launchd[], include_raw);
+      return timelineLaunchd(data as Launchd[]);
     case TimesketchArtifact.SAFARI_DOWNLOADS:
       return timelineSafariDownloads(data as SafariDownloads[], include_raw);
     case TimesketchArtifact.SAFARI_HISTORY:
@@ -111,6 +115,10 @@ export function timelineArtifact(
       return timelineBits(data as Bits, include_raw);
     case TimesketchArtifact.EVENTLOGS:
       return timelineEventLogs(data as EventLogRecord[]);
+    case TimesketchArtifact.JUMPLISTS:
+      return timelineJumplists(data as Jumplists[], include_raw);
+    case TimesketchArtifact.SHORTCUTS:
+      return timelineShortcuts(data as Shortcut[], include_raw);
     default:
       return new TimesketchError(`ARTIFACT`, `unkonwn artifact ${artifact}`);
   }

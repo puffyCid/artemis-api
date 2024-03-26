@@ -22,7 +22,7 @@ export function timelineEventLogs(
       user: "",
       artifact: "EventLog",
       data_type: "windows:eventlogs:entry",
-      _raw: item,
+      _raw: JSON.stringify(item),
     };
 
     const value_data = item.data["Event"] as Record<
@@ -30,7 +30,7 @@ export function timelineEventLogs(
       Record<string, Record<string, string | Record<string, string>> | null>
     >;
 
-    entry["event_id"] = value_data["System"]["EventID"];
+    entry["event_id"] = JSON.stringify(value_data["System"]["EventID"]);
     if (value_data["System"]["Provider"] != null) {
       const provider =
         value_data["System"]["Provider"]["#attributes"] as Record<
@@ -54,12 +54,14 @@ export function timelineEventLogs(
 
     for (const event_data in value_data["EventData"]) {
       event_message += `${event_data}: ${
-        value_data["EventData"][event_data]
+        JSON.stringify(value_data["EventData"][event_data])
       }  `;
     }
 
     for (const event_data in value_data["UserData"]) {
-      event_message += `${event_data}: ${value_data["UserData"][event_data]}  `;
+      event_message += `${event_data}: ${
+        JSON.stringify(value_data["UserData"][event_data])
+      }  `;
     }
 
     entry.message = event_message;

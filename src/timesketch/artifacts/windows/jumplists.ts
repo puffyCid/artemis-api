@@ -11,12 +11,11 @@ import { extractShortcutTimes } from "./shortcuts.ts";
  */
 export function timelineJumplists(
   data: Jumplists[],
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
   for (const item of data) {
-    let entry: TimesketchTimeline = {
+    const entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item?.jumplist_metadata.modified),
       timestamp_desc: "Jumplist Modified",
       message: item.lnk_info.path,
@@ -24,10 +23,19 @@ export function timelineJumplists(
       user: "",
       artifact: "Jumplist",
       data_type: "windows:jumplist:entry",
-      _raw: include_raw ? item : "",
+      _raw: JSON.stringify(item),
     };
 
-    entry = { ...entry, ...item };
+    if (entry.message === "" && item.jumplist_metadata.path === "") {
+      let message = "";
+      for (const shell of item.lnk_info.shellitems) {
+        message += `${shell.value}\\`;
+      }
+      entry.message = message;
+    } else if (entry.message === "") {
+      entry.message = item.jumplist_metadata.path;
+    }
+
     // Extract each unique timestamp to their own entry
     const time_entries = extractShortcutTimes(item.lnk_info);
     for (const time_entry of time_entries) {
