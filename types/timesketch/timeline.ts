@@ -54,5 +54,6 @@ export enum TimesketchArtifact {
   REGISTRY = "registry",
   SHELLBAGS = "shellbags",
   SERVICES = "services",
-  RAWFILES = "rawfiles"
+  RAWFILES = "rawfiles",
+  SHIMDB = "shimdb"
 }

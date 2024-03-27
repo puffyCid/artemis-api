@@ -1,4 +1,4 @@
-import { Shimdb } from "../../types/windows/shimdb.d.ts";
+import { Shimdb } from "../../types/windows/shimdb.ts";
 import { WindowsError } from "./errors.ts";
 
 /**
