@@ -8,16 +8,14 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
  * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of RegistryData
  */
-export function timelineRegistry(
-  data: RegistryData,
-): TimesketchTimeline[] {
+export function timelineRegistry(data: RegistryData): TimesketchTimeline[] {
   const entries = [];
 
   for (const item of data.registry_entries) {
     const entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.last_modified),
       timestamp_desc: "Registry Last Modified",
-      message: item.path,
+      message: "",
       hash: "",
       user: "",
       artifact: "Registry",
@@ -31,8 +29,14 @@ export function timelineRegistry(
     entry["path"] = item.path;
     entry["name"] = item.name;
     entry["security_offset"] = item.security_offset;
-    entry["values"] = JSON.stringify(item.values);
-    entries.push(entry);
+    for (const value of item.values) {
+      entry.message = `${item.path}  |  Value: ${value.value}`;
+      entry["value"] = value.value;
+      entry["data"] = value.data;
+      entry["reg_data_type"] = value.data_type;
+
+      entries.push(Object.assign({}, entry));
+    }
   }
 
   return entries;

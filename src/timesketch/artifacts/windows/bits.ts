@@ -90,204 +90,33 @@ interface TimeEntries {
  * @returns Array of `TimeEntries`
  */
 function extractTimes(entry: BitsInfo | Jobs): TimeEntries[] {
-  const desc = "BITS Created Modified Completed Expired";
-  const time_entry: TimeEntries = {
-    datetime: 0,
-    desc,
-  };
-
-  if (
-    entry.completed === entry.created && entry.completed === entry.modified &&
-    entry.completed === entry.expiration
-  ) {
-    time_entry.datetime = entry.completed;
-    return [time_entry];
-  }
-
   const entries: TimeEntries[] = [];
-  if (entry.completed === entry.created && entry.completed === entry.modified) {
-    time_entry.datetime = entry.expiration;
-    time_entry.desc = "BITS Expired";
-    entries.push(Object.assign({}, time_entry));
+  const check_times: Record<string, string> = {};
 
-    time_entry.datetime = entry.created;
-    time_entry.desc = "BITS Created Modified Completed";
-    entries.push(Object.assign({}, time_entry));
+  check_times[entry.created] = "BITS Created";
+  check_times[entry.modified] === undefined
+    ? (check_times[entry.modified] = "BITS Modified")
+    : (check_times[entry.modified] = `${check_times[entry.modified]} Modified`);
 
-    return entries;
+  check_times[entry.expiration] === undefined
+    ? (check_times[entry.expiration] = "BITS Expired")
+    : (check_times[entry.expiration] = `${
+      check_times[entry.expiration]
+    } Expired`);
+
+  check_times[entry.completed] === undefined
+    ? (check_times[entry.completed] = "BITS Completed")
+    : (check_times[entry.completed] = `${
+      check_times[entry.completed]
+    } Completed`);
+
+  for (const value in check_times) {
+    const entry: TimeEntries = {
+      datetime: Number(value),
+      desc: check_times[value],
+    };
+    entries.push(entry);
   }
-
-  if (
-    entry.completed === entry.created && entry.completed === entry.expiration
-  ) {
-    time_entry.datetime = entry.modified;
-    time_entry.desc = "BITS Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "BITS Created Expired Completed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (
-    entry.completed === entry.modified && entry.completed === entry.expiration
-  ) {
-    time_entry.datetime = entry.created;
-    time_entry.desc = "BITS Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "BITS Modified Expired Completed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.modified === entry.created && entry.modified === entry.expiration) {
-    time_entry.datetime = entry.created;
-    time_entry.desc = "BITS Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "BITS Modified Expired Completed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.completed === entry.created) {
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Created Completed";
-    entries.push(Object.assign({}, time_entry));
-
-    if (entry.expiration === entry.modified) {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "BITS Modified Expired";
-      entries.push(Object.assign({}, time_entry));
-    } else {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "BITS Modified";
-      entries.push(Object.assign({}, time_entry));
-
-      time_entry.datetime = entry.expiration;
-      time_entry.desc = "BITS Expired";
-      entries.push(Object.assign({}, time_entry));
-    }
-
-    return entries;
-  }
-
-  if (entry.completed === entry.expiration) {
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Completed Expired";
-    entries.push(Object.assign({}, time_entry));
-
-    if (entry.created === entry.modified) {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "BITS Created Modified";
-      entries.push(Object.assign({}, time_entry));
-    } else {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "BITS Modified";
-      entries.push(Object.assign({}, time_entry));
-
-      time_entry.datetime = entry.created;
-      time_entry.desc = "BITS Created";
-      entries.push(Object.assign({}, time_entry));
-    }
-
-    return entries;
-  }
-
-  if (entry.completed === entry.modified) {
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Completed Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    if (entry.created === entry.expiration) {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "BITS Created Expired";
-      entries.push(Object.assign({}, time_entry));
-    } else {
-      time_entry.datetime = entry.expiration;
-      time_entry.desc = "BITS Expired";
-      entries.push(Object.assign({}, time_entry));
-
-      time_entry.datetime = entry.created;
-      time_entry.desc = "BITS Created";
-      entries.push(Object.assign({}, time_entry));
-    }
-
-    return entries;
-  }
-
-  if (entry.created === entry.modified) {
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Created Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.expiration;
-    time_entry.desc = "BITS Expired";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Completed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.created === entry.expiration) {
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Created Expired";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.modified;
-    time_entry.desc = "BITS Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Completed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.modified === entry.expiration) {
-    time_entry.datetime = entry.modified;
-    time_entry.desc = "BITS Modified Expired";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "BITS Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.completed;
-    time_entry.desc = "BITS Completed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  // Every timestamp is unique
-  time_entry.datetime = entry.created;
-  time_entry.desc = "BITS Created";
-  const test = Object.assign({}, time_entry);
-  entries.push(test);
-
-  time_entry.datetime = entry.completed;
-  time_entry.desc = "BITS Completed";
-  entries.push(Object.assign({}, time_entry));
-
-  time_entry.datetime = entry.expiration;
-  time_entry.desc = "BITS Expired";
-  entries.push(Object.assign({}, time_entry));
-
-  time_entry.datetime = entry.modified;
-  time_entry.desc = "BITS Modified";
-  entries.push(Object.assign({}, time_entry));
 
   return entries;
 }

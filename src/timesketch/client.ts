@@ -138,8 +138,12 @@ export class Timesketch {
       const task_info: TimelineResponse = JSON.parse(
         extractUtf8String(new Uint8Array(response.body)),
       );
-      this.opensearch_index = task_info.objects.at(0)?.searchindex.index_name ??
-        "";
+
+      // Try to get the OpenSearch Index from the upload response
+      if (this.opensearch_index === "") {
+        this.opensearch_index =
+          task_info.objects.at(0)?.searchindex.index_name ?? "";
+      }
     }
   }
 

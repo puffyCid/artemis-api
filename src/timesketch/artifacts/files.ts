@@ -56,196 +56,29 @@ interface TimeEntries {
 function extractApiTimes(
   entry: MacosFileInfo | WindowsFileInfo | LinuxFileInfo,
 ): TimeEntries[] {
-  const desc = "Created Modified Accessed Changed";
-  const time_entry: TimeEntries = {
-    datetime: 0,
-    desc,
-  };
-  if (
-    entry.created === entry.accessed &&
-    entry.created === entry.modified &&
-    entry.created === entry.changed
-  ) {
-    time_entry.datetime = entry.created;
-    return [time_entry];
-  }
+  const check_times: Record<string, string> = {};
   const entries: TimeEntries[] = [];
-  if (entry.created === entry.accessed && entry.created === entry.modified) {
-    time_entry.datetime = entry.changed;
-    time_entry.desc = "Changed";
-    entries.push(Object.assign({}, time_entry));
 
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created Modified Accessed";
-    entries.push(Object.assign({}, time_entry));
+  check_times[entry.created] = "Created";
+  check_times[entry.modified] === undefined
+    ? (check_times[entry.modified] = "Modified")
+    : (check_times[entry.modified] = `${check_times[entry.modified]} Modified`);
 
-    return entries;
+  check_times[entry.changed] === undefined
+    ? (check_times[entry.changed] = "Changed")
+    : (check_times[entry.changed] = `${check_times[entry.changed]} Changed`);
+
+  check_times[entry.accessed] === undefined
+    ? (check_times[entry.accessed] = "Accessed")
+    : (check_times[entry.accessed] = `${check_times[entry.accessed]} Accessed`);
+
+  for (const value in check_times) {
+    const entry: TimeEntries = {
+      datetime: Number(value),
+      desc: check_times[value],
+    };
+    entries.push(entry);
   }
-
-  if (entry.created === entry.accessed && entry.created === entry.changed) {
-    time_entry.datetime = entry.modified;
-    time_entry.desc = "Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created Accessed Changed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.created === entry.modified && entry.created === entry.changed) {
-    time_entry.datetime = entry.accessed;
-    time_entry.desc = "Accessed";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created Modified Changed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.accessed === entry.modified && entry.accessed === entry.changed) {
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Modified Accessed Changed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.created === entry.accessed) {
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created Accessed";
-    entries.push(Object.assign({}, time_entry));
-
-    if (entry.changed === entry.modified) {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "Modified Changed";
-      entries.push(Object.assign({}, time_entry));
-    } else {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "Modified";
-      entries.push(Object.assign({}, time_entry));
-
-      time_entry.datetime = entry.changed;
-      time_entry.desc = "Changed";
-      entries.push(Object.assign({}, time_entry));
-    }
-
-    return entries;
-  }
-
-  if (entry.created === entry.modified) {
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    if (entry.accessed === entry.changed) {
-      time_entry.datetime = entry.accessed;
-      time_entry.desc = "Accessed Changed";
-      entries.push(Object.assign({}, time_entry));
-    } else {
-      time_entry.datetime = entry.accessed;
-      time_entry.desc = "Accessed";
-      entries.push(Object.assign({}, time_entry));
-
-      time_entry.datetime = entry.changed;
-      time_entry.desc = "Changed";
-      entries.push(Object.assign({}, time_entry));
-    }
-
-    return entries;
-  }
-
-  if (entry.created === entry.changed) {
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created Changed";
-    entries.push(Object.assign({}, time_entry));
-
-    if (entry.accessed === entry.modified) {
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "Modified Accessed";
-      entries.push(Object.assign({}, time_entry));
-    } else {
-      time_entry.datetime = entry.accessed;
-      time_entry.desc = "Accessed";
-      entries.push(Object.assign({}, time_entry));
-
-      time_entry.datetime = entry.modified;
-      time_entry.desc = "Modified";
-      entries.push(Object.assign({}, time_entry));
-    }
-  }
-
-  if (entry.accessed === entry.changed) {
-    time_entry.datetime = entry.accessed;
-    time_entry.desc = "Accessed Changed";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.modified;
-    time_entry.desc = "Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.accessed === entry.modified) {
-    time_entry.datetime = entry.accessed;
-    time_entry.desc = "Modified Accessed";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.changed;
-    time_entry.desc = "Changed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.modified === entry.changed) {
-    time_entry.datetime = entry.accessed;
-    time_entry.desc = "Modified Changed";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.accessed;
-    time_entry.desc = "Accessed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  // Every timestamp is unique
-  time_entry.datetime = entry.created;
-  time_entry.desc = "Created";
-  entries.push(Object.assign({}, time_entry));
-
-  time_entry.datetime = entry.accessed;
-  time_entry.desc = "Accessed";
-  entries.push(Object.assign({}, time_entry));
-
-  time_entry.datetime = entry.changed;
-  time_entry.desc = "Changed";
-  entries.push(Object.assign({}, time_entry));
-
-  time_entry.datetime = entry.modified;
-  time_entry.desc = "Modified";
-  entries.push(Object.assign({}, time_entry));
 
   return entries;
 }

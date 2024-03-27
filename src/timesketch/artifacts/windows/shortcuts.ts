@@ -50,66 +50,24 @@ interface TimeEntries {
   desc: string;
 }
 export function extractShortcutTimes(entry: Shortcut): TimeEntries[] {
-  const desc = "Shortcut Target Created Modified Accessed";
-  const time_entry: TimeEntries = {
-    datetime: 0,
-    desc,
-  };
-
-  if (entry.created === entry.modified && entry.created === entry.accessed) {
-    time_entry.datetime = entry.created;
-    return [time_entry];
-  }
   const entries: TimeEntries[] = [];
+  const check_times: Record<string, string> = {};
 
-  if (entry.created === entry.modified) {
-    time_entry.datetime = entry.accessed;
-    time_entry.desc = "Shortcut Target Accessed";
-    entries.push(Object.assign({}, time_entry));
+  check_times[entry.created] = "Shortcut Target Created";
+  check_times[entry.modified] === undefined
+    ? (check_times[entry.modified] = "Shortcut Target Modified")
+    : (check_times[entry.modified] = `${check_times[entry.modified]} Modified`);
 
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Shortcut Target Created Modified";
-    entries.push(Object.assign({}, time_entry));
+  check_times[entry.accessed] === undefined
+    ? (check_times[entry.accessed] = "Shortcut Target Accessed")
+    : (check_times[entry.accessed] = `${check_times[entry.accessed]} Accessed`);
 
-    return entries;
+  for (const value in check_times) {
+    const entry: TimeEntries = {
+      datetime: Number(value),
+      desc: check_times[value],
+    };
+    entries.push(entry);
   }
-
-  if (entry.created === entry.accessed) {
-    time_entry.datetime = entry.modified;
-    time_entry.desc = "Shortcut Target Modified";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Shortcut Target Created Accessed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  if (entry.modified === entry.accessed) {
-    time_entry.datetime = entry.created;
-    time_entry.desc = "Shortcut Target Created";
-    entries.push(Object.assign({}, time_entry));
-
-    time_entry.datetime = entry.modified;
-    time_entry.desc = "Shortcut Target Modified Accessed";
-    entries.push(Object.assign({}, time_entry));
-
-    return entries;
-  }
-
-  // Every timestamp is unique
-  time_entry.datetime = entry.created;
-  time_entry.desc = "Shortcut Target Created";
-  entries.push(Object.assign({}, time_entry));
-
-  time_entry.datetime = entry.modified;
-  time_entry.desc = "Shortcut Target Modified";
-  entries.push(Object.assign({}, time_entry));
-
-  time_entry.datetime = entry.accessed;
-  time_entry.desc = "Shortcut Target Accessed";
-  entries.push(Object.assign({}, time_entry));
-
   return entries;
 }

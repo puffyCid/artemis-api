@@ -1,4 +1,4 @@
-import { Services } from "../../types/windows/services.d.ts";
+import { Services } from "../../types/windows/services.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

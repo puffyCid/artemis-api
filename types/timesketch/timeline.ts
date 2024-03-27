@@ -52,4 +52,7 @@ export enum TimesketchArtifact {
   SHORTCUTS = "shortcuts",
   RECYCLEBIN = "recyclebin",
   REGISTRY = "registry",
+  SHELLBAGS = "shellbags",
+  SERVICES = "services",
+  RAWFILES = "rawfiles"
 }

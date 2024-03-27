@@ -26,6 +26,9 @@ import { Jumplists } from "../../types/windows/jumplists.ts";
 import { Shortcut } from "../../types/windows/shortcuts.ts";
 import { RecycleBin } from "../../types/windows/recyclebin.ts";
 import { RegistryData } from "../../types/windows/registry.ts";
+import { Services } from "../../types/windows/services.ts";
+import { Shellbags } from "../../types/windows/shellbags.ts";
+import { RawFileInfo } from "../../types/windows/ntfs.ts";
 
 /**
  * macOS artifact timelines
@@ -63,6 +66,9 @@ import { timelineJumplists } from "./artifacts/windows/jumplists.ts";
 import { timelineShortcuts } from "./artifacts/windows/shortcuts.ts";
 import { timelineRecycleBin } from "./artifacts/windows/recyclebin.ts";
 import { timelineRegistry } from "./artifacts/windows/registry.ts";
+import { timelineShellbags } from "./artifacts/windows/shellbags.ts";
+import { timelineServices } from "./artifacts/windows/services.ts";
+import { timelineRawFiles } from "./artifacts/windows/ntfs.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -127,6 +133,12 @@ export function timelineArtifact(
       return timelineRecycleBin(data as RecycleBin[], include_raw);
     case TimesketchArtifact.REGISTRY:
       return timelineRegistry(data as RegistryData);
+    case TimesketchArtifact.SHELLBAGS:
+      return timelineShellbags(data as Shellbags[]);
+    case TimesketchArtifact.SERVICES:
+      return timelineServices(data as Services[]);
+    case TimesketchArtifact.RAWFILES:
+      return timelineRawFiles(data as RawFileInfo[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }
