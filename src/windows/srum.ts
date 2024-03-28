@@ -7,7 +7,7 @@ import {
   NetworkConnectivityInfo,
   NetworkInfo,
   NotificationInfo,
-} from "../../types/windows/srum.d.ts";
+} from "../../types/windows/srum.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

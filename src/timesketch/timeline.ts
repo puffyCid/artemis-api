@@ -30,6 +30,17 @@ import { Services } from "../../types/windows/services.ts";
 import { Shellbags } from "../../types/windows/shellbags.ts";
 import { RawFileInfo } from "../../types/windows/ntfs.ts";
 import { Shimdb } from "../../types/windows/shimdb.ts";
+import {
+  ApplicationInfo,
+  ApplicationTimeline,
+  AppVfu,
+  EnergyInfo,
+  EnergyUsage,
+  NetworkConnectivityInfo,
+  NetworkInfo,
+  NotificationInfo,
+} from "../../types/windows/srum.ts";
+import { SearchEntry } from "../../types/windows/search.ts";
 
 /**
  * macOS artifact timelines
@@ -71,6 +82,8 @@ import { timelineShellbags } from "./artifacts/windows/shellbags.ts";
 import { timelineServices } from "./artifacts/windows/services.ts";
 import { timelineRawFiles } from "./artifacts/windows/ntfs.ts";
 import { timelineShimdb } from "./artifacts/windows/shimdb.ts";
+import { timelineSearch } from "./artifacts/windows/search.ts";
+import { timelineSrum } from "./artifacts/windows/srum.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -143,6 +156,20 @@ export function timelineArtifact(
       return timelineRawFiles(data as RawFileInfo[]);
     case TimesketchArtifact.SHIMDB:
       return timelineShimdb(data as Shimdb[]);
+    case TimesketchArtifact.SRUM:
+      return timelineSrum(
+        data as
+          | ApplicationInfo[]
+          | ApplicationTimeline[]
+          | AppVfu[]
+          | EnergyInfo[]
+          | EnergyUsage[]
+          | NetworkInfo[]
+          | NetworkConnectivityInfo[]
+          | NotificationInfo[],
+      );
+    case TimesketchArtifact.SEARCH:
+      return timelineSearch(data as SearchEntry[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

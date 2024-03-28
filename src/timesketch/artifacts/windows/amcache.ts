@@ -16,7 +16,7 @@ export function timelineAmcache(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item?.last_modified),
+      datetime: unixEpochToISO(item.last_modified),
       timestamp_desc: "Amcache Registry Last Modified",
       message: item.path,
       hash: item.sha1,

@@ -1,4 +1,4 @@
-import { SearchEntry } from "../../types/windows/search.d.ts";
+import { SearchEntry } from "../../types/windows/search.ts";
 import { WindowsError } from "./errors.ts";
 
 /**
