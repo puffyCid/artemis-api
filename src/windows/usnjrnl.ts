@@ -1,4 +1,4 @@
-import { UsnJrnl } from "../../types/windows/usnjrnl.d.ts";
+import { UsnJrnl } from "../../types/windows/usnjrnl.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

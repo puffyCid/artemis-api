@@ -72,6 +72,17 @@ export interface TaskData {
  * JSON representation of the Task XML schema.
  * Most of the schema is Optional. Only `Actions` is required
  */
+export interface TaskData {
+  /**Array of `TaskXml` parsed XML files */
+  tasks: TaskXml[];
+  /**Array of `TaskJob` parsed Job files */
+  jobs: TaskJob[];
+}
+
+/**
+ * JSON representation of the Task XML schema.
+ * Most of the schema is Optional. Only `Actions` is required
+ */
 export interface TaskXml {
   /**Registration Info about the Task */
   registrationInfo?: RegistrationInfo;
@@ -99,7 +110,7 @@ export interface TaskJob {
   error_retry_count: number;
   /**Error retry interval for the Task */
   error_retry_interval: number;
-  /**Idle deadlin for Task */
+  /**Idle deadline for Task */
   idle_deadline: number;
   /**Idle wait for Task */
   idle_wait: number;
@@ -127,7 +138,7 @@ export interface TaskJob {
   author: string;
   /**Comments associated with Task */
   comments: string;
-  /**Base64 encoded User data associatd with Task */
+  /**Base64 encoded User data associated with Task */
   user_data: string;
   /**Start Error associated with Task */
   start_error: number;
@@ -185,7 +196,7 @@ interface RegistrationInfo {
 interface Triggers {
   /**Boot triggers for Task */
   boot: BootTrigger[];
-  /**Regirstration triggers for Task. Format is exactly same as BootTriger*/
+  /**Registration triggers for Task. Format is exactly same as BootTrigger*/
   registration: BootTrigger[];
   /**Idle triggers for Task */
   idle: IdleTrigger[];
@@ -199,7 +210,7 @@ interface Triggers {
   session: SessionTrigger[];
   /**Calendar triggers for Task */
   calendar: CalendarTrigger[];
-  /**Windows Notifications triggers for Trask */
+  /**Windows Notifications triggers for Task */
   wnf: WnfTrigger[];
 }
 
@@ -383,7 +394,7 @@ interface ByMonthDayWeek {
  * Settings determine how to run Task Actions
  */
 interface Settings {
-  /**Start Task on demans */
+  /**Start Task on demand */
   allow_start_on_demand?: boolean;
   /**Restart if fails */
   restart_on_failure?: RestartType;
@@ -393,12 +404,12 @@ interface Settings {
   disallow_start_if_on_batteries?: boolean;
   /**Stop Task if going on battery power */
   stop_if_going_on_batteries?: boolean;
-  /**Task can be terminated if time limts exceeded */
+  /**Task can be terminated if time limits exceeded */
   allow_hard_terminate?: boolean;
   /**If scheduled time is missed, Task may be started */
   start_when_available?: boolean;
   /**Run based on network profile name */
-  newtork_profile_name?: string;
+  network_profile_name?: string;
   /**Run only if network connection available */
   run_only_if_network_available?: boolean;
   /**Wake system from standby or hibernate to run */
@@ -413,7 +424,7 @@ interface Settings {
   idle_settings?: IdleSettings;
   /**Network settings to run */
   network_settings?: NetworkSettings;
-  /**Taks execution time limit */
+  /**Task execution time limit */
   execution_time_limit?: string;
   /**Task Priority. Lowest is 1. Highest is 10 */
   priority?: number;
@@ -423,8 +434,8 @@ interface Settings {
   use_unified_scheduling_engine?: boolean;
   /**Task is disabled on Remote App Sessions */
   disallow_start_on_remote_app_session?: boolean;
-  /**Options to run Task during system maintence periods */
-  maintence_settings?: MaintenceSettings;
+  /**Options to run Task during system maintenance periods */
+  maintenance?: MaintenanceSettings;
   /**Task disabled on next OS startup */
   volatile?: boolean;
 }
@@ -464,14 +475,14 @@ interface NetworkSettings {
 }
 
 /**
- * Maintence options
+ * Maintenance options
  */
-interface MaintenceSettings {
-  /**Duration of maintence */
+interface MaintenanceSettings {
+  /**Duration of maintenance */
   period: string;
   /**Deadline for Task to run */
   deadline?: string;
-  /**Task can run idependently of other Tasks with `MaintenceSettings` */
+  /**Task can run independently of other Tasks with `MaintenanceSettings` */
   exclusive?: boolean;
 }
 
@@ -491,7 +502,7 @@ interface Principals {
   run_level?: string;
   /**Process Token SID associated with Task */
   process_token_sid_type?: string;
-  /**Array of privlege value */
+  /**Array of privileges value */
   required_privileges?: string[];
   /**Unique user selected ID */
   id_attribute?: string;
@@ -517,7 +528,7 @@ interface Actions {
 interface ExecType {
   /**Command to execute */
   command: string;
-  /**Arguements for command */
+  /**Arguments for command */
   arguments?: string;
   /**Path to a directory */
   working_directory?: string;

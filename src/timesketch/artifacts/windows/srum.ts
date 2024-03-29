@@ -14,7 +14,6 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline Windows Search
  * @param data Array of `SearchEntry`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of Search
  */
 export function timelineSrum(

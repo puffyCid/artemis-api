@@ -1,5 +1,5 @@
 import {
-  Logons,
+  LogonsWindows,
   LogonType,
   Raw4624Logons,
   Raw4634Logoffs,
@@ -12,7 +12,7 @@ import { getEventlogs } from "../eventlogs.ts";
  * @param path Path to Security.evtx file
  * @returns Array of `Logon` entries
  */
-export function logons(path: string): Logons[] | WindowsError {
+export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
   const recordsData = getEventlogs(path);
   if (recordsData instanceof WindowsError) {
     return new WindowsError(
@@ -31,7 +31,7 @@ export function logons(path: string): Logons[] | WindowsError {
   for (const record of records) {
     // Parse Logon entries
     if (record.data.Event.System.EventID === logon_eid && isLogon(record)) {
-      const entry: Logons = {
+      const entry: LogonsWindows = {
         logon_type: checkLogonType(record.data.Event.EventData.LogonType),
         sid: record.data.Event.EventData.TargetUserSid,
         account_name: record.data.Event.EventData.TargetUserName,

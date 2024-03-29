@@ -2,7 +2,7 @@
  * Parse the SAM Registry file and get user info
  */
 export interface UserInfo {
-  /**Last logon for account */
+  /**Last logon for account in UNIXEPOCH seconds */
   last_logon: number;
   /**Time when password last set in UNIXEPOCH seconds */
   password_last_set: number;

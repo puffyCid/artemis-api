@@ -19,10 +19,17 @@ export { getLaunchdAgents, getLaunchdDaemons } from "./src/macos/launchd.ts";
 export { getGroups, getUsers } from "./src/macos/accounts.ts";
 export { getExecpolicy } from "./src/macos/execpolicy.ts";
 export { getFsevents } from "./src/macos/fsevents.ts";
-export { getHomebrewInfo, getCasks, getPackages } from "./src/macos/homebrew.ts";
+export {
+  getHomebrewInfo,
+  getCasks,
+  getPackages,
+} from "./src/macos/homebrew.ts";
 export { getMacho } from "./src/macos/macho.ts";
 export { getPlist } from "./src/macos/plist.ts";
-export { getUnifiedLog, setupUnifiedLogParser } from "./src/macos/unifiedlogs.ts";
+export {
+  getUnifiedLog,
+  setupUnifiedLogParser,
+} from "./src/macos/unifiedlogs.ts";
 export {
   getSafariDownloads,
   getSafariHistory,
@@ -93,7 +100,7 @@ export { querySqlite } from "./src/applications/sqlite.ts";
 /**
  * Windows exported functions
  */
-export { getAltAmcache, getAmcache } from "./src/windows/amache.ts";
+export { getAltAmcache, getAmcache } from "./src/windows/amcache.ts";
 export { getBits, getBitsPath } from "./src/windows/bits.ts";
 export { getEventlogs } from "./src/windows/eventlogs.ts";
 export { readAdsData, readRawFile } from "./src/windows/ntfs.ts";
@@ -123,8 +130,9 @@ export { getServiceFile, getServices } from "./src/windows/services.ts";
 export { getJumplistPath, getJumplists } from "./src/windows/jumplists.ts";
 export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
 export { getChocolateyInfo } from "./src/windows/chocolatey.ts";
-export { logons } from "./src/windows/eventlogs/logons.ts";
+export { logonsWindows } from "./src/windows/eventlogs/logons.ts";
 export { getShellItem } from "./src/windows/shellitems.ts";
 export { userAccessLog } from "./src/windows/ese/ual.ts";
 export { parseTable } from "./src/windows/ese.ts";
 export { updateHistory } from "./src/windows/ese/updates.ts";
+export { getWmiPersist } from "./src/windows/wmi.ts";

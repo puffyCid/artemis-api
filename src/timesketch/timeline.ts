@@ -41,6 +41,12 @@ import {
   NotificationInfo,
 } from "../../types/windows/srum.ts";
 import { SearchEntry } from "../../types/windows/search.ts";
+import { TaskData } from "../../types/windows/tasks.ts";
+import { UserAssist } from "../../types/windows/userassist.ts";
+import { UserInfo } from "../../types/windows/users.ts";
+import { UsnJrnl } from "../../types/windows/usnjrnl.ts";
+import { WmiPersist } from "../../types/windows/wmi.ts";
+import { LogonsWindows } from "../../types/windows/eventlogs/logons.ts";
 
 /**
  * macOS artifact timelines
@@ -84,6 +90,12 @@ import { timelineRawFiles } from "./artifacts/windows/ntfs.ts";
 import { timelineShimdb } from "./artifacts/windows/shimdb.ts";
 import { timelineSearch } from "./artifacts/windows/search.ts";
 import { timelineSrum } from "./artifacts/windows/srum.ts";
+import { timelineTasks } from "./artifacts/windows/tasks.ts";
+import { timelineUserAssist } from "./artifacts/windows/userassist.ts";
+import { timelineUsersWindows } from "./artifacts/windows/users.ts";
+import { timelineUsnJrnl } from "./artifacts/windows/usnjrnl.ts";
+import { timelineWmiPersist } from "./artifacts/windows/wmi.ts";
+import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -170,6 +182,18 @@ export function timelineArtifact(
       );
     case TimesketchArtifact.SEARCH:
       return timelineSearch(data as SearchEntry[]);
+    case TimesketchArtifact.TASKS:
+      return timelineTasks(data as TaskData);
+    case TimesketchArtifact.USERASSIST:
+      return timelineUserAssist(data as UserAssist[]);
+    case TimesketchArtifact.USERS_WINDOWS:
+      return timelineUsersWindows(data as UserInfo[]);
+    case TimesketchArtifact.USNJRNL:
+      return timelineUsnJrnl(data as UsnJrnl[]);
+    case TimesketchArtifact.WMIPERSIST:
+      return timelineWmiPersist(data as WmiPersist[]);
+    case TimesketchArtifact.LOGONS_WINDOWS:
+      return timelineLogonsWindows(data as LogonsWindows[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

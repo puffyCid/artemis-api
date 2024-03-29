@@ -80,6 +80,9 @@ export function fatToUnixEpoch(fattime: Uint8Array): number {
  * @returns ISO8601 timestamp
  */
 export function unixEpochToISO(timestamp: number | bigint): string {
+  if (timestamp === 0 || timestamp === 0n) {
+    return new Date(Number(timestamp)).toISOString();
+  }
   const milliseconds_len = 13;
 
   const milliseconds = 1000;

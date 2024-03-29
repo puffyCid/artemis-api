@@ -1,4 +1,4 @@
-import { TaskData, TaskJob, TaskXml } from "../../types/windows/tasks.d.ts";
+import { TaskData, TaskJob, TaskXml } from "../../types/windows/tasks.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

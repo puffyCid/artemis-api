@@ -15,7 +15,7 @@ export interface TimesketchTimeline {
   /**The type of artifact that was timelined */
   artifact: string;
   /**
-   * Artifact data type. Based on plaso defintion
+   * Artifact data type. Based on plaso definition
    * (its kind of freeform, https://github.com/log2timeline/plaso/blob/main/docs/sources/user/Scribbles-about-events.md).
    * Looks like: `source:artifact:artifact:data`. With first artifact most generic and second one more specific
    * :artifact: can be nested. Ex: `windows:registry:explorer:programcache`
@@ -58,4 +58,10 @@ export enum TimesketchArtifact {
   SHIMDB = "shimdb",
   SRUM = "srum",
   SEARCH = "search",
+  TASKS = "tasks",
+  USERASSIST = "userassist",
+  USERS_WINDOWS = "users-windows",
+  USNJRNL = "usnjrnl",
+  WMIPERSIST = "wmipersist",
+  LOGONS_WINDOWS = "logons-windows",
 }
