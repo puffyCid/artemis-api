@@ -8,12 +8,12 @@ import { unixEpochToISO } from "../../time/conversion.ts";
 /**
  * Function to timeline filesystem info
  * @param data Array of `MacosFileInfo[] | WindowsFileInfo[] | LinuxFileInfo[]`
- * @param include_raw Include raw data in timeline entry
+ * @param is_windows Specify if filelisting is from Windows
  * @returns Array `TimesketchTimeline` of files
  */
 export function timelineFiles(
   data: MacosFileInfo[] | WindowsFileInfo[] | LinuxFileInfo[],
-  include_raw: boolean,
+  is_windows: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -26,13 +26,13 @@ export function timelineFiles(
       user: item.uid.toString(),
       artifact: "Files",
       data_type: "system:fs:file",
-      _raw: include_raw ? item : "",
+      _raw: "",
     };
 
     entry = { ...entry, ...item };
 
     // Extract each unique timestamp to their own entry
-    const time_entries = extractApiTimes(item);
+    const time_entries = extractApiTimes(item, is_windows);
     for (const time_entry of time_entries) {
       entry.datetime = unixEpochToISO(time_entry.datetime);
       entry.timestamp_desc = time_entry.desc;
@@ -55,6 +55,7 @@ interface TimeEntries {
  */
 function extractApiTimes(
   entry: MacosFileInfo | WindowsFileInfo | LinuxFileInfo,
+  is_windows: boolean,
 ): TimeEntries[] {
   const check_times: Record<string, string> = {};
   const entries: TimeEntries[] = [];
@@ -64,9 +65,12 @@ function extractApiTimes(
     ? (check_times[entry.modified] = "Modified")
     : (check_times[entry.modified] = `${check_times[entry.modified]} Modified`);
 
-  check_times[entry.changed] === undefined
-    ? (check_times[entry.changed] = "Changed")
-    : (check_times[entry.changed] = `${check_times[entry.changed]} Changed`);
+  // Currently Rust does not support Changed timestamps on Windows :(
+  if (!is_windows) {
+    check_times[entry.changed] === undefined
+      ? (check_times[entry.changed] = "Changed")
+      : (check_times[entry.changed] = `${check_times[entry.changed]} Changed`);
+  }
 
   check_times[entry.accessed] === undefined
     ? (check_times[entry.accessed] = "Accessed")

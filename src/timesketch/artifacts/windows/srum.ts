@@ -34,11 +34,8 @@ export function timelineSrum(
       datetime: unixEpochToISO(data[i].timestamp),
       timestamp_desc: "SRUM Table Update",
       message: data[i].app_id,
-      hash: "",
-      user: "",
       artifact: "",
       data_type: "",
-      _raw: "",
     };
 
     entry = { ...entry, ...data[i] };

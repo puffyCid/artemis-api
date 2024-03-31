@@ -8,12 +8,10 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline Safari History
  * @param data Array of `SafariHistory`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of SafariHistory
  */
 export function timelineSafariHistory(
   data: SafariHistory[],
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -23,14 +21,11 @@ export function timelineSafariHistory(
         datetime: unixEpochToISO(value.history[i].visit_time),
         timestamp_desc: "Safari Visit Time",
         message: `${value.history[i].url} - ${value.history[i].title}`,
-        hash: "",
-        user: value.user,
         data_type: "macos:safari:history",
         artifact: "SafariHistory",
-        _raw: include_raw ? data[i] : "",
       };
       entry = { ...entry, ...data[i] };
-
+      entry["visit_time"] = unixEpochToISO(value.history[i].visit_time);
       entries.push(entry);
     }
   }
@@ -40,12 +35,10 @@ export function timelineSafariHistory(
 /**
  * Function to timeline Safari Downloads
  * @param data Array of `SafariDownloads`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of SafariDownloads
  */
 export function timelineSafariDownloads(
   data: SafariDownloads[],
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -57,13 +50,20 @@ export function timelineSafariDownloads(
         message: `${value.downloads[i].source_url} - ${
           value.downloads[i].download_path
         }`,
-        hash: "",
-        user: value.user,
         data_type: "macos:safari:downloads",
         artifact: "SafariDownloads",
-        _raw: include_raw ? data[i] : "",
       };
       entry = { ...entry, ...data[i] };
+      entry["created"] = unixEpochToISO(value.downloads[i].created);
+      entry["download_entry_date"] = unixEpochToISO(
+        value.downloads[i].download_entry_date,
+      );
+      entry["download_entry_finish"] = unixEpochToISO(
+        value.downloads[i].download_entry_finish,
+      );
+      entry["volume_created"] = unixEpochToISO(
+        value.downloads[i].volume_created,
+      );
 
       entries.push(entry);
     }

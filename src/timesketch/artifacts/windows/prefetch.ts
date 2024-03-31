@@ -5,12 +5,10 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline Prefetch
  * @param data Array of `Prefetch`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of Prefetch
  */
 export function timelinePrefetch(
   data: Prefetch[],
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -19,11 +17,8 @@ export function timelinePrefetch(
       datetime: unixEpochToISO(item.last_run_time),
       timestamp_desc: "Prefetch Last Execution",
       message: item.path,
-      hash: "",
-      user: "",
       artifact: "Prefetch",
       data_type: "windows:prefetch:execution",
-      _raw: include_raw ? item : "",
     };
     entry = { ...entry, ...item };
 

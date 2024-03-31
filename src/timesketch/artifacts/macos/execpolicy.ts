@@ -5,13 +5,9 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline execpolicy
  * @param data Array of `ExecPolicy`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of LoginItems
  */
-export function timelineExecpolicy(
-  data: ExecPolicy[],
-  include_raw: boolean,
-): TimesketchTimeline[] {
+export function timelineExecpolicy(data: ExecPolicy[]): TimesketchTimeline[] {
   const entries = [];
 
   for (const item of data) {
@@ -19,13 +15,20 @@ export function timelineExecpolicy(
       datetime: unixEpochToISO(item.executable_timestamp),
       timestamp_desc: "ExecPolicy Entry Created",
       message: item.file_identifier,
-      hash: item.main_executable_hash,
-      user: "",
       artifact: "ExecPolicy",
       data_type: "macos:sqlite:execpolicy:entry",
-      _raw: include_raw ? item : "",
     };
     entry = { ...entry, ...item };
+    entry["executable_timestamp"] = unixEpochToISO(item.executable_timestamp);
+    entry["executable_measurements_v2_timestamp"] = unixEpochToISO(
+      item.executable_measurements_v2_timestamp,
+    );
+    entry["reported_timstamp"] = unixEpochToISO(item.reported_timstamp);
+    entry["mod_time"] = unixEpochToISO(item.mod_time);
+    entry["policy_scan_cache_timestamp"] = unixEpochToISO(
+      item.policy_scan_cache_timestamp,
+    );
+    entry["revocation_check_time"] = unixEpochToISO(item.revocation_check_time);
 
     entries.push(entry);
   }

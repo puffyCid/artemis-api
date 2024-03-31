@@ -5,12 +5,10 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline Shortcut
  * @param data Array of `Shortcut`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of Shortcut
  */
 export function timelineShortcuts(
   data: Shortcut[],
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -19,11 +17,8 @@ export function timelineShortcuts(
       datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.path,
-      hash: "",
-      user: "",
       artifact: "Shortcut",
       data_type: "windows:shortcut:lnk",
-      _raw: include_raw ? item : "",
     };
 
     if (entry.message === "") {

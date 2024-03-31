@@ -7,12 +7,10 @@ import { Jobs } from "../../../../types/windows/bits.ts";
 /**
  * Function to timeline BITS
  * @param data Array of `Bits`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of BITS
  */
 export function timelineBits(
   data: Bits,
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -21,11 +19,8 @@ export function timelineBits(
       datetime: "",
       timestamp_desc: "",
       message: `Job: ${item.job_name} - Target Path: ${item.target_path}`,
-      hash: "",
-      user: item.username,
       artifact: "BITS",
       data_type: "windows:ese:bits:entry",
-      _raw: include_raw ? item : "",
     };
 
     entry = { ...entry, ...item };
@@ -43,11 +38,8 @@ export function timelineBits(
       datetime: "",
       timestamp_desc: "",
       message: `Job: ${item.job_name} - Target Path: ${item.target_path}`,
-      hash: "",
-      user: item.owner_sid,
       artifact: "BITS Carved Job",
       data_type: "windows:ese:bits:carve:job",
-      _raw: include_raw ? item : "",
     };
     entry = { ...entry, ...item };
 
@@ -65,11 +57,8 @@ export function timelineBits(
       datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "Carved BITS File",
       message: `File: ${item.full_path} - URL: ${item.url}`,
-      hash: "",
-      user: "",
       artifact: "BITS Carved File",
       data_type: "windows:ese:bits:carve:file",
-      _raw: include_raw ? item : "",
     };
     entry = { ...entry, ...item };
 

@@ -17,11 +17,8 @@ export function timelineUsersWindows(
       datetime: unixEpochToISO(item.last_logon),
       timestamp_desc: "User Last Logon",
       message: item.username,
-      hash: "",
-      user: "",
       artifact: "Windows User",
       data_type: "windows:registry:users:entry",
-      _raw: "",
     };
 
     entry = { ...entry, ...item };

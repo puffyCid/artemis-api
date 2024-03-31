@@ -16,11 +16,8 @@ export function timelineWmiPersist(
       datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.consumer,
-      hash: "",
-      user: "",
       artifact: "WMI Persist",
       data_type: "windows:wmi:persistence:entry",
-      _raw: "",
     };
 
     entry = { ...entry, ...item };

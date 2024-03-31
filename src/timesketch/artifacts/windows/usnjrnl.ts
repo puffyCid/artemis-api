@@ -17,11 +17,8 @@ export function timelineUsnJrnl(
       datetime: unixEpochToISO(data[i].update_time),
       timestamp_desc: `UsnJrnl ${data[i].update_reason}`,
       message: data[i].full_path,
-      hash: "",
-      user: "",
       artifact: "UsnJrnl",
       data_type: "fs:ntfs:usnjrnl:entry",
-      _raw: "",
     };
 
     entry = { ...entry, ...data[i] };

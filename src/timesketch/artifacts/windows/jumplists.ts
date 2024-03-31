@@ -6,7 +6,6 @@ import { extractShortcutTimes } from "./shortcuts.ts";
 /**
  * Function to timeline Jumplists
  * @param data Array of `Jumplists`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of Jumplists
  */
 export function timelineJumplists(
@@ -19,8 +18,6 @@ export function timelineJumplists(
       datetime: unixEpochToISO(item?.jumplist_metadata.modified),
       timestamp_desc: "Jumplist Modified",
       message: item.lnk_info.path,
-      hash: "",
-      user: "",
       artifact: "Jumplist",
       data_type: "windows:jumplist:entry",
       _raw: JSON.stringify(item),

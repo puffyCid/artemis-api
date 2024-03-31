@@ -5,7 +5,6 @@ import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 /**
  * Function to timeline filesystem info
  * @param data Array of `MacosFileInfo[] | WindowsFileInfo[] | LinuxFileInfo[]`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of files
  */
 export function timelineRawFiles(data: RawFileInfo[]): TimesketchTimeline[] {
@@ -16,11 +15,8 @@ export function timelineRawFiles(data: RawFileInfo[]): TimesketchTimeline[] {
       datetime: "",
       timestamp_desc: "",
       message: `${item.full_path}`,
-      hash: item.md5,
-      user: item.user_sid,
       artifact: "RawFiles",
       data_type: "fs::ntfs:file",
-      _raw: "",
     };
 
     entry = { ...entry, ...item };

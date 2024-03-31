@@ -17,11 +17,8 @@ export function timelineLogonsWindows(
       datetime: unixEpochToISO(item.logoff_time),
       timestamp_desc: "Windows Logoff",
       message: `Logoff for: ${item.account_domain}\\${item.account_name}`,
-      hash: "",
-      user: item.account_name,
       artifact: "Windows Logons",
       data_type: "windows:eventlogs:logons:entry",
-      _raw: "",
     };
 
     entry = { ...entry, ...item };

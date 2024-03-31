@@ -5,7 +5,6 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline RegistryData
  * @param data `RegistryData` object
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of RegistryData
  */
 export function timelineRegistry(data: RegistryData): TimesketchTimeline[] {
@@ -16,11 +15,8 @@ export function timelineRegistry(data: RegistryData): TimesketchTimeline[] {
       datetime: unixEpochToISO(item.last_modified),
       timestamp_desc: "Registry Last Modified",
       message: "",
-      hash: "",
-      user: "",
       artifact: "Registry",
       data_type: "windows:registry:key",
-      _raw: "",
     };
     entry["registry_path"] = data.registry_path;
     entry["registry_file"] = data.registry_file;

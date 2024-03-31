@@ -8,22 +8,17 @@ The artemis API allows a user to make HTTP network requests using the
 [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html) crate. It can be
 used to interact with external services or services that expose an API.
 
-### request(url, protocol, body, headers) -> ClientResponse | HttpError
+### request(client, body) -> ClientResponse | HttpError
 
 Make a very simple GET or POST request to the provided URL. You may specify an
-optional body or headers. By default headers will use
-`Content-Type: application/json`.
+optional body.
 
 The body must be in raw bytes if provided. This function is async
 
-| Param           | Type                         | Description                                                                                                    |
-| --------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| url             | string                       | URL to target                                                                                                  |
-| protocol        | Protocol                     | Protocol to use. Currently only GET or POST                                                                    |
-| body            | Uint8Array                   | Optional body to send with request                                                                             |
-| headers         | Record&lt;string, string&gt; | Optional headers to use. Default is `Content-Type: application/json`                                           |
-| body_type       | BodyType                     | Optional value to set the body type of the POST request. Ex: FORM                                              |
-| follow_redirect | FollowRedirect               | Optional value to set if the HTTP client should follow redirects. By default HTTP client will follow redirects |
+| Param  | Type          | Description                        |
+| ------ | ------------- | ---------------------------------- |
+| client | ClientRequest | ClientRequest object               |
+| body   | Uint8Array    | Optional body to send with request |
 
 ### VirusTotal Class
 

@@ -17,8 +17,6 @@ export function timelineLaunchd(
       datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: data[i].plist_path,
-      hash: "",
-      user: "",
       data_type: "macos:plist:launchd:entry",
       artifact: "Launchd",
       _raw: JSON.stringify(data[i]),

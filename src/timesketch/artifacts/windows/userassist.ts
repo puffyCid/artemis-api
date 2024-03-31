@@ -18,11 +18,8 @@ export function timelineUserAssist(
       datetime: unixEpochToISO(item.last_execution),
       timestamp_desc: "Userassist Last Execution",
       message: item.path,
-      hash: "",
-      user: "",
       artifact: "UserAssist",
       data_type: "windows:registry:userassist:entry",
-      _raw: "",
     };
 
     entry = { ...entry, ...item };

@@ -36,11 +36,8 @@ export function timelineTasks(data: TaskData): TimesketchTimeline[] {
       datetime: "1601-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.path,
-      hash: "",
-      user: "",
       artifact: "Schedule Task",
       data_type: "windows:tasks:jobs:entry",
-      _raw: "",
     };
 
     entry = { ...entry, ...item };

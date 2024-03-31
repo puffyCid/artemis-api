@@ -5,12 +5,10 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline loginitems
  * @param data Array of `LoginItems`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of LoginItems
  */
 export function timelineLoginItems(
   data: LoginItems[],
-  include_raw: boolean,
 ): TimesketchTimeline[] {
   const entries = [];
 
@@ -21,14 +19,11 @@ export function timelineLoginItems(
       message: item.path.length != 0
         ? `${item.volume_url}${item.path.join("/")}`
         : `${item.app_binary}`,
-      hash: "",
-      user: item.uid.toString(),
       artifact: "LoginItems",
       data_type: "macos:plist:loginitems:entry",
-      _raw: include_raw ? item : "",
     };
     entry = { ...entry, ...item };
-
+    entry["volume_created"] = unixEpochToISO(item.volume_created);
     entries.push(entry);
   }
 

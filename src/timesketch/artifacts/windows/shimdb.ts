@@ -17,15 +17,12 @@ export function timelineShimdb(
       datetime: unixEpochToISO(item.db_data.compile_time),
       timestamp_desc: "Shim Compile Time",
       message: "",
-      hash: "",
-      user: "",
       artifact: "Shimdb",
       data_type: "windows:shimdb:entry",
-      _raw: "",
     };
 
     // If we include Indexes, memory usage will explode (~2GB) and crash the JS stack. Indexes primarily contain base64 binary data. There's nothing parsable in it
-    // This likely only affects sysmain.sdb due to the large number of Shims.
+    // This likely only affects sysmain.sdb due to the large number of Shims. We could split this into separate entries if needed
     // Custom Shims would likely be unaffected
     // entry["indexes"] = JSON.stringify(item.indexes);
 

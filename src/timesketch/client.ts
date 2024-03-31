@@ -1,6 +1,6 @@
 import { TimesketchAuth } from "../../types/timesketch/client.ts";
 import { TimesketchError } from "./error.ts";
-import { BodyType, FollowRedirect, Protocol, request } from "../http/client.ts";
+import { BodyType, ClientRequest, Protocol, request } from "../http/client.ts";
 import { HttpError } from "../http/errors.ts";
 import { extractUtf8String } from "../encoding/strings.ts";
 import {
@@ -17,24 +17,27 @@ export class Timesketch {
   private cookie: string;
   private timeline_name;
   private opensearch_index: string;
+  private verify_ssl: boolean;
 
   /**
    * @param auth `TimesketchAuth` object used to authenticate to Timesketch
    * @param name The name that should used for the timeline. If none is provided the artifact name will be used. It is **recommended** to provide a name (ex: the hostname)
    * @param index The OpenSearch index that should be used when uploading data. If none is provided a new index will be created
+   * @param verify_ssl Boolean value to determine if artemis should verify SSL certs. Set to false if you use self-signed certs
    */
-  constructor(auth: TimesketchAuth, name = "", index = "") {
+  constructor(auth: TimesketchAuth, name = "", index = "", verify_ssl = true) {
     this.timesketch_auth = auth;
     this.token = "";
     this.cookie = "";
     this.timeline_name = name;
     this.opensearch_index = index;
+    this.verify_ssl = verify_ssl;
   }
 
   /**
    * Function to timeline and upload data to Timesketch
    * @param data Artifact data to Timeline. Must be the type specified by `artifact`
-   * @param artifact The the artifact type that should be timeline
+   * @param artifact The artifact type that should be timeline
    * @returns A `TimesketchError` if the data cannot be timeline or if it failed to upload to Timesketch
    */
   public async timelineAndUpload(
@@ -59,8 +62,7 @@ export class Timesketch {
     }
 
     if (this.timesketch_auth.sketch_id === undefined) {
-      console.log("TODO: Create Sketch");
-      return;
+      await this.createSketch(artifact);
     }
 
     // Verify user provived a valid Sketch ID
@@ -72,15 +74,16 @@ export class Timesketch {
     return await this.uploadTimeline(timeline_data, artifact);
   }
 
+  /**
+   * Function to upload timeline data to Timesketch
+   * @param data Array of `TimesketchTimeline`
+   * @param artifact `TimesketchArtifact` enum
+   * @returns A `TimesketchError` if data cannot be uploaded.
+   */
   private async uploadTimeline(
     data: TimesketchTimeline[],
     artifact: TimesketchArtifact,
   ): Promise<void | TimesketchError> {
-    const headers = {
-      "X-Csrftoken": this.token,
-      Cookie: this.cookie,
-    };
-
     if (this.timeline_name === "") {
       this.timeline_name = artifact;
     }
@@ -90,6 +93,19 @@ export class Timesketch {
     for (let i = 0; i < data.length; i++) {
       entries_strings.push(JSON.stringify(data[i]));
     }
+
+    const headers = {
+      "X-Csrftoken": this.token,
+      Cookie: this.cookie,
+    };
+
+    const client: ClientRequest = {
+      url: `${this.timesketch_auth.url}/api/v1/upload/`,
+      protocol: Protocol.POST,
+      headers,
+      body_type: BodyType.FORM,
+      verify_ssl: this.verify_ssl,
+    };
 
     const chunk_size = 10000;
     // Split data into chunks so Timesketch does not keel over
@@ -110,13 +126,7 @@ export class Timesketch {
       }
 
       const bytes = encodeBytes(JSON.stringify(post_data));
-      const response = await request(
-        `${this.timesketch_auth.url}/api/v1/upload/`,
-        Protocol.POST,
-        bytes,
-        headers,
-        BodyType.FORM,
-      );
+      const response = await request(client, bytes);
       if (response instanceof HttpError) {
         return new TimesketchError(
           `UPLOAD`,
@@ -148,6 +158,55 @@ export class Timesketch {
   }
 
   /**
+   * Function to create a sketch
+   * @param artifact The artifact used to name the sketch if a name is not provided
+   * @returns A `TimesketchError` if a sketch cannot be created
+   */
+  private async createSketch(
+    artifact: TimesketchArtifact,
+  ): Promise<void | TimesketchError> {
+    if (this.timesketch_auth.sketch_name === undefined) {
+      this.timesketch_auth.sketch_name = artifact;
+    }
+
+    const headers = {
+      "X-Csrftoken": this.token,
+      Cookie: this.cookie,
+      "Content-Type": "application/json",
+    };
+
+    const client: ClientRequest = {
+      url: `${this.timesketch_auth.url}/api/v1/sketches/`,
+      protocol: Protocol.POST,
+      headers,
+    };
+
+    const body = {
+      "name": this.timesketch_auth.sketch_name,
+      "description": `Timeline for ${this.timesketch_auth.sketch_name}`,
+    };
+    const bytes = encodeBytes(JSON.stringify(body));
+    const response = await request(client, bytes);
+    if (response instanceof HttpError) {
+      return new TimesketchError(
+        `SKETCH_ID`,
+        `failed to create sketch ${this.timesketch_auth.sketch_name}: ${response}`,
+      );
+    }
+
+    const result = extractUtf8String(new Uint8Array(response.body));
+    const sketch_object = JSON.parse(result);
+    const objects_value = sketch_object["objects"];
+    if (objects_value === undefined) {
+      return new TimesketchError(
+        `SKETCH_ID`,
+        `failed no objects in sketch response: ${response}`,
+      );
+    }
+    this.timesketch_auth.sketch_id = objects_value.at(0)["id"];
+  }
+
+  /**
    * Function to verify if provided Sketch ID exists
    * @returns `TimesketchError` if we cannot verify the Sketch ID
    */
@@ -157,12 +216,15 @@ export class Timesketch {
       Cookie: this.cookie,
     };
 
-    const response = await request(
-      `${this.timesketch_auth.url}/api/v1/sketches/${this.timesketch_auth.sketch_id}/`,
-      Protocol.GET,
-      new Uint8Array(),
+    const client: ClientRequest = {
+      url:
+        `${this.timesketch_auth.url}/api/v1/sketches/${this.timesketch_auth.sketch_id}/`,
+      protocol: Protocol.GET,
       headers,
-    );
+      verify_ssl: this.verify_ssl,
+    };
+
+    const response = await request(client);
     if (response instanceof HttpError) {
       return new TimesketchError(
         `SKETCH_ID`,
@@ -195,10 +257,12 @@ export class Timesketch {
    * @returns `TimesketchError` if authentication failed
    */
   private async authTimesketch(): Promise<void | TimesketchError> {
-    const response = await request(
-      `${this.timesketch_auth.url}/login/`,
-      Protocol.GET,
-    );
+    const client: ClientRequest = {
+      url: `${this.timesketch_auth.url}/login/`,
+      protocol: Protocol.GET,
+      verify_ssl: this.verify_ssl,
+    };
+    const response = await request(client);
     if (response instanceof HttpError) {
       return new TimesketchError(
         `AUTH`,
@@ -241,15 +305,12 @@ export class Timesketch {
     const form_string = JSON.stringify(form);
     const bytes = encodeBytes(form_string);
 
+    client.headers = headers;
+    client.body_type = BodyType.FORM;
+    client.follow_redirects = false;
+    client.protocol = Protocol.POST;
     // Logon but do not follow the redirect. We need one more cookie
-    const auth_response = await request(
-      `${this.timesketch_auth.url}/login/`,
-      Protocol.POST,
-      bytes,
-      headers,
-      BodyType.FORM,
-      FollowRedirect.DISABLE,
-    );
+    const auth_response = await request(client, bytes);
     if (auth_response instanceof HttpError) {
       return new TimesketchError(
         `AUTH`,

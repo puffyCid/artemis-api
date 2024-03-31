@@ -101,63 +101,66 @@ import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons.ts";
  * Function to timeline artifacts parsed by artemis
  * @param data Artifact data to timeline. Must be a supported artifact defined by `TimesketchArtifact`
  * @param artifact A `TimesketchArtifact` artifact to timeline
- * @param include_raw Boolean value to indicate if the raw artifact should be included as a dedicated value. Defaults to false
  * @returns Array of `TimesketchTimeline` or `TimesketchError`
  */
 export function timelineArtifact(
   data: unknown,
   artifact: TimesketchArtifact,
-  include_raw = false,
 ): TimesketchTimeline[] | TimesketchError {
   switch (artifact) {
     case TimesketchArtifact.PROCESSESS:
-      return timelineProcesses(data as ProcessInfo[], include_raw);
+      return timelineProcesses(data as ProcessInfo[]);
     case TimesketchArtifact.LOGINITEMS:
-      return timelineLoginItems(data as LoginItems[], include_raw);
+      return timelineLoginItems(data as LoginItems[]);
     case TimesketchArtifact.SUDOLOGS_MACOS:
     case TimesketchArtifact.UNIFIEDLOGS:
-      return timelineUnifiedLogs(data as UnifiedLog[], include_raw);
+      return timelineUnifiedLogs(data as UnifiedLog[]);
     case TimesketchArtifact.HOMEBREW:
-      return timelineHomebrew(data as HomebrewReceipt[], include_raw);
+      return timelineHomebrew(data as HomebrewReceipt[]);
     case TimesketchArtifact.FSEVENTS:
-      return timelineFsevents(data as Fsevents[], include_raw);
+      return timelineFsevents(data as Fsevents[]);
     case TimesketchArtifact.USERS_MACOS:
-      return timelineUsersMacos(data as Users[], include_raw);
+      return timelineUsersMacos(data as Users[]);
     case TimesketchArtifact.GROUPS_MACOS:
-      return timelineGroupsMacos(data as Groups[], include_raw);
+      return timelineGroupsMacos(data as Groups[]);
     case TimesketchArtifact.EXECPOLICY:
-      return timelineExecpolicy(data as ExecPolicy[], include_raw);
+      return timelineExecpolicy(data as ExecPolicy[]);
     case TimesketchArtifact.FILES:
       return timelineFiles(
-        data as MacosFileInfo[] | LinuxFileInfo[] | WindowsFileInfo[],
-        include_raw,
+        data as MacosFileInfo[] | LinuxFileInfo[],
+        false,
+      );
+    case TimesketchArtifact.FILES_WINDOWS:
+      return timelineFiles(
+        data as WindowsFileInfo[],
+        true,
       );
     case TimesketchArtifact.EMOND:
-      return timelineEmond(data as Emond[], include_raw);
+      return timelineEmond(data as Emond[]);
     case TimesketchArtifact.SPOTLIGHT:
-      return timelineSpotlight(data as Spotlight[], include_raw);
+      return timelineSpotlight(data as Spotlight[]);
     case TimesketchArtifact.LAUNCHD:
       return timelineLaunchd(data as Launchd[]);
     case TimesketchArtifact.SAFARI_DOWNLOADS:
-      return timelineSafariDownloads(data as SafariDownloads[], include_raw);
+      return timelineSafariDownloads(data as SafariDownloads[]);
     case TimesketchArtifact.SAFARI_HISTORY:
-      return timelineSafariHistory(data as SafariHistory[], include_raw);
+      return timelineSafariHistory(data as SafariHistory[]);
     case TimesketchArtifact.AMCACHE:
-      return timelineAmcache(data as Amcache[], include_raw);
+      return timelineAmcache(data as Amcache[]);
     case TimesketchArtifact.SHIMCACHE:
-      return timelineShimcache(data as Shimcache[], include_raw);
+      return timelineShimcache(data as Shimcache[]);
     case TimesketchArtifact.PREFETCH:
-      return timelinePrefetch(data as Prefetch[], include_raw);
+      return timelinePrefetch(data as Prefetch[]);
     case TimesketchArtifact.BITS:
-      return timelineBits(data as Bits, include_raw);
+      return timelineBits(data as Bits);
     case TimesketchArtifact.EVENTLOGS:
       return timelineEventLogs(data as EventLogRecord[]);
     case TimesketchArtifact.JUMPLISTS:
       return timelineJumplists(data as Jumplists[]);
     case TimesketchArtifact.SHORTCUTS:
-      return timelineShortcuts(data as Shortcut[], include_raw);
+      return timelineShortcuts(data as Shortcut[]);
     case TimesketchArtifact.RECYCLEBIN:
-      return timelineRecycleBin(data as RecycleBin[], include_raw);
+      return timelineRecycleBin(data as RecycleBin[]);
     case TimesketchArtifact.REGISTRY:
       return timelineRegistry(data as RegistryData);
     case TimesketchArtifact.SHELLBAGS:

@@ -5,7 +5,6 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline EventLogs
  * @param data Array of `EventLogRecord`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of EventLogRecord
  */
 export function timelineEventLogs(
@@ -18,8 +17,6 @@ export function timelineEventLogs(
       datetime: unixEpochToISO(item.timestamp),
       timestamp_desc: "EventLog Generated",
       message: "",
-      hash: "",
-      user: "",
       artifact: "EventLog",
       data_type: "windows:eventlogs:entry",
       _raw: JSON.stringify(item),
@@ -66,7 +63,6 @@ export function timelineEventLogs(
 
     entry.message = event_message;
 
-    //entry = { ...entry, ...item };
     entries.push(entry);
   }
 

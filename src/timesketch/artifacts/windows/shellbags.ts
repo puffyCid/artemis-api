@@ -5,7 +5,6 @@ import { unixEpochToISO } from "../../../time/conversion.ts";
 /**
  * Function to timeline Shellbags
  * @param data Array of `Shellbags`
- * @param include_raw Include raw data in timeline entry
  * @returns Array `TimesketchTimeline` of Shellbags
  */
 export function timelineShellbags(data: Shellbags[]): TimesketchTimeline[] {
@@ -16,11 +15,8 @@ export function timelineShellbags(data: Shellbags[]): TimesketchTimeline[] {
       datetime: unixEpochToISO(item.reg_modified),
       timestamp_desc: "Registry Last Modified",
       message: item.path,
-      hash: "",
-      user: "",
       artifact: "Shellbags",
       data_type: "windows:registry:shellbags:item",
-      _raw: "",
     };
     entry = { ...entry, ...item };
     entry["created"] = unixEpochToISO(item.created);

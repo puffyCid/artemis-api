@@ -8,10 +8,6 @@ export interface TimesketchTimeline {
   timestamp_desc: string;
   /** **Required by Timeskech** Timeline message data */
   message: string;
-  /**A hash associated with the entry if available. Will be either MD5, SHA1, or SHA256 */
-  hash: string;
-  /**User associated with the entry if available */
-  user: string;
   /**The type of artifact that was timelined */
   artifact: string;
   /**
@@ -23,8 +19,6 @@ export interface TimesketchTimeline {
   data_type: string;
   /**Include any other valid JSON data */
   [ key: string ]: unknown;
-  /**The raw data associated with the entry */
-  _raw: unknown;
 }
 
 export enum TimesketchArtifact {
@@ -36,7 +30,10 @@ export enum TimesketchArtifact {
   USERS_MACOS = "users-macos",
   GROUPS_MACOS = "groups-macos",
   EXECPOLICY = "execpolicy",
+  /**Use `FILES_WINDOWS` for Windows filelistings */
   FILES = "files",
+  /**Use `FILES` for macOS or Linux filelistings */
+  FILES_WINDOWS = "files",
   SUDOLOGS_MACOS = "sudologs-macos",
   EMOND = "emond",
   SPOTLIGHT = "spotlight",
