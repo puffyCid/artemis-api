@@ -1,4 +1,4 @@
-import { Groups, Users } from "../../types/macos/accounts.d.ts";
+import { Groups, Users } from "../../types/macos/accounts.ts";
 import { MacosError } from "./errors.ts";
 
 /**

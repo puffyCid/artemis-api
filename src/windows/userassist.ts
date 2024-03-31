@@ -1,4 +1,4 @@
-import { UserAssist } from "../../types/windows/userassist.d.ts";
+import { UserAssist } from "../../types/windows/userassist.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

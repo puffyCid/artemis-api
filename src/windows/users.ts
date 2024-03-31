@@ -1,4 +1,4 @@
-import { UserInfo } from "../../types/windows/users.d.ts";
+import { UserInfo } from "../../types/windows/users.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

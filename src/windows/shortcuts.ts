@@ -1,4 +1,4 @@
-import { Shortcut } from "../../types/windows/shortcuts.d.ts";
+import { Shortcut } from "../../types/windows/shortcuts.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

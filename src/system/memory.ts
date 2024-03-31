@@ -1,4 +1,5 @@
 import { Memory } from "../../types/system/systeminfo.d.ts";
+import { ProcessInfo } from "../../types/system/processes.ts";
 
 /**
  * Function to get memory information
@@ -6,14 +7,10 @@ import { Memory } from "../../types/system/systeminfo.d.ts";
  */
 export function memory(): Memory {
   //@ts-ignore: Custom Artemis function
-  const data: string = system.memory();
+  const data = system.memory();
   const mem: Memory = JSON.parse(data);
   return mem;
 }
-
-import { LinuxProcessInfo } from "../../types/linux/processes.d.ts";
-import { MacosProcessInfo } from "../../types/macos/processes.d.ts";
-import { WindowsProcessInfo } from "../../types/windows/processes.d.ts";
 
 /**
  * Function to pull a process listing from system
@@ -28,7 +25,7 @@ export function processListing(
   sha1 = false,
   sha256 = false,
   binary = false,
-): LinuxProcessInfo[] | WindowsProcessInfo[] | MacosProcessInfo[] {
+): ProcessInfo[] {
   const hashes = {
     md5,
     sha1,
@@ -39,7 +36,7 @@ export function processListing(
     JSON.stringify(hashes),
     binary,
   );
-  const proc_array = JSON.parse(data);
+  const proc_array: ProcessInfo[] = JSON.parse(data);
 
   return proc_array;
 }

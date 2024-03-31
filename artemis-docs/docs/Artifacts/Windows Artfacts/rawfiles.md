@@ -127,7 +127,7 @@ export interface RawFileInfo {
   /**Parent MFT reference for entry */
   parent_mft_references: number;
   /**Attributes associated with entry */
-  attributess: string[];
+  attributes: string[];
   /**MD5 of file. Optional */
   md5: string;
   /**SHA1 of file. Optional */
@@ -146,7 +146,7 @@ export interface RawFileInfo {
   sid: number;
   /**SID  string associated with entry*/
   user_sid: string;
-  /**Group SID associated with enry */
+  /**Group SID associated with entry */
   group_sid: string;
   /**Drive letter */
   drive: string;

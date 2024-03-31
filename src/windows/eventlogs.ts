@@ -1,4 +1,4 @@
-import { EventLogRecord } from "../../types/windows/eventlogs.d.ts";
+import { EventLogRecord } from "../../types/windows/eventlogs.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

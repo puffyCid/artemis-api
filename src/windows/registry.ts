@@ -1,18 +1,32 @@
-import { Registry, SecurityKey } from "../../types/windows/registry.d.ts";
+import {
+  Registry,
+  RegistryData,
+  SecurityKey,
+} from "../../types/windows/registry.ts";
 import { WindowsError } from "./errors.ts";
 
 /**
  * Function to parse a `Registry` file
  * @param path Full path to a `Registry` file
- * @returns Array of `Registry` entries or `WindowsError`
+ * @returns `RegistryData` object or `WindowsError`
  */
-export function getRegistry(path: string): Registry[] | WindowsError {
+export function getRegistry(path: string): RegistryData | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
     const data: string = Deno.core.ops.get_registry(path);
 
     const results: Registry[] = JSON.parse(data);
-    return results;
+    const reg: RegistryData = {
+      registry_path: path,
+      registry_file: "",
+      registry_entries: results,
+    };
+    if (path.includes("\\")) {
+      reg.registry_file = path.split("\\").pop() ?? "";
+    } else {
+      reg.registry_file = path.split("/").pop() ?? "";
+    }
+    return reg;
   } catch (err) {
     return new WindowsError(
       "REGISTRY",

@@ -93,7 +93,7 @@ export interface EventLogConsumer {
   /**Name of system where WMI sends events */
   MachineName: string;
   /**Max queue for consumer in bytes */
-  MaxmiumQueueSize: number;
+  MaximumQueueSize: number;
   /**Unique ID for consumer */
   Name: string;
   /**Event category */
@@ -125,7 +125,7 @@ export interface ActiveScriptConsumer {
   /**Name of system where WMI sends events */
   MachineName: string;
   /**Max queue for consumer in bytes */
-  MaxmiumQueueSize: number;
+  MaximumQueueSize: number;
   /**Unique ID for consumer */
   Name: string;
   /**How many seconds to wait until process is killed. Zero (0) means process will not be killed */
@@ -147,7 +147,7 @@ export interface CommandLineConsumer {
   /**Name of system where WMI sends events */
   MachineName: string;
   /**Max queue for consumer in bytes */
-  MaxmiumQueueSize: number;
+  MaximumQueueSize: number;
   /**Unique ID for consumer */
   Name: string;
   /**Specifies command to execute */
@@ -174,7 +174,7 @@ export interface CommandLineConsumer {
   KillTimeout: number;
   /**Priority of process threads */
   Priority: number;
-  /**Determinse if process is launched with interactive WinStation or default WinStation */
+  /**Determines if process is launched with interactive WinStation or default WinStation */
   RunInteractively: boolean;
   /**Determines Window show state */
   ShowWindowCommand: number;
@@ -209,7 +209,7 @@ export interface LogFileConsumer {
   /**Name of system where WMI sends events */
   MachineName: string;
   /**Max queue for consumer in bytes */
-  MaxmiumQueueSize: number;
+  MaximumQueueSize: number;
   /**Unique ID for consumer */
   Name: string;
   /**Whether log file is Unicode or multibyte code file */
@@ -229,7 +229,7 @@ export interface SmtpConsumer {
   /**Name of system where WMI sends events */
   MachineName: string;
   /**Max queue for consumer in bytes */
-  MaxmiumQueueSize: number;
+  MaximumQueueSize: number;
   /**Unique ID for consumer */
   Name: string;
   /**Addresses to send email (BCC) */
@@ -251,4 +251,5 @@ export interface SmtpConsumer {
   /**Addresses to send email to */
   ToLine: string;
 }
+
 ```

@@ -1,4 +1,4 @@
-import { Shimcache } from "../../types/windows/shimcache.d.ts";
+import { Shimcache } from "../../types/windows/shimcache.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

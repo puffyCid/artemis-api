@@ -1,4 +1,4 @@
-import { Launchd } from "../../types/macos/launchd.d.ts";
+import { Launchd } from "../../types/macos/launchd.ts";
 import { MacosError } from "./errors.ts";
 
 /**

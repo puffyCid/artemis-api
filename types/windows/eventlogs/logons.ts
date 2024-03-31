@@ -1,4 +1,4 @@
-export interface Logons {
+export interface LogonsWindows {
   logon_type: LogonType;
   sid: string;
   account_name: string;

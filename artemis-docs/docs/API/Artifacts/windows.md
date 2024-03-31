@@ -109,7 +109,7 @@ Parse RecycleBin file at provided path.
 | ----- | ------ | ------------------------ |
 | path  | string | Path to RecycleBin file. |
 
-### getRegistry(path) -> Registry[] | WindowsError
+### getRegistry(path) -> RegistryData | WindowsError
 
 Parse Registry file at provided path.
 

@@ -10,11 +10,15 @@ keywords:
 Windows `Amcache` stores metadata related to execution of Windows applications.
 Data is stored in the `C:\Windows\appcompat\Programs\Amcache.hve` Registry file.
 This Registry file also contains other metadata such as OS, hardware, and
-application info. However, artemis will only collect data related to the
-execution of Windows applications.
+application info. However, the Amcache artifact will only collect data related
+to the possible execution of Windows applications.
 
-The `Registry` artifact may be used if you want to collect the full `Registry`
-data from `Amcache.hve`.
+<sup>*</sup> While an entry in Amcache often implies the application was
+executed, Windows may pre-populate Amcache with entries based on a user
+browsing to a directory that contains an application.
+
+You can use the [Registry](./registry.md) artifact to parse the Amcache file if
+you want to view other metadata such as OS, hardware, more.
 
 Other Parsers:
 
@@ -59,8 +63,8 @@ An array of `Amcache` entries
 
 ```typescript
 export interface Amcache {
-  /**Timestamp when the application was first executed in UNIXEPOCH seconds */
-  first_execution: number;
+  /**Last modified time for Registry key in UNIXEPOCH seconds */
+  last_modified: number;
   /**Path to application */
   path: string;
   /**Name of application */

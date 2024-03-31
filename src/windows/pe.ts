@@ -1,4 +1,4 @@
-import { PeInfo } from "../../types/windows/pe.d.ts";
+import { PeInfo } from "../../types/windows/pe.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

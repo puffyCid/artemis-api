@@ -22,7 +22,7 @@ export interface Spotlight {
   /**Last time Spotlight entry was updated in UNIXEPOCH **microseconds** */
   last_updated: bigint;
   /**Array of properties associated with the entry */
-  values: Record<string, SpotlightProperties>[];
+  values: Record<string, SpotlightProperties>;
   /**Location of the Spotlight database that was parsed */
   directory: string;
 }

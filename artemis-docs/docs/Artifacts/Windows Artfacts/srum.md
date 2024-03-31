@@ -133,7 +133,7 @@ export interface ApplicationTimeline {
   comp_rendered_timeline: number;
   /**Comp dirtied value for entry */
   comp_dirtied_timeline: number;
-  /**Comp propaged value for entry */
+  /**Comp propagated value for entry */
   comp_propagated_timeline: number;
   /**Audio input value for entry */
   audio_in_timeline: number;
@@ -153,7 +153,7 @@ export interface ApplicationTimeline {
   psm_foreground_s: number;
   /**User input seconds count */
   user_input_s: number;
-  /**Comp rendered seconds countr */
+  /**Comp rendered seconds count */
   comp_rendered_s: number;
   /**Comp dirtied seconds count */
   comp_dirtied_s: number;
@@ -191,7 +191,7 @@ export interface ApplicationTimeline {
   display_required_timeline: number;
   /**Keyboard input timeline value for entry */
   keyboard_input_timeline: number;
-  /**Keybouard input seconds count */
+  /**Keyboard input seconds count */
   keyboard_input_s: number;
   /**Mouse input seconds count */
   mouse_input_s: number;
@@ -224,7 +224,7 @@ export interface AppVfu {
 
 ```typescript
 /**
- * SRUM table associated witn EnergyInfo `{DA73FB89-2BEA-4DDC-86B8-6E048C6DA477}`
+ * SRUM table associated with EnergyInfo `{DA73FB89-2BEA-4DDC-86B8-6E048C6DA477}`
  */
 export interface EnergyInfo {
   /**ID in for row in the ESE table */
@@ -235,7 +235,7 @@ export interface EnergyInfo {
   app_id: string;
   /**SID associated with the application process */
   user_id: string;
-  /**Base64 encoded binary data associated witn EnegyInfo entry */
+  /**Base64 encoded binary data associated with EnergyInfo entry */
   binary_data: string;
 }
 ```
@@ -287,7 +287,7 @@ export interface NetworkInfo {
   interface_luid: number;
   /**L2 profile ID associated with entry */
   l2_profile_id: number;
-  /**L2 profiel flags associated with entry */
+  /**L2 profile flags associated with entry */
   l2_profile_flags: number;
   /**Bytes sent associated with entry */
   bytes_sent: number;

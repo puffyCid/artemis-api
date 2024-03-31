@@ -1,6 +1,6 @@
 import { VTResponse } from "../../types/http/vt.ts";
 import { extractUtf8String } from "../encoding/strings.ts";
-import { Protocol, request } from "./client.ts";
+import { ClientRequest, Protocol, request } from "./client.ts";
 import { ErrorName, HttpError } from "./errors.ts";
 
 /**
@@ -10,7 +10,7 @@ import { ErrorName, HttpError } from "./errors.ts";
  * Your key or IP will be **blocked** if you do!
  */
 export class VirusTotal {
-  key: string;
+  private key: string;
 
   /**
    * Provide the VT API key for you account
@@ -63,12 +63,13 @@ export class VirusTotal {
       "x-apikey": this.key,
     };
 
-    const response = await request(
+    const client: ClientRequest = {
       url,
-      Protocol.GET,
-      new Uint8Array(0),
+      protocol: Protocol.GET,
       headers,
-    );
+    };
+
+    const response = await request(client);
     if (response instanceof HttpError) {
       response.name = err;
       return response;

@@ -8,11 +8,11 @@
 export interface Shellbags {
   /**Reconstructed directory path */
   path: string;
-  /**FAT created timestamp. Only applicable for Directory `shell_type` */
+  /**FAT created timestamp in UNIXEPOCH. Only applicable for Directory `shell_type` */
   created: number;
-  /**FAT modified timestamp. Only applicable for Directory `shell_type` */
+  /**FAT modified timestamp in UNIXEPOCH. Only applicable for Directory `shell_type` */
   modified: number;
-  /**FAT modified timestamp. Only applicable for Directory `shell_type` */
+  /**FAT modified timestamp in UNIXEPOCH. Only applicable for Directory `shell_type` */
   accessed: number;
   /**Entry number in MFT. Only applicable for Directory `shell_type` */
   mft_entry: number;

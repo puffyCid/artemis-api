@@ -3,7 +3,7 @@
  * https://www.magnetforensics.com/blog/what-is-mru-most-recently-used/
  */
 
-import { Registry } from "../../../../types/windows/registry.d.ts";
+import { Registry } from "../../../../types/windows/registry.ts";
 import { MruValues } from "../../../../types/windows/registry/recently_used.ts";
 import { ShellItems } from "../../../../types/windows/shellitems.ts";
 import { decode } from "../../../encoding/base64.ts";

@@ -66,7 +66,7 @@ export interface Shimdb {
 /**
  * SDB files are composed of `TAGS`. There are multiple types of `TAGS`
  * `data` have `TAGS` that can be represented via a JSON object
- * `list_data` have `TAGS` that can be rerpesented as an array of JSON objects
+ * `list_data` have `TAGS` that can be represented as an array of JSON objects
  *
  * Example:
  * ```
@@ -116,7 +116,7 @@ export interface DatabaseData {
    * The SDB file may contain additional metadata information
    * May include additional `TAGS`
    */
-  additional_metdata: Record<string, string>;
+  additional_metadata: Record<string, string>;
   /**Array of `TAGS` associated with the SDB file */
   list_data: TagData[];
 }
