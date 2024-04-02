@@ -47,6 +47,7 @@ export { systemExtensions } from "./src/macos/plist/system_extensions.ts";
 export { wifiNetworks } from "./src/macos/plist/wifi.ts";
 export { parseRequirementBlob } from "./src/macos/codesigning/blob.ts";
 export { getXprotectDefinitions } from "./src/macos/plist/xprotect.ts";
+export { parseBiome } from "./src/macos/biome.ts";
 
 /**
  * Unix exported functions

@@ -77,3 +77,20 @@ commonly Big Endian
 | ------ | ---------- | --------------------------- |
 | format | Endian     | Endianess type LE or BE     |
 | data   | Uint8Array | Raw bytes to format to GUID |
+
+### parseProtobufBytes(raw_bytes) -> Record&lt;string, unknown&gt; | EncodingError
+
+An **experimental** protobuf parser. Artemis will attempt to parse the provided
+protobuf bytes and return a JSON object. Binary protobuf data is a blackbox, it
+is typically not possible to perfectly parse protobuf data perfectly everytime.
+
+Artemis will return a JSON object if it can parse the entire data
+
+See:
+
+- https://protobuf.dev/programming-guides/encoding/
+- https://github.com/protobufjs/protobuf.js/wiki/How-to-reverse-engineer-a-buffer-by-hand
+
+| Param     | Type       | Description        |
+| --------- | ---------- | ------------------ |
+| raw_bytes | Uint8Array | Raw protobuf bytes |

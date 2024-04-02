@@ -19,6 +19,7 @@ export type ErrorName =
   | "SYSTEM_EXTENSION"
   | "TCC"
   | "SPOTLIGHT"
-  | "XPROTECT";
+  | "XPROTECT"
+  | "BIOME";
 
 export class MacosError extends ErrorBase<ErrorName> {}
