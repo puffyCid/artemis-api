@@ -50,8 +50,6 @@ export function parseBiome(alt_file?: string): Biome[] {
       continue;
     }
 
-    console.log(entry);
-
     const records = extractBiome(entry);
     if (records instanceof MacosError) {
       console.warn(`Did not extract BIOMEs from ${entry}: ${records}`);
