@@ -2,6 +2,8 @@ export interface Definition {
     id: number;
     name: string;
     category: number;
+    severity: number;
+    action: number;
     rules: DefinitionRule[];
     path: string;
 }
