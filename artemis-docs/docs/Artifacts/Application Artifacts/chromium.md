@@ -22,12 +22,16 @@ Artemis supports parsing the list of artifacts below:
 - Cookies
 - Autofill
 - Bookmarks
+- Login Data
+- Extensions
 
 You have to use the artemis [api](../../API/overview.md) in order to collect:
 
 - Cookies
 - Autofill
 - Bookmarks
+- Login Data
+- Extensions
 
 Other parsers:
 

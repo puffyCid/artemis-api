@@ -10,15 +10,16 @@ artemis.
 1. artemis is written in Rust. So you will need to download and install the
    [Rust](https://www.rust-lang.org/) programming language
 2. Git
-3. [Rust analzyer](https://rust-analyzer.github.io/)
+3. [Rust analyzer](https://rust-analyzer.github.io/)
 4. An IDE or text editor. [VSCode](https://code.visualstudio.com/) or
    [VSCodium](https://vscodium.com/) are great choices.
 5. The command runner [Just](https://github.com/casey/just). Just is used to
    help build the entire artemis project and is **highly** recommended
+6. cmake (for building zlib)
 
 :::info
 
-Windows users will need to add extra arguements to the just command:\
+Windows users will need to add extra arguments to the just command:\
 `just --shell pwsh.exe --shell-arg -c`
 
 On Windows if you get an error like:\

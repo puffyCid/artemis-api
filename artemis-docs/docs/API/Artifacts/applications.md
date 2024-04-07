@@ -163,3 +163,14 @@ All Chromium derived browsers should be supported.
 | -------- | ------------ | --------------------------------------------------------- |
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | path     | string       | Optional path to a Chromium bookmark file                 |
+
+### getChromiumLogins(platform, path) -> ChromiumLogins[] | ApplicationError
+
+Get saved Login information associated with Chromium browsers
+
+All Chromium derived browsers should be supported.
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| path     | string       | Optional path to a Chromium Login Data database           |
