@@ -102,7 +102,7 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
         const receipt = readTextFile(entry.full_path);
         if (receipt instanceof FileError) {
           console.warn(
-            `failed to read install_receipt.json formata ${entry.full_path}: ${receipt}`,
+            `failed to read install_receipt.json format ${entry.full_path}: ${receipt}`,
           );
           continue;
         }
@@ -131,6 +131,8 @@ export function getCasks(glob_path?: string): HomebrewFormula[] {
   let paths = [
     "/usr/local/Caskroom/*/.metadata/*/*/Casks/*.rb",
     "/opt/homebrew/Caskroom/*/.metadata/*/*/Casks/*.rb",
+    "/usr/local/Caskroom/*/.metadata/*/*/Casks/*.json",
+    "/opt/homebrew/Caskroom/*/.metadata/*/*/Casks/*.json",
   ];
 
   if (glob_path != undefined) {
@@ -147,6 +149,27 @@ export function getCasks(glob_path?: string): HomebrewFormula[] {
     }
 
     for (const entry of globs) {
+      if (entry.filename.endsWith(".json")) {
+        const text = readTextFile(entry.full_path);
+        if (text instanceof FileError) {
+          console.warn(
+            `failed to read json ${entry.full_path}: ${text}`,
+          );
+          continue;
+        }
+
+        const data = JSON.parse(text);
+        const formula: HomebrewFormula = {
+          description: data["desc"],
+          homepage: data["homepage"],
+          url: data["url"],
+          license: "",
+          caskName: data["name"].join(" "),
+          formulaPath: entry.full_path,
+          version: data["version"],
+        };
+        casks.push(formula);
+      }
       if (!entry.filename.endsWith(".rb")) {
         continue;
       }
@@ -178,7 +201,6 @@ function parseRuby(path: string): HomebrewFormula | FileError {
   const reg_version = /(?<=version ).*$/m;
 
   const rubyText = readTextFile(path);
-
   if (rubyText instanceof FileError) {
     return rubyText;
   }

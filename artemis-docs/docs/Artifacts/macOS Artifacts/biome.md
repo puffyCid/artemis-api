@@ -6,7 +6,7 @@ keywords:
   - binary
 ---
 
-# Bill of Materials
+# Biome
 
 macOS BIOME data contains data related to application runtime. It partially
 replaces the KnowledgeC.db.\
