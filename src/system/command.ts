@@ -10,13 +10,8 @@ export function executeCommand(
   command: string,
   args: string[] = [],
 ): CommandResult | Error {
-  const comm_args: Record<string, string> = {};
-  for (let arg = 0; arg < args.length; arg++) {
-    comm_args[arg] = args[arg];
-  }
-
   //@ts-ignore: Custom Artemis function
-  const data = system.execute(command, comm_args);
+  const data = system.execute(command, args);
   if (data instanceof Error) {
     return data;
   }
