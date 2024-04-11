@@ -49,6 +49,8 @@ export { parseRequirementBlob } from "./src/macos/codesigning/blob.ts";
 export { getXprotectDefinitions } from "./src/macos/plist/xprotect.ts";
 export { parseBiome } from "./src/macos/biome.ts";
 export { luluRules } from "./src/macos/plist/lulu.ts";
+export { munkiApplicationUsage } from "./src/macos/sqlite/munki.ts";
+
 /**
  * Unix exported functions
  */

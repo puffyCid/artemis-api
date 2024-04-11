@@ -21,6 +21,7 @@ export type ErrorName =
   | "SPOTLIGHT"
   | "XPROTECT"
   | "BIOME"
-  | "LULU";
+  | "LULU"
+  | "MUNKI";
 
 export class MacosError extends ErrorBase<ErrorName> {}
