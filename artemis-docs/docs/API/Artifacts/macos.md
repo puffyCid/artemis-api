@@ -365,3 +365,15 @@ You may also provide an optional alternative path to the Xprotect.plist file.
 | Param    | Type   | Description                          |
 | -------- | ------ | ------------------------------------ |
 | alt_path | string | Optional path to Xprotect.plist file |
+
+### luluRules(alt_path) -> LuluRules | MacosError
+
+Grab LuLu rules on macOS. By default artemis will check for rule.plist file at:
+
+- /Library/Objective-See/LuLu/rules.plist
+
+You may also provide an optional alternative path to the rules.plist file.
+
+| Param    | Type   | Description                       |
+| -------- | ------ | --------------------------------- |
+| alt_path | string | Optional path to rules.plist file |

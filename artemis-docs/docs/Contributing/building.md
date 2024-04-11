@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Prerequisites
 
-There a few required applications you will need in order to build and develop
+There are few required applications you will need in order to build and develop
 artemis.
 
 1. artemis is written in Rust. So you will need to download and install the
@@ -49,10 +49,10 @@ Once you have the prerequisites installed you can build artemis.
 git clone https://github.com/puffycid/artemis
 cd artemis
 
-# Build the CLI executable
+# Build just the CLI executable
 just cli
 
-# Build the library
+# Build just the library
 just core
 ```
 
@@ -90,6 +90,13 @@ Full list of just commands (via `just --list`)
 If you want to build the entire artemis project, you will need additional
 prerequisites. These additional prerequisites are required to build the
 experimental server and webui.
+
+:::info
+
+The binaries downloaded from GitHub do not contain the server and webui
+components/workspaces. They just contain the cli comonent/workspace.
+
+:::
 
 ## Advanced Prerequisites
 

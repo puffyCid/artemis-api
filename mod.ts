@@ -20,8 +20,8 @@ export { getGroups, getUsers } from "./src/macos/accounts.ts";
 export { getExecpolicy } from "./src/macos/execpolicy.ts";
 export { getFsevents } from "./src/macos/fsevents.ts";
 export {
-  getHomebrewInfo,
   getCasks,
+  getHomebrewInfo,
   getPackages,
 } from "./src/macos/homebrew.ts";
 export { getMacho } from "./src/macos/macho.ts";
@@ -36,10 +36,10 @@ export {
   getSafariUsersDownloads,
   getSafariUsersHistory,
 } from "./src/macos/safari.ts";
-export { setupSpotlightParser, getSpotlight } from "./src/macos/spotlight.ts";
+export { getSpotlight, setupSpotlightParser } from "./src/macos/spotlight.ts";
 export { getSudoLogsMacos } from "./src/macos/sudo.ts";
 export { queryTccDb } from "./src/macos/sqlite/tcc.ts";
-export { scanApps, listApps } from "./src/macos/plist/apps.ts";
+export { listApps, scanApps } from "./src/macos/plist/apps.ts";
 export { dockTiles } from "./src/macos/plist/docktile.ts";
 export { firewallStatus } from "./src/macos/plist/firewall.ts";
 export { passwordPolicy } from "./src/macos/plist/policies.ts";
@@ -48,7 +48,7 @@ export { wifiNetworks } from "./src/macos/plist/wifi.ts";
 export { parseRequirementBlob } from "./src/macos/codesigning/blob.ts";
 export { getXprotectDefinitions } from "./src/macos/plist/xprotect.ts";
 export { parseBiome } from "./src/macos/biome.ts";
-
+export { luluRules } from "./src/macos/plist/lulu.ts";
 /**
  * Unix exported functions
  */
@@ -69,8 +69,8 @@ export {
   kernelVersion,
   osVersion,
   platform,
-  uptime,
   PlatformType,
+  uptime,
 } from "./src/system/systeminfo.ts";
 export { disks } from "./src/system/disks.ts";
 export { cpus } from "./src/system/cpu.ts";
@@ -79,20 +79,20 @@ export { memory, processListing } from "./src/system/memory.ts";
  * Application exported functions
  */
 export {
+  getChromiumAutofill,
+  getChromiumBookmarks,
+  getChromiumCookies,
   getChromiumDownloads,
   getChromiumHistory,
   getChromiumUsersDownloads,
   getChromiumUsersHistory,
-  getChromiumCookies,
-  getChromiumAutofill,
-  getChromiumBookmarks,
 } from "./src/applications/chromium.ts";
 export {
+  getFirefoxCookies,
   getFirefoxDownloads,
   getFirefoxHistory,
   getFirefoxUsersDownloads,
   getFirefoxUsersHistory,
-  getFirefoxCookies,
 } from "./src/applications/firefox.ts";
 export { fileHistory, getExtensions } from "./src/applications/vscode.ts";
 export { recentFiles } from "./src/applications/libreoffice.ts";
