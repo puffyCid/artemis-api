@@ -50,6 +50,7 @@ export { getXprotectDefinitions } from "./src/macos/plist/xprotect.ts";
 export { parseBiome } from "./src/macos/biome.ts";
 export { luluRules } from "./src/macos/plist/lulu.ts";
 export { munkiApplicationUsage } from "./src/macos/sqlite/munki.ts";
+export { quarantineEvents } from "./src/macos/sqlite/quarantine.ts";
 
 /**
  * Unix exported functions
@@ -81,16 +82,16 @@ export { memory, processListing } from "./src/system/memory.ts";
  * Application exported functions
  */
 export {
+  chromiumPreferences,
   getChromiumAutofill,
   getChromiumBookmarks,
   getChromiumCookies,
+  getChromiumDips,
   getChromiumDownloads,
   getChromiumHistory,
+  getChromiumLogins,
   getChromiumUsersDownloads,
   getChromiumUsersHistory,
-  getChromiumDips,
-  getChromiumLogins,
-  chromiumPreferences,
 } from "./src/applications/chromium.ts";
 export {
   getFirefoxCookies,

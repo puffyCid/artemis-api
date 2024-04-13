@@ -175,7 +175,7 @@ All Chromium derived browsers should be supported.
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | path     | string       | Optional path to a Chromium Login Data database           |
 
-### chromiumPreferences(platform) -> Record<string, unknown>[] | ApplicationError
+### chromiumPreferences(platform) -> Record&lt;string, unknown&gt;[] | ApplicationError
 
 Get Chromium Preferences
 

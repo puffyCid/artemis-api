@@ -5,18 +5,17 @@ description: How to script with artemis
 
 # Overview
 
-![a small velociraptor joke](../../../static/img/deno2.jpeg)
+![a small velociraptor joke. Deno image from https://deno.land/artwork. The image is MIT licensed.](../../../static/img/deno2.jpeg)
 
 A really cool capability of artemis is it contains an embedded JavaScript
 runtime via [Deno](https://deno.land/). Deno is V8 based JavaScript runtime
 written in Rust. By importing Deno we can create our own JavaScript runtime
 geared specifically for forensics and IR!
 
-For example, the artemis function `get_registry(registry_file_path)` can be used
-to parse a provided `Registry` file on disk. By registering this function with
+For example, the artemis function `get_registry()` can be used
+to parse a provided Registry file on disk. By registering this function with
 the Deno runtime we can call this function directly from JavaScript! In addition
-to JavaScript, [TypeScript](https://www.typescriptlang.org/) is also supported
-by Deno!
+to JavaScript, [TypeScript](https://www.typescriptlang.org/) is also supported!
 
 To summarize:
 
@@ -26,10 +25,12 @@ To summarize:
 
 :::info
 
-Deno image from https://deno.land/artwork. The image is MIT licensed. Checkout
-other artwork by the author at https://hashrock.studio.site/
+The JS runtime in artemis is kind of like the VQL language for [Velociraptor](https://docs.velociraptor.app/docs/vql/) or the [Dissect forensic framework](https://github.com/fox-it/dissect)  
+
+All three let you script forensic collections and parsing
 
 :::
+
 
 # Prequisites for Scripting.
 

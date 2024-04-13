@@ -12,7 +12,7 @@ multiple files that need to be combine into one .js file.
 
 A Bundler can help us perform this task.
 
-The TypeScrpt code below imports a function and the `Registry` interface from
+The TypeScrpt code below imports a function and the Registry interface from
 artemis.
 
 ```typescript

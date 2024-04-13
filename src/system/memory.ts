@@ -1,4 +1,4 @@
-import { Memory } from "../../types/system/systeminfo.d.ts";
+import { Memory } from "../../types/system/systeminfo.ts";
 import { ProcessInfo } from "../../types/system/processes.ts";
 
 /**

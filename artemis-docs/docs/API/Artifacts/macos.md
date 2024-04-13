@@ -376,4 +376,32 @@ You may also provide an optional alternative path to the rules.plist file.
 
 | Param    | Type   | Description                       |
 | -------- | ------ | --------------------------------- |
-| alt_path | string | Optional path to rules.plist file |
+| alt_file | string | Optional path to rules.plist file |
+
+### munkiApplicationUsage(db) -> MunkiApplicationUsage[] | MacosError
+
+Grab application usage tracked by Munki on macOS. By default artemis will check
+for application_usage.sqlite file at:
+
+- /Library/Managed Installs/application_usage.sqlite
+
+You may also provide an optional alternative path to the
+application_usage.sqlite file.
+
+| Param | Type   | Description                                    |
+| ----- | ------ | ---------------------------------------------- |
+| db    | string | Optional path to application_usage.sqlite file |
+
+### quarantineEvents(alt_file) -> MacosQuarantine[] | MacosError
+
+Grab quarantine events tracked by macOS. By default artemis will check for
+quarantine events for all users file at:
+
+- /Users/*/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
+
+You may also provide an optional alternative path to the
+com.apple.LaunchServices.QuarantineEventsV2 file.
+
+| Param    | Type   | Description                                                       |
+| -------- | ------ | ----------------------------------------------------------------- |
+| alt_file | string | Optional path to com.apple.LaunchServices.QuarantineEventsV2 file |

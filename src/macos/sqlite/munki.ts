@@ -14,7 +14,7 @@ export function munkiApplicationUsage(
   const query = "select * from application_usage";
   const results = querySqlite(db, query);
   if (results instanceof ApplicationError) {
-    return new MacosError("MUNKI", `failed to query ${db}: ${results}`);
+    return new MacosError(`MUNKI`, `failed to query ${db}: ${results}`);
   }
 
   const entries = [];

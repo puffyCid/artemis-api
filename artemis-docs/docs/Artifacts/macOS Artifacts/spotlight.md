@@ -340,4 +340,42 @@ interface SpotlightProperties {
    */
   value: unknown;
 }
+
+/**
+ * All possible Attribute types
+ */
+enum DataAttribute {
+  /**Boolean value */
+  AttrBool = "AttrBool",
+  /**This attribute is undocumented */
+  AttrUnknown = "AttrUnknown",
+  /**A value of variable size */
+  AttrVariableSizeInt = "AttrVariableSizeInt",
+  /**This attribute is undocumented */
+  AttrUnknown2 = "AttrUnknown2",
+  /**This attribute is undocumented */
+  AttrUnknown3 = "AttrUnknown3",
+  /**This attribute is undocumented */
+  AttrUnknown4 = "AttrUnknown4",
+  /**A value of variable size */
+  AttrVariableSizeInt2 = "AttrVariableSizeInt2",
+  /**A value of variable size (it may be in an array) */
+  AttrVariableSizeIntMultiValue = "AttrVariableSizeIntMultiValue",
+  /**A value with a size of one byte */
+  AttrByte = "AttrByte",
+  /**A 32-bit float value */
+  AttrFloat32 = "AttrFloat32",
+  /**A 64-bit float value */
+  AttrFloat64 = "AttrFloat64",
+  /**A string value */
+  AttrString = "AttrString",
+  /**A date value in seconds in UNIXEPOCH */
+  AttrDate = "AttrDate",
+  /**Base64 encoded binary value. (Depending on the property this may actually be a normal string value (similar to `AttrString`) */
+  AttrBinary = "AttrBinary",
+  /**An array of values */
+  AttrList = "AttrList",
+  /**Artemis failed to determine the attribute */
+  Unknown = "Unknown",
+}
 ````

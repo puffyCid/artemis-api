@@ -1,4 +1,4 @@
-import { Disks } from "../../types/system/systeminfo.d.ts";
+import { Disks } from "../../types/system/systeminfo.ts";
 
 /**
  * Function to get disk information on the system

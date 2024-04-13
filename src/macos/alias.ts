@@ -1,5 +1,5 @@
 import { Alias, AliasTags } from "../../types/macos/alias.ts";
-import { Nom } from "../../types/nom/nom.d.ts";
+import { Nom } from "../../types/nom/nom.ts";
 import { extractUtf8String } from "../encoding/strings.ts";
 import { NomError } from "../nom/error.ts";
 import {

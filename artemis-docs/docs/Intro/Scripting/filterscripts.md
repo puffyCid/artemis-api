@@ -91,7 +91,7 @@ The biggest differences are:
 - We base64 encode our script and assign to `filter_script` to tell artemis:
   take the results of the `[[artifacts]]` list and filter them before outputting
   the data
-- We then set the `filter` value to `true`
+- We then set the `filter` value to true
 
 :::note
 
@@ -198,4 +198,4 @@ return filter_files;
 
 So our initial data provided to our filter script gets filtered and returned. In
 this example, our 100,000 file listing entry gets filtered to only return
-entries with the filename `Info.plist`.
+entries with the filename Info.plist.

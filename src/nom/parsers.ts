@@ -1,4 +1,4 @@
-import { Nom } from "../../types/nom/nom.d.ts";
+import { Nom } from "../../types/nom/nom.ts";
 import { NomError } from "./error.ts";
 
 /**

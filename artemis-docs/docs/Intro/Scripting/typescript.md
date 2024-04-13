@@ -8,7 +8,7 @@ description: Using TypeScript
 A TypeScrpt library is provided instead of JavaScript due to the enhanced
 features and ease of use TypeScrpt provides over plain JavaScript.
 
-Continuing from `get_registry(registry_file_path)` example:
+Continuing from `get_registry()` example:
 
 ```typescript
 export interface Registry {

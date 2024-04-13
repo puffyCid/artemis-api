@@ -1,4 +1,4 @@
-import { Cpus } from "../../types/system/systeminfo.d.ts";
+import { Cpus } from "../../types/system/systeminfo.ts";
 
 /**
  * Function to get system CPU information

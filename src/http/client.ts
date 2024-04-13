@@ -1,3 +1,4 @@
+import { ClientResponse } from "../../types/http/client.ts";
 import { HttpError } from "./errors.ts";
 
 export enum Protocol {
