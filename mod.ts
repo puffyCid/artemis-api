@@ -88,6 +88,9 @@ export {
   getChromiumHistory,
   getChromiumUsersDownloads,
   getChromiumUsersHistory,
+  getChromiumDips,
+  getChromiumLogins,
+  chromiumPreferences,
 } from "./src/applications/chromium.ts";
 export {
   getFirefoxCookies,

@@ -179,7 +179,7 @@ export interface ChromiumBookmarkChildren {
   name: string;
   type: string;
   url: string;
-  meta_info: Record<string, string>,
+  meta_info: Record<string, string>;
 }
 export interface ChromiumLogins {
   origin_url: string;
@@ -194,23 +194,52 @@ export interface ChromiumLogins {
   blacklisted_by_user: number;
   scheme: number;
   password_type?: number;
-  times_used?:number;
+  times_used?: number;
   form_data?: string;
-  display_name?:string;
+  display_name?: string;
   icon_url?: string;
-  federation_url?:string;
-  skip_zero_click?:number;
-  generation_upload_status?:number;
-  possible_username_pairs?:string;
+  federation_url?: string;
+  skip_zero_click?: number;
+  generation_upload_status?: number;
+  possible_username_pairs?: string;
   id: number;
   date_last_used: number;
-  moving_blocked_for?:string;
-  date_password_modified:number;
-  sender_email?:string;
-  sender_name?:string;
-  date_received?:number;
-  sharing_notification_display:number;
-  keychain_identifier?:string;
-  sender_profile_image_url?:string;
+  moving_blocked_for?: string;
+  date_password_modified: number;
+  sender_email?: string;
+  sender_name?: string;
+  date_received?: number;
+  sharing_notification_display: number;
+  keychain_identifier?: string;
+  sender_profile_image_url?: string;
   db_path: string;
+}
+
+/**
+ * Detect Incidental Party State (DIPS) collects metrics on websites
+ */
+export interface Dips {
+  site: string;
+  /**In UNIXEPOCH seconds */
+  first_site_storage?: number | null;
+  /**In UNIXEPOCH seconds */
+  last_site_storage?: number | null;
+  /**In UNIXEPOCH seconds */
+  first_user_interaction?: number | null;
+  /**In UNIXEPOCH seconds */
+  last_user_interaction?: number | null;
+  /**In UNIXEPOCH seconds */
+  first_stateful_bounce?: number | null;
+  /**In UNIXEPOCH seconds */
+  last_stateful_bounce?: number | null;
+  /**In UNIXEPOCH seconds */
+  first_bounce?: number | null;
+  /**In UNIXEPOCH seconds */
+  last_bounce?: number | null;
+  /**In UNIXEPOCH seconds */
+  first_web_authn_assertion: number | null;
+  /**In UNIXEPOCH seconds */
+  last_web_authn_assertion: number | null;
+  /**Path to DIPS database */
+  path: string;
 }

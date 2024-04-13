@@ -2,6 +2,7 @@ import {
   ChromiumAutofill,
   ChromiumBookmarkChildren,
   ChromiumLogins,
+  Dips,
 } from "../../types/applications/chromium.ts";
 import {
   ChromiumBookmarks,
@@ -668,4 +669,235 @@ function getLogins(
   }
 
   return logins_array;
+}
+
+/**
+ * Get Chromium Preferences
+ * @param platform Platform to parse Chromium Preferences
+ * @returns Array of Preferences or `ApplicationError`
+ */
+export function chromiumPreferences(
+  platform: PlatformType,
+): Record<string, unknown>[] | ApplicationError {
+  let paths: GlobInfo[] = [];
+  switch (platform) {
+    case PlatformType.Darwin: {
+      const mac_paths = glob(
+        "/Users/*/Library/Application Support/Chromium/*/Preferences",
+      );
+      if (mac_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob macos preferences paths: ${mac_paths}`,
+        );
+      }
+      paths = mac_paths;
+      break;
+    }
+    case PlatformType.Windows: {
+      let drive = getEnvValue("SystemDrive");
+      if (drive === "") {
+        drive = "C";
+      }
+      const win_paths = glob(
+        `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Preferences`,
+      );
+      if (win_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob windows preferences paths: ${win_paths}`,
+        );
+      }
+      paths = win_paths;
+      break;
+    }
+    case PlatformType.Linux:
+    default: {
+      return [];
+    }
+  }
+
+  const preferences = [];
+  for (const path of paths) {
+    const extension = readTextFile(path.full_path);
+    if (extension instanceof FileError) {
+      console.warn(`could not read file ${path}: ${extension}`);
+      continue;
+    }
+
+    const data = JSON.parse(extension);
+    data["preference_path"] = path.full_path;
+
+    preferences.push(data);
+  }
+
+  return preferences;
+}
+
+/**
+ * Function to parse Chromium DIPS information. Can provide an optional alternative path to DIPS database, otherwise will use default paths
+ * @param platform OS platform to query for Chromium DIPS information
+ * @param path Alternative path to Chromium DIPS file
+ * @returns Array of `Dips` or `ApplicationError`
+ */
+export function getChromiumDips(
+  platform: PlatformType,
+  path?: string,
+): Dips[] | ApplicationError {
+  let glob_paths: GlobInfo[] = [];
+  switch (platform) {
+    case PlatformType.Darwin: {
+      const mac_paths = glob(
+        "/Users/*/Library/Application Support/Chromium/*/DIPS",
+      );
+      if (mac_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob macos dips paths: ${mac_paths}`,
+        );
+      }
+      glob_paths = mac_paths;
+      break;
+    }
+    case PlatformType.Windows: {
+      let drive = getEnvValue("SystemDrive");
+      if (drive === "") {
+        drive = "C";
+      }
+      const win_paths = glob(
+        `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\DIPS`,
+      );
+      if (win_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob windows dips paths: ${win_paths}`,
+        );
+      }
+      glob_paths = win_paths;
+      break;
+    }
+    case PlatformType.Linux:
+    default: {
+      return [];
+    }
+  }
+
+  let paths = [];
+  if (path != undefined) {
+    paths = [path];
+  } else {
+    for (const glob_path of glob_paths) {
+      paths.push(glob_path.full_path);
+    }
+  }
+
+  const query = "select * from bounces";
+  let dips: Dips[] = [];
+  for (const path of paths) {
+    const results = querySqlite(path, query);
+    if (results instanceof ApplicationError) {
+      console.warn(`Could not query dips for ${path}: ${results}`);
+      continue;
+    }
+
+    dips = dips.concat(getDips(results, path));
+  }
+
+  return dips;
+}
+
+/**
+ * Function to extract DIPS information from database
+ * @param data Array of sqlite data from DIPS database
+ * @param path Path to the DIPS database file
+ * @returns Array of `Dips`
+ */
+function getDips(
+  data: Record<string, unknown>[],
+  path: string,
+): Dips[] {
+  const dips_array = [];
+  const adjust_time = 1000000n;
+  for (const entry of data) {
+    const dips_entry: Dips = {
+      site: entry["site"] as string,
+      path,
+      first_bounce: webkitToUnixEpoch(
+        typeof entry["first_bounce_time"] === "undefined" ||
+          entry["first_bounce_time"] === null
+          ? 0
+          : Number(BigInt(entry["first_bounce_time"] as bigint) / adjust_time),
+      ),
+      last_bounce: webkitToUnixEpoch(
+        typeof entry["last_bounce_time"] === "undefined" ||
+          entry["last_bounce_time"] === null
+          ? 0
+          : Number(BigInt(entry["last_bounce_time"] as bigint) / adjust_time),
+      ),
+      first_site_storage: webkitToUnixEpoch(
+        typeof entry["first_site_storage_time"] === "undefined" ||
+          entry["first_site_storage_time"] === null
+          ? 0
+          : Number(
+            BigInt(entry["first_site_storage_time"] as bigint) / adjust_time,
+          ),
+      ),
+      first_stateful_bounce: webkitToUnixEpoch(
+        typeof entry["first_stateful_bounce_time"] === "undefined" ||
+          entry["first_stateful_bounce_time"] === null
+          ? 0
+          : Number(
+            BigInt(entry["first_stateful_bounce_time"] as bigint) / adjust_time,
+          ),
+      ),
+      first_user_interaction: webkitToUnixEpoch(
+        typeof entry["first_user_interaction_time"] === "undefined" ||
+          entry["first_user_interaction_time"] === null
+          ? 0
+          : Number(
+            BigInt(entry["first_user_interaction_time"] as bigint) /
+              adjust_time,
+          ),
+      ),
+      first_web_authn_assertion: webkitToUnixEpoch(
+        entry["first_web_authn_assertion_time"] === null ? 0 : Number(
+          BigInt(entry["first_web_authn_assertion_time"] as bigint) /
+            adjust_time,
+        ),
+      ),
+      last_site_storage: webkitToUnixEpoch(
+        typeof entry["last_site_storage_time"] === "undefined" ||
+          entry["last_site_storage_time"] === null
+          ? 0
+          : Number(
+            BigInt(entry["last_site_storage_time"] as bigint) / adjust_time,
+          ),
+      ),
+      last_stateful_bounce: webkitToUnixEpoch(
+        typeof entry["last_stateful_bounce_time"] === "undefined" ||
+          entry["last_stateful_bounce_time"] === null
+          ? 0
+          : Number(
+            BigInt(entry["last_stateful_bounce_time"] as bigint) / adjust_time,
+          ),
+      ),
+      last_user_interaction: webkitToUnixEpoch(
+        typeof entry["last_user_interaction_time"] === "undefined" ||
+          entry["last_user_interaction_time"] === null
+          ? 0
+          : Number(
+            BigInt(entry["last_user_interaction_time"] as bigint) / adjust_time,
+          ),
+      ),
+      last_web_authn_assertion: webkitToUnixEpoch(
+        entry["last_web_authn_assertion_time"] === null ? 0 : Number(
+          BigInt(entry["last_web_authn_assertion_time"] as bigint) /
+            adjust_time,
+        ),
+      ),
+    };
+    dips_array.push(dips_entry);
+  }
+
+  return dips_array;
 }
