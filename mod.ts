@@ -65,7 +65,7 @@ export {
 /**
  * Cross platform exported functions
  */
-export { outputResults } from "./src/system/output.ts";
+export { dumpData, outputResults } from "./src/system/output.ts";
 export {
   getSysteminfo,
   hostname,

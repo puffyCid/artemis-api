@@ -29,10 +29,21 @@ Function to pull a process listing from the system
 | sha256 | boolean | Enable SHA256 hashing. Optional. Default is false       |
 | binary | boolean | Process process binary data. Optional. Default is false |
 
-### outputResults(data, data_name, output) -> boolean
+### outputResults(data, data_name, output) -> boolean | SystemError
 
-Function to pass data to artemis to save. Returns true on success and false on
-failure.
+Function to pass data to artemis to save. Returns true on success or
+SystemError.
+
+| Param     | Type   | Description                                             |
+| --------- | ------ | ------------------------------------------------------- |
+| data      | string | A JSON string of data                                   |
+| data_name | string | Name of the type of data. Ex: processes                 |
+| output    | Output | An Output object telling artemis how to output the data |
+
+### dumpData(data, data_name, output) -> boolean | SystemError
+
+Function to pass data to artemis to save and skip adding metadata to the output.
+Returns true on success or SystemError.
 
 | Param     | Type   | Description                                             |
 | --------- | ------ | ------------------------------------------------------- |
