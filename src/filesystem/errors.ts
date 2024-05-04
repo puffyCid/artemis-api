@@ -6,6 +6,7 @@ export type ErrorName =
   | "HASH"
   | "READ_TEXT_FILE"
   | "READ_FILE"
-  | "GLOB";
+  | "GLOB"
+  | "ACQUIRE";
 
 export class FileError extends ErrorBase<ErrorName> {}

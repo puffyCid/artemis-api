@@ -78,6 +78,7 @@ export {
 export { disks } from "./src/system/disks.ts";
 export { cpus } from "./src/system/cpu.ts";
 export { memory, processListing } from "./src/system/memory.ts";
+
 /**
  * Application exported functions
  */

@@ -32,44 +32,44 @@ filter = true
 # alt_file = "C:\\Artifacts\\Amcache.hve"
 ```
 
-- `system` Defines what OS this collection targets. This example targets
-  `windows` systems. This collection will only run with the Windows version of
-  artemis
+- `system` Defines what OS this collection targets. This example targets Windows
+  systems. This collection will only run with the Windows version of artemis
 - `[output]` Defines the output configuration
   - `name` The output name. This can be any string value
   - `directory` The directory where the output should be written. This example
-    outputs to a directory called `tmp` in the current working directory
-  - `format` The output format can be either `json` or `jsonl`
-  - `compress` Whether to compress the output with `gzip` compression. Once the
-    collection is complete the output directory will be compressed with `zip`
-    compression.
+    outputs to a directory called tmp in the current working directory
+  - `format` The output format can be either json or jsonl
+  - `compress` Whether to compress the output with **gzip** compression. Once
+    the collection is complete the output directory will be compressed with
+    **zip** compression.
   - `endpoint_id` An ID assigned to the endpoint. This can be any string value
   - `collection_id` A number assigned to the collection. This can be any postive
     number
-  - `output` The output type. Values can be: `local`, `aws`, `gcp`, or `azure`
-  - `url` The URL associated with either `aws`, `gcp`, or `azure`. This is
+  - `output` The output type. Values can be: **local**, **aws**, **gcp**, or
+    **azure**
+  - `url` The URL associated with either aws, gcp, or azure. This is required
+    only if using **remote upload** output
+  - `api_key` The API key associated with either aws, gcp, or azure. This is
     required only if using **remote upload** output
-  - `api_key` The API key associated with either `aws`, `gcp`, or `azure`. This
-    is required only if using **remote upload** output
-  - `filter_name` The name of the provided `filter_script`. This is **optional**
-    but if you are using a `filter_script` you should provide a name. Otherwise
-    the default name `UnknownFilterName` is used
+  - `filter_name` The name of the provided filter_script. This is **optional**
+    but if you are using a filter_script you should provide a name. Otherwise
+    the default name **UnknownFilterName** is used
   - `filter_script` An advanced **optional** output option. Artemis will pass
-    the results of each `[[artifacts]]` entry into a script. See
+    the results of each **[[artifacts]]** entry into a script. See
     [scripting](../Scripting/deno.md) section for detailed overview of this
     option.
   - `logging` Set the logging level for artemis. This is **optional** by default
-    artemis will log errors and warnings. Valid options are:
-    `warn, error, debug, or info`
+    artemis will log errors and warnings. Valid options are: **warn**,
+    **error**, **debug**, or **info**
 - `[[artifacts]]` A list of artifacts to collect
   - `artifact_name` Name of aritfact
-  - `filter` Whether to filter the artifact data through the `filter_script`.
-    This is **optional** by default nothing is filtered
+  - `filter` Whether to filter the artifact data through the filter_script. This
+    is **optional** by default nothing is filtered
   - `[aritfacts.amcache]` Artifact configuration parameters
-    - `alt_file` Use an alternative `amcache` file when collecting data. This
+    - `alt_file` Use an alternative amcache file when collecting data. This
       configuration is **optional**
 
-The example above collects one artifact (`Amcache`) on a Windows system and
+The example above collects one artifact (Amcache) on a Windows system and
 outputs the results the local system at the path ./tmp/amcache_collection
 
 If we wanted to collect more than one artifact we could use a collection like

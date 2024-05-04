@@ -88,14 +88,20 @@ Return a list of files opened by LibreOffice for all users.
 | -------- | ------------ | -------------------- |
 | platform | PlatformType | OS platform to parse |
 
-### fileHistory(platform) -> FileHistory[] | ApplicationError
+### fileHistory(platform, alt_glob) -> FileHistory[] | ApplicationError
 
 Parse the local file history for VSCode. Returns list of history entries. Also
 supports VSCodium.
 
-| Param    | Type         | Description          |
-| -------- | ------------ | -------------------- |
-| platform | PlatformType | OS platform to parse |
+You may also provide an optional alternative glob path to the entries.json file.
+By default artemis will parse the default locations for VSCode.
+
+An altnerative glob will override the platform type.
+
+| Param    | Type         | Description                                    |
+| -------- | ------------ | ---------------------------------------------- |
+| platform | PlatformType | OS platform to parse                           |
+| alt_glob | string       | optional alternative glob path to entries.json |
 
 ### getExtensions(platform, path) -> Extensions[] | ApplicationError
 
@@ -185,7 +191,8 @@ Get Chromium Preferences
 
 ### getChromiumDips(platform, path) -> Dips[] | ApplicationError
 
-Get Detect Incidental Party State (DIPS) info. DIPS collects metrics related to websites
+Get Detect Incidental Party State (DIPS) info. DIPS collects metrics related to
+websites
 
 All Chromium derived browsers should be supported.
 

@@ -42,10 +42,10 @@ export enum OutputType {
 }
 
 /**
- * Function to pass data to `artemis` to save
+ * Function to pass data to artemis to save
  * @param data JSON string of data
  * @param data_name Name of the type of data. Ex: `processes`
- * @param output Output structure to pass to `artemis`
+ * @param output `Output` structure to pass to artemis
  * @returns True on success or `SystemError`
  */
 export function outputResults(

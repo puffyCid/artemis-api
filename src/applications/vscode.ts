@@ -10,10 +10,12 @@ import { ApplicationError } from "./errors.ts";
 /**
  * Return the local file history for all VSCode files. Also supports VSCodium.
  * @param platform OS Platform type to lookup
+ * @param alt_glob Alternative glob path to `entries.json`
  * @returns Array of `FileHistory` entries or `ApplicationError`
  */
 export function fileHistory(
   platform: PlatformType,
+  alt_glob?: string,
 ): FileHistory[] | ApplicationError {
   // Get all user paths
   let path = "";
@@ -35,6 +37,10 @@ export function fileHistory(
     case PlatformType.Linux: {
       path = "/home/*/.config/*Cod*/User/History/*/entries.json";
     }
+  }
+
+  if (alt_glob != undefined) {
+    path = alt_glob;
   }
 
   const paths = glob(path);

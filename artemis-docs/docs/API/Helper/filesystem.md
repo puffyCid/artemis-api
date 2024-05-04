@@ -59,3 +59,13 @@ Read a provided directory and get list of files. This function is async!
 | Param | Type   | Description       |
 | ----- | ------ | ----------------- |
 | path  | string | Directory to read |
+
+### acquireFile(path, output) -> boolean | FileError
+
+Acquire a local file using OS APIs. Supports copying the file to local location
+or uploading to cloud.
+
+| Param  | Type   | Description       |
+| ------ | ------ | ----------------- |
+| path   | string | Directory to read |
+| output | Output | Output object     |
