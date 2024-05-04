@@ -145,24 +145,7 @@ Parse Safari history from provided Downloads.plist file.
 | ----- | ------ | ---------------------------- |
 | path  | string | Path to Downloads.plist file |
 
-### setupUnifiedLogParser(path) -> Uint8Array | MacosError
-
-Collect and setup the required data needed to parse the macOS Unified Log from
-the runtime.\
-This function must be called before a user can start parsing the Unified
-Logfiles using the JS API.
-
-You may provide an alternative path to the directory containing the Unified Log
-files. This directory must be formatted like a logarchive collection.
-
-If a path is not provided, then artemis will parse the default log locations on
-macOS
-
-| Param | Type   | Description                                                                                                  |
-| ----- | ------ | ------------------------------------------------------------------------------------------------------------ |
-| path  | string | Optional path to an Unified Log directory. This directory **must** be formatted like a logarchive collection |
-
-### getUnifiedLog(path, meta) -> UnifiedLog[] | MacosError
+### getUnifiedLog(path, archive_path) -> UnifiedLog[] | MacosError
 
 Parse a single UnifiedLog file (.tracev3) on macOS. Typically found at:
 
@@ -171,12 +154,13 @@ Parse a single UnifiedLog file (.tracev3) on macOS. Typically found at:
 - /private/var/db/diagnostics/HighVolume
 - /private/var/db/diagnostics/Special
 
-You must call `setupUnifiedLogParser` prior to parsing the .tracev3 files.
+You may also specify an optional logarchive style directory instead of parsing
+the default locations.
 
-| Param | Type       | Description                                                                   |
-| ----- | ---------- | ----------------------------------------------------------------------------- |
-| path  | string     | Path to .tracev3 file                                                         |
-| meta  | Uint8Array | Raw bytes associated with UnifiedLog. Obtained from `setupUnifiedLogParser()` |
+| Param        | Type   | Description                          |
+| ------------ | ------ | ------------------------------------ |
+| path         | string | Path to .tracev3 file                |
+| archive_path | string | Path to a logarchive style directory |
 
 ### parseRequirementBlob(data) -> SingleRequirement | MacosError
 

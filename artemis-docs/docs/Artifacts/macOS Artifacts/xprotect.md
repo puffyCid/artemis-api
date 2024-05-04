@@ -45,7 +45,7 @@ export interface XprotectEntries {
 }
 
 export interface MatchData {
-  /**Hex encoded values. These are maybe compiled? Yara Rules */
+  /**Hex encoded values */
   pattern: string;
   filetype: string;
   sha1: string;
