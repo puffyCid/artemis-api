@@ -9,7 +9,7 @@ export interface TimesketchAuth {
     /**Password for username if using `TimesketchAuthType.CREDS` */
     password: string;
     /**If using self-signed cert you may want to disable SSL verification */
-    verify_url: boolean;
+    verify_ssl: boolean;
     /**Auth to Timesketch. Currently on creds are supported */
     auth_type: TimesketchAuthType;
     /**ID associated with the Sketch that artemis should upload data to. If **undefined** a new Sketch will be created */

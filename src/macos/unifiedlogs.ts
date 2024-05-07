@@ -4,7 +4,7 @@ import { MacosError } from "./errors.ts";
 /**
  * Function to parse a `Unified log` on a macOS system
  * @param path Full path to a Unified log file
- * @param archive_path Optional path to a logarchive style directory
+ * @param archive_path Optional path to a logarchive style directory containing the Unified Log metadata
  * @returns Array of `Unified log` entries or `MacosError`
  */
 export function getUnifiedLog(

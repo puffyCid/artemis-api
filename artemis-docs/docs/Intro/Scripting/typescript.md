@@ -73,11 +73,13 @@ export function get_registry(path: string): Registry[] {
 The above TypeScrpt code shows that we can access our registered `get_registry`
 function by calling it via `Deno.core.ops.get_registry(path);`
 
-To make scripting even easier a simple `artemis-api` library is available to
+To make scripting even easier a simple **artemis-api** library is available to
 import into Deno scripts. This allows users to create scripts without needing to
-know what functions are registered.
+know what functions are registered. There are two ways to use the **artemis-api**:
+- Import from GitHub remotely: https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts
+- Clone the API (https://github.com/puffyCid/artemis-api) and import locally
 
-The example script below shows TypeScrpt code that imports the `artemis-api`
+The example script below shows TypeScrpt code that imports the **artemis-api**
 library to parse the SOFTWARE `Registry` file to get a list of installed
 programs
 

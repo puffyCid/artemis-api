@@ -17,21 +17,18 @@ export class Timesketch {
   private cookie: string;
   private timeline_name;
   private opensearch_index: string;
-  private verify_ssl: boolean;
 
   /**
    * @param auth `TimesketchAuth` object used to authenticate to Timesketch
    * @param name The name that should used for the timeline. If none is provided the artifact name will be used. It is **recommended** to provide a name (ex: the hostname)
    * @param index The OpenSearch index that should be used when uploading data. If none is provided a new index will be created
-   * @param verify_ssl Boolean value to determine if artemis should verify SSL certs. Set to false if you use self-signed certs
    */
-  constructor(auth: TimesketchAuth, name = "", index = "", verify_ssl = true) {
+  constructor(auth: TimesketchAuth, name = "", index = "") {
     this.timesketch_auth = auth;
     this.token = "";
     this.cookie = "";
     this.timeline_name = name;
     this.opensearch_index = index;
-    this.verify_ssl = verify_ssl;
   }
 
   /**
@@ -49,7 +46,20 @@ export class Timesketch {
       return timeline_data;
     }
 
-    if (timeline_data.length === 0) {
+    await this.upload(timeline_data, artifact);
+  }
+
+  /**
+   * Function to upload timelined data
+   * @param data Array of `TimesketchTimeline`
+   * @param artifact Name of artifact that was timelined
+   * @returns A `TimesketchError` if the data cannot be timeline or if it failed to upload to Timesketch
+   */
+  public async upload(
+    data: TimesketchTimeline[],
+    artifact: string,
+  ): Promise<void | TimesketchError> {
+    if (data.length === 0) {
       return new TimesketchError(`ARTIFACT`, `zero values for ${artifact}`);
     }
 
@@ -71,18 +81,18 @@ export class Timesketch {
       return id_status;
     }
 
-    return await this.uploadTimeline(timeline_data, artifact);
+    return await this.uploadTimeline(data, artifact);
   }
 
   /**
    * Function to upload timeline data to Timesketch
    * @param data Array of `TimesketchTimeline`
-   * @param artifact `TimesketchArtifact` enum
+   * @param artifact artifact that was timelined
    * @returns A `TimesketchError` if data cannot be uploaded.
    */
   private async uploadTimeline(
     data: TimesketchTimeline[],
-    artifact: TimesketchArtifact,
+    artifact: string,
   ): Promise<void | TimesketchError> {
     if (this.timeline_name === "") {
       this.timeline_name = artifact;
@@ -104,7 +114,7 @@ export class Timesketch {
       protocol: Protocol.POST,
       headers,
       body_type: BodyType.FORM,
-      verify_ssl: this.verify_ssl,
+      verify_ssl: this.timesketch_auth.verify_ssl,
     };
 
     const chunk_size = 10000;
@@ -163,7 +173,7 @@ export class Timesketch {
    * @returns A `TimesketchError` if a sketch cannot be created
    */
   private async createSketch(
-    artifact: TimesketchArtifact,
+    artifact: string,
   ): Promise<void | TimesketchError> {
     if (this.timesketch_auth.sketch_name === undefined) {
       this.timesketch_auth.sketch_name = artifact;
@@ -221,7 +231,7 @@ export class Timesketch {
         `${this.timesketch_auth.url}/api/v1/sketches/${this.timesketch_auth.sketch_id}/`,
       protocol: Protocol.GET,
       headers,
-      verify_ssl: this.verify_ssl,
+      verify_ssl: this.timesketch_auth.verify_ssl,
     };
 
     const response = await request(client);
@@ -260,7 +270,7 @@ export class Timesketch {
     const client: ClientRequest = {
       url: `${this.timesketch_auth.url}/login/`,
       protocol: Protocol.GET,
-      verify_ssl: this.verify_ssl,
+      verify_ssl: this.timesketch_auth.verify_ssl,
     };
     const response = await request(client);
     if (response instanceof HttpError) {
