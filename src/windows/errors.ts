@@ -30,7 +30,6 @@ export type ErrorName =
   | "SHELLITEMS"
   | "MRU"
   | "UAL"
-  | "WMIPERSIST"
-  | "DEFENDER";
+  | "WMIPERSIST";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

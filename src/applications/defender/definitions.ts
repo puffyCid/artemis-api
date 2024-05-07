@@ -22,7 +22,6 @@ import { nomUnsignedFourBytes } from "../../nom/helpers.ts";
 import { Endian, nomUnsignedTwoBytes } from "../../nom/helpers.ts";
 import { nomUnsignedOneBytes } from "../../nom/mod.ts";
 import { take, takeUntil } from "../../nom/parsers.ts";
-import { WindowsError } from "../errors.ts";
 import {
   Definition,
   DefinitionRule,
@@ -30,21 +29,25 @@ import {
 } from "../../../types/windows/defender/definitions.ts";
 import { extractStrings } from "./sigs/hstr.ts";
 import { encode } from "../../encoding/base64.ts";
+import { ApplicationError } from "../errors.ts";
+import { PlatformType } from "../../../mod.ts";
 
 /**
  * Function to extract Windows Definitions. (Will take a long time if you want to extract all)
- * @param alt_file Optional path to VDM file
+ * @param platform OS `PlatformType` to parse. Only macOS (Darwin) or Windows supported
+ * @param alt_file Optional path to VDM file. Will override the `PlatformType`
  * @param limit How many Signatures to extract. Default is 30. 0 will return all
- * @returns Array of `Definition` objects or `WindowsError`
+ * @returns Array of `Definition` objects or `ApplicationError`
  */
 export function extractDefenderRules(
+  platform: PlatformType,
   alt_file?: string,
   limit = 30,
-): Definition[] | WindowsError {
+): Definition[] | ApplicationError {
   let paths = [];
   if (alt_file != undefined) {
     paths = [alt_file];
-  } else {
+  } else if (platform === PlatformType.Windows) {
     let drive = getEnvValue("SystemDrive");
     if (drive === "") {
       drive = "C";
@@ -54,7 +57,21 @@ export function extractDefenderRules(
       `${drive}:\\ProgramData\\Microsoft\\Windows Defender\\Definition Updates\\{*\\*.vdm`;
     const glob_paths = glob(vdm_glob);
     if (glob_paths instanceof FileError) {
-      return new WindowsError(
+      return new ApplicationError(
+        `DEFENDER`,
+        `could not glob path ${vdm_glob}: ${glob_paths}`,
+      );
+    }
+
+    for (const entry of glob_paths) {
+      paths.push(entry.full_path);
+    }
+  } else if (platform === PlatformType.Darwin) {
+    const vdm_glob =
+      "/Library/Application Support/Microsoft/Defender/definitions.noindex/*/*.vdm";
+    const glob_paths = glob(vdm_glob);
+    if (glob_paths instanceof FileError) {
+      return new ApplicationError(
         `DEFENDER`,
         `could not glob path ${vdm_glob}: ${glob_paths}`,
       );
@@ -68,7 +85,7 @@ export function extractDefenderRules(
   let rules: Definition[] = [];
   for (const entry of paths) {
     let rules_data = readVdm(entry);
-    if (rules_data instanceof WindowsError) {
+    if (rules_data instanceof ApplicationError) {
       console.error(rules_data);
       continue;
     }
@@ -80,7 +97,7 @@ export function extractDefenderRules(
         break;
       }
       const results = extractRules(rules_data);
-      if (results instanceof WindowsError) {
+      if (results instanceof ApplicationError) {
         console.error(
           `could not extract all rules from path ${entry}: ${results}`,
         );
@@ -114,10 +131,10 @@ export function extractDefenderRules(
  * @param path Path to a VDM file
  * @returns Decompressed VDM rules data
  */
-function readVdm(path: string): Uint8Array | WindowsError {
+function readVdm(path: string): Uint8Array | ApplicationError {
   const bytes = readFile(path);
   if (bytes instanceof FileError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `could not read file ${path}: ${bytes}`,
     );
@@ -127,7 +144,7 @@ function readVdm(path: string): Uint8Array | WindowsError {
   const sig = new Uint8Array([82, 77, 68, 88]);
   const sig_start = takeUntil(bytes, sig);
   if (sig_start instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `could not find sig for ${path}: ${sig_start}`,
     );
@@ -135,7 +152,7 @@ function readVdm(path: string): Uint8Array | WindowsError {
 
   const min_size = 32;
   if (sig_start.remaining.length < min_size) {
-    return new WindowsError(`DEFENDER`, `defender data too small`);
+    return new ApplicationError(`DEFENDER`, `defender data too small`);
   }
 
   const byte_size = 4;
@@ -159,14 +176,14 @@ function readVdm(path: string): Uint8Array | WindowsError {
   const wbits = 15;
   const decom_data = decompress_zlib(new Uint8Array(compressed_data), wbits);
   if (decom_data instanceof CompressionError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `could decompress ${path}: ${decom_data}`,
     );
   }
 
   if (decom_data.byteLength != decom_size) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `incorrect decompressed size, expected ${decom_size} got: ${decom_data.byteLength}`,
     );
@@ -186,9 +203,9 @@ interface RulesAndNextOffset {
  * @param data Bytes associated with the Defender Signature
  * @returns `RulesAndNextOffset` object which contains rules and offset to next rule
  */
-function extractRules(data: Uint8Array): RulesAndNextOffset | WindowsError {
+function extractRules(data: Uint8Array): RulesAndNextOffset | ApplicationError {
   const threat_start = getStart(data);
-  if (threat_start instanceof WindowsError) {
+  if (threat_start instanceof ApplicationError) {
     return threat_start;
   }
   let rule_type = RuleType.SIGNATURE_TYPE_THREAT_BEGIN;
@@ -202,7 +219,7 @@ function extractRules(data: Uint8Array): RulesAndNextOffset | WindowsError {
   ) {
     const sig_buffer = new Uint8Array(data.buffer.slice(offset));
     const meta = getSigMeta(sig_buffer);
-    if (meta instanceof WindowsError) {
+    if (meta instanceof ApplicationError) {
       return meta;
     }
 
@@ -215,7 +232,7 @@ function extractRules(data: Uint8Array): RulesAndNextOffset | WindowsError {
     };
 
     const rules = getSigValues(meta.bytes, meta.sig);
-    if (rules instanceof WindowsError) {
+    if (rules instanceof ApplicationError) {
       if (definition.type != RuleType.SIGNATURE_TYPE_THREAT_END) {
         definition.signatures.push(encode(meta.bytes));
         definition_rules.push(definition);
@@ -251,13 +268,13 @@ interface ThreatStart {
 /**
  * Function to extract `SIGNATURE_TYPE_THREAT_BEGIN` data
  * @param data Bytes associated with the `SIGNATURE_TYPE_THREAT_BEGIN` signature
- * @returns `ThreatStart` object or `WindowsError`
+ * @returns `ThreatStart` object or `ApplicationError`
  */
-function getStart(data: Uint8Array): ThreatStart | WindowsError {
+function getStart(data: Uint8Array): ThreatStart | ApplicationError {
   const threat_start = RuleType.SIGNATURE_TYPE_THREAT_BEGIN;
   const start_sig = getSigMeta(data);
-  if (start_sig instanceof WindowsError || start_sig.sig != threat_start) {
-    return new WindowsError(
+  if (start_sig instanceof ApplicationError || start_sig.sig != threat_start) {
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start sig: ${start_sig}`,
     );
@@ -266,12 +283,12 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
   const start_bytes = new Uint8Array(data.buffer.slice(4, start_sig.size + 1));
   const id = nomUnsignedFourBytes(start_bytes, Endian.Le);
   if (id instanceof NomError) {
-    return new WindowsError(`DEFENDER`, `failed to get start id: ${id}`);
+    return new ApplicationError(`DEFENDER`, `failed to get start id: ${id}`);
   }
 
   const unknown = nomUnsignedTwoBytes(id.remaining, Endian.Le);
   if (unknown instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start unknown: ${unknown}`,
     );
@@ -279,7 +296,7 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
 
   const counter = nomUnsignedTwoBytes(unknown.remaining, Endian.Le);
   if (counter instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start counter: ${counter}`,
     );
@@ -287,7 +304,7 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
 
   const category = nomUnsignedTwoBytes(counter.remaining, Endian.Le);
   if (category instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start category: ${category}`,
     );
@@ -295,7 +312,7 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
 
   const name_size = nomUnsignedTwoBytes(category.remaining, Endian.Le);
   if (name_size instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start name size: ${name_size}`,
     );
@@ -303,12 +320,12 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
 
   const name = take(name_size.remaining, name_size.value);
   if (name instanceof NomError) {
-    return new WindowsError(`DEFENDER`, `failed to get name: ${name_size}`);
+    return new ApplicationError(`DEFENDER`, `failed to get name: ${name_size}`);
   }
 
   const unknown2 = nomUnsignedTwoBytes(name.remaining as Uint8Array, Endian.Le);
   if (unknown2 instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start unknown2: ${unknown}`,
     );
@@ -316,7 +333,7 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
 
   const resources = take(unknown2.remaining, counter.value * 2);
   if (resources instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start resources: ${unknown}`,
     );
@@ -327,7 +344,7 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
     Endian.Le,
   );
   if (severity instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start severity: ${unknown}`,
     );
@@ -338,7 +355,7 @@ function getStart(data: Uint8Array): ThreatStart | WindowsError {
     Endian.Le,
   );
   if (action instanceof NomError) {
-    return new WindowsError(
+    return new ApplicationError(
       `DEFENDER`,
       `failed to get start action: ${unknown}`,
     );
@@ -371,11 +388,11 @@ interface SigMeta {
 /**
  * Function to extract Signature metadata
  * @param data Bytes associated with Defender Signature
- * @returns `SigMeta` object or `WindowsError`
+ * @returns `SigMeta` object or `ApplicationError`
  */
-function getSigMeta(data: Uint8Array): SigMeta | WindowsError {
+function getSigMeta(data: Uint8Array): SigMeta | ApplicationError {
   if (data.at(0) === undefined) {
-    return new WindowsError(`DEFENDER`, `bad sig`);
+    return new ApplicationError(`DEFENDER`, `bad sig`);
   }
 
   const size_low = data.buffer.slice(1, 3);
@@ -571,12 +588,12 @@ function signatureType(sig: number): RuleType {
  * Function to get Signature values
  * @param data Bytes associated with Defender Signature
  * @param rule `RuleType` enum to determine how to extract Signature data
- * @returns Array of strings or `WindowsError`
+ * @returns Array of strings or `ApplicationError`
  */
 function getSigValues(
   data: Uint8Array,
   rule: RuleType,
-): string[] | WindowsError {
+): string[] | ApplicationError {
   switch (rule) {
     case RuleType.SIGNATURE_TYPE_PEHSTR:
     case RuleType.SIGNATURE_TYPE_PEHSTR_EXT:
@@ -737,5 +754,5 @@ function getSigValues(
     case RuleType.SIGNATURE_TYPE_UNKNOWN:
   }
 
-  return new WindowsError(`DEFENDER`, `unknown RuleType ${rule}`);
+  return new ApplicationError(`DEFENDER`, `unknown RuleType ${rule}`);
 }

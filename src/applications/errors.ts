@@ -5,6 +5,7 @@ export type ErrorName =
   | "VSCODE"
   | "CHROMIUM"
   | "FIREFOX"
-  | "SQLITE";
+  | "SQLITE"
+  | "DEFENDER";
 
 export class ApplicationError extends ErrorBase<ErrorName> {}

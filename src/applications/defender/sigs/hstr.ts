@@ -1,12 +1,12 @@
 import { extractUtf16String } from "../../../encoding/strings.ts";
-import { WindowsError } from "../../errors.ts";
+import { ApplicationError } from "../../errors.ts";
 
 /**
  * Function to extracts strings associated with Defender signatures
  * @param data Bytes associated with *HSTR* Sig types
  * @returns Array of strings
  */
-export function extractStrings(data: Uint8Array): string[] | WindowsError {
+export function extractStrings(data: Uint8Array): string[] | ApplicationError {
   const count_size = 2;
   const _count1 = data.buffer.slice(0, count_size + 1);
   const _count2 = data.buffer.slice(count_size, count_size * 2 + 1);
