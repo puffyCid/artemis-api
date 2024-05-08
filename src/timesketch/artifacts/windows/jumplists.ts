@@ -35,7 +35,6 @@ export function timelineJumplists(
     delete entry["created"];
     delete entry["accessed"];
 
-    // Same issue as Disabled key. Workaround for https://github.com/google/timesketch/issues/3087
     entry["properties"] = JSON.stringify(item.lnk_info.properties);
 
     entry["modified"] = unixEpochToISO(item.jumplist_metadata.modified);
