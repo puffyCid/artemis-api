@@ -18,7 +18,7 @@ export interface TimesketchTimeline {
    */
   data_type: string;
   /**Include any other valid JSON data */
-  [ key: string ]: unknown;
+  [key: string]: unknown;
 }
 
 export enum TimesketchArtifact {

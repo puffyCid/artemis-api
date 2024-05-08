@@ -8,7 +8,8 @@ These functions can be used to pull data related to Linux artifacts
 
 ### getLogon(path) -> Logon[] | LinuxError
 
-Parse a single logon related file. The path needs to end with one of the following:
+Parse a single logon related file. The path needs to end with one of the
+following:
 
 1. wtmp
 2. btmp
@@ -39,7 +40,8 @@ You may want to consider using a
 [filter script](../../Intro/Scripting/filterscripts.md) if you are concerned
 about memory usage.
 
-By default Journal file max size is 128 MB (compressed!). Once uncompressed you could see memory usage around ~2-4GBs
+By default Journal file max size is 128 MB (compressed!). Once uncompressed you
+could see memory usage around ~2-4GBs
 
 :::
 

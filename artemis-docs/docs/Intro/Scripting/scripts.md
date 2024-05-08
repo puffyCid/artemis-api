@@ -44,10 +44,10 @@ import { Registry } from "https://raw.githubusercontent.com/puffycid/artemis-api
 ```
 
 A list of all exported artemis functions can be found at
-https://github.com/puffyCid/artemis-api. All artifacts supported by artemis
-are callable from TypeScrpt. The structured output produced by each artifact is
-listed in the respective artifact chapter. For example, the structured
-Registry data format return `getRegistry` is found in the
+https://github.com/puffyCid/artemis-api. All artifacts supported by artemis are
+callable from TypeScrpt. The structured output produced by each artifact is
+listed in the respective artifact chapter. For example, the structured Registry
+data format return `getRegistry` is found in the
 [Registry chapter](../../Artifacts/Windows%20Artfacts/registry.md)
 
 Once we have created and bundled our script. We just need to base64 encode

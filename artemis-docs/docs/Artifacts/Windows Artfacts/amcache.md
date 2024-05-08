@@ -14,8 +14,8 @@ application info. However, the Amcache artifact will only collect data related
 to the possible execution of Windows applications.
 
 <sup>*</sup> While an entry in Amcache often implies the application was
-executed, Windows may pre-populate Amcache with entries based on a user
-browsing to a directory that contains an application.
+executed, Windows may pre-populate Amcache with entries based on a user browsing
+to a directory that contains an application.
 
 You can use the [Registry](./registry.md) artifact to parse the Amcache file if
 you want to view other metadata such as OS, hardware, more.

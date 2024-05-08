@@ -474,13 +474,17 @@ The directory must contain:
 
 ### extractDefenderRules(alt_file, limit) -> DefinitionRule[] | WindowsError
 
-An experimental function to attempt to extract Windows Defender Signatures. 
-Defender can contain thousands/millions? of signatures so this function can potentially run for a long time.
+An experimental function to attempt to extract Windows Defender Signatures.
+Defender can contain thousands/millions? of signatures so this function can
+potentially run for a long time.
 
-By default it will only extract 30 signatures. You can extract all signatures by setting the limit to 0. 
+By default it will only extract 30 signatures. You can extract all signatures by
+setting the limit to 0.
 
 By default it will attempt to extract all Defender signatures at:
-- %SYSTEMDRIVE%\\ProgramData\\Microsoft\\Windows Defender\\Definition Updates\\\{\*\\\*.vdm
+
+- %SYSTEMDRIVE%\\ProgramData\\Microsoft\\Windows Defender\\Definition
+  Updates\\\{\*\\\*.vdm
 
 You may also provide an optional alternative path to the vmd file
 

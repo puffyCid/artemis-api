@@ -27,9 +27,9 @@ account permissions. If you create an account for artemis and an unauthorized
 user obtains the credentials for the account they will be able upload, delete,
 etc any data uploaded by artemis.
 
-If you do not want to expose Timesketch credentials, you can [timeline](./timelines.md) the data
-to a local directory, network share, or external drive. Then upload the data
-using an alternative tool.
+If you do not want to expose Timesketch credentials, you can
+[timeline](./timelines.md) the data to a local directory, network share, or
+external drive. Then upload the data using an alternative tool.
 
 :::
 
@@ -109,11 +109,11 @@ const status = await client.timelineAndUpload(
 
 ![A pretty timeline](../../../static/img/timesketch.png)
 
-
 :::info
 
-Artemis can only execute JavaScript code.
-You will need to create a [build.ts script](../../Intro/Scripting/bundling.md#esbuild) before you can run this example.
+Artemis can only execute JavaScript code. You will need to create a
+[build.ts script](../../Intro/Scripting/bundling.md#esbuild) before you can run
+this example.
 
 :::
 

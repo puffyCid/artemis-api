@@ -75,8 +75,11 @@ function by calling it via `Deno.core.ops.get_registry(path);`
 
 To make scripting even easier a simple **artemis-api** library is available to
 import into Deno scripts. This allows users to create scripts without needing to
-know what functions are registered. There are two ways to use the **artemis-api**:
-- Import from GitHub remotely: https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts
+know what functions are registered. There are two ways to use the
+**artemis-api**:
+
+- Import from GitHub remotely:
+  https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts
 - Clone the API (https://github.com/puffyCid/artemis-api) and import locally
 
 The example script below shows TypeScrpt code that imports the **artemis-api**

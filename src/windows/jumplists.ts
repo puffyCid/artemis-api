@@ -22,11 +22,11 @@ export function getJumplists(): Jumplists[] | WindowsError {
  * @param path Path to a single `Jumplist` file
  * @returns `Jumplists` data or `WindowsError`
  */
-export function getJumplistPath(path: string): Jumplists | WindowsError {
+export function getJumplistPath(path: string): Jumplists[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
     const data: string = Deno.core.ops.get_jumplist_file(path);
-    const jump: Jumplists = JSON.parse(data);
+    const jump: Jumplists[] = JSON.parse(data);
 
     return jump;
   } catch (err) {

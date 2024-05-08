@@ -18,8 +18,8 @@ or error.
 
 ### Timesketch Class
 
-A _very_ basic class to help authenticate and upload timelines to Timesketch. Currently only
-credential authentication is supported
+A _very_ basic class to help authenticate and upload timelines to Timesketch.
+Currently only credential authentication is supported
 
 :::warning
 
@@ -50,8 +50,8 @@ successful or an error.
 
 #### upload(data, artifact): Promise&lt;void | TimesketchError&gt;
 
-Async function to upload data to Timesketch. Returns nothing if
-successful or an error.
+Async function to upload data to Timesketch. Returns nothing if successful or an
+error.
 
 | Param    | Type                 | Description             |
 | -------- | -------------------- | ----------------------- |

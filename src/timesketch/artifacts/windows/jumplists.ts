@@ -14,14 +14,31 @@ export function timelineJumplists(
   const entries = [];
 
   for (const item of data) {
-    const entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item?.jumplist_metadata.modified),
+    let entry: TimesketchTimeline = {
+      datetime: unixEpochToISO(item.jumplist_metadata.modified),
       timestamp_desc: "Jumplist Modified",
       message: item.lnk_info.path,
       artifact: "Jumplist",
       data_type: "windows:jumplist:entry",
-      _raw: JSON.stringify(item),
     };
+
+    entry["path"] = item.path;
+    entry["app_id"] = item.app_id;
+    entry["jumplist_type"] = item.jumplist_type;
+    entry = { ...entry, ...item.jumplist_metadata };
+
+    entry = { ...entry, ...item.lnk_info };
+    entry["target_modified"] = unixEpochToISO(item.lnk_info.modified);
+    entry["target_created"] = unixEpochToISO(item.lnk_info.created);
+    entry["target_accessed"] = unixEpochToISO(item.lnk_info.accessed);
+
+    delete entry["created"];
+    delete entry["accessed"];
+
+    // Same issue as Disabled key. Workaround for https://github.com/google/timesketch/issues/3087
+    entry["properties"] = JSON.stringify(item.lnk_info.properties);
+
+    entry["modified"] = unixEpochToISO(item.jumplist_metadata.modified);
 
     if (entry.message === "" && item.jumplist_metadata.path === "") {
       let message = "";
@@ -33,6 +50,8 @@ export function timelineJumplists(
       entry.message = item.jumplist_metadata.path;
     }
 
+    entries.push(Object.assign({}, entry));
+
     // Extract each unique timestamp to their own entry
     const time_entries = extractShortcutTimes(item.lnk_info);
     for (const time_entry of time_entries) {
@@ -42,5 +61,6 @@ export function timelineJumplists(
     }
   }
 
+  console.log(entries[0]);
   return entries;
 }

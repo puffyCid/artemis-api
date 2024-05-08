@@ -33,10 +33,11 @@ archive and you should be able to start collecting forensic data!
 
 You may also build artemis from [source](https://github.com/puffycid/artemis).
 In order build artemis you will need to install the Rust programming langague.
-In addition, you will need to install cmake in order to compile the zlib dependency
+In addition, you will need to install cmake in order to compile the zlib
+dependency
 
 - Instructions to install Rust can be found on the
-[Rust Homepage](https://www.rust-lang.org/).
+  [Rust Homepage](https://www.rust-lang.org/).
 - Cmake can be install via Homebrew, Chocolatey, or Linux package manager
 
 Once Rust and cmake are installed you can download the source code for artemis

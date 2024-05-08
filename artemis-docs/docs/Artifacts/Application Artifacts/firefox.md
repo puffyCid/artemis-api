@@ -12,12 +12,12 @@ Artemis supports parsing the following artifacts from Firefox.
 
 - History
 - Downloads
-- Cookies 
+- Cookies
 - Addons
 
 You have to use the artemis [api](../../API/overview.md) in order to collect:
 
-- Cookies 
+- Cookies
 - Addons
 
 Other parsers:

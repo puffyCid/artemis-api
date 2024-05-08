@@ -12,10 +12,10 @@ runtime via [Deno](https://deno.land/). Deno is V8 based JavaScript runtime
 written in Rust. By importing Deno we can create our own JavaScript runtime
 geared specifically for forensics and IR!
 
-For example, the artemis function `get_registry()` can be used
-to parse a provided Registry file on disk. By registering this function with
-the Deno runtime we can call this function directly from JavaScript! In addition
-to JavaScript, [TypeScript](https://www.typescriptlang.org/) is also supported!
+For example, the artemis function `get_registry()` can be used to parse a
+provided Registry file on disk. By registering this function with the Deno
+runtime we can call this function directly from JavaScript! In addition to
+JavaScript, [TypeScript](https://www.typescriptlang.org/) is also supported!
 
 To summarize:
 
@@ -25,12 +25,13 @@ To summarize:
 
 :::info
 
-The JS runtime in artemis is kind of like the VQL language for [Velociraptor](https://docs.velociraptor.app/docs/vql/) or the [Dissect forensic framework](https://github.com/fox-it/dissect)  
+The JS runtime in artemis is kind of like the VQL language for
+[Velociraptor](https://docs.velociraptor.app/docs/vql/) or the
+[Dissect forensic framework](https://github.com/fox-it/dissect)
 
 All three let you script forensic collections and parsing
 
 :::
-
 
 # Prequisites for Scripting.
 
