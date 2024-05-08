@@ -8,8 +8,7 @@ Using the artemis API you may timeline artifacts and optionally upload to
 Timesketch for analysis.
 
 [Timesketch](https://timesketch.org/) is an open source timeline analysis web
-application created by Google (however its not an official Google
-[product](https://github.com/google/timesketch?tab=readme-ov-file#obligatory-fine-print)).
+application created by Google.
 
 In order to upload data to Timesketch you will first need to timeline the data.
 

@@ -53,8 +53,8 @@ artifact.
 All timestamps artemis outputs are in UNIXEPOCH seconds. The only exceptions
 are:
 
-- `UnifiedLogs` and `EventLogs` use UNIXEPOCH nanoseconds.
-- `Journals` use UNIXEPOCH microseconds.
+- UnifiedLogs and EventLogs use UNIXEPOCH nanoseconds.
+- Journals and Spotlight use UNIXEPOCH microseconds.
 
 If your new artifact has a timestamp, you will need to make sure the timestamp
 is in UNIXEPOCH seconds. Though exceptions may be allowed if needed, these
