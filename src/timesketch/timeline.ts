@@ -47,6 +47,8 @@ import { UserInfo } from "../../types/windows/users.ts";
 import { UsnJrnl } from "../../types/windows/usnjrnl.ts";
 import { WmiPersist } from "../../types/windows/wmi.ts";
 import { LogonsWindows } from "../../types/windows/eventlogs/logons.ts";
+import { Journal } from "../../types/linux/journal.ts";
+import { ChromiumHistory } from "../../types/applications/chromium.ts";
 
 /**
  * macOS artifact timelines
@@ -65,6 +67,16 @@ import {
 import { timelineLaunchd } from "./artifacts/macos/launchd.ts";
 import { timelineSpotlight } from "./artifacts/macos/spotlight.ts";
 import { timelineEmond } from "./artifacts/macos/emond.ts";
+
+/**
+ * Linux artifact timelines
+ */
+import { timelineJournals } from "./artifacts/linux/journals.ts";
+
+/**
+ * Application artifact timelines
+ */
+import { timelineChromiumHistory } from "./artifacts/applications/chromium/history.ts";
 
 /**
  * Cross platform artifact timelines
@@ -197,6 +209,13 @@ export function timelineArtifact(
       return timelineWmiPersist(data as WmiPersist[]);
     case TimesketchArtifact.LOGONS_WINDOWS:
       return timelineLogonsWindows(data as LogonsWindows[]);
+    case TimesketchArtifact.JOURNALS:
+    case TimesketchArtifact.SUDOLOGS_LINUX:
+      return timelineJournals(data as Journal[]);
+    case TimesketchArtifact.CHROMIUM_HISTORY:
+    case TimesketchArtifact.CHROME_HISTORY:
+    case TimesketchArtifact.EDGE_HISTORY:
+      return timelineChromiumHistory(data as ChromiumHistory[], artifact);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

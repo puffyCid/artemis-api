@@ -61,4 +61,9 @@ export enum TimesketchArtifact {
   USNJRNL = "usnjrnl",
   WMIPERSIST = "wmipersist",
   LOGONS_WINDOWS = "logons-windows",
+  JOURNALS = "journals",
+  SUDOLOGS_LINUX = "sudologs-linux",
+  CHROMIUM_HISTORY = "chromium-history",
+  CHROME_HISTORY = "chrome-history",
+  EDGE_HISTORY = "edge-history",
 }

@@ -109,6 +109,14 @@ const status = await client.timelineAndUpload(
 
 ![A pretty timeline](../../../static/img/timesketch.png)
 
+
+:::info
+
+Artemis can only execute JavaScript code.
+You will need to create a [build.ts script](../../Intro/Scripting/bundling.md#esbuild) before you can run this example.
+
+:::
+
 ## Limitations and Possible Issues
 
 Timesketch is primarily used to ingest

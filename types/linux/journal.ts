@@ -34,7 +34,7 @@ export interface Journal {
   audit_session: number;
   /**Login UID of the process associated with entry */
   audit_loginuid: number;
-  /**Systemd Countrol Group associated with entry */
+  /**Systemd Control Group associated with entry */
   systemd_cgroup: string;
   /**Systemd owner UID associated with entry */
   systemd_owner_uid: number;
@@ -44,7 +44,7 @@ export interface Journal {
   systemd_user_unit: string;
   /**Systemd slice associated with entry */
   systemd_slice: string;
-  /**Sysemd user slice associated with entry */
+  /**Systemd user slice associated with entry */
   systemd_user_slice: string;
   /**Systemd invocation ID associated with entry */
   systemd_invocation_id: string;
@@ -56,7 +56,7 @@ export interface Journal {
   hostname: string;
   /**Runtime scope associated with entry */
   runtime_scope: string;
-  /**Trused Timestamp associated with entry in UNIXEPOCH microseconds */
+  /**Source timestamp associated with entry in UNIXEPOCH microseconds */
   source_realtime: bigint;
   /**Timestamp associated with entry in UNIXEPOCH microseconds */
   realtime: bigint;
