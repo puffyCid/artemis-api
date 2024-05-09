@@ -3,6 +3,10 @@ for entry in */
 do
 cd $entry
 deno run -A build.ts
-../script_tester_macos_intel main.js
-cd ..
+if ../script_tester_macos_intel main.js
+then
+  cd ..
+else
+  exit 1
+fi
 done
