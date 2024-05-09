@@ -32,7 +32,11 @@ jobs:
           submodules: recursive
       - name: Download macOS Intel script tester binary
         if: matrix.info.os == 'macOS-latest'
-        run: wget -O ./tests/macos/script_tester_macos_intel https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester_macos_intel
+        run: wget -O ./tests/macos/script_tester_macos_intel https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester_macos_intel && chmod +x ./tests/macos/script_tester_macos_intel
+
+      - name: Install Deno
+        if: matrix.info.os == 'macOS-latest'
+        run: brew install deno
 
       - name: Compile and run tests (macOS)
         if: matrix.info.os == 'macOS-latest'
