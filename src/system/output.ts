@@ -1,3 +1,5 @@
+import { SystemError } from "./error.ts";
+
 /**
  * An interface to output data using `artemis`
  *
@@ -40,23 +42,53 @@ export enum OutputType {
 }
 
 /**
- * Function to pass data to `artemis` to save
+ * Function to pass data to artemis to save
  * @param data JSON string of data
  * @param data_name Name of the type of data. Ex: `processes`
- * @param output Output structure to pass to `artemis`
- * @returns True on success. False on failure
+ * @param output `Output` structure to pass to artemis
+ * @returns True on success or `SystemError`
  */
 export function outputResults(
   data: string,
   data_name: string,
   output: Output,
-): boolean {
-  const output_string = JSON.stringify(output);
-  //@ts-ignore: Custom Artemis function
-  const status: boolean = Deno.core.ops.output_results(
-    data,
-    data_name,
-    output_string,
-  );
-  return status;
+): boolean | SystemError {
+  try {
+    const output_string = JSON.stringify(output);
+    //@ts-ignore: Custom Artemis function
+    const status: boolean = Deno.core.ops.output_results(
+      data,
+      data_name,
+      output_string,
+    );
+    return status;
+  } catch (err) {
+    return new SystemError(`OUTPUT`, `failed to output data: ${err}`);
+  }
+}
+
+/**
+ * Function to pass data to `artemis` to save, skipping metadata
+ * @param data JSON string of data
+ * @param data_name Name of the type of data. Ex: `processes`
+ * @param output Output structure to pass to `artemis`
+ * @returns True on success or `SystemError`
+ */
+export function dumpData(
+  data: string,
+  data_name: string,
+  output: Output,
+): boolean | SystemError {
+  try {
+    const output_string = JSON.stringify(output);
+    //@ts-ignore: Custom Artemis function
+    const status: boolean = Deno.core.ops.raw_dump(
+      data,
+      data_name,
+      output_string,
+    );
+    return status;
+  } catch (err) {
+    return new SystemError(`OUTPUT`, `failed to output raw data: ${err}`);
+  }
 }

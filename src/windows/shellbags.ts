@@ -1,4 +1,4 @@
-import { Shellbags } from "../../types/windows/shellbags.d.ts";
+import { Shellbags } from "../../types/windows/shellbags.ts";
 import { WindowsError } from "./errors.ts";
 
 /**

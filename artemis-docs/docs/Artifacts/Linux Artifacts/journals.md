@@ -12,6 +12,9 @@ Linux `Journals` are the log files associated with the systemd service. Systemd
 is a popular system service that is common on most Linux distros. The logs can
 contain data related to application activity, sudo commands, and much more.
 
+Similar to macOS Unified Logs and Windows Event Logs, in order to keep memory
+usage low, every 100,000 entries artemis will output the data.
+
 Other Parsers:
 
 - None

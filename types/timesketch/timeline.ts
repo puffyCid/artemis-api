@@ -18,7 +18,7 @@ export interface TimesketchTimeline {
    */
   data_type: string;
   /**Include any other valid JSON data */
-  [ key: string ]: unknown;
+  [key: string]: unknown;
 }
 
 export enum TimesketchArtifact {
@@ -61,4 +61,9 @@ export enum TimesketchArtifact {
   USNJRNL = "usnjrnl",
   WMIPERSIST = "wmipersist",
   LOGONS_WINDOWS = "logons-windows",
+  JOURNALS = "journals",
+  SUDOLOGS_LINUX = "sudologs-linux",
+  CHROMIUM_HISTORY = "chromium-history",
+  CHROME_HISTORY = "chrome-history",
+  EDGE_HISTORY = "edge-history",
 }

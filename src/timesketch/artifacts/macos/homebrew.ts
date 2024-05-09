@@ -22,6 +22,8 @@ export function timelineHomebrew(
     };
 
     entry = { ...entry, ...item };
+    entry["installTime"] = unixEpochToISO(item.installTime);
+    entry["sourceModified"] = unixEpochToISO(item.sourceModified);
 
     entries.push(entry);
   }

@@ -20,6 +20,9 @@ export type ErrorName =
   | "TCC"
   | "SPOTLIGHT"
   | "XPROTECT"
-  | "BIOME";
+  | "BIOME"
+  | "LULU"
+  | "MUNKI"
+  | "QUARANTINE_EVENT";
 
 export class MacosError extends ErrorBase<ErrorName> {}

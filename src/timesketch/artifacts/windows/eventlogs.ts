@@ -15,7 +15,7 @@ export function timelineEventLogs(
   for (const item of data) {
     const entry: TimesketchTimeline = {
       datetime: unixEpochToISO(item.timestamp),
-      timestamp_desc: "EventLog Generated",
+      timestamp_desc: "EventLog Entry Generated",
       message: "",
       artifact: "EventLog",
       data_type: "windows:eventlogs:entry",

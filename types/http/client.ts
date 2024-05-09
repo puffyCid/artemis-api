@@ -1,7 +1,7 @@
 /**
  * The network response from a request made by the artemis client
  */
-interface ClientResponse {
+export interface ClientResponse {
   /**URL associated with the response */
   url: string;
   /**Response status code */

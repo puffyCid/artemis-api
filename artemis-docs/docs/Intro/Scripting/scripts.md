@@ -29,13 +29,13 @@ API and the [artemis-api](https://github.com/puffyCid/artemis-api) for scripting
 
 To import artemis functions into your script, open main.ts and import the
 function associated with the artifact you want to parse. For example, to parse
-the Windows `Registry` you would import:
+the Windows Registry you would import:
 
 ```typescript
 import { getRegistry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 ```
 
-If you wanted to parse the Windows `Registry` and manipulate the parsed data you
+If you wanted to parse the Windows Registry and manipulate the parsed data you
 would import:
 
 ```typescript
@@ -44,10 +44,10 @@ import { Registry } from "https://raw.githubusercontent.com/puffycid/artemis-api
 ```
 
 A list of all exported artemis functions can be found at
-`https://github.com/puffyCid/artemis-api`. All artifacts supported by artemis
-are callable from TypeScrpt. The structured output produced by each artifact is
-listed in the respective artifact chapter. For example, the structured
-`Registry` data format return `getRegistry` is found in the
+https://github.com/puffyCid/artemis-api. All artifacts supported by artemis are
+callable from TypeScrpt. The structured output produced by each artifact is
+listed in the respective artifact chapter. For example, the structured Registry
+data format return `getRegistry` is found in the
 [Registry chapter](../../Artifacts/Windows%20Artfacts/registry.md)
 
 Once we have created and bundled our script. We just need to base64 encode

@@ -4,7 +4,7 @@
  * The log entries show evidence of commands executed with elevated privileges
  */
 
-import { Journal } from "../../types/linux/journal.d.ts";
+import { Journal } from "../../types/linux/journal.ts";
 import { LinuxError } from "./errors.ts";
 
 /**

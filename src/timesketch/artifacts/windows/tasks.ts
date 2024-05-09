@@ -18,7 +18,6 @@ export function timelineTasks(data: TaskData): TimesketchTimeline[] {
       user: "",
       artifact: "Schedule Task",
       data_type: "windows:tasks:xml:entry",
-      _raw: "",
     };
 
     entry["registration_info"] = item.registrationInfo;

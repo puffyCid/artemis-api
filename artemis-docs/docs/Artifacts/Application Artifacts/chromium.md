@@ -22,12 +22,20 @@ Artemis supports parsing the list of artifacts below:
 - Cookies
 - Autofill
 - Bookmarks
+- Login Data
+- Extensions
+- Preferences
+- Detect Incidental Party State (DIPS)
 
 You have to use the artemis [api](../../API/overview.md) in order to collect:
 
 - Cookies
 - Autofill
 - Bookmarks
+- Login Data
+- Extensions
+- Preferences
+- Detect Incidental Party State (DIPS)
 
 Other parsers:
 
@@ -67,9 +75,9 @@ artifact_name = "chromium-downloads"
 
 ```typescript
 import {
-  getChromiumCookies,
   getChromiumAutifill,
   getChromiumBookmarks,
+  getChromiumCookies,
   PlatformType,
 } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
@@ -254,6 +262,6 @@ export interface ChromiumBookmarkChildren {
   name: string;
   type: string;
   url: string;
-  meta_info: Record<string, string>,
+  meta_info: Record<string, string>;
 }
 ```

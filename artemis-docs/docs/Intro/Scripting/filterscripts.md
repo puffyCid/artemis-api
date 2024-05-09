@@ -5,10 +5,11 @@ description: Filtering scripts
 
 # Filtering
 
-In addition to creating scripts that call artemis functions. artemis has the
+In addition to creating scripts that call artemis functions. Artemis has the
 ability to pass the artifact data as an argument to a script! For most scenarios
 calling the artemis function is the recommended practice for scripting. However,
-the sole execption is the `filelisting` and `rawfilelisting` artifacts.
+the sole execption is the `filelisting` and `rawfilelisting` artifacts or if you
+encounter large log files (ex: Linux Journal files).
 
 When pulling a filelisting artemis will recursively walk the filesystem, but in
 order to keep memory usage low, every 100,000 files artemis will output the
@@ -91,7 +92,7 @@ The biggest differences are:
 - We base64 encode our script and assign to `filter_script` to tell artemis:
   take the results of the `[[artifacts]]` list and filter them before outputting
   the data
-- We then set the `filter` value to `true`
+- We then set the `filter` value to true
 
 :::note
 
@@ -198,4 +199,4 @@ return filter_files;
 
 So our initial data provided to our filter script gets filtered and returned. In
 this example, our 100,000 file listing entry gets filtered to only return
-entries with the filename `Info.plist`.
+entries with the filename Info.plist.

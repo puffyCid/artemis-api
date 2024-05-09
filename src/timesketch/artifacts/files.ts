@@ -26,7 +26,6 @@ export function timelineFiles(
       user: item.uid.toString(),
       artifact: "Files",
       data_type: "system:fs:file",
-      _raw: "",
     };
 
     entry = { ...entry, ...item };

@@ -251,5 +251,4 @@ export interface SmtpConsumer {
   /**Addresses to send email to */
   ToLine: string;
 }
-
 ```

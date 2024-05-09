@@ -47,9 +47,9 @@ export interface MachoInfo {
   /**File type, ex: executable, dylib, object, core, etc*/
   filetype: string;
   /**Segments of the macho binary */
-  sgements: Segment64[];
+  segments: Segment64[];
   /**Dynamic libraries in the macho binary */
-  dylib_commands: DylibCommand[];
+  dylib_command: DylibCommand[];
   /**Macho binary id */
   id: string;
   /**Macho team id */

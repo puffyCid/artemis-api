@@ -4,6 +4,7 @@ import { FileError } from "../../filesystem/errors.ts";
 import { glob, readFile } from "../../filesystem/files.ts";
 import { readDir } from "../../filesystem/mod.ts";
 import { parseIcon } from "../../images/icns.ts";
+import { MacosError } from "../errors.ts";
 
 /**
  * Returns a very simple App listing on the system. Searches user installed Apps, System Apps, default Homebrew paths (/usr/local/Cellar, /opt/homebrew/Cellar).
@@ -17,10 +18,16 @@ export function listApps(): Applications[] {
     "/opt/homebrew/Cellar/*/*/*.app/Contents/Info.plist",
     "/usr/local/Cellar/*/*/*.app/Contents/Info.plist",
   ];
+  let all_apps: Applications[] = [];
   for (const path of app_paths) {
-    getApps(path);
+    const results = getApps(path);
+    if (results instanceof MacosError) {
+      continue;
+    }
+
+    all_apps = all_apps.concat(results);
   }
-  return [];
+  return all_apps;
 }
 
 /**
@@ -68,17 +75,17 @@ async function iterateVolumes(path: string, apps: Applications[]) {
 /**
  * Get Application information by parse `Info.plist` file
  * @param path Path to glob for applications
- * @returns Array of `Applications` or error
+ * @returns Array of `Applications` or `MacosError`
  */
-function getApps(path: string): Applications[] | Error {
+function getApps(path: string): Applications[] | MacosError {
   const glob_paths = glob(path);
   if (glob_paths instanceof FileError) {
-    return glob_paths;
+    return new MacosError(`PLIST`, `Failed to glob for plists: ${glob_paths}`);
   }
   const apps: Applications[] = [];
   for (const entry of glob_paths) {
     const app = parsePlist(entry.full_path);
-    if (app instanceof Error) {
+    if (app instanceof MacosError) {
       continue;
     }
     apps.push(app);
@@ -91,12 +98,14 @@ function getApps(path: string): Applications[] | Error {
  * @param path Path to `Info.plist`
  * @returns `Applications` info or error
  */
-function parsePlist(path: string): Applications | Error {
-  const data = getPlist(path);
+function parsePlist(path: string): Applications | MacosError {
+  let data = getPlist(path);
   if (data instanceof Error || data instanceof Uint8Array) {
     console.error(`Failed to parse plist ${path}: ${data}`);
-    return new Error(`Failed to parse plist ${path}`);
+    return new MacosError(`PLIST`, `Failed to parse plist ${path}`);
   }
+  data = data as Record<string, string>;
+
   let icon_file = "";
   if (`${data["CFBundleIconFile"]}`.includes("/")) {
     icon_file = `${data["CFBundleIconFile"]}`;

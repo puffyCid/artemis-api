@@ -1,5 +1,6 @@
 import { Launchd } from "../../../../types/macos/launchd.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { encode, encodeBytes } from "../../../encoding/mod.ts";
 
 /**
  * Function to timeline Launchd. (This artifact has no timestamp)
@@ -19,8 +20,29 @@ export function timelineLaunchd(
       message: data[i].plist_path,
       data_type: "macos:plist:launchd:entry",
       artifact: "Launchd",
-      _raw: JSON.stringify(data[i]),
     };
+
+    for (const key in data[i].launchd_data) {
+      // Timesketch will sometimes silently compalain about large objects and exlude them.
+      // So for now we will just base64 them
+      if (
+        typeof data[i].launchd_data[key] === "object" &&
+        !Array.isArray(data[i].launchd_data[key])
+      ) {
+        const string = JSON.stringify(data[i].launchd_data[key]);
+        const encoded = encode(encodeBytes(string));
+
+        // Workaround for https://github.com/google/timesketch/issues/3087
+        if (key === "Disabled") {
+          entry["Disabled_"] = encoded;
+          continue;
+        }
+
+        entry[key] = encoded;
+        continue;
+      }
+      entry[key] = data[i].launchd_data[key];
+    }
 
     entries.push(entry);
   }

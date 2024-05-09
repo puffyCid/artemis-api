@@ -22,6 +22,6 @@ export function decode(b64: string): Uint8Array | EncodingError {
     const bytes: Uint8Array = encoding.atob(b64);
     return bytes;
   } catch (err) {
-    return new EncodingError("BASE64", `failed to decode ${b64}: ${err}`);
+    return new EncodingError(`BASE64`, `failed to decode ${b64}: ${err}`);
   }
 }

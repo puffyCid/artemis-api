@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 5
 ---
 
 # Windows
@@ -26,7 +26,7 @@ However, artemis does use the Windows API for a handful of artifacts:
   also to get system information using Winodws APIs
 - The Windows API is also used to decompress proprietary Windows compression
   algorithms.
-  - Both Prefetch and some NTFS files may be compressed, `artemis-core` will
-    attempt to use Windows API to decompress these files
+  - Both Prefetch and some NTFS files may be compressed, artemis will attempt to
+    use Windows API to decompress these files
   - Artemis will try the Windows API to decompress the data. However, if the
     decompression fails, it will also try to manually decompress the data

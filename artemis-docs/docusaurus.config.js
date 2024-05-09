@@ -50,6 +50,8 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             "https://github.com/puffyCid/artemis-api/tree/main/artemis-docs/",
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

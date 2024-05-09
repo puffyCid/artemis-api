@@ -88,14 +88,20 @@ Return a list of files opened by LibreOffice for all users.
 | -------- | ------------ | -------------------- |
 | platform | PlatformType | OS platform to parse |
 
-### fileHistory(platform) -> FileHistory[] | ApplicationError
+### fileHistory(platform, alt_glob) -> FileHistory[] | ApplicationError
 
 Parse the local file history for VSCode. Returns list of history entries. Also
 supports VSCodium.
 
-| Param    | Type         | Description          |
-| -------- | ------------ | -------------------- |
-| platform | PlatformType | OS platform to parse |
+You may also provide an optional alternative glob path to the entries.json file.
+By default artemis will parse the default locations for VSCode.
+
+An altnerative glob will override the platform type.
+
+| Param    | Type         | Description                                    |
+| -------- | ------------ | ---------------------------------------------- |
+| platform | PlatformType | OS platform to parse                           |
+| alt_glob | string       | optional alternative glob path to entries.json |
 
 ### getExtensions(platform, path) -> Extensions[] | ApplicationError
 
@@ -163,3 +169,34 @@ All Chromium derived browsers should be supported.
 | -------- | ------------ | --------------------------------------------------------- |
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | path     | string       | Optional path to a Chromium bookmark file                 |
+
+### getChromiumLogins(platform, path) -> ChromiumLogins[] | ApplicationError
+
+Get saved Login information associated with Chromium browsers
+
+All Chromium derived browsers should be supported.
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| path     | string       | Optional path to a Chromium Login Data database           |
+
+### chromiumPreferences(platform) -> Record&lt;string, unknown&gt;[] | ApplicationError
+
+Get Chromium Preferences
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+
+### getChromiumDips(platform, path) -> Dips[] | ApplicationError
+
+Get Detect Incidental Party State (DIPS) info. DIPS collects metrics related to
+websites
+
+All Chromium derived browsers should be supported.
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| path     | string       | Optional path to a Chromium Login Data database           |

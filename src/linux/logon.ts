@@ -1,4 +1,4 @@
-import { Logon } from "../../types/linux/logon.d.ts";
+import { Logon } from "../../types/linux/log.ts";
 import { LinuxError } from "./errors.ts";
 
 /**
