@@ -12,6 +12,18 @@ macOS BIOME data contains data related to application runtime. It partially
 replaces the KnowledgeC.db.\
 Its kind of similar to Windows SRUM
 
+Biome files are stored in binary format that contains
+[Protobuf](https://protobuf.dev/) data. It is very difficult (nearly impossible)
+to parse Protobuf data perfectly without the associated Proto file.
+
+Artemis has been heavily tested to parse AppFocus Biome data which contains
+information related to application runtime. It will attempt to parse all Biome
+files by default. If you only want AppFocus data, you can provide the full path
+to the AppFocus file(s).
+
+As mentioned in the output structure below, currently artemis does not do any
+post-processing of the data.
+
 # Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
