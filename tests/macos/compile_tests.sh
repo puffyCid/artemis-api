@@ -3,6 +3,6 @@ for entry in */
 do
 cd $entry
 deno run -A build.ts
-../script_tester main.js
+../script_tester_macos_intel main.js
 cd ..
 done
