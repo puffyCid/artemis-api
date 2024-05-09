@@ -40,4 +40,4 @@ jobs:
 
       - name: Compile and run tests (macOS)
         if: matrix.info.os == 'macOS-latest'
-        run: cd tests/macos && bash compile_tests.sh
+        run: cd tests/macos && sudo bash compile_tests.sh

@@ -44,7 +44,7 @@ may include non-forensic related artifacts or features such as:
   commands from the API if you want to)
 - Submit data to network services (ex: Submit hashes to VirusTotal API)
 
-# Testing Scripts
+# Testing Scripts Locally
 
 Currently there is no easy way to write tests for the artemis API. If you are
 working on a new feature the current recommended approach to testing your
@@ -73,3 +73,53 @@ function main() {
 
 4. Test you feature with your deno project
 5. If everything works, open a pull request!
+
+## Testing Scripts on GitHub Actions
+
+Even though writing tests for the artemis API locally can be tricky. There is
+process to create tests to run on GitHub Actions.\
+When you open a PR it will trigger the Artemis API test suite. Ideally **if
+possible** you should include a test for you feature.
+
+Artemis API tests are located at the tests directory and are broken down by OS.
+All you need to do is create a new folder and add a main.ts and build.ts file
+and write your test.
+
+A **very basic** example is below:
+
+```typescript
+import { firewallStatus } from "../../../mod.ts";
+import { MacosError } from "../../../src/macos/errors.ts";
+
+function main() {
+  const results = firewallStatus();
+  if (results instanceof MacosError) {
+    throw results;
+  }
+
+  if (results.version.length === 0) {
+    throw "no version?";
+  }
+}
+
+main();
+```
+
+The example above will test the macOS Firewall artifact and make sure it does
+not return an error and that the version info is not empty.
+
+You may make you test as complex or thorough as you would like. But it should at
+least always check for errors.
+
+### Testing Scripts on GitHub Actions Locally
+
+If you want to run the test scripts locally you will need one of the options
+below:
+
+- Download
+  [script_tester](https://github.com/puffyCid/artemis/releases/tag/v0.1.0)
+- Compile the
+  [script_tester](https://github.com/puffyCid/artemis/tree/main/core/examples)
+  via `cargo build --release --examples`
+
+Place the script tester binary in the folder you want to test.

@@ -12,10 +12,11 @@ import { encode } from "../encoding/base64.ts";
 
 /**
  * A **very** experimental and simple function to parse BIOME data
+ * @param [app_focus_only=true] Only parse App.InFocus Biome files. Default is true
  * @param alt_file Full path to alternative BIOME file
  * @returns Array of `Biome` objects
  */
-export function parseBiome(alt_file?: string): Biome[] {
+export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
   let paths = [];
   if (alt_file != undefined) {
     paths = [alt_file];
@@ -44,6 +45,10 @@ export function parseBiome(alt_file?: string): Biome[] {
   const biome_array: Biome[] = [];
   // Now loop through Biomes and parse supported entries
   for (const entry of paths) {
+    if (app_focus_only && !entry.toLowerCase().includes("app.infocu")) {
+      continue;
+    }
+
     // Stat to avoid any directories
     const stat_info = stat(entry);
     if (stat_info instanceof FileError || stat_info.is_directory) {
@@ -357,7 +362,7 @@ function parseRecordV2(
     if (unknown_bytes instanceof NomError) {
       return new MacosError(
         `BIOME`,
-        `failed to get start of protobuf bytes: ${proto_bytes}`,
+        `failed to get start of protobuf bytes: ${unknown_bytes}`,
       );
     }
     const record: BiomeRecord = {

@@ -390,3 +390,18 @@ com.apple.LaunchServices.QuarantineEventsV2 file.
 | Param    | Type   | Description                                                       |
 | -------- | ------ | ----------------------------------------------------------------- |
 | alt_file | string | Optional path to com.apple.LaunchServices.QuarantineEventsV2 file |
+
+### parseBiome(app_focus_only, alt_file) -> Biome[]
+
+Parse a Biome files and try to extract data. By default artemis will only parse
+App.InFocus files located at:
+
+- /Users/\*/Library/Biome/streams/\*/\*/local/\*
+- /Users/\*/Library/Biome/streams/\*/\*/local/tombstone/\*
+- /private/var/db/biome/streams/\*/\*/local/\*
+- /private/var/db/biome/streams/\*/\*/local/tombstone/\*
+
+| Param          | Type    | Description                                       |
+| -------------- | ------- | ------------------------------------------------- |
+| app_focus_only | boolean | Only parse App.InFocus files. Default is **true** |
+| alt_file       | string  | Optional path to an alternative Biome file        |

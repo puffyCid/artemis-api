@@ -16,10 +16,10 @@ Biome files are stored in binary format that contains
 [Protobuf](https://protobuf.dev/) data. It is very difficult (nearly impossible)
 to parse Protobuf data perfectly without the associated Proto file.
 
-Artemis has been heavily tested to parse AppFocus Biome data which contains
-information related to application runtime. It will attempt to parse all Biome
-files by default. If you only want AppFocus data, you can provide the full path
-to the AppFocus file(s).
+Artemis has been heavily tested to parse App.InFocus Biome data which contains
+information related to application runtime. By default artemis will **only**
+parse App.InFocus Biome files.\
+However, you may enable parsing of all Biome files.
 
 As mentioned in the output structure below, currently artemis does not do any
 post-processing of the data.
