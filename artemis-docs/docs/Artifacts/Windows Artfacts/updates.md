@@ -10,7 +10,7 @@ keywords:
 Artemis supports parsing the history of Windows updates on the system. By
 default artemis will try to parse the ESE database at:
 
-- Windows\SoftwareDistribution\DataStore.edb
+- Windows\SoftwareDistribution\DataStore\DataStore.edb
 
 You may also provide an alternative path to DataStore.edb.
 
@@ -22,15 +22,15 @@ Windows Updates.
 # Sample API Script
 
 ```typescript
-import {
-  updateHistory,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { Updates } from "../../Projects/artemis-api/src/windows/ese/updates.ts";
 
-async function main() {
-  const results = updateHistory();
-
-  console.log(results);
+function main() {
+  const updates = new Updates();
+  console.log(updates.updateHistory(updates.pages));
 }
+
+main();
+
 ```
 
 # Output Structure
@@ -41,6 +41,7 @@ An array of `UpdateHistory`
 export interface UpdateHistory {
   client_id: string;
   support_url: string;
+  /**Timestamp in UNIXEPOCH seconds */
   date: number;
   description: string;
   operation: Operation;

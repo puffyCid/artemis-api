@@ -25,7 +25,7 @@ Other Parsers:
 References:
 
 - [BitsAdmin](https://ss64.com/nt/bitsadmin.html)
-- [Background Intelligrent Transfer Service](https://en.wikipedia.org/wiki/Background_Intelligent_Transfer_Service)
+- [Background Intelligent Transfer Service](https://en.wikipedia.org/wiki/Background_Intelligent_Transfer_Service)
 - [BITS](https://www.mandiant.com/resources/blog/attacker-use-of-windows-background-intelligent-transfer-service)
 
 # TOML Collection
@@ -200,8 +200,8 @@ export interface Files {
   /**Number of bytes downloaded */
   download_bytes_size: number;
   /**Number of bytes transferred */
-  trasfer_bytes_size: number;
-  /**Fulll file path associated with Job */
+  transfer_bytes_size: number;
+  /**Full file path associated with Job */
   full_path: string;
   /**Filename associated with Job */
   filename: string;

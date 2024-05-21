@@ -30,8 +30,6 @@ export interface BitsInfo {
   file_id: string;
   /**SID associated with the Job */
   owner_sid: string;
-  /**Username associated with SID */
-  username: string;
   /**Timestamp when the Job was created in UNIXEPOCH seconds */
   created: number;
   /**Timestamp when the Job was modified in UNIXEPOCH seconds */
@@ -102,8 +100,6 @@ export interface Jobs {
   file_id: string;
   /**SID associated with the Job */
   owner_sid: string;
-  /**Username associated with SID */
-  username: string;
   /**Timestamp when the Job was created in UNIXEPOCH seconds */
   created: number;
   /**Timestamp when the Job was modified in UNIXEPOCH seconds */
@@ -155,8 +151,8 @@ export interface Files {
   /**Number of bytes downloaded */
   download_bytes_size: number | bigint | string;
   /**Number of bytes transferred */
-  trasfer_bytes_size: number | bigint | string;
-  /**Fulll file path associated with Job */
+  transfer_bytes_size: number | bigint | string;
+  /**Full file path associated with Job */
   full_path: string;
   /**Filename associated with Job */
   filename: string;
