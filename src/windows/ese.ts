@@ -22,7 +22,7 @@ export class EseDatabase {
 
   /**
    * Function to extract the Catalog from an ESE database
-   * @returns Array of `Catalog` entries
+   * @returns Array of `Catalog` entries or `WindowsError`
    */
   public catalogInfo(): Catalog[] | WindowsError {
     try {
@@ -114,13 +114,11 @@ export class EseDatabase {
    * Function to extract rows from ESE database table
    * @param pages Array of pages to use to get ESE rows
    * @param info `TableInfo` object
-   * @param name Name of table to parse
    * @returns HashMap of table data `Record<string, EseTable[][]>`
    */
   public getRows(
     pages: number[],
     info: TableInfo,
-    name: string,
   ): Record<string, EseTable[][]> | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
@@ -128,7 +126,7 @@ export class EseDatabase {
         this.path,
         pages,
         JSON.stringify(info),
-        name,
+        info.table_name,
       );
 
       const results: Record<string, EseTable[][]> = JSON.parse(data);
@@ -145,7 +143,6 @@ export class EseDatabase {
    * Function to extract and filter rows from ESE database table. Useful if you want to combine tables based on shared key or you want to search for something
    * @param pages Array of pages to use to get ESE rows
    * @param info `TableInfo` object
-   * @param name Name of table to parse
    * @param column_name Name of column to filter on
    * @param column_data HashMap of column values to filter on `Record<string, boolean>`. Only the key matters for filtering
    * @returns
@@ -153,7 +150,6 @@ export class EseDatabase {
   public getFilteredRows(
     pages: number[],
     info: TableInfo,
-    name: string,
     column_name: string,
     column_data: Record<string, boolean>,
   ): Record<string, EseTable[][]> | WindowsError {
@@ -163,7 +159,7 @@ export class EseDatabase {
         this.path,
         pages,
         JSON.stringify(info),
-        name,
+        info.table_name,
         column_name,
         column_data,
       );
@@ -182,14 +178,12 @@ export class EseDatabase {
    * Function to dump specific columns from an ESE database table. Useful if you do **not** want all table columns provided from `getRows()` function.
    * @param pages Array of pages to use to get ESE rows
    * @param info `TableInfo` object
-   * @param name Name of table to parse
    * @param column_names Array of columns to parse
    * @returns
    */
   public dumpTableColumns(
     pages: number[],
     info: TableInfo,
-    name: string,
     column_names: string[],
   ): Record<string, EseTable[][]> | WindowsError {
     try {
@@ -198,7 +192,7 @@ export class EseDatabase {
         this.path,
         pages,
         JSON.stringify(info),
-        name,
+        info.table_name,
         column_names,
       );
 

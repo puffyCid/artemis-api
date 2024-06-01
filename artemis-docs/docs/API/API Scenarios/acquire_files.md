@@ -37,7 +37,7 @@ export interface Output {
   compress: boolean;
   /**Endpoint ID */
   endpoint_id: string;
-  /**ID for collection. Must be postive number */
+  /**ID for collection. Must be positive number */
   collection_id: number;
   /**Output type: local, azure, aws, or gcp */
   output: OutputType;
@@ -50,7 +50,7 @@ export interface Output {
 
 When acquiring files there are three caveats in regards to the Output object:
 
-- Format setting. This is option not applied to file acquistions
+- Format setting. This is option not applied to file acquisitions
 - Compressing setting. File acquisitions are always compressed regardless of
   this setting.
 - OutputType setting. Currently only local or GCP output types can be used.

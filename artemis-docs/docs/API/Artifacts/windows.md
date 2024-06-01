@@ -328,66 +328,67 @@ not super useful.
 | path   | string | Path to Windows Registry file |
 | offset | number | Offset to Security Key        |
 
-### parseTable(path, tables) -> Record&lt;string, EseTable[][]&gt; | WindowsError
+### ESE Database Class
 
-Parse an ESE database table at provided path. Will return a HashMap of tables.
-Where there string key is the table name. Table rows are returned in double
-array where each row is an array. Will bypass locked files and works dirty or
-clean ESE databases.
+A basic class to help interact and extract data from ESE databases
 
-:::warning
+#### catalogInfo() -> Catalog[] | WindowsError
 
-Larger ESE databases will consume more memory and resources
+Dump the Catalog metadata associated with an ESE database. Returns an array of Catalog entries or WindowsError
 
-:::
+#### tableInfo(catalog, table_name) -> TableInfo
 
-Sample output for one table (SmTbleSmp) that has two rows:
+Extract table metadata from parsed Catalog entries based on provided table name
 
-```typescript
-{
-    "SmTblSmp": [
-        [
-            {
-                "column_type": "Float64",
-                "column_name": "SectionID",
-                "column_data": "1"
-            },
-            {
-                "column_type": "LongBinary",
-                "column_name": "Name",
-                "column_data": "bABzAGEAYQBuAG8AbgB5AG0AbwB1AHMAbgBhAG0AZQBsAG8AbwBrAHUAcAA="
-            },
-            {
-                "column_type": "LongBinary",
-                "column_name": "Value",
-                "column_data": "MAAAAA=="
-            }
-        ],
-        [
-            {
-                "column_type": "Float64",
-                "column_name": "SectionID",
-                "column_data": "1"
-            },
-            {
-                "column_type": "LongBinary",
-                "column_name": "Name",
-                "column_data": "ZQBuAGEAYgBsAGUAZwB1AGUAcwB0AGEAYwBjAG8AdQBuAHQA"
-            },
-            {
-                "column_type": "LongBinary",
-                "column_name": "Value",
-                "column_data": "MAAAAA=="
-            }
-        ]
-    ]
-}
-```
+| Param      | Type      | Description              |
+| ---------- | --------- | ------------------------ |
+| catalog    | Catalog[] | Array of Catalog entries |
+| table_name | string    | Name of table to extract |
 
-| Param  | Type     | Description                  |
-| ------ | -------- | ---------------------------- |
-| path   | string   | Path to Windows ESE database |
-| tables | string[] | One or more tables to parse  |
+#### getPages(first_page) -> number[] | WindowsError
+
+Get an array of all pages associated with a table starting at the first page provided. First page can be found in the TableInfo object.
+
+| Param      | Type   | Description           |
+| ---------- | ------ | --------------------- |
+| first_page | number | First page of a table |
+
+#### getRows(pages, info) -> Record&lt;string, EseTable[][]&gt; | WindowsError
+
+Get rows associated with provided TableInfo object and number of pages. A returns a `Record<string, EseTable[][]>` or  WindowsError.
+
+The table name is the Record string key.
+
+[EseTable](../../Artifacts/Windows%20Artfacts/ese.md) is an array of rows and columns representing ESE data.
+
+| Param | Type      | Description      |
+| ----- | --------- | ---------------- |
+| pages | number[]  | Array of pages   |
+| info  | TableInfo | TableInfo object |
+
+#### getFilteredRows(pages, info, column_name, column_data) -> Record&lt;string, EseTable[][]&gt; | WindowsError
+
+Get rows and filter based on provided column_name and column_data. This function can be useful if you want to get data from a table thats shares data with another table.
+For example, if you call getRows() to get data associated with TableA and now you want to get data from TableB and both tables share a unique key.
+
+Its _a little_ similar to "select \* from tableB where columnX = Y" where Y is a unique key
+
+| Param       | Type                          | Description                                                                    |
+| ----------- | ----------------------------- | ------------------------------------------------------------------------------ |
+| pages       | number[]                      | Array of pages                                                                 |
+| info        | TableInfo                     | TableInfo object                                                               |
+| column_name | string                        | Column name that you want to filter on                                         |
+| column_data | Record&lt;string, boolean&gt; | HashMap of column values to filter on. Only the key is used to filter the data |
+
+#### dumpTableColumns(pages, info, column_names) -> Record&lt;string, EseTable[][]&gt; | WindowsError
+
+Get rows based on specific columns names. This function is the same as getRows() except it will only return column names that included in column_names.
+
+| Param       | Type      | Description                            |
+| ----------- | --------- | -------------------------------------- |
+| pages       | number[]  | Array of pages                         |
+| info        | TableInfo | TableInfo object                       |
+| column_name | string[]  | Array of column names to get data from |
 
 ### getChocolateyInfo(alt_base) -> ChocolateyInfo[] | WindowsError
 
@@ -400,16 +401,17 @@ An optional alternative base path can also be provided
 | -------- | ------ | --------------------------------- |
 | alt_base | string | Optional base path for Chocolatey |
 
-### updateHistory(alt_path) -> UpdateHistory[] | WindowsError
+### Updates class
+
+A simple class to help dump the contents of the Windows DataStore.edb database. This class extends the EseDatabase class.
+
+#### updateHistory(pages) -> UpdateHistory[] | WindowsError
 
 Return a list of Windows Updates by parsing the Windows DataStore.edb database.
-Will use the SystemRoot ENV value by default (C:\Windows).
 
-An optional alternative path to DataStore.edb can also be provided instead.
-
-| Param    | Type   | Description                         |
-| -------- | ------ | ----------------------------------- |
-| alt_path | string | Optional full path to DataStore.edb |
+| Param | Type     | Description                     |
+| ----- | -------- | ------------------------------- |
+| pages | number[] | Array of pages to get data from |
 
 ### powershellHistory(alt_path) -> History[] | History | WindowsError
 
@@ -441,6 +443,35 @@ shellitems.
 | Param | Type       | Description            |
 | ----- | ---------- | ---------------------- |
 | data  | Uint8Array | Raw bytes of shellitem |
+
+### UserAccessLogging class
+
+A simple class to help extract data from the Windows User Access Log database. This class extends the EseDatabase class
+
+#### getRoleIds(pages) -> RoleIds[] | WindowsError
+
+Return an array of RoleIds associated with UAL database. This function expects the UserAccessLogging class to be initialized with the SystemIdentity.mdb database otherwise it will return no results.
+
+| Param | Type     | Description                     |
+| ----- | -------- | ------------------------------- |
+| pages | number[] | Array of pages to get data from |
+
+#### getUserAccessLog(pages, roles_ual, role_page_chunk) -> UserAccessLog[] | WindowsError
+
+Parse the User Access Log (UAL) database on Windows Servers. This database
+contains logon information for users on the system.\
+It is **not** related to M365 UAL (Unified Audit Logging)!
+
+This function expects the UserAccessLogging class to be initialized with the Current.mdb or `{GUID}.mdb` database otherwise it will return no results.
+
+You may provide an optional UserAccessLogging associated with SystemIdentity.mdb to perform RoleID lookups. Otherwise this table will parse the Current.mdb or `{GUID}.mdb` database.
+You may also customize the number of pages that should be used when doing RoleID lookups, by default 30 pages will used.
+
+| Param           | Type              | Description                                                                                                                    |
+| --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| pages           | number[]          | Array of pages to get data from                                                                                                |
+| roles_ual       | UserAccessLogging | Optional UserAccessLogging object that was initialized with the file SystemIdentity.mdb. Can be used to perform RoleID lookups |
+| role_page_chunk | number            | Number of pages that should be submitted when doing RoleID lookups. By default 30 page chunks will be used to do lookup        |
 
 ### userAccessLog(alt_dir) -> UserAccessLog[] | WindowsError
 

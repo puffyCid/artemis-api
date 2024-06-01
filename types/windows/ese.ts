@@ -1,4 +1,4 @@
-/** Generic Interface for dumpting ESE tables */
+/** Generic Interface for dumping ESE tables */
 export interface EseTable {
   column_type: ColumnType;
   column_name: string;

@@ -59,7 +59,7 @@ export class Updates extends EseDatabase {
         `tbHistory info object not initialized property. Table name is empty`,
       );
     }
-    const rows = this.getRows(pages, this.info, this.table);
+    const rows = this.getRows(pages, this.info);
     if (rows instanceof WindowsError) {
       return rows;
     }

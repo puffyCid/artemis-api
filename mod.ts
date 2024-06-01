@@ -28,7 +28,6 @@ export { getMacho } from "./src/macos/macho.ts";
 export { getPlist } from "./src/macos/plist.ts";
 export {
   getUnifiedLog,
-  setupUnifiedLogParser,
 } from "./src/macos/unifiedlogs.ts";
 export {
   getSafariDownloads,
@@ -140,7 +139,4 @@ export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
 export { getChocolateyInfo } from "./src/windows/chocolatey.ts";
 export { logonsWindows } from "./src/windows/eventlogs/logons.ts";
 export { getShellItem } from "./src/windows/shellitems.ts";
-export { userAccessLog } from "./src/windows/ese/ual.ts";
-export { parseTable } from "./src/windows/ese.ts";
-export { updateHistory } from "./src/windows/ese/updates.ts";
 export { getWmiPersist } from "./src/windows/wmi.ts";

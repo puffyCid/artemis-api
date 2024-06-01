@@ -15,6 +15,7 @@ interface RoleIds {
  */
 export class UserAccessLogging extends EseDatabase {
   private info: TableInfo;
+  /**Pages associated with the table */
   pages: number[];
 
   /**
@@ -51,7 +52,7 @@ export class UserAccessLogging extends EseDatabase {
         `RoleIds info object not initialized property. Table name is empty`,
       );
     }
-    const rows = this.getRows(pages, this.info, "ROLE_IDS");
+    const rows = this.getRows(pages, this.info);
     if (rows instanceof WindowsError) {
       return rows;
     }
@@ -77,7 +78,7 @@ export class UserAccessLogging extends EseDatabase {
         `Clients info object not initialized property. Table name is empty`,
       );
     }
-    const rows = this.getRows(pages, this.info, "CLIENTS");
+    const rows = this.getRows(pages, this.info);
     if (rows instanceof WindowsError) {
       return rows;
     }
