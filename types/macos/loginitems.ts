@@ -12,9 +12,9 @@
  */
 export interface LoginItems {
   /**Path to file to run */
-  path: string[];
+  path: string;
   /**Path represented as Catalog Node ID */
-  cnid_path: number[];
+  cnid_path: string;
   /**Created timestamp of target file in UNIXEPOCH seconds */
   created: number;
   /**Path to the volume of target file */
@@ -30,7 +30,7 @@ export interface LoginItems {
   /**Created timestamp of volume in UNIXEPOCH seconds */
   volume_created: number;
   /**Volume Property flags */
-  volume_flag: number[];
+  volume_flags: VolumeFlags[];
   /**Flag if volume if the root filesystem */
   volume_root: boolean;
   /**Localized name of target file */
@@ -40,7 +40,7 @@ export interface LoginItems {
   /**Read-Only security extension of target file */
   security_extension_ro: string;
   /**File property flags */
-  target_flags: number[];
+  target_flags: TargetFlags[];
   /**Username associated with `Bookmark` */
   username: string;
   /**Folder index number associated with target file */
@@ -48,7 +48,7 @@ export interface LoginItems {
   /**UID associated with `LoginItem` */
   uid: number;
   /**`LoginItem` creation flags */
-  creation_options: number;
+  creation_options: CreationFlags[];
   /**Is `LoginItem` bundled in app */
   is_bundled: boolean;
   /**App ID associated with `LoginItem` */
@@ -61,4 +61,90 @@ export interface LoginItems {
   file_ref_flag: boolean;
   /**Path to `LoginItem` source */
   source_path: string;
+}
+
+export enum TargetFlags {
+  RegularFile = "RegularFile",
+  Directory = "Directory",
+  SymbolicLink = "SymbolicLink",
+  Volume = "Volume",
+  Package = "Package",
+  SystemImmutable = "SystemImmutable",
+  UserImmutable = "UserImmutable",
+  Hidden = "Hidden",
+  HasHiddenExtension = "HasHiddenExtension",
+  Application = "Application",
+  Compressed = "Compressed",
+  CanSetHiddenExtension = "CanSetHiddenExtension",
+  Readable = "Readable",
+  Writable = "Writable",
+  Executable = "Executable",
+  AliasFile = "AliasFile",
+  MountTrigger = "MountTrigger",
+}
+
+export enum CreationFlags {
+  MinimalBookmark = "MinimalBookmark",
+  SuitableBookmark = "SuitableBookmark",
+  SecurityScope = "SecurityScope",
+  SecurityScopeAllowOnlyReadAccess = "SecurityScopeAllowOnlyReadAccess",
+  WithoutImplicitSecurityScope = "WithoutImplicitSecurityScope",
+  PreferFileIDResolutionMask = "PreferFileIDResolutionMask",
+}
+
+export enum VolumeFlags {
+  Local = "Local",
+  Automount = "Automount",
+  DontBrowse = "DontBrowse",
+  ReadOnly = "ReadOnly",
+  Quarantined = "Quarantined",
+  Ejectable = "Ejectable",
+  Removable = "Removable",
+  Internal = "Internal",
+  External = "External",
+  DiskImage = "DiskImage",
+  FileVault = "FileVault",
+  LocaliDiskMirror = "LocaliDiskMirror",
+  Ipod = "Ipod",
+  Idisk = "Idisk",
+  Cd = "Cd",
+  Dvd = "Dvd",
+  DeviceFileSystem = "DeviceFileSystem",
+  TimeMachine = "TimeMachine",
+  Airport = "Airport",
+  VideoDisk = "VideoDisk",
+  DvdVideo = "DvdVideo",
+  BdVideo = "BdVideo",
+  MobileTimeMachine = "MobileTimeMachine",
+  NetworkOptical = "NetworkOptical",
+  BeingRepaired = "BeingRepaired",
+  Unmounted = "Unmounted",
+  SupportsPersistentIds = "SupportsPersistentIds",
+  SupportsSearchFs = "SupportsSearchFs",
+  SupportsExchange = "SupportsExchange",
+  SupportsSymbolicLinks = "SupportsSymbolicLinks",
+  SupportsDenyModes = "SupportsDenyModes",
+  SupportsCopyFile = "SupportsCopyFile",
+  SupportsReadDirAttr = "SupportsReadDirAttr",
+  SupportsJournaling = "SupportsJournaling",
+  SupportsRename = "SupportsRename",
+  SupportsFastStatFs = "SupportsFastStatFs",
+  SupportsCaseSensitiveNames = "SupportsCaseSensitiveNames",
+  SupportsCasePreservedNames = "SupportsCasePreservedNames",
+  SupportsFlock = "SupportsFlock",
+  SupportsNoRootDirectoryTimes = "SupportsNoRootDirectoryTimes",
+  SupportsExtendedSecurity = "SupportsExtendedSecurity",
+  Supports2TbFileSize = "Supports2TbFileSize",
+  SupportsHardLinks = "SupportsHardLinks",
+  SupportsMandatoryByteRangeLocks = "SupportsMandatoryByteRangeLocks",
+  SupportsPathFromId = "SupportsPathFromId",
+  Journaling = "Journaling",
+  SupportsSparseFiles = "SupportsSparseFiles",
+  SupportsZeroRunes = "SupportsZeroRunes",
+  SupportsVolumeSizes = "SupportsVolumeSizes",
+  SupportsRemoteEvents = "SupportsRemoteEvents",
+  SupportsHiddenFiles = "SupportsHiddenFiles",
+  SupportsDecmpFsCompression = "SupportsDecmpFsCompression",
+  Has64BitObjectIds = "Has64BitObjectIds",
+  PropertyFlagsAll = "PropertyFlagsAll",
 }
