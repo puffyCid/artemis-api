@@ -44,7 +44,7 @@ The above code initializes a new EseDatabase instance that we will use to parse 
 
 ### Extract the Catalog
 
-Before we can do any parsing of the ESE database must get the Catalog associated with the ESE database.
+Before we can do any parsing of the database we must get the Catalog.
 The Catalog is a special table in all ESE databases that contains metadata on all tables and columns in the database.
 
 There are 4 high level steps required in order to extract data from an ESE database:
@@ -140,7 +140,7 @@ Do not worry too much about the large amount of objects, artemis will handle all
 
 ### Getting Table information
 
-Since we are parsing the Current.mdb database, we are mainly interesting the CLIENTS table.
+Since we are parsing the Current.mdb database, we are mainly interested the CLIENTS table.
 
 The code below shows how to extract metadata associated with the CLIENTS table.
 
@@ -204,7 +204,7 @@ function main() {
 main();
 ```
 
-The code above will now also get all of the pages associated with the table CLIENTS!
+The code above will now get all of the pages associated with the table CLIENTS!
 
 ### Getting our data
 
