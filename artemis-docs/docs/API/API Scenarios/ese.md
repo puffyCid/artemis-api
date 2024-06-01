@@ -14,7 +14,7 @@ However, these database files may become very large. For example, the Windows Se
 
 So we must careful that we do not read all of the data into memory.
 
-Artemis provides a TypeScript EseDatabase class to help us parse and interact with ESE databases and giving us flexibility on much systems resources we can use.
+Artemis provides a TypeScript EseDatabase class to help us parse and interact with ESE databases.
 
 ## ESE Parsing Guide
 
