@@ -15,6 +15,12 @@ Protection (SIP) protected files.
 Since a filelisting can be extremely large, every 100k entries artemis will
 output the data and then continue.
 
+Artemis will skip
+[firmlink](http://www.swiftforensics.com/2019/10/macos-1015-volumes-firmlink-magic.html)
+paths on the system by checking for registered firmlink paths at:
+
+- /usr/share/firmlinks
+
 Other Parsers:
 
 - Any tool that can recursively list files and directories
