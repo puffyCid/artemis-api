@@ -15,6 +15,7 @@ import { decode } from "../../encoding/base64.ts";
 import { EncodingError } from "../../encoding/errors.ts";
 import { parseRequirementBlob } from "../codesigning/blob.ts";
 import { SigningError } from "../codesigning/errors.ts";
+import { unixEpochToISO } from "../../time/conversion.ts";
 
 /**
  * Query all `TCC.db` files on the system. `TCC.db` contains granted permissions for applications.
@@ -82,11 +83,11 @@ function getTccData(data: Record<string, unknown>[], path: string): TccValues {
       indirect_object_identifier: entry["indirect_object_identifier"] as string,
       indirect_object_code_identity: undefined,
       flags: entry["flags"] as number | undefined,
-      last_modified: entry["last_modified"] as number,
+      last_modified: unixEpochToISO(entry["last_modified"] as number),
       pid: entry["pid"] as number | undefined,
       pid_version: entry["pid_version"] as number | undefined,
       boot_uuid: entry["boot_uuid"] as string,
-      last_reminded: entry["last_reminded"] as number,
+      last_reminded: unixEpochToISO(entry["last_reminded"] as number),
     };
 
     if (entry["csreq"] != undefined) {

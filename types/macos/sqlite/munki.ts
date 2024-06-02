@@ -10,8 +10,8 @@ export interface MunkiApplicationUsage {
   app_version: string;
   /**Path the application */
   app_path: string;
-  /**Last time of the event in UNIXEPOCH seconds */
-  last_time: number;
+  /**Last time of the event */
+  last_time: string;
   /**Number of times of the event */
   number_times: number;
 }

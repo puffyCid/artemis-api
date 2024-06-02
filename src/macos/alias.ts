@@ -11,7 +11,7 @@ import {
   nomUnsignedTwoBytes,
 } from "../nom/helpers.ts";
 import { take } from "../nom/parsers.ts";
-import { hfsToUnixEpoch } from "../time/conversion.ts";
+import { hfsToUnixEpoch, unixEpochToISO } from "../time/conversion.ts";
 import { MacosError } from "./errors.ts";
 
 /**
@@ -88,7 +88,7 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   // Get the volume name
   const volume_name = extractUtf8String(string_data.nommed as Uint8Array);
 
-  const created_data = nomSignedFourBytes(
+  const created_data = nomUnsignedFourBytes(
     alias_data.remaining as Uint8Array,
     Endian.Be,
   );
@@ -257,13 +257,13 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   const alias: Alias = {
     kind,
     volume_name,
-    volume_created: hfsToUnixEpoch(volume_created),
+    volume_created: unixEpochToISO(hfsToUnixEpoch(volume_created)),
     filesystem_type,
     disk_type,
     cnid,
     target_name,
     target_cnid,
-    target_created: hfsToUnixEpoch(target_created),
+    target_created: unixEpochToISO(hfsToUnixEpoch(target_created)),
     target_creator_code,
     target_type_code,
     number_directory_levels_from_alias_to_root,

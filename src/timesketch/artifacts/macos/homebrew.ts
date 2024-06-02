@@ -1,6 +1,5 @@
 import { HomebrewReceipt } from "../../../../types/macos/homebrew.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline Homebrew Packages info
@@ -14,7 +13,7 @@ export function timelineHomebrew(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.installTime),
+      datetime: item.installTime,
       timestamp_desc: "Homebrew Package Installed",
       message: `${item.name} - ${item.description}`,
       data_type: "macos:homebrew:package",
@@ -22,8 +21,8 @@ export function timelineHomebrew(
     };
 
     entry = { ...entry, ...item };
-    entry["installTime"] = unixEpochToISO(item.installTime);
-    entry["sourceModified"] = unixEpochToISO(item.sourceModified);
+    entry["installTime"] = item.installTime;
+    entry["sourceModified"] = item.sourceModified;
 
     entries.push(entry);
   }

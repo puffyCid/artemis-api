@@ -8,7 +8,7 @@ import {
   QuarantineEvent,
   QuarantineType,
 } from "../../../types/macos/sqlite/quarantine.ts";
-import { cocoatimeToUnixEpoch } from "../../time/conversion.ts";
+import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
 
 /**
  * Function to extract macOS Quarantine Events
@@ -53,9 +53,9 @@ export function quarantineEvents(
     for (const value of results) {
       const entry: QuarantineEvent = {
         id: value["LSQuarantineEventIdentifier"] as string,
-        timestamp: cocoatimeToUnixEpoch(
+        timestamp: unixEpochToISO(cocoatimeToUnixEpoch(
           value["LSQuarantineTimeStamp"] as number,
-        ),
+        )),
         agent_name: value["LSQuarantineAgentName"] as string,
         type: quarantineType(value["LSQuarantineTypeNumber"] as number),
         bundle_id:
