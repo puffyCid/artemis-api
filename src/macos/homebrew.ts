@@ -5,6 +5,7 @@ import {
 } from "../../types/macos/homebrew.ts";
 import { FileError } from "../filesystem/errors.ts";
 import { glob, readTextFile } from "../filesystem/files.ts";
+import { unixEpochToISO } from "../time/conversion.ts";
 
 /**
  * Function to get Homebrew info on installed packages and Casks
@@ -53,8 +54,8 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
       const brew_info: HomebrewReceipt = {
         installedAsDependency: false,
         installedOnRequest: false,
-        installTime: 0,
-        sourceModified: 0,
+        installTime: "",
+        sourceModified: "",
         version: "",
         name: "",
         description: "",
@@ -108,11 +109,13 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
         }
         const receipt_data = JSON.parse(receipt);
 
-        brew_info.installTime = receipt_data["time"];
+        brew_info.installTime = unixEpochToISO(receipt_data["time"]);
         brew_info.installedAsDependency =
           receipt_data["installed_as_dependency"];
         brew_info.installedOnRequest = receipt_data["installed_on_request"];
-        brew_info.sourceModified = receipt_data["source_modified_time"];
+        brew_info.sourceModified = unixEpochToISO(
+          receipt_data["source_modified_time"],
+        );
       }
 
       brew_receipts.push(brew_info);

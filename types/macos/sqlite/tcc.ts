@@ -18,11 +18,11 @@ export interface TccData {
   indirect_object_identifier: string;
   indirect_object_code_identity: SingleRequirement | undefined;
   flags: number | undefined;
-  last_modified: number;
+  last_modified: string;
   pid: number | undefined;
   pid_version: number | undefined;
   boot_uuid: string;
-  last_reminded: number;
+  last_reminded: string;
 }
 
 export enum Reason {

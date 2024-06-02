@@ -124,9 +124,9 @@ export interface RawSafariDownloads {
   /**Download finish date in UNIXEPOCH seoconds */
   download_entry_finish: number;
   /**Path to file to run */
-  path: string[];
+  path: string;
   /**Path represented as Catalog Node ID */
-  cnid_path: number[];
+  cnid_path: number;
   /**Created timestamp of target file in UNIXEPOCH seconds */
   created: number;
   /**Path to the volume of target file */
@@ -142,7 +142,7 @@ export interface RawSafariDownloads {
   /**Created timestamp of volume in UNIXEPOCH seconds */
   volume_created: number;
   /**Volume Property flags */
-  volume_flag: number[];
+  volume_flag: VolumeFlags[];
   /**Flag if volume if the root filesystem */
   volume_root: boolean;
   /**Localized name of target file */
@@ -152,7 +152,7 @@ export interface RawSafariDownloads {
   /**Read-Only security extension of target file */
   security_extension_ro: string;
   /**File property flags */
-  target_flags: number[];
+  target_flags: TargetFlags[];
   /**Username associated with `Bookmark` */
   username: string;
   /**Folder index number associated with target file */
@@ -160,7 +160,7 @@ export interface RawSafariDownloads {
   /**UID associated with `LoginItem` */
   uid: number;
   /**`LoginItem` creation flags */
-  creation_options: number;
+  creation_options: CreationFlags[];
   /**Is target file executable */
   is_executable: boolean;
   /**Does target file have file reference flag */

@@ -4,7 +4,7 @@ export interface MacosQuarantine {
 }
 export interface QuarantineEvent {
   id: string;
-  timestamp: number;
+  timestamp: string;
   bundle_id?: string;
   agent_name: string;
   url_string?: string;

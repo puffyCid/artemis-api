@@ -1,8 +1,8 @@
 export interface HomebrewReceipt extends HomebrewFormula {
   installedAsDependency: boolean;
   installedOnRequest: boolean;
-  installTime: number;
-  sourceModified: number;
+  installTime: string;
+  sourceModified: string;
   name: string;
 }
 

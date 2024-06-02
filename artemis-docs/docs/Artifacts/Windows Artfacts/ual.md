@@ -11,12 +11,6 @@ The Windows User Access Log (UAL) is an ESE database containing logon activity
 to a system. This database only exists on Windows Servers. Artemis supports
 parsing both unlocked and locked UAL databases.
 
-By default artemis will try to parse the database files at:
-
-- System32\\LogFiles\\Sum
-
-However, you may provide an optional alternative path to the UAL databases.
-
 This database is **not** related to to the M365 UAL (Unified Audit Logging).
 
 # Collection
@@ -27,15 +21,52 @@ keys.
 # Sample API Script
 
 ```typescript
-import {
-  userAccessLog,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { FileError } from "../../Projects/artemis-api/src/filesystem/errors.ts";
+import { glob } from "../../Projects/artemis-api/src/filesystem/files.ts";
+import { WindowsError } from "../../Projects/artemis-api/src/windows/errors.ts";
+import { UserAccessLogging } from "../../Projects/artemis-api/src/windows/ese/ual.ts";
 
-async function main() {
-  const results = userAccessLog();
+function main() {
+  const glob_path = "C:\\System32\\LogFiles\\Sum\\*.mdb";
+  const paths = glob(glob_path);
+  if (paths instanceof FileError) {
+    return;
+  }
 
-  console.log(results);
+  let role = undefined;
+  for (const path of paths) {
+    if (path.filename != "SystemIdentity.mdb") {
+      continue;
+    }
+
+    const ual = new UserAccessLogging(path.full_path);
+    role = ual;
+  }
+
+  if(role === undefined) {
+    return;
+  }
+
+  console.log(role.pages);
+
+  for (const path of paths) {
+    if (path.filename === "SystemIdentity.mdb") {
+      continue;
+    }
+    console.log(`Parsing: ${path.full_path}`);
+
+    const clients = new UserAccessLogging(path.full_path);
+
+    const data = clients.getUserAccessLog(clients.pages, role);
+    if (data instanceof WindowsError) {
+      console.error(data);
+      continue;
+    }
+    console.log(data.length);
+  }
 }
+
+main();
 ```
 
 # Output Structure

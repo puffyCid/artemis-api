@@ -11,13 +11,13 @@
 export interface Alias {
   kind: string;
   volume_name: string;
-  volume_created: number;
+  volume_created: string;
   filesystem_type: number;
   disk_type: number;
   cnid: number;
   target_name: string;
   target_cnid: number;
-  target_created: number;
+  target_created: string;
   target_creator_code: number;
   target_type_code: number;
   number_directory_levels_from_alias_to_root: number;
