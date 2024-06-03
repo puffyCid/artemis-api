@@ -5,11 +5,12 @@ import {
   RawFirefoxDownloads,
   RawFirefoxHistory,
 } from "../../types/applications/firefox.ts";
-import { GlobInfo } from "../../types/filesystem/globs.d.ts";
+import { GlobInfo } from "../../types/filesystem/globs.ts";
 import { getEnvValue } from "../environment/env.ts";
 import { FileError } from "../filesystem/errors.ts";
 import { glob, readTextFile } from "../filesystem/mod.ts";
 import { PlatformType } from "../system/systeminfo.ts";
+import { unixEpochToISO } from "../time/conversion.ts";
 import { ApplicationError } from "./errors.ts";
 import { querySqlite } from "./sqlite.ts";
 
@@ -199,15 +200,15 @@ function getCookies(
     };
 
     if (entry["lastAccessed"] != undefined) {
-      cookie_entry.last_accessed = Number(
+      cookie_entry.last_accessed = unixEpochToISO(Number(
         BigInt(entry["lastAccessed"] as bigint) / adjust_time,
-      );
+      ));
     }
 
     if (entry["creationTime"] != undefined) {
-      cookie_entry.creation_time = Number(
+      cookie_entry.creation_time = unixEpochToISO(Number(
         BigInt(entry["creationTime"] as bigint) / adjust_time,
-      );
+      ));
     }
 
     cookie_array.push(cookie_entry);

@@ -1,6 +1,6 @@
-import { FileInfo } from "../../types/filesystem/directory.d.ts";
-import { Hashes } from "../../types/filesystem/files.d.ts";
-import { GlobInfo } from "../../types/filesystem/globs.d.ts";
+import { FileInfo } from "../../types/filesystem/directory.ts";
+import { Hashes } from "../../types/filesystem/files.ts";
+import { GlobInfo } from "../../types/filesystem/globs.ts";
 import { FileError } from "./errors.ts";
 
 /**

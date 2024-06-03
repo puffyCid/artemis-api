@@ -136,10 +136,10 @@ export interface ChromiumCookies {
   /**This value is currently Base64 encoded */
   encrypted_value: string;
   path: string;
-  expires: number;
+  expires: string;
   is_secure: boolean;
   is_httponly: boolean;
-  last_access: number;
+  last_access: string;
   has_expires: boolean;
   is_persistent: boolean;
   priority: number;
@@ -147,7 +147,7 @@ export interface ChromiumCookies {
   source_scheme: number;
   source_port: number;
   is_same_party: number;
-  last_update: number;
+  last_update: string;
   db_path: string;
 }
 
@@ -155,8 +155,8 @@ export interface ChromiumAutofill {
   name?: string;
   value?: string;
   value_lower?: string;
-  date_created: number;
-  date_last_used: number;
+  date_created: string;
+  date_last_used: string;
   /**Default is 1 */
   count: number;
   db_path: string;
@@ -171,9 +171,9 @@ export interface ChromiumBookmarks {
 
 export interface ChromiumBookmarkChildren {
   /**In UNIXEPOCH seconds */
-  date_added: number;
+  date_added: string;
   /**In UNIXEPOCH seconds */
-  date_last_used: number;
+  date_last_used: string;
   guid: string;
   id: number;
   name: string;
@@ -190,7 +190,7 @@ export interface ChromiumLogins {
   password_value?: string;
   submit_element?: string;
   signon_realm: string;
-  date_created: number;
+  date_created: string;
   blacklisted_by_user: number;
   scheme: number;
   password_type?: number;
@@ -203,12 +203,12 @@ export interface ChromiumLogins {
   generation_upload_status?: number;
   possible_username_pairs?: string;
   id: number;
-  date_last_used: number;
+  date_last_used: string;
   moving_blocked_for?: string;
-  date_password_modified: number;
+  date_password_modified: string;
   sender_email?: string;
   sender_name?: string;
-  date_received?: number;
+  date_received?: string;
   sharing_notification_display: number;
   keychain_identifier?: string;
   sender_profile_image_url?: string;
@@ -221,25 +221,25 @@ export interface ChromiumLogins {
 export interface Dips {
   site: string;
   /**In UNIXEPOCH seconds */
-  first_site_storage?: number | null;
+  first_site_storage?: string | null;
   /**In UNIXEPOCH seconds */
-  last_site_storage?: number | null;
+  last_site_storage?: string | null;
   /**In UNIXEPOCH seconds */
-  first_user_interaction?: number | null;
+  first_user_interaction?: string | null;
   /**In UNIXEPOCH seconds */
-  last_user_interaction?: number | null;
+  last_user_interaction?: string | null;
   /**In UNIXEPOCH seconds */
-  first_stateful_bounce?: number | null;
+  first_stateful_bounce?: string | null;
   /**In UNIXEPOCH seconds */
-  last_stateful_bounce?: number | null;
+  last_stateful_bounce?: string | null;
   /**In UNIXEPOCH seconds */
-  first_bounce?: number | null;
+  first_bounce?: string | null;
   /**In UNIXEPOCH seconds */
-  last_bounce?: number | null;
+  last_bounce?: string | null;
   /**In UNIXEPOCH seconds */
-  first_web_authn_assertion: number | null;
+  first_web_authn_assertion: string | null;
   /**In UNIXEPOCH seconds */
-  last_web_authn_assertion: number | null;
+  last_web_authn_assertion: string | null;
   /**Path to DIPS database */
   path: string;
 }

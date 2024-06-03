@@ -12,12 +12,12 @@ import {
   RawChromiumDownloads,
   RawChromiumHistory,
 } from "../../types/applications/chromium.ts";
-import { GlobInfo } from "../../types/filesystem/globs.d.ts";
+import { GlobInfo } from "../../types/filesystem/globs.ts";
 import { getEnvValue } from "../environment/env.ts";
 import { FileError } from "../filesystem/errors.ts";
 import { glob, readTextFile } from "../filesystem/files.ts";
 import { PlatformType } from "../system/systeminfo.ts";
-import { webkitToUnixEpoch } from "../time/conversion.ts";
+import { unixEpochToISO, webkitToUnixEpoch } from "../time/conversion.ts";
 import { ApplicationError } from "./errors.ts";
 import { querySqlite } from "./sqlite.ts";
 
@@ -202,14 +202,14 @@ function getCookies(
       value: entry["value"] as string,
       encrypted_value: entry["encrypted_value"] as string,
       path: entry["path"] as string,
-      expires: webkitToUnixEpoch(
+      expires: unixEpochToISO(webkitToUnixEpoch(
         Number(BigInt(entry["expires_utc"] as bigint) / adjust_time),
-      ),
+      )),
       is_secure: !!(entry["is_secure"] as number),
       is_httponly: !!(entry["is_httponly"] as number),
-      last_access: webkitToUnixEpoch(
+      last_access: unixEpochToISO(webkitToUnixEpoch(
         Number(BigInt(entry["last_access_utc"] as bigint) / adjust_time),
-      ),
+      )),
       has_expires: !!(entry["has_expires"] as number),
       is_persistent: !!(entry["is_persistent"] as number),
       priority: entry["priority"] as number,
@@ -217,9 +217,9 @@ function getCookies(
       source_scheme: entry["source_scheme"] as number,
       source_port: entry["source_port"] as number,
       is_same_party: entry["is_same_party"] as number,
-      last_update: webkitToUnixEpoch(
+      last_update: unixEpochToISO(webkitToUnixEpoch(
         Number(BigInt(entry["last_update_utc"] as bigint) / adjust_time),
-      ),
+      )),
       db_path: path,
     };
     cookie_array.push(cookie_entry);
@@ -315,8 +315,8 @@ function getAutofill(
     const fill_entry: ChromiumAutofill = {
       name: entry["name"] as string | undefined,
       value: entry["value"] as string | undefined,
-      date_created: entry["date_created"] as number,
-      date_last_used: entry["date_last_used"] as number,
+      date_created: unixEpochToISO(entry["date_created"] as number),
+      date_last_used: unixEpochToISO(entry["date_last_used"] as number),
       count: entry["count"] as number,
       db_path: path,
     };
@@ -436,12 +436,12 @@ function getBookmarkChildren(
   for (const entry of book) {
     if (typeof entry["children"] === "undefined") {
       const book_entry: ChromiumBookmarkChildren = {
-        date_added: webkitToUnixEpoch(
+        date_added: unixEpochToISO(webkitToUnixEpoch(
           Number(BigInt(entry["date_added"] as string) / adjust_time),
-        ),
-        date_last_used: webkitToUnixEpoch(
+        )),
+        date_last_used: unixEpochToISO(webkitToUnixEpoch(
           Number(BigInt(entry["date_last_used"] as string) / adjust_time),
-        ),
+        )),
         guid: entry["guid"] as string,
         id: Number(entry["id"] as string),
         name: entry["name"] as string,
@@ -617,18 +617,18 @@ function getLogins(
     const login_entry: ChromiumLogins = {
       origin_url: entry["origin_url"] as string,
       signon_realm: entry["signon_realm"] as string,
-      date_created: webkitToUnixEpoch(
+      date_created: unixEpochToISO(webkitToUnixEpoch(
         Number(BigInt(entry["date_created"] as bigint) / adjust_time),
-      ),
+      )),
       blacklisted_by_user: entry["blacklisted_by_user"] as number,
       scheme: entry["scheme"] as number,
       id: entry["id"] as number,
-      date_last_used: webkitToUnixEpoch(
+      date_last_used: unixEpochToISO(webkitToUnixEpoch(
         Number(BigInt(entry["date_last_used"] as bigint) / adjust_time),
-      ),
-      date_password_modified: webkitToUnixEpoch(
+      )),
+      date_password_modified: unixEpochToISO(webkitToUnixEpoch(
         Number(BigInt(entry["date_password_modified"] as bigint) / adjust_time),
-      ),
+      )),
       sharing_notification_display: entry[
         "sharing_notification_display"
       ] as number,
@@ -651,11 +651,11 @@ function getLogins(
       password_element: entry["password_element"] as string | undefined,
       password_type: entry["password_type"] as number | undefined,
       password_value: entry["password_value"] as string | undefined,
-      date_received: webkitToUnixEpoch(
+      date_received: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["date_received"] === "undefined"
           ? 0
           : Number(BigInt(entry["date_received"] as bigint) / adjust_time),
-      ),
+      )),
       sender_email: entry["sender_email"] as string | undefined,
       sender_name: entry["sender_name"] as string | undefined,
       skip_zero_click: entry["skip_zero_click"] as number | undefined,
@@ -822,35 +822,35 @@ function getDips(
     const dips_entry: Dips = {
       site: entry["site"] as string,
       path,
-      first_bounce: webkitToUnixEpoch(
+      first_bounce: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["first_bounce_time"] === "undefined" ||
           entry["first_bounce_time"] === null
           ? 0
           : Number(BigInt(entry["first_bounce_time"] as bigint) / adjust_time),
-      ),
-      last_bounce: webkitToUnixEpoch(
+      )),
+      last_bounce: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["last_bounce_time"] === "undefined" ||
           entry["last_bounce_time"] === null
           ? 0
           : Number(BigInt(entry["last_bounce_time"] as bigint) / adjust_time),
-      ),
-      first_site_storage: webkitToUnixEpoch(
+      )),
+      first_site_storage: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["first_site_storage_time"] === "undefined" ||
           entry["first_site_storage_time"] === null
           ? 0
           : Number(
             BigInt(entry["first_site_storage_time"] as bigint) / adjust_time,
           ),
-      ),
-      first_stateful_bounce: webkitToUnixEpoch(
+      )),
+      first_stateful_bounce: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["first_stateful_bounce_time"] === "undefined" ||
           entry["first_stateful_bounce_time"] === null
           ? 0
           : Number(
             BigInt(entry["first_stateful_bounce_time"] as bigint) / adjust_time,
           ),
-      ),
-      first_user_interaction: webkitToUnixEpoch(
+      )),
+      first_user_interaction: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["first_user_interaction_time"] === "undefined" ||
           entry["first_user_interaction_time"] === null
           ? 0
@@ -858,43 +858,43 @@ function getDips(
             BigInt(entry["first_user_interaction_time"] as bigint) /
               adjust_time,
           ),
-      ),
-      first_web_authn_assertion: webkitToUnixEpoch(
+      )),
+      first_web_authn_assertion: unixEpochToISO(webkitToUnixEpoch(
         entry["first_web_authn_assertion_time"] === null ? 0 : Number(
           BigInt(entry["first_web_authn_assertion_time"] as bigint) /
             adjust_time,
         ),
-      ),
-      last_site_storage: webkitToUnixEpoch(
+      )),
+      last_site_storage: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["last_site_storage_time"] === "undefined" ||
           entry["last_site_storage_time"] === null
           ? 0
           : Number(
             BigInt(entry["last_site_storage_time"] as bigint) / adjust_time,
           ),
-      ),
-      last_stateful_bounce: webkitToUnixEpoch(
+      )),
+      last_stateful_bounce: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["last_stateful_bounce_time"] === "undefined" ||
           entry["last_stateful_bounce_time"] === null
           ? 0
           : Number(
             BigInt(entry["last_stateful_bounce_time"] as bigint) / adjust_time,
           ),
-      ),
-      last_user_interaction: webkitToUnixEpoch(
+      )),
+      last_user_interaction: unixEpochToISO(webkitToUnixEpoch(
         typeof entry["last_user_interaction_time"] === "undefined" ||
           entry["last_user_interaction_time"] === null
           ? 0
           : Number(
             BigInt(entry["last_user_interaction_time"] as bigint) / adjust_time,
           ),
-      ),
-      last_web_authn_assertion: webkitToUnixEpoch(
+      )),
+      last_web_authn_assertion: unixEpochToISO(webkitToUnixEpoch(
         entry["last_web_authn_assertion_time"] === null ? 0 : Number(
           BigInt(entry["last_web_authn_assertion_time"] as bigint) /
             adjust_time,
         ),
-      ),
+      )),
     };
     dips_array.push(dips_entry);
   }
