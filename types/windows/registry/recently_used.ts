@@ -11,12 +11,12 @@ export interface MruValues {
   filename: string;
   /**Path to MRU entry */
   path: string;
-  /**Created time of MRU entry in UNIXEPOCH seconds */
-  created: number;
-  /**Modified time of MRU entry in UNIXEPOCH seconds */
-  modified: number;
-  /**Accessed time of MRU entry in UNIXEPOCH seconds */
-  accessed: number;
+  /**Created time of MRU entry */
+  created: string;
+  /**Modified time of MRU entry */
+  modified: string;
+  /**Accessed time of MRU entry */
+  accessed: string;
   /**All ShellItems that make up the MRU entry */
   items: ShellItems[];
 }

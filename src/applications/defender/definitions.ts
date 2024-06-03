@@ -26,7 +26,7 @@ import {
   Definition,
   DefinitionRule,
   RuleType,
-} from "../../../types/windows/defender/definitions.ts";
+} from "../../../types/applications/definitions.ts";
 import { extractStrings } from "./sigs/hstr.ts";
 import { encode } from "../../encoding/base64.ts";
 import { ApplicationError } from "../errors.ts";
