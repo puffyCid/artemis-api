@@ -10,7 +10,7 @@ import { formatGuid } from "../../encoding/uuid.ts";
 import { getEnvValue } from "../../environment/env.ts";
 import { Endian } from "../../nom/helpers.ts";
 import { nomUnsignedFourBytes, take } from "../../nom/mod.ts";
-import { filetimeToUnixEpoch } from "../../time/conversion.ts";
+import { filetimeToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
 import { WindowsError } from "../errors.ts";
 import { EseDatabase } from "../ese.ts";
 
@@ -94,7 +94,7 @@ export class Updates extends EseDatabase {
       const update: UpdateHistory = {
         client_id: "",
         support_url: "",
-        date: 0,
+        date: "",
         description: "",
         operation: Operation.Unknown,
         server_selection: ServerSelection.Unknown,
@@ -119,7 +119,9 @@ export class Updates extends EseDatabase {
         } else if (column.column_name === "MoreInfoUrl") {
           update.more_info = column.column_data;
         } else if (column.column_name === "Date") {
-          update.date = filetimeToUnixEpoch(BigInt(column.column_data));
+          update.date = unixEpochToISO(
+            filetimeToUnixEpoch(BigInt(column.column_data)),
+          );
         } else if (column.column_name === "Status") {
           switch (column.column_data) {
             case "1": {

@@ -44,5 +44,6 @@ export function extractStrings(data: Uint8Array): string[] | ApplicationError {
     count++;
   }
 
+  console.log(strings);
   return strings;
 }
