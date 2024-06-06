@@ -1,7 +1,7 @@
 export interface UserAccessLog {
   total_accesses: number;
-  last_logon: number;
-  first_logon: number;
+  last_logon: string;
+  first_logon: string;
   ip: string;
   username: string;
   domain: string;

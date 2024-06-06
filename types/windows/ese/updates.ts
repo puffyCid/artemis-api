@@ -1,8 +1,7 @@
 export interface UpdateHistory {
   client_id: string;
   support_url: string;
-  /**Timestamp in UNIXEPOCH seconds */
-  date: number;
+  date: string;
   description: string;
   operation: Operation;
   server_selection: ServerSelection;

@@ -4,6 +4,7 @@ import {
   MruValues,
 } from "../../../types/windows/registry/recently_used.ts";
 import { ShellItems } from "../../../types/windows/shellitems.ts";
+import { unixEpochToISO } from "../../time/conversion.ts";
 import { WindowsError } from "../errors.ts";
 import { getRegistry } from "../registry.ts";
 import { lastVisitMru, openSaveMru } from "./mru/common.ts";
@@ -23,7 +24,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
     );
   }
 
-  const common = openSaveMru(reg_data);
+  const common = openSaveMru(reg_data.registry_entries);
   if (common instanceof WindowsError) {
     return new WindowsError(
       "MRU",
@@ -41,7 +42,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
 
   mrus.push(open_save_mru);
 
-  const last_visit = lastVisitMru(reg_data);
+  const last_visit = lastVisitMru(reg_data.registry_entries);
   if (last_visit instanceof WindowsError) {
     return new WindowsError(
       "MRU",
@@ -57,7 +58,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
 
   mrus.push(last_visit_mru);
 
-  const recent_docs = recentDocs(reg_data);
+  const recent_docs = recentDocs(reg_data.registry_entries);
   if (recent_docs instanceof WindowsError) {
     return new WindowsError(
       "MRU",
@@ -91,9 +92,9 @@ export function assembleMru(items: ShellItems[]): MruValues {
   const entry: MruValues = {
     filename: item.value,
     path: paths.join("\\"),
-    modified: item.modified,
-    created: item.created,
-    accessed: item.accessed,
+    modified: unixEpochToISO(item.modified),
+    created: unixEpochToISO(item.created),
+    accessed: unixEpochToISO(item.accessed),
     items,
   };
 

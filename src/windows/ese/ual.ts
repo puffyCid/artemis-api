@@ -4,6 +4,7 @@ import { UserAccessLog } from "../../../types/windows/ese/ual.ts";
 import { EseTable, TableInfo } from "../../../types/windows/ese.ts";
 import { decode } from "../../encoding/base64.ts";
 import { EncodingError } from "../../encoding/errors.ts";
+import { unixEpochToISO } from "../../time/conversion.ts";
 
 interface RoleIds {
   guid: string;
@@ -204,8 +205,8 @@ export class UserAccessLogging extends EseDatabase {
     for (const row of rows) {
       const ual_log: UserAccessLog = {
         total_accesses: 0,
-        last_logon: 0,
-        first_logon: 0,
+        last_logon: "",
+        first_logon: "",
         ip: "",
         username: "",
         domain: "",
@@ -222,10 +223,10 @@ export class UserAccessLogging extends EseDatabase {
             ual_log.total_accesses = Number(entry.column_data);
             break;
           case "InsertDate":
-            ual_log.first_logon = Number(entry.column_data);
+            ual_log.first_logon = unixEpochToISO(Number(entry.column_data));
             break;
           case "LastAccess":
-            ual_log.last_logon = Number(entry.column_data);
+            ual_log.last_logon = unixEpochToISO(Number(entry.column_data));
             break;
           case "Address":
             ual_log.ip = this.extractIp(entry.column_data);

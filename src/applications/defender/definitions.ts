@@ -26,7 +26,7 @@ import {
   Definition,
   DefinitionRule,
   RuleType,
-} from "../../../types/windows/defender/definitions.ts";
+} from "../../../types/applications/definitions.ts";
 import { extractStrings } from "./sigs/hstr.ts";
 import { encode } from "../../encoding/base64.ts";
 import { ApplicationError } from "../errors.ts";
@@ -50,11 +50,11 @@ export function extractDefenderRules(
   } else if (platform === PlatformType.Windows) {
     let drive = getEnvValue("SystemDrive");
     if (drive === "") {
-      drive = "C";
+      drive = "C:";
     }
 
     const vdm_glob =
-      `${drive}:\\ProgramData\\Microsoft\\Windows Defender\\Definition Updates\\{*\\*.vdm`;
+      `${drive}\\ProgramData\\Microsoft\\Windows Defender\\Definition Updates\\{*\\*.vdm`;
     const glob_paths = glob(vdm_glob);
     if (glob_paths instanceof FileError) {
       return new ApplicationError(
@@ -99,7 +99,7 @@ export function extractDefenderRules(
       const results = extractRules(rules_data);
       if (results instanceof ApplicationError) {
         console.error(
-          `could not extract all rules from path ${entry}: ${results}`,
+          `could not extract all rules from path ${entry}: ${results.cause}`,
         );
         break;
       }
@@ -611,6 +611,7 @@ function getSigValues(
     case RuleType.SIGNATURE_TYPE_CMDHSTR_EXT:
     case RuleType.SIGNATURE_TYPE_DMGHSTR_EXT:
     case RuleType.SIGNATURE_TYPE_MDBHSTR_EXT:
+      // All Rule types above are just strings
       return extractStrings(data);
     case RuleType.SIGNATURE_TYPE_RESERVED:
     case RuleType.SIGNATURE_TYPE_VOLATILE_THREAT_INFO:
