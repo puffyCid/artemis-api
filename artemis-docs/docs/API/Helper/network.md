@@ -68,3 +68,14 @@ submitted to https://endoflife.date.
 | ------- | ------ | ---------------- |
 | name    | string | Software name    |
 | version | string | Software version |
+
+### lookupExtension(id, version, browser) -> CrxResponse | HttpError
+
+Lookup browser extension reports on https://crxcavator.io. Will submit the
+extension ID and version to https://crxcavator.io.
+
+| Param   | Type    | Description                           |
+| ------- | ------- | ------------------------------------- |
+| id      | string  | Extension ID                          |
+| version | string  | Extension version                     |
+| browser | Browser | Browser associated with the extension |
