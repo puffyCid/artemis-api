@@ -21,8 +21,6 @@ export function timelineHomebrew(
     };
 
     entry = { ...entry, ...item };
-    entry["installTime"] = item.installTime;
-    entry["sourceModified"] = item.sourceModified;
 
     entries.push(entry);
   }

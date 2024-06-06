@@ -19,8 +19,8 @@ export interface Spotlight {
   flags: number;
   /**Store ID associated with indexed entry */
   store_id: number;
-  /**Last time Spotlight entry was updated in UNIXEPOCH **microseconds** */
-  last_updated: bigint;
+  /**Last time Spotlight entry was updated */
+  last_updated: string;
   /**Array of properties associated with the entry */
   values: Record<string, SpotlightProperties>;
   /**Location of the Spotlight database that was parsed */

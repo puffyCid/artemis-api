@@ -15,8 +15,8 @@ export interface LoginItems {
   path: string;
   /**Path represented as Catalog Node ID */
   cnid_path: string;
-  /**Created timestamp of target file in UNIXEPOCH seconds */
-  created: number;
+  /**Created timestamp of target file */
+  created: string;
   /**Path to the volume of target file */
   volume_path: string;
   /**Target file URL type */
@@ -27,8 +27,8 @@ export interface LoginItems {
   volume_uuid: string;
   /**Size of target volume in bytes */
   volume_size: number;
-  /**Created timestamp of volume in UNIXEPOCH seconds */
-  volume_created: number;
+  /**Created timestamp of volume */
+  volume_created: string;
   /**Volume Property flags */
   volume_flags: VolumeFlags[];
   /**Flag if volume if the root filesystem */

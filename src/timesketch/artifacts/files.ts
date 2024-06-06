@@ -3,7 +3,6 @@ import { WindowsFileInfo } from "../../../types/windows/files.ts";
 import { LinuxFileInfo } from "../../../types/linux/files.ts";
 
 import { TimesketchTimeline } from "../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
 
 /**
  * Function to timeline filesystem info
@@ -33,7 +32,7 @@ export function timelineFiles(
     // Extract each unique timestamp to their own entry
     const time_entries = extractApiTimes(item, is_windows);
     for (const time_entry of time_entries) {
-      entry.datetime = unixEpochToISO(time_entry.datetime);
+      entry.datetime = time_entry.datetime;
       entry.timestamp_desc = time_entry.desc;
       entries.push(Object.assign({}, entry));
     }
@@ -43,7 +42,7 @@ export function timelineFiles(
 }
 
 interface TimeEntries {
-  datetime: number;
+  datetime: string;
   desc: string;
 }
 
@@ -77,7 +76,7 @@ function extractApiTimes(
 
   for (const value in check_times) {
     const entry: TimeEntries = {
-      datetime: Number(value),
+      datetime: value,
       desc: check_times[value],
     };
     entries.push(entry);

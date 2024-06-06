@@ -10,14 +10,14 @@ export interface FileInfo {
   filename: string;
   /**Extension of file if any */
   extension: string;
-  /**Standard created timestamp of file in UNIXEPOCH seconds. Its not available on Linux */
-  created: number;
-  /**Standard modified timestamp of file in UNIXEPOCH seconds */
-  modified: number;
-  /**Standard changed timestamp of file in UNIXEPOCH seconds. Is not available on Windows */
-  changed: number;
-  /**Standard accessed timestamp of file in UNIXEPOCH seconds */
-  accessed: number;
+  /**Standard created timestamp of file. Its not available on Linux */
+  created: string;
+  /**Standard modified timestamp of file */
+  modified: string;
+  /**Standard changed timestamp of file. Is not available on Windows */
+  changed: string;
+  /**Standard accessed timestamp of file */
+  accessed: string;
   /**Size of file */
   size: number;
   /**Index node associated with file. Only available on Unix like systems */

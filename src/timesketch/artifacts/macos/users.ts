@@ -1,6 +1,5 @@
 import { Users } from "../../../../types/macos/accounts.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline macos users
@@ -14,14 +13,14 @@ export function timelineUsersMacos(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.account_created),
+      datetime: item.account_created,
       timestamp_desc: "User Created",
       message: item.home_path.join(" "),
       artifact: "Users",
       data_type: "macos:plist:accounts:user",
     };
     entry = { ...entry, ...item };
-    entry["account_created"] = unixEpochToISO(item.account_created);
+    entry["account_created"] = item.account_created;
     entries.push(entry);
   }
 

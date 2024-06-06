@@ -1,6 +1,5 @@
 import { Spotlight } from "../../../../types/macos/spotlight.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline macos users
@@ -14,7 +13,7 @@ export function timelineSpotlight(
 
   for (let i = 0; i < data.length; i++) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(data[i].last_updated),
+      datetime: data[i].last_updated,
       timestamp_desc: "Spotlight Entry Last Updated",
       message: data[i].values["_kMDItemFileName"]?.value as string ??
         `Inode: ${data[i].inode}`,
@@ -22,7 +21,6 @@ export function timelineSpotlight(
       data_type: "macos:spotlight:entry",
     };
     entry = { ...entry, ...data[i] };
-    entry["last_updated"] = unixEpochToISO(data[i].last_updated);
     entries.push(entry);
   }
 

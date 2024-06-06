@@ -23,8 +23,8 @@ export interface ExecPolicy {
   cdhash: string;
   /**SHA256 hash of executable */
   main_executable_hash: string;
-  /**Timestamp when the executable was inserted in ExecPolicy database in UNIXEPOCH seconds */
-  executable_timestamp: number;
+  /**Timestamp when the executable was inserted in ExecPolicy database */
+  executable_timestamp: string;
   /**Size of file */
   file_size: number;
   /**Is library */
@@ -37,10 +37,10 @@ export interface ExecPolicy {
   is_valid: number;
   /**Is quarantined entry */
   is_quarantined: number;
-  /**Timestamp for executable measurements in UNIXEPOCH seconds */
-  executable_measurements_v2_timestamp: number;
-  /**Reported timestamp in UNIXEPOCH seconds */
-  reported_timstamp: number;
+  /**Timestamp for executable measurements */
+  executable_measurements_v2_timestamp: string;
+  /**Reported timestamp */
+  reported_timstamp: string;
   /**Primary key */
   pk: number;
   /**Volume UUID for entry */
@@ -57,12 +57,12 @@ export interface ExecPolicy {
   malware_result: number;
   /**Flags for entry */
   flags: number;
-  /**Modified time in UNIXEPOCH seconds */
-  mod_time: number;
-  /**Policy scan cache timestamp in UNIXEPOCH seconds */
-  policy_scan_cache_timestamp: number;
-  /**Revocation check timestamp in UNIXEPOCH seconds */
-  revocation_check_time: number;
+  /**Modified time */
+  mod_time: string;
+  /**Policy scan cache timestamp */
+  policy_scan_cache_timestamp: string;
+  /**Revocation check timestamp */
+  revocation_check_time: string;
   /**Scan version for entry */
   scan_version: number;
   /**Top policy match for entry */
