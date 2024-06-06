@@ -30,7 +30,6 @@ function main() {
 }
 
 main();
-
 ```
 
 # Output Structure

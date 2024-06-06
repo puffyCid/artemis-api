@@ -43,7 +43,7 @@ function main() {
     role = ual;
   }
 
-  if(role === undefined) {
+  if (role === undefined) {
     return;
   }
 

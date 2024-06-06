@@ -26,9 +26,7 @@ export {
 } from "./src/macos/homebrew.ts";
 export { getMacho } from "./src/macos/macho.ts";
 export { getPlist } from "./src/macos/plist.ts";
-export {
-  getUnifiedLog,
-} from "./src/macos/unifiedlogs.ts";
+export { getUnifiedLog } from "./src/macos/unifiedlogs.ts";
 export {
   getSafariDownloads,
   getSafariHistory,

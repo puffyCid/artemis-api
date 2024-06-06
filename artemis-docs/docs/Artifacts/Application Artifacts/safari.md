@@ -84,8 +84,8 @@ export interface RawSafariHistory {
   visit_count_score: number;
   /**Status code value */
   status_code: number;
-  /**Visit time in UNIXEPOCH seconds */
-  visit_time: number;
+  /**Visit time */
+  visit_time: string;
   /**Load successful value */
   load_successful: boolean;
   /**Page title */
@@ -119,16 +119,16 @@ export interface RawSafariDownloads {
   download_bytes: number;
   /**Download ID value */
   download_id: string;
-  /**Download start date in UNIXEPOCH seconds */
-  download_entry_date: number;
-  /**Download finish date in UNIXEPOCH seoconds */
-  download_entry_finish: number;
+  /**Download start date */
+  download_entry_date: string;
+  /**Download finish date in */
+  download_entry_finish: stirng;
   /**Path to file to run */
   path: string;
   /**Path represented as Catalog Node ID */
   cnid_path: number;
-  /**Created timestamp of target file in UNIXEPOCH seconds */
-  created: number;
+  /**Created timestamp of target file */
+  created: string;
   /**Path to the volume of target file */
   volume_path: string;
   /**Target file URL type */
@@ -139,8 +139,8 @@ export interface RawSafariDownloads {
   volume_uuid: string;
   /**Size of target volume in bytes */
   volume_size: number;
-  /**Created timestamp of volume in UNIXEPOCH seconds */
-  volume_created: number;
+  /**Created timestamp of volume */
+  volume_created: string;
   /**Volume Property flags */
   volume_flag: VolumeFlags[];
   /**Flag if volume if the root filesystem */
