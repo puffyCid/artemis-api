@@ -57,3 +57,14 @@ Lookup an IP on VirusTotal. This function is async
 | Param | Type   | Description  |
 | ----- | ------ | ------------ |
 | ip    | string | IP to submit |
+
+### checkEolStatus(name, version) -> EolStatus | HttpError
+
+Check software status at https://endoflife.date. This can be used to determine
+if installed software is still supported. Only the name of the software is
+submitted to https://endoflife.date.
+
+| Param   | Type   | Description      |
+| ------- | ------ | ---------------- |
+| name    | string | Software name    |
+| version | string | Software version |
