@@ -519,22 +519,10 @@ The directory must contain:
 | ----- | ------ | ---------------------- |
 | path  | string | Path to WMI Repository |
 
-### extractDefenderRules(alt_file, limit) -> DefinitionRule[] | WindowsError
+### listUsbDevices(alt_file) -> UsbDevices[] | WindowsError
 
-An experimental function to attempt to extract Windows Defender Signatures.
-Defender can contain thousands/millions? of signatures so this function can
-potentially run for a long time.
+Parse SYSTEM Registry to get list of USB devices that have been connected
 
-By default it will only extract 30 signatures. You can extract all signatures by
-setting the limit to 0.
-
-By default it will attempt to extract all Defender signatures at:
-
-- %SYSTEMDRIVE%\\ProgramData\\Microsoft\\Windows Defender\\Definition
-  Updates\\\{\*\\\*.vdm
-
-You may also provide an optional alternative path to the vmd file
-
-| Param   | Type   | Description                                            |
-| ------- | ------ | ------------------------------------------------------ |
-| alt_dir | string | Alternative directory containing the UAL log databases |
+| Param    | Type   | Description                                  |
+| -------- | ------ | -------------------------------------------- |
+| alt_file | string | Alternative path to the SYSTEM Registry file |

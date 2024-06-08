@@ -22,7 +22,7 @@ import {
   logons,
 } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
-async function main() {
+function main() {
   const path = "path to Security.evtx";
   const results = logons(path);
 

@@ -5,8 +5,6 @@ import { EncodingError } from "../../encoding/errors.ts";
 import { decode } from "../../encoding/mod.ts";
 import { extractUtf16String } from "../../encoding/strings.ts";
 import { getEnvValue } from "../../environment/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/mod.ts";
 import { NomError } from "../../nom/error.ts";
 import { Endian } from "../../nom/helpers.ts";
 import { nomUnsignedEightBytes } from "../../nom/mod.ts";
@@ -15,27 +13,21 @@ import { WindowsError } from "../errors.ts";
 
 /**
  * Function to parse Windows Registry files to get list of USB devices that have been connected
+ * @param alt_file Alternative path to a SYSTEM Registry file
  * @returns Array of `UsbDevices` or `WindowsError`
  */
-export function listUsbDevices(): UsbDevices[] | WindowsError {
+export function listUsbDevices(alt_file?: string): UsbDevices[] | WindowsError {
+  if (alt_file != undefined) {
+    return usbSystem(alt_file);
+  }
+
   const volume = getEnvValue("SystemDrive");
   if (volume === "") {
     return new WindowsError(`USB`, `no SystemDrive found`);
   }
 
   const system = `${volume}\\Windows\\System32\\config\\SYSTEM`;
-  const glob_users = `${volume}\\Users\\*\\NTUSER.DAT`;
-  const user_paths = glob(glob_users);
-  if (user_paths instanceof FileError) {
-    return new WindowsError(
-      `USB`,
-      `failed to glob for NTUSER.DAT: ${user_paths}`,
-    );
-  }
-
-  const usbs = usbSystem(system);
-
-  return usbs;
+  return usbSystem(system);
 }
 
 /**
@@ -43,10 +35,9 @@ export function listUsbDevices(): UsbDevices[] | WindowsError {
  * @param path Full path to the SYSTEM Registry file
  * @returns Array of `UsbDevices` or `WindowsError`
  */
-export function usbSystem(path: string): UsbDevices[] | WindowsError {
+function usbSystem(path: string): UsbDevices[] | WindowsError {
   const usbstor = "Control\\DeviceMigration\\Devices\\USBSTOR\\";
   const usbstor_legacy = "\\Enum\\USBSTOR\\";
-  const usb = "Control\\DeviceMigration\\Devices\\USB";
   const mounts = "MountedDevices";
 
   const reg_data = getRegistry(path);
