@@ -19,6 +19,15 @@ artemis.
 
 :::info
 
+If you use Chocolatey to install cmake. You need to make sure to install with:
+`choco install cmake.install --installargs '"ADD_CMAKE_TO_PATH=User"'`
+
+Cmake is not added to you path by [default](https://github.com/chocolatey-community/chocolatey-packages/issues/987)
+
+:::
+
+:::info
+
 Windows users will need to add extra arguments to the just command:\
 `just --shell pwsh.exe --shell-arg -c`
 

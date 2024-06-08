@@ -10,11 +10,10 @@ export interface UsbDevices {
   /**Last drive letter assigned to the USB */
   drive_letter: string;
   last_connected: string;
-  /**This is in local time */
-  first_connected: string;
-  volume_serial: string;
   last_insertion: string;
   last_removal: string;
+  install: string;
+  first_install: string;
   usb_type: string;
   vendor: string;
   product: string;

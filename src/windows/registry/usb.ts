@@ -45,6 +45,7 @@ export function listUsbDevices(): UsbDevices[] | WindowsError {
  */
 export function usbSystem(path: string): UsbDevices[] | WindowsError {
   const usbstor = "Control\\DeviceMigration\\Devices\\USBSTOR\\";
+  const usbstor_legacy = "\\Enum\\USBSTOR\\";
   const usb = "Control\\DeviceMigration\\Devices\\USB";
   const mounts = "MountedDevices";
 
@@ -56,13 +57,16 @@ export function usbSystem(path: string): UsbDevices[] | WindowsError {
   const usbs = [];
   for (const reg of reg_data.registry_entries) {
     if (
-      reg.path.includes(usbstor) && reg.values.length > 0 &&
-      reg.name.includes("&") && reg.path.includes("ControlSet00")
+      (reg.path.includes(usbstor) || reg.path.includes(usbstor_legacy)) &&
+      reg.values.length > 0 &&
+      reg.name.includes("&") &&
+      reg.path.includes("ControlSet00")
     ) {
       const values = usbStor(reg);
       usbs.push(values);
     }
   }
+
   for (let i = 0; i < usbs.length; i++) {
     for (const reg of reg_data.registry_entries) {
       if (reg.path.includes(usbs[i].tracking_id) && "Partmg") {
@@ -87,10 +91,50 @@ export function usbSystem(path: string): UsbDevices[] | WindowsError {
           }
         }
       }
+      if (
+        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes("\\USBSTOR\\") &&
+        reg.name === "0064"
+      ) {
+        for (const value of reg.values) {
+          usbs[i].first_install = unixEpochToISO(
+            filetimeToUnixEpoch(BigInt(value.data)),
+          );
+        }
+      } else if (
+        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes("\\USBSTOR\\") &&
+        reg.name === "0065"
+      ) {
+        for (const value of reg.values) {
+          usbs[i].install = unixEpochToISO(
+            filetimeToUnixEpoch(BigInt(value.data)),
+          );
+        }
+      } else if (
+        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes("\\USBSTOR\\") &&
+        reg.name === "0066"
+      ) {
+        for (const value of reg.values) {
+          usbs[i].last_connected = unixEpochToISO(
+            filetimeToUnixEpoch(BigInt(value.data)),
+          );
+        }
+      } else if (
+        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes("\\USBSTOR\\") &&
+        reg.name === "0067"
+      ) {
+        for (const value of reg.values) {
+          usbs[i].last_removal = unixEpochToISO(
+            filetimeToUnixEpoch(BigInt(value.data)),
+          );
+        }
+      }
     }
   }
 
-  console.log(usbs);
   return usbs;
 }
 
@@ -103,7 +147,6 @@ function usbStor(data: Registry): UsbDevices {
   const entry: UsbDevices = {
     friendly_name: "",
     last_connected: "",
-    first_connected: "",
     last_removal: "",
     usb_type: "",
     vendor: "",
@@ -113,8 +156,9 @@ function usbStor(data: Registry): UsbDevices {
     disk_id: "",
     device_class_id: "",
     drive_letter: "",
-    volume_serial: "",
     last_insertion: "",
+    install: "",
+    first_install: "",
   };
 
   const info = (data.key.split("\\").pop() as string).split("&");
@@ -159,7 +203,9 @@ function usbStor(data: Registry): UsbDevices {
       const time_value = unixEpochToISO(
         filetimeToUnixEpoch(BigInt(time_data.value)),
       );
-      entry.last_connected = time_value;
+      entry.last_insertion = time_value;
+    } else if (value.value === "ClassGUID") {
+      entry.device_class_id = value.data.replace("{", "").replace("}", "");
     }
   }
 
