@@ -44,7 +44,7 @@ jobs:
 
       - name: Install Deno Windows
         if: matrix.info.os == 'windows-latest'
-        run: chocolatey install deno
+        run: choco.exe install deno
 
       - name: Compile and run tests macOS
         if: matrix.info.os == 'macOS-latest'
