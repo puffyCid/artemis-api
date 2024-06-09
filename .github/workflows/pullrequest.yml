@@ -52,4 +52,4 @@ jobs:
 
       - name: Compile and run tests Windows
         if: matrix.info.os == 'windows-latest'
-        run: cd tests\windows && compile_tests.bat
+        run: cd tests\windows && .\compile_tests.bat
