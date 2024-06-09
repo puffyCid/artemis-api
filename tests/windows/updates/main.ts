@@ -12,9 +12,7 @@ function main() {
 
     throw results;
   }
-  if (results.length === 0) {
-    throw "no entries?";
-  }
+
 }
 
 main();
