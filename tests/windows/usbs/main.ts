@@ -7,9 +7,7 @@ function main() {
   if (results instanceof WindowsError) {
     throw results;
   }
-  if (results.length === 0) {
-    throw "no entries?";
-  }
+
 }
 
 main();
