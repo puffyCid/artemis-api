@@ -5,7 +5,7 @@ setlocal EnableExtensions DisableDelayedExpansion
 for /D %%i in ("*") do (
   cd %%i 
   echo "Running test for %%i"
-  deno run -A build.ts
+  deno.exe run -A build.ts
   ::set value=
   setlocal EnableDelayedExpansion
   ..\script_tester.exe main.js
