@@ -6,6 +6,10 @@ function main() {
   const results = client.updateHistory(client.pages);
 
   if (results instanceof WindowsError) {
+    if (results.message.includes("Table name is empty")) {
+      return;
+    }
+
     throw results;
   }
   if (results.length === 0) {
