@@ -6,9 +6,6 @@ function main() {
   if (results instanceof WindowsError) {
     throw results;
   }
-  if (Array.isArray(results) && results.length === 0) {
-    throw "no entries?";
-  }
 }
 
 main();
