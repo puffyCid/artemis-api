@@ -78,7 +78,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
 }
 
 /**
- * Assmeble `ShellItems` into a MRU formatted entry
+ * Assemble `ShellItems` into a MRU formatted entry
  * @param items Array of `Shellitems`
  * @returns Generic `MruValues`
  */
