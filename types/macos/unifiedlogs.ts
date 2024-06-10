@@ -26,6 +26,8 @@ export interface UnifiedLog {
   library_uuid: string;
   /**UNIXEPOCH timestamp of log entry in nanoseconds */
   time: bigint;
+  /**ISO RFC 3339 timestamp with nanosecond precision */
+  timestamp: string;
   /**Log entry event type */
   event_type: string;
   /**Log entry log type */

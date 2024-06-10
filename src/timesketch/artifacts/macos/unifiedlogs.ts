@@ -14,7 +14,7 @@ export function timelineUnifiedLogs(
 
   for (let i = 0; i < data.length; i++) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(data[i].time),
+      datetime: data[i].timestamp,
       timestamp_desc: "UnifiedLog Entry Created",
       message: "",
       artifact: "UnifiedLogs",
