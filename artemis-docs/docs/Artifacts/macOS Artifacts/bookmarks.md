@@ -24,7 +24,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 ```typescript
 import { parseBookmark } from "./artemis-api/src/macos/bookmark.ts";
 function main() {
-  // Need to obtain Bookmar bytes from another file. Plist files may have bookmark data.
+  // Need to obtain Bookmark bytes from another file. Plist files may have bookmark data.
   const results = parseBookmark(new Uint8Array());
   console.log(results);
 }
@@ -32,7 +32,7 @@ function main() {
 
 # Output Structure
 
-An `BookmarkData` object structure
+A `BookmarkData` object structure
 
 ```typescript
 export interface BookmarkData {

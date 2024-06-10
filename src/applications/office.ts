@@ -1,4 +1,4 @@
-import { PlatformType } from "../../mod.ts";
+import { getRegistry, PlatformType } from "../../mod.ts";
 import { FileError } from "../filesystem/errors.ts";
 import { glob } from "../filesystem/mod.ts";
 import { parseBookmark } from "../macos/bookmark.ts";
@@ -6,17 +6,154 @@ import { BookmarkData as OfficeRecentFilesMacos } from "../../types/macos/bookma
 import { MacosError } from "../macos/errors.ts";
 import { getPlist } from "../macos/plist.ts";
 import { ApplicationError } from "./errors.ts";
+import { getEnvValue } from "../environment/mod.ts";
+import { WindowsError } from "../windows/errors.ts";
+import { Registry } from "../../types/windows/registry.ts";
+import { filetimeToUnixEpoch, unixEpochToISO } from "../time/conversion.ts";
+import { OfficeRecentFilesWindows } from "../../types/applications/office.ts";
+import { OfficeApp } from "../../types/applications/office.ts";
 
+/**
+ * Function to extract Microsoft Office MRU files
+ * @param platform OS `PlatformType`. Only Windows or Darwin is supported
+ * @param alt_file Optional alternative path to NTUSER.DAT or plist file
+ * @returns Array of `OfficeRecentFilesMacos` or `OfficeRecentFilesWindows` or `ApplicationError`
+ */
 export function officeMruFiles(
   platform: PlatformType.Darwin | PlatformType.Windows,
   alt_file?: string,
-): OfficeRecentFilesMacos[] | ApplicationError {
+): OfficeRecentFilesMacos[] | OfficeRecentFilesWindows[] | ApplicationError {
   switch (platform) {
     case PlatformType.Darwin:
       return officeBookmarks(alt_file);
     case PlatformType.Windows:
-      return [];
+      return officeMru(alt_file);
   }
+}
+
+/**
+ * Function to parse NTUSER.DAT Registry file to extract Office MRU entries
+ * @param alt_file Optional alternative path to NTUSER.DAT
+ * @returns Array of `OfficeRecentFilesWindows` or `ApplicationError`
+ */
+function officeMru(
+  alt_file?: string,
+): OfficeRecentFilesWindows[] | ApplicationError {
+  const paths = [];
+  if (alt_file != undefined) {
+    paths.push(alt_file);
+  } else {
+    const volume = getEnvValue("SystemDrive");
+    if (volume === "") {
+      return new ApplicationError(`OFFICE`, `no SystemDrive found`);
+    }
+    const glob_office = `${volume}\\Users\\*\\NTUSER.DAT`;
+    const glob_paths = glob(glob_office);
+    if (glob_paths instanceof FileError) {
+      return new ApplicationError(
+        `OFFICE`,
+        `failed to glob office paths for macOS: ${glob_paths}`,
+      );
+    }
+    for (const entry of glob_paths) {
+      if (!entry.is_file || entry.full_path.includes("Default User")) {
+        continue;
+      }
+      paths.push(entry.full_path);
+    }
+  }
+
+  let all_values: OfficeRecentFilesWindows[] = [];
+  for (const reg of paths) {
+    const reg_data = getRegistry(reg);
+    if (reg_data instanceof WindowsError) {
+      console.warn(`failed to parse Windows Registry ${reg}: ${reg_data}`);
+      continue;
+    }
+
+    const values = extractMruRegistry(reg_data.registry_entries, reg);
+    all_values = all_values.concat(values);
+  }
+  return all_values;
+}
+
+/**
+ * Extract MRU info
+ * @param data Array of `Registry` entries
+ * @param registry_file Path to the Registry file
+ * @returns Array of `OfficeRecentFilesWindows`
+ */
+function extractMruRegistry(
+  data: Registry[],
+  registry_file: string,
+): OfficeRecentFilesWindows[] {
+  const mrus = [];
+  const filter = ["\\Office\\", "\\File MRU"];
+  for (const entries of data) {
+    if (
+      !filter.every((item) => entries.path.includes(item)) ||
+      entries.values.length === 0 ||
+      entries.path.includes("\\File MRU\\")
+    ) {
+      continue;
+    }
+    mrus.push(entries);
+  }
+
+  const office_mru = [];
+  for (const mru_path of mrus) {
+    for (const value of mru_path.values) {
+      if (!value.value.includes("Item")) {
+        continue;
+      }
+
+      const mru_data = value.data.split("*");
+      const path = mru_data.at(1) ?? "";
+      const timestamp = mru_data.at(0);
+      if (timestamp === undefined) {
+        console.warn(`could not split MRU path properly: ${value.data}`);
+        continue;
+      }
+
+      const match = /T0.*]\[/;
+      let time_data = timestamp.match(match)?.[0];
+      if (time_data === undefined) {
+        console.warn(`could not match MRU path properly: ${timestamp}`);
+        continue;
+      }
+
+      time_data = time_data.replace("T", "").replace("]", "").replace("[", "");
+      const filetime = BigInt(`0x${time_data}`);
+      const last_opened = unixEpochToISO(filetimeToUnixEpoch(filetime));
+
+      const mru_entry: OfficeRecentFilesWindows = {
+        path,
+        last_opened,
+        application: officeType(mru_path.path),
+        registry_file,
+        key_path: mru_path.path,
+      };
+
+      office_mru.push(mru_entry);
+    }
+  }
+
+  return office_mru;
+}
+
+/**
+ * Determine Office application associated with MRU entry
+ * @param path Registry key path
+ * @returns `OfficeApp` enum
+ */
+function officeType(path: string): OfficeApp {
+  if (path.includes(OfficeApp.WORD)) return OfficeApp.WORD;
+  if (path.includes(OfficeApp.ACCESS)) return OfficeApp.ACCESS;
+  if (path.includes(OfficeApp.EXCEL)) return OfficeApp.EXCEL;
+  if (path.includes(OfficeApp.ONENOTE)) return OfficeApp.ONENOTE;
+  if (path.includes(OfficeApp.POWERPOINT)) return OfficeApp.POWERPOINT;
+
+  return OfficeApp.UNKNOWN;
 }
 
 /**

@@ -28,7 +28,7 @@ from the Windows
 [User Access Logging database](https://www.crowdstrike.com/blog/user-access-logging-ual-overview/)
 (UAL). The guide below assumes you have cloned the artemis API repository to
 your local system. However, you may also import the API remotely, you will just
-need to update the imports.
+need to change the imports paths.
 
 The functions in this guide are documented
 [here](../Artifacts/windows.md#ese-database-class)
@@ -284,7 +284,7 @@ with CLIENTS table.
 The number of pages and table content will determine the amount of memory
 artemis uses.
 
-Ex: If a table has 5 columns and 1000 pages and provide 1000 pages to getRows(),
+Ex: If a table has 5 columns and 1000 pages and you provide 1000 pages to getRows(),
 artemis will return back all of the data. This **may** be ok. If the 5 columns
 only have numbers or small text then it **probably** will not require a lot of
 memory.
@@ -345,7 +345,7 @@ function main() {
       // Go through all columns
       for (const column of row) {
         console.log(
-          `Name: ${column.column_name} - Type: ${column.column_type} - Data: ${column.column_data}`,
+          `Name: ${column.column_name} - Type: ${column.column_type} - Data: ${column.column_data}`
         );
       }
     }
@@ -390,3 +390,8 @@ columns and can grow to be very very large. Artemis uses 400 page chunks to
 parse the Search database, which uses ~800-900MBs of memory.
 
 :::
+
+# ESE References
+
+- https://techcommunity.microsoft.com/t5/ask-the-directory-services-team/ese-deep-dive-part-1-the-anatomy-of-an-ese-database/ba-p/400496
+- https://github.com/libyal/libesedb/blob/main/documentation/Extensible%20Storage%20Engine%20(ESE)%20Database%20File%20(EDB)%20format.asciidoc

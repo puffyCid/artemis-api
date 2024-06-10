@@ -17,7 +17,7 @@ Use the just command `just complex` to measure lines of Rust and complexity!\
 
 From the root of the artemis repo:
 
-- `core/` workspace containsthe library component of artemis. The bulk of the
+- `core/` workspace contains the library component of artemis. The bulk of the
   code is located here
 - `cli/` workspace contains the executable component artemis.
 - `server/` workspace contains the experimental server component of artemis. Its
@@ -29,7 +29,7 @@ From the `core/src/` directory
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | artifacts  | Contains the code related to parsing forensic artifacts.<br/> It is broken down by OS and application artifacts                                                                                                        |
 | filesystem | Contains code to help interact with the filesystem. It contains helper functions that can be used when adding new artifacts/features. <br/>Ex: reading/hashing files, getting file timestamps, listing files, etc      |
-| output     | Contains code related to outputing parsed data                                                                                                                                                                         |
+| output     | Contains code related to outputting parsed data                                                                                                                                                                        |
 | runtime    | Contains code related to the embedded Deno runtime                                                                                                                                                                     |
 | structs    | Contains code related to how TOML collection files are parsed. It <br/> tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
@@ -72,8 +72,8 @@ Use the time functions under `utils` to help with timestamp conversions!
 # Artifact Scope
 
 Currently all artifacts that artemis parses are statically coded in the binary
-(they are written in Rust). While this ok, it prevents us from dyanamically
-upating the parser if the artifact format changes (ex: new Windows release).
+(they are written in Rust). While this ok, it prevents us from dynamically
+updating the parser if the artifact format changes (ex: new Windows release).
 
 Currently the [JS runtime](../Intro/Scripting/deno.md) has minimal support for
 creating parsers. If you are interested in adding a small parser to artemis, it
@@ -98,9 +98,10 @@ implemented, some suggested ones to review are:
   artifact is less than 300 lines (not counting tests). And includes:
   - Parsing binary data
   - Converting timestamps
-  - Collecting user Registy data
+  - Collecting user Registry data
 - `FsEvents`: If you want to to parse a binary file. The `FsEvents` is less than
   300 lines (not counting tests). And includes:
+
   - Parsing binary data
   - Decompressing data
   - Getting data flags
@@ -124,14 +125,16 @@ For example the Windows `Registry` artifact exposes a helper function that other
 
 Some other examples listed below:
 
-- `/filesytem` contains code to help interact with the filesystem.
+- `/filesystem` contains code to help interact with the filesystem.
+
   - `pub(crate) fn list_files(path: &str)` returns list of files
   - `pub(crate) fn read_file(path: &str)` reads a file
   - `pub(crate) fn hash_file(hashes: &Hashes, path: &str)` hashes a file based
     on selected hashes (MD5, SHA1, SHA256)
 
-- `/filesystem/ntfs` contains code to help iteract with the raw NTFS filesystem.
+- `/filesystem/ntfs` contains code to help interact with the raw NTFS filesystem.
   It lets us bypass locked files. This is only available on Windows
+
   - `pub(crate) fn raw_read_file(path: &str)` reads a file. Will bypass file
     locks
   - `pub(crate) fn read_attribute(path: &str, attribute: &str)` can read an

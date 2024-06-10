@@ -103,7 +103,7 @@ experimental server and webui.
 :::info
 
 The binaries downloaded from GitHub do not contain the server and webui
-components/workspaces. They just contain the cli comonent/workspace.
+components/workspaces. They just contain the cli components/workspace.
 
 :::
 

@@ -14,6 +14,7 @@ tracking recently opened files.
 
 - macOS:
   /Users/\*/Library/Containers/com.microsoft\*/Data/Library/Preferences/com.microsoft.\*.securebookmarks.plist
+- Windows: \\Users\\\*\\NTUSER.DAT
 
 # Collection
 
@@ -32,5 +33,26 @@ function main() {
 
 # Output Structure
 
-An array of `OfficeRecentFilesMacos` entries. See
+On macOS an array of `OfficeRecentFilesMacos` entries. See
 [bookmarks](../macOS%20Artifacts/bookmarks.md) for the format.
+
+On Windows an array of `OfficeRecentFilesWindows`.
+
+```typescript
+export interface OfficeRecentFilesWindows {
+  path: string;
+  last_opened: string;
+  application: string;
+  registry_file: string;
+  key_path: string;
+}
+
+export enum OfficeApp {
+  WORD = "Word",
+  POWERPOINT = "PowerPoint",
+  EXCEL = "Excel",
+  ACCESS = "Access",
+  ONENOTE = "OneNote",
+  UNKNOWN = "Unknown",
+}
+```

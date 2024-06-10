@@ -17,7 +17,7 @@ total).
 Its recommended to run in release mode for tests. This will greatly speed up the
 tests. Tests should be run with root or Administrator privileges.
 
-`cargo test --release`
+`just test or just nextest`
 
 :::
 
@@ -28,14 +28,14 @@ macOS and Linux users may need to increase the ulimit for open files.
 
 :::
 
-If you are unfamilar with creating Rust tests. The Rust
+If you are unfamiliar with creating Rust tests. The Rust
 [book](https://doc.rust-lang.org/book/ch11-03-test-organization.html) and
 [Rust by example](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html)
 have great learning resources.
 
 ## Integration Tests
 
-If you are adding a new forensic aritfact to artemis, including an integration
+If you are adding a new forensic artifact to artemis, including an integration
 test for the artifact can also be very useful. Writing an integration is a two
 (2) step process:
 
@@ -94,7 +94,7 @@ sample of the artifact that can be used for tests that would be very helpful.
 Some things to keep in mind though:
 
 - Size. If the artifact is large (10-20MB) then including the sample in the
-  artemis repo is unecessary.
+  artemis repo is unnecessary.
 - Licensing. If you can provide the artifact from your own system that is ideal.
-  However, if you find the sample aritfact in another GitHub repo make sure that
+  However, if you find the sample artifact in another GitHub repo make sure that
   repo's LICENSE is compatible with artemis.

@@ -20,10 +20,10 @@ scripts as mentioned in [scripting](../Intro/Scripting/deno.md). You will need:
 
 # Adding a Feature
 
-Please try to creae an issue before working on a feature. Basic overview of
+Please try to create an issue before working on a feature. Basic overview of
 adding a new feature:
 
-1. Create an issue. If you want to work on it, make sure to explictly volunteer!
+1. Create an issue. If you want to work on it, make sure to explicitly volunteer!
 2. Create a branch on your clone artemis repo
 3. Work on feature
 4. If you are adding a new artifact make sure you have updated the artemis docs
@@ -52,7 +52,7 @@ feature is:
 
 1. Write you feature and export it to mod.ts file located at the root of the
    `artemis-api` repo.
-2. Create a deno project in a separate directory outsdie of `artemis-api` using
+2. Create a deno project in a separate directory outside of `artemis-api` using
    `deno init <feature>`
 3. Follow the [walkthrough](../Intro/Scripting/walkthrough.md) guide, except
    instead of importing functions from GitHub import functions from your local
