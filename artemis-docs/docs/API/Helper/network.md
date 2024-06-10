@@ -57,3 +57,48 @@ Lookup an IP on VirusTotal. This function is async
 | Param | Type   | Description  |
 | ----- | ------ | ------------ |
 | ip    | string | IP to submit |
+
+### checkEolStatus(name, version) -> EolStatus | HttpError
+
+Check software status at https://endoflife.date. This can be used to determine
+if installed software is still supported. Only the name of the software is
+submitted to https://endoflife.date.
+
+| Param   | Type   | Description      |
+| ------- | ------ | ---------------- |
+| name    | string | Software name    |
+| version | string | Software version |
+
+### lookupExtension(id, version, browser) -> CrxResponse | HttpError
+
+Lookup browser extension reports on https://crxcavator.io. Will submit the
+extension ID and version to https://crxcavator.io.
+
+| Param   | Type    | Description                           |
+| ------- | ------- | ------------------------------------- |
+| id      | string  | Extension ID                          |
+| version | string  | Extension version                     |
+| browser | Browser | Browser associated with the extension |
+
+### circluHashlookup(hashes, hash_type) -> ashlookupResponse | HashlookupResponse[] | HttpError
+
+Check hash against the Cirlu Hashlookup service
+(https://www.circl.lu/services/hashlookup/). This checks hashes aginst known
+files from public respositories. Hashlookup includes hashes from:
+
+- Common Windows 10 and Windows 11 build (French, Dutch, German, UK, US)
+- NIST NSRL - All RDS hash sets including current, modern, android, iOS and
+  legacy + SHA256 mapping.
+- Ubuntu packages distribution
+- CentOS core OS distribution
+- Fedora project EPEL repository
+- Kali linux packages distribution
+- OpenSUSE distribution packages
+- OpenBSD binary tar.gz distribution
+- CDNJS
+- Snap public repository
+
+| Param     | Type               | Description                                                                          |
+| --------- | ------------------ | ------------------------------------------------------------------------------------ |
+| hashes    | string or string[] | MD5, SHA1, or SHA256 hash to submit. You may **not** submit an array of SH256 hashes |
+| hash_type | HashType           | The hash type to submit                                                              |

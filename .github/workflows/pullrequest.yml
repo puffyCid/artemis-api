@@ -30,14 +30,26 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Download macOS Intel script tester binary
+      - name: Download script tester binary macOS
         if: matrix.info.os == 'macOS-latest'
         run: wget -O ./tests/macos/script_tester_macos_intel https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester_macos_intel && chmod +x ./tests/macos/script_tester_macos_intel
 
-      - name: Install Deno
+      - name: Download script tester binary Windows
+        if: matrix.info.os == 'windows-latest'
+        run: Invoke-WebRequest https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester.exe -OutFile .\tests\windows\script_tester.exe
+
+      - name: Install Deno macOS
         if: matrix.info.os == 'macOS-latest'
         run: brew install deno
 
-      - name: Compile and run tests (macOS)
+      - name: Install Deno Windows
+        if: matrix.info.os == 'windows-latest'
+        run: choco.exe install deno
+
+      - name: Compile and run tests macOS
         if: matrix.info.os == 'macOS-latest'
         run: cd tests/macos && sudo bash compile_tests.sh
+
+      - name: Compile and run tests Windows
+        if: matrix.info.os == 'windows-latest'
+        run: cd tests\windows && .\compile_tests.bat

@@ -6,10 +6,10 @@ sidebar_position: 3
 
 Before working on a new feature for artemis please make sure you have read the
 [Contributing](https://github.com/puffycid/artemis/blob/main/CONTRIBUTING.md)
-doucment. Most important thing is to first create an issue! Basic overview of
+document. Most important thing is to first create an issue! Basic overview of
 adding a new feature:
 
-1. Create an issue. If you want to work on it, make sure to explictly volunteer!
+1. Create an issue. If you want to work on it, make sure to explicitly volunteer!
 2. Create a branch on your clone artemis repo
 3. Work on feature
 4. Ensure tests are made for all functions

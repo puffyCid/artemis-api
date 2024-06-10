@@ -5,6 +5,7 @@ import { getEnvValue } from "../environment/env.ts";
 import { FileError } from "../filesystem/errors.ts";
 import { glob, readTextFile } from "../filesystem/files.ts";
 import { PlatformType } from "../system/systeminfo.ts";
+import { unixEpochToISO } from "../time/conversion.ts";
 import { ApplicationError } from "./errors.ts";
 
 /**
@@ -93,6 +94,9 @@ export function fileHistory(
       }
       // Base64 encode the history data
       const history_encoded = encode(encodeBytes(history_data));
+      json_data.entries[i].timestamp = unixEpochToISO(
+        json_data.entries[i].timestamp as number,
+      );
       json_data.entries[i].content = history_encoded;
     }
 

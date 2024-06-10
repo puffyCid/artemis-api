@@ -3,7 +3,6 @@ import {
   SafariHistory,
 } from "../../../../types/macos/safari.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline Safari History
@@ -18,14 +17,13 @@ export function timelineSafariHistory(
   for (const value of data) {
     for (let i = 0; i < value.history.length; i++) {
       let entry: TimesketchTimeline = {
-        datetime: unixEpochToISO(value.history[i].visit_time),
+        datetime: value.history[i].visit_time,
         timestamp_desc: "Safari Visit Time",
         message: `${value.history[i].url} - ${value.history[i].title}`,
         data_type: "macos:safari:history",
         artifact: "SafariHistory",
       };
       entry = { ...entry, ...data[i] };
-      entry["visit_time"] = unixEpochToISO(value.history[i].visit_time);
       entries.push(entry);
     }
   }
@@ -45,7 +43,7 @@ export function timelineSafariDownloads(
   for (const value of data) {
     for (let i = 0; i < value.downloads.length; i++) {
       let entry: TimesketchTimeline = {
-        datetime: unixEpochToISO(value.downloads[i].created),
+        datetime: value.downloads[i].created,
         timestamp_desc: "Safari Download File Created",
         message: `${value.downloads[i].source_url} - ${
           value.downloads[i].download_path
@@ -54,16 +52,6 @@ export function timelineSafariDownloads(
         artifact: "SafariDownloads",
       };
       entry = { ...entry, ...data[i] };
-      entry["created"] = unixEpochToISO(value.downloads[i].created);
-      entry["download_entry_date"] = unixEpochToISO(
-        value.downloads[i].download_entry_date,
-      );
-      entry["download_entry_finish"] = unixEpochToISO(
-        value.downloads[i].download_entry_finish,
-      );
-      entry["volume_created"] = unixEpochToISO(
-        value.downloads[i].volume_created,
-      );
 
       entries.push(entry);
     }

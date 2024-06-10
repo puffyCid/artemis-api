@@ -22,7 +22,7 @@ import {
   getChocolateyInfo,
 } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
-async function main() {
+function main() {
   const results = getChocolateyInfo();
 
   console.log(results);

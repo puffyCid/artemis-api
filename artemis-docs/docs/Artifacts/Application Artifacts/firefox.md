@@ -166,8 +166,8 @@ export interface FirefoxCookies {
   host?: string;
   path?: string;
   expiry?: number;
-  last_accessed?: number;
-  creation_time?: number;
+  last_accessed?: string;
+  creation_time?: string;
   is_secure?: boolean;
   is_http_only?: boolean;
   in_browser_element: boolean;

@@ -334,7 +334,8 @@ A basic class to help interact and extract data from ESE databases
 
 #### catalogInfo() -> Catalog[] | WindowsError
 
-Dump the Catalog metadata associated with an ESE database. Returns an array of Catalog entries or WindowsError
+Dump the Catalog metadata associated with an ESE database. Returns an array of
+Catalog entries or WindowsError
 
 #### tableInfo(catalog, table_name) -> TableInfo
 
@@ -347,7 +348,8 @@ Extract table metadata from parsed Catalog entries based on provided table name
 
 #### getPages(first_page) -> number[] | WindowsError
 
-Get an array of all pages associated with a table starting at the first page provided. First page can be found in the TableInfo object.
+Get an array of all pages associated with a table starting at the first page
+provided. First page can be found in the TableInfo object.
 
 | Param      | Type   | Description           |
 | ---------- | ------ | --------------------- |
@@ -355,11 +357,13 @@ Get an array of all pages associated with a table starting at the first page pro
 
 #### getRows(pages, info) -> Record&lt;string, EseTable[][]&gt; | WindowsError
 
-Get rows associated with provided TableInfo object and number of pages. A returns a `Record<string, EseTable[][]>` or  WindowsError.
+Get rows associated with provided TableInfo object and number of pages. A
+returns a `Record<string, EseTable[][]>` or WindowsError.
 
 The table name is the Record string key.
 
-[EseTable](../../Artifacts/Windows%20Artfacts/ese.md) is an array of rows and columns representing ESE data.
+[EseTable](../../Artifacts/Windows%20Artfacts/ese.md) is an array of rows and
+columns representing ESE data.
 
 | Param | Type      | Description      |
 | ----- | --------- | ---------------- |
@@ -368,10 +372,14 @@ The table name is the Record string key.
 
 #### getFilteredRows(pages, info, column_name, column_data) -> Record&lt;string, EseTable[][]&gt; | WindowsError
 
-Get rows and filter based on provided column_name and column_data. This function can be useful if you want to get data from a table thats shares data with another table.
-For example, if you call getRows() to get data associated with TableA and now you want to get data from TableB and both tables share a unique key.
+Get rows and filter based on provided column_name and column_data. This function
+can be useful if you want to get data from a table thats shares data with
+another table. For example, if you call getRows() to get data associated with
+TableA and now you want to get data from TableB and both tables share a unique
+key.
 
-Its _a little_ similar to "select \* from tableB where columnX = Y" where Y is a unique key
+Its _a little_ similar to "select \* from tableB where columnX = Y" where Y is a
+unique key
 
 | Param       | Type                          | Description                                                                    |
 | ----------- | ----------------------------- | ------------------------------------------------------------------------------ |
@@ -382,7 +390,8 @@ Its _a little_ similar to "select \* from tableB where columnX = Y" where Y is a
 
 #### dumpTableColumns(pages, info, column_names) -> Record&lt;string, EseTable[][]&gt; | WindowsError
 
-Get rows based on specific columns names. This function is the same as getRows() except it will only return column names that included in column_names.
+Get rows based on specific columns names. This function is the same as getRows()
+except it will only return column names that included in column_names.
 
 | Param       | Type      | Description                            |
 | ----------- | --------- | -------------------------------------- |
@@ -403,7 +412,8 @@ An optional alternative base path can also be provided
 
 ### Updates class
 
-A simple class to help dump the contents of the Windows DataStore.edb database. This class extends the EseDatabase class.
+A simple class to help dump the contents of the Windows DataStore.edb database.
+This class extends the EseDatabase class.
 
 #### updateHistory(pages) -> UpdateHistory[] | WindowsError
 
@@ -446,11 +456,14 @@ shellitems.
 
 ### UserAccessLogging class
 
-A simple class to help extract data from the Windows User Access Log database. This class extends the EseDatabase class
+A simple class to help extract data from the Windows User Access Log database.
+This class extends the EseDatabase class
 
 #### getRoleIds(pages) -> RoleIds[] | WindowsError
 
-Return an array of RoleIds associated with UAL database. This function expects the UserAccessLogging class to be initialized with the SystemIdentity.mdb database otherwise it will return no results.
+Return an array of RoleIds associated with UAL database. This function expects
+the UserAccessLogging class to be initialized with the SystemIdentity.mdb
+database otherwise it will return no results.
 
 | Param | Type     | Description                     |
 | ----- | -------- | ------------------------------- |
@@ -462,10 +475,13 @@ Parse the User Access Log (UAL) database on Windows Servers. This database
 contains logon information for users on the system.\
 It is **not** related to M365 UAL (Unified Audit Logging)!
 
-This function expects the UserAccessLogging class to be initialized with the Current.mdb or `{GUID}.mdb` database otherwise it will return no results.
+This function expects the UserAccessLogging class to be initialized with the
+Current.mdb or `{GUID}.mdb` database otherwise it will return no results.
 
-You may provide an optional UserAccessLogging associated with SystemIdentity.mdb to perform RoleID lookups. Otherwise this table will parse the Current.mdb or `{GUID}.mdb` database.
-You may also customize the number of pages that should be used when doing RoleID lookups, by default 30 pages will used.
+You may provide an optional UserAccessLogging associated with SystemIdentity.mdb
+to perform RoleID lookups. Otherwise this table will parse the Current.mdb or
+`{GUID}.mdb` database. You may also customize the number of pages that should be
+used when doing RoleID lookups, by default 30 pages will used.
 
 | Param           | Type              | Description                                                                                                                    |
 | --------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -503,22 +519,10 @@ The directory must contain:
 | ----- | ------ | ---------------------- |
 | path  | string | Path to WMI Repository |
 
-### extractDefenderRules(alt_file, limit) -> DefinitionRule[] | WindowsError
+### listUsbDevices(alt_file) -> UsbDevices[] | WindowsError
 
-An experimental function to attempt to extract Windows Defender Signatures.
-Defender can contain thousands/millions? of signatures so this function can
-potentially run for a long time.
+Parse SYSTEM Registry to get list of USB devices that have been connected
 
-By default it will only extract 30 signatures. You can extract all signatures by
-setting the limit to 0.
-
-By default it will attempt to extract all Defender signatures at:
-
-- %SYSTEMDRIVE%\\ProgramData\\Microsoft\\Windows Defender\\Definition
-  Updates\\\{\*\\\*.vdm
-
-You may also provide an optional alternative path to the vmd file
-
-| Param   | Type   | Description                                            |
-| ------- | ------ | ------------------------------------------------------ |
-| alt_dir | string | Alternative directory containing the UAL log databases |
+| Param    | Type   | Description                                  |
+| -------- | ------ | -------------------------------------------- |
+| alt_file | string | Alternative path to the SYSTEM Registry file |

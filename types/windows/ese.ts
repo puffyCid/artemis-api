@@ -30,7 +30,6 @@ export enum ColumnType {
   Unknown = "Unknown",
 }
 
-
 /**
  * Metadata about the ESE database Catalog
  */
@@ -94,32 +93,32 @@ export interface Catalog {
 }
 
 export enum CatalogType {
-    Table = "Table",
-    Column = "Column",
-    Index = "Index",
-    LongValue = "LongValue",
-    Callback = "Callback",
-    SlvAvail = "SlvAvail",
-    SlvSpaceMap = "SlvSpaceMap",
-    Unknown = "Unknown",
+  Table = "Table",
+  Column = "Column",
+  Index = "Index",
+  LongValue = "LongValue",
+  Callback = "Callback",
+  SlvAvail = "SlvAvail",
+  SlvSpaceMap = "SlvSpaceMap",
+  Unknown = "Unknown",
 }
 
 export interface TableInfo {
-    obj_id_table: number;
-    table_page: number;
-    table_name: string;
-    column_info: ColumnInfo[];
-    long_value_page: number;
+  obj_id_table: number;
+  table_page: number;
+  table_name: string;
+  column_info: ColumnInfo[];
+  long_value_page: number;
 }
 
 export interface ColumnInfo {
-    column_type: ColumnType;
-    column_name: string;
-    column_data: number[];
-    column_id: number;
-    column_flags: ColumnFlags[];
-    column_space_usage: number;
-    column_tagged_flags: TaggedDataFlag[];
+  column_type: ColumnType;
+  column_name: string;
+  column_data: number[];
+  column_id: number;
+  column_flags: ColumnFlags[];
+  column_space_usage: number;
+  column_tagged_flags: TaggedDataFlag[];
 }
 
 export enum ColumnFlags {

@@ -22,7 +22,7 @@ import {
   logons,
 } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
-async function main() {
+function main() {
   const path = "path to Security.evtx";
   const results = logons(path);
 
@@ -45,8 +45,8 @@ export interface Logons {
   authentication_package: string;
   source_ip: string;
   source_workstation: string;
-  logon_time: bigint;
-  logoff_time: bigint;
+  logon_time: string;
+  logoff_time: string;
   duration: number;
 }
 

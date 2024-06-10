@@ -43,7 +43,7 @@ function main() {
     role = ual;
   }
 
-  if(role === undefined) {
+  if (role === undefined) {
     return;
   }
 
@@ -76,8 +76,8 @@ An array of `UserAccessLog`
 ```typescript
 export interface UserAccessLog {
   total_accesses: number;
-  last_logon: number;
-  first_logon: number;
+  last_logon: string;
+  first_logon: string;
   ip: string;
   username: string;
   domain: string;

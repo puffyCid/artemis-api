@@ -3,7 +3,6 @@ import { MachoInfo } from "../../../types/macos/macho.ts";
 import { ProcessInfo } from "../../../types/system/processes.ts";
 import { TimesketchTimeline } from "../../../types/timesketch/timeline.ts";
 import { PeInfo } from "../../../types/windows/pe.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
 
 /**
  * Function to timeline process info
@@ -17,7 +16,7 @@ export function timelineProcesses(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.start_time),
+      datetime: item.start_time,
       timestamp_desc: "ProcessStart",
       message: `${item.full_path} ${item.arguments}`,
       artifact: "Processes",
@@ -41,7 +40,7 @@ export function timelineProcesses(
     entry["sha1"] = item.sha1;
     entry["sha256"] = item.sha256;
 
-    entry["start_time"] = unixEpochToISO(item.start_time);
+    entry["start_time"] = item.start_time;
 
     if (isPe(item.binary_info)) {
       entry = windowsProcess(entry, item.binary_info);

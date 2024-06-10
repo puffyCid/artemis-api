@@ -23,6 +23,7 @@ export type ErrorName =
   | "BIOME"
   | "LULU"
   | "MUNKI"
-  | "QUARANTINE_EVENT";
+  | "QUARANTINE_EVENT"
+  | "BOOKMARK";
 
 export class MacosError extends ErrorBase<ErrorName> {}

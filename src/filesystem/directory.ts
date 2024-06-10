@@ -1,4 +1,4 @@
-import { FileInfo } from "../../types/filesystem/directory.d.ts";
+import { FileInfo } from "../../types/filesystem/directory.ts";
 import { FileError } from "./errors.ts";
 
 /**

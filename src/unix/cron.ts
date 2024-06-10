@@ -1,4 +1,4 @@
-import { Cron } from "../../types/unix/cron.d.ts";
+import { Cron } from "../../types/unix/cron.ts";
 import { UnixError } from "./errors.ts";
 
 /**

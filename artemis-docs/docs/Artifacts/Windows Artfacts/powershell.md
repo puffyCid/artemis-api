@@ -29,7 +29,7 @@ import {
   powershellHistory,
 } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
-async function main() {
+function main() {
   const results = powershellHistory();
 
   console.log(results);

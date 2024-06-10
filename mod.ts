@@ -26,9 +26,7 @@ export {
 } from "./src/macos/homebrew.ts";
 export { getMacho } from "./src/macos/macho.ts";
 export { getPlist } from "./src/macos/plist.ts";
-export {
-  getUnifiedLog,
-} from "./src/macos/unifiedlogs.ts";
+export { getUnifiedLog } from "./src/macos/unifiedlogs.ts";
 export {
   getSafariDownloads,
   getSafariHistory,
@@ -140,3 +138,6 @@ export { getChocolateyInfo } from "./src/windows/chocolatey.ts";
 export { logonsWindows } from "./src/windows/eventlogs/logons.ts";
 export { getShellItem } from "./src/windows/shellitems.ts";
 export { getWmiPersist } from "./src/windows/wmi.ts";
+export { powershellHistory } from "./src/windows/powershell.ts";
+export { parseMru } from "./src/windows/registry/recently_used.ts";
+export { listUsbDevices } from "./src/windows/registry/usb.ts";

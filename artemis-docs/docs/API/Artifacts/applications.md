@@ -200,3 +200,36 @@ All Chromium derived browsers should be supported.
 | -------- | ------------ | --------------------------------------------------------- |
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | path     | string       | Optional path to a Chromium Login Data database           |
+
+### extractDefenderRules(platform, alt_file, limit) -> DefinitionRule[] | ApplicationError
+
+An experimental function to attempt to extract Windows Defender Signatures.
+Defender can contain thousands/millions? of signatures so this function can
+potentially run for a long time.
+
+By default it will only extract 30 signatures. You can extract all signatures by
+setting the limit to 0.
+
+By default it will attempt to extract all Defender signatures at:
+
+- %SYSTEMDRIVE%\\ProgramData\\Microsoft\\Windows Defender\\Definition
+  Updates\\\{\*\\\*.vdm
+- /Library/Application Support/Microsoft/Defender/definitions.noindex/\*/\*.vdm
+
+You may also provide an optional alternative path to the vmd file
+
+| Param    | Type         | Description                                            |
+| -------- | ------------ | ------------------------------------------------------ |
+| platform | PlatformType | OS platform to extract rules from                      |
+| alt_dir  | string       | Alternative directory containing the UAL log databases |
+| limit    | number       | Number of rules to return. Default is 30               |
+
+### officeMruFiles(platform, alt_file) -> OfficeRecentFilesMacos[] | OfficeRecentFilesWindows[] | ApplicationError
+
+Extract Microsoft Office MRU entries. Supports both macOS and Windows. By default will parse MRU entries for all users.  
+You may also provide an optional alternative path to the MRU plist or NTUSER.DAT file.
+
+| Param    | Type         | Description                                               |
+| -------- | ------------ | --------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| alt_file | string       | Optional path to a MRU plist or NTUSER.DAT                |

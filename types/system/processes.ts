@@ -26,8 +26,8 @@ export interface ProcessInfo {
   memory_usage: number;
   /**Process virtual memory usage */
   virtual_memory_usage: number;
-  /**Process start time in UNIXEPOCH seconds*/
-  start_time: number;
+  /**Process start time */
+  start_time: string;
   /** User ID associated with process */
   uid: string;
   /**Group ID associated with process */

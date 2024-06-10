@@ -2,7 +2,7 @@ import {
   BashHistory,
   PythonHistory,
   ZshHistory,
-} from "../../types/unix/shellhistory.d.ts";
+} from "../../types/unix/shellhistory.ts";
 import { UnixError } from "./errors.ts";
 
 /**

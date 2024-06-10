@@ -1,3 +1,5 @@
+import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark.ts";
+
 /**
  * `LoginItems` are a form of persistence on macOS systems.
  * They are triggered when a user logs on to the system.
@@ -15,8 +17,8 @@ export interface LoginItems {
   path: string;
   /**Path represented as Catalog Node ID */
   cnid_path: string;
-  /**Created timestamp of target file in UNIXEPOCH seconds */
-  created: number;
+  /**Created timestamp of target file */
+  created: string;
   /**Path to the volume of target file */
   volume_path: string;
   /**Target file URL type */
@@ -27,8 +29,8 @@ export interface LoginItems {
   volume_uuid: string;
   /**Size of target volume in bytes */
   volume_size: number;
-  /**Created timestamp of volume in UNIXEPOCH seconds */
-  volume_created: number;
+  /**Created timestamp of volume */
+  volume_created: string;
   /**Volume Property flags */
   volume_flags: VolumeFlags[];
   /**Flag if volume if the root filesystem */
@@ -61,90 +63,4 @@ export interface LoginItems {
   file_ref_flag: boolean;
   /**Path to `LoginItem` source */
   source_path: string;
-}
-
-export enum TargetFlags {
-  RegularFile = "RegularFile",
-  Directory = "Directory",
-  SymbolicLink = "SymbolicLink",
-  Volume = "Volume",
-  Package = "Package",
-  SystemImmutable = "SystemImmutable",
-  UserImmutable = "UserImmutable",
-  Hidden = "Hidden",
-  HasHiddenExtension = "HasHiddenExtension",
-  Application = "Application",
-  Compressed = "Compressed",
-  CanSetHiddenExtension = "CanSetHiddenExtension",
-  Readable = "Readable",
-  Writable = "Writable",
-  Executable = "Executable",
-  AliasFile = "AliasFile",
-  MountTrigger = "MountTrigger",
-}
-
-export enum CreationFlags {
-  MinimalBookmark = "MinimalBookmark",
-  SuitableBookmark = "SuitableBookmark",
-  SecurityScope = "SecurityScope",
-  SecurityScopeAllowOnlyReadAccess = "SecurityScopeAllowOnlyReadAccess",
-  WithoutImplicitSecurityScope = "WithoutImplicitSecurityScope",
-  PreferFileIDResolutionMask = "PreferFileIDResolutionMask",
-}
-
-export enum VolumeFlags {
-  Local = "Local",
-  Automount = "Automount",
-  DontBrowse = "DontBrowse",
-  ReadOnly = "ReadOnly",
-  Quarantined = "Quarantined",
-  Ejectable = "Ejectable",
-  Removable = "Removable",
-  Internal = "Internal",
-  External = "External",
-  DiskImage = "DiskImage",
-  FileVault = "FileVault",
-  LocaliDiskMirror = "LocaliDiskMirror",
-  Ipod = "Ipod",
-  Idisk = "Idisk",
-  Cd = "Cd",
-  Dvd = "Dvd",
-  DeviceFileSystem = "DeviceFileSystem",
-  TimeMachine = "TimeMachine",
-  Airport = "Airport",
-  VideoDisk = "VideoDisk",
-  DvdVideo = "DvdVideo",
-  BdVideo = "BdVideo",
-  MobileTimeMachine = "MobileTimeMachine",
-  NetworkOptical = "NetworkOptical",
-  BeingRepaired = "BeingRepaired",
-  Unmounted = "Unmounted",
-  SupportsPersistentIds = "SupportsPersistentIds",
-  SupportsSearchFs = "SupportsSearchFs",
-  SupportsExchange = "SupportsExchange",
-  SupportsSymbolicLinks = "SupportsSymbolicLinks",
-  SupportsDenyModes = "SupportsDenyModes",
-  SupportsCopyFile = "SupportsCopyFile",
-  SupportsReadDirAttr = "SupportsReadDirAttr",
-  SupportsJournaling = "SupportsJournaling",
-  SupportsRename = "SupportsRename",
-  SupportsFastStatFs = "SupportsFastStatFs",
-  SupportsCaseSensitiveNames = "SupportsCaseSensitiveNames",
-  SupportsCasePreservedNames = "SupportsCasePreservedNames",
-  SupportsFlock = "SupportsFlock",
-  SupportsNoRootDirectoryTimes = "SupportsNoRootDirectoryTimes",
-  SupportsExtendedSecurity = "SupportsExtendedSecurity",
-  Supports2TbFileSize = "Supports2TbFileSize",
-  SupportsHardLinks = "SupportsHardLinks",
-  SupportsMandatoryByteRangeLocks = "SupportsMandatoryByteRangeLocks",
-  SupportsPathFromId = "SupportsPathFromId",
-  Journaling = "Journaling",
-  SupportsSparseFiles = "SupportsSparseFiles",
-  SupportsZeroRunes = "SupportsZeroRunes",
-  SupportsVolumeSizes = "SupportsVolumeSizes",
-  SupportsRemoteEvents = "SupportsRemoteEvents",
-  SupportsHiddenFiles = "SupportsHiddenFiles",
-  SupportsDecmpFsCompression = "SupportsDecmpFsCompression",
-  Has64BitObjectIds = "Has64BitObjectIds",
-  PropertyFlagsAll = "PropertyFlagsAll",
 }

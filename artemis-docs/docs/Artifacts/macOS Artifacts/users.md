@@ -62,10 +62,10 @@ export interface Users {
   real_name: string[];
   /**Base64 encoded photo associated with user */
   account_photo: string[];
-  /**Timestamp the user was created in UNIXEPOCH seconds */
-  account_created: number;
-  /**Password last changed for the user in UNIXEPOCH seconds */
-  password_last_set: number;
+  /**Timestamp the user was created */
+  account_created: string;
+  /**Password last changed for the user */
+  password_last_set: string;
   /**Shell associated with the user */
   shell: string[];
   /**Unlock associated with the user */

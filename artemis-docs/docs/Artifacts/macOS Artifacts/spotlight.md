@@ -96,8 +96,8 @@ export interface Spotlight {
   flags: number;
   /**Store ID associated with indexed entry */
   store_id: number;
-  /**Last time Spotlight entry was updated in UNIXEPOCH **microseconds** */
-  last_updated: bigint;
+  /**Last time Spotlight entry was updated */
+  last_updated: string;
   /**
    *  Properties associated with the entry
    *

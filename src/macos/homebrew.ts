@@ -201,7 +201,14 @@ function parseRuby(path: string): HomebrewFormula | FileError {
   const reg_license = /(?<=license ).*$/m;
   const reg_url = /(?<=url ).*$/m;
   const reg_name = /(?<=name ).*$/m;
-  const reg_version = /(?<=version ).*$/m;
+
+  const versionvalue = path.split("/");
+  let version = "";
+  if (path.includes("/Casks/")) {
+    version = versionvalue[versionvalue.length - 4];
+  } else {
+    version = versionvalue[versionvalue.length - 3];
+  }
 
   const rubyText = readTextFile(path);
   if (rubyText instanceof FileError) {
@@ -216,7 +223,7 @@ function parseRuby(path: string): HomebrewFormula | FileError {
     license: "",
     caskName: "",
     formulaPath: path,
-    version: "",
+    version,
   };
   if (typeof description?.[0] === "string") {
     receipt.description = description?.[0].replaceAll('"', "");
@@ -238,13 +245,8 @@ function parseRuby(path: string): HomebrewFormula | FileError {
   }
 
   const name = rubyText.match(reg_name);
-  if (typeof name?.[0] === "string") {
+  if (typeof name?.[0] === "string" && path.includes("Cask")) {
     receipt.caskName = name?.[0].replaceAll('"', "");
-  }
-
-  const version = rubyText.match(reg_version);
-  if (typeof version?.[0] === "string") {
-    receipt.version = version?.[0].replaceAll('"', "");
   }
 
   return receipt;

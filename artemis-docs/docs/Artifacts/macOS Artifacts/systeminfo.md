@@ -45,7 +45,7 @@ A `SystemInfo` object structure
 ```typescript
 export interface SystemInfo {
   /**Boot time for endpoint */
-  boot_time: number;
+  boot_time: string;
   /**Endpoint hostname */
   hostname: string;
   /**Endpoint OS version */

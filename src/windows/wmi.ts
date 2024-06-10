@@ -1,6 +1,5 @@
 import { WindowsError } from "./errors.ts";
 import { WmiPersist } from "../../types/windows/wmi.ts";
-import { getEnvValue } from "../environment/env.ts";
 
 /**
  * Function to parse WMI repository and extract persistence entries
