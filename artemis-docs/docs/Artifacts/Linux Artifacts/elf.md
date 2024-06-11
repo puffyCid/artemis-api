@@ -25,13 +25,13 @@ References:
 
 # TOML Collection
 
-There is no way to collect just `ELF` data with artemis instead it is an
-optional feature for the Linux `filelisting` and `processes` artifacts.
+There is no way to collect just ELF data with artemis instead it is an
+optional feature for the Linux [filelisting](./files.md) and [processes](./processes.md) artifacts.
 
-However, it is possible to directly parse `ELF` files by using JavaScript. See
+However, it is possible to directly parse ELF files by using JavaScript. See
 the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
 
-# Configuration Optaions
+# Configuration Options
 
 N/A
 

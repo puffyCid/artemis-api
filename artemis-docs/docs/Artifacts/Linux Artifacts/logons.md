@@ -16,8 +16,8 @@ information on Linux:
 - utmp - Users currently logged on
 
 In addition, [Journal](./journals.md) files may also contain logon information
-Currently artemis supports all three (3) files above when obtaining `Logon`
-information. When collecting `Logon` information artemis will only parse: wtmp,
+Currently artemis supports all three (3) files above when obtaining Logon
+information. When collecting Logon information artemis will only parse: wtmp,
 utmp, and btmp files.
 
 If you want to check for logons in `Journal` files, you can try to apply a
@@ -83,8 +83,10 @@ export interface Logon {
   exit_status: number;
   /**Session for logon entry */
   session: number;
-  /**Timestamp for logon in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp for logon */
+  timestamp: string;
+  /**Microseconds for logon */
+  microseconds: number;
   /**Source IP for logon entry */
   ip: string;
   /**Status of logon entry: `Success` or `Failed` */

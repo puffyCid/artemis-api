@@ -73,7 +73,7 @@ file_regex = "" # Regex for files
   configuration is **optional**. Default is **false**
 - `path_regex` Only descend into paths (directories) that match the provided
   regex. This configuration is **optional**. Default is no Regex
-- `file_regex` Only return entres that match the provided regex. This
+- `file_regex` Only return entries that match the provided regex. This
   configuration is **optional**. Default is no Regex
 
 # Output Structure

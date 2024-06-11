@@ -27,8 +27,10 @@ export interface Logon {
   exit_status: number;
   /**Session for logon entry */
   session: number;
-  /**Timestamp for logon in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp for logon */
+  timestamp: string;
+  /**Microseconds for logon */
+  microseconds: number;
   /**Source IP for logon entry */
   ip: string;
   /**Status of logon entry: `Success` or `Failed` */

@@ -1,5 +1,4 @@
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 import { Journal } from "../../../../types/linux/journal.ts";
 
 /**
@@ -14,7 +13,7 @@ export function timelineJournals(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.realtime),
+      datetime: item.realtime,
       timestamp_desc: "Journal Entry Generated",
       message: item.message,
       artifact: "Journal",
@@ -22,8 +21,8 @@ export function timelineJournals(
     };
 
     entry = { ...entry, ...item };
-    entry["realtime"] = unixEpochToISO(item.realtime);
-    entry["source_realtime"] = unixEpochToISO(item.source_realtime);
+    entry["realtime"] = item.realtime;
+    entry["source_realtime"] = item.source_realtime;
 
     entries.push(entry);
   }

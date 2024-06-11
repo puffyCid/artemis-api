@@ -46,6 +46,6 @@ export interface MacosFileInfo {
   is_symlink: boolean;
   /**Depth the file from provided start point */
   depth: number;
-  /**Macho binary metadata */
+  /**MACHO binary metadata */
   binary_info: MachoInfo[];
 }

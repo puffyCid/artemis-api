@@ -19,8 +19,8 @@ export interface BashHistory {
 export interface BashData {
   /**Line entry */
   history: string;
-  /**Timestamp associated with line entry in UNIXEPOCH. Timestamps are **optional** in `.bash_history`, zero (0) is returned for no timestamp */
-  timestamp: number;
+  /**Timestamp associated with line entry. Timestamps are **optional** in `.bash_history` */
+  timestamp: string;
   /**Line number */
   line: number;
 }
@@ -34,7 +34,7 @@ export interface BashData {
 export interface ZshHistory {
   /**Array of lines associated with `.zs_history` file */
   history: ZshData[];
-  /**Path to `.bash_history` file */
+  /**Path to `.zsh_history` file */
   path: string;
   /**User directory name */
   user: string;
@@ -46,8 +46,8 @@ export interface ZshHistory {
 export interface ZshData {
   /**Line entry */
   history: string;
-  /**Timestamp associated with line entry in UNIXEPOCH. Timestamps are **optional** in `.zsh_history`, zero (0) is returned for no timestamp */
-  timestamp: number;
+  /**Timestamp associated with line entry. Timestamps are **optional** in `.zsh_history` */
+  timestamp: string;
   /**Line number */
   line: number;
   /**Duration of command */
@@ -56,7 +56,7 @@ export interface ZshData {
 
 /**
  * `Python` is a popular programming language.
- * For most endpoints `Python` will record commands executed in its iteractive shell environment in a history file called `.python_history`
+ * For most endpoints `Python` will record commands executed in its interactive shell environment in a history file called `.python_history`
  *
  * A `.python_history`file can exist per user on an endpoint
  */

@@ -6,8 +6,7 @@ export interface RpmPackages {
   size: number;
   sha1: string;
   arch: string;
-  /**In UNIXEPOCH seconds */
-  install_time: number;
+  install_time: string;
   vendor: string;
   package_group: string;
   summary: string;

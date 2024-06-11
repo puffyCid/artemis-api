@@ -12,6 +12,7 @@ import {
   nomUnsignedFourBytes,
 } from "../nom/helpers.ts";
 import { takeUntil } from "../nom/parsers.ts";
+import { unixEpochToISO } from "../time/conversion.ts";
 
 /**
  * Function to get installed RPM packages. This function only supports getting packages from the sqlite database. The historical Berkley database is not supported.
@@ -62,7 +63,7 @@ export function getRpmInfo(alt_path?: string): RpmPackages[] | LinuxError {
       size: 0,
       sha1: "",
       arch: "",
-      install_time: 0,
+      install_time: "",
       vendor: "",
       package_group: "",
       summary: "",
@@ -101,7 +102,9 @@ export function getRpmInfo(alt_path?: string): RpmPackages[] | LinuxError {
           break;
         }
         case `${TagName.InstallTime}`: {
-          rpm.install_time = (rpm_tags[value] as number[]).at(0) ?? 0;
+          rpm.install_time = unixEpochToISO(
+            (rpm_tags[value] as number[]).at(0) ?? 0,
+          );
           break;
         }
         case `${TagName.Vendor}`: {
