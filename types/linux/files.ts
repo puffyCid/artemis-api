@@ -46,6 +46,6 @@ export interface LinuxFileInfo {
   is_symlink: boolean;
   /**Depth the file from provided start point */
   depth: number;
-  /**PE binary metadata */
+  /**ELF binary metadata */
   binary_info: ElfInfo[];
 }
