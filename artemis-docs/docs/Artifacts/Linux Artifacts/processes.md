@@ -89,7 +89,7 @@ export interface LinuxProcessInfo {
   sha1: string;
   /**SHA256 hash of process binary */
   sha256: string;
-  /**ELF metadata asssociated with process binary */
+  /**ELF metadata associated with process binary */
   binary_info: ElfInfo[];
 }
 ```

@@ -9,7 +9,7 @@ keywords:
 # Cron
 
 `Cron` is an application that lets users create jobs on an endpoint. It is
-common on Unix, Linux, and macOS systems. A `Cron` job can be configured to
+common on Unix, Linux, and macOS systems. A cron job can be configured to
 execute a command on at a specific time. It is a popular form of persistence on
 supported systems.
 

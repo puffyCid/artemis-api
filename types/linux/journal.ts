@@ -56,10 +56,10 @@ export interface Journal {
   hostname: string;
   /**Runtime scope associated with entry */
   runtime_scope: string;
-  /**Source timestamp associated with entry in UNIXEPOCH microseconds */
-  source_realtime: bigint;
-  /**Timestamp associated with entry in UNIXEPOCH microseconds */
-  realtime: bigint;
+  /**Source timestamp associated with entry */
+  source_realtime: string;
+  /**Timestamp associated with entry */
+  realtime: string;
   /**How entry was received by the Journal service */
   transport: string;
   /**Journal message entry */

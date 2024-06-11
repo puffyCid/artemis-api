@@ -38,6 +38,6 @@ export interface ProcessInfo {
   sha1: string;
   /**SHA256 hash of process binary */
   sha256: string;
-  /**Binary metadata asssociated with process binary */
+  /**Binary metadata associated with process binary */
   binary_info: PeInfo[] | MachoInfo[] | ElfInfo[];
 }
