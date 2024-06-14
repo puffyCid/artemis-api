@@ -47,8 +47,8 @@ export interface Registry {
    * Ex: `Run => Vmware`. Where `Run` is the `Key` name and `Vmware` is the value name
    */
   values: Value[];
-  /**Timestamp of when the path was last modified in UNIXEPOCH seconds */
-  last_modified: number;
+  /**Timestamp of when the path was last modified */
+  last_modified: string;
   /**Depth of key name */
   depth: number;
   /**Offset to the Security Key info for the key */

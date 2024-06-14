@@ -63,8 +63,8 @@ An array of `Amcache` entries
 
 ```typescript
 export interface Amcache {
-  /**Last modified time for Registry key in UNIXEPOCH seconds */
-  last_modified: number;
+  /**Last modified time for Registry key */
+  last_modified: string;
   /**Path to application */
   path: string;
   /**Name of application */

@@ -62,8 +62,8 @@ An array of `RecycleBin` entries
 export interface RecycleBin {
   /**Size of deleted file */
   size: number;
-  /**Deleted timestamp of file in UNIXEPOCH seconds */
-  deleted: number;
+  /**Deleted timestamp of file */
+  deleted: string;
   /**Name of deleted file */
   filename: string;
   /**Full path to the deleted file */

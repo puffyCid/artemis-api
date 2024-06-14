@@ -71,8 +71,8 @@ export interface Services {
   service_type: string[];
   /**Account associated with Service */
   account: string;
-  /**Registry modified timestamp in UNIXEPOCH seconds. May be used to determine when the Service was created */
-  modified: number;
+  /**Registry modified timestamp. May be used to determine when the Service was created */
+  modified: string;
   /**DLL associated with Service */
   service_dll: string;
   /**Service command upon failure */

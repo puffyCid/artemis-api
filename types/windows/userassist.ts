@@ -8,8 +8,8 @@
 export interface UserAssist {
   /**Path of executed application */
   path: string;
-  /**Last execution time of application in UNIXEPOCH seconds */
-  last_execution: number;
+  /**Last execution time of application */
+  last_execution: string;
   /**Number of times executed */
   count: number;
   /**Registry path to UserAssist entry */

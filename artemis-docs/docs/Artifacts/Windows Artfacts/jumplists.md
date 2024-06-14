@@ -95,8 +95,8 @@ interface DestEntries {
   hostname: string;
   /**Jumplist entry number */
   entry: number;
-  /**Modified timestamp of Jumplist entry in UNIXEPOCH seconds */
-  modified: number;
+  /**Modified timestamp of Jumplist entry */
+  modified: string;
   /**Status if Jumplist entry is pinned. `Pinned` or `NotPinned` */
   pin_status: string;
   /**Path associated with Jumplist entry */

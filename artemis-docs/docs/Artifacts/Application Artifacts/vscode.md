@@ -57,7 +57,7 @@ export interface FileHistory {
 interface Entries {
   /**Name of history file */
   id: string;
-  /**Time when file was saved in UNIXEPOCH milliseconds */
+  /**Time when file was saved */
   timestamp: string;
   /**Based64 encoded file content */
   content: string;

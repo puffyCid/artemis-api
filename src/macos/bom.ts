@@ -19,6 +19,7 @@ import {
   nomUnsignedTwoBytes,
 } from "../nom/helpers.ts";
 import { nomUnsignedFourBytes, take } from "../nom/mod.ts";
+import { unixEpochToISO } from "../time/conversion.ts";
 import { MacosError } from "./errors.ts";
 import { getPlist } from "./plist.ts";
 
@@ -862,7 +863,7 @@ function assembleBom(files: Map<number, BomData>): BomFiles[] {
       mode: value.bom_info.mode,
       size: value.bom_info.size,
       path: paths.join("/"),
-      modified: value.bom_info.modified,
+      modified: unixEpochToISO(value.bom_info.modified),
       checksum: value.bom_info.checksum,
     };
     boms.push(bom);

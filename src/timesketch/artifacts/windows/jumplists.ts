@@ -1,6 +1,5 @@
 import { Jumplists } from "../../../../types/windows/jumplists.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 import { extractShortcutTimes } from "./shortcuts.ts";
 
 /**
@@ -15,7 +14,7 @@ export function timelineJumplists(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.jumplist_metadata.modified),
+      datetime: item.jumplist_metadata.modified,
       timestamp_desc: "Jumplist Modified",
       message: item.lnk_info.path,
       artifact: "Jumplist",
@@ -28,16 +27,16 @@ export function timelineJumplists(
     entry = { ...entry, ...item.jumplist_metadata };
 
     entry = { ...entry, ...item.lnk_info };
-    entry["target_modified"] = unixEpochToISO(item.lnk_info.modified);
-    entry["target_created"] = unixEpochToISO(item.lnk_info.created);
-    entry["target_accessed"] = unixEpochToISO(item.lnk_info.accessed);
+    entry["target_modified"] = item.lnk_info.modified;
+    entry["target_created"] = item.lnk_info.created;
+    entry["target_accessed"] = item.lnk_info.accessed;
 
     delete entry["created"];
     delete entry["accessed"];
 
     entry["properties"] = JSON.stringify(item.lnk_info.properties);
 
-    entry["modified"] = unixEpochToISO(item.jumplist_metadata.modified);
+    entry["modified"] = item.jumplist_metadata.modified;
 
     if (entry.message === "" && item.jumplist_metadata.path === "") {
       let message = "";
@@ -54,7 +53,7 @@ export function timelineJumplists(
     // Extract each unique timestamp to their own entry
     const time_entries = extractShortcutTimes(item.lnk_info);
     for (const time_entry of time_entries) {
-      entry.datetime = unixEpochToISO(time_entry.datetime);
+      entry.datetime = time_entry.datetime;
       entry.timestamp_desc = time_entry.desc;
       entries.push(Object.assign({}, entry));
     }

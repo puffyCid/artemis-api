@@ -1,6 +1,5 @@
 import { Prefetch } from "../../../../types/windows/prefetch.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline Prefetch
@@ -14,7 +13,7 @@ export function timelinePrefetch(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.last_run_time),
+      datetime: item.last_run_time,
       timestamp_desc: "Prefetch Last Execution",
       message: item.path,
       artifact: "Prefetch",
@@ -25,7 +24,7 @@ export function timelinePrefetch(
     entries.push(entry);
     for (let i = 0; i < item.all_run_times.length; i++) {
       const old_run = Object.assign({}, entry);
-      old_run.datetime = unixEpochToISO(item.all_run_times[i]);
+      old_run.datetime = item.all_run_times[i];
       old_run.timestamp_desc = "Prefetch Execution";
       entries.push(old_run);
     }

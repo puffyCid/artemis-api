@@ -8,12 +8,12 @@
 export interface Shellbags {
   /**Reconstructed directory path */
   path: string;
-  /**FAT created timestamp in UNIXEPOCH. Only applicable for Directory `shell_type` */
-  created: number;
-  /**FAT modified timestamp in UNIXEPOCH. Only applicable for Directory `shell_type` */
-  modified: number;
-  /**FAT modified timestamp in UNIXEPOCH. Only applicable for Directory `shell_type` */
-  accessed: number;
+  /**FAT created timestamp. Only applicable for Directory `shell_type` */
+  created: string;
+  /**FAT modified timestamp. Only applicable for Directory `shell_type` */
+  modified: string;
+  /**FAT modified timestamp. Only applicable for Directory `shell_type` */
+  accessed: string;
   /**Entry number in MFT. Only applicable for Directory `shell_type` */
   mft_entry: number;
   /**Sequence number in MFT. Only applicable for Directory `shell_type` */
@@ -32,8 +32,8 @@ export interface Shellbags {
    * Ex: `20d04fe0-3aea-1069-a2d8-08002b30309d` to `This PC`
    */
   resolve_path: string;
-  /**Registry key last modified in UNIXEPOCH seconds */
-  reg_modified: number;
+  /**Registry key last modified */
+  reg_modified: string;
   /**User Registry file associated with `Shellbags` */
   reg_file: string;
   /**Registry key path to `Shellbags` data */

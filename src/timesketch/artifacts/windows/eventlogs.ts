@@ -1,6 +1,5 @@
 import { EventLogRecord } from "../../../../types/windows/eventlogs.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline EventLogs
@@ -14,7 +13,7 @@ export function timelineEventLogs(
 
   for (const item of data) {
     const entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.timestamp),
+      datetime: item.timestamp,
       timestamp_desc: "EventLog Entry Generated",
       message: "",
       artifact: "EventLog",

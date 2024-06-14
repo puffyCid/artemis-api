@@ -63,8 +63,8 @@ export interface Shimcache {
   entry: number;
   /**Full path to application file */
   path: string;
-  /**Standard Information Modified timestamp in UNIXEPOCH seconds */
-  last_modified: number;
+  /**Standard Information Modified timestamp */
+  last_modified: string;
   /**Full path to the Registry key */
   key_path: string;
 }

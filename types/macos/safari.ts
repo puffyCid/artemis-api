@@ -86,7 +86,7 @@ export interface RawSafariDownloads {
   download_id: string;
   /**Download start date */
   download_entry_date: string;
-  /**Download finish date in UNIXEPOCH seoconds */
+  /**Download finish date */
   download_entry_finish: string;
   /**Path to file to run */
   path: string;

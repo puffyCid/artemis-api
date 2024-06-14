@@ -59,12 +59,12 @@ export interface ShellItems {
    *  Most common is `Directory`
    */
   shell_type: string;
-  /**FAT created timestamp in UNIXEPOCH seconds. Only applicable for Directory `shell_type` */
-  created: number;
-  /**FAT modified timestamp in UNIXEPOCH seconds. Only applicable for Directory `shell_type` */
-  modified: number;
-  /**FAT modified timestamp in UNIXEPOCH seconds. Only applicable for Directory `shell_type` */
-  accessed: number;
+  /**FAT created timestamp. Only applicable for Directory `shell_type` */
+  created: string;
+  /**FAT modified timestamp. Only applicable for Directory `shell_type` */
+  modified: string;
+  /**FAT modified timestamp. Only applicable for Directory `shell_type` */
+  accessed: string;
   /**Entry number in MFT. Only applicable for Directory `shell_type` */
   mft_entry: number;
   /**Sequence number in MFT. Only applicable for Directory `shell_type` */

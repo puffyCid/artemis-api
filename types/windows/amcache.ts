@@ -7,8 +7,8 @@
  *  - https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf
  */
 export interface Amcache {
-  /**Last modified time for Registry key in UNIXEPOCH seconds */
-  last_modified: number;
+  /**Last modified time for Registry key */
+  last_modified: string;
   /**Path to application */
   path: string;
   /**Name of application */

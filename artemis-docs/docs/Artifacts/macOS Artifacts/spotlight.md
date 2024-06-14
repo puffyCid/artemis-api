@@ -328,7 +328,7 @@ interface SpotlightProperties {
    * - AttrFloat32
    * - AttrFloat64
    * - AttrString
-   * - AttrDate (typically will be number of seconds in UNIXEPOCH)
+   * - AttrDate (ISO RFC 3339 date)
    * - AttrBinary
    * - AttrList
    * - Unknown
@@ -369,7 +369,7 @@ enum DataAttribute {
   AttrFloat64 = "AttrFloat64",
   /**A string value */
   AttrString = "AttrString",
-  /**A date value in seconds in UNIXEPOCH */
+  /**A date value in ISO RFC 3339 format */
   AttrDate = "AttrDate",
   /**Base64 encoded binary value. (Depending on the property this may actually be a normal string value (similar to `AttrString`) */
   AttrBinary = "AttrBinary",

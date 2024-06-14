@@ -1,6 +1,5 @@
 import { RegistryData } from "../../../../types/windows/registry.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline RegistryData
@@ -12,7 +11,7 @@ export function timelineRegistry(data: RegistryData): TimesketchTimeline[] {
 
   for (const item of data.registry_entries) {
     const entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.last_modified),
+      datetime: item.last_modified,
       timestamp_desc: "Registry Last Modified",
       message: "",
       artifact: "Registry",

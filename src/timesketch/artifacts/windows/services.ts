@@ -11,8 +11,8 @@ export function timelineServices(data: Services[]): TimesketchTimeline[] {
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: "1601-01-01T00:00:00.000Z",
-      timestamp_desc: "N/A",
+      datetime: item.modified,
+      timestamp_desc: "Registry Modified",
       message: `Service Name: ${item.name}  |  ${item.path}`,
       artifact: "Service",
       data_type: "windows:registry:services:entry",

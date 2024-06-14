@@ -1,6 +1,5 @@
 import { Shimdb } from "../../../../types/windows/shimdb.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline Shimdb
@@ -14,7 +13,7 @@ export function timelineShimdb(
 
   for (const item of data) {
     const entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.db_data.compile_time),
+      datetime: item.db_data.compile_time,
       timestamp_desc: "Shim Compile Time",
       message: "",
       artifact: "Shimdb",
