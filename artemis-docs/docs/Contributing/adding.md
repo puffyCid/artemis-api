@@ -9,7 +9,8 @@ Before working on a new feature for artemis please make sure you have read the
 document. Most important thing is to first create an issue! Basic overview of
 adding a new feature:
 
-1. Create an issue. If you want to work on it, make sure to explicitly volunteer!
+1. Create an issue. If you want to work on it, make sure to explicitly
+   volunteer!
 2. Create a branch on your clone artemis repo
 3. Work on feature
 4. Ensure tests are made for all functions

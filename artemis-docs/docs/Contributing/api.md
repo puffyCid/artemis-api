@@ -23,7 +23,8 @@ scripts as mentioned in [scripting](../Intro/Scripting/deno.md). You will need:
 Please try to create an issue before working on a feature. Basic overview of
 adding a new feature:
 
-1. Create an issue. If you want to work on it, make sure to explicitly volunteer!
+1. Create an issue. If you want to work on it, make sure to explicitly
+   volunteer!
 2. Create a branch on your clone artemis repo
 3. Work on feature
 4. If you are adding a new artifact make sure you have updated the artemis docs

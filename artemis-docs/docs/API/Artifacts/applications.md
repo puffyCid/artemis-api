@@ -226,8 +226,10 @@ You may also provide an optional alternative path to the vmd file
 
 ### officeMruFiles(platform, alt_file) -> OfficeRecentFilesMacos[] | OfficeRecentFilesWindows[] | ApplicationError
 
-Extract Microsoft Office MRU entries. Supports both macOS and Windows. By default will parse MRU entries for all users.  
-You may also provide an optional alternative path to the MRU plist or NTUSER.DAT file.
+Extract Microsoft Office MRU entries. Supports both macOS and Windows. By
+default will parse MRU entries for all users.\
+You may also provide an optional alternative path to the MRU plist or NTUSER.DAT
+file.
 
 | Param    | Type         | Description                                               |
 | -------- | ------------ | --------------------------------------------------------- |

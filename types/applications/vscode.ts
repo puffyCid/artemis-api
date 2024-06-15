@@ -17,7 +17,7 @@ interface Entries {
   /**Name of history file */
   id: string;
   /**Time when file was saved */
-  timestamp: number | string ;
+  timestamp: number | string;
   /**Based64 encoded file content */
   content: string;
 }
