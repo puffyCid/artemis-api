@@ -4,7 +4,6 @@ import { UserAccessLog } from "../../../types/windows/ese/ual.ts";
 import { EseTable, TableInfo } from "../../../types/windows/ese.ts";
 import { decode } from "../../encoding/base64.ts";
 import { EncodingError } from "../../encoding/errors.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
 
 interface RoleIds {
   guid: string;
@@ -42,7 +41,7 @@ export class UserAccessLogging extends EseDatabase {
   }
 
   /**
-   * Function to get UAL RoleID info
+   * Function to get UAL RoleID info from `SystemIdentity.mdb`
    * @param pages Array of pages to parse for the RoleIds table
    * @returns Array of `RoleIds` or `WindowsError`
    */
@@ -223,10 +222,10 @@ export class UserAccessLogging extends EseDatabase {
             ual_log.total_accesses = Number(entry.column_data);
             break;
           case "InsertDate":
-            ual_log.first_logon = unixEpochToISO(Number(entry.column_data));
+            ual_log.first_logon = entry.column_data;
             break;
           case "LastAccess":
-            ual_log.last_logon = unixEpochToISO(Number(entry.column_data));
+            ual_log.last_logon = entry.column_data;
             break;
           case "Address":
             ual_log.ip = this.extractIp(entry.column_data);

@@ -4,7 +4,6 @@ import {
   MruValues,
 } from "../../../types/windows/registry/recently_used.ts";
 import { ShellItems } from "../../../types/windows/shellitems.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
 import { WindowsError } from "../errors.ts";
 import { getRegistry } from "../registry.ts";
 import { lastVisitMru, openSaveMru } from "./mru/common.ts";
@@ -92,9 +91,9 @@ export function assembleMru(items: ShellItems[]): MruValues {
   const entry: MruValues = {
     filename: item.value,
     path: paths.join("\\"),
-    modified: unixEpochToISO(item.modified),
-    created: unixEpochToISO(item.created),
-    accessed: unixEpochToISO(item.accessed),
+    modified: item.modified,
+    created: item.created,
+    accessed: item.accessed,
     items,
   };
 
