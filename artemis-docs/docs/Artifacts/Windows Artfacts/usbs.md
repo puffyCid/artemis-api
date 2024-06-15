@@ -7,7 +7,9 @@ keywords:
 
 # USBs
 
-Artemis support attempting to extract USB devices that have been connected to the Windows system. It will parse the SYSTEM Registry file to look for USB devices that have been connected.
+Artemis support attempting to extract USB devices that have been connected to
+the Windows system. It will parse the SYSTEM Registry file to look for USB
+devices that have been connected.
 
 References:
 

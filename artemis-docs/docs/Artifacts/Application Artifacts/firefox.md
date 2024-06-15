@@ -103,8 +103,8 @@ export interface RawFirefoxHistory {
   typed: number;
   /**Frequency value */
   frequency: number;
-  /**Last visit time in UNIXEPOCH seconds */
-  last_visit_date: number;
+  /**Last visit time */
+  last_visit_date: string;
   /**GUID for entry */
   guid: string;
   /**Foreign count value */
@@ -148,10 +148,10 @@ export interface RawFirefoxDownloads {
   expiration: number;
   /**Download type value */
   download_type: number;
-  /**Date added in UNIXEPOCH seconds */
-  date_added: number;
-  /**Last modified in UNIXEPOCH seconds */
-  last_modified: number;
+  /**Date added */
+  date_added: string;
+  /**Last modified */
+  last_modified: string;
   /**Downloaded file name */
   name: string;
   /**History data associated with downloaded file */

@@ -284,10 +284,10 @@ with CLIENTS table.
 The number of pages and table content will determine the amount of memory
 artemis uses.
 
-Ex: If a table has 5 columns and 1000 pages and you provide 1000 pages to getRows(),
-artemis will return back all of the data. This **may** be ok. If the 5 columns
-only have numbers or small text then it **probably** will not require a lot of
-memory.
+Ex: If a table has 5 columns and 1000 pages and you provide 1000 pages to
+getRows(), artemis will return back all of the data. This **may** be ok. If the
+5 columns only have numbers or small text then it **probably** will not require
+a lot of memory.
 
 However, if each column contain 1MB of data and there are 1000 rows, then
 artemis will end up using a lot of memory.
@@ -345,7 +345,7 @@ function main() {
       // Go through all columns
       for (const column of row) {
         console.log(
-          `Name: ${column.column_name} - Type: ${column.column_type} - Data: ${column.column_data}`
+          `Name: ${column.column_name} - Type: ${column.column_type} - Data: ${column.column_data}`,
         );
       }
     }

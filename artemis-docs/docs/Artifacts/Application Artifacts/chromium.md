@@ -119,8 +119,8 @@ export interface RawChromiumHistory {
   visit_count: number;
   /**Typed count value */
   typed_count: number;
-  /**Last visit time in UNIXEPOCH seconds */
-  last_visit_time: number;
+  /**Last visit time */
+  last_visit_time: string;
   /**Hiden value */
   hidden: number;
   /**Visits ID value */
@@ -158,8 +158,8 @@ export interface RawChromiumDownloads {
   current_path: string;
   /**Target path to download */
   target_path: string;
-  /**Download start time in UNIXEPOCH seconds */
-  start_time: number;
+  /**Download start time */
+  start_time: string;
   /**Bytes downloaded */
   received_bytes: number;
   /**Total bytes downloaded */
@@ -172,12 +172,12 @@ export interface RawChromiumDownloads {
   interrupt_reason: number;
   /**Raw byte hash value */
   hash: number[];
-  /**Download end time in UNIXEPOCH seconds */
-  end_time: number;
+  /**Download end time */
+  end_time: string;
   /**Opened value */
   opened: number;
-  /**Last access time in UNIXEPOCH seconds */
-  last_access_time: number;
+  /**Last access time */
+  last_access_time: string;
   /**Transient value */
   transient: number;
   /**Referer URL */
@@ -196,7 +196,7 @@ export interface RawChromiumDownloads {
   by_ext_name: string;
   /**Etag value */
   etag: string;
-  /**Last modified time as STRING */
+  /**Last modified time */
   last_modified: string;
   /**MIME type value */
   mime_type: string;
@@ -253,9 +253,7 @@ export interface ChromiumBookmarks {
 }
 
 export interface ChromiumBookmarkChildren {
-  /**In UNIXEPOCH seconds */
   date_added: string;
-  /**In UNIXEPOCH seconds */
   date_last_used: string;
   guid: string;
   id: number;
@@ -304,25 +302,15 @@ export interface ChromiumLogins {
  */
 export interface Dips {
   site: string;
-  /**In UNIXEPOCH seconds */
   first_site_storage?: string | null;
-  /**In UNIXEPOCH seconds */
   last_site_storage?: string | null;
-  /**In UNIXEPOCH seconds */
   first_user_interaction?: string | null;
-  /**In UNIXEPOCH seconds */
   last_user_interaction?: string | null;
-  /**In UNIXEPOCH seconds */
   first_stateful_bounce?: string | null;
-  /**In UNIXEPOCH seconds */
   last_stateful_bounce?: string | null;
-  /**In UNIXEPOCH seconds */
   first_bounce?: string | null;
-  /**In UNIXEPOCH seconds */
   last_bounce?: string | null;
-  /**In UNIXEPOCH seconds */
   first_web_authn_assertion: string | null;
-  /**In UNIXEPOCH seconds */
   last_web_authn_assertion: string | null;
   /**Path to DIPS database */
   path: string;

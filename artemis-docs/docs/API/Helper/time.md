@@ -57,3 +57,13 @@ Convert Windows FAT time bytes to UnixEpoch
 | Param   | Type       | Description         |
 | ------- | ---------- | ------------------- |
 | oletime | Uint8Array | FAT timestamp bytes |
+
+### unixEpochToISO(timestamp) -> string
+
+Convert timestamp to ISO RFC 3339 string with millisecond precision.\
+Supports seconds, microseconds, milliseconds, and nanoseconds duration
+timestamps
+
+| Param     | Type             | Description                                                                     |
+| --------- | ---------------- | ------------------------------------------------------------------------------- |
+| timestamp | number or BigInt | UnixEpoch timestamp. Can be seconds, microseconds, milliseconds, or nanoseconds |

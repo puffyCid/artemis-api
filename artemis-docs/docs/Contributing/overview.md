@@ -50,15 +50,13 @@ artifact.
 
 # Timestamps
 
-All timestamps artemis outputs are in UNIXEPOCH seconds. The only exceptions
-are:
-
-- UnifiedLogs and EventLogs use UNIXEPOCH nanoseconds.
-- Journals and Spotlight use UNIXEPOCH microseconds.
+All timestamps artemis outputs are in ISO RFC 3339 format
+(YYYY-MM-DDTHH:mm:ss.SSSZ). The timestamp from should be from UNIXEPOCH time.
 
 If your new artifact has a timestamp, you will need to make sure the timestamp
-is in UNIXEPOCH seconds. Though exceptions may be allowed if needed, these
-exceptions will only be for the duration (ex: seconds vs nanoseconds).
+is in YYYY-MM-DDTHH:mm:ss.SSSZ format. Though exceptions may be allowed if
+needed, these exceptions will only be for the duration (ex: seconds vs
+nanoseconds).
 
 No other time formats such as Windows FILETIME, FATTIME, Chromium time, etc are
 allowed.
@@ -132,8 +130,8 @@ Some other examples listed below:
   - `pub(crate) fn hash_file(hashes: &Hashes, path: &str)` hashes a file based
     on selected hashes (MD5, SHA1, SHA256)
 
-- `/filesystem/ntfs` contains code to help interact with the raw NTFS filesystem.
-  It lets us bypass locked files. This is only available on Windows
+- `/filesystem/ntfs` contains code to help interact with the raw NTFS
+  filesystem. It lets us bypass locked files. This is only available on Windows
 
   - `pub(crate) fn raw_read_file(path: &str)` reads a file. Will bypass file
     locks

@@ -75,8 +75,8 @@ export function fatToUnixEpoch(fattime: Uint8Array): number {
 }
 
 /**
- * Function to convert UNIXEPOCH times to ISO8601
- * @param timestamp Data timestamp. Should be UNIXEPOCH. Duration should either: Seconds, Milliseconds, Microseconds, or nanoseconds
+ * Function to convert UNIXEPOCH times to ISO8601 with millisecond precision
+ * @param timestamp Data timestamp. Should be UNIXEPOCH. Duration should either: Seconds, Milliseconds, Microseconds, or Nanoseconds
  * @returns ISO8601 timestamp
  */
 export function unixEpochToISO(timestamp: number | bigint): string {
