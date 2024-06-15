@@ -4,7 +4,6 @@ import {
   Raw4624Logons,
   Raw4634Logoffs,
 } from "../../../types/windows/eventlogs/logons.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
 import { WindowsError } from "../errors.ts";
 import { getEventlogs } from "../eventlogs.ts";
 
@@ -43,7 +42,7 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
           record.data.Event.EventData.AuthenticationPackageName,
         source_ip: record.data.Event.EventData.IpAddress,
         source_workstation: record.data.Event.EventData.WorkstationName,
-        logon_time: unixEpochToISO(record.timestamp),
+        logon_time: record.timestamp,
         logoff_time: "",
         duration: 0,
       };
@@ -61,7 +60,7 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
       if (
         logon_entries[i].logon_id === logoff.data.Event.EventData.TargetLogonId
       ) {
-        logon_entries[i].logoff_time = unixEpochToISO(logoff.timestamp);
+        logon_entries[i].logoff_time = logoff.timestamp;
         const duration = new Date(logon_entries[i].logoff_time).getTime() -
           new Date(logon_entries[i].logon_time).getTime();
         logon_entries[i].duration = Number(duration);

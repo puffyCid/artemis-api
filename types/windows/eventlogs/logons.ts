@@ -15,7 +15,7 @@ export interface LogonsWindows {
 
 export interface Raw4624Logons {
   event_record_id: number;
-  timestamp: bigint;
+  timestamp: string;
   data: {
     Event: {
       "#attributes": {
@@ -84,7 +84,7 @@ export interface Raw4624Logons {
 
 export interface Raw4634Logoffs {
   event_record_id: number;
-  timestamp: bigint;
+  timestamp: string;
   data: {
     Event: {
       "#attributes": {
