@@ -1,6 +1,5 @@
 import { Bits } from "../../../../types/windows/bits.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 import { BitsInfo } from "../../../../types/windows/bits.ts";
 import { Jobs } from "../../../../types/windows/bits.ts";
 
@@ -27,7 +26,7 @@ export function timelineBits(
     // Extract each unique timestamp to their own entry
     const time_entries = extractTimes(item);
     for (const time_entry of time_entries) {
-      entry.datetime = unixEpochToISO(time_entry.datetime);
+      entry.datetime = time_entry.datetime;
       entry.timestamp_desc = time_entry.desc;
       entries.push(Object.assign({}, entry));
     }
@@ -46,7 +45,7 @@ export function timelineBits(
     // Extract each unique timestamp to their own entry
     const time_entries = extractTimes(item);
     for (const time_entry of time_entries) {
-      entry.datetime = unixEpochToISO(time_entry.datetime);
+      entry.datetime = time_entry.datetime;
       entry.timestamp_desc = `Carved ${time_entry.desc}`;
       entries.push(Object.assign({}, entry));
     }
@@ -69,7 +68,7 @@ export function timelineBits(
 }
 
 interface TimeEntries {
-  datetime: number;
+  datetime: string;
   desc: string;
 }
 
@@ -101,7 +100,7 @@ function extractTimes(entry: BitsInfo | Jobs): TimeEntries[] {
 
   for (const value in check_times) {
     const entry: TimeEntries = {
-      datetime: Number(value),
+      datetime: value,
       desc: check_times[value],
     };
     entries.push(entry);

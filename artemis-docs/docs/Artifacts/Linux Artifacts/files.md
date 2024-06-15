@@ -90,14 +90,14 @@ export interface LinuxFileInfo {
   filename: string;
   /**Extension of file if any */
   extension: string;
-  /**Created timestamp in UNIXEPOCH seconds */
-  created: number;
-  /**Modified timestamp in UNIXEPOCH seconds */
-  modified: number;
-  /**Changed timestamp in UNIXEPOCH seconds */
-  changed: number;
-  /**Accessed timestamp in UNIXEPOCH seconds */
-  accessed: number;
+  /**Created timestamp */
+  created: string;
+  /**Modified timestamp */
+  modified: string;
+  /**Changed timestamp */
+  changed: string;
+  /**Accessed timestamp */
+  accessed: string;
   /**Size of file in bytes */
   size: number;
   /**Inode associated with entry */

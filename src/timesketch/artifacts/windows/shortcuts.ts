@@ -1,6 +1,5 @@
 import { Shortcut } from "../../../../types/windows/shortcuts.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline Shortcut
@@ -31,7 +30,7 @@ export function timelineShortcuts(
     // Extract each unique timestamp to their own entry
     const time_entries = extractShortcutTimes(item);
     for (const time_entry of time_entries) {
-      entry.datetime = unixEpochToISO(time_entry.datetime);
+      entry.datetime = time_entry.datetime;
       entry.timestamp_desc = time_entry.desc;
       entries.push(Object.assign({}, entry));
     }
@@ -41,7 +40,7 @@ export function timelineShortcuts(
 }
 
 interface TimeEntries {
-  datetime: number;
+  datetime: string;
   desc: string;
 }
 export function extractShortcutTimes(entry: Shortcut): TimeEntries[] {
@@ -59,7 +58,7 @@ export function extractShortcutTimes(entry: Shortcut): TimeEntries[] {
 
   for (const value in check_times) {
     const entry: TimeEntries = {
-      datetime: Number(value),
+      datetime: value,
       desc: check_times[value],
     };
     entries.push(entry);

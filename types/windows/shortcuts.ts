@@ -16,11 +16,11 @@ export interface Shortcut {
   /**File attributes of target file */
   attribute_flags: string[];
   /**Standard Information created timestamp of target file */
-  created: number;
+  created: string;
   /**Standard Information accessed timestamp of target file */
-  accessed: number;
+  accessed: string;
   /**Standard Information modified timestamp of target file */
-  modified: number;
+  modified: string;
   /**Size in bytes of target file */
   file_size: number;
   /**Flag associated where target file is located. On volume or network share */

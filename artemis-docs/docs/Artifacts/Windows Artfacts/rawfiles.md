@@ -98,22 +98,22 @@ export interface RawFileInfo {
   filename: string;
   /**Extension of file if any */
   extension: string;
-  /**Created timestamp in UNIXEPOCH seconds */
-  created: number;
-  /**Modified timestamp in UNIXEPOCH seconds */
-  modified: number;
-  /**Changed timestamp in UNIXEPOCH seconds */
-  changed: number;
-  /**Accessed timestamp in UNIXEPOCH seconds */
-  accessed: number;
-  /**Filename created timestamp in UNIXEPOCH seconds */
-  filename_created: number;
-  /**Filename modified timestamp in UNIXEPOCH seconds */
-  filename_modified: number;
-  /**Filename accessed timestamp in UNIXEPOCH seconds */
-  filename_accessed: number;
-  /**Filename changed timestamp in UNIXEPOCH seconds */
-  filename_changed: number;
+  /**Created timestamp */
+  created: string;
+  /**Modified timestamp */
+  modified: string;
+  /**Changed timestamp */
+  changed: string;
+  /**Accessed timestamp */
+  accessed: string;
+  /**Filename created timestamp */
+  filename_created: string;
+  /**Filename modified timestamp */
+  filename_modified: string;
+  /**Filename accessed timestamp */
+  filename_accessed: string;
+  /**Filename changed timestamp */
+  filename_changed: string;
   /**Size of file in bytes */
   size: number;
   /**Size of file if compressed */

@@ -55,8 +55,8 @@ export interface TagData {
 export interface DatabaseData {
   /**SDB version info */
   sdb_version: string;
-  /**Compile timestamp of the SDB file in UNIXEPOCH seconds */
-  compile_time: number;
+  /**Compile timestamp of the SDB file */
+  compile_time: string;
   /**Compiler version info */
   compiler_version: string;
   /**Name of SDB */

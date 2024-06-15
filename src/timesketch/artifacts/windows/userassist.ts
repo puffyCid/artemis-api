@@ -1,6 +1,5 @@
 import { UserAssist } from "../../../../types/windows/userassist.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline UserAssist
@@ -15,7 +14,7 @@ export function timelineUserAssist(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.last_execution),
+      datetime: item.last_execution,
       timestamp_desc: "Userassist Last Execution",
       message: item.path,
       artifact: "UserAssist",
@@ -23,7 +22,6 @@ export function timelineUserAssist(
     };
 
     entry = { ...entry, ...item };
-    entry["last_execution"] = unixEpochToISO(item.last_execution);
 
     entries.push(entry);
   }

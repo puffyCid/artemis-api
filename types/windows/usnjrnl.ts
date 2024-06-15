@@ -19,8 +19,8 @@ export interface UsnJrnl {
   parent_mft_sequence: number;
   /**ID number in the Update Sequence Number Journal (UsnJrnl) */
   update_sequence_number: number;
-  /**Timestamp of of entry update in UNIXEPOCH seconds */
-  update_time: number;
+  /**Timestamp of of entry update */
+  update_time: string;
   /**Reason for update action */
   update_reason: string;
   /**Source information of the update */

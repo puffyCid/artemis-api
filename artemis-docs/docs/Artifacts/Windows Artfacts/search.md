@@ -74,8 +74,8 @@ export interface SearchEntry {
   document_id: number;
   /**Search entry name */
   entry: string;
-  /**Search entry last modified in UNIXEPOCH seconds */
-  last_modified: number;
+  /**Search entry last modified */
+  last_modified: string;
   /**
    * JSON object representing the properties associated with the entry
    *

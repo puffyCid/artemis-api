@@ -1,6 +1,5 @@
 import { RecycleBin } from "../../../../types/windows/recyclebin.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline RecycleBin
@@ -14,7 +13,7 @@ export function timelineRecycleBin(
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: unixEpochToISO(item.deleted),
+      datetime: item.deleted,
       timestamp_desc: "RecycleBin File Deleted",
       message: item.full_path,
       artifact: "RecycleBin",

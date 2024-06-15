@@ -61,8 +61,8 @@ export interface BomFiles {
   size: number;
   /**Path to file */
   path: string;
-  /**Modified timestamp of file in UNIXEPOCH seconds */
-  modified: number;
+  /**Modified timestamp of file */
+  modified: string;
   /**CRC-32 checksum for file */
   checksum: string;
 }

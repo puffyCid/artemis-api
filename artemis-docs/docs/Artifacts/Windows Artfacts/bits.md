@@ -81,14 +81,14 @@ export interface BitsInfo {
   file_id: string;
   /**SID associated with the Job */
   owner_sid: string;
-  /**Timestamp when the Job was created in UNIXEPOCH seconds */
-  created: number;
-  /**Timestamp when the Job was modified in UNIXEPOCH seconds */
-  modified: number;
-  /**Timestamp when the Job was completed in UNIXEPOCH seconds */
-  completed: number;
-  /**Timestamp when the Job was expired in UNIXEPOCH seconds */
-  expiration: number;
+  /**Timestamp when the Job was created */
+  created: string;
+  /**Timestamp when the Job was modified */
+  modified: string;
+  /**Timestamp when the Job was completed */
+  completed: string;
+  /**Timestamp when the Job was expired */
+  expiration: string;
   /**Files associated with the Job */
   files_total: number;
   /**Number of bytes downloaded */
@@ -151,14 +151,14 @@ export interface Jobs {
   file_id: string;
   /**SID associated with the Job */
   owner_sid: string;
-  /**Timestamp when the Job was created in UNIXEPOCH seconds */
-  created: number;
-  /**Timestamp when the Job was modified in UNIXEPOCH seconds */
-  modified: number;
-  /**Timestamp when the Job was completed in UNIXEPOCH seconds */
-  completed: number;
-  /**Timestamp when the Job was expired in UNIXEPOCH seconds */
-  expiration: number;
+  /**Timestamp when the Job was created */
+  created: string;
+  /**Timestamp when the Job was modified */
+  modified: string;
+  /**Timestamp when the Job was completed */
+  completed: string;
+  /**Timestamp when the Job was expired */
+  expiration: string;
   /**Name associated with Job */
   job_name: string;
   /**Description associated with Job */

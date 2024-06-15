@@ -16,8 +16,8 @@
 export interface ApplicationInfo {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */
@@ -60,8 +60,8 @@ export interface ApplicationInfo {
 export interface ApplicationTimeline {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */
@@ -69,7 +69,7 @@ export interface ApplicationTimeline {
   /**Flags associated with entry */
   flags: number;
   /**End time of entry */
-  end_time: number;
+  end_time: string;
   /**Duration of timeline in microseconds */
   duration_ms: number;
   /**Span of timeline in microseconds */
@@ -154,18 +154,18 @@ export interface ApplicationTimeline {
 export interface AppVfu {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */
   user_id: string;
   /**Flags associated with VFU entry */
   flags: number;
-  /**Start time in UNIXEPOCH seconds associated with VFU entry */
-  start_time: number;
-  /**End time in UNIXEPOCH seconds associated with VFU entry */
-  end_time: number;
+  /**Start time associated with VFU entry */
+  start_time: string;
+  /**End time associated with VFU entry */
+  end_time: string;
   /**Base64 encoded usage data associated with VFU entry */
   usage: string;
 }
@@ -176,8 +176,8 @@ export interface AppVfu {
 export interface EnergyInfo {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */
@@ -192,14 +192,14 @@ export interface EnergyInfo {
 export interface EnergyUsage {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */
   user_id: string;
-  /**Event Timestamp in UNIXEPOCH seconds */
-  event_timestamp: number;
+  /**Event Timestamp */
+  event_timestamp: string;
   /**State transition associated with entry */
   state_transition: number;
   /**Full charged capacity associated with entry */
@@ -220,8 +220,8 @@ export interface EnergyUsage {
 export interface NetworkInfo {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */
@@ -244,8 +244,8 @@ export interface NetworkInfo {
 export interface NetworkConnectivityInfo {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */
@@ -256,7 +256,7 @@ export interface NetworkConnectivityInfo {
   l2_profile_id: number;
   /**Connected time associated with entry */
   connected_time: number;
-  /*Connect start time associated with entry in UNIXEPOCH seconds*/
+  /*Connect start time associated with entry*/
   connect_start_time: number;
   /**L2 profile flags associated with entry */
   l2_profile_flags: number;
@@ -268,8 +268,8 @@ export interface NetworkConnectivityInfo {
 export interface NotificationInfo {
   /**ID in for row in the ESE table */
   auto_inc_id: number;
-  /**Timestamp when ESE table was updated in UNIXEPOCH seconds */
-  timestamp: number;
+  /**Timestamp when ESE table was updated */
+  timestamp: string;
   /**Application name */
   app_id: string;
   /**SID associated with the application process */

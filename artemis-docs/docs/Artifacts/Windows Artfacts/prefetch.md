@@ -61,18 +61,18 @@ export interface Prefetch {
   filename: string;
   /**Prefetch hash */
   hash: string;
-  /**Most recent execution timestamp in UNIXEPOCH seconds */
-  last_run_time: number;
-  /**Array of up to eight (8) execution timestamps in UNIXEPOCH seconds */
-  all_run_times: number[];
+  /**Most recent execution timestamp */
+  last_run_time: string;
+  /**Array of up to eight (8) execution timestamps */
+  all_run_times: string[];
   /**Number of executions */
   run_count: number;
   /**Size of executed file */
   size: number;
   /**Array of volume serial numbers associated with accessed files/directories */
   volume_serial: string[];
-  /**Array of volume creation timestamps in UNIXEPOCH seconds associated with accessed files/directories */
-  volume_creation: number[];
+  /**Array of volume creation timestamps associated with accessed files/directories */
+  volume_creation: string[];
   /**Array of volumes associated accessed files/directories */
   volume_path: string[];
   /**Number of files accessed by executed file */

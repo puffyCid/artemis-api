@@ -1,4 +1,3 @@
-import { unixEpochToISO } from "../../../time/conversion.ts";
 import { RawFileInfo } from "../../../../types/windows/ntfs.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 
@@ -20,22 +19,12 @@ export function timelineRawFiles(data: RawFileInfo[]): TimesketchTimeline[] {
     };
 
     entry = { ...entry, ...item };
-    entry["created"] = unixEpochToISO(item.created);
-    entry["modified"] = unixEpochToISO(item.modified);
-    entry["accessed"] = unixEpochToISO(item.accessed);
-    entry["changed"] = unixEpochToISO(item.created);
-
-    entry["filename_created"] = unixEpochToISO(item.filename_created);
-    entry["filename_modified"] = unixEpochToISO(item.filename_modified);
-    entry["filename_accessed"] = unixEpochToISO(item.filename_accessed);
-    entry["filename_changed"] = unixEpochToISO(item.filename_changed);
-
     entry["binary_info"] = JSON.stringify(item.binary_info);
 
     // Extract each unique timestamp to their own entry
     const time_entries = extractRawTimes(item);
     for (const time_entry of time_entries) {
-      entry.datetime = unixEpochToISO(time_entry.datetime);
+      entry.datetime = time_entry.datetime;
       entry.timestamp_desc = time_entry.desc;
       entries.push(Object.assign({}, entry));
     }
@@ -45,7 +34,7 @@ export function timelineRawFiles(data: RawFileInfo[]): TimesketchTimeline[] {
 }
 
 interface TimeEntries {
-  datetime: number;
+  datetime: string;
   desc: string;
 }
 
@@ -97,7 +86,7 @@ function extractRawTimes(entry: RawFileInfo): TimeEntries[] {
 
   for (const value in check_times) {
     const entry: TimeEntries = {
-      datetime: Number(value),
+      datetime: value,
       desc: check_times[value],
     };
     entries.push(entry);
