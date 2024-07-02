@@ -405,3 +405,16 @@ App.InFocus files located at:
 | -------------- | ------- | ------------------------------------------------- |
 | app_focus_only | boolean | Only parse App.InFocus files. Default is **true** |
 | alt_file       | string  | Optional path to an alternative Biome file        |
+
+### gatekeeperEntries(db) -> GatekeeperEntries[] | MacosError
+
+Grab Gatekeeper entries on macOS. By default artemis will parse the sqlite
+database at:
+
+- /var/db/SystemPolicy
+
+You may also provide an optional alternative path to the SystemPolicy file.
+
+| Param | Type   | Description                        |
+| ----- | ------ | ---------------------------------- |
+| db    | string | Optional path to SystemPolicy file |

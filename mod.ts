@@ -48,6 +48,7 @@ export { parseBiome } from "./src/macos/biome.ts";
 export { luluRules } from "./src/macos/plist/lulu.ts";
 export { munkiApplicationUsage } from "./src/macos/sqlite/munki.ts";
 export { quarantineEvents } from "./src/macos/sqlite/quarantine.ts";
+export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper.ts";
 
 /**
  * Unix exported functions

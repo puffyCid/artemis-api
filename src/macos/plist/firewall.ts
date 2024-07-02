@@ -13,66 +13,77 @@ import { getPlist } from "../plist.ts";
 /**
  * Function to get the macOS Firewall status and metadata
  * @param alt_path Optional path to `com.apple.alf.plist`
- * @returns `Firewall` status or `MacosError`
+ * @returns Array of `Firewall` status or `MacosError`
  */
-export function firewallStatus(alt_path?: string): Firewall | MacosError {
-  let path = "/Library/Preferences/com.apple.alf.plist";
+export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
+  let path = [
+    "/Library/Preferences/com.apple.alf.plist",
+    "/usr/libexec/ApplicationFirewall/com.apple.alf.plist",
+  ];
   if (alt_path != undefined) {
-    path = alt_path;
+    path = [alt_path];
   }
 
-  const plist_results = getPlist(path);
-  if (
-    plist_results instanceof MacosError || plist_results instanceof Uint8Array
-  ) {
-    return new MacosError("FIREWALL", `failed to parse plist ${plist_results}`);
+  const firewalls = [];
+  for (const entry of path) {
+    const plist_results = getPlist(entry);
+    if (
+      plist_results instanceof MacosError || plist_results instanceof Uint8Array
+    ) {
+      return new MacosError(
+        "FIREWALL",
+        `failed to parse plist ${plist_results}`,
+      );
+    }
+
+    const results = plist_results as Record<string, string>;
+
+    const firewall: Firewall = {
+      allow_signed_enabled: !!results["allowsignedenabled"],
+      firewall_unload: !!results["firewallunload"],
+      logging_enabled: !!results["loggingenabled"],
+      global_state: !!results["globalstate"],
+      logging_option: !!results["loggingoption"],
+      stealth_enabled: !!results["stealthenabled"],
+      version: results["version"],
+      applications: [],
+      exceptions: [],
+      explict_auths: [],
+      services: [],
+    };
+
+    const applications: Record<string, string | Uint8Array | number>[] =
+      results["applications"] as unknown as Record<
+        string,
+        string | Uint8Array | number
+      >[];
+    for (const app of applications) {
+      const entry = parseApplications(app);
+      firewall.applications.push(entry);
+    }
+
+    const exceptions: Record<string, string | number>[] =
+      results["exceptions"] as unknown as Record<string, string | number>[];
+    firewall.exceptions = getExceptions(exceptions);
+
+    const services: Record<string, object> =
+      results["firewall"] as unknown as Record<
+        string,
+        object
+      >;
+    firewall.services = getServices(services);
+
+    const auths: Record<string, string>[] =
+      results["explicitauths"] as unknown as Record<
+        string,
+        string
+      >[];
+    firewall.explict_auths = getAuths(auths);
+
+    firewalls.push(firewall);
   }
 
-  const results = plist_results as Record<string, string>;
-
-  const firewall: Firewall = {
-    allow_signed_enabled: !!results["allowsignedenabled"],
-    firewall_unload: !!results["firewallunload"],
-    logging_enabled: !!results["loggingenabled"],
-    global_state: !!results["globalstate"],
-    logging_option: !!results["loggingoption"],
-    stealth_enabled: !!results["stealthenabled"],
-    version: results["version"],
-    applications: [],
-    exceptions: [],
-    explict_auths: [],
-    services: [],
-  };
-
-  const applications: Record<string, string | Uint8Array | number>[] =
-    results["applications"] as unknown as Record<
-      string,
-      string | Uint8Array | number
-    >[];
-  for (const app of applications) {
-    const entry = parseApplications(app);
-    firewall.applications.push(entry);
-  }
-
-  const exceptions: Record<string, string | number>[] =
-    results["exceptions"] as unknown as Record<string, string | number>[];
-  firewall.exceptions = getExceptions(exceptions);
-
-  const services: Record<string, object> =
-    results["firewall"] as unknown as Record<
-      string,
-      object
-    >;
-  firewall.services = getServices(services);
-
-  const auths: Record<string, string>[] =
-    results["explicitauths"] as unknown as Record<
-      string,
-      string
-    >[];
-  firewall.explict_auths = getAuths(auths);
-
-  return firewall;
+  return firewalls;
 }
 
 /**

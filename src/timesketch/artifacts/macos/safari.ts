@@ -15,15 +15,17 @@ export function timelineSafariHistory(
   const entries = [];
 
   for (const value of data) {
-    for (let i = 0; i < value.history.length; i++) {
+    for (let i = 0; i < value.results.length; i++) {
       let entry: TimesketchTimeline = {
-        datetime: value.history[i].visit_time,
+        datetime: value.results[i].visit_time,
         timestamp_desc: "Safari Visit Time",
-        message: `${value.history[i].url} - ${value.history[i].title}`,
+        message: `${value.results[i].url} - ${value.results[i].title}`,
         data_type: "macos:safari:history",
         artifact: "SafariHistory",
       };
-      entry = { ...entry, ...data[i] };
+      entry = { ...entry, ...value.results[i] };
+      entry["path"] = value.path;
+      entry["user"] = value.user;
       entries.push(entry);
     }
   }
@@ -41,17 +43,19 @@ export function timelineSafariDownloads(
   const entries = [];
 
   for (const value of data) {
-    for (let i = 0; i < value.downloads.length; i++) {
+    for (let i = 0; i < value.results.length; i++) {
       let entry: TimesketchTimeline = {
-        datetime: value.downloads[i].created,
+        datetime: value.results[i].created,
         timestamp_desc: "Safari Download File Created",
-        message: `${value.downloads[i].source_url} - ${
-          value.downloads[i].download_path
+        message: `${value.results[i].source_url} - ${
+          value.results[i].download_path
         }`,
         data_type: "macos:safari:downloads",
         artifact: "SafariDownloads",
       };
-      entry = { ...entry, ...data[i] };
+      entry = { ...entry, ...value.results[i] };
+      entry["path"] = value.path;
+      entry["user"] = value.user;
 
       entries.push(entry);
     }

@@ -75,6 +75,19 @@ export function fatToUnixEpoch(fattime: Uint8Array): number {
 }
 
 /**
+ * Convert Julian timestamp to UnixExoch
+ * @param days Days in Julian timestamp
+ * @returns UnixEpoch milliseconds
+ */
+export function julianToUnixEpoch(days: number): number {
+  const epoch = 2440587.5;
+  const epoch_milli = 86400000;
+  const milli = (days - epoch) * epoch_milli;
+
+  return new Date(milli).getTime();
+}
+
+/**
  * Function to convert UNIXEPOCH times to ISO8601 with millisecond precision
  * @param timestamp Data timestamp. Should be UNIXEPOCH. Duration should either: Seconds, Milliseconds, Microseconds, or Nanoseconds
  * @returns ISO8601 timestamp
@@ -94,16 +107,19 @@ export function unixEpochToISO(timestamp: number | bigint): string {
     return js_date.toISOString();
   }
   const microseconds_len = 16;
-  const nanoseconds_len = 19;
-  if (timestamp.toString().length === milliseconds_len) {
+  // Milliseconds
+  if (timestamp.toString().length < microseconds_len) {
     return new Date(Number(timestamp)).toISOString();
   }
 
-  if (timestamp.toString().length === microseconds_len) {
+  const nanoseconds_len = 19;
+  // Microseconds
+  if (timestamp.toString().length < nanoseconds_len) {
     const milli_time = BigInt(timestamp) / BigInt(milliseconds);
     return new Date(Number(milli_time)).toISOString();
   }
 
+  // Nanoseconds?
   if (timestamp.toString().length === nanoseconds_len) {
     const milli_time = BigInt(timestamp) / BigInt(milliseconds * milliseconds);
     return new Date(Number(milli_time)).toISOString();

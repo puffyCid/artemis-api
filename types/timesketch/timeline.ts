@@ -40,6 +40,8 @@ export enum TimesketchArtifact {
   LAUNCHD = "launchd",
   SAFARI_DOWNLOADS = "safari-downloads",
   SAFARI_HISTORY = "safari-history",
+  GATEKEEPER = "gatekeeper",
+
   AMCACHE = "amcache",
   SHIMCACHE = "shimcache",
   PREFETCH = "prefetch",
