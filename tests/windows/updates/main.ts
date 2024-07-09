@@ -12,7 +12,6 @@ function main() {
 
     throw results;
   }
-
 }
 
 main();

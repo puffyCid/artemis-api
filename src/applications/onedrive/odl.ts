@@ -41,7 +41,7 @@ export function parseOdl(
   const version_support = 3;
   if (log_version.value != version_support) {
     console.warn(
-      `Got version ${log_version.value}. Only version ${version_support} supported`,
+      `Got version ${log_version.value} for ${path}. Only version ${version_support} supported`,
     );
     return [];
   }
@@ -349,7 +349,6 @@ function parseDescription(
 
   const desc = take(desc_size.remaining, desc_size.value);
   if (desc instanceof NomError) {
-    console.log(desc_size.value);
     return new ApplicationError(
       `ONEDRIVE`,
       `failed to parse description: ${desc.message}`,

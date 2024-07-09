@@ -9,7 +9,7 @@ keywords:
 # Microsoft Office
 
 Microsoft Office software (Word, PowerPoint, Excel, etc) track recently open
-files. Artemis supports parsing Office configuration files associated with
+files. Artemis supports parsing Office configurations associated with
 tracking recently opened files.
 
 - macOS:
@@ -45,14 +45,5 @@ export interface OfficeRecentFilesWindows {
   application: string;
   registry_file: string;
   key_path: string;
-}
-
-export enum OfficeApp {
-  WORD = "Word",
-  POWERPOINT = "PowerPoint",
-  EXCEL = "Excel",
-  ACCESS = "Access",
-  ONENOTE = "OneNote",
-  UNKNOWN = "Unknown",
 }
 ```

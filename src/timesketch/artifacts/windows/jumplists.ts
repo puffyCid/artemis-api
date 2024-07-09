@@ -59,6 +59,5 @@ export function timelineJumplists(
     }
   }
 
-  console.log(entries[0]);
   return entries;
 }
