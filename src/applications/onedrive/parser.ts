@@ -193,6 +193,11 @@ function extractKeys(paths: GlobInfo[]): KeyInfo[] {
   return keys;
 }
 
+/**
+ * Function to extract Account details associated with OneDrive
+ * @param paths Array of `GlobInfo` to NTUSER.DAT Registry files
+ * @returns Array of `OneDriveAccount`
+ */
 function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
   const accounts = [];
   for (const entry of paths) {
