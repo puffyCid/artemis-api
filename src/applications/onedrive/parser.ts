@@ -13,6 +13,8 @@ import { getEnvValue } from "../../environment/mod.ts";
 import { FileError } from "../../filesystem/errors.ts";
 import { readFile, readTextFile } from "../../filesystem/files.ts";
 import { glob } from "../../filesystem/mod.ts";
+import { MacosError } from "../../macos/errors.ts";
+import { getPlist } from "../../macos/plist.ts";
 import { unixEpochToISO } from "../../time/conversion.ts";
 import { WindowsError } from "../../windows/errors.ts";
 import { getRegistry } from "../../windows/registry.ts";
@@ -46,6 +48,10 @@ export function onedriveDetails(
   if (platform === PlatformType.Darwin) {
     odl_files = `/Users/${user}/Library/Logs/OneDrive/*/*odl*`;
     key_file = `/Users/${user}/Library/Logs/OneDrive/*/general.keystore`;
+    sync_db =
+      `/Users/${user}/Library/Application Support/OneDrive/settings/*/SyncEngineDatabase.db`;
+    reg_files =
+      `/Users/${user}/Library/Group Containers/*.OneDriveStandaloneSuite/Library/Preferences/*.OneDriveStandaloneSuite.plist`;
   } else {
     const drive = getEnvValue("HOMEDRIVE");
     if (drive === "") {
@@ -108,6 +114,9 @@ export function onedriveDetails(
 
   if (platform === PlatformType.Windows) {
     const accounts = accountWindows(reg_paths);
+    details.accounts = accounts;
+  } else if (platform === PlatformType.Darwin) {
+    const accounts = accountMacos(reg_paths);
     details.accounts = accounts;
   }
 
@@ -247,5 +256,45 @@ function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
       }
     }
   }
+  return accounts;
+}
+
+/**
+ * Function to extract Account details associated with OneDrive
+ * @param paths Array of `GlobInfo` to OneDriveStandaloneSuite.plist plist files
+ * @returns Array of `OneDriveAccount`
+ */
+function accountMacos(paths: GlobInfo[]): OneDriveAccount[] {
+  const accounts = [];
+  for (const entry of paths) {
+    const values = getPlist(entry.full_path);
+    if (values instanceof MacosError) {
+      console.warn(`could not parse ${entry.full_path}: ${values.message}`);
+      continue;
+    }
+
+    if (Array.isArray(values) || values instanceof Uint8Array) {
+      console.warn(`unexpected plist type`);
+      continue;
+    }
+
+    for (const key in values) {
+      // Lazy check if the plist data contains the data we want
+      if (!JSON.stringify(values[key]).includes("UserEmail")) {
+        continue;
+      }
+      const account_value = values[key] as Record<string, string | number>;
+
+      const account: OneDriveAccount = {
+        email: account_value["UserEmail"] as string,
+        device_id: account_value["OneDriveDeviceId"] as string,
+        account_id: account_value["OneAutoAccountId"] as string,
+        last_signin: "1601-01-01T00:00:00.000Z",
+        cid: account_value["cid"] as string,
+      };
+      accounts.push(account);
+    }
+  }
+
   return accounts;
 }

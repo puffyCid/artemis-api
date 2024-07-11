@@ -247,7 +247,7 @@ OneDrive artifacts. You must include the trailing slash. The folder should
 contain the following artifacts:
 
 - \*odl\* files
-- NTUSER.DAT file
+- NTUSER.DAT file or \*.OneDriveStandaloneSuite.plist
 - general.keystore
 - SyncEngineDatabase.db
 

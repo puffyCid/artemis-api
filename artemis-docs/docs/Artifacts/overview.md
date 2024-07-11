@@ -16,9 +16,9 @@ See [API Overview](../API/overview.md) for more details.
 
 A breakdown of artifacts by OS is below.
 
-| OS                               | Number of Artifacts |
-| -------------------------------- | ------------------- |
-| [Windows](./windows.md)          | 33                  |
-| [macOS](./macos.md)              | 38                  |
-| [Linux](./linux.md)              | 13                  |
-| [Application](./applications.md) | 8                   |
+| OS                                | Number of Artifacts |
+| --------------------------------- | ------------------- |
+| [Windows](./windows.md)           | 33                  |
+| [macOS](./macos.md)               | 38                  |
+| [Linux](./linux.md)               | 13                  |
+| [Applications](./applications.md) | 8                   |
