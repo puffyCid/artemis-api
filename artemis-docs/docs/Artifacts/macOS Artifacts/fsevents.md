@@ -63,5 +63,15 @@ export interface Fsevents {
   node: number;
   /**Event ID associated with FsEvent record */
   event_id: number;
+  /**Path to the FsEvent file */
+  source: string;
+  /**Created timestamp of the FsEvent source */
+  source_created: string;
+  /**Modified timestamp of the FsEvent source */
+  source_modified: string;
+  /**Changed timestamp of the FsEvent source */
+  source_changed: string;
+  /**Accessed timestamp of the FsEvent source */
+  source_accessed: string;
 }
 ```

@@ -19,7 +19,32 @@ export function timelineFsevents(data: Fsevents[]): TimesketchTimeline[] {
     };
     entry = { ...entry, ...data[i] };
 
-    entries.push(entry);
+    const check_times: Record<string, string> = {};
+
+    check_times[data[i].source_created] = "Source Created";
+    check_times[data[i].source_modified] === undefined
+      ? (check_times[data[i].source_modified] = "Source Modified")
+      : (check_times[data[i].source_modified] = `${
+        check_times[data[i].source_modified]
+      } Source Modified`);
+
+    check_times[data[i].source_changed] === undefined
+      ? (check_times[data[i].source_changed] = "Source Changed")
+      : (check_times[data[i].source_changed] = `${
+        check_times[data[i].source_changed]
+      } Source Changed`);
+
+    check_times[data[i].source_accessed] === undefined
+      ? (check_times[data[i].source_accessed] = "Source Accessed")
+      : (check_times[data[i].source_accessed] = `${
+        check_times[data[i].source_accessed]
+      } Source Accessed`);
+
+    for (const key in check_times) {
+      entry.datetime = check_times[key];
+      entry.timestamp_desc = key;
+      entries.push(Object.assign({}, entry));
+    }
   }
 
   return entries;
