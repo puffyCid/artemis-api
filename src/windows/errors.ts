@@ -31,6 +31,7 @@ export type ErrorName =
   | "MRU"
   | "UAL"
   | "WMIPERSIST"
-  | "USB";
+  | "USB"
+  | "SERVICEINSTALL";
 
 export class WindowsError extends ErrorBase<ErrorName> {}
