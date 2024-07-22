@@ -1,11 +1,11 @@
 ---
-description: Windows Logon events
+description: Windows Service Install events
 keywords:
   - windows
   - eventlogs
 ---
 
-# Logons
+# Service Installs
 
 Artemis supports extracting Service Install events from the Windows EventLog
 System.evtx file.
