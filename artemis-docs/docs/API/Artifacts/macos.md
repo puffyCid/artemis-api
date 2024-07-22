@@ -418,3 +418,19 @@ You may also provide an optional alternative path to the SystemPolicy file.
 | Param | Type   | Description                        |
 | ----- | ------ | ---------------------------------- |
 | db    | string | Optional path to SystemPolicy file |
+
+### logonsMacos(path, archive_path) -> LogonMacos[] | MacosError
+
+Extract Logon entries from UnifiedLog files (.tracev3) on macOS. Typically found
+at:
+
+- /private/var/db/diagnostics/Special
+
+You may also specify an optional logarchive style directory containing the
+Unified Log metadata (UUID directories, timesync, and dsc directory). Otherwise
+artemis will parse their default locations.
+
+| Param        | Type   | Description                                                                   |
+| ------------ | ------ | ----------------------------------------------------------------------------- |
+| path         | string | Path to .tracev3 file                                                         |
+| archive_path | string | Optional path to a logarchive style directory containing Unified Log metadata |
