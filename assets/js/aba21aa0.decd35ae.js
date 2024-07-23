@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkartemis_docs=self.webpackChunkartemis_docs||[]).push([[32],{9996:s=>{s.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"default"}')}}]);
