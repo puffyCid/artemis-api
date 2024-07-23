@@ -1,14 +1,14 @@
-import { firewallStatus } from "../../../mod.ts";
+import { gatekeeperEntries } from "../../../mod.ts";
 import { MacosError } from "../../../src/macos/errors.ts";
 
 function main() {
-  const results = firewallStatus();
+  const results = gatekeeperEntries();
   if (results instanceof MacosError) {
     throw results;
   }
 
-  if (results[0].version.length === 0) {
-    throw "no version?";
+  if (results.length === 0) {
+    throw "no entries?";
   }
 }
 

@@ -1,4 +1,4 @@
-import { CreationFlags, TargetFlags, VolumeFlags } from "./loginitems.ts";
+import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark.ts";
 
 /**
  * Safari history is stored in a SQLITE file.
@@ -10,7 +10,7 @@ import { CreationFlags, TargetFlags, VolumeFlags } from "./loginitems.ts";
  */
 export interface SafariHistory {
   /**Array of history entries */
-  history: RawSafariHistory[];
+  results: RawSafariHistory[];
   /**Path associated with the history file */
   path: string;
   /**User associated with the history file */
@@ -63,7 +63,7 @@ export interface RawSafariHistory {
  */
 export interface SafariDownloads {
   /**Array of downloads entries */
-  downloads: RawSafariDownloads[];
+  results: RawSafariDownloads[];
   /**Path associated with the downloads file */
   path: string;
   /**User associated with the downloads file */

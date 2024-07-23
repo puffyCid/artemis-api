@@ -7,7 +7,6 @@ function main() {
   if (results instanceof WindowsError) {
     throw results;
   }
-
 }
 
 main();

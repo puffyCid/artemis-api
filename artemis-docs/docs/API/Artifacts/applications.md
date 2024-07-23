@@ -235,3 +235,24 @@ file.
 | -------- | ------------ | --------------------------------------------------------- |
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | alt_file | string       | Optional path to a MRU plist or NTUSER.DAT                |
+
+### onedriveDetails(platform, alt_path, user) -> OneDriveDetails | ApplicationError
+
+Extract Microsoft OneDrive artifacts. Supports both macOS and Windows. By
+default will parse OneDrive artifacts for **all** users. You may provide a
+single user as an optional arguement to only parse data for a specific user.
+
+You may also provide an optional alternative path to a folder containing
+OneDrive artifacts. You must include the trailing slash. The folder should
+contain the following artifacts:
+
+- \*odl\* files
+- NTUSER.DAT file or \*.OneDriveStandaloneSuite.plist
+- general.keystore
+- SyncEngineDatabase.db
+
+| Param    | Type         | Description                                                |
+| -------- | ------------ | ---------------------------------------------------------- |
+| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin)  |
+| alt_path | string       | Optional path to a directory containing OneDrive artifacts |
+| user     | string       | Optional single user to parse instead of all users         |

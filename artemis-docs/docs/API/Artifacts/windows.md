@@ -526,3 +526,11 @@ Parse SYSTEM Registry to get list of USB devices that have been connected
 | Param    | Type   | Description                                  |
 | -------- | ------ | -------------------------------------------- |
 | alt_file | string | Alternative path to the SYSTEM Registry file |
+
+### serviceInstalls(path) -> ServiceInstalls[] | WindowsError
+
+Parse Windows System.evtx file to extract Service Install events.
+
+| Param | Type   | Description                  |
+| ----- | ------ | ---------------------------- |
+| path  | string | Path to the System.evtx file |

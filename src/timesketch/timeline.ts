@@ -6,7 +6,7 @@ import { TimesketchError } from "./error.ts";
 import { ProcessInfo } from "../../types/system/processes.ts";
 import { LoginItems } from "../../types/macos/loginitems.ts";
 import { UnifiedLog } from "../../types/macos/unifiedlogs.ts";
-import { HomebrewReceipt } from "../../types/macos/homebrew.ts";
+import { HomebrewData } from "../../types/macos/homebrew.ts";
 import { Fsevents } from "../../types/macos/fsevents.ts";
 import { Groups, Users } from "../../types/macos/accounts.ts";
 import { ExecPolicy } from "../../types/macos/execpolicy.ts";
@@ -108,6 +108,8 @@ import { timelineUsersWindows } from "./artifacts/windows/users.ts";
 import { timelineUsnJrnl } from "./artifacts/windows/usnjrnl.ts";
 import { timelineWmiPersist } from "./artifacts/windows/wmi.ts";
 import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons.ts";
+import { timelineGatekeeper } from "./artifacts/macos/sqlite/gatekeeper.ts";
+import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -128,7 +130,7 @@ export function timelineArtifact(
     case TimesketchArtifact.UNIFIEDLOGS:
       return timelineUnifiedLogs(data as UnifiedLog[]);
     case TimesketchArtifact.HOMEBREW:
-      return timelineHomebrew(data as HomebrewReceipt[]);
+      return timelineHomebrew(data as HomebrewData);
     case TimesketchArtifact.FSEVENTS:
       return timelineFsevents(data as Fsevents[]);
     case TimesketchArtifact.USERS_MACOS:
@@ -137,6 +139,8 @@ export function timelineArtifact(
       return timelineGroupsMacos(data as Groups[]);
     case TimesketchArtifact.EXECPOLICY:
       return timelineExecpolicy(data as ExecPolicy[]);
+    case TimesketchArtifact.GATEKEEPER:
+      return timelineGatekeeper(data as GatekeeperEntries[]);
     case TimesketchArtifact.FILES:
       return timelineFiles(
         data as MacosFileInfo[] | LinuxFileInfo[],

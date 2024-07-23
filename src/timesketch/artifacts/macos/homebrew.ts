@@ -1,4 +1,4 @@
-import { HomebrewReceipt } from "../../../../types/macos/homebrew.ts";
+import { HomebrewData } from "../../../../types/macos/homebrew.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 
 /**
@@ -7,11 +7,11 @@ import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
  * @returns Array `TimesketchTimeline` of HomebrewReceipt
  */
 export function timelineHomebrew(
-  data: HomebrewReceipt[],
+  data: HomebrewData,
 ): TimesketchTimeline[] {
   const entries = [];
 
-  for (const item of data) {
+  for (const item of data.packages) {
     let entry: TimesketchTimeline = {
       datetime: item.installTime,
       timestamp_desc: "Homebrew Package Installed",

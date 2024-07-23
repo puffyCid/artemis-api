@@ -1,7 +1,7 @@
 import { CompressionError } from "./errors.ts";
 
 /**
- * Decompress zlib compressed data
+ * Function to decompress zlib compressed data
  * @param data The raw bytes to decompress
  * @param wbits Value associated with zlib data. Use 0 (default) if there is no wbit value
  * @returns Decompressed data or `CompressionError`
@@ -16,5 +16,22 @@ export function decompress_zlib(
     return bytes;
   } catch (err) {
     return new CompressionError(`ZLIB`, `failed to decompress: ${err}`);
+  }
+}
+
+/**
+ * Function to decompress gzip compressed data
+ * @param data Raw bytes to decompress
+ * @returns Decomprssed data or `CompressionError`
+ */
+export function decompress_gzip(
+  data: Uint8Array,
+): Uint8Array | CompressionError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const bytes: Uint8Array = compression.decompress_gzip(data);
+    return bytes;
+  } catch (err) {
+    return new CompressionError(`GZIP`, `failed to decompress: ${err}`);
   }
 }

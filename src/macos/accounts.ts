@@ -14,7 +14,7 @@ export function getUsers(path?: string): Users[] | MacosError {
 
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_users_macs(user_path);
+    const data = Deno.core.ops.get_users_macos(user_path);
 
     const users: Users[] = JSON.parse(data);
     return users;

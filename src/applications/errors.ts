@@ -7,6 +7,7 @@ export type ErrorName =
   | "FIREFOX"
   | "SQLITE"
   | "DEFENDER"
-  | "OFFICE";
+  | "OFFICE"
+  | "ONEDRIVE";
 
 export class ApplicationError extends ErrorBase<ErrorName> {}

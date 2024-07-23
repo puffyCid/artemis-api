@@ -1,6 +1,5 @@
 import { UnifiedLog } from "../../../../types/macos/unifiedlogs.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { unixEpochToISO } from "../../../time/conversion.ts";
 
 /**
  * Function to timeline unifiedlogs
@@ -22,7 +21,6 @@ export function timelineUnifiedLogs(
     };
 
     entry = { ...entry, ...data[i] };
-    entry["time"] = unixEpochToISO(data[i].time);
     entries.push(entry);
   }
 

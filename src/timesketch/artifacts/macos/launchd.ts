@@ -44,7 +44,32 @@ export function timelineLaunchd(
       entry[key] = data[i].launchd_data[key];
     }
 
-    entries.push(entry);
+    const check_times: Record<string, string> = {};
+
+    check_times[data[i].created] = "Created";
+    check_times[data[i].modified] === undefined
+      ? (check_times[data[i].modified] = "Modified")
+      : (check_times[data[i].modified] = `${
+        check_times[data[i].modified]
+      } Modified`);
+
+    check_times[data[i].changed] === undefined
+      ? (check_times[data[i].changed] = "Changed")
+      : (check_times[data[i].changed] = `${
+        check_times[data[i].changed]
+      } Changed`);
+
+    check_times[data[i].accessed] === undefined
+      ? (check_times[data[i].accessed] = "Accessed")
+      : (check_times[data[i].accessed] = `${
+        check_times[data[i].accessed]
+      } Accessed`);
+
+    for (const key in check_times) {
+      entry.datetime = check_times[key];
+      entry.timestamp_desc = key;
+      entries.push(Object.assign({}, entry));
+    }
   }
 
   return entries;

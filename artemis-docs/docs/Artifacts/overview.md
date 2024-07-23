@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Artifacts Overview
 
-artemis supports over 30 different types of artifacts. All of these artifacts
+artemis supports over 60 different types of artifacts. All of these artifacts
 can be collected from a TOML collection or from simple JavaScript code.
 
 In addition, custom artifacts can be created using JavaScript by using the
@@ -16,9 +16,9 @@ See [API Overview](../API/overview.md) for more details.
 
 A breakdown of artifacts by OS is below.
 
-| OS                               | Number of Artifacts |
-| -------------------------------- | ------------------- |
-| [Windows](./windows.md)          | 33                  |
-| [macOS](./macos.md)              | 37                  |
-| [Linux](./linux.md)              | 13                  |
-| [Application](./applications.md) | 7                   |
+| OS                                | Number of Artifacts |
+| --------------------------------- | ------------------- |
+| [Windows](./windows.md)           | 34                  |
+| [macOS](./macos.md)               | 39                  |
+| [Linux](./linux.md)               | 13                  |
+| [Applications](./applications.md) | 8                   |
