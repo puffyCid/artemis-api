@@ -83,6 +83,18 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
  */
 export function assembleMru(items: ShellItems[]): MruValues {
   const paths = [];
+
+  if (items.length === 0) {
+    return {
+      filename: "",
+      path: "",
+      modified: "1601-01-01T00:00:00.000Z",
+      created: "1601-01-01T00:00:00.000Z",
+      accessed: "1601-01-01T00:00:00.000Z",
+      items: [],
+    };
+  }
+
   for (const item of items) {
     paths.push(item.value.replaceAll("\\\\", ""));
   }

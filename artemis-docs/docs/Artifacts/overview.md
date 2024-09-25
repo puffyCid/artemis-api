@@ -18,7 +18,7 @@ A breakdown of artifacts by OS is below.
 
 | OS                                | Number of Artifacts |
 | --------------------------------- | ------------------- |
-| [Windows](./windows.md)           | 34                  |
+| [Windows](./windows.md)           | 35                  |
 | [macOS](./macos.md)               | 39                  |
 | [Linux](./linux.md)               | 13                  |
 | [Applications](./applications.md) | 8                   |

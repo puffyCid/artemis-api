@@ -117,14 +117,18 @@ Parse Registry file at provided path.
 | ----- | ------ | ---------------------- |
 | path  | string | Path to Registry file. |
 
-### getSearch(path) -> SearchEntry[] | WindowsError
+### getSearch(path, page_limit) -> SearchEntry[] | WindowsError
 
 Parse Windows [Search](../../Artifacts/Windows%20Artfacts/search.md) database at
 provided path.
 
-| Param | Type   | Description                      |
-| ----- | ------ | -------------------------------- |
-| path  | string | Path to Windows Search database. |
+You can provide an optional page_limit (default is 50). Will influence memory
+usage, a higher number means higher memory usage but faster parsing.
+
+| Param      | Type   | Description                                                |
+| ---------- | ------ | ---------------------------------------------------------- |
+| path       | string | Path to Windows Search database.                           |
+| page_limit | number | Set the number of pages to use when parsing. Default is 50 |
 
 ### getServices() -> Services[] | WindowsError
 
