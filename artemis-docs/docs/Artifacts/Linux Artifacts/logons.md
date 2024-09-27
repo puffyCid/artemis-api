@@ -1,5 +1,5 @@
 ---
-description: Linux logon info 
+description: Linux logon info
 keywords:
   - linux
   - binary
