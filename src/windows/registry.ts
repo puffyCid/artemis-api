@@ -4,7 +4,7 @@ import { WindowsError } from "./errors.ts";
 /**
  * Function to parse a `Registry` file
  * @param path Full path to a `Registry` file
- * @returns `RegistryData` object or `WindowsError`
+ * @returns `Registry` array or `WindowsError`
  */
 export function getRegistry(path: string): Registry[] | WindowsError {
   try {

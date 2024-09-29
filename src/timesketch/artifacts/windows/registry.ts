@@ -2,9 +2,9 @@ import { Registry } from "../../../../types/windows/registry.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 
 /**
- * Function to timeline RegistryData
- * @param data `RegistryData` object
- * @returns Array `TimesketchTimeline` of RegistryData
+ * Function to timeline Registry
+ * @param data `Registry` array
+ * @returns Array `TimesketchTimeline` of Registry
  */
 export function timelineRegistry(data: Registry[]): TimesketchTimeline[] {
   const entries = [];
