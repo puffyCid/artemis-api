@@ -1,4 +1,4 @@
-import { RegistryData } from "../../../../types/windows/registry.ts";
+import { Registry } from "../../../../types/windows/registry.ts";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 
 /**
@@ -6,10 +6,10 @@ import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
  * @param data `RegistryData` object
  * @returns Array `TimesketchTimeline` of RegistryData
  */
-export function timelineRegistry(data: RegistryData): TimesketchTimeline[] {
+export function timelineRegistry(data: Registry[]): TimesketchTimeline[] {
   const entries = [];
 
-  for (const item of data.registry_entries) {
+  for (const item of data) {
     const entry: TimesketchTimeline = {
       datetime: item.last_modified,
       timestamp_desc: "Registry Last Modified",
@@ -17,8 +17,8 @@ export function timelineRegistry(data: RegistryData): TimesketchTimeline[] {
       artifact: "Registry",
       data_type: "windows:registry:key",
     };
-    entry["registry_path"] = data.registry_path;
-    entry["registry_file"] = data.registry_file;
+    entry["registry_path"] = item.registry_path;
+    entry["registry_file"] = item.registry_file;
     entry["depth"] = item.depth;
     entry["key"] = item.key;
     entry["path"] = item.path;

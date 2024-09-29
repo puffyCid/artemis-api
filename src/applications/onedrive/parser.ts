@@ -216,7 +216,7 @@ function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
       continue;
     }
 
-    for (const reg of values.registry_entries) {
+    for (const reg of values) {
       if (
         reg.path.includes("\\Software\\Microsoft\\OneDrive\\Accounts") &&
         reg.values.length != 0

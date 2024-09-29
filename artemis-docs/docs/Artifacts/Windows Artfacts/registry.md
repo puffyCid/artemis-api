@@ -67,18 +67,9 @@ system_hives = true # SYSTEM, SOFTWARE, SAM, SECURITY
 
 # Output Structure
 
-An array of `RegistryData` entries for each parsed `Registry` file
+An array of `Registry` entries for each parsed file
 
 ```typescript
-export interface RegistryData {
-  /**Path to Registry file */
-  registry_path: string;
-  /**Registry file name */
-  registry_file: string;
-  /**Array of Registry entries */
-  registry_entries: Registry[];
-}
-
 /**
  * Inteface representing the parsed `Registry` structure
  */
@@ -107,6 +98,10 @@ export interface Registry {
   last_modified: number;
   /**Depth of key name */
   depth: number;
+  /**Path to Registry file */
+  registry_path: string;
+  /**Registry file name */
+  registry_file: string;
 }
 
 /**
