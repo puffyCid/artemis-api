@@ -13,44 +13,56 @@ import { getEventlogs } from "../eventlogs.ts";
  * @returns Array of `Logon` entries
  */
 export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
-  const recordsData = getEventlogs(path);
-  if (recordsData instanceof WindowsError) {
-    return new WindowsError(
-      "LOGONCORRELATION",
-      `failed to parse eventlog ${path}: ${recordsData}`,
-    );
-  }
-
-  const records = recordsData as Raw4624Logons[] | Raw4634Logoffs[];
-  const logon_eid = 4624;
-  const logoff_eid = 4634;
+  let offset = 0;
+  const limit = 10000;
   const logon_entries = [];
   const logoff_entries = [];
 
-  // Loop through Event Log entries
-  for (const record of records) {
-    // Parse Logon entries
-    if (record.data.Event.System.EventID === logon_eid && isLogon(record)) {
-      const entry: LogonsWindows = {
-        logon_type: checkLogonType(record.data.Event.EventData.LogonType),
-        sid: record.data.Event.EventData.TargetUserSid,
-        account_name: record.data.Event.EventData.TargetUserName,
-        account_domain: record.data.Event.EventData.TargetDomainName,
-        logon_id: record.data.Event.EventData.TargetLogonId,
-        logon_process: record.data.Event.EventData.LogonProcessName,
-        authentication_package:
-          record.data.Event.EventData.AuthenticationPackageName,
-        source_ip: record.data.Event.EventData.IpAddress,
-        source_workstation: record.data.Event.EventData.WorkstationName,
-        logon_time: record.timestamp,
-        logoff_time: "",
-        duration: 0,
-      };
-      logon_entries.push(entry);
-    } else if (
-      record.data.Event.System.EventID === logoff_eid && isLogoff(record)
-    ) {
-      logoff_entries.push(record);
+  const logon_eid = 4624;
+  const logoff_eid = 4634;
+
+  while (true) {
+    // Get records 10000 at a time
+    const logs = getEventlogs(path, offset, limit);
+    if (logs instanceof WindowsError) {
+      return new WindowsError(
+        "LOGONCORRELATION",
+        `failed to parse eventlog ${path}: ${logs}`,
+      );
+    }
+    const recordsData = logs[1];
+    if (recordsData.length === 0) {
+      break;
+    }
+
+    offset += limit;
+
+    const records = recordsData as Raw4624Logons[] | Raw4634Logoffs[];
+    // Loop through Event Log entries
+    for (const record of records) {
+      // Parse Logon entries
+      if (record.data.Event.System.EventID === logon_eid && isLogon(record)) {
+        const entry: LogonsWindows = {
+          logon_type: checkLogonType(record.data.Event.EventData.LogonType),
+          sid: record.data.Event.EventData.TargetUserSid,
+          account_name: record.data.Event.EventData.TargetUserName,
+          account_domain: record.data.Event.EventData.TargetDomainName,
+          logon_id: record.data.Event.EventData.TargetLogonId,
+          logon_process: record.data.Event.EventData.LogonProcessName,
+          authentication_package:
+            record.data.Event.EventData.AuthenticationPackageName,
+          source_ip: record.data.Event.EventData.IpAddress,
+          source_workstation: record.data.Event.EventData.WorkstationName,
+          logon_time: record.timestamp,
+          logoff_time: "",
+          duration: 0,
+        };
+        logon_entries.push(entry);
+      } else if (
+        record.data.Event.System.EventID === logoff_eid && isLogoff(record)
+      ) {
+        logoff_entries.push(record);
+      }
     }
   }
 

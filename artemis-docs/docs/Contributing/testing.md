@@ -4,10 +4,7 @@ sidebar_position: 4
 
 # Testing
 
-artemis has a single basic guideline for testing:
-
-- All functions should ideally have a test
-
+All functions should ideally have a test.\
 For example, if you open a pull request to add a new feature and create three
 new functions. Your should have a test for each new function (three tests
 total).
@@ -15,7 +12,7 @@ total).
 :::tip
 
 Its recommended to run in release mode for tests. This will greatly speed up the
-tests. Tests should be run with root or Administrator privileges.
+tests. Tests may need to be run with root or Administrator privileges.
 
 `just test or just nextest`
 
@@ -23,7 +20,7 @@ tests. Tests should be run with root or Administrator privileges.
 
 :::warning
 
-macOS and Linux users may need to increase the ulimit for open files.
+macOS and Linux users might need to increase the ulimit for open files.
 `ulimit -n 1024`
 
 :::
@@ -63,7 +60,6 @@ output = "local"
 [[artifacts]]
 artifact_name = "prefetch"
 [artifacts.prefetch]
-alt_drive = 'C'
 ```
 
 2. `prefetch_tester.rs` created at

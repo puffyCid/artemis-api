@@ -37,13 +37,19 @@ provided path. Supports carving deleted entries.
 | path  | string  | Path to Windows BITS file             |
 | carve | boolean | Attempt to carve deleted BITS entries |
 
-### getEventlogs(path) -> EventLogRecord[] | WindowsError
+### getEventlogs(path, offset, limit, include_templates, template_file) -> EventLogRecord[] |EventLogMessage[] | WindowsError
 
-Parse Windows EventLog file at provided path.
+Parse Windows EventLog file at provided path. If you want to include template
+strings and you are on a non-Windows platform, a `template_file` file is
+required.
 
-| Param | Type   | Description                   |
-| ----- | ------ | ----------------------------- |
-| path  | string | Path to Windows EventLog file |
+| Param             | Type    | Description                                                     |
+| ----------------- | ------- | --------------------------------------------------------------- |
+| path              | string  | Path to Windows EventLog file                                   |
+| offset            | number  | How many records to skip                                        |
+| limit             | number  | Max number of records to return                                 |
+| include_templates | boolean | Whether to include template strings in output. Default is false |
+| template_file     | string  | Path to a JSON template file                                    |
 
 ### getJumplists() -> Jumplists[] | WindowsError
 

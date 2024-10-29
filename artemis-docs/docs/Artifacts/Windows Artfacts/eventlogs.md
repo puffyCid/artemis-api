@@ -91,6 +91,16 @@ evtx crate will output the following message data from an EventLog file
 now compared to the Event Viewer on Windows
 
 ```
+Credential Manager credentials were read.
+
+Subject:
+	Security ID:		DESKTOP-9FSUKAJ\bob
+	Account Name:		bob
+	Account Domain:		DESKTOP-9FSUKAJ
+	Logon ID:		0x3311b1
+	Read Operation:		Enumerate Credentials
+
+This event occurs when a user performs a read operation on stored credentials in Credential Manager.
 ```
 
 In order to get the entire EventLog message, we need to parse EventLog provider
@@ -98,16 +108,17 @@ files (PE files) and extract resource data. The Windows Registry contains
 information about EventLog providers. Artemis will perform the following high
 level actions to attempt to extract EventLog template strings:
 
-1. Read and parse the SOFTWARE Registry file to identify EventLog providers. The
-   provider information includes information about the PE file that provides the
-   EventLog template strings
+1. Read and parse the SOFTWARE and SYSTEM Registry files to identify EventLog
+   providers. The provider information includes information about the PE file
+   that provides the EventLog template strings
 2. Read and parse all PE files associated with EventLog providers
 3. Extract and parse MUI, MESSAGETABLE, and WEVT_TEMPLATE resources from the PE
    files
 4. Attempt to use: MESSAGETABLE, WEVT_TEMPLATE, and the EventLog data above to
    assemble the full EventLog message
 
-If parsing is successful artemis will return the EventLog message below 🥳 :
+If parsing is successful artemis should return a more detailed EventLog message
+if you use the `include_templates` option 🥳 :
 
 ```
 Credential Manager credentials were read.
@@ -324,12 +335,13 @@ export interface EventLogMessage {
 }
 ```
 
-If you choose to dump template strings to a JSON file, artemis will output a `TemplateStrings` structure:
+If you choose to dump template strings to a JSON file, artemis will output a
+`TemplateStrings` structure:
 
 ```typescript
 /**
- * A complex structure that represents the parsed EventLog template strings. 
- * Can be used to create a full EventLog message 
+ * A complex structure that represents the parsed EventLog template strings.
+ * Can be used to create a full EventLog message
  */
 export interface TemplateStrings {
   /**Object containing Template provider info. Key is the provider name or a GUID */

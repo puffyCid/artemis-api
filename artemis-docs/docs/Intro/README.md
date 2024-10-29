@@ -12,7 +12,7 @@ Notable features _so far_:
 
 - Setup collections using basic TOML files
 - Parsing support for large amount of forensic artifacts (25+)
-- Output to JSON or JSONL file(s)
+- Output to JSON or JSONL or CSV file(s)
 - Can output results to local system or upload to cloud services.
 - Embedded JavaScript runtime via [Deno](https://deno.land/)
 

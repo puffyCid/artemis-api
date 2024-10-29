@@ -38,7 +38,7 @@ filter = true
   - `name` The output name. This can be any string value
   - `directory` The directory where the output should be written. This example
     outputs to a directory called tmp in the current working directory
-  - `format` The output format can be either json or jsonl
+  - `format` The output format can be either json or jsonl or csv
   - `compress` Whether to compress the output with **gzip** compression. Once
     the collection is complete the output directory will be compressed with
     **zip** compression.
