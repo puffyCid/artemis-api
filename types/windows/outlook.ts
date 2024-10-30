@@ -99,3 +99,14 @@ export interface AttachmentInfo {
   block_id: number;
   descriptor_id: number;
 }
+
+export interface Attachment {
+  /**Base64 string containing attachment*/
+  data: string;
+  size: bigint;
+  name: string;
+  mime: string;
+  extension: string;
+  method: string;
+  props: PropertyContext[];
+}
