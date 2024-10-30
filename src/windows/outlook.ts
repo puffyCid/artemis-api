@@ -69,22 +69,29 @@ export class Outlook {
     /**
      * Function to read an email from an OST file. How many messages to read depends on rows in `TableInfo.rows`
      *
-     * Ex: TableInfo.rows = [0..200]. Read the first 200 messages. TableInfo.rows = [20..25]. Read messages 20-25
      * @param table `TableInfo` object. Obtained from `readFolder`
-     * @param branch Optional `TableBranchInfo` object. Obtained from `readFolder`
+     * @param offset What message to start. A value of 0 means start at the first message
+     * @param limit How many messages to parse
      * @returns `MessageDetails` object or `WindowsError`
      */
     public readMessage(
         table: TableInfo,
-        branch?: TableBranchInfo,
+        offset: number,
+        limit: number,
     ): MessageDetails | WindowsError {
+        const rows = [];
+        for (let i = offset; i < limit; i++) {
+            rows.push(i);
+        }
+
+        table.rows = rows;
         try {
             //@ts-ignore: Custom Artemis function
             const data = Deno.core.ops.read_message(
                 this.path,
                 this.use_ntfs,
                 table,
-                branch,
+                offset,
             );
 
             const results: MessageDetails = JSON.parse(data);

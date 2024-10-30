@@ -12,7 +12,7 @@ export interface FolderInfo {
 
 export interface SubFolder {
   name: string;
-  node: bigint;
+  node: number;
 }
 
 export interface PropertyContext {
