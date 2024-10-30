@@ -1,7 +1,6 @@
 import {
     FolderInfo,
     MessageDetails,
-    TableBranchInfo,
     TableInfo,
 } from "../../types/windows/outlook.ts";
 import { WindowsError } from "./errors.ts";
@@ -74,12 +73,12 @@ export class Outlook {
      * @param limit How many messages to parse
      * @returns `MessageDetails` object or `WindowsError`
      */
-    public readMessage(
+    public readMessages(
         table: TableInfo,
         offset: number,
-        limit: number,
+        limit = 50,
     ): MessageDetails | WindowsError {
-        const rows = [];
+        const rows: number[] = [];
         for (let i = offset; i < limit; i++) {
             rows.push(i);
         }
@@ -87,10 +86,10 @@ export class Outlook {
         table.rows = rows;
         try {
             //@ts-ignore: Custom Artemis function
-            const data = Deno.core.ops.read_message(
+            const data = Deno.core.ops.read_messages(
                 this.path,
                 this.use_ntfs,
-                table,
+                JSON.stringify(table),
                 offset,
             );
 
