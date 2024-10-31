@@ -95,7 +95,8 @@ just --shell pwsh.exe --shell-arg -c cli
 
 to compile the cli
 
-Please see the Contributing documentation if you would like to compile the
-entire project including optional experimental components
+Please see the [Contributing](../Contributing/overview.md) documentation if you
+would like to compile the entire project including optional experimental
+components
 
 ::::

@@ -26,7 +26,7 @@ logging = "warn"
 
 [[artifacts]]
 artifact_name = "amcache"
-filter = true
+filter = false
 [artifacts.amcache]
 # Optional
 # alt_file = "C:\\Artifacts\\Amcache.hve"
@@ -64,7 +64,8 @@ filter = true
 - `[[artifacts]]` A list of artifacts to collect
   - `artifact_name` Name of aritfact
   - `filter` Whether to filter the artifact data through the filter_script. This
-    is **optional** by default nothing is filtered
+    is **optional** by default nothing is filtered. This option will send
+    artifact results to your provided filter_script
   - `[aritfacts.amcache]` Artifact configuration parameters
     - `alt_file` Use an alternative amcache file when collecting data. This
       configuration is **optional**

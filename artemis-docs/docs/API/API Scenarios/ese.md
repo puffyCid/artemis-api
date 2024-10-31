@@ -33,9 +33,9 @@ need to change the imports paths.
 The functions in this guide are documented
 [here](../Artifacts/windows.md#ese-database-class)
 
-### Create a EseDatabase class instance
+### Create an EseDatabase class instance
 
-Before we can parse a ESE database we need to initialize an instance of the
+Before we can parse an ESE database we need to initialize an instance of the
 EseDatabase class. This is not too difficult :)
 
 ```typescript
