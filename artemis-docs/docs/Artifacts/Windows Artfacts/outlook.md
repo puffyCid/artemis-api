@@ -12,6 +12,11 @@ Outlook 2013). OST is used by Outlook 2013+.
 
 Artemis supports parsing and extracting emails and attachments from OST files.
 
+## Limitations
+
+- Only OST files are supported, PST is not yet fully supported.
+- Encrypted OST/PST files are not supported yet
+
 :::note
 
 Outlook was re-written in 2022 (New Outlook for Windows). Which is an online
