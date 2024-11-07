@@ -23,7 +23,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
     );
   }
 
-  const common = openSaveMru(reg_data.registry_entries);
+  const common = openSaveMru(reg_data);
   if (common instanceof WindowsError) {
     return new WindowsError(
       "MRU",
@@ -41,7 +41,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
 
   mrus.push(open_save_mru);
 
-  const last_visit = lastVisitMru(reg_data.registry_entries);
+  const last_visit = lastVisitMru(reg_data);
   if (last_visit instanceof WindowsError) {
     return new WindowsError(
       "MRU",
@@ -57,7 +57,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
 
   mrus.push(last_visit_mru);
 
-  const recent_docs = recentDocs(reg_data.registry_entries);
+  const recent_docs = recentDocs(reg_data);
   if (recent_docs instanceof WindowsError) {
     return new WindowsError(
       "MRU",
@@ -83,6 +83,18 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
  */
 export function assembleMru(items: ShellItems[]): MruValues {
   const paths = [];
+
+  if (items.length === 0) {
+    return {
+      filename: "",
+      path: "",
+      modified: "1601-01-01T00:00:00.000Z",
+      created: "1601-01-01T00:00:00.000Z",
+      accessed: "1601-01-01T00:00:00.000Z",
+      items: [],
+    };
+  }
+
   for (const item of items) {
     paths.push(item.value.replaceAll("\\\\", ""));
   }

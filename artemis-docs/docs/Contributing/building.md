@@ -4,30 +4,33 @@ sidebar_position: 1
 
 # Prerequisites
 
-There are few required applications you will need in order to build and develop
-artemis.
+## Automated Setup
 
-1. artemis is written in Rust. So you will need to download and install the
+If you would like to build and develop Artemis yourself you will need a few
+required applications:
+
+1. Artemis is written in Rust. So you will need to download and install the
    [Rust](https://www.rust-lang.org/) programming language
 2. Git
 3. [Rust analyzer](https://rust-analyzer.github.io/)
 4. An IDE or text editor. [VSCode](https://code.visualstudio.com/) or
    [VSCodium](https://vscodium.com/) are great choices.
-5. The command runner [Just](https://github.com/casey/just). Just is used to
-   help build the entire artemis project and is **highly** recommended
-6. cmake (for building zlib)
+5. The command runner [Just](https://github.com/casey/just).
+
+Windows users will need to install
+[Chocolatey](https://community.chocolatey.org/). In addition, you will need to
+install the MSVC version of [Rust](https://www.rust-lang.org/) macOS users will
+need to install [Homebrew](https://brew.sh/)
+
+You can use Just to automate most of the setup process.
 
 :::info
 
-If you use Chocolatey to install cmake. You need to make sure to install with:
-`choco install cmake.install --installargs '"ADD_CMAKE_TO_PATH=User"'`
-
-Cmake is not added to you path by
-[default](https://github.com/chocolatey-community/chocolatey-packages/issues/987)
-
-:::
-
-:::info
+Ubuntu users can run: `just setup-ubuntu`\
+Fedora users can run `just setup-fedora`\
+Windows users can run `just setup-windows` (after you have installed Chocolatey
+and Rust)\
+macOS users can run `just setup-macos` (after you have installed Homebrew)
 
 Windows users will need to add extra arguments to the just command:\
 `just --shell pwsh.exe --shell-arg -c`
@@ -35,15 +38,18 @@ Windows users will need to add extra arguments to the just command:\
 On Windows if you get an error like:\
 `error: Recipe _wasm could not be run because just could not find the shell: program not found`
 
-that means you forgot provide: `just --shell pwsh.exe  --shell-arg -c`
+it means you forgot provide: `just --shell pwsh.exe  --shell-arg -c`
 
 :::
 
-artemis has been developed on:
+If you would like to install the build dependencies manaully, review the Just
+files .setup folder in the artemis repo for your platform.
+
+Artemis has been developed on:
 
 - macOS 12 (Monterey) and higher
 - Windows 10 and higher
-- Linux distros such as Ubuntu, Arch Linux, and Debian
+- Linux distros such as Ubuntu, Debian, and Fedora
 
 # Building
 
@@ -68,62 +74,34 @@ just core
 
 Full list of just commands (via `just --list`)
 
-| Command    | Description                                      |
-| ---------- | ------------------------------------------------ |
-| build      | Build the entire artemis project                 |
-| cli        | Build the artemis executable                     |
-| complex    | Run the scc tool against the artemis source code |
-| core       | Build the artemis library                        |
-| default    | Run clippy                                       |
-| ese        | Run all the ESE parsing tests                    |
-| filesystem | Run all the filesystem tests                     |
-| linux      | Run all the Linux tests                          |
-| macos      | Run all the macOS tests                          |
-| nextest    | Run all tests using nextest                      |
-| runtime    | Run all the JS runtime tests                     |
-| server     | Build the artemis server and start it            |
-| shellitems | Run all the ShellItem parsing tests              |
-| test       | Run all artemis tests                            |
-| unix       | Run all Unix tests                               |
-| windows    | Run all Windows tests                            |
-| wmi        | Run all WMI parsing tests                        |
-
-# Additional Optional Tools
-
-1. [nextest](https://nexte.st/) can be used as an alternative to
-   `cargo test --release`
-2. [scc](https://github.com/boyter/scc) can be used to measure code complexity
-   in artemis
-
-# Advanced
-
-If you want to build the entire artemis project, you will need additional
-prerequisites. These additional prerequisites are required to build the
-experimental server and webui.
-
-:::info
-
-The binaries downloaded from GitHub do not contain the server and webui
-components/workspaces. They just contain the cli components/workspace.
-
-:::
-
-## Advanced Prerequisites
-
-1. Install [NodeJS](https://nodejs.org/en). NodeJS is required to install
-   TailWindCSS and DaisyUI
-2. Install [Insomnia](https://github.com/Kong/insomnia). You do not need an
-   account. Local Scratch Pad works fine.
-3. Add WASM support for Rust via `rustup target add wasm32-unknown-unknown`
-4. Install TailWindCSS `npm install -D tailwindcss`
-5. Install DaisyUI `npm i -D daisyui@latest`
-6. Install Typography `npm install -D @tailwindcss/typography`
-7. Install [Trunk](https://trunkrs.dev/). Required to compile the webui to web
-   assembly
-8. Build the entire project with `just build` or build only the server with
-   `just server`
+| Command       | Description                                                       |
+| ------------- | ----------------------------------------------------------------- |
+| build         | Build the entire artemis project                                  |
+| cli           | Build the artemis executable                                      |
+| complex       | Run the scc tool against the artemis source code                  |
+| core          | Build the artemis library                                         |
+| default       | Run clippy                                                        |
+| ese           | Run all the ESE parsing tests                                     |
+| filesystem    | Run all the filesystem tests                                      |
+| linux         | Run all the Linux tests                                           |
+| macos         | Run all the macOS tests                                           |
+| nextest       | Run all tests using nextest                                       |
+| runtime       | Run all the JS runtime tests                                      |
+| server        | Build the artemis server and start it                             |
+| client        | Build the artemis client and attempt to connect to artemis server |
+| shellitems    | Run all the ShellItem parsing tests                               |
+| test          | Run all artemis tests                                             |
+| unix          | Run all Unix tests                                                |
+| windows       | Run all Windows tests                                             |
+| wmi           | Run all WMI parsing tests                                         |
+| outlook       | Run all the Outlook parsing tests                                 |
+| spotlight     | Run all the Spotlight parsing tests                               |
+| setup-ubuntu  | Install all artemis development dependencies on Ubuntu            |
+| setup-fedora  | Install all artemis development dependencies on Fedora            |
+| setup-windows | Install all artemis development dependencies on Windows           |
+| setup-macos   | Install all artemis development dependencies on macOS             |
 
 ### Server Interaction
 
 Download and import the Insomnia config from the repository to interact with the
-server.
+server. The server is experimental and not bundled in the GitHub binaries

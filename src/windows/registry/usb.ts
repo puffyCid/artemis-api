@@ -46,7 +46,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
   }
 
   const usbs = [];
-  for (const reg of reg_data.registry_entries) {
+  for (const reg of reg_data) {
     if (
       (reg.path.includes(usbstor) || reg.path.includes(usbstor_legacy)) &&
       reg.values.length > 0 &&
@@ -59,7 +59,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
   }
 
   for (let i = 0; i < usbs.length; i++) {
-    for (const reg of reg_data.registry_entries) {
+    for (const reg of reg_data) {
       if (reg.path.includes(usbs[i].tracking_id) && "Partmg") {
         for (const value of reg.values) {
           if (value.value != "DiskId" || usbs[i].disk_id != "") {

@@ -37,13 +37,19 @@ provided path. Supports carving deleted entries.
 | path  | string  | Path to Windows BITS file             |
 | carve | boolean | Attempt to carve deleted BITS entries |
 
-### getEventlogs(path) -> EventLogRecord[] | WindowsError
+### getEventlogs(path, offset, limit, include_templates, template_file) -> EventLogRecord[] |EventLogMessage[] | WindowsError
 
-Parse Windows EventLog file at provided path.
+Parse Windows EventLog file at provided path. If you want to include template
+strings and you are on a non-Windows platform, a `template_file` file is
+required.
 
-| Param | Type   | Description                   |
-| ----- | ------ | ----------------------------- |
-| path  | string | Path to Windows EventLog file |
+| Param             | Type    | Description                                                     |
+| ----------------- | ------- | --------------------------------------------------------------- |
+| path              | string  | Path to Windows EventLog file                                   |
+| offset            | number  | How many records to skip                                        |
+| limit             | number  | Max number of records to return                                 |
+| include_templates | boolean | Whether to include template strings in output. Default is false |
+| template_file     | string  | Path to a JSON template file                                    |
 
 ### getJumplists() -> Jumplists[] | WindowsError
 
@@ -109,7 +115,7 @@ Parse RecycleBin file at provided path.
 | ----- | ------ | ------------------------ |
 | path  | string | Path to RecycleBin file. |
 
-### getRegistry(path) -> RegistryData | WindowsError
+### getRegistry(path) -> Registry[] | WindowsError
 
 Parse Registry file at provided path.
 
@@ -117,14 +123,18 @@ Parse Registry file at provided path.
 | ----- | ------ | ---------------------- |
 | path  | string | Path to Registry file. |
 
-### getSearch(path) -> SearchEntry[] | WindowsError
+### getSearch(path, page_limit) -> SearchEntry[] | WindowsError
 
 Parse Windows [Search](../../Artifacts/Windows%20Artfacts/search.md) database at
 provided path.
 
-| Param | Type   | Description                      |
-| ----- | ------ | -------------------------------- |
-| path  | string | Path to Windows Search database. |
+You can provide an optional page_limit (default is 50). Will influence memory
+usage, a higher number means higher memory usage but faster parsing.
+
+| Param      | Type   | Description                                                |
+| ---------- | ------ | ---------------------------------------------------------- |
+| path       | string | Path to Windows Search database.                           |
+| page_limit | number | Set the number of pages to use when parsing. Default is 50 |
 
 ### getServices() -> Services[] | WindowsError
 
@@ -534,3 +544,46 @@ Parse Windows System.evtx file to extract Service Install events.
 | Param | Type   | Description                  |
 | ----- | ------ | ---------------------------- |
 | path  | string | Path to the System.evtx file |
+
+### Outlook Class
+
+A basic class to help interact and extract data from OST files.
+
+#### rootFolder() -> FolderInfo | WindowsError
+
+Returns the root folder in an OST file. Can be used to start walking through the
+OST file
+
+#### readFolder(folder) -> FolderInfo | WindowsError
+
+Reads the provided folder ID. Returns the same object as `rootFolder()`
+function.
+
+| Param  | Type   | Description |
+| ------ | ------ | ----------- |
+| folder | number | Folder ID   |
+
+#### readMessages(table, offset, limit) -> MessageDetails[] | WindowsError
+
+Read messages in a folder. You can specify which message to start at with the
+offset and how many the limit. Returns an array of read messages or an error.
+
+An offset of 0 means, start with the first message. By default artemis will
+return only 50 messages.
+
+| Param  | Type      | Description                                                                |
+| ------ | --------- | -------------------------------------------------------------------------- |
+| table  | TableInfo | Table structure associated with the folder. Obtained by readFolder()       |
+| offset | number    | First message to read. A value of 0 means read the first message           |
+| limit  | number    | Optional limit to provide to the function. By default 50 messages are read |
+
+#### readAttachment(block_id, descriptor_id) -> Attachment | WindowsError
+
+Read and extract and attach from provided block and descriptor IDs. The IDs can
+be obtained from the readMessages function. If there are no IDs in the
+MessageDetails object then the message has no attachment
+
+| Param         | Type   | Description                              |
+| ------------- | ------ | ---------------------------------------- |
+| block_id      | number | Block ID associated with attachment      |
+| descriptor_id | number | Descriptor ID associated with attachment |

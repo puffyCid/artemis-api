@@ -16,7 +16,7 @@ export function timelineJumplists(
     let entry: TimesketchTimeline = {
       datetime: item.jumplist_metadata.modified,
       timestamp_desc: "Jumplist Modified",
-      message: item.lnk_info.path,
+      message: item.jumplist_metadata.path,
       artifact: "Jumplist",
       data_type: "windows:jumplist:entry",
     };
@@ -25,6 +25,7 @@ export function timelineJumplists(
     entry["app_id"] = item.app_id;
     entry["jumplist_type"] = item.jumplist_type;
     entry = { ...entry, ...item.jumplist_metadata };
+    entry["shortcut_path"] = item.lnk_info.path;
 
     entry = { ...entry, ...item.lnk_info };
     entry["target_modified"] = item.lnk_info.modified;

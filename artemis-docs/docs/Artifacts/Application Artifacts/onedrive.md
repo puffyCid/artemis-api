@@ -9,7 +9,9 @@ keywords:
 
 # OneDrive
 
-Microsoft OneDrive is a cloud storage service that is used to store files in the cloud. Artemis supports parsing several artifacts containing OneDrive metadata such as:
+Microsoft OneDrive is a cloud storage service that is used to store files in the
+cloud. Artemis supports parsing several artifacts containing OneDrive metadata
+such as:
 
 - Basic support for OneDrive Logs (ODL files, version 3 only)
 - SQLITE files
@@ -17,10 +19,12 @@ Microsoft OneDrive is a cloud storage service that is used to store files in the
 - PLIST files
 
 References:
+
 - [OneDrive blog](http://www.swiftforensics.com/2022/02/reading-onedrive-logs.html)
 - [OneDrive blog part 2](http://www.swiftforensics.com/2022/11/reading-onedrive-logs-part-2.html)
 
 Other Parsers:
+
 - [OneDrive Explorer](https://github.com/Beercow/OneDriveExplorer)
 
 # Collection

@@ -25,7 +25,7 @@ import { EventLogRecord } from "../../types/windows/eventlogs.ts";
 import { Jumplists } from "../../types/windows/jumplists.ts";
 import { Shortcut } from "../../types/windows/shortcuts.ts";
 import { RecycleBin } from "../../types/windows/recyclebin.ts";
-import { RegistryData } from "../../types/windows/registry.ts";
+import { Registry } from "../../types/windows/registry.ts";
 import { Services } from "../../types/windows/services.ts";
 import { Shellbags } from "../../types/windows/shellbags.ts";
 import { RawFileInfo } from "../../types/windows/ntfs.ts";
@@ -178,7 +178,7 @@ export function timelineArtifact(
     case TimesketchArtifact.RECYCLEBIN:
       return timelineRecycleBin(data as RecycleBin[]);
     case TimesketchArtifact.REGISTRY:
-      return timelineRegistry(data as RegistryData);
+      return timelineRegistry(data as Registry[]);
     case TimesketchArtifact.SHELLBAGS:
       return timelineShellbags(data as Shellbags[]);
     case TimesketchArtifact.SERVICES:

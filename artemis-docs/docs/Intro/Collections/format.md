@@ -26,7 +26,7 @@ logging = "warn"
 
 [[artifacts]]
 artifact_name = "amcache"
-filter = true
+filter = false
 [artifacts.amcache]
 # Optional
 # alt_file = "C:\\Artifacts\\Amcache.hve"
@@ -38,7 +38,7 @@ filter = true
   - `name` The output name. This can be any string value
   - `directory` The directory where the output should be written. This example
     outputs to a directory called tmp in the current working directory
-  - `format` The output format can be either json or jsonl
+  - `format` The output format can be either json or jsonl or csv
   - `compress` Whether to compress the output with **gzip** compression. Once
     the collection is complete the output directory will be compressed with
     **zip** compression.
@@ -64,7 +64,8 @@ filter = true
 - `[[artifacts]]` A list of artifacts to collect
   - `artifact_name` Name of aritfact
   - `filter` Whether to filter the artifact data through the filter_script. This
-    is **optional** by default nothing is filtered
+    is **optional** by default nothing is filtered. This option will send
+    artifact results to your provided filter_script
   - `[aritfacts.amcache]` Artifact configuration parameters
     - `alt_file` Use an alternative amcache file when collecting data. This
       configuration is **optional**

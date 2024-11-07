@@ -11,7 +11,7 @@ export interface Output {
   name: string;
   /**Target directory for output */
   directory: string;
-  /**Format of output: JSON or JSONL */
+  /**Format of output: JSON or JSONL or CSV */
   format: Format;
   /**Compress data with GZIP and all files with ZIP */
   compress: boolean;
@@ -31,6 +31,7 @@ export interface Output {
 export enum Format {
   JSON = "json",
   JSONL = "jsonl",
+  CSV = "csv",
 }
 
 /**Output type. Only local, azure, aws, and gcp supported */

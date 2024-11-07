@@ -71,7 +71,7 @@ function officeMru(
       continue;
     }
 
-    const values = extractMruRegistry(reg_data.registry_entries, reg);
+    const values = extractMruRegistry(reg_data, reg);
     all_values = all_values.concat(values);
   }
   return all_values;

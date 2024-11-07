@@ -67,5 +67,7 @@ export interface Shimcache {
   last_modified: string;
   /**Full path to the Registry key */
   key_path: string;
+  /**Path to the Registry file */
+  source_path: string;
 }
 ```

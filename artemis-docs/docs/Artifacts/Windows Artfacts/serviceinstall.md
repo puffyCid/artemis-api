@@ -21,10 +21,10 @@ Service Install entries.
 import { serviceInstalls } from "./artemis-api/src/windows/eventlogs/services.ts";
 
 function main() {
-    const data = serviceInstalls(
-        "C:\\Windows\\System32\\winevt\\Logs\\System.evtx",
-    );
-    console.log(data);
+  const data = serviceInstalls(
+    "C:\\Windows\\System32\\winevt\\Logs\\System.evtx",
+  );
+  console.log(data);
 }
 
 main();
@@ -36,15 +36,15 @@ An array of `ServiceInstalls`
 
 ```typescript
 export interface ServiceInstalls {
-    name: string;
-    image_path: string;
-    service_type: string;
-    start_type: string;
-    account: string;
-    hostname: string;
-    timestamp: string;
-    process_id: number;
-    thread_id: number;
-    sid: string;
+  name: string;
+  image_path: string;
+  service_type: string;
+  start_type: string;
+  account: string;
+  hostname: string;
+  timestamp: string;
+  process_id: number;
+  thread_id: number;
+  sid: string;
 }
 ```

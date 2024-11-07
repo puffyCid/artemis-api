@@ -14,14 +14,6 @@ import { Descriptor } from "./acls.ts";
  *  - https://github.com/libyal/libregf
  *  - https://github.com/msuhanov/regf/blob/master/Windows%20registry%20file%20format%20specification.md
  */
-export interface RegistryData {
-  /**Path to Registry file */
-  registry_path: string;
-  /**Registry file name */
-  registry_file: string;
-  /**Array of Registry entries */
-  registry_entries: Registry[];
-}
 
 /**
  * Inteface representing the parsed `Registry` structure
@@ -53,6 +45,10 @@ export interface Registry {
   depth: number;
   /**Offset to the Security Key info for the key */
   security_offset: number;
+  /**Path to Registry file */
+  registry_path: string;
+  /**Registry file name */
+  registry_file: string;
 }
 
 /**

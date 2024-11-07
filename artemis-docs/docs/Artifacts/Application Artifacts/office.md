@@ -9,8 +9,8 @@ keywords:
 # Microsoft Office
 
 Microsoft Office software (Word, PowerPoint, Excel, etc) track recently open
-files. Artemis supports parsing Office configurations associated with
-tracking recently opened files.
+files. Artemis supports parsing Office configurations associated with tracking
+recently opened files.
 
 - macOS:
   /Users/\*/Library/Containers/com.microsoft\*/Data/Library/Preferences/com.microsoft.\*.securebookmarks.plist

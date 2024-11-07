@@ -5,7 +5,7 @@ sidebar_position: 3
 # CLI Options
 
 artemis is designed to have a very simple CLI menu. All of the complex data
-parsing is handle in the `artemis-core` library.
+parsing is handle in the `core` library.
 
 # Running Artemis
 
@@ -69,6 +69,7 @@ Commands:
   jumplists          windows: Parse Jumplists
   recyclebin         windows: Parse RecycleBin
   wmipersist         windows: Parse WMI Repository
+  outlook            windows: Parse Outlook messages
   execpolicy         macos: Parse ExecPolicy
   users-macos        macos: Collect local users
   fsevents           macos: Parse FsEvents entries
@@ -89,7 +90,7 @@ Commands:
   help               Print this message or the help of the given subcommand(s)
 
 Options:
-      --format <FORMAT>  Output format. JSON or JSON [default: json]
+      --format <FORMAT>  Output format. JSON or JSON or CSV [default: json]
   -h, --help             Print help
 ```
 
@@ -194,7 +195,7 @@ main();
 To execute the above code
 
 ```
-sudo ./artemis -j ../../artemis-core/tests/test_data/deno_scripts/vanilla.js
+artemis -j vanilla.js
 [artemis] Starting artemis collection!
 [runtime]: "/usr/libexec/nesessionmanager"
 [artemis] Finished artemis collection!

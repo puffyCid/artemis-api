@@ -45,14 +45,14 @@ export function onedriveDetails(
     reg_files = `${alt_path}NTUSER.DAT`;
   }
 
-  if (platform === PlatformType.Darwin) {
+  if (platform === PlatformType.Darwin && alt_path === undefined) {
     odl_files = `/Users/${user}/Library/Logs/OneDrive/*/*odl*`;
     key_file = `/Users/${user}/Library/Logs/OneDrive/*/general.keystore`;
     sync_db =
       `/Users/${user}/Library/Application Support/OneDrive/settings/*/SyncEngineDatabase.db`;
     reg_files =
       `/Users/${user}/Library/Group Containers/*.OneDriveStandaloneSuite/Library/Preferences/*.OneDriveStandaloneSuite.plist`;
-  } else {
+  } else if (alt_path === undefined) {
     const drive = getEnvValue("HOMEDRIVE");
     if (drive === "") {
       return new ApplicationError(`ONEDRIVE`, `no HOMEDRIVE value`);
@@ -216,7 +216,7 @@ function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
       continue;
     }
 
-    for (const reg of values.registry_entries) {
+    for (const reg of values) {
       if (
         reg.path.includes("\\Software\\Microsoft\\OneDrive\\Accounts") &&
         reg.values.length != 0

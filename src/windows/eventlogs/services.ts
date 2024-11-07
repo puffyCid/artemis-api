@@ -13,33 +13,46 @@ import { getEventlogs } from "../eventlogs.ts";
 export function serviceInstalls(
   path: string,
 ): ServiceInstalls[] | WindowsError {
-  const record_data = getEventlogs(path);
-  if (record_data instanceof WindowsError) {
-    return new WindowsError(
-      "SERVICEINSTALL",
-      `failed to parse eventlog ${path}: ${record_data}`,
-    );
-  }
+  let offset = 0;
+  const limit = 10000;
   const events = [];
 
-  for (const entry of record_data as unknown as RawService7045[]) {
-    if (!isInstall(entry)) {
-      continue;
+  while (true) {
+    // Get records 10000 at a time
+    const logs = getEventlogs(path, offset, limit);
+    if (logs instanceof WindowsError) {
+      return new WindowsError(
+        "SERVICEINSTALL",
+        `failed to parse eventlog ${path}: ${logs}`,
+      );
+    }
+    const recordsData = logs[1];
+    if (recordsData.length === 0) {
+      break;
     }
 
-    const service: ServiceInstalls = {
-      name: entry.data.Event.EventData["ServiceName"],
-      image_path: entry.data.Event.EventData["ImagePath"],
-      service_type: entry.data.Event.EventData["ServiceType"],
-      account: entry.data.Event.EventData["AccountName"],
-      start_type: entry.data.Event.EventData["StartType"],
-      hostname: entry.data.Event.System.Computer,
-      timestamp: entry.timestamp,
-      process_id: entry.data.Event.System.Execution["#attributes"].ProcessID,
-      thread_id: entry.data.Event.System.Execution["#attributes"].ThreadID,
-      sid: entry.data.Event.System.Security["#attributes"].UserID,
-    };
-    events.push(service);
+    offset += limit;
+
+    const records = recordsData as RawService7045[];
+    for (const entry of records) {
+      if (!isInstall(entry)) {
+        continue;
+      }
+
+      const service: ServiceInstalls = {
+        name: entry.data.Event.EventData["ServiceName"],
+        image_path: entry.data.Event.EventData["ImagePath"],
+        service_type: entry.data.Event.EventData["ServiceType"],
+        account: entry.data.Event.EventData["AccountName"],
+        start_type: entry.data.Event.EventData["StartType"],
+        hostname: entry.data.Event.System.Computer,
+        timestamp: entry.timestamp,
+        process_id: entry.data.Event.System.Execution["#attributes"].ProcessID,
+        thread_id: entry.data.Event.System.Execution["#attributes"].ThreadID,
+        sid: entry.data.Event.System.Security["#attributes"].UserID,
+      };
+      events.push(service);
+    }
   }
 
   return events;

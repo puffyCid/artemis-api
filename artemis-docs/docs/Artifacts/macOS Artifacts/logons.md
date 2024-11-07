@@ -22,17 +22,17 @@ import { glob } from "./artemis-api/src/filesystem/mod.ts";
 import { logonsMacos } from "./artemis-api/src/macos/unifiedlogs/logons.ts";
 
 function main() {
-    const logs = glob("/var/db/diagnostics/Special/*");
-    if (logs instanceof FileError) {
-        return;
-    }
-    let values = [];
+  const logs = glob("/var/db/diagnostics/Special/*");
+  if (logs instanceof FileError) {
+    return;
+  }
+  let values = [];
 
-    for (const entry of logs) {
-        const data = logonsMacos(entry.full_path);
-        values = values.concat(data);
-    }
-    console.log(values);
+  for (const entry of logs) {
+    const data = logonsMacos(entry.full_path);
+    values = values.concat(data);
+  }
+  console.log(values);
 }
 
 main();
@@ -44,13 +44,13 @@ An array of `LogonMacos`
 
 ```typescript
 export interface LogonMacos {
-    username: string;
-    uid: number;
-    gid: number;
-    timestamp: string;
-    message: string;
-    pid: number;
-    thread_id: number;
-    system_timezone: string;
+  username: string;
+  uid: number;
+  gid: number;
+  timestamp: string;
+  message: string;
+  pid: number;
+  thread_id: number;
+  system_timezone: string;
 }
 ```
