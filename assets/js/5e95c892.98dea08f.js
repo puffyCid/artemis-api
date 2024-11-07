@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkartemis_docs=self.webpackChunkartemis_docs||[]).push([[4304],{43564:(e,s,r)=>{r.r(s),r.d(s,{default:()=>i});r(11504);var c=r(65456),a=r(15756),t=r(45864),u=r(85464),d=r(68272),n=r(17624);function i(e){return(0,n.jsx)(a.cr,{className:(0,c.c)(t.W.wrapper.docsPages),children:(0,n.jsx)(d.c,{children:(0,u.k)(e.route.routes)})})}}}]);
