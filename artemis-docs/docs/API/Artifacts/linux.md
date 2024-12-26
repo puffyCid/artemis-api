@@ -87,3 +87,30 @@ On Fedora based distributions the sqlite file should be located at
 | Param    | Type   | Description                            |
 | -------- | ------ | -------------------------------------- |
 | alt_path | string | Optional path to the rpmdb.sqlite file |
+
+### getGnomeExtensions(alt_path) -> Extension[] | LinuxError
+
+Get list of installed GNOME Shell extensions. Can provide an optional
+alternative path to a metadata.json file.
+
+Parses user and sytem installed extensions by default
+
+| Param    | Type   | Description                    |
+| -------- | ------ | ------------------------------ |
+| alt_path | string | Alt path to metadata.json file |
+
+### gnomeAppUsage(alt_path) -> AppUsage[] | LinuxError
+
+Parse recently used GNOME applications.
+
+| Param    | Type   | Description                        |
+| -------- | ------ | ---------------------------------- |
+| alt_path | string | Alt path to application_state file |
+
+### geditRecentFiles(alt_path) -> AppUsage[] | LinuxError
+
+Parse recently opened files by gedit.
+
+| Param    | Type   | Description                         |
+| -------- | ------ | ----------------------------------- |
+| alt_path | string | Alt path to gedit-metadata.xml file |

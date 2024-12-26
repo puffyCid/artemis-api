@@ -8,8 +8,8 @@ keywords:
 # VSCode
 
 VSCode is a popular open source text editor created by Microsoft. Artemis
-supports parsing installed extensions and get file history from the application.
-Artemis also supports parsing the VSCodium application.
+supports parsing installed extensions and getting file history from the
+application. Artemis also supports parsing the VSCodium application.
 
 # Collection
 

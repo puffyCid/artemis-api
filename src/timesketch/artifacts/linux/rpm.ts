@@ -7,20 +7,20 @@ import type { TimesketchTimeline } from "../../../../types/timesketch/timeline.t
  * @returns Array `TimesketchTimeline` of RPM packages
  */
 export function timelineRpm(data: RpmPackages[]): TimesketchTimeline[] {
-    const entries = [];
-    for (const item of data) {
-        let entry: TimesketchTimeline = {
-            datetime: item.install_time,
-            timestamp_desc: "RPM Package Installed",
-            message: `${item.name} - Version: ${item.version} installed`,
-            artifact: "RPM Package",
-            data_type: "linux:rpm:entry",
-        };
+  const entries = [];
+  for (const item of data) {
+    let entry: TimesketchTimeline = {
+      datetime: item.install_time,
+      timestamp_desc: "RPM Package Installed",
+      message: `${item.name} - Version: ${item.version} installed`,
+      artifact: "RPM Package",
+      data_type: "linux:rpm:entry",
+    };
 
-        entry = { ...entry, ...item };
+    entry = { ...entry, ...item };
 
-        entries.push(entry);
-    }
+    entries.push(entry);
+  }
 
-    return entries;
+  return entries;
 }
