@@ -107,10 +107,19 @@ Parse recently used GNOME applications.
 | -------- | ------ | ---------------------------------- |
 | alt_path | string | Alt path to application_state file |
 
-### geditRecentFiles(alt_path) -> AppUsage[] | LinuxError
+### geditRecentFiles(alt_path) -> RecentFiles[] | LinuxError
 
 Parse recently opened files by gedit.
 
 | Param    | Type   | Description                         |
 | -------- | ------ | ----------------------------------- |
 | alt_path | string | Alt path to gedit-metadata.xml file |
+
+### parseGvfs(alt_path) -> GvfsEntry[] | LinuxError
+
+Parse GVFS metadata files. By default artemis will parse all GVFS metadata files
+for all users.
+
+| Param    | Type   | Description                                        |
+| -------- | ------ | -------------------------------------------------- |
+| alt_path | string | Alt path to GVFS metadata file. Can also be a glob |

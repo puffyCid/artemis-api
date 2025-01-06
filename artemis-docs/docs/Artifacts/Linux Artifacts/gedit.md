@@ -12,15 +12,15 @@ supports parsing recently opened files by gedit.
 
 # Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to recent
-opened files by gedit.
+You have to use the artemis [api](../../API/overview.md) in order to parse
+recent opened files by gedit.
 
 ```typescript
 import { geditRecentFiles } from "./artemis-api/src/linux/gnome/gedit.ts";
 
 function main() {
-    const results = geditRecentFiles();
-    console.log(results);
+  const results = geditRecentFiles();
+  console.log(results);
 }
 
 main();
@@ -35,11 +35,11 @@ An array of `RecentFiles` entries.
  * Recent Files opened by gedit
  */
 export interface RecentFiles {
-    /**Path to file */
-    path: string;
-    /**Last accessed */
-    accessed: string;
-    /**Path to `gedit-metdata.xml` */
-    gedit_source: string;
+  /**Path to file */
+  path: string;
+  /**Last accessed */
+  accessed: string;
+  /**Path to `gedit-metdata.xml` */
+  gedit_source: string;
 }
 ```

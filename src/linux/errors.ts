@@ -8,6 +8,7 @@ export type ErrorName =
   | "SUDOLOGS"
   | "RPMPACKAGES"
   | "GNOME_APP_USAGE"
-  | "GEDIT";
+  | "GEDIT"
+  | "GVFS";
 
 export class LinuxError extends ErrorBase<ErrorName> {}
