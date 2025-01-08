@@ -123,3 +123,7 @@ for all users.
 | Param    | Type   | Description                                        |
 | -------- | ------ | -------------------------------------------------- |
 | alt_path | string | Alt path to GVFS metadata file. Can also be a glob |
+
+### listSnaps() -> Record&lt;string, SnapState&gt; | LinuxError
+
+Get a list of all installed Snap packages

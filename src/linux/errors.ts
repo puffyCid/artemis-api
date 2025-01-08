@@ -9,6 +9,7 @@ export type ErrorName =
   | "RPMPACKAGES"
   | "GNOME_APP_USAGE"
   | "GEDIT"
-  | "GVFS";
+  | "GVFS"
+  | "SNAP";
 
 export class LinuxError extends ErrorBase<ErrorName> {}

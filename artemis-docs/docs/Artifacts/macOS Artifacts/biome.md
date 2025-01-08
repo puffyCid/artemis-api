@@ -35,7 +35,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 import { parseBiome } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
 
 function main() {
-  const results = parseBom();
+  const results = parseBiome();
   console.log(results);
 }
 ```
