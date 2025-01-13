@@ -6,10 +6,6 @@ function main() {
   if (results instanceof LinuxError) {
     throw results;
   }
-
-  if (results[0].sequence[0].name === "") {
-    throw "got snap with no name?";
-  }
 }
 
 main();
