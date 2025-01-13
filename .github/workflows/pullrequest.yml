@@ -39,7 +39,7 @@ jobs:
         run: Invoke-WebRequest https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester.exe -OutFile .\tests\windows\script_tester.exe
 
       - name: Download script tester binary Linux
-        if: matrix.info.os == 'ubuntu-latest'
+        if: matrix.info.os == 'ubuntu-24.04'
         run: wget -O ./tests/linux/script_tester https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester && chmod +x ./tests/linux/script_tester
 
       - name: Install Deno macOS
@@ -47,7 +47,7 @@ jobs:
         run: brew install deno
 
       - name: Install Deno Linux
-        if: matrix.info.os == 'ubuntu-latest'
+        if: matrix.info.os == 'ubuntu-24.04'
         run: curl -fsSL https://deno.land/install.sh | sh
 
       - name: Install Deno Windows
@@ -63,5 +63,5 @@ jobs:
         run: cd tests\windows && .\compile_tests.bat
       
       - name: Compile and run tests Linux
-        if: matrix.info.os == 'ubuntu-latest'
+        if: matrix.info.os == 'ubuntu-24.04'
         run: cd tests/linux && sudo bash compile_tests.sh
