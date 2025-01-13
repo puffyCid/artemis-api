@@ -32,7 +32,7 @@ export class DuckDuckGo {
           break;
         }
         case "q": {
-          this.url["duckduckgo_query"] = param.at(1);
+          this.url["search_query"] = param.at(1);
           break;
         }
         case "df": {

@@ -120,6 +120,10 @@ export class Google {
                 "Google Web Search Wizard, Search Engine Results Page";
               break;
             }
+            case "gws-wiz": {
+              this.url["search_client"] = "Google Web Search Wizard";
+              break;
+            }
             default: {
               this.url["search_client"] = value;
               break;
