@@ -21,12 +21,10 @@ The goal of this book is to provide a comprehensive guide on how to use artemis.
 Artemis is a relatively(ish) new forensic tool written from scratch. While it
 does have an extensive test suite and has been carefully developed to make sure
 the data it produces is accurate. You may want to verify its output with other
-more popular/mature tools:
+popular DFIR tools:
 
 - The cross platform forensic tool
   [Velociprator](https://docs.velociraptor.app/)
-- Windows artifacts only but still excellent
-  [Zimmerman tools](https://ericzimmerman.github.io/#!index.md)
 
 During the development of artemis both of these tools were used to provide
 verification that the output of artemis is correct.
