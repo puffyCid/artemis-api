@@ -16,7 +16,6 @@ encounter a `shellitem` entry that is not supported please open an issue!
 
 Other parsers:
 
-- [ShllBagsExplorer](https://ericzimmerman.github.io/)
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.forensics.shellbags/)
 
 References:

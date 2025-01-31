@@ -19,12 +19,9 @@ There are two (2) types of Jumplist files:
 
 Other parsers:
 
-- [Jumplist Explorer](https://ericzimmerman.github.io/)
-
 References:
 
 - [Libyal](https://github.com/libyal/dtformats/blob/main/documentation/Jump%20lists%20format.asciidoc)
-- [Zimmerman blog](https://binaryforay.blogspot.com/2016/02/jump-lists-in-depth-understand-format.html)
 
 # TOML Collection
 
