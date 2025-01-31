@@ -14,7 +14,6 @@ be disabled).
 Other Parsers:
 
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.registry.userassist/)
-- [RegistryExplorer](https://ericzimmerman.github.io)
 
 References:
 

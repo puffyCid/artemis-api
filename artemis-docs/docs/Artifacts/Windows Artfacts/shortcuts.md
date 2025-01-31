@@ -16,7 +16,6 @@ interaction. The directory at
 
 Other Parsers:
 
-- [LECmd](https://ericzimmerman.github.io/)
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.forensics.lnk/)
 
 References:

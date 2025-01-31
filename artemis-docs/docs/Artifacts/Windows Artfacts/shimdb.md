@@ -16,7 +16,7 @@ function calls. Malicious custom shims can be created as a form of persistence.
 
 OtherParsers:
 
-- [SDBExplorer](https://ericzimmerman.github.io/)
+- N/A
 
 References:
 

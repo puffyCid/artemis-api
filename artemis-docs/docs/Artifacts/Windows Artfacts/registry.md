@@ -21,7 +21,6 @@ on a system such as:
 Other Parser:
 
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.registry.ntuser/)
-- [RegistryExplorer](https://ericzimmerman.github.io/#!index.md)
 
 References:
 

@@ -19,7 +19,6 @@ browsing to a directory that contains an application.
 Other parsers:
 
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.registry.appcompatcache/)
-- [RegistryExplorer](https://ericzimmerman.github.io)
 
 References:
 
