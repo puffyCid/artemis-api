@@ -26,6 +26,7 @@ export type ErrorName =
   | "QUARANTINE_EVENT"
   | "BOOKMARK"
   | "GAKTKEEPER"
-  | "LOGONS";
+  | "LOGONS"
+  | "COOKIES";
 
 export class MacosError extends ErrorBase<ErrorName> {}

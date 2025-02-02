@@ -434,3 +434,11 @@ artemis will parse their default locations.
 | ------------ | ------ | ----------------------------------------------------------------------------- |
 | path         | string | Path to .tracev3 file                                                         |
 | archive_path | string | Optional path to a logarchive style directory containing Unified Log metadata |
+
+### parseCookies(path) -> Cookie[] | MacosError
+
+Parse binary Safri cookie at provided path.
+
+| Param | Type   | Description                |
+| ----- | ------ | -------------------------- |
+| path  | string | Path to binary cookie file |
