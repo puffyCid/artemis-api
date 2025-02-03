@@ -22,3 +22,9 @@ A breakdown of artifacts by OS is below.
 | [macOS](./macos.md)               | 40                  |
 | [Linux](./linux.md)               | 18                  |
 | [Applications](./applications.md) | 7                   |
+
+Artemis also supports parsing apps and artifacts from unencrypted iTunes backups
+
+| OS              | Number of Apps/Artifacts |
+| --------------- | ------------------------ |
+| [iOS](./ios.md) | 6                        |

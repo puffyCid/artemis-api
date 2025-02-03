@@ -5,10 +5,10 @@ import { take } from "../nom/parsers.ts";
 import { NomError } from "../nom/error.ts";
 import { Endian, nomUnsignedFourBytes } from "../nom/helpers.ts";
 import { nomUnsignedEightBytes } from "../nom/mod.ts";
-import { parseProtobufBytes } from "../encoding/protobuf.ts";
 import { EncodingError } from "../encoding/errors.ts";
 import { Biome } from "../../types/macos/biome.ts";
 import { encode } from "../encoding/base64.ts";
+import { parseProtobuf } from "../encoding/protobufv2.ts";
 
 /**
  * A **very** experimental and simple function to parse BIOME data
@@ -75,7 +75,7 @@ export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
         continue;
       }
 
-      const results = parseProtobufBytes(record.protobuf_bytes);
+      const results = parseProtobuf(record.protobuf_bytes);
       if (results instanceof EncodingError) {
         console.error(
           `Failed to parse all protobuf data for ${entry}: ${results}`,

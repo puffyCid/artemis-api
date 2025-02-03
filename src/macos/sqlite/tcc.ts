@@ -84,8 +84,8 @@ function getTccData(data: Record<string, unknown>[], path: string): TccValues {
       indirect_object_code_identity: undefined,
       flags: entry["flags"] as number | undefined,
       last_modified: unixEpochToISO(entry["last_modified"] as number),
-      pid: entry["pid"] as number | undefined,
-      pid_version: entry["pid_version"] as number | undefined,
+      pid: entry["pid"] as number | null,
+      pid_version: entry["pid_version"] as number | null,
       boot_uuid: entry["boot_uuid"] as string,
       last_reminded: unixEpochToISO(entry["last_reminded"] as number),
     };
