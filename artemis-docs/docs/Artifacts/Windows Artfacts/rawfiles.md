@@ -127,7 +127,7 @@ export interface RawFileInfo {
   /**Parent MFT reference for entry */
   parent_mft_references: number;
   /**Attributes associated with entry */
-  attributes: string[];
+  attributes: AttributeFlags[];
   /**MD5 of file. Optional */
   md5: string;
   /**SHA1 of file. Optional */

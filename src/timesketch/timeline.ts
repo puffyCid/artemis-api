@@ -72,6 +72,7 @@ import { timelineEmond } from "./artifacts/macos/emond.ts";
  * Linux artifact timelines
  */
 import { timelineJournals } from "./artifacts/linux/journals.ts";
+import type { RpmPackages } from "../../types/linux/rpm.ts";
 
 /**
  * Application artifact timelines
@@ -110,6 +111,7 @@ import { timelineWmiPersist } from "./artifacts/windows/wmi.ts";
 import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons.ts";
 import { timelineGatekeeper } from "./artifacts/macos/sqlite/gatekeeper.ts";
 import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper.ts";
+import { timelineRpm } from "./artifacts/linux/rpm.ts";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -220,6 +222,8 @@ export function timelineArtifact(
     case TimesketchArtifact.CHROME_HISTORY:
     case TimesketchArtifact.EDGE_HISTORY:
       return timelineChromiumHistory(data as ChromiumHistory[], artifact);
+    case TimesketchArtifact.RPM:
+      return timelineRpm(data as RpmPackages[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

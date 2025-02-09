@@ -7,18 +7,16 @@ keywords:
 
 # Safari
 
-Safari is the builtin web browser an Apple devices. artemis supports parsing
-browsing history and downloads from Safari. History data is stored in a SQLITE
-file while downloads data is stored PLIST file and then stored in
-[Bookmark](https://mac-alias.readthedocs.io/en/latest/index.html) format
+Safari is the builtin web browser an Apple devices. Artemis supports parsing:
 
-Other Parsers:
-
-- Any program that read a SQLITE database for History data
+- browser history
+- Download history
+- Cookies
 
 References:
 
 - [History Schema](https://gist.github.com/l1x/68e206f56bcc22cde3d76cc8fed49f3f)
+- [Cookies](https://github.com/libyal/dtformats/blob/main/documentation/Safari%20Cookies.asciidoc)
 
 # TOML Collection
 

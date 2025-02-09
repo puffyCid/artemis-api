@@ -15,7 +15,7 @@ This database is **not** related to to the M365 UAL (Unified Audit Logging).
 
 # Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to collect MRU
+You have to use the artemis [api](../../API/overview.md) in order to collect UAL
 keys.
 
 # Sample API Script

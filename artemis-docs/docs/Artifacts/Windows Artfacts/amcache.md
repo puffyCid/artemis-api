@@ -23,7 +23,6 @@ you want to view other metadata such as OS, hardware, more.
 Other Parsers:
 
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.detection.amcache/)
-- [AmcacheParser](https://ericzimmerman.github.io/#!index.md)
 
 References:
 

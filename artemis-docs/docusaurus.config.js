@@ -97,6 +97,12 @@ const config = {
             label: "Contributing",
           },
           {
+            type: "docSidebar",
+            sidebarId: "apollo",
+            position: "left",
+            label: "Apollo",
+          },
+          {
             href: "https://github.com/puffyCid/artemis",
             label: "GitHub",
             position: "right",

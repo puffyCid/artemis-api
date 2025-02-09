@@ -587,3 +587,12 @@ MessageDetails object then the message has no attachment
 | ------------- | ------ | ---------------------------------------- |
 | block_id      | number | Block ID associated with attachment      |
 | descriptor_id | number | Descriptor ID associated with attachment |
+
+#### parseWordWheel(path) -> WordWheelEntry[] | WindowsError
+
+Reads the provided glob path and parses all NTUSER.DAT files looking for
+WordWheel entries.
+
+| Param | Type   | Description                |
+| ----- | ------ | -------------------------- |
+| path  | string | Glob to NTUSER.DAT file(s) |

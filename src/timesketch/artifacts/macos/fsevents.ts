@@ -41,8 +41,8 @@ export function timelineFsevents(data: Fsevents[]): TimesketchTimeline[] {
       } Source Accessed`);
 
     for (const key in check_times) {
-      entry.datetime = check_times[key];
-      entry.timestamp_desc = key;
+      entry.timestamp_desc = check_times[key];
+      entry.datetime = key;
       entries.push(Object.assign({}, entry));
     }
   }

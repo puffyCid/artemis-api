@@ -68,4 +68,5 @@ export enum TimesketchArtifact {
   CHROMIUM_HISTORY = "chromium-history",
   CHROME_HISTORY = "chrome-history",
   EDGE_HISTORY = "edge-history",
+  RPM = "rpm",
 }

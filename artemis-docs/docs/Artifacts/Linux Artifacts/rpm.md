@@ -40,6 +40,8 @@ function main() {
 
   console.log(results);
 }
+
+main();
 ```
 
 # Output Structure

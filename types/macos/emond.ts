@@ -32,6 +32,14 @@ export interface Emond {
   variables: Record<string, unknown>[];
   /**If the emond client is enabled */
   emond_clients_enabled: boolean;
+  /**Emond plist created  */
+  plist_created: string;
+  /**Emond plist modified  */
+  plist_modifed: string;
+  /**Emond plist changed  */
+  plist_changed: string;
+  /**Emond plist accessed  */
+  plist_accessed: string;
 }
 
 /**

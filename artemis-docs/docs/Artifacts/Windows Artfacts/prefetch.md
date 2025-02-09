@@ -17,7 +17,6 @@ parsing `Prefetch` fiels
 Other Parsers:
 
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.forensics.prefetch/)
-- [PECmd](https://ericzimmerman.github.io/)
 
 References:
 [Libyal](https://github.com/libyal/libscca/blob/main/documentation/Windows%20Prefetch%20File%20(PF)%20format.asciidoc)

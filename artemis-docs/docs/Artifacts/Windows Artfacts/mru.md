@@ -7,7 +7,7 @@ keywords:
 
 # Most Recently Used
 
-Artemis support extracting Most Recently Used (MRU) entries from multiple
+Artemis supports extracting Most Recently Used (MRU) entries from multiple
 Registry key paths in the NTUSER.DAT Registry file. MRU keys can provide
 evidence if a was accessed on a system. Artemis currently supports the following
 MRU keys:

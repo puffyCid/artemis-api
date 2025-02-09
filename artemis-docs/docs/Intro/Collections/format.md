@@ -103,7 +103,7 @@ Windows system and outputs the results to the local system at the path
 ./tmp/execution_collection.
 
 Notable changes:\
-`name` our collection is now named `execution_collection`
+**name** our collection is now named `execution_collection`
 
 ```toml
 [[artifacts]]
@@ -111,7 +111,7 @@ artifact_name = "amcache"
 [artifacts.amcache]
 ```
 
-Since the `alt_drive` parameter is optional for `amcache` we do not need to
+Since the `alt_drive` parameter is optional for **amcache** we do not need to
 specifiy it
 
 ```toml
@@ -122,10 +122,10 @@ path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 ```
 
 - `[[artifacts]]` The second entry in our list of artifacts to collect
-  - `artifact_name` Name of aritfact
+  - **artifact_name** Name of aritfact
   - `[aritfacts.shortcuts]` Artifact configuration parameters
-    - `path` Use the provided path to collect `shortcuts` data. This parameter
-      is **required**
+    - **path** Use the provided path to collect **shortcuts** data. This
+      parameter is **required**
 
 Since `[[artifacts]]` is a list we can even provide the same artifact multiple
 times:

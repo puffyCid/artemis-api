@@ -4,14 +4,14 @@ sidebar_position: 1
 
 # Introduction
 
-**Artemis** is a powerful command line digital forensic and incident response
-(DFIR) tool that collects forensic data from Windows, macOS, and Linux
-endpoints. Its primary focus is: speed, ease of use, and low resource usage.
+Artemis is a powerful command line digital forensic and incident response (DFIR)
+tool that collects forensic data from Windows, macOS, and Linux endpoints. Its
+primary focus is: speed, ease of use, and low resource usage.
 
 Notable features _so far_:
 
 - Setup collections using basic TOML files
-- Parsing support for large amount of forensic artifacts (25+)
+- Parsing support for large amount of forensic artifacts (40+)
 - Output to JSON or JSONL or CSV file(s)
 - Can output results to local system or upload to cloud services.
 - Embedded JavaScript runtime via [Deno](https://deno.land/)
@@ -21,12 +21,10 @@ The goal of this book is to provide a comprehensive guide on how to use artemis.
 Artemis is a relatively(ish) new forensic tool written from scratch. While it
 does have an extensive test suite and has been carefully developed to make sure
 the data it produces is accurate. You may want to verify its output with other
-more popular/mature tools:
+popular DFIR tools:
 
 - The cross platform forensic tool
   [Velociprator](https://docs.velociraptor.app/)
-- Windows artifacts only but still excellent
-  [Zimmerman tools](https://ericzimmerman.github.io/#!index.md)
 
 During the development of artemis both of these tools were used to provide
 verification that the output of artemis is correct.

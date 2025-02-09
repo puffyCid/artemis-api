@@ -18,7 +18,6 @@ later versions of Windows the data is no longer in the Registry.
 Other Parsers:
 
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.forensics.srum/)
-- [SRUMECmd](https://ericzimmerman.github.io/#!index.md)
 
 References:
 

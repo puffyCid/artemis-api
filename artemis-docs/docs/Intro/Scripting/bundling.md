@@ -237,16 +237,17 @@ script. Using the same main.ts file above, create a `build.ts` file in the same
 directory. Add the following code to `build.ts`:
 
 ```typescript
-import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
-import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
+import * as esbuild from "npm:esbuild@0.20.2";
+import { denoPlugins } from "jsr:@luca/esbuild-deno-loader@^0.11.1";
 
 async function main() {
   const _result = await esbuild.build({
-    plugins: [denoPlugin()],
+    plugins: [...denoPlugins()],
     entryPoints: ["./main.ts"],
     outfile: "main.js",
     bundle: true,
     format: "cjs",
+    minify: false, // Set to true if you want a smaller output file
   });
 
   esbuild.stop();
