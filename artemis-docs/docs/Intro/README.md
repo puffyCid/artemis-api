@@ -4,14 +4,14 @@ sidebar_position: 1
 
 # Introduction
 
-**Artemis** is a powerful command line digital forensic and incident response
-(DFIR) tool that collects forensic data from Windows, macOS, and Linux
-endpoints. Its primary focus is: speed, ease of use, and low resource usage.
+Artemis is a powerful command line digital forensic and incident response (DFIR)
+tool that collects forensic data from Windows, macOS, and Linux endpoints. Its
+primary focus is: speed, ease of use, and low resource usage.
 
 Notable features _so far_:
 
 - Setup collections using basic TOML files
-- Parsing support for large amount of forensic artifacts (25+)
+- Parsing support for large amount of forensic artifacts (40+)
 - Output to JSON or JSONL or CSV file(s)
 - Can output results to local system or upload to cloud services.
 - Embedded JavaScript runtime via [Deno](https://deno.land/)
