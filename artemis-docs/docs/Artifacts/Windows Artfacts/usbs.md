@@ -17,8 +17,8 @@ References:
 
 # Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to collect MRU
-keys.
+You have to use the artemis [api](../../API/overview.md) in order to collect
+USBs keys.
 
 # Sample API Script
 
