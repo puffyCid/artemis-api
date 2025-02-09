@@ -78,7 +78,7 @@ High Level Steps:
 5. Base64 encode the service account JSON file
 6. Create TOML collection and use
    `https://storage.googleapis.com/upload/storage/v1/b/<BUCKETNAME>` for your
-   `url`. Use the base64 encoded string from step 5 as your `api_key`
+   url. Use the base64 encoded string from step 5 as your api_key
 7. Execute artemis and provide TOML collection as either file or base64 encoded
    argument
 8. Delete the service account key once you are done collecting data using
@@ -119,7 +119,7 @@ High level steps:
 4. Generate a Shared Access Signature (SAS) Policy for the created Container in
    step 2. Make sure to only allow create and write access
 5. Copy the Blob SAS URL
-6. Create a TOML collection and use the Blob SAS URL for the `url` option
+6. Create a TOML collection and use the Blob SAS URL for the url option
 7. Execute artemis and provide TOML collection as either file or base64 encoded
    argument
 
@@ -163,15 +163,15 @@ High level steps:
 
 ```json
 {
-  "bucket": "yourbucketname",
-  "secret": "yoursecretfromyouraccount",
-  "key": "yourkeyfromyouraccount",
-  "region": "yourbucketregion"
+   "bucket": "yourbucketname",
+   "secret": "yoursecretfromyouraccount",
+   "key": "yourkeyfromyouraccount",
+   "region": "yourbucketregion"
 }
 ```
 
-6. Create TOML collection and use `https://s3.amazonaws.com` for your `url`.
-   Base64 encode the JSON blob from step 5 as your `api_key`
+6. Create TOML collection and use `https://s3.amazonaws.com` for your url.
+   Base64 encode the JSON blob from step 5 as your api_key
 7. Execute artemis and provide TOML collection as either file or base64 encoded
    argument
 8. Delete the API key once you are done collecting data using artemis

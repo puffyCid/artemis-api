@@ -70,6 +70,7 @@ Commands:
   recyclebin         windows: Parse RecycleBin
   wmipersist         windows: Parse WMI Repository
   outlook            windows: Parse Outlook messages
+  mft                windows: Parse MFT file
   execpolicy         macos: Parse ExecPolicy
   users-macos        macos: Collect local users
   fsevents           macos: Parse FsEvents entries
@@ -90,8 +91,10 @@ Commands:
   help               Print this message or the help of the given subcommand(s)
 
 Options:
-      --format <FORMAT>  Output format. JSON or JSON or CSV [default: json]
-  -h, --help             Print help
+      --format <FORMAT>          Output format. JSON or JSONL or CSV [default: JSON]
+      --output-dir <OUTPUT_DIR>  Optional output directory for storing results [default: ./tmp]
+      --compress                 GZIP Compress results
+  -h, --help                     Print help
 ```
 
 To collect a process listing you would type:
@@ -135,8 +138,8 @@ artemis.exe -t processes.toml
 ```
 
 Both `processes.toml` files tell artemis to output the results to a directory
-called `tmp/process_collection` in the current directory and output using
-`jsonl` format
+called `tmp/process_collection` in the current directory and output using jsonl
+format
 
 ```
 ./tmp

@@ -51,14 +51,14 @@ script = "Ly8gaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B1ZmZ5Y2lkL2FydGVtaX
 
 A macOS collection script that does the following:
 
-- Parses and filters the `Persist` UnifiedLog files for log messags that contain
-  `sudo` or `osascript`
+- Parses and filters the **Persist** UnifiedLog files for log messags that
+  contain `sudo` or `osascript`
 - Parses and filters Fseventsd entries for evidence of `.dmg` files or files in
   `/tmp`
 - Parses and filters an App filelisting to list Applications and their
   associated `Info.plist` content
-- Parses `LoginItems` and try to parse the associated persistence binary (if it
-  exists and is a `macho` executable)
+- Parses LoginItems and try to parse the associated persistence binary (if it
+  exists and is a macho executable)
 
 The script is coded in a manner so that it can run as a filter or a normal
 script.

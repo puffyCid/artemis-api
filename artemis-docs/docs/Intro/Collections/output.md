@@ -22,7 +22,7 @@ When you run artemis three (3) types of files will be generated:
   provides a quick way to see what files contain a specific artifact. Only one
   (1) per collection will exist
 
-The json output from the `amcache` TOML collection from the previous page would
+The json output from the amcache TOML collection from the previous page would
 look like the following:
 
 ```json
@@ -93,11 +93,11 @@ All artifacts parsed by artemis will be formatted similar to the output above.
 - `data` object that contains the artifact specific data.\
   See the [artifact](../../Artifacts/overview.md) chapter to see the structure
   for each artifact.\
-  If you choose to execute JavaScript you can control what the `data` contains.
+  If you choose to execute JavaScript you can control what the data contains.
   For example you can return a string instead of an object or even combine
   multiple artifacts!
 
-The jsonl output from the `amcache` TOML collection from the previous page would
+The jsonl output from the amcache TOML collection from the previous page would
 look like the following:
 
 ```jsonl
