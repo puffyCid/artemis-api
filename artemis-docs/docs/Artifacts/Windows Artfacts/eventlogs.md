@@ -160,7 +160,6 @@ also be found in several
    system (or VM) in order to include template strings. You cannot use Linux or
    macOS. If you want to include template strings on Linux or macOS you must
    also provide a template file
-4. RenderingInfo element data is currently not included
 
 ## Template Files
 
