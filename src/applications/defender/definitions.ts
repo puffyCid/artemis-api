@@ -341,7 +341,6 @@ function getStart(data: Uint8Array): ThreatStart | ApplicationError {
 
   const severity = nomUnsignedOneBytes(
     resources.remaining as Uint8Array,
-    Endian.Le,
   );
   if (severity instanceof NomError) {
     return new ApplicationError(
@@ -352,7 +351,6 @@ function getStart(data: Uint8Array): ThreatStart | ApplicationError {
 
   const action = nomUnsignedOneBytes(
     severity.remaining as Uint8Array,
-    Endian.Le,
   );
   if (action instanceof NomError) {
     return new ApplicationError(

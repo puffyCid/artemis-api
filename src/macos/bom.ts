@@ -196,7 +196,7 @@ export function parseReceipt(path: string): Bom | MacosError {
 }
 
 interface Header {
-  sig: number;
+  sig: bigint;
   version: number;
   number_blocks: number;
   index_table_offset: number;
@@ -373,7 +373,7 @@ function getVars(data: Uint8Array): Vars | MacosError {
       return new MacosError("BOM", `failed to parse vars index: ${index}`);
     }
 
-    const length = nomUnsignedOneBytes(index.remaining, Endian.Be);
+    const length = nomUnsignedOneBytes(index.remaining);
     if (length instanceof NomError) {
       return new MacosError("BOM", `failed to parse vars length: ${length}`);
     }
@@ -497,7 +497,7 @@ function parseTreeEntry(
     );
   }
 
-  const unknown = nomUnsignedOneBytes(block_size.remaining, Endian.Be);
+  const unknown = nomUnsignedOneBytes(block_size.remaining);
   if (unknown instanceof NomError) {
     return new MacosError(
       "BOM",
@@ -719,14 +719,14 @@ function getPathInfo(
     return new MacosError("BOM", `failed to get path data: ${path_data}`);
   }
 
-  const type_data = nomUnsignedOneBytes(path_data, Endian.Be);
+  const type_data = nomUnsignedOneBytes(path_data);
   if (type_data instanceof NomError) {
     return new MacosError("BOM", `failed to parse path type: ${type_data}`);
   }
 
   const file_type = getType(type_data.value);
 
-  const unknown = nomUnsignedOneBytes(type_data.remaining, Endian.Be);
+  const unknown = nomUnsignedOneBytes(type_data.remaining);
   if (unknown instanceof NomError) {
     return new MacosError("BOM", `failed to parse path unknown: ${unknown}`);
   }
@@ -761,7 +761,7 @@ function getPathInfo(
     return new MacosError("BOM", `failed to parse path size: ${size}`);
   }
 
-  const unknown2 = nomUnsignedOneBytes(size.remaining, Endian.Be);
+  const unknown2 = nomUnsignedOneBytes(size.remaining);
   if (unknown2 instanceof NomError) {
     return new MacosError("BOM", `failed to parse path unknown2: ${unknown2}`);
   }

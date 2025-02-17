@@ -1,6 +1,6 @@
 import type { Url } from "../../../types/http/unfold.ts";
 import { EncodingError } from "../../encoding/errors.ts";
-import { parseProtobuf } from "../../encoding/protobufv2.ts";
+import { parseProtobuf } from "../../encoding/protobuf.ts";
 import { NomError } from "../../nom/error.ts";
 import { Endian, nomUnsignedFourBytes } from "../../nom/helpers.ts";
 import { unixEpochToISO } from "../../time/conversion.ts";

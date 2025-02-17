@@ -1,20 +1,15 @@
-/**
- * Sudo ("super user do" or "substitute user") is used to run programs with elevated privileges.
- * Linux `Sudo Logs` are stored in the Systemd Journal files.
- * The log entries show evidence of commands executed with elevated privileges
- */
-
 import { Journal } from "../../types/linux/journal.ts";
 import { LinuxError } from "./errors.ts";
 
 /**
  * Function to get `sudo logs`
+ * @param path Optional path to a Journal file. If none is provided all Journal files will be parsed
  * @returns Array of `sudo log` entries from Linux Journal files or `LinuxError`
  */
-export function getSudoLogsLinux(): Journal[] | LinuxError {
+export function getSudoLogsLinux(path = ""): Journal[] | LinuxError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_sudologs_linux();
+    const data = Deno.core.ops.get_sudologs_linux(path);
 
     const log_data: Journal[] = JSON.parse(data);
     return log_data;

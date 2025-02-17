@@ -11,5 +11,5 @@ export interface ClientResponse {
   /**Body length */
   contentLength: number;
   /**Response body in raw bytes */
-  body: Uint8Array;
+  body: number[];
 }

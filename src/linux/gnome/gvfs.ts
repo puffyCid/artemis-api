@@ -179,7 +179,7 @@ function extractHeader(data: Uint8Array): Header | NomError {
     tag: tag.value,
     root_offset: root_offset.value,
     keywords_offset: keywords_offset.value,
-    base_time: base_time.value,
+    base_time: Number(base_time.value),
   };
 
   return header;

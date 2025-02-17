@@ -67,7 +67,6 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   // First byte is the length of volume name
   const volume_data = nomUnsignedOneBytes(
     alias_data.nommed as Uint8Array,
-    Endian.Be,
   );
   if (volume_data instanceof NomError) {
     return new MacosError(
@@ -133,7 +132,6 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   // First byte of target name is the size of name
   const target_size = nomUnsignedOneBytes(
     alias_data.nommed as Uint8Array,
-    Endian.Be,
   );
   if (target_size instanceof NomError) {
     return new MacosError(
@@ -371,7 +369,7 @@ function parseTag(data: Uint8Array): Nom | NomError {
 
   // If size is odd. There is a padding byte
   if (result.value & 1) {
-    result = nomUnsignedOneBytes(path_data.remaining as Uint8Array, Endian.Be);
+    result = nomUnsignedOneBytes(path_data.remaining as Uint8Array);
     if (result instanceof NomError) {
       return result;
     }

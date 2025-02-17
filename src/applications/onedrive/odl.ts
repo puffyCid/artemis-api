@@ -331,7 +331,7 @@ interface DescriptionData {
 function parseDescription(
   data: Uint8Array,
 ): DescriptionData | ApplicationError {
-  const count = nomUnsignedOneBytes(data, Endian.Le);
+  const count = nomUnsignedOneBytes(data);
   if (count instanceof NomError) {
     return new ApplicationError(
       `ONEDRIVE`,
@@ -359,14 +359,14 @@ function parseDescription(
   let remaining = desc.remaining as Uint8Array;
   let values = "";
   while (value_count < count.value) {
-    const size = nomUnsignedOneBytes(remaining, Endian.Le);
+    const size = nomUnsignedOneBytes(remaining);
     if (size instanceof NomError) {
       return new ApplicationError(
         `ONEDRIVE`,
         `failed to parse description extra size: ${size.message}`,
       );
     }
-    const flag = nomUnsignedOneBytes(size.remaining, Endian.Le);
+    const flag = nomUnsignedOneBytes(size.remaining);
     if (flag instanceof NomError) {
       return new ApplicationError(
         `ONEDRIVE`,

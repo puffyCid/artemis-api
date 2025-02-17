@@ -11,9 +11,8 @@ import { FileError } from "./errors.ts";
 export function stat(path: string): FileInfo | FileError {
   try {
     //@ts-ignore: Custom Artemis function
-    const result = fs.stat(path);
-    const value: FileInfo = JSON.parse(result);
-    return value;
+    const result = js_stat(path);
+    return result;
   } catch (err) {
     return new FileError("STAT", `failed to stat ${path}: ${err}`);
   }
@@ -35,9 +34,8 @@ export function hash(
 ): Hashes | FileError {
   try {
     //@ts-ignore: Custom Artemis function
-    const result = fs.hash(path, md5, sha1, sha256);
-    const data: Hashes = result;
-    return data;
+    const result = js_hash(path, md5, sha1, sha256);
+    return result;
   } catch (err) {
     return new FileError("HASH", `failed to hash ${path}: ${err}`);
   }
@@ -51,9 +49,8 @@ export function hash(
 export function readTextFile(path: string): string | FileError {
   try {
     //@ts-ignore: Custom Artemis function
-    const result = fs.readTextFile(path);
-    const data: string = result;
-    return data;
+    const result = js_read_text_file(path);
+    return result;
   } catch (err) {
     return new FileError(
       "READ_TEXT_FILE",
@@ -70,9 +67,8 @@ export function readTextFile(path: string): string | FileError {
 export function readFile(path: string): Uint8Array | FileError {
   try {
     //@ts-ignore: Custom Artemis function
-    const result = fs.readFile(path);
-    const data: Uint8Array = result;
-    return data;
+    const result = js_read_file(path);
+    return result;
   } catch (err) {
     return new FileError("READ_FILE", `failed to read file ${path}: ${err}`);
   }
@@ -86,9 +82,8 @@ export function readFile(path: string): Uint8Array | FileError {
 export function glob(pattern: string): GlobInfo[] | FileError {
   try {
     //@ts-ignore: Custom Artemis function
-    const result = fs.glob(pattern);
-    const data: GlobInfo[] = JSON.parse(result);
-    return data;
+    const result = js_glob(pattern);
+    return result;
   } catch (err) {
     return new FileError("GLOB", `failed to glob pattern ${pattern}" ${err}`);
   }

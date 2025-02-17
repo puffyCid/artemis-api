@@ -5,6 +5,6 @@
  */
 export function encodeBytes(data: string): Uint8Array {
   //@ts-ignore: Custom Artemis function
-  const result: Uint8Array = encoding.bytes_encode(data);
+  const result: Uint8Array = js_encode_bytes(data);
   return result;
 }

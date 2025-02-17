@@ -8,7 +8,7 @@ import { nomUnsignedEightBytes } from "../nom/mod.ts";
 import { EncodingError } from "../encoding/errors.ts";
 import { Biome } from "../../types/macos/biome.ts";
 import { encode } from "../encoding/base64.ts";
-import { parseProtobuf } from "../encoding/protobufv2.ts";
+import { parseProtobuf } from "../encoding/protobuf.ts";
 
 /**
  * A **very** experimental and simple function to parse BIOME data
@@ -319,7 +319,7 @@ function parseRecordV2(
     const record: BiomeFooter = {
       end_offset: offset.value,
       state: state.value,
-      entry_created: created.value,
+      entry_created: Number(created.value),
     };
 
     footers.push(record);
@@ -367,7 +367,7 @@ function parseRecordV2(
     }
     const record: BiomeRecord = {
       size,
-      created: footer.entry_created,
+      created: Number(footer.entry_created),
       created2: 0,
       protobuf_bytes: unknown_bytes.remaining,
       remaining: new Uint8Array(),

@@ -1,6 +1,6 @@
 import {
-  NomSigned,
-  NomUnsigned,
+  NomNumber,
+  NomSignedLarge,
   NomUnsignedLarge,
 } from "../../types/nom/nom.ts";
 import { NomError } from "./error.ts";
@@ -24,20 +24,25 @@ export enum Endian {
 export function nomUnsignedFourBytes(
   data: Uint8Array,
   endianess: Endian,
-): NomUnsigned | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomUnsigned = Deno.core.ops.js_nom_unsigned_four_bytes(
-      data,
-      endianess,
-    );
-    return result;
-  } catch (err) {
+): NomNumber | NomError {
+  if (data.buffer.byteLength < 4) {
     return new NomError(
       "NOM",
-      `failed to nom unsigned four byte: ${err}`,
+      `fewer than four bytes in input`,
     );
   }
+  let little = false;
+  if (endianess === Endian.Le) {
+    little = true;
+  }
+  const nom_bytes = data.buffer.slice(0, 4);
+  const value = new DataView(nom_bytes.slice(0, nom_bytes.byteLength))
+    .getUint32(0, little);
+  const bytes: NomNumber = {
+    remaining: data.slice(4),
+    value,
+  };
+  return bytes;
 }
 
 /**
@@ -49,20 +54,25 @@ export function nomUnsignedFourBytes(
 export function nomUnsignedEightBytes(
   data: Uint8Array,
   endianess: Endian,
-): NomUnsigned | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomUnsigned = Deno.core.ops.js_nom_unsigned_eight_bytes(
-      data,
-      endianess,
-    );
-    return result;
-  } catch (err) {
+): NomUnsignedLarge | NomError {
+  if (data.buffer.byteLength < 8) {
     return new NomError(
       "NOM",
-      `failed to nom unsigned eight byte: ${err}`,
+      `fewer than eight bytes in input`,
     );
   }
+  let little = false;
+  if (endianess === Endian.Le) {
+    little = true;
+  }
+  const nom_bytes = data.buffer.slice(0, 8);
+  const value = new DataView(nom_bytes.slice(0, nom_bytes.byteLength))
+    .getBigUint64(0, little);
+  const bytes: NomUnsignedLarge = {
+    remaining: data.slice(8),
+    value,
+  };
+  return bytes;
 }
 
 /**
@@ -74,20 +84,25 @@ export function nomUnsignedEightBytes(
 export function nomUnsignedTwoBytes(
   data: Uint8Array,
   endianess: Endian,
-): NomUnsigned | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomUnsigned = Deno.core.ops.js_nom_unsigned_two_bytes(
-      data,
-      endianess,
-    );
-    return result;
-  } catch (err) {
+): NomNumber | NomError {
+  if (data.buffer.byteLength < 2) {
     return new NomError(
       "NOM",
-      `failed to nom unsigned two byte: ${err}`,
+      `fewer than two bytes in input`,
     );
   }
+  let little = false;
+  if (endianess === Endian.Le) {
+    little = true;
+  }
+  const nom_bytes = data.buffer.slice(0, 2);
+  const value = new DataView(nom_bytes.slice(0, nom_bytes.byteLength))
+    .getUint16(0, little);
+  const bytes: NomNumber = {
+    remaining: data.slice(2),
+    value,
+  };
+  return bytes;
 }
 
 /**
@@ -98,21 +113,22 @@ export function nomUnsignedTwoBytes(
  */
 export function nomUnsignedOneBytes(
   data: Uint8Array,
-  endianess: Endian,
-): NomUnsigned | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomUnsigned = Deno.core.ops.js_nom_unsigned_one_bytes(
-      data,
-      endianess,
-    );
-    return result;
-  } catch (err) {
+): NomNumber | NomError {
+  if (data.buffer.byteLength < 1) {
     return new NomError(
       "NOM",
-      `failed to nom unsigned one byte: ${err}`,
+      `fewer than one byte in input`,
     );
   }
+
+  const nom_bytes = data.buffer.slice(0, 1);
+  const value = new DataView(nom_bytes.slice(0, nom_bytes.byteLength))
+    .getUint8(0);
+  const bytes: NomNumber = {
+    remaining: data.slice(1),
+    value,
+  };
+  return bytes;
 }
 
 /**
@@ -125,20 +141,31 @@ export function nomUnsignedSixteenBytes(
   data: Uint8Array,
   endianess: Endian,
 ): NomUnsignedLarge | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomUnsignedLarge = Deno.core.ops
-      .js_nom_unsigned_sixteen_bytes(
-        data,
-        endianess,
-      );
-    return result;
-  } catch (err) {
+  if (data.buffer.byteLength < 16) {
     return new NomError(
       "NOM",
-      `failed to nom unsigned sixteen byte: ${err}`,
+      `fewer than sixteen byte in input`,
     );
   }
+
+  const fist_eight = data.buffer.slice(0, 8);
+  const second_eight = data.buffer.slice(8, 16);
+  let little = false;
+  if (endianess === Endian.Le) {
+    little = true;
+  }
+
+  const value = new DataView(fist_eight.slice(0, fist_eight.byteLength))
+    .getBigUint64(0, little);
+  const value2 = new DataView(second_eight.slice(0, second_eight.byteLength))
+    .getBigUint64(0, little);
+
+  const bytes: NomUnsignedLarge = {
+    remaining: data.slice(16),
+    value: BigInt(value.toString() + value2.toString()),
+  };
+
+  return bytes;
 }
 
 /**
@@ -150,20 +177,25 @@ export function nomUnsignedSixteenBytes(
 export function nomSignedFourBytes(
   data: Uint8Array,
   endianess: Endian,
-): NomSigned | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomSigned = Deno.core.ops.js_nom_signed_four_bytes(
-      data,
-      endianess,
-    );
-    return result;
-  } catch (err) {
+): NomNumber | NomError {
+  if (data.buffer.byteLength < 4) {
     return new NomError(
       "NOM",
-      `failed to nom signed four byte: ${err}`,
+      `fewer than four bytes in input`,
     );
   }
+  let little = false;
+  if (endianess === Endian.Le) {
+    little = true;
+  }
+  const nom_bytes = data.buffer.slice(0, 4);
+  const value = new DataView(nom_bytes.slice(0, nom_bytes.byteLength))
+    .getInt32(0, little);
+  const bytes: NomNumber = {
+    remaining: data.slice(4),
+    value,
+  };
+  return bytes;
 }
 
 /**
@@ -175,20 +207,25 @@ export function nomSignedFourBytes(
 export function nomSignedEightBytes(
   data: Uint8Array,
   endianess: Endian,
-): NomSigned | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomSigned = Deno.core.ops.js_nom_signed_eight_bytes(
-      data,
-      endianess,
-    );
-    return result;
-  } catch (err) {
+): NomSignedLarge | NomError {
+  if (data.buffer.byteLength < 8) {
     return new NomError(
       "NOM",
-      `failed to nom signed eight byte: ${err}`,
+      `fewer than eight bytes in input`,
     );
   }
+  let little = false;
+  if (endianess === Endian.Le) {
+    little = true;
+  }
+  const nom_bytes = data.buffer.slice(0, 8);
+  const value = new DataView(nom_bytes.slice(0, nom_bytes.byteLength))
+    .getBigInt64(0, little);
+  const bytes: NomUnsignedLarge = {
+    remaining: data.slice(8),
+    value,
+  };
+  return bytes;
 }
 
 /**
@@ -200,18 +237,23 @@ export function nomSignedEightBytes(
 export function nomSignedTwoBytes(
   data: Uint8Array,
   endianess: Endian,
-): NomSigned | NomError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: NomSigned = Deno.core.ops.js_nom_signed_two_bytes(
-      data,
-      endianess,
-    );
-    return result;
-  } catch (err) {
+): NomNumber | NomError {
+  if (data.buffer.byteLength < 2) {
     return new NomError(
       "NOM",
-      `failed to nom signed two byte: ${err}`,
+      `fewer than two bytes in input`,
     );
   }
+  let little = false;
+  if (endianess === Endian.Le) {
+    little = true;
+  }
+  const nom_bytes = data.buffer.slice(0, 2);
+  const value = new DataView(nom_bytes.slice(0, nom_bytes.byteLength))
+    .getInt16(0, little);
+  const bytes: NomNumber = {
+    remaining: data.slice(2),
+    value,
+  };
+  return bytes;
 }

@@ -57,8 +57,7 @@ export class Unfold {
   private extractUrl(): Url | UnfoldError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.url_parse(this.url);
-      const url_info: Url = JSON.parse(data);
+      const url_info: Url = js_url_parse(this.url);
       url_info.url = this.url;
       url_info.last_segment = url_info.segments.at(-1) ?? "";
       return url_info;

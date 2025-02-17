@@ -10,6 +10,7 @@ import {
   Endian,
   nomSignedFourBytes,
   nomUnsignedFourBytes,
+  nomUnsignedOneBytes,
 } from "../nom/helpers.ts";
 import { takeUntil } from "../nom/parsers.ts";
 import { unixEpochToISO } from "../time/conversion.ts";
@@ -37,7 +38,7 @@ export function getRpmInfo(alt_path?: string): RpmPackages[] | LinuxError {
   const rpm_entries = [];
 
   for (const entry of results) {
-    // Packages are base64 envoded binary blobs that need to be parsed
+    // Packages are base64 encoded binary blobs that need to be parsed
     const raw_bytes = decode(entry["blob"] as string);
     if (raw_bytes instanceof EncodingError) {
       console.error(`Could not base64 decode RPM binary date: ${raw_bytes}`);
@@ -540,13 +541,12 @@ function extractTagValue(
           return values;
         }
 
-        // We nommed **until** end of string character. We still need to remove it
-        tag_data = new Uint8Array(
-          (value_data.remaining as Uint8Array).buffer.slice(
-            1,
-            value_data.remaining.length,
-          ),
-        );
+        const eol = nomUnsignedOneBytes(value_data.remaining as Uint8Array);
+        if (eol instanceof NomError) {
+          console.error(`Could not nom end of line ${eol}`);
+          break;
+        }
+        tag_data = eol.remaining;
 
         count_value++;
       }

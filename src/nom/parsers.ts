@@ -11,27 +11,16 @@ export function take(data: string | Uint8Array, input: number): Nom | NomError {
   if (input < 0) {
     return new NomError("NOM", "provided negative number");
   }
-  if (typeof data === "string") {
-    try {
-      //@ts-ignore: Custom Artemis function
-      const result_string: string = Deno.core.ops.js_nom_take_string(
-        data,
-        input,
-      );
-      const nom_string: Nom = JSON.parse(result_string);
-      return nom_string;
-    } catch (err) {
-      return new NomError("NOM", `could not take string ${err}`);
-    }
+  if (data.length < input) {
+    return new NomError("NOM", `wanted ${input} but input is ${data.length}`);
   }
 
-  try {
-    //@ts-ignore: Custom Artemis function
-    const result: Nom = Deno.core.ops.js_nom_take_bytes(data, input);
-    return result;
-  } catch (err) {
-    return new NomError("NOM", `could not take bytes ${err}`);
-  }
+  const nommed = data.slice(0, input);
+  const value: Nom = {
+    remaining: data.slice(input),
+    nommed,
+  };
+  return value;
 }
 
 /**
@@ -51,23 +40,28 @@ export function takeUntil(
   if (typeof data === "string" && typeof input === "string") {
     try {
       //@ts-ignore: Custom Artemis function
-      const result_string: string = Deno.core.ops.js_nom_take_until_string(
+      const result = js_nom_take_until_string(
         data,
         input,
       );
-      const nom_string: Nom = JSON.parse(result_string);
-      return nom_string;
+      return result;
     } catch (err) {
       return new NomError("NOM", `could not take until string ${err}`);
     }
   }
+
   try {
     //@ts-ignore: Custom Artemis function
-    const result: Nom = Deno.core.ops.js_nom_take_until_bytes(
+    const result = js_nom_take_until_bytes(
       data,
       input,
     );
-    return result;
+
+    const value: Nom = {
+      nommed: result,
+      remaining: data.slice(0, result.buffer.byteLength + 1),
+    };
+    return value;
   } catch (err) {
     return new NomError("NOM", `could not take until bytes ${err}`);
   }
@@ -96,23 +90,27 @@ export function takeWhile(
   if (typeof data === "string" && typeof input === "string") {
     try {
       //@ts-ignore: Custom Artemis function
-      const result_string: string = Deno.core.ops.js_nom_take_while_string(
+      const result: Nom = js_nom_take_while_string(
         data,
         input,
       );
-      const nom_string: Nom = JSON.parse(result_string);
-      return nom_string;
+
+      return result;
     } catch (err) {
       return new NomError("NOM", `could not take while string ${err}`);
     }
   }
   try {
     //@ts-ignore: Custom Artemis function
-    const result: Nom = Deno.core.ops.js_nom_take_while_bytes(
+    const result = js_nom_take_while_bytes(
       data,
       input,
     );
-    return result;
+    const value: Nom = {
+      nommed: result,
+      remaining: data.slice(0, result.buffer.byteLength + 1),
+    };
+    return value;
   } catch (err) {
     return new NomError("NOM", `could not take while bytes ${err}`);
   }
