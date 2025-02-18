@@ -10,9 +10,16 @@ export function decompress_zlib(
   data: Uint8Array,
   wbits: number = 0,
 ): Uint8Array | CompressionError {
+  const max_wbit = 255;
+  if (wbits > max_wbit) {
+    return new CompressionError(
+      `ZLIB`,
+      `wbit value too large, should be less than 255`,
+    );
+  }
   try {
     //@ts-ignore: Custom Artemis function
-    const bytes: Uint8Array = compression.decompress_zlib(data, wbits);
+    const bytes: Uint8Array = js_decompress_zlib(data, wbits);
     return bytes;
   } catch (err) {
     return new CompressionError(`ZLIB`, `failed to decompress: ${err}`);
@@ -29,7 +36,7 @@ export function decompress_gzip(
 ): Uint8Array | CompressionError {
   try {
     //@ts-ignore: Custom Artemis function
-    const bytes: Uint8Array = compression.decompress_gzip(data);
+    const bytes: Uint8Array = js_decompress_gzip(data);
     return bytes;
   } catch (err) {
     return new CompressionError(`GZIP`, `failed to decompress: ${err}`);

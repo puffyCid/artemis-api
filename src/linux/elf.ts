@@ -9,9 +9,8 @@ import { LinuxError } from "./errors.ts";
 export function getElf(path: string): ElfInfo | LinuxError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_elf(path);
-    const elf: ElfInfo = JSON.parse(data);
-    return elf;
+    const data = js_get_elf(path);
+    return data;
   } catch (err) {
     return new LinuxError("ELF", `failed to parse elf ${path}: ${err}`);
   }

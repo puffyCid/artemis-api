@@ -4,7 +4,7 @@
  */
 export function timeNow(): number {
   //@ts-ignore: Custom Artemis function
-  const data: bigint = time.time_now();
+  const data: bigint = js_time_now();
   return Number(data);
 }
 
@@ -15,7 +15,7 @@ export function timeNow(): number {
  */
 export function filetimeToUnixEpoch(filetime: bigint): number {
   //@ts-ignore: Custom Artemis function
-  const data: bigint = time.filetime_to_unixepoch(filetime);
+  const data: bigint = js_filetime_to_unixepoch(filetime);
   return Number(data);
 }
 
@@ -26,7 +26,7 @@ export function filetimeToUnixEpoch(filetime: bigint): number {
  */
 export function cocoatimeToUnixEpoch(cocoatime: number): number {
   //@ts-ignore: Custom Artemis function
-  const data: bigint = time.cocoatime_to_unixepoch(cocoatime);
+  const data: bigint = js_cocoatime_to_unixepoch(cocoatime);
   return Number(data);
 }
 
@@ -37,7 +37,7 @@ export function cocoatimeToUnixEpoch(cocoatime: number): number {
  */
 export function hfsToUnixEpoch(hfstime: number): number {
   //@ts-ignore: Custom Artemis function
-  const data: bigint = time.hfs_to_unixepoch(hfstime);
+  const data: bigint = js_hfs_to_unixepoch(hfstime);
   return Number(data);
 }
 
@@ -48,7 +48,7 @@ export function hfsToUnixEpoch(hfstime: number): number {
  */
 export function oleToUnixEpoch(oletime: number): number {
   //@ts-ignore: Custom Artemis function
-  const data: bigint = time.ole_automationtime_to_unixepoch(oletime);
+  const data: bigint = js_ole_automationtime_to_unixepoch(oletime);
   return Number(data);
 }
 
@@ -59,7 +59,7 @@ export function oleToUnixEpoch(oletime: number): number {
  */
 export function webkitToUnixEpoch(webkittime: number): number {
   //@ts-ignore: Custom Artemis function
-  const data: bigint = time.webkit_time_to_unixepoch(webkittime);
+  const data: bigint = js_webkit_time_to_unixepoch(webkittime);
   return Number(data);
 }
 
@@ -70,7 +70,7 @@ export function webkitToUnixEpoch(webkittime: number): number {
  */
 export function fatToUnixEpoch(fattime: Uint8Array): number {
   //@ts-ignore: Custom Artemis function
-  const data: bigint = time.fattime_utc_to_unixepoch(fattime);
+  const data: bigint = js_fat_time_utc_to_unixepoch(fattime);
   return Number(data);
 }
 

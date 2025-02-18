@@ -24,20 +24,20 @@ export function extractBackup(path: string, output: Output) {
     return info;
   }
 
-  outputResults(JSON.stringify(info), "itunes_info.plist", output);
+  outputResults(info, "itunes_info.plist", output);
 
   const status = getStatus(path);
   if (status instanceof IosError) {
     return status;
   }
-  outputResults(JSON.stringify(status), "itunes_status.plist", output);
+  outputResults(status, "itunes_status.plist", output);
 
   const manifest = getManifest(path);
   if (manifest instanceof IosError) {
     return manifest;
   }
 
-  outputResults(JSON.stringify(manifest), "itunes_manifest.plist", output);
+  outputResults(manifest, "itunes_manifest.plist", output);
 
   const domains = queryDomains(path);
   if (domains instanceof IosError) {
@@ -52,7 +52,7 @@ export function extractBackup(path: string, output: Output) {
       continue;
     }
     output.name = `${output_name}_${domain.namespace}`;
-    outputResults(JSON.stringify(paths), domain.namespace, output);
+    outputResults(paths, domain.namespace, output);
     extractAppInfo(paths, domain.namespace, path, output);
   }
 }

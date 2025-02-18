@@ -7,7 +7,7 @@ import { DecryptError } from "./errors.ts";
  * @param data Encrypted data
  * @returns Decrypted data or `DecryptError`
  */
-export function decrypt_aes(
+export function decryptAes(
   key: Uint8Array,
   iv: Uint8Array,
   data: Uint8Array,
@@ -21,7 +21,7 @@ export function decrypt_aes(
   }
   try {
     //@ts-ignore: Custom Artemis function
-    const bytes: Uint8Array = decryption.decrypt_aes(key, iv, data);
+    const bytes: Uint8Array = js_decrypt_aes(key, iv, data);
     return bytes;
   } catch (err) {
     return new DecryptError(`AES`, `failed to decrypt: ${err}`);

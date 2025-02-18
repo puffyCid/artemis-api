@@ -44,23 +44,22 @@ export enum OutputType {
 
 /**
  * Function to pass data to artemis to save
- * @param data JSON string of data
+ * @param data Data you want to output
  * @param data_name Name of the type of data. Ex: `processes`
  * @param output `Output` structure to pass to artemis
  * @returns True on success or `SystemError`
  */
 export function outputResults(
-  data: string,
+  data: unknown,
   data_name: string,
   output: Output,
 ): boolean | SystemError {
   try {
-    const output_string = JSON.stringify(output);
     //@ts-ignore: Custom Artemis function
-    const status: boolean = Deno.core.ops.output_results(
+    const status: boolean = js_output_results(
       data,
       data_name,
-      output_string,
+      output,
     );
     return status;
   } catch (err) {
@@ -70,23 +69,22 @@ export function outputResults(
 
 /**
  * Function to pass data to `artemis` to save, skipping metadata
- * @param data JSON string of data
+ * @param data Data you want to output
  * @param data_name Name of the type of data. Ex: `processes`
  * @param output Output structure to pass to `artemis`
  * @returns True on success or `SystemError`
  */
 export function dumpData(
-  data: string,
+  data: unknown,
   data_name: string,
   output: Output,
 ): boolean | SystemError {
   try {
-    const output_string = JSON.stringify(output);
     //@ts-ignore: Custom Artemis function
-    const status: boolean = Deno.core.ops.raw_dump(
+    const status: boolean = js_raw_dump(
       data,
       data_name,
-      output_string,
+      output,
     );
     return status;
   } catch (err) {

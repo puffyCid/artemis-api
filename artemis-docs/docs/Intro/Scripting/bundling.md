@@ -131,7 +131,7 @@ console when bundling.
 ### --no-check Flag
 
 This flag tells Deno not to type check values. This flag is required due to:
-`Deno.core.ops.get_registry(path)`
+`js_get_registry(path)`
 
 The Deno binary is designed to support code written for the Deno platform.
 However, we are using a custom Deno runtime.
@@ -147,7 +147,7 @@ function we have registered in our own runtime.
 // This code was bundled using `deno bundle` and it's not recommended to edit it manually
 
 function get_registry(path) {
-    const data = Deno.core.ops.get_registry(path);
+    const data = js_get_registry(path);
     const reg_array = JSON.parse(data);
     return reg_array;
 }
@@ -265,7 +265,7 @@ files into one .js file using esbuild. We then execute this code using
 ```javascript
 // https://raw.githubusercontent.com/puffycid/artemis-api/master/src/windows/registry.ts
 function get_registry(path) {
-  const data = Deno.core.ops.get_registry(path);
+  const data = js_get_registry(path);
   const reg_array = JSON.parse(data);
   return reg_array;
 }

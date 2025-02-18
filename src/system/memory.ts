@@ -7,9 +7,8 @@ import { ProcessInfo } from "../../types/system/processes.ts";
  */
 export function memory(): Memory {
   //@ts-ignore: Custom Artemis function
-  const data = system.memory();
-  const mem: Memory = JSON.parse(data);
-  return mem;
+  const data: Memory = js_memory();
+  return data;
 }
 
 /**
@@ -32,11 +31,10 @@ export function processListing(
     sha256,
   };
   //@ts-ignore: Custom Artemis function
-  const data = Deno.core.ops.get_processes(
-    JSON.stringify(hashes),
+  const data: ProcessInfo[] = js_get_processes(
+    hashes,
     binary,
   );
-  const proc_array: ProcessInfo[] = JSON.parse(data);
 
-  return proc_array;
+  return data;
 }

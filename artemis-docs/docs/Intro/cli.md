@@ -175,7 +175,7 @@ function getProcesses(md5, sha1, sha256, binary_info) {
     sha1,
     sha256,
   };
-  const data = Deno.core.ops.get_processes(
+  const data = js_get_processes(
     JSON.stringify(hashes),
     binary_info,
   );

@@ -30,19 +30,11 @@ export function extractZoom(
 
     if (info.path.includes("us.zoom.videomeetings.plist")) {
       const result = parseMeetings(target);
-      outputResults(
-        JSON.stringify(result),
-        "zoom_preferences_meetings",
-        output,
-      );
+      outputResults(result, "zoom_preferences_meetings", output);
       continue;
     } else if (info.path.includes("ZoomChat.plist")) {
       const result = parseChat(target);
-      outputResults(
-        JSON.stringify(result),
-        "zoom_preferences_chat",
-        output,
-      );
+      outputResults(result, "zoom_preferences_chat", output);
       continue;
     }
 

@@ -12,9 +12,15 @@ export function getLogon(path: string): Logon[] | LinuxError {
   ) {
     return new LinuxError("LOGON", `provided non-logon file ${path}`);
   }
-  //@ts-ignore: Custom Artemis function
-  const data = Deno.core.ops.get_logon(path);
+  try {
+    //@ts-ignore: Custom Artemis function
+    const data = js_get_logon(path);
 
-  const journal: Logon[] = JSON.parse(data);
-  return journal;
+    return data;
+  } catch (err) {
+    return new LinuxError(
+      "LOGON",
+      `failed to parse logon file ${path}: ${err}`,
+    );
+  }
 }

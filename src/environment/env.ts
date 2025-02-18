@@ -4,7 +4,7 @@
  */
 export function listEnv(): Record<string, string> {
   //@ts-ignore: Custom Artemis function
-  const data: Record<string, string> = env.environment();
+  const data: Record<string, string> = js_env();
   return data;
 }
 
@@ -15,6 +15,6 @@ export function listEnv(): Record<string, string> {
  */
 export function getEnvValue(key: string): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = env.environmentValue(key);
+  const data: string = js_env_value(key);
   return data;
 }

@@ -11,11 +11,10 @@ export function executeCommand(
   args: string[] = [],
 ): CommandResult | Error {
   //@ts-ignore: Custom Artemis function
-  const data = system.execute(command, args);
+  const data: CommandResult | Error = js_command(command, args);
   if (data instanceof Error) {
     return data;
   }
 
-  const result: CommandResult = JSON.parse(data);
-  return result;
+  return data;
 }

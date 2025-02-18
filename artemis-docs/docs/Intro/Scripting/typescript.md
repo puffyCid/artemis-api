@@ -63,7 +63,7 @@ export interface Value {
  */
 export function get_registry(path: string): Registry[] {
   // Array of JSON objects
-  const data = Deno.core.ops.get_registry(path);
+  const data = js_get_registry(path);
   const reg_array: Registry[] = JSON.parse(data);
 
   return reg_array;
@@ -71,7 +71,7 @@ export function get_registry(path: string): Registry[] {
 ```
 
 The above TypeScrpt code shows that we can access our registered `get_registry`
-function by calling it via `Deno.core.ops.get_registry(path);`
+function by calling it via `js_get_registry(path);`
 
 To make scripting even easier a simple **artemis-api** library is available to
 import into Deno scripts. This allows users to create scripts without needing to

@@ -29,7 +29,7 @@ export function extractDuckDuckGo(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("GeolocationSites.plist")) {
       const result = parseGeoSites(target);
-      outputResults(JSON.stringify(result), "duckduckgo_geosites", output);
+      outputResults(result, "duckduckgo_geosites", output);
     }
     //console.log(info.path);
     //console.log(target);

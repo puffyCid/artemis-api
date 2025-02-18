@@ -9,10 +9,8 @@ import { LinuxError } from "./errors.ts";
 export function getSudoLogsLinux(path = ""): Journal[] | LinuxError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_sudologs_linux(path);
-
-    const log_data: Journal[] = JSON.parse(data);
-    return log_data;
+    const data = js_get_sudologs_linux(path);
+    return data;
   } catch (err) {
     return new LinuxError("SUDOLOGS", `failed to parse sudo logs: ${err}`);
   }

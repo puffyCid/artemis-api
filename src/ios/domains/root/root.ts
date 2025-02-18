@@ -29,11 +29,7 @@ export function extractRootDomain(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("locationd/clients.plist")) {
       const result = parseClients(target);
-      outputResults(
-        JSON.stringify(result),
-        "rootdomain_locationd_clients",
-        output,
-      );
+      outputResults(result, "rootdomain_locationd_clients", output);
       continue;
     }
     //console.log(info.path);
