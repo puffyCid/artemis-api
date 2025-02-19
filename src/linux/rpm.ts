@@ -17,11 +17,17 @@ import { unixEpochToISO } from "../time/conversion.ts";
 
 /**
  * Function to get installed RPM packages. This function only supports getting packages from the sqlite database. The historical Berkley database is not supported.
+ * @param offset What offset to start the query at
+ * @param limit How many packages to return
  * @param alt_path Optional path to the RPM sqlite database. Will default to `/var/lib/rpm/rpmdb.sqlite`
  * @returns Array of `RpmPackages` or `LinuxError`
  */
-export function getRpmInfo(alt_path?: string): RpmPackages[] | LinuxError {
-  const query = "select * from Packages";
+export function getRpmInfo(
+  offset: number,
+  limit: number,
+  alt_path?: string,
+): RpmPackages[] | LinuxError {
+  const query = `SELECT * FROM Packages LIMIT ${limit} OFFSET ${offset}`;
   let path = "/var/lib/rpm/rpmdb.sqlite";
   if (alt_path != undefined) {
     path = alt_path;
@@ -284,7 +290,6 @@ function parseHeader(data: Uint8Array): HeaderInfo | LinuxError {
   if (il_data instanceof NomError) {
     return new LinuxError(`RPMPACKAGES`, `failed to get il value: ${il_data}`);
   }
-
   const il = il_data.value;
   if (il < 1) {
     return new LinuxError(

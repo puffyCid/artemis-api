@@ -12,10 +12,8 @@ import { UnixError } from "./errors.ts";
 export function getBashHistory(): BashHistory[] | UnixError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_bash_history();
-
-    const history: BashHistory[] = JSON.parse(data);
-    return history;
+    const data = js_bash_history();
+    return data;
   } catch (err) {
     return new UnixError(
       "BASHHISTORY",
@@ -31,10 +29,8 @@ export function getBashHistory(): BashHistory[] | UnixError {
 export function getZshHistory(): ZshHistory[] | UnixError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_zsh_history();
-
-    const history: ZshHistory[] = JSON.parse(data);
-    return history;
+    const data = js_zsh_history();
+    return data;
   } catch (err) {
     return new UnixError("ZSHHISTORY", `failed to parse shell history: ${err}`);
   }
@@ -47,7 +43,7 @@ export function getZshHistory(): ZshHistory[] | UnixError {
 export function getPythonHistory(): PythonHistory[] | UnixError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_python_history();
+    const data = js_python_history();
 
     const history: PythonHistory[] = JSON.parse(data);
     return history;

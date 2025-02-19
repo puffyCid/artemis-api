@@ -8,10 +8,8 @@ import { UnixError } from "./errors.ts";
 export function getCron(): Cron[] | UnixError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_cron();
-
-    const cron: Cron[] = JSON.parse(data);
-    return cron;
+    const data: Cron[] = js_get_cron();
+    return data;
   } catch (err) {
     return new UnixError("CRON", `failed to parse cron jobs: ${err}`);
   }
