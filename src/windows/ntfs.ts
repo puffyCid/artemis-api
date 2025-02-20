@@ -11,7 +11,7 @@ import { WindowsError } from "./errors.ts";
 export function readRawFile(path: string): Uint8Array | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data: Uint8Array = Deno.core.ops.read_raw_file(path);
+    const data: Uint8Array = js_read_raw_file(path);
     return data;
   } catch (err) {
     return new WindowsError("NTFS", `failed to read file ${path}: ${err}`);
@@ -33,7 +33,7 @@ export function readAdsData(
 ): Uint8Array | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data: Uint8Array = Deno.core.ops.read_ads_data(
+    const data: Uint8Array = js_read_ads(
       path,
       ads_name,
     );

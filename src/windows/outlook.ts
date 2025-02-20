@@ -27,13 +27,12 @@ export class Outlook {
   public rootFolder(): FolderInfo | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.get_root_folder(
+      const data:FolderInfo = js_root_folder(
         this.path,
         this.use_ntfs,
       );
 
-      const results: FolderInfo = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",
@@ -50,14 +49,13 @@ export class Outlook {
   public readFolder(folder: number): FolderInfo | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.read_folder(
+      const data:FolderInfo = js_read_folder(
         this.path,
         this.use_ntfs,
         folder,
       );
 
-      const results: FolderInfo = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",
@@ -87,15 +85,14 @@ export class Outlook {
     table.rows = rows;
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.read_messages(
+      const data:MessageDetails[] = js_read_messages(
         this.path,
         this.use_ntfs,
-        JSON.stringify(table),
+        table,
         offset,
       );
 
-      const results: MessageDetails[] = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",
@@ -116,15 +113,14 @@ export class Outlook {
   ): Attachment | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.read_attachment(
+      const data:Attachment = js_read_attachment(
         this.path,
         this.use_ntfs,
         block_id,
         descriptor_id,
       );
 
-      const results: Attachment = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",
