@@ -33,7 +33,7 @@ export function getEventlogs(
   }
   try {
     //@ts-ignore: Custom Artemis function
-    const results: string = Deno.core.ops.get_eventlogs(
+    const results = Deno.core.ops.get_eventlogs(
       path,
       offset,
       limit,
@@ -44,9 +44,7 @@ export function getEventlogs(
     const data: [
       messages: EventLogMessage[],
       raw_messages: EventLogRecord[],
-    ] = JSON.parse(
-      results,
-    );
+    ] = results;
     return data;
   } catch (err) {
     return new WindowsError(

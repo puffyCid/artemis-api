@@ -7,7 +7,7 @@ import { WindowsError } from "./errors.ts";
  * @param path Optional path to `BITS` file
  * @returns `Bits` object containing bits, carved jobs, carved files arrays or `WindowsError`
  */
-export function getBits(carve: boolean, path?:string): Bits | WindowsError {
+export function getBits(carve: boolean, path?: string): Bits | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
     const results = js_bits(carve, path);

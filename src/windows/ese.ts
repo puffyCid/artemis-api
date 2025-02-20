@@ -27,10 +27,8 @@ export class EseDatabase {
   public catalogInfo(): Catalog[] | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.get_catalog(this.path);
-
-      const results: Catalog[] = JSON.parse(data);
-      return results;
+      const data: Catalog[] = js_get_catalog(this.path);
+      return data;
     } catch (err) {
       return new WindowsError(
         "ESE",
@@ -122,15 +120,14 @@ export class EseDatabase {
   ): Record<string, EseTable[][]> | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.page_data(
+      const data: Record<string, EseTable[][]> = js_page_data(
         this.path,
         pages,
-        JSON.stringify(info),
+        info,
         info.table_name,
       );
 
-      const results: Record<string, EseTable[][]> = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "ESE",
@@ -155,17 +152,16 @@ export class EseDatabase {
   ): Record<string, EseTable[][]> | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.filter_page_data(
+      const data: Record<string, EseTable[][]> = js_filter_page_data(
         this.path,
         pages,
-        JSON.stringify(info),
+        info,
         info.table_name,
         column_name,
         column_data,
       );
 
-      const results: Record<string, EseTable[][]> = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "ESE",
@@ -188,16 +184,16 @@ export class EseDatabase {
   ): Record<string, EseTable[][]> | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.get_table_columns(
-        this.path,
-        pages,
-        JSON.stringify(info),
-        info.table_name,
-        column_names,
-      );
+      const data: Record<string, EseTable[][]> = Deno.core.ops
+        .get_table_columns(
+          this.path,
+          pages,
+          info,
+          info.table_name,
+          column_names,
+        );
 
-      const results: Record<string, EseTable[][]> = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "ESE",

@@ -8,31 +8,9 @@ import { WindowsError } from "./errors.ts";
 export function getJumplists(): Jumplists[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_jumplists();
-    const jump: Jumplists[] = JSON.parse(data);
-
-    return jump;
+    const data = js_jumplists();
+    return data;
   } catch (err) {
     return new WindowsError("JUMPLIST", `failed to parse jumplists: ${err}`);
-  }
-}
-
-/**
- * Function to parse a single `Jumplist` file. Supports both Automatic and Custom `Jumplist` files
- * @param path Path to a single `Jumplist` file
- * @returns `Jumplists` data or `WindowsError`
- */
-export function getJumplistPath(path: string): Jumplists[] | WindowsError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_jumplist_file(path);
-    const jump: Jumplists[] = JSON.parse(data);
-
-    return jump;
-  } catch (err) {
-    return new WindowsError(
-      "JUMPLIST",
-      `failed to parse jumplist at ${path}: ${err}`,
-    );
   }
 }

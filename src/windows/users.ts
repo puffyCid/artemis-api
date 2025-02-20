@@ -6,7 +6,7 @@ import { WindowsError } from "./errors.ts";
  * @param path Optional path to SAM file
  * @returns Array of `UserInfo` entries or `WindowsError`
  */
-export function getUsersWin(path?:string): UserInfo[] | WindowsError {
+export function getUsersWin(path?: string): UserInfo[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
     const data = js_users_windows(path);
