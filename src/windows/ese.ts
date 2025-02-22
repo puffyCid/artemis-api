@@ -184,14 +184,13 @@ export class EseDatabase {
   ): Record<string, EseTable[][]> | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data: Record<string, EseTable[][]> = Deno.core.ops
-        .get_table_columns(
-          this.path,
-          pages,
-          info,
-          info.table_name,
-          column_names,
-        );
+      const data: Record<string, EseTable[][]> = js_get_table_columns(
+        this.path,
+        pages,
+        info,
+        info.table_name,
+        column_names,
+      );
 
       return data;
     } catch (err) {

@@ -3,33 +3,15 @@ import { WmiPersist } from "../../types/windows/wmi.ts";
 
 /**
  * Function to parse WMI repository and extract persistence entries
- * @param alt_drive Use an alternative drive letter to parse WMI repo. Otherwise will default to the `SystemDrive`
+ * @param path Optional path to folder containing WMI repo data. Should contain MAPPING*.MAP, OBJECTS.DATA, INDEX.BTR
  * @returns Array of `WmiPersist` entries or `WindowsError`
  */
-export function getWmiPersist(): WmiPersist[] | WindowsError {
+export function getWmiPersist(path?: string): WmiPersist[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_wmipersist();
+    const data = js_wmipersist(path);
 
-    const results: WmiPersist[] = JSON.parse(data);
-    return results;
-  } catch (err) {
-    return new WindowsError("WMIPERSIST", `failed to parse WMI repo: ${err}`);
-  }
-}
-
-/**
- * Function to parse WMI repository and extract persistence entries from provided directory.
- * @param path Path to the WMI repository. Should contain MAPPING*.MAP, OBJECTS.DATA, INDEX.BTR
- * @returns Array of `WmiPersist` entries or `WindowsError`
- */
-export function getWmiPersistPath(path: string): WmiPersist[] | WindowsError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_wmipersist(path);
-
-    const results: WmiPersist[] = JSON.parse(data);
-    return results;
+    return data;
   } catch (err) {
     return new WindowsError("WMIPERSIST", `failed to parse WMI repo: ${err}`);
   }
