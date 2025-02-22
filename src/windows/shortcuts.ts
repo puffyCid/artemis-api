@@ -9,10 +9,9 @@ import { WindowsError } from "./errors.ts";
 export function getLnkFile(path: string): Shortcut | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_lnk_file(path);
+    const data = js_lnk(path);
 
-    const results: Shortcut = JSON.parse(data);
-    return results;
+    return data;
   } catch (err) {
     return new WindowsError(
       "SHORTCUTS",

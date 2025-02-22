@@ -96,7 +96,7 @@ export class EseDatabase {
   public getPages(first_page: number): number[] | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.get_pages(this.path, first_page);
+      const data = js_get_pages(this.path, first_page);
 
       const results: number[] = data;
       return results;

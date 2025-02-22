@@ -33,7 +33,7 @@ export function getEventlogs(
   }
   try {
     //@ts-ignore: Custom Artemis function
-    const results = Deno.core.ops.get_eventlogs(
+    const results = js_eventlogs(
       path,
       offset,
       limit,
