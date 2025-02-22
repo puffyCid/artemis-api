@@ -9,11 +9,9 @@ import { WindowsError } from "./errors.ts";
 export function getRegistry(path: string): Registry[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_registry(path);
+    const data = js_registry(path);
 
-    const results: Registry[] = JSON.parse(data);
-
-    return results;
+    return data;
   } catch (err) {
     return new WindowsError(
       "REGISTRY",
@@ -37,10 +35,9 @@ export function lookupSecurityKey(
   }
   try {
     //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_sk_info(path, offset);
+    const data = js_sk_info(path, offset);
 
-    const results: SecurityKey = JSON.parse(data);
-    return results;
+    return data;
   } catch (err) {
     return new WindowsError("REGISTRY", `failed to parse security key: ${err}`);
   }

@@ -59,7 +59,7 @@ export function takeUntil(
 
     const value: Nom = {
       nommed: result,
-      remaining: data.slice(0, result.buffer.byteLength + 1),
+      remaining: data.slice(result.buffer.byteLength),
     };
     return value;
   } catch (err) {

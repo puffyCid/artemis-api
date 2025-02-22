@@ -1,5 +1,4 @@
-import { JsShellItem } from "../../types/windows/shellitems.ts";
-import { JsShellItemRaw } from "../../types/windows/shellitems.ts";
+import { JsShellItem, ShellItems } from "../../types/windows/shellitems.ts";
 import { WindowsError } from "./errors.ts";
 
 /**
@@ -10,10 +9,10 @@ import { WindowsError } from "./errors.ts";
 export function getShellItem(data: Uint8Array): JsShellItem | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const result: JsShellItemRaw = Deno.core.ops.js_get_shellitem(data);
+    const result = js_shellitems(data);
     const item: JsShellItem = {
-      item: JSON.parse(result.item),
-      remaining: result.remaining,
+      item: result.item as ShellItems,
+      remaining: new Uint8Array(result.remaining),
     };
 
     return item;

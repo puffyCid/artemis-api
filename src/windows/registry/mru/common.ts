@@ -110,7 +110,7 @@ export function lastVisitMru(reg_data: Registry[]): MruValues[] | WindowsError {
       // Now nom the end of string charater
       const remaining_item = take(remaining.remaining as Uint8Array, 3);
       if (remaining_item instanceof NomError) {
-        console.error(`could not nom end of string: ${remaining}`);
+        console.error(`could not nom end of byte string: ${remaining}`);
         continue;
       }
 

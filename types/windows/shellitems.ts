@@ -41,9 +41,3 @@ export interface JsShellItem {
   /**Remaining bytes associated with the data */
   remaining: Uint8Array;
 }
-
-export interface JsShellItemRaw {
-  item: string;
-  /**Remaining bytes associated with the data */
-  remaining: Uint8Array;
-}
