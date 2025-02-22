@@ -27,7 +27,7 @@ export class Outlook {
   public rootFolder(): FolderInfo | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data:FolderInfo = js_root_folder(
+      const data: FolderInfo = js_root_folder(
         this.path,
         this.use_ntfs,
       );
@@ -49,7 +49,7 @@ export class Outlook {
   public readFolder(folder: number): FolderInfo | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data:FolderInfo = js_read_folder(
+      const data: FolderInfo = js_read_folder(
         this.path,
         this.use_ntfs,
         folder,
@@ -85,7 +85,7 @@ export class Outlook {
     table.rows = rows;
     try {
       //@ts-ignore: Custom Artemis function
-      const data:MessageDetails[] = js_read_messages(
+      const data: MessageDetails[] = js_read_messages(
         this.path,
         this.use_ntfs,
         table,
@@ -113,7 +113,7 @@ export class Outlook {
   ): Attachment | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data:Attachment = js_read_attachment(
+      const data: Attachment = js_read_attachment(
         this.path,
         this.use_ntfs,
         block_id,

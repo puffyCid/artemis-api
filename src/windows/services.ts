@@ -6,7 +6,7 @@ import { WindowsError } from "./errors.ts";
  * @param path Optional path to Registry file
  * @returns Array of `Services` or `WindowsError`
  */
-export function getServices(path?:string): Services[] | WindowsError {
+export function getServices(path?: string): Services[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
     const data = js_services(path);

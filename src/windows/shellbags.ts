@@ -9,7 +9,7 @@ import { WindowsError } from "./errors.ts";
  */
 export function getShellbags(
   resolve_guids: boolean,
-  path?: string
+  path?: string,
 ): Shellbags[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
@@ -20,4 +20,3 @@ export function getShellbags(
     return new WindowsError("SHELLBAGS", `failed to parse shellbags: ${err}`);
   }
 }
-

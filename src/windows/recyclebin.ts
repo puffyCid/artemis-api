@@ -18,4 +18,3 @@ export function getRecycleBin(): RecycleBin[] | WindowsError {
     );
   }
 }
-
