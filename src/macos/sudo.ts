@@ -3,23 +3,17 @@ import { MacosError } from "./errors.ts";
 
 /**
  * Function to get `sudo logs`. Can provide an alternative directory containing logs. Otherwise will parse default log locations on macOS
- * @param logarchive_path Optional path to a directory containing unified log data. It should be formatted the same way as a logarchive
+ * @param path Optional path to a directory containing unified log data. It should be formatted the same way as a logarchive
  * @returns Array of `sudo` entries from macOS Unified Logs or `MacosError`
  */
 export function getSudoLogsMacos(
-  logarchive_path?: string,
+  path?: string,
 ): UnifiedLog[] | MacosError {
-  let path = "";
-  if (logarchive_path !== undefined) {
-    path = logarchive_path;
-  }
-
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_sudologs_macos(path);
+    const data = js_sudologs_macos(path);
 
-    const log_data: UnifiedLog[] = JSON.parse(data);
-    return log_data;
+    return data;
   } catch (err) {
     return new MacosError("SUDOLOGS", `failed to parse sudo logs: ${err}`);
   }

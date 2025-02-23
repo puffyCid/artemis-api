@@ -9,9 +9,8 @@ import { MacosError } from "./errors.ts";
 export function getFsevents(path: string): Fsevents[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_fsevents(path);
-    const fsevents: Fsevents[] = JSON.parse(data);
-    return fsevents;
+    const data = js_fsevents(path);
+    return data;
   } catch (err) {
     return new MacosError(
       "FSEVENTS",

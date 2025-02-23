@@ -8,10 +8,9 @@ import { MacosError } from "./errors.ts";
 export function getLaunchdDaemons(): Launchd[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_launchd_daemons();
-    const launchd_array: Launchd[] = JSON.parse(data);
+    const data = js_launchd_daemons();
 
-    return launchd_array;
+    return data;
   } catch (err) {
     return new MacosError("LAUNCHD", `failed to parse launchd daemons: ${err}`);
   }
@@ -24,10 +23,9 @@ export function getLaunchdDaemons(): Launchd[] | MacosError {
 export function getLaunchdAgents(): Launchd[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_launchd_agents();
-    const launchd_array: Launchd[] = JSON.parse(data);
+    const data = js_launchd_agents();
 
-    return launchd_array;
+    return data;
   } catch (err) {
     return new MacosError("LAUNCHD", `failed to parse launchd agents: ${err}`);
   }

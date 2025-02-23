@@ -13,10 +13,9 @@ import { MacosError } from "./errors.ts";
 export function getSafariUsersHistory(): SafariHistory[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_safari_users_history();
+    const data = js_safari_users_history();
 
-    const history: SafariHistory[] = JSON.parse(data);
-    return history;
+    return data;
   } catch (err) {
     return new MacosError("SAFARI", `failed to get users history: ${err}`);
   }
@@ -32,10 +31,9 @@ export function getSafariHistory(
 ): RawSafariHistory[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_safari_history(path);
+    const data = js_safari_history(path);
 
-    const history: RawSafariHistory[] = JSON.parse(data);
-    return history;
+    return data;
   } catch (err) {
     return new MacosError(
       "SAFARI",
@@ -51,10 +49,9 @@ export function getSafariHistory(
 export function getSafariUsersDownloads(): SafariDownloads[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_safari_users_downloads();
+    const data = js_safari_users_downloads();
 
-    const downloads: SafariDownloads[] = JSON.parse(data);
-    return downloads;
+    return data;
   } catch (err) {
     return new MacosError("SAFARI", `failed to get users downloads: ${err}`);
   }
@@ -70,10 +67,9 @@ export function getSafariDownloads(
 ): RawSafariDownloads[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_safari_downloads(path);
+    const data = js_safari_downloads(path);
 
-    const downloads: RawSafariDownloads[] = JSON.parse(data);
-    return downloads;
+    return data;
   } catch (err) {
     return new MacosError(
       "SAFARI",

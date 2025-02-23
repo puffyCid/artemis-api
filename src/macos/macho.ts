@@ -9,9 +9,8 @@ import { MacosError } from "./errors.ts";
 export function getMacho(path: string): MachoInfo[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_macho(path);
-    const macho: MachoInfo[] = JSON.parse(data);
-    return macho;
+    const data = js_macho(path);
+    return data;
   } catch (err) {
     return new MacosError("MACHO", `filed to parse macho file ${path}: ${err}`);
   }

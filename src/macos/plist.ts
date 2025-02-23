@@ -17,8 +17,11 @@ export function getPlist(
   if (path instanceof Uint8Array) {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.get_plist_data(path);
-      const plist_data: Record<string, unknown> | Uint8Array = JSON.parse(data);
+      const data = js_plist_data(path);
+      const plist_data: Record<string, unknown> | Uint8Array | Record<
+        string,
+        unknown
+      >[] = data;
       return plist_data;
     } catch (err) {
       return new MacosError("PLIST", `failed to parse plist bytes: ${err}`);
@@ -27,8 +30,11 @@ export function getPlist(
 
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_plist(path);
-    const plist_data: Record<string, unknown> | Uint8Array = JSON.parse(data);
+    const data = js_plist(path);
+    const plist_data: Record<string, unknown> | Uint8Array | Record<
+      string,
+      unknown
+    >[] = data;
     return plist_data;
   } catch (err) {
     return new MacosError("PLIST", `failed to parse plist ${path}: ${err}`);

@@ -9,9 +9,8 @@ import { MacosError } from "./errors.ts";
 export function parseBookmark(data: Uint8Array): BookmarkData | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const results = Deno.core.ops.get_bookmark(data);
-    const book: BookmarkData = JSON.parse(results);
-    return book;
+    const results = js_bookmark(data);
+    return results;
   } catch (err) {
     return new MacosError("BOOKMARK", `failed to parse bookmark: ${err}`);
   }
