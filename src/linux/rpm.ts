@@ -41,7 +41,7 @@ export function getRpmInfo(
     );
   }
 
-  const rpm_entries = [];
+  const rpm_entries: RpmPackages[] = [];
 
   for (const entry of results) {
     // Packages are base64 encoded binary blobs that need to be parsed
@@ -311,7 +311,7 @@ function parseHeader(data: Uint8Array): HeaderInfo | LinuxError {
   const data_end = data_start + dl;
 
   let count = 0;
-  const entries = [];
+  const entries: Entry[] = [];
 
   let entry_data = dl_data.remaining;
   while (count < il) {
@@ -470,7 +470,7 @@ function extractTagValue(
 ): string[] | number[] | bigint[] | LinuxError {
   let count_value = 1;
   let tag_data = data;
-  let values = [];
+  let values: any[] = [];
 
   if (data.length < count) {
     return new LinuxError(`RPMPACKAGES`, `count greater than remaining bytes`);

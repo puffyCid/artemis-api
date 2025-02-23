@@ -16,9 +16,13 @@ import { Output } from "../../system/output.ts";
 /**
  * Function to parse data from an iTunes backup
  * @param path Path to iTunes backup directory
- * @returns
+ * @param output `Output` object
+ * @returns Nothing or `IosError`
  */
-export function extractBackup(path: string, output: Output) {
+export function extractBackup(
+  path: string,
+  output: Output,
+): undefined | IosError {
   const info = getInfo(path);
   if (info instanceof IosError) {
     return info;
