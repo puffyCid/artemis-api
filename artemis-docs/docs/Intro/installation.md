@@ -33,15 +33,11 @@ archive and you should be able to start collecting forensic data!
 
 You may also build artemis from [source](https://github.com/puffycid/artemis).
 In order build artemis you will need to install the Rust programming langague.
-In addition, you will need to install cmake in order to compile the zlib
-dependency
 
 - Instructions to install Rust can be found on the
   [Rust Homepage](https://www.rust-lang.org/).
-- Cmake can be install via Homebrew, Chocolatey, or Linux package manager
 
-Once Rust and cmake are installed you can download the source code for artemis
-using git:
+Once Rust is installed you can download the source code for artemis using git:
 
 ```
 git clone https://github.com/puffycid/artemis
@@ -69,21 +65,6 @@ The compiled binary will be located at:
 
 :::info
 
-If you get an error like below:
-
-```
-error: #[derive(RustEmbed)] folder '/Users/android/Projects/artemis/server/../target/dist/web' does not exist. cwd: '/Users/android/Projects/artemis'
- --> server/src/frontend/webui.rs:7:1
-  |
-7 | / #[folder = "../target/dist/web"]
-8 | | struct Frontend;
-  | |________________^
-```
-
-It means you are trying to compile the entire artemis project, instead of just
-the CLI. You will need to navigate to the cli/ directory to just build the
-artemis cli binary
-
 Alternatively, you may also install the command runner
 [Just](https://github.com/casey/just) and run:
 
@@ -93,7 +74,7 @@ or for Windows
 just --shell pwsh.exe --shell-arg -c cli
 ```
 
-to compile the cli
+to compile artemis
 
 Please see the [Contributing](../Contributing/overview.md) documentation if you
 would like to compile the entire project including optional experimental

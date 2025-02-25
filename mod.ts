@@ -81,23 +81,19 @@ export { memory, processListing } from "./src/system/memory.ts";
  * Application exported functions
  */
 export {
+  chromiumDownloads,
+  chromiumHistory,
   chromiumPreferences,
   getChromiumAutofill,
   getChromiumBookmarks,
   getChromiumCookies,
   getChromiumDips,
-  getChromiumDownloads,
-  getChromiumHistory,
   getChromiumLogins,
-  getChromiumUsersDownloads,
-  getChromiumUsersHistory,
 } from "./src/applications/chromium.ts";
 export {
+  firefoxDownloads,
+  firefoxHistory,
   getFirefoxCookies,
-  getFirefoxDownloads,
-  getFirefoxHistory,
-  getFirefoxUsersDownloads,
-  getFirefoxUsersHistory,
 } from "./src/applications/firefox.ts";
 export { fileHistory, getExtensions } from "./src/applications/vscode.ts";
 export { recentFiles } from "./src/applications/libreoffice.ts";
@@ -106,17 +102,17 @@ export { querySqlite } from "./src/applications/sqlite.ts";
 /**
  * Windows exported functions
  */
-export { getAltAmcache, getAmcache } from "./src/windows/amcache.ts";
-export { getBits, getBitsPath } from "./src/windows/bits.ts";
+export { getAmcache } from "./src/windows/amcache.ts";
+export { getBits } from "./src/windows/bits.ts";
 export { getEventlogs } from "./src/windows/eventlogs.ts";
 export { readAdsData, readRawFile } from "./src/windows/ntfs.ts";
 export { getPe } from "./src/windows/pe.ts";
-export { getPrefetch, getPrefetchPath } from "./src/windows/prefetch.ts";
+export { getPrefetch } from "./src/windows/prefetch.ts";
 export { getRegistry } from "./src/windows/registry.ts";
 export { getSearch } from "./src/windows/search.ts";
-export { getAltShellbags, getShellbags } from "./src/windows/shellbags.ts";
-export { getAltShimcache, getShimcache } from "./src/windows/shimcache.ts";
-export { getCustomShimdb, getShimdb } from "./src/windows/shimdb.ts";
+export { getShellbags } from "./src/windows/shellbags.ts";
+export { getShimcache } from "./src/windows/shimcache.ts";
+export { getShimdb } from "./src/windows/shimdb.ts";
 export { getLnkFile } from "./src/windows/shortcuts.ts";
 export {
   getSrumApplicationInfo,
@@ -128,13 +124,13 @@ export {
   getSrumNetworkInfo,
   getSrumNotifications,
 } from "./src/windows/srum.ts";
-export { getAltUserassist, getUserassist } from "./src/windows/userassist.ts";
-export { getAltUsersWin, getUsersWin } from "./src/windows/users.ts";
-export { getAltUsnjrnl, getUsnjrnl } from "./src/windows/usnjrnl.ts";
-export { getTaskFile, getTasks } from "./src/windows/tasks.ts";
-export { getServiceFile, getServices } from "./src/windows/services.ts";
-export { getJumplistPath, getJumplists } from "./src/windows/jumplists.ts";
-export { getRecycleBin, getRecycleBinFile } from "./src/windows/recyclebin.ts";
+export { getUserassist } from "./src/windows/userassist.ts";
+export { getUsersWin } from "./src/windows/users.ts";
+export { getUsnjrnl } from "./src/windows/usnjrnl.ts";
+export { getTasks } from "./src/windows/tasks.ts";
+export { getServices } from "./src/windows/services.ts";
+export { getJumplists } from "./src/windows/jumplists.ts";
+export { getRecycleBin } from "./src/windows/recyclebin.ts";
 export { getChocolateyInfo } from "./src/windows/chocolatey.ts";
 export { logonsWindows } from "./src/windows/eventlogs/logons.ts";
 export { getShellItem } from "./src/windows/shellitems.ts";

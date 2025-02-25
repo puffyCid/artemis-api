@@ -15,87 +15,183 @@ import { ApplicationError } from "./errors.ts";
 import { querySqlite } from "./sqlite.ts";
 
 /**
- * Get Firefox history for all users on a endpoint
- * @returns Array of `FirefoxHistory` entries for all users or `ApplicationError`
+ * Get FireFox history for all users
+ * @param platform Platform to parse Firefox addons
+ * @returns Array of `FirefoxHistory` or `ApplicationError`
  */
-export function getFirefoxUsersHistory(): FirefoxHistory[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_users_history();
-
-    const history: FirefoxHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get user history: ${err}`,
-    );
+export function firefoxHistory(
+  platform: PlatformType,
+): FirefoxHistory[] | ApplicationError {
+  const paths = firefoxPaths(platform, "places.sqlite");
+  if (paths instanceof ApplicationError) {
+    return paths;
   }
+  const query = `SELECT 
+                  moz_places.id AS moz_places_id, 
+                  url, 
+                  title, 
+                  rev_host, 
+                  visit_count, 
+                  hidden, 
+                  typed, 
+                  last_visit_date, 
+                  guid, 
+                  foreign_count, 
+                  url_hash, 
+                  description, 
+                  preview_image_url, 
+                  origin_id, 
+                  prefix, 
+                  host, 
+                  moz_origins.frecency AS frequency 
+                FROM 
+                  moz_places 
+                JOIN moz_origins ON moz_places.origin_id = moz_origins.id`;
+  const hits = [];
+  for (const path of paths) {
+    const results = querySqlite(path.full_path, query);
+    if (results instanceof ApplicationError) {
+      console.warn(`Failed to query ${path.full_path}: ${results}`);
+      continue;
+    }
+    const history = [];
+    // Loop through history rows
+    for (const entry of results) {
+      const history_row: RawFirefoxHistory = {
+        moz_places_id: entry["moz_places_id"] as number ?? 0,
+        url: entry["url"] as string ?? "",
+        title: entry["title"] as string ?? "",
+        rev_host: entry["rev_host"] as string ?? "",
+        visit_count: entry["rev_host"] as number ?? 0,
+        hidden: entry["hidden"] as number ?? 0,
+        typed: entry["typed"] as number ?? 0,
+        frequency: entry["frequency"] as number ?? 0,
+        last_visit_date: unixEpochToISO(
+          entry["last_visit_date"] as bigint ?? 0,
+        ),
+        guid: entry["guid"] as string ?? "",
+        foreign_count: entry["foreign_count"] as number ?? 0,
+        url_hash: entry["url_hash"] as number ?? 0,
+        description: entry["description"] as string ?? "",
+        preview_image_url: entry["preview_image_url"] as string ?? "",
+        prefix: entry["prefix"] as string ?? "",
+        host: entry["host"] as string ?? "",
+      };
+      history.push(history_row);
+    }
+
+    const hit: FirefoxHistory = {
+      history,
+      path: path.full_path,
+      user: "",
+    };
+
+    hits.push(hit);
+  }
+
+  return hits;
 }
 
 /**
- * Get Firefox history from provided `places.sqlite` file
- * @param path Full path to `places.sqlite` file
- * @returns `RawFirefoxHistory` entries for file or `ApplicationError`
+ * Get FireFox downloads for all users
+ * @param platform Platform to parse Firefox addons
+ * @returns Array of `FirefoxHistory` or `ApplicationError`
  */
-export function getFirefoxHistory(
-  path: string,
-): RawFirefoxHistory[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_history(path);
-
-    const history: RawFirefoxHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get history for ${path}: ${err}`,
-    );
+export function firefoxDownloads(
+  platform: PlatformType,
+): FirefoxDownloads[] | ApplicationError {
+  const paths = firefoxPaths(platform, "places.sqlite");
+  if (paths instanceof ApplicationError) {
+    return paths;
   }
-}
 
-/**
- * Get Firefox downloads for all users on a endpoint
- * @returns Array of `FirefoxDownloads` entries for all users or `ApplicationError`
- */
-export function getFirefoxUsersDownloads():
-  | FirefoxDownloads[]
-  | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_users_downloads();
+  const query = `SELECT 
+                  moz_annos.id AS downloads_id, 
+                  place_id, 
+                  anno_attribute_id, 
+                  content, 
+                  flags, 
+                  expiration, 
+                  type, 
+                  dateAdded, 
+                  lastModified, 
+                  moz_places.id AS moz_places_id, 
+                  url, 
+                  title, 
+                  rev_host, 
+                  visit_count, 
+                  hidden, 
+                  typed, 
+                  last_visit_date, 
+                  guid, 
+                  foreign_count, 
+                  url_hash, 
+                  description, 
+                  preview_image_url, 
+                  name 
+                FROM 
+                  moz_annos 
+                  JOIN moz_places ON moz_annos.place_id = moz_places.id 
+                  JOIN moz_anno_attributes ON anno_attribute_id = moz_anno_attributes.id`;
+  const hits = [];
+  for (const path of paths) {
+    const results = querySqlite(path.full_path, query);
+    if (results instanceof ApplicationError) {
+      console.warn(`Failed to query ${path.full_path}: ${results}`);
+      continue;
+    }
+    const downloads = [];
+    // Loop through downloads rows
+    for (const entry of results) {
+      const download_row: RawFirefoxDownloads = {
+        id: entry["id"] as number ?? 0,
+        place_id: entry["place_id"] as number ?? 0,
+        anno_attribute_id: entry["anno_attribute_id"] as number ?? 0,
+        content: entry["content"] as string ?? "",
+        flags: entry["flags"] as number ?? 0,
+        expiration: entry["expiration"] as number ?? 0,
+        download_type: entry["download_type"] as number ?? 0,
+        date_added: unixEpochToISO(
+          entry["date_added"] as bigint ?? 0,
+        ),
+        last_modified: unixEpochToISO(
+          entry["last_modified"] as bigint ?? 0,
+        ),
+        name: entry["name"] as string ?? "",
+        history: {
+          moz_places_id: entry["moz_places_id"] as number ?? 0,
+          url: entry["url"] as string ?? "",
+          title: entry["title"] as string ?? "",
+          rev_host: entry["rev_host"] as string ?? "",
+          visit_count: entry["rev_host"] as number ?? 0,
+          hidden: entry["hidden"] as number ?? 0,
+          typed: entry["typed"] as number ?? 0,
+          frequency: entry["frequency"] as number ?? 0,
+          last_visit_date: unixEpochToISO(
+            entry["last_visit_date"] as bigint ?? 0,
+          ),
+          guid: entry["guid"] as string ?? "",
+          foreign_count: entry["foreign_count"] as number ?? 0,
+          url_hash: entry["url_hash"] as number ?? 0,
+          description: entry["description"] as string ?? "",
+          preview_image_url: entry["preview_image_url"] as string ?? "",
+          prefix: entry["prefix"] as string ?? "",
+          host: entry["host"] as string ?? "",
+        },
+      };
+      downloads.push(download_row);
+    }
 
-    const downloads: FirefoxDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get user downloads: ${err}`,
-    );
+    const hit: FirefoxDownloads = {
+      downloads,
+      path: path.full_path,
+      user: "",
+    };
+
+    hits.push(hit);
   }
-}
 
-/**
- * Get Firefox downloads from provided `places.sqlite` file
- * @param path Full path to `places.sqlite` file
- * @returns `RawFirefoxDownloads` entries for file or `ApplicationError`
- */
-export function getFirefoxDownloads(
-  path: string,
-): RawFirefoxDownloads[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_downloads(path);
-
-    const downloads: RawFirefoxDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get downloads for ${path}: ${err}`,
-    );
-  }
+  return hits;
 }
 
 /**
@@ -258,7 +354,17 @@ function firefoxPaths(
       paths = win_paths;
       break;
     }
-    case PlatformType.Linux:
+    case PlatformType.Linux: {
+      const linux_paths = glob(`/home/*/.mozilla/firefox/*/${file}`);
+      if (linux_paths instanceof FileError) {
+        return new ApplicationError(
+          "FIREFOX",
+          `failed to glob linux paths: ${linux_paths}`,
+        );
+      }
+      paths = linux_paths;
+      break;
+    }
     default: {
       return [];
     }

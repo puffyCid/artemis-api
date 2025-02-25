@@ -22,88 +22,191 @@ import { ApplicationError } from "./errors.ts";
 import { querySqlite } from "./sqlite.ts";
 
 /**
- * Get Chromium history for all users on a endpoint
- * @returns Array of `ChromiumHistory` entries for all users or `ApplicationError`
+ * Function to get Chromium history for all users
+ * @param platform OS platform
+ * @returns Array of `ChromiumHistory` or `ApplicationError`
  */
-export function getChromiumUsersHistory():
-  | ChromiumHistory[]
-  | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_users_history();
-
-    const history: ChromiumHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get user history ${err}`,
-    );
+export function chromiumHistory(
+  platform: PlatformType,
+): ChromiumHistory[] | ApplicationError {
+  const paths = chromiumPaths(platform, "History");
+  if (paths instanceof ApplicationError) {
+    return paths;
   }
+
+  const query = `SELECT 
+                  urls.id AS urls_id, 
+                  urls.url AS urls_url, 
+                  title, 
+                  visit_count, 
+                  typed_count, 
+                  last_visit_time, 
+                  hidden, 
+                  visits.id AS visits_id, 
+                  from_visit, 
+                  transition, 
+                  segment_id, 
+                  visit_duration, 
+                  opener_visit 
+                FROM 
+                  urls 
+                  JOIN visits ON urls.id = visits.url`;
+
+  const hits = [];
+  for (const path of paths) {
+    const results = querySqlite(path.full_path, query);
+    if (results instanceof ApplicationError) {
+      console.warn(`Failed to query ${path.full_path}: ${results}`);
+      continue;
+    }
+    const history = [];
+    // Loop through history rows
+    for (const entry of results) {
+      const adjust = 1000000;
+      const webkit = webkitToUnixEpoch(
+        (entry["last_visit_time"] as number ?? 0) / adjust,
+      );
+      const history_row: RawChromiumHistory = {
+        id: entry["id"] as number ?? 0,
+        url: entry["url"] as string ?? "",
+        title: entry["title"] as string ?? "",
+        visit_count: entry["visit_count"] as number ?? 0,
+        typed_count: entry["typed_count"] as number ?? 0,
+        last_visit_time: unixEpochToISO(webkit),
+        hidden: entry["hidden"] as number ?? 0,
+        visits_id: entry["visits_id"] as number ?? 0,
+        from_visit: entry["from_visit"] as number ?? 0,
+        transition: entry["transition"] as number ?? 0,
+        segment_id: entry["segment_id"] as number ?? 0,
+        visit_duration: entry["visit_duration"] as number ?? 0,
+        opener_visit: entry["opener_visit"] as number ?? 0,
+      };
+      history.push(history_row);
+    }
+
+    const hit: ChromiumHistory = {
+      history,
+      path: path.full_path,
+      user: "",
+    };
+
+    hits.push(hit);
+  }
+
+  return hits;
 }
 
 /**
- * Get Chromium history from provided `History` file
- * @param path Full path to `History` file
- * @returns `RawChromiumHistory` entries for file or `ApplicationError`
+ * Function to get Chromium downloads for all users
+ * @param platform OS platform
+ * @returns Array of `ChromiumDownloads` or `ApplicationError`
  */
-export function getChromiumHistory(
-  path: string,
-): RawChromiumHistory[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_history(path);
-    const history: RawChromiumHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get history for ${path}: ${err}`,
-    );
+export function chromiumDownloads(
+  platform: PlatformType,
+): ChromiumDownloads[] | ApplicationError {
+  const paths = chromiumPaths(platform, "History");
+  if (paths instanceof ApplicationError) {
+    return paths;
   }
-}
 
-/**
- * Get Chromium downloads for all users on a endpoint
- * @returns Array of `ChromiumDownloads` entries for all users or `ApplicationError`
- */
-export function getChromiumUsersDownloads():
-  | ChromiumDownloads[]
-  | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_users_downloads();
+  const query = `SELECT 
+                  downloads.id AS downloads_id, 
+                  guid, 
+                  current_path, 
+                  target_path, 
+                  start_time, 
+                  received_bytes, 
+                  total_bytes, 
+                  state, 
+                  danger_type, 
+                  interrupt_reason, 
+                  hash, 
+                  end_time, 
+                  opened, 
+                  last_access_time, 
+                  transient, 
+                  referrer, 
+                  site_url, 
+                  tab_url, 
+                  tab_referrer_url, 
+                  http_method, 
+                  by_ext_id, 
+                  by_ext_name, 
+                  etag, 
+                  last_modified, 
+                  mime_type, 
+                  original_mime_type, 
+                  downloads_url_chains.id AS downloads_url_chain_id, 
+                  chain_index, 
+                  url 
+                FROM 
+                  downloads 
+                  JOIN downloads_url_chains ON downloads_url_chains.id = downloads.id`;
 
-    const downloads: ChromiumDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get user downloads ${err}`,
-    );
+  const hits = [];
+  for (const path of paths) {
+    const results = querySqlite(path.full_path, query);
+    if (results instanceof ApplicationError) {
+      console.warn(`Failed to query ${path.full_path}: ${results}`);
+      continue;
+    }
+    const downloads = [];
+    // Loop through history rows
+    for (const entry of results) {
+      const adjust = 1000000;
+      const start = webkitToUnixEpoch(
+        (entry["start_time"] as number ?? 0) / adjust,
+      );
+      const end = webkitToUnixEpoch(
+        (entry["end_time"] as number ?? 0) / adjust,
+      );
+      const access = webkitToUnixEpoch(
+        (entry["last_access_time"] as number ?? 0) / adjust,
+      );
+      const download_row: RawChromiumDownloads = {
+        id: entry["id"] as number ?? 0,
+        guid: entry["guid"] as string ?? "",
+        current_path: entry["current_path"] as string ?? "",
+        target_path: entry["target_path"] as string ?? "",
+        start_time: unixEpochToISO(start),
+        received_bytes: entry["received_bytes"] as number ?? 0,
+        total_bytes: entry["total_bytes"] as number ?? 0,
+        state: entry["state"] as number ?? 0,
+        danger_type: entry["danger_type"] as number ?? 0,
+        interrupt_reason: entry["interrupt_reason"] as number ?? 0,
+        hash: entry["hash"] as number[] ?? [],
+        end_time: unixEpochToISO(end),
+        opened: entry["opened"] as number ?? 0,
+        last_access_time: unixEpochToISO(access),
+        transient: entry["transient"] as number ?? 0,
+        referrer: entry["referrer"] as string ?? "",
+        site_url: entry["site_url"] as string ?? "",
+        tab_url: entry["tab_url"] as string ?? "",
+        tab_referrer_url: entry["tab_referrer_url"] as string ?? "",
+        http_method: entry["http_method"] as string ?? "",
+        by_ext_id: entry["by_ext_id"] as string ?? "",
+        by_ext_name: entry["by_ext_name"] as string ?? "",
+        etag: entry["etag"] as string ?? "",
+        last_modified: entry["last_modified"] as string ?? "",
+        mime_type: entry["mime_type"] as string ?? "",
+        original_mime_type: entry["original_mime_type"] as string ?? "",
+        downloads_url_chain_id: entry["downloads_url_chain_id"] as number ?? 0,
+        chain_index: entry["chain_index"] as number ?? 0,
+        url: entry["url"] as string ?? "",
+      };
+      downloads.push(download_row);
+    }
+
+    const hit: ChromiumDownloads = {
+      downloads,
+      path: path.full_path,
+      user: "",
+    };
+
+    hits.push(hit);
   }
-}
 
-/**
- * Get Chromium downloads from provided `History` file
- * @param path Full path to `History` file
- * @returns `RawChromiumDownloads` entries for file or `ApplicationError`
- */
-export function getChromiumDownloads(
-  path: string,
-): RawChromiumDownloads[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_downloads(path);
-
-    const downloads: RawChromiumDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get downloads for ${path}: ${err}`,
-    );
-  }
+  return hits;
 }
 
 /**
@@ -776,7 +879,19 @@ export function getChromiumDips(
       glob_paths = win_paths;
       break;
     }
-    case PlatformType.Linux:
+    case PlatformType.Linux: {
+      const mac_paths = glob(
+        "/home/*/.config/chromium/*/DIPS",
+      );
+      if (mac_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob macos dips paths: ${mac_paths}`,
+        );
+      }
+      glob_paths = mac_paths;
+      break;
+    }
     default: {
       return [];
     }
@@ -900,4 +1015,58 @@ function getDips(
   }
 
   return dips_array;
+}
+
+function chromiumPaths(
+  platform: PlatformType,
+  file: string,
+): GlobInfo[] | ApplicationError {
+  let paths: GlobInfo[] = [];
+  switch (platform) {
+    case PlatformType.Darwin: {
+      const mac_paths = glob(
+        `/Users/*/Library/Application Support/Chromium/*/${file}`,
+      );
+      if (mac_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob macos paths: ${mac_paths}`,
+        );
+      }
+      paths = mac_paths;
+      break;
+    }
+    case PlatformType.Windows: {
+      let drive = getEnvValue("SystemDrive");
+      if (drive === "") {
+        drive = "C";
+      }
+      const win_paths = glob(
+        `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\${file}`,
+      );
+      if (win_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob windows paths: ${win_paths}`,
+        );
+      }
+      paths = win_paths;
+      break;
+    }
+    case PlatformType.Linux: {
+      const linux_paths = glob(`/home/*/.config/chromium/*/${file}`);
+      if (linux_paths instanceof FileError) {
+        return new ApplicationError(
+          "CHROMIUM",
+          `failed to glob linux paths: ${linux_paths}`,
+        );
+      }
+      paths = linux_paths;
+      break;
+    }
+    default: {
+      return [];
+    }
+  }
+  return paths;
 }

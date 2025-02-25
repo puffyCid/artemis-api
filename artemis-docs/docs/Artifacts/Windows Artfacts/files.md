@@ -130,6 +130,6 @@ export interface WindowsFileInfo {
   /**Depth the file from provided start poin */
   depth: number;
   /**PE binary metadata */
-  binary_info: PeInfo[];
+  binary_info: PeInfo;
 }
 ```
