@@ -47,7 +47,7 @@ export function queryTccDb(alt_db?: string): TccValues[] | MacosError {
   }
 
   const query = "select * from access";
-  const tcc_data = [];
+  const tcc_data: TccValues[] = [];
   for (const entry of dbs) {
     const results = querySqlite(entry, query);
     if (results instanceof ApplicationError) {
@@ -67,7 +67,7 @@ export function queryTccDb(alt_db?: string): TccValues[] | MacosError {
  * @returns `TccValues` data from `TCC.db` file
  */
 function getTccData(data: Record<string, unknown>[], path: string): TccValues {
-  const tcc_array = [];
+  const tcc_array: TccData[] = [];
   for (const entry of data) {
     const tcc_data: TccData = {
       service: entry["service"] as string,

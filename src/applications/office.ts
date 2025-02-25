@@ -39,7 +39,7 @@ export function officeMruFiles(
 function officeMru(
   alt_file?: string,
 ): OfficeRecentFilesWindows[] | ApplicationError {
-  const paths = [];
+  const paths: string[] = [];
   if (alt_file != undefined) {
     paths.push(alt_file);
   } else {
@@ -87,7 +87,7 @@ function extractMruRegistry(
   data: Registry[],
   registry_file: string,
 ): OfficeRecentFilesWindows[] {
-  const mrus = [];
+  const mrus: Registry[] = [];
   const filter = ["\\Office\\", "\\File MRU"];
   for (const entries of data) {
     if (
@@ -100,7 +100,7 @@ function extractMruRegistry(
     mrus.push(entries);
   }
 
-  const office_mru = [];
+  const office_mru: OfficeRecentFilesWindows[] = [];
   for (const mru_path of mrus) {
     for (const value of mru_path.values) {
       if (!value.value.includes("Item")) {
@@ -164,7 +164,7 @@ function officeType(path: string): OfficeApp {
 function officeBookmarks(
   alt_file?: string,
 ): OfficeRecentFilesMacos[] | ApplicationError {
-  const paths = [];
+  const paths: string[] = [];
   if (alt_file != undefined) {
     paths.push(alt_file);
   } else {
@@ -182,7 +182,7 @@ function officeBookmarks(
     }
   }
 
-  const office_files = [];
+  const office_files: OfficeRecentFilesMacos[] = [];
   for (const entry of paths) {
     const plist_data = getPlist(entry);
     if (plist_data instanceof MacosError) {

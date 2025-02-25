@@ -36,7 +36,7 @@ function parseWifi(path: string): Wifi[] {
     return [];
   }
   const wifi_data = plist_data as Record<string, WifiPlist>;
-  const wifis = [];
+  const wifis: Wifi[] = [];
 
   for (const entry in wifi_data) {
     const wifi_value: Wifi = {

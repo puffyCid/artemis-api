@@ -28,7 +28,7 @@ export function gatekeeperEntries(
     );
   }
 
-  const entries = [];
+  const entries: GatekeeperEntries[] = [];
 
   for (const value of results) {
     const entry: GatekeeperEntries = {

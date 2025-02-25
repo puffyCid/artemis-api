@@ -22,7 +22,7 @@ export function systemExtensions(
     );
   }
 
-  const exts = [];
+  const exts: SystemExtension[] = [];
   for (const entry in plist_data) {
     if (entry != "extensions") {
       continue;

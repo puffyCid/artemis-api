@@ -15,90 +15,6 @@ import { ApplicationError } from "./errors.ts";
 import { querySqlite } from "./sqlite.ts";
 
 /**
- * Get Firefox history for all users on a endpoint
- * @returns Array of `FirefoxHistory` entries for all users or `ApplicationError`
- */
-export function getFirefoxUsersHistory(): FirefoxHistory[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_users_history();
-
-    const history: FirefoxHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get user history: ${err}`,
-    );
-  }
-}
-
-/**
- * Get Firefox history from provided `places.sqlite` file
- * @param path Full path to `places.sqlite` file
- * @returns `RawFirefoxHistory` entries for file or `ApplicationError`
- */
-export function getFirefoxHistory(
-  path: string,
-): RawFirefoxHistory[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_history(path);
-
-    const history: RawFirefoxHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get history for ${path}: ${err}`,
-    );
-  }
-}
-
-/**
- * Get Firefox downloads for all users on a endpoint
- * @returns Array of `FirefoxDownloads` entries for all users or `ApplicationError`
- */
-export function getFirefoxUsersDownloads():
-  | FirefoxDownloads[]
-  | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_users_downloads();
-
-    const downloads: FirefoxDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get user downloads: ${err}`,
-    );
-  }
-}
-
-/**
- * Get Firefox downloads from provided `places.sqlite` file
- * @param path Full path to `places.sqlite` file
- * @returns `RawFirefoxDownloads` entries for file or `ApplicationError`
- */
-export function getFirefoxDownloads(
-  path: string,
-): RawFirefoxDownloads[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_firefox_downloads(path);
-
-    const downloads: RawFirefoxDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "FIREFOX",
-      `failed to get downloads for ${path}: ${err}`,
-    );
-  }
-}
-
-/**
  * Get installed Firefox addons
  * @param platform Platform to parse Firefox addons
  * @returns Array of `Record<string, unknown>` or `ApplicationError`
@@ -138,7 +54,7 @@ export function getFirefoxCookies(
   platform: PlatformType,
   path?: string,
 ): FirefoxCookies[] | ApplicationError {
-  let paths = [];
+  let paths: string[] = [];
 
   if (path != undefined) {
     paths = [path];
@@ -178,7 +94,7 @@ function getCookies(
   data: Record<string, unknown>[],
   path: string,
 ): FirefoxCookies[] {
-  const cookie_array = [];
+  const cookie_array: FirefoxCookies[] = [];
 
   const adjust_time: bigint = 1000000n;
   for (const entry of data) {

@@ -179,7 +179,7 @@ function querySqlite(paths: GlobInfo[]): OneDriveSyncEngineRecord[] {
  * @returns Array of keys
  */
 function extractKeys(paths: GlobInfo[]): KeyInfo[] {
-  const keys = [];
+  const keys: KeyInfo[] = [];
   for (const entry of paths) {
     const key: KeyInfo = {
       path: entry.full_path,
@@ -208,7 +208,7 @@ function extractKeys(paths: GlobInfo[]): KeyInfo[] {
  * @returns Array of `OneDriveAccount`
  */
 function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
-  const accounts = [];
+  const accounts: OneDriveAccount[] = [];
   for (const entry of paths) {
     const values = getRegistry(entry.full_path);
     if (values instanceof WindowsError) {
@@ -265,7 +265,7 @@ function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
  * @returns Array of `OneDriveAccount`
  */
 function accountMacos(paths: GlobInfo[]): OneDriveAccount[] {
-  const accounts = [];
+  const accounts: OneDriveAccount[] = [];
   for (const entry of paths) {
     const values = getPlist(entry.full_path);
     if (values instanceof MacosError) {

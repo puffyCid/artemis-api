@@ -22,91 +22,6 @@ import { ApplicationError } from "./errors.ts";
 import { querySqlite } from "./sqlite.ts";
 
 /**
- * Get Chromium history for all users on a endpoint
- * @returns Array of `ChromiumHistory` entries for all users or `ApplicationError`
- */
-export function getChromiumUsersHistory():
-  | ChromiumHistory[]
-  | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_users_history();
-
-    const history: ChromiumHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get user history ${err}`,
-    );
-  }
-}
-
-/**
- * Get Chromium history from provided `History` file
- * @param path Full path to `History` file
- * @returns `RawChromiumHistory` entries for file or `ApplicationError`
- */
-export function getChromiumHistory(
-  path: string,
-): RawChromiumHistory[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_history(path);
-    const history: RawChromiumHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get history for ${path}: ${err}`,
-    );
-  }
-}
-
-/**
- * Get Chromium downloads for all users on a endpoint
- * @returns Array of `ChromiumDownloads` entries for all users or `ApplicationError`
- */
-export function getChromiumUsersDownloads():
-  | ChromiumDownloads[]
-  | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_users_downloads();
-
-    const downloads: ChromiumDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get user downloads ${err}`,
-    );
-  }
-}
-
-/**
- * Get Chromium downloads from provided `History` file
- * @param path Full path to `History` file
- * @returns `RawChromiumDownloads` entries for file or `ApplicationError`
- */
-export function getChromiumDownloads(
-  path: string,
-): RawChromiumDownloads[] | ApplicationError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_chromium_downloads(path);
-
-    const downloads: RawChromiumDownloads[] = JSON.parse(data);
-    return downloads;
-  } catch (err) {
-    return new ApplicationError(
-      "CHROMIUM",
-      `failed to get downloads for ${path}: ${err}`,
-    );
-  }
-}
-
-/**
  * Function to parse Chromium cookies. Can provide an optional alternative path to cookie database, otherwise will use default paths
  * @param platform OS platform to query for Chromium cookies
  * @param path Alternative path to Chromium cookie database
@@ -154,7 +69,7 @@ export function getChromiumCookies(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -188,7 +103,7 @@ function getCookies(
   data: Record<string, unknown>[],
   path: string,
 ): ChromiumCookies[] {
-  const cookie_array = [];
+  const cookie_array: ChromiumCookies[] = [];
   const adjust_time = 1000000n;
 
   for (const entry of data) {
@@ -275,7 +190,7 @@ export function getChromiumAutofill(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -309,7 +224,7 @@ function getAutofill(
   data: Record<string, unknown>[],
   path: string,
 ): ChromiumAutofill[] {
-  const fill_array = [];
+  const fill_array: ChromiumAutofill[] = [];
 
   for (const entry of data) {
     const fill_entry: ChromiumAutofill = {
@@ -373,7 +288,7 @@ export function getChromiumBookmarks(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -511,7 +426,7 @@ export function chromiumExtensions(
     }
   }
 
-  const extensions = [];
+  const extensions: any[] = [];
   for (const path of paths) {
     const extension = readTextFile(path.full_path);
     if (extension instanceof FileError) {
@@ -576,7 +491,7 @@ export function getChromiumLogins(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -610,7 +525,7 @@ function getLogins(
   data: Record<string, unknown>[],
   path: string,
 ): ChromiumLogins[] {
-  const logins_array = [];
+  const logins_array: ChromiumLogins[] = [];
   const adjust_time = 1000000n;
 
   for (const entry of data) {
@@ -717,7 +632,7 @@ export function chromiumPreferences(
     }
   }
 
-  const preferences = [];
+  const preferences: any[] = [];
   for (const path of paths) {
     const extension = readTextFile(path.full_path);
     if (extension instanceof FileError) {
@@ -782,7 +697,7 @@ export function getChromiumDips(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -816,7 +731,7 @@ function getDips(
   data: Record<string, unknown>[],
   path: string,
 ): Dips[] {
-  const dips_array = [];
+  const dips_array: Dips[] = [];
   const adjust_time = 1000000n;
   for (const entry of data) {
     const dips_entry: Dips = {

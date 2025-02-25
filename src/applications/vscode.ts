@@ -49,7 +49,7 @@ export function fileHistory(
     return new ApplicationError("VSCODE", `failed to glob paths: ${paths}`);
   }
 
-  const entries = [];
+  const entries: FileHistory[] = [];
   for (const path of paths) {
     if (!path.is_file) {
       continue;
@@ -117,7 +117,7 @@ export function getExtensions(
   alt_path?: string,
 ): Extensions[] | ApplicationError {
   // Get all user paths, unless alt_path is provided
-  let paths = [];
+  let paths: string[] = [];
   if (alt_path != undefined) {
     paths = [alt_path];
   } else {
@@ -149,7 +149,7 @@ export function getExtensions(
     }
   }
 
-  const extensions = [];
+  const extensions: Extensions[] = [];
   // Read extensions.json
   for (const entry of paths) {
     const extension_data = readTextFile(entry);

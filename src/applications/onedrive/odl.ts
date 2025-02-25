@@ -120,7 +120,7 @@ function odl_entry(
   path: string,
   filename: string,
 ): OneDriveLog[] | ApplicationError {
-  const entries = [];
+  const entries: OneDriveLog[] = [];
   const min_size = 32;
   while (data.length > min_size) {
     const sig = nomUnsignedFourBytes(data, Endian.Le);

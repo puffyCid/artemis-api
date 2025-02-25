@@ -18,7 +18,7 @@ import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
 export function quarantineEvents(
   alt_file?: string,
 ): MacosQuarantine[] | MacosError {
-  let paths = [];
+  let paths: string[] = [];
 
   if (alt_file != undefined) {
     paths = [alt_file];
@@ -49,7 +49,7 @@ export function quarantineEvents(
       );
     }
 
-    const entries = [];
+    const entries: QuarantineEvent[] = [];
     for (const value of results) {
       const entry: QuarantineEvent = {
         id: value["LSQuarantineEventIdentifier"] as string,

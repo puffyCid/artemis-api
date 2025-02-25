@@ -75,7 +75,7 @@ function getRecords(
     );
   }
 
-  const records = [];
+  const records: OneDriveSyncEngineRecord[] = [];
   for (const value of results) {
     const record: OneDriveSyncEngineRecord = {
       parent_resource_id: value["parentResourceID"] as string,
@@ -142,7 +142,7 @@ function getFolders(
     );
   }
 
-  const folders = [];
+  const folders: OneDriveSyncEngineFolder[] = [];
   for (const value of results) {
     const folder: OneDriveSyncEngineFolder = {
       parent_resource_id: value["parentResourceID"] as string,
@@ -211,7 +211,7 @@ function getMeta(path: string): SyncMeta[] | ApplicationError {
     );
   }
 
-  const values = [];
+  const values: SyncMeta[] = [];
   for (const value of results) {
     const meta: SyncMeta = {
       created_by: value["createdBy"] as string,

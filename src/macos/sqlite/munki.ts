@@ -18,7 +18,7 @@ export function munkiApplicationUsage(
     return new MacosError(`MUNKI`, `failed to query ${db}: ${results}`);
   }
 
-  const entries = [];
+  const entries: MunkiApplicationUsage[] = [];
   for (const value of results) {
     const entry: MunkiApplicationUsage = {
       event: value["event"] as string,
