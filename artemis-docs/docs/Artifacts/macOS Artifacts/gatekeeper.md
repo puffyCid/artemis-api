@@ -29,7 +29,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 # Sample API Script
 
 ```typescript
-import { gatekeeperEntries } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { gatekeeperEntries } from "./artemis-api/mod.ts";
 
 function main() {
   const values = gatekeeperEntries();

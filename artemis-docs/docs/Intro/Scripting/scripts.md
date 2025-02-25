@@ -5,20 +5,12 @@ description: Creating a script
 
 # Scripts
 
-The easiest way to start scripting is to create a Deno project.
+The easiest way to start scripting is to create a TypeScript project.
 
-- `deno init <project name>` will create a project in the current directory
+- Create a new directory that will contain out TypeScript code
 
-The [deno](https://deno.land/manual@v1.32.4/introduction) website contains the
-full documentation on a Deno project layout. By default the following files are
-created for a new project:
 
-- deno.jsonc
-- main.ts
-- main_test.ts
-
-Since we are using a runtime built specifically for forensics and IR none of the
-builtin Deno functions are available. All scripts must import the
+Since we are using a runtime built specifically for DFIR all scripts must import the
 [artemis-api](https://github.com/puffyCid/artemis-api) modules in order to
 effectively create scripts.
 
@@ -27,28 +19,28 @@ vanilla
 [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
 API and the [artemis-api](https://github.com/puffyCid/artemis-api) for scripting
 
-To import artemis functions into your script, open main.ts and import the
+To import artemis functions into your script, create a main.ts file and import the
 function associated with the artifact you want to parse. For example, to parse
 the Windows Registry you would import:
 
 ```typescript
-import { getRegistry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { getRegistry } from "./artemis-api/mod.ts";
 ```
 
 If you wanted to parse the Windows Registry and manipulate the parsed data you
 would import:
 
 ```typescript
-import { getRegistry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
-import { Registry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/windows/registry.ts";
+import { getRegistry } from "./artemis-api/mod.ts";
+import { Registry } from "./artemis-api/src/windows/registry.ts";
 ```
 
 A list of all exported artemis functions can be found at
 https://github.com/puffyCid/artemis-api. All artifacts supported by artemis are
 callable from TypeScrpt. The structured output produced by each artifact is
-listed in the respective artifact chapter. For example, the structured Registry
-data format return `getRegistry` is found in the
-[Registry chapter](../../Artifacts/Windows%20Artfacts/registry.md)
+listed in the respective artifact section. For example, the structured Registry
+output returned by `getRegistry` is found in the
+[Registry artifact](../../Artifacts/Windows%20Artfacts/registry.md)
 
 Once we have created and bundled our script. We just need to base64 encode
 before providing it to artemis.

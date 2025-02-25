@@ -10,8 +10,7 @@ code and logic.
 - [Nom](https://github.com/rust-bakery/nom)
 - Artifact format documentation from the [libyal](https://github.com/libyal)
   project
-- [Deno](https://github.com/denoland/deno). See `runtime` and `core` for
-  examples on embedding Deno
+- [TypeScript](https://www.typescriptlang.org/). 
 
 Resources for learning Rust:
 

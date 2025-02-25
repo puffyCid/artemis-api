@@ -82,8 +82,7 @@ Each subfolder will contain you JSON output
 
 Adding support for new apps or artifacts is not too challenging :)
 
-1. Make sure you have the tool prerequisites installed (Deno, VSCodium (or
-   VSCode))
+1. Make sure you have the tool prerequisites installed (Ex: TypeScript text editor)
 2. Clone the artemis-api repo (https://github.com/puffyCid/artemis-api.git)
 3. To add support for a new app, create a folder under
    `./src/ios/apps/<app name>`\

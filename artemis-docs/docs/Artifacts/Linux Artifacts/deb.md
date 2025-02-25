@@ -21,7 +21,7 @@ installed deb packages.
 ```typescript
 import {
   getDebInfo,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+} from "./artemis-api/mod.ts";
 
 function main() {
   const results = getDebInfo();

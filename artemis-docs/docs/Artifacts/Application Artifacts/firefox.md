@@ -59,7 +59,7 @@ artifact_name = "firefox-downloads"
 import {
   getFirefoxCookies,
   PlatformType,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+} from "./artemis-api/mod.ts";
 
 function main() {
   const results = getFirefoxCookies(PlatformType.Darwin);

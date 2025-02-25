@@ -7,7 +7,7 @@ description: How to script with artemis
 
 A really cool capability of artemis is it contains an embedded JavaScript
 runtime thats designed specifically for DFIR! Artemis uses
-[Boa](https://boajs.dev/) a JS enginge written in Rust.
+[Boa](https://boajs.dev/) a JS engine written in Rust.
 
 Using an embedded JS enginge allows us to call Rust functions from JavaScript!\
 For example, the artemis function `get_registry()` can be used to parse a

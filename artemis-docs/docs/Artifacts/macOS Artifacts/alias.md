@@ -20,7 +20,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 # Sample API Script
 
 ```typescript
-import { parseAlias } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { parseAlias } from "./artemis-api/mod.ts";
 
 function main() {
   // Need to obtain alias bytes from another file. Plist files may have alias data.

@@ -79,7 +79,7 @@ know what functions are registered. There are two ways to use the
 **artemis-api**:
 
 - Import from GitHub remotely:
-  https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts
+  ./artemis-api/mod.ts
 - Clone the API (https://github.com/puffyCid/artemis-api) and import locally
 
 The example script below shows TypeScrpt code that imports the **artemis-api**
@@ -87,8 +87,8 @@ library to parse the SOFTWARE `Registry` file to get a list of installed
 programs
 
 ```typescript
-import { getRegistry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
-import { Registry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/windows/registry.ts";
+import { getRegistry } from "./artemis-api/mod.ts";
+import { Registry } from "./artemis-api/src/windows/registry.ts";
 
 interface InstalledPrograms {
   name: string;

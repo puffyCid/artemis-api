@@ -207,4 +207,4 @@ artemis -j vanilla.js
 Collecting data via JavaScript is a bit more complex than other methods. But it
 provides alot more flexiblity on what you can do with the data.
 
-See the section on [Scripting](../Intro/Scripting/deno.md) to learn more!
+See the section on [Scripting](../Intro/Scripting/boa.md) to learn more!

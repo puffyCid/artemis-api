@@ -79,7 +79,7 @@ import {
   getChromiumBookmarks,
   getChromiumCookies,
   PlatformType,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+} from "./artemis-api/mod.ts";
 
 function main() {
   const results = getChromiumCookies(PlatformType.Darwin);

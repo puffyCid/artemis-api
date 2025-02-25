@@ -12,11 +12,9 @@ This can make contributions significantly easier if interested in contributing
 to artemis.
 
 The Prerequisites for adding API features are the same as creating artemis
-scripts as mentioned in [scripting](../Intro/Scripting/deno.md). You will need:
+scripts as mentioned in [scripting](../Intro/Scripting/boa.md). You will need:
 
-- Deno installed
-- VSCode or VSCodium
-- The Deno extension
+- A text editor that supports TypeScript
 
 # Adding a Feature
 
@@ -53,11 +51,8 @@ feature is:
 
 1. Write you feature and export it to mod.ts file located at the root of the
    `artemis-api` repo.
-2. Create a deno project in a separate directory outside of `artemis-api` using
-   `deno init <feature>`
-3. Follow the [walkthrough](../Intro/Scripting/walkthrough.md) guide, except
-   instead of importing functions from GitHub import functions from your local
-   clone repo.
+2. Create a project in a separate directory outside of `artemis-api`.
+3. Follow the [walkthrough](../Intro/Scripting/walkthrough.md) guide.
 
 ```typescript
 import { processListing } from "../../path/to/local/artemis-api/mod.ts";
@@ -72,7 +67,7 @@ function main() {
 }
 ```
 
-4. Test you feature with your deno project
+4. Test you feature with your project
 5. If everything works, open a pull request!
 
 ## Testing Scripts on GitHub Actions
