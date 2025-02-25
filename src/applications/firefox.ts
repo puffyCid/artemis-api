@@ -47,35 +47,35 @@ export function firefoxHistory(
                 FROM 
                   moz_places 
                 JOIN moz_origins ON moz_places.origin_id = moz_origins.id`;
-  const hits = [];
+  const hits: FirefoxHistory[] = [];
   for (const path of paths) {
     const results = querySqlite(path.full_path, query);
     if (results instanceof ApplicationError) {
       console.warn(`Failed to query ${path.full_path}: ${results}`);
       continue;
     }
-    const history = [];
+    const history: RawFirefoxHistory[] = [];
     // Loop through history rows
     for (const entry of results) {
       const history_row: RawFirefoxHistory = {
-        moz_places_id: entry["moz_places_id"] as number ?? 0,
-        url: entry["url"] as string ?? "",
-        title: entry["title"] as string ?? "",
-        rev_host: entry["rev_host"] as string ?? "",
-        visit_count: entry["rev_host"] as number ?? 0,
-        hidden: entry["hidden"] as number ?? 0,
-        typed: entry["typed"] as number ?? 0,
-        frequency: entry["frequency"] as number ?? 0,
+        moz_places_id: entry[ "moz_places_id" ] as number ?? 0,
+        url: entry[ "url" ] as string ?? "",
+        title: entry[ "title" ] as string ?? "",
+        rev_host: entry[ "rev_host" ] as string ?? "",
+        visit_count: entry[ "rev_host" ] as number ?? 0,
+        hidden: entry[ "hidden" ] as number ?? 0,
+        typed: entry[ "typed" ] as number ?? 0,
+        frequency: entry[ "frequency" ] as number ?? 0,
         last_visit_date: unixEpochToISO(
-          entry["last_visit_date"] as bigint ?? 0,
+          entry[ "last_visit_date" ] as bigint ?? 0,
         ),
-        guid: entry["guid"] as string ?? "",
-        foreign_count: entry["foreign_count"] as number ?? 0,
-        url_hash: entry["url_hash"] as number ?? 0,
-        description: entry["description"] as string ?? "",
-        preview_image_url: entry["preview_image_url"] as string ?? "",
-        prefix: entry["prefix"] as string ?? "",
-        host: entry["host"] as string ?? "",
+        guid: entry[ "guid" ] as string ?? "",
+        foreign_count: entry[ "foreign_count" ] as number ?? 0,
+        url_hash: entry[ "url_hash" ] as number ?? 0,
+        description: entry[ "description" ] as string ?? "",
+        preview_image_url: entry[ "preview_image_url" ] as string ?? "",
+        prefix: entry[ "prefix" ] as string ?? "",
+        host: entry[ "host" ] as string ?? "",
       };
       history.push(history_row);
     }
@@ -133,50 +133,50 @@ export function firefoxDownloads(
                   moz_annos 
                   JOIN moz_places ON moz_annos.place_id = moz_places.id 
                   JOIN moz_anno_attributes ON anno_attribute_id = moz_anno_attributes.id`;
-  const hits = [];
+  const hits: FirefoxDownloads[] = [];
   for (const path of paths) {
     const results = querySqlite(path.full_path, query);
     if (results instanceof ApplicationError) {
       console.warn(`Failed to query ${path.full_path}: ${results}`);
       continue;
     }
-    const downloads = [];
+    const downloads: RawFirefoxDownloads[] = [];
     // Loop through downloads rows
     for (const entry of results) {
       const download_row: RawFirefoxDownloads = {
-        id: entry["id"] as number ?? 0,
-        place_id: entry["place_id"] as number ?? 0,
-        anno_attribute_id: entry["anno_attribute_id"] as number ?? 0,
-        content: entry["content"] as string ?? "",
-        flags: entry["flags"] as number ?? 0,
-        expiration: entry["expiration"] as number ?? 0,
-        download_type: entry["download_type"] as number ?? 0,
+        id: entry[ "id" ] as number ?? 0,
+        place_id: entry[ "place_id" ] as number ?? 0,
+        anno_attribute_id: entry[ "anno_attribute_id" ] as number ?? 0,
+        content: entry[ "content" ] as string ?? "",
+        flags: entry[ "flags" ] as number ?? 0,
+        expiration: entry[ "expiration" ] as number ?? 0,
+        download_type: entry[ "download_type" ] as number ?? 0,
         date_added: unixEpochToISO(
-          entry["date_added"] as bigint ?? 0,
+          entry[ "date_added" ] as bigint ?? 0,
         ),
         last_modified: unixEpochToISO(
-          entry["last_modified"] as bigint ?? 0,
+          entry[ "last_modified" ] as bigint ?? 0,
         ),
-        name: entry["name"] as string ?? "",
+        name: entry[ "name" ] as string ?? "",
         history: {
-          moz_places_id: entry["moz_places_id"] as number ?? 0,
-          url: entry["url"] as string ?? "",
-          title: entry["title"] as string ?? "",
-          rev_host: entry["rev_host"] as string ?? "",
-          visit_count: entry["rev_host"] as number ?? 0,
-          hidden: entry["hidden"] as number ?? 0,
-          typed: entry["typed"] as number ?? 0,
-          frequency: entry["frequency"] as number ?? 0,
+          moz_places_id: entry[ "moz_places_id" ] as number ?? 0,
+          url: entry[ "url" ] as string ?? "",
+          title: entry[ "title" ] as string ?? "",
+          rev_host: entry[ "rev_host" ] as string ?? "",
+          visit_count: entry[ "rev_host" ] as number ?? 0,
+          hidden: entry[ "hidden" ] as number ?? 0,
+          typed: entry[ "typed" ] as number ?? 0,
+          frequency: entry[ "frequency" ] as number ?? 0,
           last_visit_date: unixEpochToISO(
-            entry["last_visit_date"] as bigint ?? 0,
+            entry[ "last_visit_date" ] as bigint ?? 0,
           ),
-          guid: entry["guid"] as string ?? "",
-          foreign_count: entry["foreign_count"] as number ?? 0,
-          url_hash: entry["url_hash"] as number ?? 0,
-          description: entry["description"] as string ?? "",
-          preview_image_url: entry["preview_image_url"] as string ?? "",
-          prefix: entry["prefix"] as string ?? "",
-          host: entry["host"] as string ?? "",
+          guid: entry[ "guid" ] as string ?? "",
+          foreign_count: entry[ "foreign_count" ] as number ?? 0,
+          url_hash: entry[ "url_hash" ] as number ?? 0,
+          description: entry[ "description" ] as string ?? "",
+          preview_image_url: entry[ "preview_image_url" ] as string ?? "",
+          prefix: entry[ "prefix" ] as string ?? "",
+          host: entry[ "host" ] as string ?? "",
         },
       };
       downloads.push(download_row);
@@ -215,8 +215,8 @@ export function firefoxAddons(
       continue;
     }
 
-    const data = JSON.parse(extension)["addons"];
-    data["addons_path"] = path.full_path;
+    const data = JSON.parse(extension)[ "addons" ];
+    data[ "addons_path" ] = path.full_path;
 
     extensions = extensions.concat(data);
   }
@@ -237,7 +237,7 @@ export function getFirefoxCookies(
   let paths: string[] = [];
 
   if (path != undefined) {
-    paths = [path];
+    paths = [ path ];
   } else {
     const glob_paths = firefoxPaths(platform, "cookies.sqlite");
     if (glob_paths instanceof ApplicationError) {
@@ -279,31 +279,31 @@ function getCookies(
   const adjust_time: bigint = 1000000n;
   for (const entry of data) {
     const cookie_entry: FirefoxCookies = {
-      id: entry["id"] as number,
-      origin_attributes: entry["originAttributes"] as string,
-      in_browser_element: !!(entry["inBrowserElement"] as number),
-      same_site: !!(entry["sameSite"] as number),
-      raw_same_site: !!(entry["rawSameSite"] as number),
-      scheme_map: entry["rawSameSite"] as number,
-      name: entry["name"] as string | undefined,
-      value: entry["value"] as string | undefined,
-      path: entry["path"] as string | undefined,
-      expiry: entry["expiry"] as number | undefined,
-      is_secure: !!(entry["isSecure"] as number | undefined),
-      is_http_only: !!(entry["isSecure"] as number | undefined),
-      host: entry["host"] as string | undefined,
+      id: entry[ "id" ] as number,
+      origin_attributes: entry[ "originAttributes" ] as string,
+      in_browser_element: !!(entry[ "inBrowserElement" ] as number),
+      same_site: !!(entry[ "sameSite" ] as number),
+      raw_same_site: !!(entry[ "rawSameSite" ] as number),
+      scheme_map: entry[ "rawSameSite" ] as number,
+      name: entry[ "name" ] as string | undefined,
+      value: entry[ "value" ] as string | undefined,
+      path: entry[ "path" ] as string | undefined,
+      expiry: entry[ "expiry" ] as number | undefined,
+      is_secure: !!(entry[ "isSecure" ] as number | undefined),
+      is_http_only: !!(entry[ "isSecure" ] as number | undefined),
+      host: entry[ "host" ] as string | undefined,
       db_path: path,
     };
 
-    if (entry["lastAccessed"] != undefined) {
+    if (entry[ "lastAccessed" ] != undefined) {
       cookie_entry.last_accessed = unixEpochToISO(Number(
-        BigInt(entry["lastAccessed"] as bigint) / adjust_time,
+        BigInt(entry[ "lastAccessed" ] as bigint) / adjust_time,
       ));
     }
 
-    if (entry["creationTime"] != undefined) {
+    if (entry[ "creationTime" ] != undefined) {
       cookie_entry.creation_time = unixEpochToISO(Number(
-        BigInt(entry["creationTime"] as bigint) / adjust_time,
+        BigInt(entry[ "creationTime" ] as bigint) / adjust_time,
       ));
     }
 
