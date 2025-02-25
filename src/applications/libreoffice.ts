@@ -45,7 +45,7 @@ export function recentFiles(
     );
   }
 
-  const entries = [];
+  const entries: RecentFilesLibreOffice[] = [];
   // Loop through registrymodifications.xcu path for all users
   for (const path of paths) {
     if (!path.is_file) {
@@ -70,7 +70,7 @@ export function recentFiles(
       if (
         xml_entry["node"] === undefined ||
         xml_entry["node"] as object[][0] as Record<string, object>["$"] ===
-          undefined
+        undefined
       ) {
         continue;
       }

@@ -257,7 +257,7 @@ export function getChromiumCookies(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -291,7 +291,7 @@ function getCookies(
   data: Record<string, unknown>[],
   path: string,
 ): ChromiumCookies[] {
-  const cookie_array = [];
+  const cookie_array: ChromiumCookies[] = [];
   const adjust_time = 1000000n;
 
   for (const entry of data) {
@@ -378,7 +378,7 @@ export function getChromiumAutofill(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -412,7 +412,7 @@ function getAutofill(
   data: Record<string, unknown>[],
   path: string,
 ): ChromiumAutofill[] {
-  const fill_array = [];
+  const fill_array: ChromiumAutofill[] = [];
 
   for (const entry of data) {
     const fill_entry: ChromiumAutofill = {
@@ -476,7 +476,7 @@ export function getChromiumBookmarks(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -614,7 +614,7 @@ export function chromiumExtensions(
     }
   }
 
-  const extensions = [];
+  const extensions: any[] = [];
   for (const path of paths) {
     const extension = readTextFile(path.full_path);
     if (extension instanceof FileError) {
@@ -679,7 +679,7 @@ export function getChromiumLogins(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -713,7 +713,7 @@ function getLogins(
   data: Record<string, unknown>[],
   path: string,
 ): ChromiumLogins[] {
-  const logins_array = [];
+  const logins_array: ChromiumLogins[] = [];
   const adjust_time = 1000000n;
 
   for (const entry of data) {
@@ -820,7 +820,7 @@ export function chromiumPreferences(
     }
   }
 
-  const preferences = [];
+  const preferences: any[] = [];
   for (const path of paths) {
     const extension = readTextFile(path.full_path);
     if (extension instanceof FileError) {
@@ -897,7 +897,7 @@ export function getChromiumDips(
     }
   }
 
-  let paths = [];
+  let paths: string[] = [];
   if (path != undefined) {
     paths = [path];
   } else {
@@ -931,7 +931,7 @@ function getDips(
   data: Record<string, unknown>[],
   path: string,
 ): Dips[] {
-  const dips_array = [];
+  const dips_array: Dips[] = [];
   const adjust_time = 1000000n;
   for (const entry of data) {
     const dips_entry: Dips = {

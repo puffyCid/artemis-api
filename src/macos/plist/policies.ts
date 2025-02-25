@@ -23,7 +23,7 @@ export function passwordPolicy(
       "Got raw bytes at root of PasswordPolicy this is unexpected",
     );
   }
-  const policies = [];
+  const policies: PasswordPolicy[] = [];
   const policy = policy_data as Record<string, object>;
 
   // An array of embedded plist files

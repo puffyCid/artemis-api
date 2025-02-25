@@ -17,7 +17,7 @@ import { parseProtobuf } from "../encoding/protobuf.ts";
  * @returns Array of `Biome` objects
  */
 export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
-  let paths = [];
+  let paths: string[] = [];
   if (alt_file != undefined) {
     paths = [alt_file];
   } else {
@@ -128,7 +128,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
     let remaining_bytes = header_bytes.remaining as Uint8Array;
 
     const record_size = 32;
-    const records = [];
+    const records: BiomeRecord[] = [];
     while ((remaining_bytes as Uint8Array).byteLength >= record_size) {
       const record_bytes = new Uint8Array(remaining_bytes.buffer.slice(
         0,
@@ -281,7 +281,7 @@ function parseRecordV2(
   let remaining_bytes = footer_bytes;
   let count = 0;
 
-  const footers = [];
+  const footers: BiomeFooter[] = [];
   while (count < entries) {
     const offset = nomUnsignedFourBytes(remaining_bytes, Endian.Le);
     if (offset instanceof NomError) {
@@ -329,7 +329,7 @@ function parseRecordV2(
   footers.reverse();
   const align = 4;
 
-  const records = [];
+  const records: BiomeRecord[] = [];
   remaining_bytes = raw_bytes;
   let previous_size = 0;
   const unknown = 4;

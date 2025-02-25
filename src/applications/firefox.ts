@@ -234,7 +234,7 @@ export function getFirefoxCookies(
   platform: PlatformType,
   path?: string,
 ): FirefoxCookies[] | ApplicationError {
-  let paths = [];
+  let paths: string[] = [];
 
   if (path != undefined) {
     paths = [path];
@@ -274,7 +274,7 @@ function getCookies(
   data: Record<string, unknown>[],
   path: string,
 ): FirefoxCookies[] {
-  const cookie_array = [];
+  const cookie_array: FirefoxCookies[] = [];
 
   const adjust_time: bigint = 1000000n;
   for (const entry of data) {

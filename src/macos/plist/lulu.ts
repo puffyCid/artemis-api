@@ -128,7 +128,7 @@ function getCodeSigning(
       continue;
     }
 
-    const entries = [];
+    const entries: string[] = [];
     // more NS.Objects
     for (const entry of value["NS.objects"]) {
       const lulu_value = objects.at(entry) as string ?? `${entry}`;

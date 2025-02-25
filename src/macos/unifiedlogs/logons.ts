@@ -17,7 +17,7 @@ export function logonsMacos(
     return new MacosError(`LOGONS`, `failed to parse ${path}: ${logs}`);
   }
 
-  const logons = [];
+  const logons: LogonMacos[] = [];
   for (const entry of logs) {
     if (
       entry.process.endsWith("loginwindow") &&
