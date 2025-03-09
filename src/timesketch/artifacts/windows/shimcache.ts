@@ -9,7 +9,7 @@ import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 export function timelineShimcache(
   data: Shimcache[],
 ): TimesketchTimeline[] {
-  const entries = [];
+  const entries: TimesketchTimeline[] = [];
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
