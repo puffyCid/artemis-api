@@ -1,6 +1,7 @@
 import type { Url } from "../../types/http/unfold.ts";
 import { UnfoldError } from "./error.ts";
 import { Bing } from "./plugins/bing.ts";
+import { Dropbox } from "./plugins/dropbox.ts";
 import { DuckDuckGo } from "./plugins/duckduckgo.ts";
 import { Google } from "./plugins/google.ts";
 import { Outlook } from "./plugins/outlook.ts";
@@ -11,7 +12,7 @@ import { Outlook } from "./plugins/outlook.ts";
 export class Unfold {
   private url: string;
 
-  constructor(url: string) {
+  constructor (url: string) {
     this.url = url;
   }
 
@@ -45,6 +46,9 @@ export class Unfold {
     } else if (info.domain.includes("bing.com")) {
       const bing = new Bing(info);
       bing.parseBing();
+    } else if (info.domain.includes("dropbox.com")) {
+      const drop = new Dropbox(info);
+      drop.parseDropbox();
     }
 
     return info;
