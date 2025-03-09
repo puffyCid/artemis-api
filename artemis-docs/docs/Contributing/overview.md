@@ -35,8 +35,6 @@ From the `core/src/` directory
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
 | core.rs    | Contains the entry point to the `core` library.                                                                                                                                                                        |
 
-A basic graph of the code structure can be found
-[here](../../static/img/core.svg)
 
 # Adding New Artifacts
 
