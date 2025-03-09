@@ -74,34 +74,42 @@ just core
 
 Full list of just commands (via `just --list`)
 
-| Command       | Description                                                       |
-| ------------- | ----------------------------------------------------------------- |
-| build         | Build the entire artemis project                                  |
-| cli           | Build the artemis executable                                      |
-| complex       | Run the scc tool against the artemis source code                  |
-| core          | Build the artemis library                                         |
-| default       | Run clippy                                                        |
-| ese           | Run all the ESE parsing tests                                     |
-| filesystem    | Run all the filesystem tests                                      |
-| linux         | Run all the Linux tests                                           |
-| macos         | Run all the macOS tests                                           |
-| nextest       | Run all tests using nextest                                       |
-| runtime       | Run all the JS runtime tests                                      |
-| server        | Build the artemis server and start it                             |
-| client        | Build the artemis client and attempt to connect to artemis server |
-| shellitems    | Run all the ShellItem parsing tests                               |
-| test          | Run all artemis tests                                             |
-| unix          | Run all Unix tests                                                |
-| windows       | Run all Windows tests                                             |
-| wmi           | Run all WMI parsing tests                                         |
-| outlook       | Run all the Outlook parsing tests                                 |
-| spotlight     | Run all the Spotlight parsing tests                               |
-| setup-ubuntu  | Install all artemis development dependencies on Ubuntu            |
-| setup-fedora  | Install all artemis development dependencies on Fedora            |
-| setup-windows | Install all artemis development dependencies on Windows           |
-| setup-macos   | Install all artemis development dependencies on macOS             |
+```just
+Available recipes:
+    build         # Build the entire artemis project.
+    complex       # Review complexity with scc
+    default       # Run cargo clippy on artemis project
+    filesystem    # Test only the FileSystem functions
+    nextest       # Test the entire artemis project using nextest
+    runtime       # Test only the JavaScript runtime
+    test          # Test the entire artemis project
+    timeline      # Test only the timelining functions
 
-### Server Interaction
+    [artifacts]
+    ese           # Test only the ESE parsing functions
+    eventlogs     # Test only the Eventlog parsing functions
+    mft           # Test only the MFT parsing functions
+    outlook       # Test only the Outlook parsing functions
+    registry      # Test only the Registry parsing functions
+    shellitems    # Test only the ShellItems parsing functions
+    spotlight     # Test only the Spotlight parsing functions
+    wmi           # Test only the WMI parsing functions
 
-Download and import the Insomnia config from the repository to interact with the
-server. The server is experimental and not bundled in the GitHub binaries
+    [os]
+    linux         # Test all the Linux artifacts
+    macos         # Test all the macOS artifacts
+    unix          # Test all the Unix artifacts
+    windows       # Test all the Windows artifacts
+
+    [setup]
+    setup-fedora  # Setup Artemis development environment for Fedora
+    setup-macos   # Setup Artemis development environment for macOS
+    setup-ubuntu  # Setup Artemis development environment for Ubuntu
+    setup-windows # Setup Artemis development environment for Windows
+
+    [workspace]
+    cli           # Just build the artemis binary
+    core          # Just build core library
+    slim          # Just build the artemis binary. But do not enable Yara-X
+
+```

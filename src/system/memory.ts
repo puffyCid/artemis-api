@@ -1,5 +1,6 @@
 import { Memory } from "../../types/system/systeminfo.ts";
 import { ProcessInfo } from "../../types/system/processes.ts";
+import { Connection } from "../../types/system/connections.ts";
 
 /**
  * Function to get memory information
@@ -35,6 +36,17 @@ export function processListing(
     hashes,
     binary,
   );
+
+  return data;
+}
+
+/**
+ * Function to get list of network connections from system
+ * @returns Array of `Connection`
+ */
+export function connections(): Connection[] {
+  //@ts-ignore: Custom Artemis function
+  const data: Connection[] = js_connections();
 
   return data;
 }

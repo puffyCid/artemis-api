@@ -23,7 +23,7 @@ export class Timesketch {
    * @param name The name that should used for the timeline. If none is provided the artifact name will be used. It is **recommended** to provide a name (ex: the hostname)
    * @param index The OpenSearch index that should be used when uploading data. If none is provided a new index will be created
    */
-  constructor(auth: TimesketchAuth, name = "", index = "") {
+  constructor (auth: TimesketchAuth, name = "", index = "") {
     this.timesketch_auth = auth;
     this.token = "";
     this.cookie = "";
@@ -98,10 +98,10 @@ export class Timesketch {
       this.timeline_name = artifact;
     }
 
-    const entries_strings = [];
+    const entries_strings: string[] = [];
     // We have to convert the TimesketchTimeline object to a string :/
     for (let i = 0; i < data.length; i++) {
-      entries_strings.push(JSON.stringify(data[i]));
+      entries_strings.push(JSON.stringify(data[ i ]));
     }
 
     const headers = {
@@ -132,7 +132,7 @@ export class Timesketch {
       };
 
       if (this.opensearch_index != "") {
-        post_data["index_name"] = this.opensearch_index;
+        post_data[ "index_name" ] = this.opensearch_index;
       }
 
       const bytes = encodeBytes(JSON.stringify(post_data));
@@ -147,10 +147,9 @@ export class Timesketch {
       if (response.status != 201) {
         return new TimesketchError(
           `UPLOAD`,
-          `non-201 response for uploading data ${
-            extractUtf8String(
-              new Uint8Array(response.body),
-            )
+          `non-201 response for uploading data ${extractUtf8String(
+            new Uint8Array(response.body),
+          )
           }`,
         );
       }
@@ -206,14 +205,14 @@ export class Timesketch {
 
     const result = extractUtf8String(new Uint8Array(response.body));
     const sketch_object = JSON.parse(result);
-    const objects_value = sketch_object["objects"];
+    const objects_value = sketch_object[ "objects" ];
     if (objects_value === undefined) {
       return new TimesketchError(
         `SKETCH_ID`,
         `failed no objects in sketch response: ${response}`,
       );
     }
-    this.timesketch_auth.sketch_id = objects_value.at(0)["id"];
+    this.timesketch_auth.sketch_id = objects_value.at(0)[ "id" ];
   }
 
   /**
@@ -245,16 +244,15 @@ export class Timesketch {
     if (response.status != 200) {
       return new TimesketchError(
         `SKETCH_ID`,
-        `non-200 response for verifying Sketch ID ${
-          extractUtf8String(
-            new Uint8Array(response.body),
-          )
+        `non-200 response for verifying Sketch ID ${extractUtf8String(
+          new Uint8Array(response.body),
+        )
         }`,
       );
     }
     const id_text = extractUtf8String(new Uint8Array(response.body));
     const id_info = JSON.parse(id_text);
-    if (id_info["objects"].length === 0) {
+    if (id_info[ "objects" ].length === 0) {
       return new TimesketchError(
         `SKETCH_ID`,
         `no Sketch ID associated ${this.timesketch_auth.sketch_id}: ${id_text}`,
@@ -286,14 +284,14 @@ export class Timesketch {
     const value_token = body_text.match(value_regex);
 
     // Extract the CSRF Token
-    if (typeof value_token?.[0] === "string" && value_token?.[0].length > 50) {
-      this.token = value_token?.[0]
+    if (typeof value_token?.[ 0 ] === "string" && value_token?.[ 0 ].length > 50) {
+      this.token = value_token?.[ 0 ]
         .replaceAll("value=", "")
         .replaceAll('"', "");
     }
 
     // Also need first cookie
-    this.cookie = response.headers["set-cookie"].split(";").at(0) ?? "";
+    this.cookie = response.headers[ "set-cookie" ].split(";").at(0) ?? "";
     if (this.cookie === "") {
       return new TimesketchError(
         `AUTH`,
@@ -331,16 +329,15 @@ export class Timesketch {
     if (auth_response.status != 302) {
       return new TimesketchError(
         `AUTH`,
-        `non-302 response for auth to Timesketch ${
-          extractUtf8String(
-            new Uint8Array(auth_response.body),
-          )
+        `non-302 response for auth to Timesketch ${extractUtf8String(
+          new Uint8Array(auth_response.body),
+        )
         }`,
       );
     }
 
     // Update the cookie so we remain authenticated
-    this.cookie = auth_response.headers["set-cookie"].split(";").at(0) ?? "";
+    this.cookie = auth_response.headers[ "set-cookie" ].split(";").at(0) ?? "";
     if (this.cookie === "") {
       return new TimesketchError(
         `AUTH`,

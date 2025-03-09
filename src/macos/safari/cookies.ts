@@ -45,7 +45,7 @@ export function parseCookies(path: string): Cookie[] | MacosError {
 
   let cookies: Cookie[] = [];
   for (let i = 0; i < header.pages_count; i++) {
-    const cookie = parsePage(header.remaining_bytes, header.page_sizes[i]);
+    const cookie = parsePage(header.remaining_bytes, header.page_sizes[ i ]);
     if (cookie instanceof NomError) {
       return new MacosError(
         `COOKIES`,
@@ -78,7 +78,7 @@ function parseHeader(data: Uint8Array): Header | NomError {
     return input;
   }
   const pages_count = input.value;
-  const page_sizes = [];
+  const page_sizes: number[] = [];
   for (let i = 0; i < pages_count; i++) {
     input = nomUnsignedFourBytes(input.remaining, Endian.Be);
     if (input instanceof NomError) {
@@ -121,7 +121,7 @@ function parsePage(data: Uint8Array, size: number): Cookie[] | NomError {
     return input;
   }
   const cookie_count = input.value;
-  const cookie_offsets = [];
+  const cookie_offsets: number[] = [];
   for (let i = 0; i < cookie_count; i++) {
     input = nomUnsignedFourBytes(input.remaining, Endian.Le);
     if (input instanceof NomError) {
@@ -137,7 +137,7 @@ function parsePage(data: Uint8Array, size: number): Cookie[] | NomError {
     remaining_bytes: page_input.remaining as Uint8Array,
   };
 
-  const cookies = [];
+  const cookies: Cookie[] = [];
   for (const offset of page.cookie_offsets) {
     const start = take(page_input.nommed, offset);
     if (start instanceof NomError) {
@@ -210,13 +210,13 @@ function parseRecord(data: Uint8Array): Cookie | NomError {
   const value_offset = input.value;
 
   // Unknown
-  input = nomUnsignedEightBytes(input.remaining, Endian.Le);
-  if (input instanceof NomError) {
-    return input;
+  let unknown = nomUnsignedEightBytes(input.remaining, Endian.Le);
+  if (unknown instanceof NomError) {
+    return unknown;
   }
 
   const time_size = 8;
-  let time = take(input.remaining, time_size);
+  let time = take(unknown.remaining, time_size);
   if (time instanceof NomError) {
     return time;
   }
@@ -277,7 +277,7 @@ function extractOffsets(data: Uint8Array, offset: number): string | NomError {
     return start;
   }
 
-  const string_data = takeUntil(start.remaining, Uint8Array.from([0]));
+  const string_data = takeUntil(start.remaining, Uint8Array.from([ 0 ]));
   if (string_data instanceof NomError) {
     return string_data;
   }

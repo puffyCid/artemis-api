@@ -30,5 +30,3 @@ function main() {
 main();
 ```
 
-Lots of example scripts can be found at
-[artemis-scripts](https://github.com/puffycid/artemis-scripts)

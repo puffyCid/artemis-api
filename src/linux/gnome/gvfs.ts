@@ -85,7 +85,7 @@ export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
     const children = getChildren(
       root.children_offset,
       data,
-      [root.name],
+      [ root.name ],
       header.base_time,
       keywords,
       entry.full_path,
@@ -169,7 +169,7 @@ function extractHeader(data: Uint8Array): Header | NomError {
 
   let magic_sig = 0;
   for (let i = 0; i < magic.nommed.length; i++) {
-    magic_sig |= (magic.nommed as Uint8Array)[i] << (i * 8);
+    magic_sig |= (magic.nommed as Uint8Array)[ i ] << (i * 8);
   }
 
   const header: Header = {
@@ -202,7 +202,7 @@ function getKeywords(
       `failed to get keyword start: ${keyword_start}`,
     );
   }
-  const keywords = [];
+  const keywords: string[] = [];
   const keyword_count = nomUnsignedFourBytes(
     keyword_start.remaining as Uint8Array,
     Endian.Be,
@@ -233,7 +233,7 @@ function getKeywords(
 
     const keyword_value = takeUntil(
       keyword_start.remaining,
-      new Uint8Array([0]),
+      new Uint8Array([ 0 ]),
     );
     if (keyword_value instanceof NomError) {
       continue;
@@ -398,7 +398,7 @@ function extractMetadata(
       );
     }
 
-    meta[keyword_value] = name;
+    meta[ keyword_value ] = name;
 
     count++;
   }
@@ -546,7 +546,7 @@ function getName(offset: number, data: Uint8Array): string | NomError {
     );
   }
 
-  const name_data = takeUntil(name_start.remaining, new Uint8Array([0]));
+  const name_data = takeUntil(name_start.remaining, new Uint8Array([ 0 ]));
   if (name_data instanceof NomError) {
     return new NomError(
       "NOM",

@@ -2,7 +2,7 @@
 description: Windows process metadata
 keywords:
   - windows
-  - proc meta
+  - volatile
 ---
 
 # Processes

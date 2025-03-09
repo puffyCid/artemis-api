@@ -15,10 +15,7 @@ Artemis supports parsing the following artifacts from Firefox.
 - Cookies
 - Addons
 
-You have to use the artemis [api](../../API/overview.md) in order to collect:
-
-- Cookies
-- Addons
+You have to use the artemis [api](../../API/overview.md) in order to collect FireFox data
 
 Other parsers:
 
@@ -28,30 +25,6 @@ References:
 
 - [Schema](https://kb.mozillazine.org/Places.sqlite)
 
-# TOML Collection
-
-```toml
-system = "macos"
-
-[output]
-name = "firefox_tester"
-directory = "./tmp"
-format = "json"
-compress = false
-endpoint_id = "abdc"
-collection_id = 1
-output = "local"
-
-[[artifacts]]
-artifact_name = "firefox-history"
-
-[[artifacts]]
-artifact_name = "firefox-downloads"
-```
-
-# Collection Options
-
-- N/A
 
 # Sample API Script
 
@@ -70,8 +43,7 @@ function main() {
 
 # Output Structure
 
-An array of `FirefoxHistory` for history data and `FirefoxDownloads` for
-downloads data per user.
+Dependent on browser artifact user wants to parse.
 
 ```typescript
 export interface FirefoxHistory {

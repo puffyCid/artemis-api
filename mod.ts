@@ -7,6 +7,11 @@ export { getLogon } from "./src/linux/logon.ts";
 export { getSudoLogsLinux } from "./src/linux/sudo.ts";
 export { getDebInfo } from "./src/linux/deb.ts";
 export { getRpmInfo } from "./src/linux/rpm.ts";
+export { listSnaps } from "./src/linux/snap.ts";
+export { getGnomeExtensions } from "./src/linux/gnome/extensions.ts";
+export { geditRecentFiles } from "./src/linux/gnome/gedit.ts";
+export { parseGvfs } from "./src/linux/gnome/gvfs.ts";
+export { gnomeAppUsage } from "./src/linux/gnome/usage.ts";
 
 /**
  * macOS exported functions
@@ -49,6 +54,7 @@ export { luluRules } from "./src/macos/plist/lulu.ts";
 export { munkiApplicationUsage } from "./src/macos/sqlite/munki.ts";
 export { quarantineEvents } from "./src/macos/sqlite/quarantine.ts";
 export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper.ts";
+export { parseCookies } from "./src/macos/safari/cookies.ts";
 
 /**
  * Unix exported functions
@@ -138,3 +144,24 @@ export { getWmiPersist } from "./src/windows/wmi.ts";
 export { powershellHistory } from "./src/windows/powershell.ts";
 export { parseMru } from "./src/windows/registry/recently_used.ts";
 export { listUsbDevices } from "./src/windows/registry/usb.ts";
+export { parseWordWheel } from "./src/windows/registry/wordwheel.ts";
+export { UserAccessLogging } from "./src/windows/ese/ual.ts";
+export { Updates } from "./src/windows/ese/updates.ts";
+export { Outlook } from "./src/windows/outlook.ts";
+
+/**
+ * Timelining
+ */
+export { timelineArtifact } from "./src/timesketch/timeline.ts";
+export { Timesketch } from "./src/timesketch/client.ts";
+
+/**
+ * Unfold
+ */
+export { Unfold } from "./src/unfold/client.ts";
+
+/**
+ * iOS
+ */
+
+export { extractBackup } from "./src/ios/itunes/backup.ts";

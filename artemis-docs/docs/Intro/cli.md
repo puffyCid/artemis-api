@@ -43,12 +43,9 @@ Usage: artemis acquire [OPTIONS] [COMMAND]
 
 Commands:
   processes          Collect processes
+  connections       Collect network connections
   filelisting        Pull filelisting
   systeminfo         Get systeminfo
-  firefoxhistory     Parse Firefox History
-  chromiumhistory    Parse Chromium History
-  firefoxdownloads   Parse Firefox Downloads
-  chromiumdownloads  Parse Chromium Downloads
   prefetch           windows: Parse Prefetch
   eventlogs          windows: Parse EventLogs
   rawfilelisting     windows: Parse NTFS to get filelisting

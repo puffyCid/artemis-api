@@ -2,7 +2,7 @@
 description: macOS process metadata
 keywords:
   - macOS
-  - proc meta
+  - volatile
 ---
 
 # Processes

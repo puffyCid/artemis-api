@@ -72,7 +72,7 @@ export function parseBom(path: string): Bom | MacosError {
     }
 
     let forward = tree_entry.index;
-    const index_list = [];
+    const index_list: TreeIndex[] = [];
     while (forward != 0) {
       let tree = parseTree(data, forward, table.pointers);
       if (tree instanceof MacosError) {
@@ -182,12 +182,12 @@ export function parseReceipt(path: string): Bom | MacosError {
 
   const receipt = plist_data as Record<string, string>;
   const bom: Bom = {
-    package_name: receipt["PackageFileName"],
-    install_data: receipt["InstallDate"],
-    package_id: receipt["PackageIdentifier"],
-    package_version: receipt["PackageVersion"],
-    install_process_name: receipt["InstallProcessName"],
-    install_prefix_path: receipt["InstallPrefixPath"],
+    package_name: receipt[ "PackageFileName" ],
+    install_data: receipt[ "InstallDate" ],
+    package_id: receipt[ "PackageIdentifier" ],
+    package_version: receipt[ "PackageVersion" ],
+    install_process_name: receipt[ "InstallProcessName" ],
+    install_prefix_path: receipt[ "InstallPrefixPath" ],
     path,
     bom_path: "",
     files: [],
@@ -418,7 +418,7 @@ function getBlock(
     return new MacosError("BOM", `index greater than pointers length`);
   }
 
-  const pointer = pointers[index];
+  const pointer = pointers[ index ];
   if (
     pointer.address > data.length ||
     pointer.address + pointer.length > data.length
@@ -835,17 +835,17 @@ interface BomData {
  * @returns Array of `Bom`
  */
 function assembleBom(files: Map<number, BomData>): BomFiles[] {
-  const boms = [];
+  const boms: BomFiles[] = [];
   const root = 0;
 
-  for (const [key, value] of files) {
+  for (const [ key, value ] of files) {
     // Root directory
     if (key === root) {
       continue;
     }
 
     let parent = value.bom_file.parent;
-    let paths = [];
+    let paths: string[] = [];
     while (parent != root) {
       const parent_path = files.get(parent);
       if (parent_path === undefined) {

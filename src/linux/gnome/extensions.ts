@@ -21,10 +21,10 @@ export function getGnomeExtensions(
   ];
 
   if (alt_path != undefined) {
-    paths = [alt_path];
+    paths = [ alt_path ];
   }
 
-  const extensions = [];
+  const extensions: Extension[] = [];
   for (const entry of paths) {
     const glob_paths = glob(entry);
     if (glob_paths instanceof FileError) {

@@ -8,6 +8,11 @@ import { FileError } from "../../filesystem/errors.ts";
 import { glob } from "../../filesystem/files.ts";
 import { WindowsError } from "../errors.ts";
 
+/**
+ * Fucntion to parse user WordWheel searches in Windows Explorer
+ * @param path Path to NTUSER.dat file. Can also provide a glob to NTUSER.dat files
+ * @returns Array of `WordWheelEntry` or `WindowsError`
+ */
 export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
   const globs = glob(path);
   if (globs instanceof FileError) {
@@ -34,8 +39,14 @@ export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
   return wheels;
 }
 
+/**
+ * Extract WordWheel entries from Regstry. It is just a string value
+ * @param reg Array of `Registry` entries
+ * @param source_path Source path to the NTUSER.dat file
+ * @returns Array of `WordWheelEntry` entries
+ */
 function extractWheel(reg: Registry[], source_path: string): WordWheelEntry[] {
-  const wheels = [];
+  const wheels: WordWheelEntry[] = [];
   for (const entry of reg) {
     if (!entry.path.includes("WordWheel")) {
       continue;

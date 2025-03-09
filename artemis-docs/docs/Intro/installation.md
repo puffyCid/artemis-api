@@ -18,11 +18,19 @@ Grab the latest **stable** release
 
 Currently artemis has been tested on the following types of systems:
 
-- Windows 8.1 and higher. Arch: 64-bit
+- Windows 8.1 and higher. Arch: 64-bit and ARM
 - macOS Catalina and higher. Arch: 64-bit and ARM
 - Ubuntu, Fedora, Arch Linux. Arch: 64-bit and ARM
 
-If you would like support for another OS or architecture please open an issue.
+### Additional platforms
+
+Artemis also supports the following platforms but release binaries are not available yet
+
+- FreeBSD
+- NetBSD
+- Android
+- Linux RISC-V
+- Windows ARM
 
 ## GitHub Releases
 
@@ -79,5 +87,17 @@ to compile artemis
 Please see the [Contributing](../Contributing/overview.md) documentation if you
 would like to compile the entire project including optional experimental
 components
+
+::::
+
+:::info
+
+By default Yara-X is enabled for artemis. However, you may disable this if you want by running:
+
+```
+just slim
+or for Windows
+just --shell pwsh.exe --shell-arg -c slim
+```
 
 ::::

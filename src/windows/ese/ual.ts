@@ -22,7 +22,7 @@ export class UserAccessLogging extends EseDatabase {
    * Construct a `UserAccessLogging` object based on the provided UAL file. Client.mdb and <GUID>.mdb files contain the logon information. SystemIdentity.mdb contains role information
    * @param path Path to UAL related file. Such as SystemIdentity.mdb or Current.mdb or <GUID>.mdb.
    */
-  constructor(path: string) {
+  constructor (path: string) {
     super(path);
     this.info = {
       obj_id_table: 0,
@@ -57,7 +57,7 @@ export class UserAccessLogging extends EseDatabase {
       return rows;
     }
 
-    return this.parseIds(rows["ROLE_IDS"]);
+    return this.parseIds(rows[ "ROLE_IDS" ]);
   }
 
   /**
@@ -83,7 +83,7 @@ export class UserAccessLogging extends EseDatabase {
       return rows;
     }
 
-    const clients = this.parseClients(rows["CLIENTS"]);
+    const clients = this.parseClients(rows[ "CLIENTS" ]);
     let roles_limit: number[] = [];
     if (roles_ual === undefined) {
       return clients;
@@ -174,7 +174,7 @@ export class UserAccessLogging extends EseDatabase {
    * @returns Array of `RoleIds`
    */
   private parseIds(rows: EseTable[][]): RoleIds[] {
-    const roles = [];
+    const roles: RoleIds[] = [];
 
     for (const row of rows) {
       const role: RoleIds = {
@@ -200,7 +200,7 @@ export class UserAccessLogging extends EseDatabase {
    * @returns Array of `UserAccessLog` entries
    */
   private parseClients(rows: EseTable[][]): UserAccessLog[] {
-    const logs = [];
+    const logs: UserAccessLog[] = [];
     for (const row of rows) {
       const ual_log: UserAccessLog = {
         total_accesses: 0,
@@ -261,7 +261,7 @@ export class UserAccessLogging extends EseDatabase {
 
     const is_ipv6 = 16;
     if (raw_ip.length === is_ipv6) {
-      const ip = [];
+      const ip: string[] = [];
       for (const data of raw_ip) {
         ip.push(data.toString(16));
       }

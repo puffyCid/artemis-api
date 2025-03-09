@@ -29,7 +29,7 @@ export function geditRecentFiles(
     );
   }
 
-  const files = [];
+  const files: RecentFiles[] = [];
 
   for (const entry of glob_paths) {
     const data = readXml(entry.full_path);
@@ -40,16 +40,16 @@ export function geditRecentFiles(
       continue;
     }
 
-    const meta = data["metadata"] as Record<
+    const meta = data[ "metadata" ] as Record<
       string,
       Record<string, Record<string, string>>[]
     >;
 
-    const docs = meta["document"];
+    const docs = meta[ "document" ];
     for (const doc of docs) {
       const recent: RecentFiles = {
-        path: doc["$"]["uri"],
-        accessed: unixEpochToISO(Number(doc["$"]["atime"])),
+        path: doc[ "$" ][ "uri" ],
+        accessed: unixEpochToISO(Number(doc[ "$" ][ "atime" ])),
         gedit_source: entry.full_path,
       };
       files.push(recent);
