@@ -97,10 +97,8 @@ export {
   getChromiumLogins,
 } from "./src/applications/chromium.ts";
 export {
-  firefoxDownloads,
-  firefoxHistory,
-  getFirefoxCookies,
-} from "./src/applications/firefox.ts";
+  FireFox,
+} from "./src/applications/firefox/fox.ts";
 export { fileHistory, getExtensions } from "./src/applications/vscode.ts";
 export { recentFiles } from "./src/applications/libreoffice.ts";
 export { querySqlite } from "./src/applications/sqlite.ts";
