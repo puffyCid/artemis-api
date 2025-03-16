@@ -49,6 +49,29 @@ export interface FolderInfo {
 }
 
 /**
+ * Additional metadata associated with a folder
+ */
+export interface FolderMetadata {
+  message_class: string;
+  created: string;
+  properties: PropertyContext[];
+}
+
+export interface NameEntry {
+  reference: number;
+  entry_type: number;
+  value: unknown;
+  index: number;
+  guid: string;
+  name_type: NameType;
+}
+
+export enum NameType {
+  String = "String",
+  Guid = "Guid",
+}
+
+/**
  * Preview of sub-folder metadata
  */
 export interface SubFolder {

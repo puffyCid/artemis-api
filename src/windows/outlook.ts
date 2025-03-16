@@ -1,7 +1,10 @@
 import {
   type Attachment,
   FolderInfo,
+  FolderMetadata,
   MessageDetails,
+  NameEntry,
+  PropertyContext,
   TableInfo,
 } from "../../types/windows/outlook.ts";
 import { WindowsError } from "./errors.ts";
@@ -15,7 +18,7 @@ export class Outlook {
    * @param path Path to the Outlook OST file
    * @param ntfs Should NTFS parser be used. Only works on **Windows**. Required if you want to parse a locked OST file
    */
-  constructor(path: string, ntfs = false) {
+  constructor (path: string, ntfs = false) {
     this.path = path;
     this.use_ntfs = ntfs;
   }
@@ -60,6 +63,71 @@ export class Outlook {
       return new WindowsError(
         "OUTLOOK",
         `failed to read folder for ${this.path}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Function to extract even more metadata from an Outlook folder
+   * @param folder Folder number
+   * @returns Additional folder info `FolderMetadata`  or `WindowsError`
+   */
+  public folderMetadata(folder: number): FolderMetadata | WindowsError {
+    try {
+      //@ts-ignore: Custom Artemis function
+      const data: FolderMetadata = js_folder_meta(
+        this.path,
+        this.use_ntfs,
+        folder,
+      );
+
+      return data;
+    } catch (err) {
+      return new WindowsError(
+        "OUTLOOK",
+        `failed to read folder metadata for ${this.path}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Function to export the Outlook Message Store. Does NOT contain messages
+   * @returns Array of `PropertyContext` or `WindowsError`
+   */
+  public messageStore(): PropertyContext[] | WindowsError {
+    try {
+      //@ts-ignore: Custom Artemis function
+      const data: PropertyContext[] = js_message_store(
+        this.path,
+        this.use_ntfs,
+      );
+
+      return data;
+    } catch (err) {
+      return new WindowsError(
+        "OUTLOOK",
+        `failed to export message store for ${this.path}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Function to extract Name Maps from Outlook. Can be used to translate some GUID values to a name
+   * @returns HashMap of `NameEntry` or `WindowsError`
+   */
+  public nameMaps(): Record<number, NameEntry> | WindowsError {
+    try {
+      //@ts-ignore: Custom Artemis function
+      const data: Record<number, NameEntry> = js_name_map(
+        this.path,
+        this.use_ntfs,
+      );
+
+      return data;
+    } catch (err) {
+      return new WindowsError(
+        "OUTLOOK",
+        `failed to get name maps for ${this.path}: ${err}`,
       );
     }
   }
