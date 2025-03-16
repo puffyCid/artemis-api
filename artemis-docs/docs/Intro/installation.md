@@ -14,6 +14,18 @@ Grab the latest **stable** release
 **Nightly** releases can be downloaded
 [here](https://github.com/puffyCid/artemis/releases/tag/nightly)
 
+:::info
+
+### Which version should I choose: Nightly or Stable?
+
+Nightly versions of artemis are built every day using GitHub Actions.
+Nightly versions are actually stable enough for daily usage.
+
+Stable releases are typically released every 2-3 months.
+Nightly and Stable versions go through the same tests and release process.
+
+:::
+
 ## Supported Systems
 
 Currently artemis has been tested on the following types of systems:

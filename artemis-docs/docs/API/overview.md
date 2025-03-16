@@ -33,4 +33,5 @@ The API can be broken down into two broad groups of categories:
 | [macOS](./Artifacts/macos.md)               | Functions to parse macOS artifacts       |
 | [Linux](./Artifacts/linux.md)               | Functions to parse Linux artifacts       |
 | [Unix](./Artifacts/unix.md)                 | Functions to parse Unix artifacts        |
+| [FreeBSD](./Artifacts/freebsd.md)           | Functions to parse FreeBSD artifacts     |
 | [Applications](./Artifacts/applications.md) | Functions to parse Application artifacts |

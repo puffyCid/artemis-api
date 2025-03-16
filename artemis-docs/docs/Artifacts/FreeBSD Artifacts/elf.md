@@ -1,7 +1,7 @@
 ---
-description: The native executable format for Linux
+description: The native executable format for FreeBSD
 keywords:
-  - linux
+  - freebsd
   - executable
   - binary
 ---
@@ -9,7 +9,7 @@ keywords:
 # ELF
 
 The Executable Linkable Format (`ELF`) is the executable format for
-applications on Linux systems.
+applications on FreeBSD systems.
 
 Artemis is able to parse basic metadata from `ELF` files.
 
@@ -26,7 +26,7 @@ References:
 # TOML Collection
 
 There is no way to collect just ELF data with artemis instead it is an optional
-feature for the Linux [filelisting](./files.md) and [processes](./processes.md)
+feature for the [filelisting](./files.md) and [processes](./processes.md)
 artifacts.
 
 However, it is possible to directly parse ELF files by using JavaScript. See the

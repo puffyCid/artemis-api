@@ -19,12 +19,12 @@ export function getEventlogs(
   offset: number,
   limit: number,
   include_templates = false,
-  template_file = "",
+  template_file = undefined,
 ):
-  | readonly [messages: EventLogMessage[], raw_messages: EventLogRecord[]]
+  | readonly [ messages: EventLogMessage[], raw_messages: EventLogRecord[] ]
   | WindowsError {
   if (
-    include_templates && platform() != "Windows" && template_file == ""
+    include_templates && platform() != "Windows" && template_file === undefined
   ) {
     return new WindowsError(
       "EVENTLOG",

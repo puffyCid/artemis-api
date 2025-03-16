@@ -148,6 +148,11 @@ export { Updates } from "./src/windows/ese/updates.ts";
 export { Outlook } from "./src/windows/outlook.ts";
 
 /**
+ * FreeBSD
+ */
+export { getPkgs } from "./src/freebsd/packages.ts";
+
+/**
  * Timelining
  */
 export { timelineArtifact } from "./src/timesketch/timeline.ts";
