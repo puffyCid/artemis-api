@@ -132,3 +132,13 @@ for all users.
 ### listSnaps() -> Record&lt;string, SnapState&gt; | LinuxError
 
 Get a list of all installed Snap packages
+
+### extractAbrt(alt_dir) -> Abrt[] | LinuxError
+
+Extract abrt metadata about application crashes. You may provide an optional alternative directory containing abrt related files.
+
+By default all abrt crashes are parsed. Root access is required to access abrt related fiels
+
+| Param    | Type   | Description                                        |
+| -------- | ------ | -------------------------------------------------- |
+| alt_dir  | string | Alt path to abrt crash directory                   |

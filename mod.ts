@@ -12,6 +12,7 @@ export { getGnomeExtensions } from "./src/linux/gnome/extensions.ts";
 export { geditRecentFiles } from "./src/linux/gnome/gedit.ts";
 export { parseGvfs } from "./src/linux/gnome/gvfs.ts";
 export { gnomeAppUsage } from "./src/linux/gnome/usage.ts";
+export { extractAbrt } from "./src/linux/abrt.ts";
 
 /**
  * macOS exported functions
