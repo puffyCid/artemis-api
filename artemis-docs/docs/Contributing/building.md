@@ -51,7 +51,7 @@ Artemis has been developed on:
 - Windows 10 and higher
 - Linux distros such as Ubuntu, Debian, and Fedora
 
-# Building
+## Building
 
 Once you have the prerequisites installed you can build artemis.
 
@@ -114,7 +114,7 @@ Available recipes:
 
 ```
 
-# Building for estoric platforms
+## Building for estoric platforms
 
 Artemis can be compiled for a varierty of platforms using [cross](https://github.com/cross-rs/cross). Once you have cross setup you can build artemis for:
 - FreeBSD

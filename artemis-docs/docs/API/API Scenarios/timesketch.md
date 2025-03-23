@@ -110,8 +110,8 @@ const status = await client.timelineAndUpload(
 
 :::info
 
-Artemis can only execute JavaScript code. You will need to create a
-[build.ts script](../../Intro/Scripting/bundling.md#esbuild) before you can run
+Artemis can only execute JavaScript code. You will to
+[bundle](../../Intro/Scripting/bundling.md#esbuild) this TypeScript code before you can run
 this example.
 
 :::
