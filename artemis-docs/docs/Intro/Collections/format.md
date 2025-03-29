@@ -15,6 +15,7 @@ name = "amcache_collection"
 directory = "./tmp"
 format = "json"
 compress = false
+timeline = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"
@@ -42,6 +43,7 @@ filter = false
   - `compress` Whether to compress the output with **gzip** compression. Once
     the collection is complete the output directory will be compressed with
     **zip** compression.
+  - `timeline` Whether to timeline the parsed data. This forces the output format to JSONL and is compatible with [Timesketch](https://timesketch.org/)
   - `endpoint_id` An ID assigned to the endpoint. This can be any string value
   - `collection_id` A number assigned to the collection. This can be any postive
     number
@@ -84,6 +86,7 @@ name = "execution_collection"
 directory = "./tmp"
 format = "jsonl"
 compress = false
+timeline = true
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"

@@ -124,3 +124,22 @@ export interface FirefoxProfiles {
   full_path: string;
   version: number;
 }
+export interface FirefoxStorage {
+  repository: Respository;
+  suffix?: string;
+  group: string;
+  origin: string;
+  client_usages: string;
+  last_access: string;
+  accessed: number;
+  persisted: number;
+  db_path: string;
+}
+
+export enum Respository {
+  Persistent = "Persistent",
+  Default = "Default",
+  Private = "Private",
+  Unknown = "Unknown",
+  Temporary = "Temporary",
+}

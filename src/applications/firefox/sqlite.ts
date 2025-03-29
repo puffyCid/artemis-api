@@ -1,4 +1,4 @@
-import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxHistory, FirefoxProfiles, RawFirefoxDownloads, RawFirefoxHistory } from "../../../types/applications/firefox";
+import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxHistory, FirefoxProfiles, FirefoxStorage, RawFirefoxDownloads, RawFirefoxHistory, Respository } from "../../../types/applications/firefox";
 import { PlatformType } from "../../system/systeminfo";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
@@ -298,4 +298,51 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
 
     }
     return favicons;
+}
+
+export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType): FirefoxStorage[] | ApplicationError {
+    const query = "SELECT respository_id, suffix, group_, origin, client_usages, usage, last_access_time, accessed, persisted FROM origin";
+
+    const storage: FirefoxStorage[] = [];
+    for (const path of paths) {
+        let full_path = `${path.full_path}/storage.sqlite`;
+
+        if (platform === PlatformType.Windows) {
+            full_path = `${path.full_path}\\storage.sqlite`;
+        }
+
+        const results = querySqlite(full_path, query);
+        if (results instanceof ApplicationError) {
+            console.warn(`Failed to query ${full_path}: ${results}`);
+            continue;
+        }
+
+        for (const entry of results) {
+            const fav_entry: FirefoxStorage = {
+                db_path: full_path,
+                repository: getRepo(entry[ "respository_id" ] as number),
+                group: entry[ "group_" ] as string,
+                origin: entry[ "origin" ] as string,
+                client_usages: entry[ "client_usages" ] as string,
+                last_access: unixEpochToISO(entry[ "last_access_time" ] as number),
+                accessed: entry[ "accessed" ] as number,
+                persisted: entry[ "persisted" ] as number,
+                suffix: entry[ "suffix" ] as string ?? undefined
+            };
+
+            storage.push(fav_entry);
+        }
+
+    }
+    return storage;
+}
+
+function getRepo(id: number): Respository {
+    switch (id) {
+        case 1: return Respository.Temporary;
+        case 0: return Respository.Persistent;
+        case 2: return Respository.Default;
+        case 3: return Respository.Private;
+        default: return Respository.Unknown;
+    }
 }

@@ -1,4 +1,4 @@
-import { FirefoxCookies, FirefoxDownloads, FirefoxHistory, FirefoxProfiles } from "../../../types/applications/firefox";
+import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
@@ -6,8 +6,11 @@ import { glob, readTextFile } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { firefoxAddons } from "./addons";
-import { firefoxCookies, firefoxDownloads, firefoxHistory } from "./sqlite";
+import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxHistory, firefoxStorage } from "./sqlite";
 
+/**
+ * Class to extract Firefox information
+ */
 export class FireFox {
     private paths: FirefoxProfiles[];
     private platform: PlatformType;
@@ -72,6 +75,22 @@ export class FireFox {
      */
     public addons(): Record<string, unknown>[] | ApplicationError {
         return firefoxAddons(this.paths, this.platform);
+    }
+
+    /**
+     * Function to extract entries from `storage.sqlite`
+     * @returns Array of `FirefoxStorage` or `ApplicationError`
+     */
+    public storage(): FirefoxStorage[] | ApplicationError {
+        return firefoxStorage(this.paths, this.platform);
+    }
+
+    /**
+     * Function to extract favicon entries
+     * @returns Array of `FirefoxFavicons` or `ApplicationError`
+     */
+    public favicons(): FirefoxFavicons[] | ApplicationError {
+        return firefoxFavicons(this.paths, this.platform);
     }
 
     /**
