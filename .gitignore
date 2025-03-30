@@ -1,4 +1,4 @@
 .DS_Store
 tests/*/*/*.js
-deno.lock
 *script_tester*
+*node_modules*
