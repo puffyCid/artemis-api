@@ -5,7 +5,7 @@ setlocal EnableExtensions DisableDelayedExpansion
 for /D %%i in ("*") do (
   cd %%i 
   echo "Running test for %%i"
-  C:\ProgramData\chocolatey\lib\deno\deno.exe run -A build.ts
+.\node_modules\.bin\esbuild  run -A build.ts
   ::set value=
   setlocal EnableDelayedExpansion
   ..\script_tester.exe main.js

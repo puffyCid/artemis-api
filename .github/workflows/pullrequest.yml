@@ -42,17 +42,17 @@ jobs:
         if: matrix.info.os == 'ubuntu-24.04'
         run: wget -O ./tests/linux/script_tester https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester && chmod +x ./tests/linux/script_tester
 
-      - name: Install Deno macOS
+      - name: Install esbuild macOS
         if: matrix.info.os == 'macOS-latest'
-        run: brew install deno
+        run: brew install esbuild
 
-      - name: Install Deno Linux
+      - name: Install esbuild Linux
         if: matrix.info.os == 'ubuntu-24.04'
-        run: curl -fsSL https://deno.land/install.sh | sh
+        run: sudo apt install esbuild
 
-      - name: Install Deno Windows
+      - name: Install esbuild Windows
         if: matrix.info.os == 'windows-latest'
-        run: choco.exe install deno
+        run: npm install --save-exact --save-dev esbuild
 
       - name: Compile and run tests macOS
         if: matrix.info.os == 'macOS-latest'
