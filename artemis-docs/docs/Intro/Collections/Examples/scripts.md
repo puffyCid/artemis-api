@@ -21,6 +21,7 @@ name = "win_filter"
 directory = "./tmp"
 format = "json"
 compress = false
+timeline = false
 endpoint_id = "abdc"
 collection_id = 1
 output = "local"

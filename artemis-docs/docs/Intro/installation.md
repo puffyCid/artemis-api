@@ -36,7 +36,7 @@ Currently artemis has been tested on the following types of systems:
 
 ### Additional platforms
 
-Artemis also supports the following platforms but release binaries are not available yet
+Artemis also supports the following platforms:
 
 - FreeBSD
 - NetBSD

@@ -57,6 +57,7 @@ function main() {
     directory: "./tmp",
     format: Format.JSONL,
     compress: false,
+    timeline: false,
     endpoint_id: "abc",
     collection_id: 0,
     output: OutputType.LOCAL,
@@ -71,7 +72,7 @@ function main() {
   if (status instanceof TimesketchError) {
     return;
   }
-  dumpData(JSON.stringify(results), "launchd", out);
+  dumpData(results, "launchd", out);
 }
 
 main();

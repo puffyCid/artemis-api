@@ -120,7 +120,7 @@ This data would be saved in a `<uuid>.jsonl` file
 The `<uuid>.log` output from a collection contains any errors or warnings
 encountered during the collection.
 
-The `status.log` output from a collection maps the `<uuid>.{json or jsonl}`
+The `status.log` output from a collection maps the `<uuid>.{json, jsonl, or csv}`
 files to an artifact name. A possible example from the macOS `UnifiedLogs`
 
 ```
@@ -129,13 +129,13 @@ unifiedlogs:eccd7b5b-4941-4134-a790-b073eb992188.json
 ```
 
 As mentioned and seen above you can also check the actual
-`<uuid>.{json or jsonl}` files to find the `artifact_name`
+`<uuid>.{json, jsonl, or csv}` files to find the `artifact_name`
 
-# Compression
+## Compression
 
 If you choose to enable compression for the output artemis will compress each
-`<uuid>.{json or jsonl}` using gzip compression. The files will be saved as
-`<uuid>.{json or jsonl}.gz`. The log files are not compressed.
+`<uuid>.{json, jsonl, or csv}` using gzip compression. The files will be saved as
+`<uuid>.{json, jsonl, or csv}.gz`. The log files are not compressed.
 
 Once the collection is complete artemis will compress the whole output directory
 into a zip file and remove the output directory. Leaving only the zip file.
@@ -146,3 +146,68 @@ to deleting its data:
 - It gets a list of files in its output directory and deletes files one at a
   time that end in: json, jsonl, gz, or log
 - Once all output files are deleted, it will delete the empty directory.
+
+## Timelining
+
+There are two primary ways to timeline data with artemis. The easiest way is to use a TOML file or cli command:  
+```
+artemis acquire --timeline prefetch
+```
+
+You can also use the [JS API](../../API/API%20Scenarios/timelines.md) to timeline data.
+
+Artemis outputs timeline data in a format that is support by Timesketch. So you can upload results to review (you can also use [artemis](../../API/API%20Scenarios/timesketch.md)).
+
+:::info
+
+Two things to be aware when timelining data:
+1. The output will always be JSONL
+2. Timelining an artifact will cause artemis to run longer and use a little bit more memory
+
+:::
+
+When you timeline an artifact using a TOML file or cli, you can only timeline the following artifacts:
+```
+  processes          Collect processes
+  connections        Collect network connections
+  filelisting        Pull filelisting
+  prefetch           windows: Parse Prefetch
+  eventlogs          windows: Parse EventLogs
+  rawfilelisting     windows: Parse NTFS to get filelisting
+  shimdb             windows: Parse ShimDatabase
+  registry           windows: Parse Registry
+  userassist         windows: Parse Userassist
+  shimcache          windows: Parse Shimcache
+  shellbags          windows: Parse Shellbags
+  amcache            windows: Parse Amcache
+  shortcuts          windows: Parse Shortcuts
+  usnjrnl            windows: Parse UsnJrnl
+  bits               windows: Parse BITS
+  srum               windows: Parse SRUM
+  users-windows      windows: Parse Users
+  search             windows: Parse Windows Search
+  tasks              windows: Parse Windows Tasks
+  services           windows: Parse Windows Services
+  jumplists          windows: Parse Jumplists
+  recyclebin         windows: Parse RecycleBin
+  wmipersist         windows: Parse WMI Repository
+  outlook            windows: Parse Outlook messages
+  mft                windows: Parse MFT file
+  execpolicy         macos: Parse ExecPolicy
+  users-macos        macos: Collect local users
+  fsevents           macos: Parse FsEvents entries
+  emond              macos: Parse Emond persistence. Removed in Ventura
+  loginitems         macos: Parse LoginItems
+  launchd            macos: Parse Launch Daemons and Agents
+  groups-macos       macos: Collect local groups
+  safari-history     macos: Collect Safari History
+  safari-downloads   macos: Collect Safari Downloads
+  unifiedlogs        macos: Parse the Unified Logs
+  sudologs-macos     macos: Parse Sudo log entries from Unified Logs
+  spotlight          macos: Parse the Spotlight database
+  sudologs-linux     linux: Grab Sudo logs
+  journals           linux: Parse systemd Journal files
+  logons             linux: Parse Logon files
+```
+
+If you timeline an artifact using the JS API you can timeline any artifact.

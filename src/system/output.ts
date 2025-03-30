@@ -15,6 +15,8 @@ export interface Output {
   format: Format;
   /**Compress data with GZIP and all files with ZIP */
   compress: boolean;
+  /**Use `timelineArtifact()` or timeline the data yourself (using TS/JS). The Rust timeliner cannot timeline dynamic artifacts */
+  timeline: false;
   /**Endpoint ID */
   endpoint_id: string;
   /**ID for collection. Must be postive number */
