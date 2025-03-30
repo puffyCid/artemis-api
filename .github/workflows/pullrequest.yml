@@ -52,7 +52,7 @@ jobs:
 
       - name: Install esbuild Windows
         if: matrix.info.os == 'windows-latest'
-        run: npm install --save-exact --save-dev esbuild
+        run: cd tests\windows && npm install --save-exact --save-dev esbuild
 
       - name: Compile and run tests macOS
         if: matrix.info.os == 'macOS-latest'
