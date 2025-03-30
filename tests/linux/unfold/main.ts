@@ -10,9 +10,8 @@ function main() {
     throw info;
   }
 
-  console.log(info);
-  if (info["partial_query"] != "artemis dfir github") {
-    throw `got ${info["partial_query"]} instead of 'artemis dfir github'`;
+  if (info[ "partial_query" ] != "artemis dfir github") {
+    throw `got ${info[ "partial_query" ]} instead of 'artemis dfir github'`;
   }
 }
 
