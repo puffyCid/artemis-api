@@ -156,7 +156,13 @@ artemis acquire --timeline prefetch
 
 You can also use the [JS API](../../API/API%20Scenarios/timelines.md) to timeline data.
 
-Artemis outputs timeline data in a format that is support by Timesketch. So you can upload results to review (you can also use [artemis](../../API/API%20Scenarios/timesketch.md)).
+Artemis outputs timeline data in a format that is supported by Timesketch. So you can upload results to review (you can also use [artemis](../../API/API%20Scenarios/timesketch.md)).
+
+When you timeline data, artemis will add four fields:
+- message
+- datetime
+- timestamp_desc
+- data_type
 
 :::info
 
@@ -211,3 +217,155 @@ When you timeline an artifact using a TOML file or cli, you can only timeline th
 ```
 
 If you timeline an artifact using the JS API you can timeline any artifact.
+
+Artemis will not sort your timeline, it will only extract different timestamps into separate entries.
+For example, below is a simple filelisting entry:
+```json
+{
+    "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+    "directory": "./deps",
+    "filename": "autocfg-36b1baa0a559f221.d",
+    "extension": "d",
+    "created": "2024-12-05T03:59:38.000Z",
+    "modified": "2024-12-05T03:59:36.000Z",
+    "changed": "2024-12-08T03:59:36.000Z",
+    "accessed": "2024-12-06T04:42:22.000Z",
+    "size": 1780,
+    "inode": 4295384,
+    "mode": 33188,
+    "uid": 1000,
+    "gid": 1000,
+    "md5": "9b5ec7c5011358706533373fdc05f59e",
+    "sha1": "",
+    "sha256": "",
+    "is_file": true,
+    "is_directory": false,
+    "is_symlink": false,
+    "depth": 2,
+    "yara_hits": [],
+    "binary_info": []
+}
+```
+
+Notice it has four different timestamps. When you timeline this data artemis will create four seperate entries, one for each timestamp.
+
+```json
+[
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-06T04:42:22.000Z",
+        "timestamp_desc": "Accessed"
+    },
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-05T03:59:38.000Z",
+        "timestamp_desc": "Created"
+    },
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-05T03:59:36.000Z",
+        "timestamp_desc": "Modified"
+    },
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-08T03:59:36.000Z",
+        "timestamp_desc": "Changed"
+    }
+]
+```
