@@ -5,7 +5,7 @@ setlocal EnableExtensions DisableDelayedExpansion
 for /D %%i in ("*") do (
   cd %%i 
   echo "Running test for %%i"
- ..\node_modules\.bin\esbuild --bundle --outfile=main.js main.ts
+  ..\node_modules\.bin\esbuild --bundle --outfile=main.js main.ts
   ::set value=
   setlocal EnableDelayedExpansion
   ..\script_tester.exe main.js
