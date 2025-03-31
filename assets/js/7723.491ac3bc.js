@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkartemis_docs=self.webpackChunkartemis_docs||[]).push([[7723],{80104:(e,s,c)=>{c.d(s,{createPieServices:()=>a.f});var a=c(88685);c(19369)}}]);
