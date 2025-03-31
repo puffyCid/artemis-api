@@ -1,5 +1,5 @@
-import { WmiPersist } from "../../../../types/windows/wmi.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { WmiPersist } from "../../../../types/windows/wmi";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline WMI Persistence

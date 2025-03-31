@@ -1,7 +1,7 @@
-import { DebPackages } from "../../types/linux/deb.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { readTextFile } from "../filesystem/mod.ts";
-import { LinuxError } from "./errors.ts";
+import { DebPackages } from "../../types/linux/deb";
+import { FileError } from "../filesystem/errors";
+import { readTextFile } from "../filesystem/mod";
+import { LinuxError } from "./errors";
 
 /**
  * Function to get installed DEB packages. Will attempt to parse `/var/lib/dpkg/status` by default.

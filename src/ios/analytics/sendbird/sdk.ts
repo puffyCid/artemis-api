@@ -1,11 +1,11 @@
-import { getPlist } from "../../../../mod.ts";
+import { getPlist } from "../../../../mod";
 import {
   Daily,
   StatStorage,
-} from "../../../../types/ios/analytivs/sendbird.ts";
-import { extractUtf8String } from "../../../encoding/mod.ts";
-import { MacosError } from "../../../macos/errors.ts";
-import { IosError } from "../../error.ts";
+} from "../../../../types/ios/analytivs/sendbird";
+import { extractUtf8String } from "../../../encoding/mod";
+import { MacosError } from "../../../macos/errors";
+import { IosError } from "../../error";
 
 /**
  * Function to extract SendBird stat storage info

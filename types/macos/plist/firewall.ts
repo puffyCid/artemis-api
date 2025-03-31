@@ -1,5 +1,5 @@
-import { Alias } from "../alias.ts";
-import { SingleRequirement } from "../codesigning.ts";
+import { Alias } from "../alias";
+import { SingleRequirement } from "../codesigning";
 
 /**
  * Represents the current status of the macOS Firewall

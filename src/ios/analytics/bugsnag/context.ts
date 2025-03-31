@@ -1,7 +1,7 @@
-import { encode } from "../../../encoding/mod.ts";
-import { FileError } from "../../../filesystem/errors.ts";
-import { readFile } from "../../../filesystem/files.ts";
-import { IosError } from "../../error.ts";
+import { encode } from "../../../encoding/mod";
+import { FileError } from "../../../filesystem/errors";
+import { readFile } from "../../../filesystem/files";
+import { IosError } from "../../error";
 
 /**
  * Function to read the `run_context` binary file. Seems to only contain a UUID string

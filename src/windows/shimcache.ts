@@ -1,5 +1,5 @@
-import { Shimcache } from "../../types/windows/shimcache.ts";
-import { WindowsError } from "./errors.ts";
+import { Shimcache } from "../../types/windows/shimcache";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse `Shimcache` entries on the systemdrive

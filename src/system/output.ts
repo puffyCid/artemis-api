@@ -1,4 +1,4 @@
-import { SystemError } from "./error.ts";
+import { SystemError } from "./error";
 
 /**
  * An interface to output data using `artemis`

@@ -1,5 +1,5 @@
-import { UnifiedLog } from "../../types/macos/unifiedlogs.ts";
-import { MacosError } from "./errors.ts";
+import { UnifiedLog } from "../../types/macos/unifiedlogs";
+import { MacosError } from "./errors";
 
 /**
  * Function to get `sudo logs`. Can provide an alternative directory containing logs. Otherwise will parse default log locations on macOS

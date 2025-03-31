@@ -1,5 +1,5 @@
-import { Registry, SecurityKey } from "../../types/windows/registry.ts";
-import { WindowsError } from "./errors.ts";
+import { Registry, SecurityKey } from "../../types/windows/registry";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse a `Registry` file

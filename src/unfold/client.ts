@@ -1,10 +1,10 @@
-import type { Url } from "../../types/http/unfold.ts";
-import { UnfoldError } from "./error.ts";
-import { Bing } from "./plugins/bing.ts";
-import { Dropbox } from "./plugins/dropbox.ts";
-import { DuckDuckGo } from "./plugins/duckduckgo.ts";
-import { Google } from "./plugins/google.ts";
-import { Outlook } from "./plugins/outlook.ts";
+import type { Url } from "../../types/http/unfold";
+import { UnfoldError } from "./error";
+import { Bing } from "./plugins/bing";
+import { Dropbox } from "./plugins/dropbox";
+import { DuckDuckGo } from "./plugins/duckduckgo";
+import { Google } from "./plugins/google";
+import { Outlook } from "./plugins/outlook";
 
 /**
  * Class to extract additional metadata from a URL. Inspired by [unfurl](https://dfir.blog/introducing-unfurl/)

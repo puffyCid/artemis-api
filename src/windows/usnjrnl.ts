@@ -1,5 +1,5 @@
-import { UsnJrnl } from "../../types/windows/usnjrnl.ts";
-import { WindowsError } from "./errors.ts";
+import { UsnJrnl } from "../../types/windows/usnjrnl";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse the `UsnJrnl` on the systemdrive

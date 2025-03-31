@@ -1,11 +1,11 @@
 import {
   FileType,
   ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
-import { parseGeoSites } from "./webkit.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
+import { parseGeoSites } from "./webkit";
 
 /**
  * Function to extract DuckDuckGo browser info

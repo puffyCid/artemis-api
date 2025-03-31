@@ -1,5 +1,5 @@
-import { UserInfo } from "../../../../types/windows/users.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { UserInfo } from "../../../../types/windows/users";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Windows Users

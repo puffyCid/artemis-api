@@ -1,7 +1,7 @@
-import { EolResponse, EolStatus } from "../../types/http/eol.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
-import { ClientRequest, Protocol, request } from "./client.ts";
-import { HttpError } from "./errors.ts";
+import { EolResponse, EolStatus } from "../../types/http/eol";
+import { extractUtf8String } from "../encoding/strings";
+import { ClientRequest, Protocol, request } from "./client";
+import { HttpError } from "./errors";
 
 /**
  * Function to check the version information of software via https://endoflife.date. Only the software name is submitted to https://endoflife.date

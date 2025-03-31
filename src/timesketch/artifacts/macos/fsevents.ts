@@ -1,5 +1,5 @@
-import { Fsevents } from "../../../../types/macos/fsevents.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Fsevents } from "../../../../types/macos/fsevents";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline fsevents. (This artifact has no timestamp)

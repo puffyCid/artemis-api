@@ -1,5 +1,5 @@
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { Journal } from "../../../../types/linux/journal.ts";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
+import { Journal } from "../../../../types/linux/journal";
 
 /**
  * Function to timeline Journal files

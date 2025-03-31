@@ -1,4 +1,4 @@
-import { ShellItems } from "../shellitems.ts";
+import { ShellItems } from "../shellitems";
 
 export interface Mru {
   ntuser_path: string;

@@ -1,5 +1,5 @@
-import { Logon } from "../../types/linux/logon.ts";
-import { LinuxError } from "./errors.ts";
+import { Logon } from "../../types/linux/logon";
+import { LinuxError } from "./errors";
 
 /**
  * Function to get parse a logon file

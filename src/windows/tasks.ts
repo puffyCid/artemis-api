@@ -1,5 +1,5 @@
-import { TaskData, TaskJob, TaskXml } from "../../types/windows/tasks.ts";
-import { WindowsError } from "./errors.ts";
+import { TaskData, TaskJob, TaskXml } from "../../types/windows/tasks";
+import { WindowsError } from "./errors";
 
 /**
  * Parse the Schedule Task files using the default systemdrive (typically C).

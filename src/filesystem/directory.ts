@@ -1,5 +1,5 @@
-import { FileInfo } from "../../types/filesystem/directory.ts";
-import { FileError } from "./errors.ts";
+import { FileInfo } from "../../types/filesystem/directory";
+import { FileError } from "./errors";
 
 /**
  * Read a provided directory and get list of files

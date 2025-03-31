@@ -2,10 +2,10 @@ import {
   HomebrewData,
   HomebrewFormula,
   HomebrewReceipt,
-} from "../../types/macos/homebrew.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { glob, readTextFile } from "../filesystem/files.ts";
-import { unixEpochToISO } from "../time/conversion.ts";
+} from "../../types/macos/homebrew";
+import { FileError } from "../filesystem/errors";
+import { glob, readTextFile } from "../filesystem/files";
+import { unixEpochToISO } from "../time/conversion";
 
 /**
  * Function to get Homebrew info on installed packages and Casks

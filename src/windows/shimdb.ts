@@ -1,5 +1,5 @@
-import { Shimdb } from "../../types/windows/shimdb.ts";
-import { WindowsError } from "./errors.ts";
+import { Shimdb } from "../../types/windows/shimdb";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse `ShimDB` entries on the systemdrive

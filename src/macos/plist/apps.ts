@@ -1,10 +1,10 @@
-import { getPlist } from "../../../mod.ts";
-import { Applications } from "../../../types/macos/plist/apps.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob, readFile } from "../../filesystem/files.ts";
-import { readDir } from "../../filesystem/mod.ts";
-import { parseIcon } from "../../images/icns.ts";
-import { MacosError } from "../errors.ts";
+import { getPlist } from "../../../mod";
+import { Applications } from "../../../types/macos/plist/apps";
+import { FileError } from "../../filesystem/errors";
+import { glob, readFile } from "../../filesystem/files";
+import { readDir } from "../../filesystem/mod";
+import { parseIcon } from "../../images/icns";
+import { MacosError } from "../errors";
 
 /**
  * Returns a very simple App listing on the system. Searches user installed Apps, System Apps, default Homebrew paths (/usr/local/Cellar, /opt/homebrew/Cellar).

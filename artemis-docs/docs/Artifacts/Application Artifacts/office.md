@@ -22,8 +22,8 @@ You have to use the artemis [api](../../API/overview.md) in order to collect
 Microsoft Office information.
 
 ```typescript
-import { PlatformType } from "./artemis-api/mod.ts";
-import { officeMruFiles } from "./artemis-api/src/applications/office.ts";
+import { PlatformType } from "./artemis-api/mod";
+import { officeMruFiles } from "./artemis-api/src/applications/office";
 
 function main() {
   const results = officeMruFiles(PlatformType.Darwin);

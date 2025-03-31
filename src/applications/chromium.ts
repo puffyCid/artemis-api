@@ -3,7 +3,7 @@ import {
   ChromiumBookmarkChildren,
   ChromiumLogins,
   Dips,
-} from "../../types/applications/chromium.ts";
+} from "../../types/applications/chromium";
 import {
   ChromiumBookmarks,
   ChromiumCookies,
@@ -11,15 +11,15 @@ import {
   ChromiumHistory,
   RawChromiumDownloads,
   RawChromiumHistory,
-} from "../../types/applications/chromium.ts";
-import { GlobInfo } from "../../types/filesystem/globs.ts";
-import { getEnvValue } from "../environment/env.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { glob, readTextFile } from "../filesystem/files.ts";
-import { PlatformType } from "../system/systeminfo.ts";
-import { unixEpochToISO, webkitToUnixEpoch } from "../time/conversion.ts";
-import { ApplicationError } from "./errors.ts";
-import { querySqlite } from "./sqlite.ts";
+} from "../../types/applications/chromium";
+import { GlobInfo } from "../../types/filesystem/globs";
+import { getEnvValue } from "../environment/env";
+import { FileError } from "../filesystem/errors";
+import { glob, readTextFile } from "../filesystem/files";
+import { PlatformType } from "../system/systeminfo";
+import { unixEpochToISO, webkitToUnixEpoch } from "../time/conversion";
+import { ApplicationError } from "./errors";
+import { querySqlite } from "./sqlite";
 
 /**
  * Function to get Chromium history for all users

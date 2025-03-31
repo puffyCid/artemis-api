@@ -1,5 +1,5 @@
-import { Nom } from "../../types/nom/nom.ts";
-import { NomError } from "./error.ts";
+import { Nom } from "../../types/nom/nom";
+import { NomError } from "./error";
 
 /**
  * Nom string or bytes

@@ -1,5 +1,5 @@
-import { UnifiedLog } from "../../../../types/macos/unifiedlogs.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { UnifiedLog } from "../../../../types/macos/unifiedlogs";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline unifiedlogs

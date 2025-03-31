@@ -1,17 +1,17 @@
-import { EseTable, TableInfo } from "../../../types/windows/ese.ts";
+import { EseTable, TableInfo } from "../../../types/windows/ese";
 import {
   Operation,
   ServerSelection,
   UpdateHistory,
-} from "../../../types/windows/ese/updates.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { decode } from "../../encoding/mod.ts";
-import { formatGuid } from "../../encoding/uuid.ts";
-import { getEnvValue } from "../../environment/env.ts";
-import { Endian } from "../../nom/helpers.ts";
-import { nomUnsignedFourBytes, take } from "../../nom/mod.ts";
-import { WindowsError } from "../errors.ts";
-import { EseDatabase } from "../ese.ts";
+} from "../../../types/windows/ese/updates";
+import { EncodingError } from "../../encoding/errors";
+import { decode } from "../../encoding/mod";
+import { formatGuid } from "../../encoding/uuid";
+import { getEnvValue } from "../../environment/env";
+import { Endian } from "../../nom/helpers";
+import { nomUnsignedFourBytes, take } from "../../nom/mod";
+import { WindowsError } from "../errors";
+import { EseDatabase } from "../ese";
 
 /**
  * Class to parse history of Windows Updates

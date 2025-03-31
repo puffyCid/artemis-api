@@ -1,5 +1,5 @@
-import { Shortcut } from "../../types/windows/shortcuts.ts";
-import { WindowsError } from "./errors.ts";
+import { Shortcut } from "../../types/windows/shortcuts";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse a `Shortcut (lnk)` file

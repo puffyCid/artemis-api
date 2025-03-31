@@ -1,5 +1,5 @@
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { Services } from "../../../../types/windows/services.ts";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
+import { Services } from "../../../../types/windows/services";
 
 /**
  * Function to timeline Services

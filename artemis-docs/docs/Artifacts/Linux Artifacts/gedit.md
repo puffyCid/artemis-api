@@ -16,7 +16,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 recent opened files by gedit.
 
 ```typescript
-import { geditRecentFiles } from "./artemis-api/src/linux/gnome/gedit.ts";
+import { geditRecentFiles } from "./artemis-api/src/linux/gnome/gedit";
 
 function main() {
   const results = geditRecentFiles();

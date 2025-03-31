@@ -1,5 +1,5 @@
-import { Services } from "../../types/windows/services.ts";
-import { WindowsError } from "./errors.ts";
+import { Services } from "../../types/windows/services";
+import { WindowsError } from "./errors";
 
 /**
  * Parse Windows Services using the default systemdrive (typically C).

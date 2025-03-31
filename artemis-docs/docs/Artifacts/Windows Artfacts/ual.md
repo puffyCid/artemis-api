@@ -21,10 +21,10 @@ keys.
 # Sample API Script
 
 ```typescript
-import { FileError } from "../../Projects/artemis-api/src/filesystem/errors.ts";
-import { glob } from "../../Projects/artemis-api/src/filesystem/files.ts";
-import { WindowsError } from "../../Projects/artemis-api/src/windows/errors.ts";
-import { UserAccessLogging } from "../../Projects/artemis-api/src/windows/ese/ual.ts";
+import { FileError } from "../../Projects/artemis-api/src/filesystem/errors";
+import { glob } from "../../Projects/artemis-api/src/filesystem/files";
+import { WindowsError } from "../../Projects/artemis-api/src/windows/errors";
+import { UserAccessLogging } from "../../Projects/artemis-api/src/windows/ese/ual";
 
 function main() {
   const glob_path = "C:\\System32\\LogFiles\\Sum\\*.mdb";

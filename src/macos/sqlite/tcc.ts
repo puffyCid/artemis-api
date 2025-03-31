@@ -1,21 +1,21 @@
-import { MacosError } from "../errors.ts";
+import { MacosError } from "../errors";
 import {
   AuthValue,
   ClientType,
   Reason,
   TccData,
   TccValues,
-} from "../../../types/macos/sqlite/tcc.ts";
-import { glob } from "../../filesystem/files.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { querySqlite } from "../../applications/sqlite.ts";
-import { ApplicationError } from "../../applications/errors.ts";
-import { SingleRequirement } from "../../../types/macos/codesigning.ts";
-import { decode } from "../../encoding/base64.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { parseRequirementBlob } from "../codesigning/blob.ts";
-import { SigningError } from "../codesigning/errors.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
+} from "../../../types/macos/sqlite/tcc";
+import { glob } from "../../filesystem/files";
+import { FileError } from "../../filesystem/errors";
+import { querySqlite } from "../../applications/sqlite";
+import { ApplicationError } from "../../applications/errors";
+import { SingleRequirement } from "../../../types/macos/codesigning";
+import { decode } from "../../encoding/base64";
+import { EncodingError } from "../../encoding/errors";
+import { parseRequirementBlob } from "../codesigning/blob";
+import { SigningError } from "../codesigning/errors";
+import { unixEpochToISO } from "../../time/conversion";
 
 /**
  * Query all `TCC.db` files on the system. `TCC.db` contains granted permissions for applications.

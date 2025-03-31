@@ -1,5 +1,5 @@
-import { Emond } from "../../types/macos/emond.ts";
-import { MacosError } from "./errors.ts";
+import { Emond } from "../../types/macos/emond";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the `Emond` rules on a macOS system

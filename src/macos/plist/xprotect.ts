@@ -1,9 +1,9 @@
-import { MacosError } from "../errors.ts";
+import { MacosError } from "../errors";
 import {
   MatchData,
   XprotectEntries,
-} from "../../../types/macos/plist/xprotect.ts";
-import { getPlist } from "../plist.ts";
+} from "../../../types/macos/plist/xprotect";
+import { getPlist } from "../plist";
 
 /**
  * Function to extract Xprotect definitions

@@ -1,8 +1,8 @@
-import { SingleRequirement } from "../../../types/macos/codesigning.ts";
-import { bytesToHexString, extractUtf8String } from "../../encoding/strings.ts";
-import { Endian, nomUnsignedFourBytes } from "../../nom/helpers.ts";
-import { take } from "../../nom/parsers.ts";
-import { SigningError } from "./errors.ts";
+import { SingleRequirement } from "../../../types/macos/codesigning";
+import { bytesToHexString, extractUtf8String } from "../../encoding/strings";
+import { Endian, nomUnsignedFourBytes } from "../../nom/helpers";
+import { take } from "../../nom/parsers";
+import { SigningError } from "./errors";
 
 /**
  * Function to parse a Single Requirement blob and extract data

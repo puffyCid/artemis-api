@@ -1,8 +1,8 @@
-import { Icon, OSType } from "../../types/images/icns.ts";
-import { encode, extractUtf8String } from "../encoding/mod.ts";
-import { Endian } from "../nom/helpers.ts";
-import { nomUnsignedFourBytes, take } from "../nom/mod.ts";
-import { ImageError } from "./errors.ts";
+import { Icon, OSType } from "../../types/images/icns";
+import { encode, extractUtf8String } from "../encoding/mod";
+import { Endian } from "../nom/helpers";
+import { nomUnsignedFourBytes, take } from "../nom/mod";
+import { ImageError } from "./errors";
 
 /**
  * Parse a `icns` file and return all the icons in the file

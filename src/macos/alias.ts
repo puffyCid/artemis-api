@@ -1,7 +1,7 @@
-import { Alias, AliasTags } from "../../types/macos/alias.ts";
-import { Nom } from "../../types/nom/nom.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
-import { NomError } from "../nom/error.ts";
+import { Alias, AliasTags } from "../../types/macos/alias";
+import { Nom } from "../../types/nom/nom";
+import { extractUtf8String } from "../encoding/strings";
+import { NomError } from "../nom/error";
 import {
   Endian,
   nomSignedFourBytes,
@@ -9,10 +9,10 @@ import {
   nomUnsignedFourBytes,
   nomUnsignedOneBytes,
   nomUnsignedTwoBytes,
-} from "../nom/helpers.ts";
-import { take } from "../nom/parsers.ts";
-import { hfsToUnixEpoch, unixEpochToISO } from "../time/conversion.ts";
-import { MacosError } from "./errors.ts";
+} from "../nom/helpers";
+import { take } from "../nom/parsers";
+import { hfsToUnixEpoch, unixEpochToISO } from "../time/conversion";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse macOS `alias` data

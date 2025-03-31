@@ -1,5 +1,5 @@
-import { WindowsError } from "./errors.ts";
-import { ClassInfo, IndexBody, Namespace, WmiPersist } from "../../types/windows/wmi.ts";
+import { WindowsError } from "./errors";
+import { ClassInfo, IndexBody, Namespace, WmiPersist } from "../../types/windows/wmi";
 
 /**
  * Function to parse WMI repository and extract persistence entries

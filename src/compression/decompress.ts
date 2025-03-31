@@ -1,4 +1,4 @@
-import { CompressionError } from "./errors.ts";
+import { CompressionError } from "./errors";
 
 /**
  * Function to decompress zlib compressed data

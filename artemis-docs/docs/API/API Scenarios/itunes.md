@@ -24,8 +24,8 @@ If you are looking for a more mature tool, checkout
 Its really easy to start reviewing iTunes backups using the API.
 
 ```typescript
-import { extractBackup } from "./artemis-api/src/ios/itunes/backup.ts";
-import { Format, Output, OutputType } from "./artemis-api/src/system/output.ts";
+import { extractBackup } from "./artemis-api/src/ios/itunes/backup";
+import { Format, Output, OutputType } from "./artemis-api/src/system/output";
 
 function main() {
     const out: Output = {
@@ -109,10 +109,10 @@ In our new file we would add the following code
 import {
     FileType,
     ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
 
 /**
  * Function to extract DuckDuckGo browser info

@@ -1,16 +1,16 @@
-import { Messages, Notification } from "../../../../types/ios/apps/hinge.ts";
-import { ApplicationError } from "../../../applications/errors.ts";
-import { querySqlite } from "../../../applications/sqlite.ts";
-import { decode } from "../../../encoding/base64.ts";
-import { EncodingError } from "../../../encoding/errors.ts";
-import { extractUtf8String } from "../../../encoding/mod.ts";
-import { FileError } from "../../../filesystem/errors.ts";
-import { readTextFile } from "../../../filesystem/files.ts";
+import { Messages, Notification } from "../../../../types/ios/apps/hinge";
+import { ApplicationError } from "../../../applications/errors";
+import { querySqlite } from "../../../applications/sqlite";
+import { decode } from "../../../encoding/base64";
+import { EncodingError } from "../../../encoding/errors";
+import { extractUtf8String } from "../../../encoding/mod";
+import { FileError } from "../../../filesystem/errors";
+import { readTextFile } from "../../../filesystem/files";
 import {
   cocoatimeToUnixEpoch,
   unixEpochToISO,
-} from "../../../time/conversion.ts";
-import { IosError } from "../../error.ts";
+} from "../../../time/conversion";
+import { IosError } from "../../error";
 
 /**
  * Function to read Hinge like info

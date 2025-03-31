@@ -15,12 +15,12 @@ of the [prequisites](./boa.md) before getting started!
    to import one function. In the main.ts file add the following
 
 ```typescript
-import { processListing } from "./artemis-api/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 ```
 3. Now lets call our `processListing` function!
 
 ```typescript
-import { processListing } from "./artemis-api/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 
 function main() {
   const md5 = false;
@@ -48,7 +48,7 @@ example, we will provide arguments but will still set them to false.
    loop to do this
 
 ```typescript
-import { processListing } from "./artemis-api/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 
 function main() {
   const md5 = false;
@@ -76,7 +76,7 @@ scripting less challenging!
 5. Now lets return our data and make sure artemis will call our main function.
 
 ```typescript
-import { processListing } from "./artemis-api/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 
 function main() {
   const md5 = false;

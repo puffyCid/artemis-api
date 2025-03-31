@@ -1,7 +1,7 @@
-import { FileInfo } from "../../types/filesystem/directory.ts";
-import { Hashes } from "../../types/filesystem/files.ts";
-import { GlobInfo } from "../../types/filesystem/globs.ts";
-import { FileError } from "./errors.ts";
+import { FileInfo } from "../../types/filesystem/directory";
+import { Hashes } from "../../types/filesystem/files";
+import { GlobInfo } from "../../types/filesystem/globs";
+import { FileError } from "./errors";
 
 /**
  * Return basic metadata about a file or directory

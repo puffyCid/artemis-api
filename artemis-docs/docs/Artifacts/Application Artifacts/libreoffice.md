@@ -20,7 +20,7 @@ LibreOffice information.
 import {
   PlatformType,
   recentFiles,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = recentFiles(PlatformType.Darwin);

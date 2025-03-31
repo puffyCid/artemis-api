@@ -1,6 +1,6 @@
-import { SystemExtension } from "../../../types/macos/plist/system_extensions.ts";
-import { MacosError } from "../errors.ts";
-import { getPlist } from "../plist.ts";
+import { SystemExtension } from "../../../types/macos/plist/system_extensions";
+import { MacosError } from "../errors";
+import { getPlist } from "../plist";
 
 /**
  * Get all System Extensions on the system

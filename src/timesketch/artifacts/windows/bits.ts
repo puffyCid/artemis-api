@@ -1,7 +1,7 @@
-import { Bits } from "../../../../types/windows/bits.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { BitsInfo } from "../../../../types/windows/bits.ts";
-import { Jobs } from "../../../../types/windows/bits.ts";
+import { Bits } from "../../../../types/windows/bits";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
+import { BitsInfo } from "../../../../types/windows/bits";
+import { Jobs } from "../../../../types/windows/bits";
 
 /**
  * Function to timeline BITS

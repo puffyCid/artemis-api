@@ -1,5 +1,5 @@
-import { UserInfo } from "../../types/windows/users.ts";
-import { WindowsError } from "./errors.ts";
+import { UserInfo } from "../../types/windows/users";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse Windows user entries

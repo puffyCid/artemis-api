@@ -1,5 +1,5 @@
-import { JsShellItem, ShellItems } from "../../types/windows/shellitems.ts";
-import { WindowsError } from "./errors.ts";
+import { JsShellItem, ShellItems } from "../../types/windows/shellitems";
+import { WindowsError } from "./errors";
 
 /**
  * Parse raw bytes that contain a shellitem. Can be used to parse data that contains multiple Shellitems

@@ -1,5 +1,5 @@
-import { Journal } from "../../types/linux/journal.ts";
-import { LinuxError } from "./errors.ts";
+import { Journal } from "../../types/linux/journal";
+import { LinuxError } from "./errors";
 
 /**
  * Function to get `sudo logs`

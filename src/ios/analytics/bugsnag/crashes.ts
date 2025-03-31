@@ -1,6 +1,6 @@
-import { FileError } from "../../../filesystem/errors.ts";
-import { readTextFile } from "../../../filesystem/mod.ts";
-import { IosError } from "../../error.ts";
+import { FileError } from "../../../filesystem/errors";
+import { readTextFile } from "../../../filesystem/mod";
+import { IosError } from "../../error";
 
 /**
  * Function to parse the BugSnag crash state json file.

@@ -1,7 +1,7 @@
-import { VTResponse } from "../../types/http/vt.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
-import { ClientRequest, Protocol, request } from "./client.ts";
-import { ErrorName, HttpError } from "./errors.ts";
+import { VTResponse } from "../../types/http/vt";
+import { extractUtf8String } from "../encoding/strings";
+import { ClientRequest, Protocol, request } from "./client";
+import { ErrorName, HttpError } from "./errors";
 
 /**
  * @class Simple API class to help interact with VT

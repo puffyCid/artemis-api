@@ -1,7 +1,7 @@
-import { querySqlite } from "../../../mod.ts";
-import { ManifestDomainStats } from "../../../types/ios/itunes/manifest.ts";
-import { ApplicationError } from "../../applications/errors.ts";
-import { IosError } from "../error.ts";
+import { querySqlite } from "../../../mod";
+import { ManifestDomainStats } from "../../../types/ios/itunes/manifest";
+import { ApplicationError } from "../../applications/errors";
+import { IosError } from "../error";
 
 /**
  * Function to determine the number of domains in the `Manifest.db file.

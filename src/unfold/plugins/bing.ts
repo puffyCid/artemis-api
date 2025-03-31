@@ -1,9 +1,9 @@
-import type { Url } from "../../../types/http/unfold.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { extractUtf8String } from "../../encoding/mod.ts";
-import { NomError } from "../../nom/error.ts";
-import { takeUntil } from "../../nom/mod.ts";
-import { decodeBase64Url, extractUUID } from "./encoding.ts";
+import type { Url } from "../../../types/http/unfold";
+import { EncodingError } from "../../encoding/errors";
+import { extractUtf8String } from "../../encoding/mod";
+import { NomError } from "../../nom/error";
+import { takeUntil } from "../../nom/mod";
+import { decodeBase64Url, extractUUID } from "./encoding";
 
 /**
  * Class to parse Bing searches

@@ -23,7 +23,7 @@ USBs keys.
 # Sample API Script
 
 ```typescript
-import { listUsbDevices } from "./artemis-api/src/windows/registry/usb.ts";
+import { listUsbDevices } from "./artemis-api/src/windows/registry/usb";
 
 function main() {
   const results = listUsbDevices();

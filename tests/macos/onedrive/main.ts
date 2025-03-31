@@ -1,6 +1,6 @@
-import { ApplicationError } from "../../../src/applications/errors.ts";
-import { onedriveDetails } from "../../../src/applications/onedrive/parser.ts";
-import { PlatformType } from "../../../src/system/systeminfo.ts";
+import { ApplicationError } from "../../../src/applications/errors";
+import { onedriveDetails } from "../../../src/applications/onedrive/parser";
+import { PlatformType } from "../../../src/system/systeminfo";
 
 function main() {
   const results = onedriveDetails(PlatformType.Darwin);

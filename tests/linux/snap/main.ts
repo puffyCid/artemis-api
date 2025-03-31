@@ -1,5 +1,5 @@
-import { LinuxError } from "../../../src/linux/errors.ts";
-import { listSnaps } from "../../../src/linux/snap.ts";
+import { LinuxError } from "../../../src/linux/errors";
+import { listSnaps } from "../../../src/linux/snap";
 
 function main() {
   const results = listSnaps();

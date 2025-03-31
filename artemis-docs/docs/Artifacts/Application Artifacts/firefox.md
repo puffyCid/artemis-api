@@ -32,7 +32,7 @@ References:
 import {
   getFirefoxCookies,
   PlatformType,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = getFirefoxCookies(PlatformType.Darwin);

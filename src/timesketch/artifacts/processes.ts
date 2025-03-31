@@ -1,8 +1,8 @@
-import { ElfInfo } from "../../../types/linux/elf.ts";
-import { MachoInfo } from "../../../types/macos/macho.ts";
-import { ProcessInfo } from "../../../types/system/processes.ts";
-import { TimesketchTimeline } from "../../../types/timesketch/timeline.ts";
-import { PeInfo } from "../../../types/windows/pe.ts";
+import { ElfInfo } from "../../../types/linux/elf";
+import { MachoInfo } from "../../../types/macos/macho";
+import { ProcessInfo } from "../../../types/system/processes";
+import { TimesketchTimeline } from "../../../types/timesketch/timeline";
+import { PeInfo } from "../../../types/windows/pe";
 
 /**
  * Function to timeline process info

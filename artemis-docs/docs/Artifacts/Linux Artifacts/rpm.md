@@ -31,8 +31,8 @@ installed RPM packages.
 # Sample API Script
 
 ```typescript
-import { LinuxError } from "./artemis-api/src/linux/errors.ts";
-import { getRpmInfo } from "./artemis-api/src/linux/rpm.ts";
+import { LinuxError } from "./artemis-api/src/linux/errors";
+import { getRpmInfo } from "./artemis-api/src/linux/rpm";
 
 function main() {
   let offset = 0;

@@ -1,11 +1,11 @@
 import {
   type Extension,
   ExtensionType,
-} from "../../../types/linux/gnome/extensions.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/files.ts";
-import { readTextFile, stat } from "../../filesystem/mod.ts";
-import { LinuxError } from "../errors.ts";
+} from "../../../types/linux/gnome/extensions";
+import { FileError } from "../../filesystem/errors";
+import { glob } from "../../filesystem/files";
+import { readTextFile, stat } from "../../filesystem/mod";
+import { LinuxError } from "../errors";
 
 /**
  * Function to get installed GNOME extensions. Will parse user and system installed extensions by default

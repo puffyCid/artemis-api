@@ -1,6 +1,6 @@
-import { wifiNetworks } from "../../../mod.ts";
-import { FileError } from "../../../src/filesystem/errors.ts";
-import { stat } from "../../../src/filesystem/mod.ts";
+import { wifiNetworks } from "../../../mod";
+import { FileError } from "../../../src/filesystem/errors";
+import { stat } from "../../../src/filesystem/mod";
 
 function main() {
   //github actions runner has no wifi networks

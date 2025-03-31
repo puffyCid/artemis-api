@@ -1,5 +1,5 @@
-import type { ProtoTag } from "../../types/encoding/protobuf.ts";
-import { EncodingError } from "./errors.ts";
+import type { ProtoTag } from "../../types/encoding/protobuf";
+import { EncodingError } from "./errors";
 
 /**
  * Function to extract Protobuf data using the Rust [sunlight](https://crates.io/crates/sunlight) library

@@ -6,8 +6,8 @@ import {
   ColumnType,
   EseTable,
   TableInfo,
-} from "../../types/windows/ese.ts";
-import { WindowsError } from "./errors.ts";
+} from "../../types/windows/ese";
+import { WindowsError } from "./errors";
 
 export class EseDatabase {
   private path: string;

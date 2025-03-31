@@ -1,5 +1,5 @@
-import type { RpmPackages } from "../../../../types/linux/rpm.ts";
-import type { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import type { RpmPackages } from "../../../../types/linux/rpm";
+import type { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline RPM packages

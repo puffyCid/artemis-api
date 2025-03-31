@@ -1,5 +1,5 @@
-import { RawFileInfo } from "../../../../types/windows/ntfs.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { RawFileInfo } from "../../../../types/windows/ntfs";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline filesystem info

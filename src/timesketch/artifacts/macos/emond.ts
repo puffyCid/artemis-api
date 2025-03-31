@@ -1,5 +1,5 @@
-import { Emond } from "../../../../types/macos/emond.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Emond } from "../../../../types/macos/emond";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Emond. (This artifact has no timestamp)

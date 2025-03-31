@@ -11,29 +11,29 @@
  *  - maybe? https://github.com/hongson11698/defender-database-extract
  */
 
-import { decompress_zlib } from "../../compression/decompress.ts";
-import { CompressionError } from "../../compression/errors.ts";
+import { decompress_zlib } from "../../compression/decompress";
+import { CompressionError } from "../../compression/errors";
 import {
   extractUtf16String,
   extractUtf8String,
-} from "../../encoding/strings.ts";
-import { getEnvValue } from "../../environment/env.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob, readFile } from "../../filesystem/files.ts";
-import { NomError } from "../../nom/error.ts";
-import { nomUnsignedFourBytes } from "../../nom/helpers.ts";
-import { Endian, nomUnsignedTwoBytes } from "../../nom/helpers.ts";
-import { nomUnsignedOneBytes } from "../../nom/mod.ts";
-import { take, takeUntil } from "../../nom/parsers.ts";
+} from "../../encoding/strings";
+import { getEnvValue } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
+import { glob, readFile } from "../../filesystem/files";
+import { NomError } from "../../nom/error";
+import { nomUnsignedFourBytes } from "../../nom/helpers";
+import { Endian, nomUnsignedTwoBytes } from "../../nom/helpers";
+import { nomUnsignedOneBytes } from "../../nom/mod";
+import { take, takeUntil } from "../../nom/parsers";
 import {
   Definition,
   DefinitionRule,
   RuleType,
-} from "../../../types/applications/definitions.ts";
-import { extractStrings } from "./sigs/hstr.ts";
-import { encode } from "../../encoding/base64.ts";
-import { ApplicationError } from "../errors.ts";
-import { PlatformType } from "../../../mod.ts";
+} from "../../../types/applications/definitions";
+import { extractStrings } from "./sigs/hstr";
+import { encode } from "../../encoding/base64";
+import { ApplicationError } from "../errors";
+import { PlatformType } from "../../../mod";
 
 /**
  * Function to extract Windows Definitions. (Will take a long time if you want to extract all)

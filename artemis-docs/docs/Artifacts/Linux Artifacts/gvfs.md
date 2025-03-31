@@ -67,7 +67,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse GVFS
 metadata files.
 
 ```typescript
-import { parseGvfs } from "./artemis-api/src/linux/gnome/gvfs.ts";
+import { parseGvfs } from "./artemis-api/src/linux/gnome/gvfs";
 
 function main() {
     const results = parseGvfs();

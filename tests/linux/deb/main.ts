@@ -1,5 +1,5 @@
-import { getDebInfo } from "../../../mod.ts";
-import { LinuxError } from "../../../src/linux/errors.ts";
+import { getDebInfo } from "../../../mod";
+import { LinuxError } from "../../../src/linux/errors";
 
 function main() {
   const results = getDebInfo();

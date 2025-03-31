@@ -1,6 +1,6 @@
-import { PasswordPolicy } from "../../../types/macos/plist/policies.ts";
-import { MacosError } from "../errors.ts";
-import { getPlist } from "../plist.ts";
+import { PasswordPolicy } from "../../../types/macos/plist/policies";
+import { MacosError } from "../errors";
+import { getPlist } from "../plist";
 
 /**
  * Get Password Policies on macOS. Will parse plist file at `/var/db/dslocal/nodes/Default/config/shadowhash.plist`

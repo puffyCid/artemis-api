@@ -1,9 +1,9 @@
-import { WindowsError } from "../errors.ts";
-import { EseDatabase } from "../ese.ts";
-import { UserAccessLog } from "../../../types/windows/ese/ual.ts";
-import { EseTable, TableInfo } from "../../../types/windows/ese.ts";
-import { decode } from "../../encoding/base64.ts";
-import { EncodingError } from "../../encoding/errors.ts";
+import { WindowsError } from "../errors";
+import { EseDatabase } from "../ese";
+import { UserAccessLog } from "../../../types/windows/ese/ual";
+import { EseTable, TableInfo } from "../../../types/windows/ese";
+import { decode } from "../../encoding/base64";
+import { EncodingError } from "../../encoding/errors";
 
 interface RoleIds {
   guid: string;

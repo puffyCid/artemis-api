@@ -1,11 +1,11 @@
-import { RecentFilesLibreOffice } from "../../types/applications/libreoffice.ts";
-import { EncodingError } from "../encoding/errors.ts";
-import { readXml } from "../encoding/xml.ts";
-import { getEnvValue } from "../environment/env.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { glob } from "../filesystem/files.ts";
-import { PlatformType } from "../system/systeminfo.ts";
-import { ApplicationError } from "./errors.ts";
+import { RecentFilesLibreOffice } from "../../types/applications/libreoffice";
+import { EncodingError } from "../encoding/errors";
+import { readXml } from "../encoding/xml";
+import { getEnvValue } from "../environment/env";
+import { FileError } from "../filesystem/errors";
+import { glob } from "../filesystem/files";
+import { PlatformType } from "../system/systeminfo";
+import { ApplicationError } from "./errors";
 
 /**
  * Return a list of files opened by LibreOffice for all users

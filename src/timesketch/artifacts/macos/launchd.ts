@@ -1,6 +1,6 @@
-import { Launchd } from "../../../../types/macos/launchd.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { encode, encodeBytes } from "../../../encoding/mod.ts";
+import { Launchd } from "../../../../types/macos/launchd";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
+import { encode, encodeBytes } from "../../../encoding/mod";
 
 /**
  * Function to timeline Launchd. (This artifact has no timestamp)

@@ -30,7 +30,7 @@ import {
   getCasks,
   getHomebrewInfo,
   getPackages,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   // Get all packages and Casks

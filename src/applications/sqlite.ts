@@ -1,4 +1,4 @@
-import { ApplicationError } from "./errors.ts";
+import { ApplicationError } from "./errors";
 
 /**
  * Query a SQLITE database file

@@ -2,8 +2,8 @@ import {
   BashHistory,
   PythonHistory,
   ZshHistory,
-} from "../../types/unix/shellhistory.ts";
-import { UnixError } from "./errors.ts";
+} from "../../types/unix/shellhistory";
+import { UnixError } from "./errors";
 
 /**
  * Parse and get the contents of the `.bash_history` file for all users on an endpoint

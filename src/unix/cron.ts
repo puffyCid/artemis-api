@@ -1,5 +1,5 @@
-import { Cron } from "../../types/unix/cron.ts";
-import { UnixError } from "./errors.ts";
+import { Cron } from "../../types/unix/cron";
+import { UnixError } from "./errors";
 
 /**
  * Parse `Cron` files on an endpoint

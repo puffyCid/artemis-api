@@ -1,5 +1,5 @@
-import { Launchd } from "../../types/macos/launchd.ts";
-import { MacosError } from "./errors.ts";
+import { Launchd } from "../../types/macos/launchd";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse `Launchd daemons` on a macOS system

@@ -1,5 +1,5 @@
-import { Bits } from "../../types/windows/bits.ts";
-import { WindowsError } from "./errors.ts";
+import { Bits } from "../../types/windows/bits";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse default `BITS` location

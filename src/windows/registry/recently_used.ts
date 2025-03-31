@@ -2,12 +2,12 @@ import {
   Mru,
   MruType,
   MruValues,
-} from "../../../types/windows/registry/recently_used.ts";
-import { ShellItems } from "../../../types/windows/shellitems.ts";
-import { WindowsError } from "../errors.ts";
-import { getRegistry } from "../registry.ts";
-import { lastVisitMru, openSaveMru } from "./mru/common.ts";
-import { recentDocs } from "./mru/recent_docs.ts";
+} from "../../../types/windows/registry/recently_used";
+import { ShellItems } from "../../../types/windows/shellitems";
+import { WindowsError } from "../errors";
+import { getRegistry } from "../registry";
+import { lastVisitMru, openSaveMru } from "./mru/common";
+import { recentDocs } from "./mru/recent_docs";
 
 /**
  * Parse common Most Recently Used (MRU) Registry keys

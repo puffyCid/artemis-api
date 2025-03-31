@@ -1,10 +1,10 @@
-import type { AppUsage } from "../../../types/linux/gnome/usage.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { readXml } from "../../encoding/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/mod.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { LinuxError } from "../errors.ts";
+import type { AppUsage } from "../../../types/linux/gnome/usage";
+import { EncodingError } from "../../encoding/errors";
+import { readXml } from "../../encoding/mod";
+import { FileError } from "../../filesystem/errors";
+import { glob } from "../../filesystem/mod";
+import { unixEpochToISO } from "../../time/conversion";
+import { LinuxError } from "../errors";
 
 /**
  * Function to extract GNOME Application usage

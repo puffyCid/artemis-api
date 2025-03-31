@@ -1,15 +1,15 @@
-import { TimesketchAuth } from "../../types/timesketch/client.ts";
-import { TimesketchError } from "./error.ts";
-import { BodyType, ClientRequest, Protocol, request } from "../http/client.ts";
-import { HttpError } from "../http/errors.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
+import { TimesketchAuth } from "../../types/timesketch/client";
+import { TimesketchError } from "./error";
+import { BodyType, ClientRequest, Protocol, request } from "../http/client";
+import { HttpError } from "../http/errors";
+import { extractUtf8String } from "../encoding/strings";
 import {
   TimesketchArtifact,
   TimesketchTimeline,
-} from "../../types/timesketch/timeline.ts";
-import { encodeBytes } from "../encoding/bytes.ts";
-import { timelineArtifact } from "./timeline.ts";
-import { TimelineResponse } from "../../types/timesketch/client.ts";
+} from "../../types/timesketch/timeline";
+import { encodeBytes } from "../encoding/bytes";
+import { timelineArtifact } from "./timeline";
+import { TimelineResponse } from "../../types/timesketch/client";
 
 export class Timesketch {
   private timesketch_auth: TimesketchAuth;

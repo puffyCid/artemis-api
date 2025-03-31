@@ -1,9 +1,9 @@
 import {
   RawService7045,
   ServiceInstalls,
-} from "../../../types/windows/eventlogs/services.ts";
-import { WindowsError } from "../errors.ts";
-import { getEventlogs } from "../eventlogs.ts";
+} from "../../../types/windows/eventlogs/services";
+import { WindowsError } from "../errors";
+import { getEventlogs } from "../eventlogs";
 
 /**
  * Function to extract Service install events from EventLog

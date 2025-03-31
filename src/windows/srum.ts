@@ -7,8 +7,8 @@ import {
   NetworkConnectivityInfo,
   NetworkInfo,
   NotificationInfo,
-} from "../../types/windows/srum.ts";
-import { WindowsError } from "./errors.ts";
+} from "../../types/windows/srum";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse and get Application info from SRUM file

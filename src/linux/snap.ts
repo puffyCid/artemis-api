@@ -1,7 +1,7 @@
-import { SnapState } from "../../types/linux/snap.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { glob, readTextFile } from "../filesystem/mod.ts";
-import { LinuxError } from "./errors.ts";
+import { SnapState } from "../../types/linux/snap";
+import { FileError } from "../filesystem/errors";
+import { glob, readTextFile } from "../filesystem/mod";
+import { LinuxError } from "./errors";
 
 /**
  * Function to return a list of installed Snaps

@@ -24,7 +24,7 @@ network.
 ```typescript
 import {
   wifiNetworks,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   const results = wifiNetworks();

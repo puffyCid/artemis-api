@@ -1,8 +1,8 @@
-import { HashlookupResponse, HashType } from "../../types/http/circlu.ts";
-import { encodeBytes } from "../encoding/bytes.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
-import { ClientRequest, Protocol, request } from "./client.ts";
-import { HttpError } from "./errors.ts";
+import { HashlookupResponse, HashType } from "../../types/http/circlu";
+import { encodeBytes } from "../encoding/bytes";
+import { extractUtf8String } from "../encoding/strings";
+import { ClientRequest, Protocol, request } from "./client";
+import { HttpError } from "./errors";
 
 /**
  * Function to lookup hashes against Circlu Hashlookup service

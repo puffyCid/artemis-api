@@ -95,8 +95,8 @@ import {
   Format,
   Output,
   OutputType,
-} from "./artemis-api/src/system/output.ts";
-import { acquireFile } from "./artemis-api/src/filesystem/acquire.ts";
+} from "./artemis-api/src/system/output";
+import { acquireFile } from "./artemis-api/src/filesystem/acquire";
 
 function main() {
   const out: Output = {
@@ -125,8 +125,8 @@ import {
   Format,
   Output,
   OutputType,
-} from "./artemis-api/src/system/output.ts";
-import { acquireFile } from "./artemis-api/src/filesystem/acquire.ts";
+} from "./artemis-api/src/system/output";
+import { acquireFile } from "./artemis-api/src/filesystem/acquire";
 
 function main() {
   const out: Output = {
