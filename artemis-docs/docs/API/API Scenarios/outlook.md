@@ -23,8 +23,7 @@ Lets walkthrough a small sample
 OST file.
 
 The guide below assumes you have cloned the artemis API repository to your local
-system. However, you may also import the API remotely, you will just need to
-change the imports paths.
+system. 
 
 The functions in this guide are documented
 [here](../Artifacts/windows.md#outlook-class)
