@@ -1,5 +1,5 @@
-import { Prefetch } from "../../types/windows/prefetch.ts";
-import { WindowsError } from "./errors.ts";
+import { Prefetch } from "../../types/windows/prefetch";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse default `Prefetch` directory

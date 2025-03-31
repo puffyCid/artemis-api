@@ -23,7 +23,7 @@ WordWheel keys.
 ```typescript
 import {
     parseWordWheel,
-} from "./artemis-api/src/windows/registry/wordwheel.ts";
+} from "./artemis-api/src/windows/registry/wordwheel";
 
 async function main() {
     const path = "glob to NTUSER.DAT files";

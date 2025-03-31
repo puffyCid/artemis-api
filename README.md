@@ -15,7 +15,7 @@ An in depth guide is documented at https://puffycid.github.io/artemis-api
 Basic example
 
 ```typescript
-import { processListing } from "./artemis-api/mod.ts";
+import { processListing } from "./artemis-api/mod";
 
 function main() {
   const md5 = true;

@@ -1,14 +1,14 @@
-import { FileError } from "../filesystem/errors.ts";
-import { glob, readFile, stat } from "../filesystem/files.ts";
-import { MacosError } from "./errors.ts";
-import { take } from "../nom/parsers.ts";
-import { NomError } from "../nom/error.ts";
-import { Endian, nomUnsignedFourBytes } from "../nom/helpers.ts";
-import { nomUnsignedEightBytes } from "../nom/mod.ts";
-import { EncodingError } from "../encoding/errors.ts";
-import { Biome } from "../../types/macos/biome.ts";
-import { encode } from "../encoding/base64.ts";
-import { parseProtobuf } from "../encoding/protobuf.ts";
+import { FileError } from "../filesystem/errors";
+import { glob, readFile, stat } from "../filesystem/files";
+import { MacosError } from "./errors";
+import { take } from "../nom/parsers";
+import { NomError } from "../nom/error";
+import { Endian, nomUnsignedFourBytes } from "../nom/helpers";
+import { nomUnsignedEightBytes } from "../nom/mod";
+import { EncodingError } from "../encoding/errors";
+import { Biome } from "../../types/macos/biome";
+import { encode } from "../encoding/base64";
+import { parseProtobuf } from "../encoding/protobuf";
 
 /**
  * A **very** experimental and simple function to parse BIOME data

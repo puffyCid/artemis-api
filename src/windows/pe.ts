@@ -1,5 +1,5 @@
-import { PeInfo } from "../../types/windows/pe.ts";
-import { WindowsError } from "./errors.ts";
+import { PeInfo } from "../../types/windows/pe";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse a `PE` executable.

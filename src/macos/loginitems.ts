@@ -1,5 +1,5 @@
-import { LoginItems } from "../../types/macos/loginitems.ts";
-import { MacosError } from "./errors.ts";
+import { LoginItems } from "../../types/macos/loginitems";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the `LoginItems` on a macOS system

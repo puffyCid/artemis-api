@@ -1,4 +1,4 @@
-import { AccessControl } from "./acls.ts";
+import { AccessControl } from "./acls";
 
 /**
  * Windows Background Intelligent Transfer Service (`BITS`) is a service that allows applications and users to register jobs to upload/download files.

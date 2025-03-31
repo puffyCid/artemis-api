@@ -1,19 +1,19 @@
 import {
   FileType,
   ManifestApp,
-} from "../../../../../types/ios/itunes/manifest.ts";
-import { parseCookies } from "../../../../macos/safari/cookies.ts";
-import { readBreadcrumbs } from "../../../analytics/bugsnag/breadcrumbs.ts";
-import { readRunContext } from "../../../analytics/bugsnag/context.ts";
-import { readConfig } from "../../../analytics/bugsnag/config.ts";
-import { readState } from "../../../analytics/bugsnag/state.ts";
-import { readSystemState } from "../../../analytics/bugsnag/system.ts";
-import { IosError } from "../../../error.ts";
-import { parseManifestAppPlist } from "../../../itunes/apps.ts";
-import { parsePreferences } from "./preferences.ts";
-import { outputResults } from "../../../../../mod.ts";
-import { Output } from "../../../../system/output.ts";
-import { readCapabilities } from "./preferences.ts";
+} from "../../../../../types/ios/itunes/manifest";
+import { parseCookies } from "../../../../macos/safari/cookies";
+import { readBreadcrumbs } from "../../../analytics/bugsnag/breadcrumbs";
+import { readRunContext } from "../../../analytics/bugsnag/context";
+import { readConfig } from "../../../analytics/bugsnag/config";
+import { readState } from "../../../analytics/bugsnag/state";
+import { readSystemState } from "../../../analytics/bugsnag/system";
+import { IosError } from "../../../error";
+import { parseManifestAppPlist } from "../../../itunes/apps";
+import { parsePreferences } from "./preferences";
+import { outputResults } from "../../../../../mod";
+import { Output } from "../../../../system/output";
+import { readCapabilities } from "./preferences";
 
 /**
  * Function to parse Amazon Echo info

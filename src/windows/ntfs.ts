@@ -1,4 +1,4 @@
-import { WindowsError } from "./errors.ts";
+import { WindowsError } from "./errors";
 
 /**
  * Function to read a file by accessing the raw `NTFS` filesystem.

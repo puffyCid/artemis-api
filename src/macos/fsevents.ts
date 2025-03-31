@@ -1,5 +1,5 @@
-import { Fsevents } from "../../types/macos/fsevents.ts";
-import { MacosError } from "./errors.ts";
+import { Fsevents } from "../../types/macos/fsevents";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the `FsEvents` on a macOS system

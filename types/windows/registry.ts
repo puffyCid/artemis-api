@@ -1,4 +1,4 @@
-import { Descriptor } from "./acls.ts";
+import { Descriptor } from "./acls";
 
 /**
  * Windows `Registry` is a collection of binary files that store Windows configuration settings and OS information.

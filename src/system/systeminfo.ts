@@ -1,4 +1,4 @@
-import { SystemInfo } from "../../types/system/systeminfo.ts";
+import { SystemInfo } from "../../types/system/systeminfo";
 
 /**
  * Function to pull systeminfo

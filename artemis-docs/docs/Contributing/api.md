@@ -55,7 +55,7 @@ feature is:
 3. Follow the [walkthrough](../Intro/Scripting/walkthrough.md) guide.
 
 ```typescript
-import { processListing } from "../../path/to/local/artemis-api/mod.ts";
+import { processListing } from "../../path/to/local/artemis-api/mod";
 
 function main() {
   const md5 = false;
@@ -84,8 +84,8 @@ and write your test.
 A **very basic** example is below:
 
 ```typescript
-import { firewallStatus } from "../../../mod.ts";
-import { MacosError } from "../../../src/macos/errors.ts";
+import { firewallStatus } from "../../../mod";
+import { MacosError } from "../../../src/macos/errors";
 
 function main() {
   const results = firewallStatus();

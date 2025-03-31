@@ -1,8 +1,8 @@
-import { FileError } from "../../../../filesystem/errors.ts";
-import { readTextFile } from "../../../../filesystem/mod.ts";
-import { MacosError } from "../../../../macos/errors.ts";
-import { getPlist } from "../../../../macos/plist.ts";
-import { IosError } from "../../../error.ts";
+import { FileError } from "../../../../filesystem/errors";
+import { readTextFile } from "../../../../filesystem/mod";
+import { MacosError } from "../../../../macos/errors";
+import { getPlist } from "../../../../macos/plist";
+import { IosError } from "../../../error";
 
 /**
  * Function parse Amazon Echo preference file. Contains additional binary plists at keys:

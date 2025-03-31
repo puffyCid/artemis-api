@@ -1,5 +1,5 @@
-import { MachoInfo } from "../../types/macos/macho.ts";
-import { MacosError } from "./errors.ts";
+import { MachoInfo } from "../../types/macos/macho";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse a `macho` executable.

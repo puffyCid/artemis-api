@@ -1,5 +1,5 @@
-import { Spotlight } from "../../../../types/macos/spotlight.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Spotlight } from "../../../../types/macos/spotlight";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline macos users

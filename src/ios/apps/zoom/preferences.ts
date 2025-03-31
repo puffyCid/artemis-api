@@ -1,6 +1,6 @@
-import { MacosError } from "../../../macos/errors.ts";
-import { getPlist } from "../../../macos/plist.ts";
-import { IosError } from "../../error.ts";
+import { MacosError } from "../../../macos/errors";
+import { getPlist } from "../../../macos/plist";
+import { IosError } from "../../error";
 
 /**
  * Function to extract meeting preferences

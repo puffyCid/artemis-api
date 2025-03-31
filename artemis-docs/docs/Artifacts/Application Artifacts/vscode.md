@@ -23,7 +23,7 @@ import {
   fileHistory,
   getExtensions,
   PlatformType,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = fileHistory(PlatformType.Darwin);

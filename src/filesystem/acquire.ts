@@ -1,5 +1,5 @@
-import { Output } from "../system/output.ts";
-import { FileError } from "./errors.ts";
+import { Output } from "../system/output";
+import { FileError } from "./errors";
 
 /**
  * Function to acquire a file from the system

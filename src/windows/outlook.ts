@@ -6,8 +6,8 @@ import {
   NameEntry,
   PropertyContext,
   TableInfo,
-} from "../../types/windows/outlook.ts";
-import { WindowsError } from "./errors.ts";
+} from "../../types/windows/outlook";
+import { WindowsError } from "./errors";
 
 export class Outlook {
   private path: string;

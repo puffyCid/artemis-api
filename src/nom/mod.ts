@@ -7,5 +7,5 @@ export {
   nomUnsignedOneBytes,
   nomUnsignedSixteenBytes,
   nomUnsignedTwoBytes,
-} from "./helpers.ts";
-export { take, takeUntil, takeWhile } from "./parsers.ts";
+} from "./helpers";
+export { take, takeUntil, takeWhile } from "./parsers";

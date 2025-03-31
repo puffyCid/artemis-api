@@ -1,10 +1,10 @@
-import type { RecentFiles } from "../../../types/linux/gnome/gedit.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { readXml } from "../../encoding/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/mod.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { LinuxError } from "../errors.ts";
+import type { RecentFiles } from "../../../types/linux/gnome/gedit";
+import { EncodingError } from "../../encoding/errors";
+import { readXml } from "../../encoding/mod";
+import { FileError } from "../../filesystem/errors";
+import { glob } from "../../filesystem/mod";
+import { unixEpochToISO } from "../../time/conversion";
+import { LinuxError } from "../errors";
 
 /**
  * Function to extract recently open files by gedit

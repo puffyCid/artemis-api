@@ -1,5 +1,5 @@
-import { LogonsWindows } from "../../../../../types/windows/eventlogs/logons.ts";
-import { TimesketchTimeline } from "../../../../../types/timesketch/timeline.ts";
+import { LogonsWindows } from "../../../../../types/windows/eventlogs/logons";
+import { TimesketchTimeline } from "../../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Windows Logons

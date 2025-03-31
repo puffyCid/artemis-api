@@ -1,5 +1,5 @@
-import { Spotlight, StoreMeta } from "../../types/macos/spotlight.ts";
-import { MacosError } from "./errors.ts";
+import { Spotlight, StoreMeta } from "../../types/macos/spotlight";
+import { MacosError } from "./errors";
 
 /**
  * Function to obtain the metadata to start parsing the Spotlight database.

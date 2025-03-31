@@ -1,21 +1,21 @@
-import { OneDriveLog } from "../../../types/applications/onedrive.ts";
-import { decompress_gzip } from "../../compression/decompress.ts";
-import { CompressionError } from "../../compression/errors.ts";
-import { encode } from "../../encoding/base64.ts";
-import { extractUtf8String } from "../../encoding/strings.ts";
-import { NomError } from "../../nom/error.ts";
+import { OneDriveLog } from "../../../types/applications/onedrive";
+import { decompress_gzip } from "../../compression/decompress";
+import { CompressionError } from "../../compression/errors";
+import { encode } from "../../encoding/base64";
+import { extractUtf8String } from "../../encoding/strings";
+import { NomError } from "../../nom/error";
 import {
   Endian,
   nomUnsignedOneBytes,
   nomUnsignedTwoBytes,
-} from "../../nom/helpers.ts";
+} from "../../nom/helpers";
 import {
   nomUnsignedEightBytes,
   nomUnsignedFourBytes,
   take,
-} from "../../nom/mod.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { ApplicationError } from "../errors.ts";
+} from "../../nom/mod";
+import { unixEpochToISO } from "../../time/conversion";
+import { ApplicationError } from "../errors";
 
 export function parseOdl(
   data: Uint8Array,

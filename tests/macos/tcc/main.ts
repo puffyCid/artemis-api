@@ -1,5 +1,5 @@
-import { MacosError } from "../../../src/macos/errors.ts";
-import { queryTccDb } from "../../../src/macos/sqlite/tcc.ts";
+import { MacosError } from "../../../src/macos/errors";
+import { queryTccDb } from "../../../src/macos/sqlite/tcc";
 
 function main() {
   const data = queryTccDb();

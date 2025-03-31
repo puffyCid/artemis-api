@@ -1,11 +1,11 @@
-import { getPlist, outputResults } from "../../../mod.ts";
-import { IosError } from "../error.ts";
-import { MacosError } from "../../macos/errors.ts";
-import { InfoPlist, StatusPlist } from "../../../types/ios/itunes/backup.ts";
-import { extractAppInfo, getAppPaths, parseAppItunesMetadata } from "./apps.ts";
-import { ManifestPlist } from "../../../types/ios/itunes/manifest.ts";
-import { queryDomains } from "./manifest.ts";
-import { Output } from "../../system/output.ts";
+import { getPlist, outputResults } from "../../../mod";
+import { IosError } from "../error";
+import { MacosError } from "../../macos/errors";
+import { InfoPlist, StatusPlist } from "../../../types/ios/itunes/backup";
+import { extractAppInfo, getAppPaths, parseAppItunesMetadata } from "./apps";
+import { ManifestPlist } from "../../../types/ios/itunes/manifest";
+import { queryDomains } from "./manifest";
+import { Output } from "../../system/output";
 
 /**
  * Resources:

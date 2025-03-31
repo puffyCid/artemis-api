@@ -1,5 +1,5 @@
-import { SearchEntry } from "../../types/windows/search.ts";
-import { WindowsError } from "./errors.ts";
+import { SearchEntry } from "../../types/windows/search";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse Windows Search data. Supports both ESE and SQLITE databases

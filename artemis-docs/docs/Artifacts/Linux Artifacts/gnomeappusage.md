@@ -17,7 +17,7 @@ You have to use the artemis [api](../../API/overview.md) in order to collect
 GNOME app usage.
 
 ```typescript
-import { gnomeAppUsage } from "./artemis-api/src/linux/gnome/usage.ts";
+import { gnomeAppUsage } from "./artemis-api/src/linux/gnome/usage";
 
 function main() {
     const results = gnomeAppUsage();

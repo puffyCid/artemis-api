@@ -1,5 +1,5 @@
-import { BookmarkData } from "../../types/macos/bookmark.ts";
-import { MacosError } from "./errors.ts";
+import { BookmarkData } from "../../types/macos/bookmark";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse macOS Bookmark data. They are similar to Windows Shortcut files. Bookmarks replace Alias links in macOS

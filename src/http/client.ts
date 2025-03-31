@@ -1,5 +1,5 @@
-import { ClientResponse } from "../../types/http/client.ts";
-import { HttpError } from "./errors.ts";
+import { ClientResponse } from "../../types/http/client";
+import { HttpError } from "./errors";
 
 export enum Protocol {
   GET = "GET",

@@ -1,4 +1,4 @@
-import { ShellItems } from "./shellitems.ts";
+import { ShellItems } from "./shellitems";
 
 /**
  * `Shortcut` files are files that point to another file.

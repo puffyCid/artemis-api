@@ -1,15 +1,15 @@
-import { getRegistry } from "../../../mod.ts";
-import { Registry } from "../../../types/windows/registry.ts";
-import { UsbDevices } from "../../../types/windows/registry/usb.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { decode } from "../../encoding/mod.ts";
-import { extractUtf16String } from "../../encoding/strings.ts";
-import { getEnvValue } from "../../environment/mod.ts";
-import { NomError } from "../../nom/error.ts";
-import { Endian } from "../../nom/helpers.ts";
-import { nomUnsignedEightBytes } from "../../nom/mod.ts";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
-import { WindowsError } from "../errors.ts";
+import { getRegistry } from "../../../mod";
+import { Registry } from "../../../types/windows/registry";
+import { UsbDevices } from "../../../types/windows/registry/usb";
+import { EncodingError } from "../../encoding/errors";
+import { decode } from "../../encoding/mod";
+import { extractUtf16String } from "../../encoding/strings";
+import { getEnvValue } from "../../environment/mod";
+import { NomError } from "../../nom/error";
+import { Endian } from "../../nom/helpers";
+import { nomUnsignedEightBytes } from "../../nom/mod";
+import { filetimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { WindowsError } from "../errors";
 
 /**
  * Function to parse Windows Registry files to get list of USB devices that have been connected
@@ -45,7 +45,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
     return new WindowsError(`USB`, `failed to parse ${path}: ${reg_data}`);
   }
 
-  const usbs = [];
+  const usbs: UsbDevices[] = [];
   for (const reg of reg_data) {
     if (
       (reg.path.includes(usbstor) || reg.path.includes(usbstor_legacy)) &&

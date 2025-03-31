@@ -26,7 +26,7 @@ installed System extensions.
 ```typescript
 import {
   systemExtensions,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   const results = systemExtensions();

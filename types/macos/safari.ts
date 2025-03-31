@@ -1,4 +1,4 @@
-import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark.ts";
+import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark";
 
 /**
  * Safari history is stored in a SQLITE file.

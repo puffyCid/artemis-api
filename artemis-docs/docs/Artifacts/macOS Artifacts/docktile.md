@@ -22,7 +22,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse Dock
 Tile data.
 
 ```typescript
-import { dockTiles } from "./artemis-api/mod.ts";
+import { dockTiles } from "./artemis-api/mod";
 
 async function main() {
   const results = await dockTiles();

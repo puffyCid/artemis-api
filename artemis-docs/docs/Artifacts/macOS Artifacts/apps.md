@@ -30,7 +30,7 @@ installed applications.
 import {
   listApps,
   scanApps,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   // Gets simple application listing at known macOS paths.

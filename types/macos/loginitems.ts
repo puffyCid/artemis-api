@@ -1,4 +1,4 @@
-import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark.ts";
+import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark";
 
 /**
  * `LoginItems` are a form of persistence on macOS systems.

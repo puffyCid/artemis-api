@@ -24,7 +24,7 @@ ShellItems.
 ```typescript
 import {
   pargetShellItemseMru,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   const results = getShellItem(new Uint8Array());

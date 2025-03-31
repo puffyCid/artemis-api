@@ -1,17 +1,17 @@
-import { Cookie, CookieFlag } from "../../../types/macos/safari/cookies.ts";
-import { extractUtf8String } from "../../encoding/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { readFile } from "../../filesystem/files.ts";
-import { NomError } from "../../nom/error.ts";
-import { Endian } from "../../nom/helpers.ts";
+import { Cookie, CookieFlag } from "../../../types/macos/safari/cookies";
+import { extractUtf8String } from "../../encoding/mod";
+import { FileError } from "../../filesystem/errors";
+import { readFile } from "../../filesystem/files";
+import { NomError } from "../../nom/error";
+import { Endian } from "../../nom/helpers";
 import {
   nomUnsignedEightBytes,
   nomUnsignedFourBytes,
   take,
   takeUntil,
-} from "../../nom/mod.ts";
-import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
-import { MacosError } from "../errors.ts";
+} from "../../nom/mod";
+import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { MacosError } from "../errors";
 
 /**
  * Function to parse the Safari binary cookie format

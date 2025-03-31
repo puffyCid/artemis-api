@@ -1,4 +1,4 @@
-import { ElfInfo } from "./elf.ts";
+import { ElfInfo } from "./elf";
 
 /**
  * `LinuxFileInfo` is an interface containing metadata on Linux files and directories.

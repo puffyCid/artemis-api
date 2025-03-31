@@ -1,11 +1,11 @@
-import type { Url } from "../../../types/http/unfold.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { extractUtf8String } from "../../encoding/mod.ts";
-import { formatGuid } from "../../encoding/uuid.ts";
-import { NomError } from "../../nom/error.ts";
-import { Endian, nomUnsignedFourBytes } from "../../nom/helpers.ts";
-import { take } from "../../nom/parsers.ts";
-import { decodeBase64Url } from "./encoding.ts";
+import type { Url } from "../../../types/http/unfold";
+import { EncodingError } from "../../encoding/errors";
+import { extractUtf8String } from "../../encoding/mod";
+import { formatGuid } from "../../encoding/uuid";
+import { NomError } from "../../nom/error";
+import { Endian, nomUnsignedFourBytes } from "../../nom/helpers";
+import { take } from "../../nom/parsers";
+import { decodeBase64Url } from "./encoding";
 
 /**
  * Class to parse Outlook URLs

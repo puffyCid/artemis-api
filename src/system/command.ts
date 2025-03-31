@@ -1,4 +1,4 @@
-import { CommandResult } from "../../types/system/command.ts";
+import { CommandResult } from "../../types/system/command";
 
 /**
  * Execute a command on the system and return the data

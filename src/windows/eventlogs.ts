@@ -1,9 +1,9 @@
 import {
   EventLogMessage,
   EventLogRecord,
-} from "../../types/windows/eventlogs.ts";
-import { platform } from "../system/systeminfo.ts";
-import { WindowsError } from "./errors.ts";
+} from "../../types/windows/eventlogs";
+import { platform } from "../system/systeminfo";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse an `evtx` file. Returns a tuple containing extracted EventLogs

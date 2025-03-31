@@ -1,5 +1,5 @@
-import { Shellbags } from "../../types/windows/shellbags.ts";
-import { WindowsError } from "./errors.ts";
+import { Shellbags } from "../../types/windows/shellbags";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse and reconstruct `Shellbags` on the systemdrive

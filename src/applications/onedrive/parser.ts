@@ -1,26 +1,26 @@
-import { PlatformType } from "../../../mod.ts";
+import { PlatformType } from "../../../mod";
 import {
   KeyInfo,
   OneDriveDetails,
-} from "../../../types/applications/onedrive.ts";
+} from "../../../types/applications/onedrive";
 import {
   OneDriveAccount,
   OneDriveLog,
   OneDriveSyncEngineRecord,
-} from "../../../types/applications/onedrive.ts";
-import { GlobInfo } from "../../../types/filesystem/globs.ts";
-import { getEnvValue } from "../../environment/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { readFile, readTextFile } from "../../filesystem/files.ts";
-import { glob } from "../../filesystem/mod.ts";
-import { MacosError } from "../../macos/errors.ts";
-import { getPlist } from "../../macos/plist.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { WindowsError } from "../../windows/errors.ts";
-import { getRegistry } from "../../windows/registry.ts";
-import { ApplicationError } from "../errors.ts";
-import { parseOdl } from "./odl.ts";
-import { extractSyncEngine } from "./sqlite.ts";
+} from "../../../types/applications/onedrive";
+import { GlobInfo } from "../../../types/filesystem/globs";
+import { getEnvValue } from "../../environment/mod";
+import { FileError } from "../../filesystem/errors";
+import { readFile, readTextFile } from "../../filesystem/files";
+import { glob } from "../../filesystem/mod";
+import { MacosError } from "../../macos/errors";
+import { getPlist } from "../../macos/plist";
+import { unixEpochToISO } from "../../time/conversion";
+import { WindowsError } from "../../windows/errors";
+import { getRegistry } from "../../windows/registry";
+import { ApplicationError } from "../errors";
+import { parseOdl } from "./odl";
+import { extractSyncEngine } from "./sqlite";
 
 /**
  * Function to parse OneDrive artifacts

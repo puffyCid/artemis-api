@@ -1,5 +1,5 @@
-import { Jumplists } from "../../types/windows/jumplists.ts";
-import { WindowsError } from "./errors.ts";
+import { Jumplists } from "../../types/windows/jumplists";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse all Jumplists for all users using the `Systemdrive` (typically C)

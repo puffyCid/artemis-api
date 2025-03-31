@@ -1,4 +1,4 @@
-import type { Url } from "../../../types/http/unfold.ts";
+import type { Url } from "../../../types/http/unfold";
 
 /**
  * Class to parse DuckDuckGo searches

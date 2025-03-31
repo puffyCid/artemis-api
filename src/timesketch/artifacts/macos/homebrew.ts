@@ -1,5 +1,5 @@
-import { HomebrewData } from "../../../../types/macos/homebrew.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { HomebrewData } from "../../../../types/macos/homebrew";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Homebrew Packages info

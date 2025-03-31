@@ -22,7 +22,7 @@ policies.
 ```typescript
 import {
   passwordPolicy,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   const results = passwordPolicy();

@@ -1,5 +1,5 @@
-import { Shimcache } from "../../../../types/windows/shimcache.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Shimcache } from "../../../../types/windows/shimcache";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Shimcache

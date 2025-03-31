@@ -1,5 +1,5 @@
-import { ExecPolicy } from "../../../../types/macos/execpolicy.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { ExecPolicy } from "../../../../types/macos/execpolicy";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline execpolicy

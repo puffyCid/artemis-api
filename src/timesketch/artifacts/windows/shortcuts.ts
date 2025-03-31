@@ -1,5 +1,5 @@
-import { Shortcut } from "../../../../types/windows/shortcuts.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Shortcut } from "../../../../types/windows/shortcuts";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Shortcut

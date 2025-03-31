@@ -1,4 +1,4 @@
-import { MacosError } from "./errors.ts";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse a `plist` file. This function either returns a `plist` as a JSON struct

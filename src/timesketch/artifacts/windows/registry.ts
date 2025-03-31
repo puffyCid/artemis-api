@@ -1,5 +1,5 @@
-import { Registry } from "../../../../types/windows/registry.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Registry } from "../../../../types/windows/registry";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Registry

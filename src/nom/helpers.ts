@@ -2,8 +2,8 @@ import {
   NomNumber,
   NomSignedLarge,
   NomUnsignedLarge,
-} from "../../types/nom/nom.ts";
-import { NomError } from "./error.ts";
+} from "../../types/nom/nom";
+import { NomError } from "./error";
 
 /**
  * Determines Endian type to use when parsing bytes

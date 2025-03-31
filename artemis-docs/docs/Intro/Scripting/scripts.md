@@ -24,15 +24,15 @@ function associated with the artifact you want to parse. For example, to parse
 the Windows Registry you would import:
 
 ```typescript
-import { getRegistry } from "./artemis-api/mod.ts";
+import { getRegistry } from "./artemis-api/mod";
 ```
 
 If you wanted to parse the Windows Registry and manipulate the parsed data you
 would import:
 
 ```typescript
-import { getRegistry } from "./artemis-api/mod.ts";
-import { Registry } from "./artemis-api/src/windows/registry.ts";
+import { getRegistry } from "./artemis-api/mod";
+import { Registry } from "./artemis-api/src/windows/registry";
 ```
 
 A list of all exported artemis functions can be found at

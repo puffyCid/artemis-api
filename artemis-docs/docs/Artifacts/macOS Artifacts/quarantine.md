@@ -21,7 +21,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 # Sample API Script
 
 ```typescript
-import { quarantineEvents } from "./artemis-api/mod.ts";
+import { quarantineEvents } from "./artemis-api/mod";
 
 function main() {
   const results = quarantineEvents();

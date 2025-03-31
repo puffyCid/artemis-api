@@ -1,5 +1,5 @@
-import { UnifiedLog } from "../../types/macos/unifiedlogs.ts";
-import { MacosError } from "./errors.ts";
+import { UnifiedLog } from "../../types/macos/unifiedlogs";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse a `Unified log` on a macOS system

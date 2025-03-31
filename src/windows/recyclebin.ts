@@ -1,5 +1,5 @@
-import { RecycleBin } from "../../types/windows/recyclebin.ts";
-import { WindowsError } from "./errors.ts";
+import { RecycleBin } from "../../types/windows/recyclebin";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse Recycle Bin files at `SystemDrive`

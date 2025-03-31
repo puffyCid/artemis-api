@@ -1,15 +1,15 @@
 import {
   FileType,
   ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { parseHeartbeat } from "../../analytics/firebase/heartbeat.ts";
-import { extractStatStorage } from "../../analytics/sendbird/sdk.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
-import { extractChat, extractComment, extractNotifications } from "./chat.ts";
-import { parseMetrics } from "./metrics.ts";
-import { parsePreferences, parseSupportLog } from "./preferences.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { parseHeartbeat } from "../../analytics/firebase/heartbeat";
+import { extractStatStorage } from "../../analytics/sendbird/sdk";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
+import { extractChat, extractComment, extractNotifications } from "./chat";
+import { parseMetrics } from "./metrics";
+import { parsePreferences, parseSupportLog } from "./preferences";
 
 /**
  * Function to extract Hinge app information

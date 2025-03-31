@@ -16,8 +16,8 @@ The TypeScrpt code below imports a function and the Registry interface from
 artemis.
 
 ```typescript
-import { getRegistry } from "./artemis-api/mod.ts";
-import { Registry } from "./artemis-api/src/windows/registry.ts";
+import { getRegistry } from "./artemis-api/mod";
+import { Registry } from "./artemis-api/src/windows/registry";
 
 interface InstalledPrograms {
   name: string;

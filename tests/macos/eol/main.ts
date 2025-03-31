@@ -1,6 +1,6 @@
-import { getHomebrewInfo } from "../../../mod.ts";
-import { checkEolStatus } from "../../../src/http/eol.ts";
-import { HttpError } from "../../../src/http/errors.ts";
+import { getHomebrewInfo } from "../../../mod";
+import { checkEolStatus } from "../../../src/http/eol";
+import { HttpError } from "../../../src/http/errors";
 
 async function main() {
   const apps = getHomebrewInfo();

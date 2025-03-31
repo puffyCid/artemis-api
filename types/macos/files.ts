@@ -1,4 +1,4 @@
-import { MachoInfo } from "./macho.ts";
+import { MachoInfo } from "./macho";
 
 /**
  * `MacosFileInfo` is an interface containing metadata on macOS files and directories.

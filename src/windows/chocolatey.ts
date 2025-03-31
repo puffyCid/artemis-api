@@ -1,11 +1,11 @@
-import { ChocolateyInfo } from "../../types/windows/chocolatey.ts";
-import { Nuspec } from "../../types/windows/nuspec.ts";
-import { EncodingError } from "../encoding/errors.ts";
-import { readXml } from "../encoding/xml.ts";
-import { getEnvValue } from "../environment/env.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { glob } from "../filesystem/mod.ts";
-import { WindowsError } from "./errors.ts";
+import { ChocolateyInfo } from "../../types/windows/chocolatey";
+import { Nuspec } from "../../types/windows/nuspec";
+import { EncodingError } from "../encoding/errors";
+import { readXml } from "../encoding/xml";
+import { getEnvValue } from "../environment/env";
+import { FileError } from "../filesystem/errors";
+import { glob } from "../filesystem/mod";
+import { WindowsError } from "./errors";
 
 /**
  * Function to get installed Chocolatey packages.
@@ -35,7 +35,7 @@ export function getChocolateyInfo(
     );
   }
 
-  const packages = [];
+  const packages: ChocolateyInfo[] = [];
   for (const path of globs) {
     // Read the Nuspec XML file
     const xml_data = readXml(path.full_path) as unknown as Nuspec;

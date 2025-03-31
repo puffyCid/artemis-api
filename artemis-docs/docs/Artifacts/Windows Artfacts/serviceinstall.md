@@ -18,7 +18,7 @@ Service Install entries.
 # Sample API Script
 
 ```typescript
-import { serviceInstalls } from "./artemis-api/src/windows/eventlogs/services.ts";
+import { serviceInstalls } from "./artemis-api/src/windows/eventlogs/services";
 
 function main() {
   const data = serviceInstalls(

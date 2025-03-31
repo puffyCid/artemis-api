@@ -1,5 +1,5 @@
-import { Groups, Users } from "../../types/macos/accounts.ts";
-import { MacosError } from "./errors.ts";
+import { Groups, Users } from "../../types/macos/accounts";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the local `Users` on a macOS system

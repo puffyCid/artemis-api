@@ -1,5 +1,5 @@
-import { RecycleBin } from "../../../../types/windows/recyclebin.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { RecycleBin } from "../../../../types/windows/recyclebin";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline RecycleBin

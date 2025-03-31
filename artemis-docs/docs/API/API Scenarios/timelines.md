@@ -39,17 +39,17 @@ ensure the output follows **TimesketchTimeline** object above.
 A sample script below shows how to timeline launchdaemon data.
 
 ```typescript
-import { dumpData, getLaunchdDaemons } from "../../Projects/artemis-api/mod.ts";
-import { MacosError } from "../../Projects/artemis-api/src/macos/errors.ts";
+import { dumpData, getLaunchdDaemons } from "../../Projects/artemis-api/mod";
+import { MacosError } from "../../Projects/artemis-api/src/macos/errors";
 import {
   Format,
   Output,
   OutputType,
-} from "../../Projects/artemis-api/src/system/output.ts";
+} from "../../Projects/artemis-api/src/system/output";
 
-import { TimesketchError } from "../../Projects/artemis-api/src/timesketch/error.ts";
-import { timelineArtifact } from "../../Projects/artemis-api/src/timesketch/timeline.ts";
-import { TimesketchArtifact } from "../../Projects/artemis-api/types/timesketch/timeline.ts";
+import { TimesketchError } from "../../Projects/artemis-api/src/timesketch/error";
+import { timelineArtifact } from "../../Projects/artemis-api/src/timesketch/timeline";
+import { TimesketchArtifact } from "../../Projects/artemis-api/types/timesketch/timeline";
 
 function main() {
   const out: Output = {

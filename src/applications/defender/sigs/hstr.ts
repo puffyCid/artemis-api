@@ -1,9 +1,9 @@
 import {
   extractUtf16String,
   extractUtf8String,
-} from "../../../encoding/strings.ts";
-import { PlatformType } from "../../../system/systeminfo.ts";
-import { ApplicationError } from "../../errors.ts";
+} from "../../../encoding/strings";
+import { PlatformType } from "../../../system/systeminfo";
+import { ApplicationError } from "../../errors";
 
 /**
  * Function to extracts strings associated with Defender signatures

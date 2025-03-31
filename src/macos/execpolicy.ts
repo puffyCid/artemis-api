@@ -1,5 +1,5 @@
-import { ExecPolicy } from "../../types/macos/execpolicy.ts";
-import { MacosError } from "./errors.ts";
+import { ExecPolicy } from "../../types/macos/execpolicy";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the `ExecPolicy` on a macOS system

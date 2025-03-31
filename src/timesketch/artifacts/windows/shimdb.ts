@@ -1,5 +1,5 @@
-import { Shimdb } from "../../../../types/windows/shimdb.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Shimdb } from "../../../../types/windows/shimdb";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Shimdb

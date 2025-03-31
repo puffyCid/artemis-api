@@ -1,4 +1,4 @@
-import { EncodingError } from "./errors.ts";
+import { EncodingError } from "./errors";
 
 /**
  * Read a XML file into a JSON object. Supports either UTF8 or UTF16 encoded XML files

@@ -20,7 +20,7 @@ Logon entries.
 ```typescript
 import {
   logons,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const path = "path to Security.evtx";

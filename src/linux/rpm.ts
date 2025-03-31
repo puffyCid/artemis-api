@@ -1,19 +1,19 @@
-import { LinuxError } from "./errors.ts";
-import { RpmPackages } from "../../types/linux/rpm.ts";
-import { querySqlite } from "../applications/sqlite.ts";
-import { ApplicationError } from "../applications/errors.ts";
-import { decode, encode } from "../encoding/base64.ts";
-import { EncodingError } from "../encoding/errors.ts";
-import { NomError } from "../nom/error.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
+import { LinuxError } from "./errors";
+import { RpmPackages } from "../../types/linux/rpm";
+import { querySqlite } from "../applications/sqlite";
+import { ApplicationError } from "../applications/errors";
+import { decode, encode } from "../encoding/base64";
+import { EncodingError } from "../encoding/errors";
+import { NomError } from "../nom/error";
+import { extractUtf8String } from "../encoding/strings";
 import {
   Endian,
   nomSignedFourBytes,
   nomUnsignedFourBytes,
   nomUnsignedOneBytes,
-} from "../nom/helpers.ts";
-import { takeUntil } from "../nom/parsers.ts";
-import { unixEpochToISO } from "../time/conversion.ts";
+} from "../nom/helpers";
+import { takeUntil } from "../nom/parsers";
+import { unixEpochToISO } from "../time/conversion";
 
 /**
  * Function to get installed RPM packages. This function only supports getting packages from the sqlite database. The historical Berkley database is not supported.

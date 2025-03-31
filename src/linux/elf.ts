@@ -1,5 +1,5 @@
-import { ElfInfo } from "../../types/linux/elf.ts";
-import { LinuxError } from "./errors.ts";
+import { ElfInfo } from "../../types/linux/elf";
+import { LinuxError } from "./errors";
 
 /**
  * Function to parse an `elf` executable.

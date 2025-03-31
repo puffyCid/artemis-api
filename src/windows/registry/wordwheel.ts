@@ -1,12 +1,12 @@
-import { getRegistry } from "../../../mod.ts";
-import { Registry } from "../../../types/windows/registry.ts";
-import { WordWheelEntry } from "../../../types/windows/registry/wordwheel.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { decode } from "../../encoding/mod.ts";
-import { extractUtf16String } from "../../encoding/strings.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/files.ts";
-import { WindowsError } from "../errors.ts";
+import { getRegistry } from "../../../mod";
+import { Registry } from "../../../types/windows/registry";
+import { WordWheelEntry } from "../../../types/windows/registry/wordwheel";
+import { EncodingError } from "../../encoding/errors";
+import { decode } from "../../encoding/mod";
+import { extractUtf16String } from "../../encoding/strings";
+import { FileError } from "../../filesystem/errors";
+import { glob } from "../../filesystem/files";
+import { WindowsError } from "../errors";
 
 /**
  * Fucntion to parse user WordWheel searches in Windows Explorer

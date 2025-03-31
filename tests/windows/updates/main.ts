@@ -1,5 +1,5 @@
-import { WindowsError } from "../../../src/windows/errors.ts";
-import { Updates } from "../../../src/windows/ese/updates.ts";
+import { WindowsError } from "../../../src/windows/errors";
+import { Updates } from "../../../src/windows/ese/updates";
 
 function main() {
   const client = new Updates();

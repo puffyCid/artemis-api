@@ -1,7 +1,7 @@
-import { FileError } from "../../../src/filesystem/errors.ts";
-import { glob } from "../../../src/filesystem/mod.ts";
-import { WindowsError } from "../../../src/windows/errors.ts";
-import { parseMru } from "../../../src/windows/registry/recently_used.ts";
+import { FileError } from "../../../src/filesystem/errors";
+import { glob } from "../../../src/filesystem/mod";
+import { WindowsError } from "../../../src/windows/errors";
+import { parseMru } from "../../../src/windows/registry/recently_used";
 
 function main() {
   const paths = glob("C:\\Users\\*\\NTUSER.DAT");

@@ -1,4 +1,4 @@
-import { EncodingError } from "./errors.ts";
+import { EncodingError } from "./errors";
 
 /**
  * Base64 encode raw bytes. The encoding is not URL safe

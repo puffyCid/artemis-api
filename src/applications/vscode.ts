@@ -1,12 +1,12 @@
-import { Extensions, FileHistory } from "../../types/applications/vscode.ts";
-import { encode } from "../encoding/base64.ts";
-import { encodeBytes } from "../encoding/bytes.ts";
-import { getEnvValue } from "../environment/env.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { glob, readTextFile } from "../filesystem/files.ts";
-import { PlatformType } from "../system/systeminfo.ts";
-import { unixEpochToISO } from "../time/conversion.ts";
-import { ApplicationError } from "./errors.ts";
+import { Extensions, FileHistory } from "../../types/applications/vscode";
+import { encode } from "../encoding/base64";
+import { encodeBytes } from "../encoding/bytes";
+import { getEnvValue } from "../environment/env";
+import { FileError } from "../filesystem/errors";
+import { glob, readTextFile } from "../filesystem/files";
+import { PlatformType } from "../system/systeminfo";
+import { unixEpochToISO } from "../time/conversion";
+import { ApplicationError } from "./errors";
 
 /**
  * Return the local file history for all VSCode files. Also supports VSCodium.

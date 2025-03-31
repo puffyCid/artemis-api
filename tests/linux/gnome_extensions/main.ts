@@ -1,5 +1,5 @@
-import { LinuxError } from "../../../src/linux/errors.ts";
-import { getGnomeExtensions } from "../../../src/linux/gnome/extensions.ts";
+import { LinuxError } from "../../../src/linux/errors";
+import { getGnomeExtensions } from "../../../src/linux/gnome/extensions";
 
 function main() {
   const results = getGnomeExtensions();

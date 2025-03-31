@@ -3,9 +3,9 @@ import {
   LogonType,
   Raw4624Logons,
   Raw4634Logoffs,
-} from "../../../types/windows/eventlogs/logons.ts";
-import { WindowsError } from "../errors.ts";
-import { getEventlogs } from "../eventlogs.ts";
+} from "../../../types/windows/eventlogs/logons";
+import { WindowsError } from "../errors";
+import { getEventlogs } from "../eventlogs";
 
 /**
  * Function to parse Logon and Logoff events from Security.evtx file

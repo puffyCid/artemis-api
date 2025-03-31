@@ -1,4 +1,4 @@
-import { listApps } from "../../../mod.ts";
+import { listApps } from "../../../mod";
 
 function main() {
   const results = listApps();

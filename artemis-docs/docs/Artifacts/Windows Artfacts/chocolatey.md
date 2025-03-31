@@ -20,7 +20,7 @@ installed Chocolatey packages.
 ```typescript
 import {
   getChocolateyInfo,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = getChocolateyInfo();

@@ -7,21 +7,21 @@
  *  - https://github.com/iineva/bom
  *  - https://github.com/hogliux/bomutils
  */
-import { Bom, BomFiles } from "../../types/macos/bom.ts";
-import { extractUtf8String } from "../encoding/mod.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { readFile } from "../filesystem/files.ts";
-import { NomError } from "../nom/error.ts";
+import { Bom, BomFiles } from "../../types/macos/bom";
+import { extractUtf8String } from "../encoding/mod";
+import { FileError } from "../filesystem/errors";
+import { readFile } from "../filesystem/files";
+import { NomError } from "../nom/error";
 import {
   Endian,
   nomUnsignedEightBytes,
   nomUnsignedOneBytes,
   nomUnsignedTwoBytes,
-} from "../nom/helpers.ts";
-import { nomUnsignedFourBytes, take } from "../nom/mod.ts";
-import { unixEpochToISO } from "../time/conversion.ts";
-import { MacosError } from "./errors.ts";
-import { getPlist } from "./plist.ts";
+} from "../nom/helpers";
+import { nomUnsignedFourBytes, take } from "../nom/mod";
+import { unixEpochToISO } from "../time/conversion";
+import { MacosError } from "./errors";
+import { getPlist } from "./plist";
 
 /**
  * Parse a Bill of Materials (BOM) file and get file paths described in the file. When an application (pkg) is install macOS creates a BOM file to track files the pkg creates

@@ -1,6 +1,6 @@
-import { Memory } from "../../types/system/systeminfo.ts";
-import { ProcessInfo } from "../../types/system/processes.ts";
-import { Connection } from "../../types/system/connections.ts";
+import { Memory } from "../../types/system/systeminfo";
+import { ProcessInfo } from "../../types/system/processes";
+import { Connection } from "../../types/system/connections";
 
 /**
  * Function to get memory information

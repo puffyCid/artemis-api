@@ -21,7 +21,7 @@ Firewall information.
 ```typescript
 import {
   firewallStatus,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   const results = firewallStatus();

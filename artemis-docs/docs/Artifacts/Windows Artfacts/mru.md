@@ -26,7 +26,7 @@ keys.
 ```typescript
 import {
   parseMru,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 async function main() {
   const path = "path to NTUSER.DAT";

@@ -1,5 +1,5 @@
-import { UserAssist } from "../../types/windows/userassist.ts";
-import { WindowsError } from "./errors.ts";
+import { UserAssist } from "../../types/windows/userassist";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse `UserAssist` entries

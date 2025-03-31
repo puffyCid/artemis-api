@@ -1,14 +1,14 @@
 import {
   GatekeeperEntries,
   GkType,
-} from "../../../types/macos/sqlite/gatekeeper.ts";
-import { ApplicationError } from "../../applications/errors.ts";
-import { querySqlite } from "../../applications/sqlite.ts";
-import { decode } from "../../encoding/base64.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { bytesToHexString } from "../../encoding/strings.ts";
-import { julianToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
-import { MacosError } from "../errors.ts";
+} from "../../../types/macos/sqlite/gatekeeper";
+import { ApplicationError } from "../../applications/errors";
+import { querySqlite } from "../../applications/sqlite";
+import { decode } from "../../encoding/base64";
+import { EncodingError } from "../../encoding/errors";
+import { bytesToHexString } from "../../encoding/strings";
+import { julianToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { MacosError } from "../errors";
 
 /**
  * Function to extract Gatekeeper entries

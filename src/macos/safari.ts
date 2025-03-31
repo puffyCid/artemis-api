@@ -3,8 +3,8 @@ import {
   RawSafariHistory,
   SafariDownloads,
   SafariHistory,
-} from "../../types/macos/safari.ts";
-import { MacosError } from "./errors.ts";
+} from "../../types/macos/safari";
+import { MacosError } from "./errors";
 
 /**
  * Get Safari history for all users on a endpoint

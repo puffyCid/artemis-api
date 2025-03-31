@@ -1,5 +1,5 @@
-import { decode } from "../../encoding/base64.ts";
-import { EncodingError } from "../../encoding/errors.ts";
+import { decode } from "../../encoding/base64";
+import { EncodingError } from "../../encoding/errors";
 
 /**
  * Function to base64 URL string

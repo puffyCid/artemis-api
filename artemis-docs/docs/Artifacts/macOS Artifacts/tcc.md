@@ -29,7 +29,7 @@ data.
 ```typescript
 import {
   queryTccDb,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = queryTccDb();

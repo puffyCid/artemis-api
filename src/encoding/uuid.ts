@@ -1,4 +1,4 @@
-import { Endian } from "../nom/helpers.ts";
+import { Endian } from "../nom/helpers";
 
 /**
  * Format bytes to a GUID value. Must specify Endianess

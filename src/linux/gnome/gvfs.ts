@@ -1,19 +1,19 @@
-import type { GvfsEntry } from "../../../types/linux/gnome/gvfs.ts";
-import { extractUtf8String } from "../../encoding/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { readFile } from "../../filesystem/files.ts";
-import { glob } from "../../filesystem/mod.ts";
-import { NomError } from "../../nom/error.ts";
-import { Endian } from "../../nom/helpers.ts";
+import type { GvfsEntry } from "../../../types/linux/gnome/gvfs";
+import { extractUtf8String } from "../../encoding/mod";
+import { FileError } from "../../filesystem/errors";
+import { readFile } from "../../filesystem/files";
+import { glob } from "../../filesystem/mod";
+import { NomError } from "../../nom/error";
+import { Endian } from "../../nom/helpers";
 import {
   nomUnsignedEightBytes,
   nomUnsignedFourBytes,
   nomUnsignedTwoBytes,
   take,
   takeUntil,
-} from "../../nom/mod.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { LinuxError } from "../errors.ts";
+} from "../../nom/mod";
+import { unixEpochToISO } from "../../time/conversion";
+import { LinuxError } from "../errors";
 
 /**
  * Function to parse GVFS metadata files. By default will parse all GVFS metadata files at `/home/%/.local/share/gvfs-metadata/%`

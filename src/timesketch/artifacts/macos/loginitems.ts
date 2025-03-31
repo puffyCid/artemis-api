@@ -1,5 +1,5 @@
-import { LoginItems } from "../../../../types/macos/loginitems.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { LoginItems } from "../../../../types/macos/loginitems";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline loginitems

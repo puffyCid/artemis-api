@@ -27,7 +27,7 @@ Logon entries.
 ```typescript
 import {
   powershellHistory,
-} from "./artemis-api/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = powershellHistory();

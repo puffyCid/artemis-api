@@ -1,5 +1,5 @@
-import { gatekeeperEntries } from "../../../mod.ts";
-import { MacosError } from "../../../src/macos/errors.ts";
+import { gatekeeperEntries } from "../../../mod";
+import { MacosError } from "../../../src/macos/errors";
 
 function main() {
   const results = gatekeeperEntries();

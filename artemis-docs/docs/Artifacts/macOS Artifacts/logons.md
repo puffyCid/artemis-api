@@ -17,9 +17,9 @@ Logon entries.
 # Sample API Script
 
 ```typescript
-import { FileError } from "./artemis-api/src/filesystem/errors.ts";
-import { glob } from "./artemis-api/src/filesystem/mod.ts";
-import { logonsMacos } from "./artemis-api/src/macos/unifiedlogs/logons.ts";
+import { FileError } from "./artemis-api/src/filesystem/errors";
+import { glob } from "./artemis-api/src/filesystem/mod";
+import { logonsMacos } from "./artemis-api/src/macos/unifiedlogs/logons";
 
 function main() {
   const logs = glob("/var/db/diagnostics/Special/*");

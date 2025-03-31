@@ -1,5 +1,5 @@
-import { Prefetch } from "../../../../types/windows/prefetch.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Prefetch } from "../../../../types/windows/prefetch";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Prefetch

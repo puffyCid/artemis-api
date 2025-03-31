@@ -1,5 +1,5 @@
-import { Amcache } from "../../types/windows/amcache.ts";
-import { WindowsError } from "./errors.ts";
+import { Amcache } from "../../types/windows/amcache";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse `Amcache` entries on the systemdrive

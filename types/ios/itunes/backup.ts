@@ -1,4 +1,4 @@
-import { AppMetadata } from "./metadata.ts";
+import { AppMetadata } from "./metadata";
 
 /**
  * Metadata about the iTunes backup

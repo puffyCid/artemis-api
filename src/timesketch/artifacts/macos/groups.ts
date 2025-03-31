@@ -1,5 +1,5 @@
-import { Groups } from "../../../../types/macos/accounts.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Groups } from "../../../../types/macos/accounts";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline macos Groups

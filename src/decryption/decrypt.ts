@@ -1,4 +1,4 @@
-import { DecryptError } from "./errors.ts";
+import { DecryptError } from "./errors";
 
 /**
  * Function to decrypt AES256 data

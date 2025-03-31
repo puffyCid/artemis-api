@@ -1,22 +1,22 @@
-import { getPlist, querySqlite } from "../../../mod.ts";
+import { getPlist, querySqlite } from "../../../mod";
 import {
   FileMetadata,
   ManifestApp,
-} from "../../../types/ios/itunes/manifest.ts";
-import { AppMetadata } from "../../../types/ios/itunes/metadata.ts";
-import { ApplicationError } from "../../applications/errors.ts";
-import { decode } from "../../encoding/base64.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { MacosError } from "../../macos/errors.ts";
-import { Output } from "../../system/output.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { extractAmazonEcho } from "../apps/amazon/echo/echo.ts";
-import { extractDuckDuckGo } from "../apps/duckduckgo/duck.ts";
-import { extractHingeInfo } from "../apps/hinge/hinge.ts";
-import { extractZoom } from "../apps/zoom/zoom.ts";
-import { extractHomeDomain } from "../domains/home/home.ts";
-import { extractRootDomain } from "../domains/root/root.ts";
-import { IosError } from "../error.ts";
+} from "../../../types/ios/itunes/manifest";
+import { AppMetadata } from "../../../types/ios/itunes/metadata";
+import { ApplicationError } from "../../applications/errors";
+import { decode } from "../../encoding/base64";
+import { EncodingError } from "../../encoding/errors";
+import { MacosError } from "../../macos/errors";
+import { Output } from "../../system/output";
+import { unixEpochToISO } from "../../time/conversion";
+import { extractAmazonEcho } from "../apps/amazon/echo/echo";
+import { extractDuckDuckGo } from "../apps/duckduckgo/duck";
+import { extractHingeInfo } from "../apps/hinge/hinge";
+import { extractZoom } from "../apps/zoom/zoom";
+import { extractHomeDomain } from "../domains/home/home";
+import { extractRootDomain } from "../domains/root/root";
+import { IosError } from "../error";
 
 /**
  * Function to parse the binary plist info in `iTunesMetadata`
