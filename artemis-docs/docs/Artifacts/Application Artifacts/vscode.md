@@ -23,7 +23,7 @@ import {
   fileHistory,
   getExtensions,
   PlatformType,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = fileHistory(PlatformType.Darwin);

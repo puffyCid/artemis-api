@@ -1,5 +1,5 @@
-import { Amcache } from "../../../../types/windows/amcache.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Amcache } from "../../../../types/windows/amcache";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Amcache

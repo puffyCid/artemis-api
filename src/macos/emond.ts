@@ -1,5 +1,5 @@
-import { Emond } from "../../types/macos/emond.ts";
-import { MacosError } from "./errors.ts";
+import { Emond } from "../../types/macos/emond";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the `Emond` rules on a macOS system
@@ -7,17 +7,11 @@ import { MacosError } from "./errors.ts";
  * @returns Array of `Emond` rules or `MacosError`
  */
 export function getEmond(path?: string): Emond[] | MacosError {
-  let emond_path = "";
-  if (path != undefined) {
-    emond_path = path;
-  }
-
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_emond(emond_path);
+    const data = js_emond(path);
 
-    const emond: Emond[] = JSON.parse(data);
-    return emond;
+    return data;
   } catch (err) {
     return new MacosError("EMOND", `failed to parse emond: ${err}`);
   }

@@ -1,10 +1,13 @@
 import {
   type Attachment,
   FolderInfo,
+  FolderMetadata,
   MessageDetails,
+  NameEntry,
+  PropertyContext,
   TableInfo,
-} from "../../types/windows/outlook.ts";
-import { WindowsError } from "./errors.ts";
+} from "../../types/windows/outlook";
+import { WindowsError } from "./errors";
 
 export class Outlook {
   private path: string;
@@ -15,7 +18,7 @@ export class Outlook {
    * @param path Path to the Outlook OST file
    * @param ntfs Should NTFS parser be used. Only works on **Windows**. Required if you want to parse a locked OST file
    */
-  constructor(path: string, ntfs = false) {
+  constructor (path: string, ntfs = false) {
     this.path = path;
     this.use_ntfs = ntfs;
   }
@@ -27,13 +30,12 @@ export class Outlook {
   public rootFolder(): FolderInfo | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.get_root_folder(
+      const data: FolderInfo = js_root_folder(
         this.path,
         this.use_ntfs,
       );
 
-      const results: FolderInfo = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",
@@ -50,18 +52,82 @@ export class Outlook {
   public readFolder(folder: number): FolderInfo | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.read_folder(
+      const data: FolderInfo = js_read_folder(
         this.path,
         this.use_ntfs,
         folder,
       );
 
-      const results: FolderInfo = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",
         `failed to read folder for ${this.path}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Function to extract even more metadata from an Outlook folder
+   * @param folder Folder number
+   * @returns Additional folder info `FolderMetadata`  or `WindowsError`
+   */
+  public folderMetadata(folder: number): FolderMetadata | WindowsError {
+    try {
+      //@ts-ignore: Custom Artemis function
+      const data: FolderMetadata = js_folder_meta(
+        this.path,
+        this.use_ntfs,
+        folder,
+      );
+
+      return data;
+    } catch (err) {
+      return new WindowsError(
+        "OUTLOOK",
+        `failed to read folder metadata for ${this.path}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Function to export the Outlook Message Store. Does NOT contain messages
+   * @returns Array of `PropertyContext` or `WindowsError`
+   */
+  public messageStore(): PropertyContext[] | WindowsError {
+    try {
+      //@ts-ignore: Custom Artemis function
+      const data: PropertyContext[] = js_message_store(
+        this.path,
+        this.use_ntfs,
+      );
+
+      return data;
+    } catch (err) {
+      return new WindowsError(
+        "OUTLOOK",
+        `failed to export message store for ${this.path}: ${err}`,
+      );
+    }
+  }
+
+  /**
+   * Function to extract Name Maps from Outlook. Can be used to translate some GUID values to a name
+   * @returns HashMap of `NameEntry` or `WindowsError`
+   */
+  public nameMaps(): Record<number, NameEntry> | WindowsError {
+    try {
+      //@ts-ignore: Custom Artemis function
+      const data: Record<number, NameEntry> = js_name_map(
+        this.path,
+        this.use_ntfs,
+      );
+
+      return data;
+    } catch (err) {
+      return new WindowsError(
+        "OUTLOOK",
+        `failed to get name maps for ${this.path}: ${err}`,
       );
     }
   }
@@ -87,15 +153,14 @@ export class Outlook {
     table.rows = rows;
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.read_messages(
+      const data: MessageDetails[] = js_read_messages(
         this.path,
         this.use_ntfs,
-        JSON.stringify(table),
+        table,
         offset,
       );
 
-      const results: MessageDetails[] = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",
@@ -116,15 +181,14 @@ export class Outlook {
   ): Attachment | WindowsError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.read_attachment(
+      const data: Attachment = js_read_attachment(
         this.path,
         this.use_ntfs,
         block_id,
         descriptor_id,
       );
 
-      const results: Attachment = JSON.parse(data);
-      return results;
+      return data;
     } catch (err) {
       return new WindowsError(
         "OUTLOOK",

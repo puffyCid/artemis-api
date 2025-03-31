@@ -24,7 +24,7 @@ Xprotect data.
 ```typescript
 import {
   getXprotectDefinitions,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = getXprotectDefinitions();

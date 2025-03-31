@@ -22,7 +22,7 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 # Sample API Script
 
 ```typescript
-import { parseBookmark } from "./artemis-api/src/macos/bookmark.ts";
+import { parseBookmark } from "./artemis-api/src/macos/bookmark";
 function main() {
   // Need to obtain Bookmark bytes from another file. Plist files may have bookmark data.
   const results = parseBookmark(new Uint8Array());

@@ -16,8 +16,8 @@ The TypeScrpt code below imports a function and the Registry interface from
 artemis.
 
 ```typescript
-import { getRegistry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
-import { Registry } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/windows/registry.ts";
+import { getRegistry } from "./artemis-api/mod";
+import { Registry } from "./artemis-api/src/windows/registry";
 
 interface InstalledPrograms {
   name: string;
@@ -117,160 +117,41 @@ Lets save this code to the file main.ts. Before we can compile the code to
 JavaScript we have to include (bundle) `mod.ts` and `registry.ts`.
 
 There are multiple types of bundler applications that can help us with this
-task. Two (2) we will focus on are:
-
-- The builtin bundler in Deno
-- [esbuild Deno loader](https://deno.land/x/esbuild_deno_loader@0.6.0)
-
-## Deno Builtin Bundler
-
-To bundle our main.ts and compile to a JS file. We just need to run:
-`deno bundle  --no-check main.ts > main.js`. By default Deno wil output to the
-console when bundling.
-
-### --no-check Flag
-
-This flag tells Deno not to type check values. This flag is required due to:
-`Deno.core.ops.get_registry(path)`
-
-The Deno binary is designed to support code written for the Deno platform.
-However, we are using a custom Deno runtime.
-
-The Deno binary has no idea what `get_registry` is because it is a custom
-function we have registered in our own runtime.
-
-### Output
-
-```javascript
-// deno-fmt-ignore-file
-// deno-lint-ignore-file
-// This code was bundled using `deno bundle` and it's not recommended to edit it manually
-
-function get_registry(path) {
-    const data = Deno.core.ops.get_registry(path);
-    const reg_array = JSON.parse(data);
-    return reg_array;
-}
-function getRegistry(path) {
-    return get_registry(path);
-}
-function grab_info(reg) {
-    const programs = [];
-    for (const entries of reg){
-        if (entries.values.length < 3) {
-            continue;
-        }
-        const program = {
-            name: "",
-            version: "",
-            install_location: "",
-            install_source: "",
-            language: "",
-            publisher: "",
-            install_string: "",
-            install_date: "",
-            uninstall_string: "",
-            url_info: "",
-            reg_path: entries.path
-        };
-        for (const value of entries.values){
-            switch(value.value){
-                case "DisplayName":
-                    program.name = value.data;
-                    break;
-                case "DisplayVersion":
-                    program.version = value.data;
-                    break;
-                case "InstallDate":
-                    program.install_date = value.data;
-                    break;
-                case "InstallLocation":
-                    program.install_location = value.data;
-                    break;
-                case "InstallSource":
-                    program.install_source = value.data;
-                    break;
-                case "Language":
-                    program.language = value.data;
-                    break;
-                case "Publisher":
-                    program.publisher = value.data;
-                    break;
-                case "UninstallString":
-                    program.uninstall_string = value.data;
-                    break;
-                case "URLInfoAbout":
-                    program.url_info = value.data;
-                    break;
-                default:
-                    continue;
-            }
-        }
-        programs.push(program);
-    }
-    return programs;
-}
-function main() {
-    const path = "C:\\Windows\\System32\\config\\SOFTWARE";
-    const reg = getRegistry(path);
-    const programs = [];
-    for (const entries of reg){
-        if (!entries.path.includes("Microsoft\\Windows\\CurrentVersion\\Uninstall")) {
-            continue;
-        }
-        programs.push(entries);
-    }
-    return grab_info(programs);
-}
-main();
-```
-
-The JavaScript code above was generated with the `deno bundle` command and is
-now ready to be executed by artemis!
+task. One of the most popular ones is [esbuild](https://esbuild.github.io/)
 
 ## Esbuild
 
-[esbuild](https://esbuild.github.io/) is a popular Bundler for JavaScript. It is
-normally run as a standalone binary, however we can import a module that lets us
-dynamically execute esbuild using Deno. In order to do this we need a build
-script. Using the same main.ts file above, create a `build.ts` file in the same
-directory. Add the following code to `build.ts`:
+[esbuild](https://esbuild.github.io/) is a popular Bundler for JavaScript. It can be run as a standalone binary.
+Once you have esbuild installed you can transpile and bundle your TypeScript with the following command:
 
-```typescript
-import * as esbuild from "npm:esbuild@0.20.2";
-import { denoPlugins } from "jsr:@luca/esbuild-deno-loader@^0.11.1";
-
-async function main() {
-  const _result = await esbuild.build({
-    plugins: [...denoPlugins()],
-    entryPoints: ["./main.ts"],
-    outfile: "main.js",
-    bundle: true,
-    format: "cjs",
-    minify: false, // Set to true if you want a smaller output file
-  });
-
-  esbuild.stop();
-}
-
-main();
+```
+esbuild --bundle --outfile=out.js main.ts
 ```
 
-The above script will use the main.ts file and bundle all of its pre-requisite
-files into one .js file using esbuild. We then execute this code using
-`deno run build.ts`
+:::info
+
+esbuild can also minify JavaScript code! This can dramitically reduce the size of your script
+
+```
+esbuild --bundle --minify --outfile=out.js main.ts
+```
+
+:::
+
+
+The above commands will use the main.ts file and bundle all of its pre-requisite
+files into one .js file using esbuild.
 
 ### Output
 
 ```javascript
-// https://raw.githubusercontent.com/puffycid/artemis-api/master/src/windows/registry.ts
 function get_registry(path) {
-  const data = Deno.core.ops.get_registry(path);
+  const data = js_get_registry(path);
   const reg_array = JSON.parse(data);
   return reg_array;
 }
 
-// https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts
+// ./artemis-api/mod.ts
 function getRegistry(path) {
   return get_registry(path);
 }
@@ -352,5 +233,5 @@ function main() {
 main();
 ```
 
-The JavaScript code above was generated by esbuild via Deno and is now ready to
+The JavaScript code above was generated by esbuild and is now ready to
 be executed by artemis!

@@ -1,5 +1,5 @@
-import { getHomebrewInfo } from "../../../mod.ts";
-import { MacosError } from "../../../src/macos/errors.ts";
+import { getHomebrewInfo } from "../../../mod";
+import { MacosError } from "../../../src/macos/errors";
 
 function main() {
   const data = getHomebrewInfo();

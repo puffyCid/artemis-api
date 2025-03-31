@@ -1,8 +1,8 @@
-import { MacosFileInfo } from "../../../types/macos/files.ts";
-import { WindowsFileInfo } from "../../../types/windows/files.ts";
-import { LinuxFileInfo } from "../../../types/linux/files.ts";
+import { MacosFileInfo } from "../../../types/macos/files";
+import { WindowsFileInfo } from "../../../types/windows/files";
+import { LinuxFileInfo } from "../../../types/linux/files";
 
-import { TimesketchTimeline } from "../../../types/timesketch/timeline.ts";
+import { TimesketchTimeline } from "../../../types/timesketch/timeline";
 
 /**
  * Function to timeline filesystem info

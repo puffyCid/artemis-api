@@ -1,5 +1,5 @@
-import { WindowsError } from "../../../src/windows/errors.ts";
-import { powershellHistory } from "../../../src/windows/powershell.ts";
+import { WindowsError } from "../../../src/windows/errors";
+import { powershellHistory } from "../../../src/windows/powershell";
 
 function main() {
   const results = powershellHistory();

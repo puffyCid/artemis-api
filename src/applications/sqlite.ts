@@ -1,4 +1,4 @@
-import { ApplicationError } from "./errors.ts";
+import { ApplicationError } from "./errors";
 
 /**
  * Query a SQLITE database file
@@ -12,10 +12,9 @@ export function querySqlite(
 ): Record<string, unknown>[] | ApplicationError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.query_sqlite(path, query);
+    const data = js_query_sqlite(path, query);
 
-    const results: Record<string, unknown>[] = JSON.parse(data);
-    return results;
+    return data;
   } catch (err) {
     return new ApplicationError(
       "SQLITE",

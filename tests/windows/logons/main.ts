@@ -1,5 +1,5 @@
-import { WindowsError } from "../../../src/windows/errors.ts";
-import { logonsWindows } from "../../../src/windows/eventlogs/logons.ts";
+import { WindowsError } from "../../../src/windows/errors";
+import { logonsWindows } from "../../../src/windows/eventlogs/logons";
 
 function main() {
   const results = logonsWindows(

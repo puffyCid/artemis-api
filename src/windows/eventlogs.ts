@@ -1,9 +1,9 @@
 import {
   EventLogMessage,
   EventLogRecord,
-} from "../../types/windows/eventlogs.ts";
-import { platform } from "../system/systeminfo.ts";
-import { WindowsError } from "./errors.ts";
+} from "../../types/windows/eventlogs";
+import { platform } from "../system/systeminfo";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse an `evtx` file. Returns a tuple containing extracted EventLogs
@@ -19,12 +19,12 @@ export function getEventlogs(
   offset: number,
   limit: number,
   include_templates = false,
-  template_file = "",
+  template_file = undefined,
 ):
-  | readonly [messages: EventLogMessage[], raw_messages: EventLogRecord[]]
+  | readonly [ messages: EventLogMessage[], raw_messages: EventLogRecord[] ]
   | WindowsError {
   if (
-    include_templates && platform() != "Windows" && template_file == ""
+    include_templates && platform() != "Windows" && template_file === undefined
   ) {
     return new WindowsError(
       "EVENTLOG",
@@ -33,7 +33,7 @@ export function getEventlogs(
   }
   try {
     //@ts-ignore: Custom Artemis function
-    const results: string = Deno.core.ops.get_eventlogs(
+    const results = js_eventlogs(
       path,
       offset,
       limit,
@@ -44,9 +44,7 @@ export function getEventlogs(
     const data: [
       messages: EventLogMessage[],
       raw_messages: EventLogRecord[],
-    ] = JSON.parse(
-      results,
-    );
+    ] = results;
     return data;
   } catch (err) {
     return new WindowsError(

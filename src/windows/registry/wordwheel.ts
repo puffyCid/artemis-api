@@ -1,13 +1,18 @@
-import { getRegistry } from "../../../mod.ts";
-import { Registry } from "../../../types/windows/registry.ts";
-import { WordWheelEntry } from "../../../types/windows/registry/wordwheel.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { decode } from "../../encoding/mod.ts";
-import { extractUtf16String } from "../../encoding/strings.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/files.ts";
-import { WindowsError } from "../errors.ts";
+import { getRegistry } from "../../../mod";
+import { Registry } from "../../../types/windows/registry";
+import { WordWheelEntry } from "../../../types/windows/registry/wordwheel";
+import { EncodingError } from "../../encoding/errors";
+import { decode } from "../../encoding/mod";
+import { extractUtf16String } from "../../encoding/strings";
+import { FileError } from "../../filesystem/errors";
+import { glob } from "../../filesystem/files";
+import { WindowsError } from "../errors";
 
+/**
+ * Fucntion to parse user WordWheel searches in Windows Explorer
+ * @param path Path to NTUSER.dat file. Can also provide a glob to NTUSER.dat files
+ * @returns Array of `WordWheelEntry` or `WindowsError`
+ */
 export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
   const globs = glob(path);
   if (globs instanceof FileError) {
@@ -34,8 +39,14 @@ export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
   return wheels;
 }
 
+/**
+ * Extract WordWheel entries from Regstry. It is just a string value
+ * @param reg Array of `Registry` entries
+ * @param source_path Source path to the NTUSER.dat file
+ * @returns Array of `WordWheelEntry` entries
+ */
 function extractWheel(reg: Registry[], source_path: string): WordWheelEntry[] {
-  const wheels = [];
+  const wheels: WordWheelEntry[] = [];
   for (const entry of reg) {
     if (!entry.path.includes("WordWheel")) {
       continue;

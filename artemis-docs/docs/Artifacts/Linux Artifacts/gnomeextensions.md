@@ -21,7 +21,7 @@ installed extensions.
 # Sample API Script
 
 ```typescript
-import { getGnomeExtensions } from "./artemis-api/src/linux/gnome/extensions.ts";
+import { getGnomeExtensions } from "./artemis-api/src/linux/gnome/extensions";
 
 function main() {
     const results = getGnomeExtensions();

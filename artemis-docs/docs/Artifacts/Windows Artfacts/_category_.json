@@ -1,6 +1,6 @@
 {
   "label": "Windows Artifacts",
-  "position": 10,
+  "position": 11,
   "link": {
     "type": "generated-index",
     "description": "Forensic artifacts for Windows systems"

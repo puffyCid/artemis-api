@@ -1,18 +1,17 @@
-import { PeInfo } from "../../types/windows/pe.ts";
-import { WindowsError } from "./errors.ts";
+import { PeInfo } from "../../types/windows/pe";
+import { WindowsError } from "./errors";
 
 /**
- * Function to parse a `pe` executable.
- * @param path Full path to a `pe` file
- * @returns Basic `PeInfo` interface or `WindowsError`
+ * Function to parse a `PE` executable.
+ * @param path Full path to a `PE` file
+ * @returns `PeInfo` object or `WindowsError`
  */
 export function getPe(path: string): PeInfo | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_pe(path);
-    const result: PeInfo = JSON.parse(data);
-    return result;
+    //@ts-ignore: Custom Artemis functionjs_
+    const data: PeInfo = get_pe(path);
+    return data;
   } catch (err) {
-    return new WindowsError("PE", `failed to parse pe file ${path}: ${err}`);
+    return new WindowsError("PE", `failed to parse PE file ${path}: ${err}`);
   }
 }

@@ -1,8 +1,8 @@
-import { getPlist } from "../../../../mod.ts";
-import { FileError } from "../../../filesystem/errors.ts";
-import { readTextFile } from "../../../filesystem/files.ts";
-import { MacosError } from "../../../macos/errors.ts";
-import { IosError } from "../../error.ts";
+import { getPlist } from "../../../../mod";
+import { FileError } from "../../../filesystem/errors";
+import { readTextFile } from "../../../filesystem/files";
+import { MacosError } from "../../../macos/errors";
+import { IosError } from "../../error";
 
 /**
  * Function parse Hinge preference file

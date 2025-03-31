@@ -120,7 +120,7 @@ This data would be saved in a `<uuid>.jsonl` file
 The `<uuid>.log` output from a collection contains any errors or warnings
 encountered during the collection.
 
-The `status.log` output from a collection maps the `<uuid>.{json or jsonl}`
+The `status.log` output from a collection maps the `<uuid>.{json, jsonl, or csv}`
 files to an artifact name. A possible example from the macOS `UnifiedLogs`
 
 ```
@@ -129,13 +129,13 @@ unifiedlogs:eccd7b5b-4941-4134-a790-b073eb992188.json
 ```
 
 As mentioned and seen above you can also check the actual
-`<uuid>.{json or jsonl}` files to find the `artifact_name`
+`<uuid>.{json, jsonl, or csv}` files to find the `artifact_name`
 
-# Compression
+## Compression
 
 If you choose to enable compression for the output artemis will compress each
-`<uuid>.{json or jsonl}` using gzip compression. The files will be saved as
-`<uuid>.{json or jsonl}.gz`. The log files are not compressed.
+`<uuid>.{json, jsonl, or csv}` using gzip compression. The files will be saved as
+`<uuid>.{json, jsonl, or csv}.gz`. The log files are not compressed.
 
 Once the collection is complete artemis will compress the whole output directory
 into a zip file and remove the output directory. Leaving only the zip file.
@@ -146,3 +146,226 @@ to deleting its data:
 - It gets a list of files in its output directory and deletes files one at a
   time that end in: json, jsonl, gz, or log
 - Once all output files are deleted, it will delete the empty directory.
+
+## Timelining
+
+There are two primary ways to timeline data with artemis. The easiest way is to use a TOML file or cli command:  
+```
+artemis acquire --timeline prefetch
+```
+
+You can also use the [JS API](../../API/API%20Scenarios/timelines.md) to timeline data.
+
+Artemis outputs timeline data in a format that is supported by Timesketch. So you can upload results to review (you can also use [artemis](../../API/API%20Scenarios/timesketch.md)).
+
+When you timeline data, artemis will add four fields:
+- message
+- datetime
+- timestamp_desc
+- data_type
+
+:::info
+
+Two things to be aware when timelining data:
+1. The output will always be JSONL
+2. Timelining an artifact will cause artemis to run longer and use a little bit more memory
+
+:::
+
+When you timeline an artifact using a TOML file or cli, you can only timeline the following artifacts:
+```
+  processes          Collect processes
+  connections        Collect network connections
+  filelisting        Pull filelisting
+  prefetch           windows: Parse Prefetch
+  eventlogs          windows: Parse EventLogs
+  rawfilelisting     windows: Parse NTFS to get filelisting
+  shimdb             windows: Parse ShimDatabase
+  registry           windows: Parse Registry
+  userassist         windows: Parse Userassist
+  shimcache          windows: Parse Shimcache
+  shellbags          windows: Parse Shellbags
+  amcache            windows: Parse Amcache
+  shortcuts          windows: Parse Shortcuts
+  usnjrnl            windows: Parse UsnJrnl
+  bits               windows: Parse BITS
+  srum               windows: Parse SRUM
+  users-windows      windows: Parse Users
+  search             windows: Parse Windows Search
+  tasks              windows: Parse Windows Tasks
+  services           windows: Parse Windows Services
+  jumplists          windows: Parse Jumplists
+  recyclebin         windows: Parse RecycleBin
+  wmipersist         windows: Parse WMI Repository
+  outlook            windows: Parse Outlook messages
+  mft                windows: Parse MFT file
+  execpolicy         macos: Parse ExecPolicy
+  users-macos        macos: Collect local users
+  fsevents           macos: Parse FsEvents entries
+  emond              macos: Parse Emond persistence. Removed in Ventura
+  loginitems         macos: Parse LoginItems
+  launchd            macos: Parse Launch Daemons and Agents
+  groups-macos       macos: Collect local groups
+  safari-history     macos: Collect Safari History
+  safari-downloads   macos: Collect Safari Downloads
+  unifiedlogs        macos: Parse the Unified Logs
+  sudologs-macos     macos: Parse Sudo log entries from Unified Logs
+  spotlight          macos: Parse the Spotlight database
+  sudologs-linux     linux: Grab Sudo logs
+  journals           linux: Parse systemd Journal files
+  logons             linux: Parse Logon files
+```
+
+If you timeline an artifact using the JS API you can timeline any artifact.
+
+Artemis will not sort your timeline, it will only extract different timestamps into separate entries.
+For example, below is a simple filelisting entry:
+```json
+{
+    "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+    "directory": "./deps",
+    "filename": "autocfg-36b1baa0a559f221.d",
+    "extension": "d",
+    "created": "2024-12-05T03:59:38.000Z",
+    "modified": "2024-12-05T03:59:36.000Z",
+    "changed": "2024-12-08T03:59:36.000Z",
+    "accessed": "2024-12-06T04:42:22.000Z",
+    "size": 1780,
+    "inode": 4295384,
+    "mode": 33188,
+    "uid": 1000,
+    "gid": 1000,
+    "md5": "9b5ec7c5011358706533373fdc05f59e",
+    "sha1": "",
+    "sha256": "",
+    "is_file": true,
+    "is_directory": false,
+    "is_symlink": false,
+    "depth": 2,
+    "yara_hits": [],
+    "binary_info": []
+}
+```
+
+Notice it has four different timestamps. When you timeline this data artemis will create four seperate entries, one for each timestamp.
+
+```json
+[
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-06T04:42:22.000Z",
+        "timestamp_desc": "Accessed"
+    },
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-05T03:59:38.000Z",
+        "timestamp_desc": "Created"
+    },
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-05T03:59:36.000Z",
+        "timestamp_desc": "Modified"
+    },
+    {
+        "full_path": "./deps/autocfg-36b1baa0a559f221.d",
+        "directory": "./deps",
+        "filename": "autocfg-36b1baa0a559f221.d",
+        "extension": "d",
+        "created": "2024-12-05T03:59:38.000Z",
+        "modified": "2024-12-05T03:59:36.000Z",
+        "changed": "2024-12-08T03:59:36.000Z",
+        "accessed": "2024-12-06T04:42:22.000Z",
+        "size": 1780,
+        "inode": 4295384,
+        "mode": 33188,
+        "uid": 1000,
+        "gid": 1000,
+        "md5": "9b5ec7c5011358706533373fdc05f59e",
+        "sha1": "",
+        "sha256": "",
+        "is_file": true,
+        "is_directory": false,
+        "is_symlink": false,
+        "depth": 2,
+        "yara_hits": [],
+        "binary_info": [],
+        "artifact": "Files",
+        "data_type": "system:fs:file",
+        "message": "./deps/autocfg-36b1baa0a559f221.d",
+        "datetime": "2024-12-08T03:59:36.000Z",
+        "timestamp_desc": "Changed"
+    }
+]
+```

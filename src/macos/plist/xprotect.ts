@@ -1,9 +1,9 @@
-import { MacosError } from "../errors.ts";
+import { MacosError } from "../errors";
 import {
   MatchData,
   XprotectEntries,
-} from "../../../types/macos/plist/xprotect.ts";
-import { getPlist } from "../plist.ts";
+} from "../../../types/macos/plist/xprotect";
+import { getPlist } from "../plist";
 
 /**
  * Function to extract Xprotect definitions
@@ -13,7 +13,7 @@ import { getPlist } from "../plist.ts";
 export function getXprotectDefinitions(
   alt_path?: string,
 ): XprotectEntries[] | MacosError {
-  let paths = [];
+  let paths: string[] = [];
   if (alt_path != undefined) {
     paths = [alt_path];
   } else {

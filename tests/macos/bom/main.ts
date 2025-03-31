@@ -1,7 +1,7 @@
-import { parseBom } from "../../../mod.ts";
-import { FileError } from "../../../src/filesystem/errors.ts";
-import { glob } from "../../../src/filesystem/mod.ts";
-import { MacosError } from "../../../src/macos/errors.ts";
+import { parseBom } from "../../../mod";
+import { FileError } from "../../../src/filesystem/errors";
+import { glob } from "../../../src/filesystem/mod";
+import { MacosError } from "../../../src/macos/errors";
 
 function main() {
   const path = "/var/db/receipts/*.bom";

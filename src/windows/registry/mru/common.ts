@@ -3,17 +3,17 @@
  * https://www.magnetforensics.com/blog/what-is-mru-most-recently-used/
  */
 
-import { Registry } from "../../../../types/windows/registry.ts";
-import { MruValues } from "../../../../types/windows/registry/recently_used.ts";
-import { ShellItems } from "../../../../types/windows/shellitems.ts";
-import { decode } from "../../../encoding/base64.ts";
-import { EncodingError } from "../../../encoding/errors.ts";
-import { extractUtf16String } from "../../../encoding/strings.ts";
-import { NomError } from "../../../nom/error.ts";
-import { take, takeUntil } from "../../../nom/parsers.ts";
-import { WindowsError } from "../../errors.ts";
-import { getShellItem } from "../../shellitems.ts";
-import { assembleMru } from "../recently_used.ts";
+import { Registry } from "../../../../types/windows/registry";
+import { MruValues } from "../../../../types/windows/registry/recently_used";
+import { ShellItems } from "../../../../types/windows/shellitems";
+import { decode } from "../../../encoding/base64";
+import { EncodingError } from "../../../encoding/errors";
+import { extractUtf16String } from "../../../encoding/strings";
+import { NomError } from "../../../nom/error";
+import { take, takeUntil } from "../../../nom/parsers";
+import { WindowsError } from "../../errors";
+import { getShellItem } from "../../shellitems";
+import { assembleMru } from "../recently_used";
 
 /**
  * Parse the Open and Save MRU keys
@@ -110,7 +110,7 @@ export function lastVisitMru(reg_data: Registry[]): MruValues[] | WindowsError {
       // Now nom the end of string charater
       const remaining_item = take(remaining.remaining as Uint8Array, 3);
       if (remaining_item instanceof NomError) {
-        console.error(`could not nom end of string: ${remaining}`);
+        console.error(`could not nom end of byte string: ${remaining}`);
         continue;
       }
 

@@ -1,10 +1,10 @@
-import type { Url } from "../../../types/http/unfold.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { parseProtobuf } from "../../encoding/protobufv2.ts";
-import { NomError } from "../../nom/error.ts";
-import { Endian, nomUnsignedFourBytes } from "../../nom/helpers.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { decodeBase64Url } from "./encoding.ts";
+import type { Url } from "../../../types/http/unfold";
+import { EncodingError } from "../../encoding/errors";
+import { parseProtobuf } from "../../encoding/protobuf";
+import { NomError } from "../../nom/error";
+import { Endian, nomUnsignedFourBytes } from "../../nom/helpers";
+import { unixEpochToISO } from "../../time/conversion";
+import { decodeBase64Url } from "./encoding";
 
 /**
  * Class to parse Google searches

@@ -25,12 +25,12 @@ export interface WmiPersist {
    * Most common ones are defined, however users can create their own class
    */
   values:
-    | EventLogConsumer
-    | ActiveScriptConsumer
-    | CommandLineConsumer
-    | LogFileConsumer
-    | SmtpConsumer
-    | Record<string, unknown>;
+  | EventLogConsumer
+  | ActiveScriptConsumer
+  | CommandLineConsumer
+  | LogFileConsumer
+  | SmtpConsumer
+  | Record<string, unknown>;
 }
 
 /**
@@ -199,4 +199,91 @@ export interface SmtpConsumer {
   Subject: string;
   /**Addresses to send email to */
   ToLine: string;
+}
+
+export interface Namespace {
+  class: string;
+  /**SHA256 hash of the namespace name */
+  clas_hash: string;
+  name: string;
+  path: string;
+  super_class: string;
+}
+
+export interface ClassInfo {
+  super_class_name: string;
+  class_name: string;
+  qualifiers: Qualifier[];
+  properties: Property[];
+  class_hash: string;
+  includes_parent_props: boolean;
+}
+
+interface Qualifier {
+  name: string;
+  value_data_type: CimType;
+  data: unknown;
+}
+
+interface Property {
+  name: string;
+  property_data_type: CimType;
+  property_index: number;
+  data_offset: number;
+  class_level: number;
+  qualifiers: Qualifier[];
+}
+
+enum CimType {
+  Sint16 = "Sint16",
+  Sint32 = "Sint32",
+  Real32 = "Real32",
+  Real64 = "Real64",
+  String = "String",
+  Bool = "Bool",
+  Object = "Object",
+  Sint8 = "Sint8",
+  Uint8 = "Uint8",
+  Uint16 = "Uint16",
+  Uint32 = "Uint32",
+  Sint64 = "Sint64",
+  Uint64 = "Uint64",
+  Datetime = "Datetime",
+  Reference = "Reference",
+  Char = "Char",
+  ArrayString = "ArrayString",
+  ArraySint16 = "ArraySint16",
+  ArraySint8 = "ArraySint8",
+  ArraySint32 = "ArraySint32",
+  ArraySint64 = "ArraySint64",
+  ArrayReal32 = "ArrayReal32",
+  ArrayReal64 = "ArrayReal64",
+  ArrayBool = "ArrayBool",
+  ArrayUint8 = "ArrayUint8",
+  ArrayUint16 = "ArrayUint16",
+  ArrayUint32 = "ArrayUint32",
+  ArrayUint64 = "ArrayUint64",
+  ArrayChar = "ArrayChar",
+  ArrayObject = "ArrayObject",
+  ByteRefString = "ByteRefString",
+  ByteRefUint32 = "ByteRefUint32",
+  ByteRefUint16 = "ByteRefUint64",
+  ByteRefSint64 = "ByteRefSint64",
+  ByteRefSint32 = "ByteRefSint32",
+  ByteRefReal32 = "ByteRefReal32",
+  ByteRefBool = "ByteRefBool",
+  ByteRefDatetime = "ByteRefDatetime",
+  ByteRefUint8 = "ByteRefUint8",
+  ByteRefReference = "ByteRefReference",
+  ByteRefObject = "ByteRefObject",
+  Unknown = "Unknown",
+  None = "None",
+}
+
+export interface IndexBody {
+  array_sub_pages: number[];
+  array_key_offset: number[];
+  key_data: number[];
+  array_value_offsets: number[];
+  value_data: string[];
 }

@@ -1,5 +1,5 @@
-import { ExecPolicy } from "../../types/macos/execpolicy.ts";
-import { MacosError } from "./errors.ts";
+import { ExecPolicy } from "../../types/macos/execpolicy";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the `ExecPolicy` on a macOS system
@@ -7,17 +7,11 @@ import { MacosError } from "./errors.ts";
  * @returns Array of `ExecPolicy` records or `MacosError`
  */
 export function getExecpolicy(path?: string): ExecPolicy[] | MacosError {
-  let policy_path = "/var/db/SystemPolicyConfiguration/ExecPolicy";
-  if (path != undefined) {
-    policy_path = path;
-  }
-
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_execpolicy(policy_path);
+    const data = js_execpolicy(path);
 
-    const policy: ExecPolicy[] = JSON.parse(data);
-    return policy;
+    return data;
   } catch (err) {
     return new MacosError("EXECPOLICY", `failed to parse execpolicy: ${err}`);
   }

@@ -1,4 +1,4 @@
-import { SystemInfo } from "../../types/system/systeminfo.ts";
+import { SystemInfo } from "../../types/system/systeminfo";
 
 /**
  * Function to pull systeminfo
@@ -6,7 +6,7 @@ import { SystemInfo } from "../../types/system/systeminfo.ts";
  */
 export function getSysteminfo(): SystemInfo {
   //@ts-ignore: Custom Artemis function
-  const data: SystemInfo = Deno.core.ops.get_systeminfo();
+  const data: SystemInfo = js_get_systeminfo();
 
   return data;
 }
@@ -17,7 +17,7 @@ export function getSysteminfo(): SystemInfo {
  */
 export function uptime(): number {
   //@ts-ignore: Custom Artemis function
-  const data: number = system.uptime();
+  const data: number = js_uptime();
   return data;
 }
 
@@ -27,7 +27,7 @@ export function uptime(): number {
  */
 export function hostname(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = system.hostname();
+  const data: string = js_hostname();
   return data;
 }
 
@@ -37,7 +37,7 @@ export function hostname(): string {
  */
 export function osVersion(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = system.osVersion();
+  const data: string = js_osVersion();
   return data;
 }
 
@@ -47,7 +47,7 @@ export function osVersion(): string {
  */
 export function kernelVersion(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = system.kernelVersion();
+  const data: string = js_kernelVersion();
   return data;
 }
 
@@ -58,11 +58,11 @@ export enum PlatformType {
 }
 
 /**
- * Function to get platform type of the system. Ex: `Darwin`
+ * Function to get platform type of the js_ Ex: `Darwin`
  * @returns Platform type of the system
  */
 export function platform(): string {
   //@ts-ignore: Custom Artemis function
-  const data: string = system.platform();
+  const data: string = js_platform();
   return data;
 }

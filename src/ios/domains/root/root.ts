@@ -1,11 +1,11 @@
 import {
   FileType,
   ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
-import { parseClients } from "./locationd.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
+import { parseClients } from "./locationd";
 
 /**
  * Function to extract RootDomain info
@@ -29,11 +29,7 @@ export function extractRootDomain(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("locationd/clients.plist")) {
       const result = parseClients(target);
-      outputResults(
-        JSON.stringify(result),
-        "rootdomain_locationd_clients",
-        output,
-      );
+      outputResults(result, "rootdomain_locationd_clients", output);
       continue;
     }
     //console.log(info.path);

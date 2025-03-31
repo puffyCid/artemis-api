@@ -1,6 +1,6 @@
-import { Wifi, WifiPlist } from "../../../types/macos/plist/wifi.ts";
-import { MacosError } from "../errors.ts";
-import { getPlist } from "../plist.ts";
+import { Wifi, WifiPlist } from "../../../types/macos/plist/wifi";
+import { MacosError } from "../errors";
+import { getPlist } from "../plist";
 
 /**
  * Function to parse joined Wifi networks on macOS. Supports macOS Catalina+
@@ -36,7 +36,7 @@ function parseWifi(path: string): Wifi[] {
     return [];
   }
   const wifi_data = plist_data as Record<string, WifiPlist>;
-  const wifis = [];
+  const wifis: Wifi[] = [];
 
   for (const entry in wifi_data) {
     const wifi_value: Wifi = {

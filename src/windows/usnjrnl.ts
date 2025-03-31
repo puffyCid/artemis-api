@@ -1,37 +1,24 @@
-import { UsnJrnl } from "../../types/windows/usnjrnl.ts";
-import { WindowsError } from "./errors.ts";
+import { UsnJrnl } from "../../types/windows/usnjrnl";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse the `UsnJrnl` on the systemdrive
+ * @param path Optional path to an alternative `UsnJrnl` file
+ * @param drive Optional alternative drive letter
+ * @param mft Optional path to an alternative MFT file
  * @returns Array of `UsnJrnl` entries from sysystemdrive letter or `WindowsError`
  */
-export function getUsnjrnl(): UsnJrnl[] | WindowsError {
+export function getUsnjrnl(
+  path?: string,
+  drive?: string,
+  mft?: string,
+): UsnJrnl[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_usnjrnl();
+    const data = js_usnjrnl(path, drive, mft);
 
-    const results: UsnJrnl[] = JSON.parse(data);
-    return results;
+    return data;
   } catch (err) {
     return new WindowsError("USNJRNL", `failed to parse usnjrnl: ${err}`);
-  }
-}
-
-/**
- * Function to parse the `UsnJrnl` on an alternative driver
- * @returns Array of `UsnJrnl` entries from a Windows driver letter or `WindowsError`
- */
-export function getAltUsnjrnl(drive: string): UsnJrnl[] | WindowsError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_alt_usnjrnl(drive);
-
-    const results: UsnJrnl[] = JSON.parse(data);
-    return results;
-  } catch (err) {
-    return new WindowsError(
-      "USNJRNL",
-      `failed to parse usnjrnl at drive ${drive}: ${err}`,
-    );
   }
 }

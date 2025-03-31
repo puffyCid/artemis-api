@@ -1,5 +1,5 @@
-import { listUsbDevices } from "../../../mod.ts";
-import { WindowsError } from "../../../src/windows/errors.ts";
+import { listUsbDevices } from "../../../mod";
+import { WindowsError } from "../../../src/windows/errors";
 
 function main() {
   const results = listUsbDevices();

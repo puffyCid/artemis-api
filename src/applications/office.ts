@@ -1,17 +1,17 @@
-import { getRegistry, PlatformType } from "../../mod.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { glob } from "../filesystem/mod.ts";
-import { parseBookmark } from "../macos/bookmark.ts";
-import { BookmarkData as OfficeRecentFilesMacos } from "../../types/macos/bookmark.ts";
-import { MacosError } from "../macos/errors.ts";
-import { getPlist } from "../macos/plist.ts";
-import { ApplicationError } from "./errors.ts";
-import { getEnvValue } from "../environment/mod.ts";
-import { WindowsError } from "../windows/errors.ts";
-import { Registry } from "../../types/windows/registry.ts";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../time/conversion.ts";
-import { OfficeRecentFilesWindows } from "../../types/applications/office.ts";
-import { OfficeApp } from "../../types/applications/office.ts";
+import { getRegistry, PlatformType } from "../../mod";
+import { FileError } from "../filesystem/errors";
+import { glob } from "../filesystem/mod";
+import { parseBookmark } from "../macos/bookmark";
+import { BookmarkData as OfficeRecentFilesMacos } from "../../types/macos/bookmark";
+import { MacosError } from "../macos/errors";
+import { getPlist } from "../macos/plist";
+import { ApplicationError } from "./errors";
+import { getEnvValue } from "../environment/mod";
+import { WindowsError } from "../windows/errors";
+import { Registry } from "../../types/windows/registry";
+import { filetimeToUnixEpoch, unixEpochToISO } from "../time/conversion";
+import { OfficeRecentFilesWindows } from "../../types/applications/office";
+import { OfficeApp } from "../../types/applications/office";
 
 /**
  * Function to extract Microsoft Office MRU files
@@ -39,7 +39,7 @@ export function officeMruFiles(
 function officeMru(
   alt_file?: string,
 ): OfficeRecentFilesWindows[] | ApplicationError {
-  const paths = [];
+  const paths: string[] = [];
   if (alt_file != undefined) {
     paths.push(alt_file);
   } else {
@@ -87,7 +87,7 @@ function extractMruRegistry(
   data: Registry[],
   registry_file: string,
 ): OfficeRecentFilesWindows[] {
-  const mrus = [];
+  const mrus: Registry[] = [];
   const filter = ["\\Office\\", "\\File MRU"];
   for (const entries of data) {
     if (
@@ -100,7 +100,7 @@ function extractMruRegistry(
     mrus.push(entries);
   }
 
-  const office_mru = [];
+  const office_mru: OfficeRecentFilesWindows[] = [];
   for (const mru_path of mrus) {
     for (const value of mru_path.values) {
       if (!value.value.includes("Item")) {
@@ -164,7 +164,7 @@ function officeType(path: string): OfficeApp {
 function officeBookmarks(
   alt_file?: string,
 ): OfficeRecentFilesMacos[] | ApplicationError {
-  const paths = [];
+  const paths: string[] = [];
   if (alt_file != undefined) {
     paths.push(alt_file);
   } else {
@@ -182,7 +182,7 @@ function officeBookmarks(
     }
   }
 
-  const office_files = [];
+  const office_files: OfficeRecentFilesMacos[] = [];
   for (const entry of paths) {
     const plist_data = getPlist(entry);
     if (plist_data instanceof MacosError) {

@@ -1,13 +1,13 @@
 import {
   OneDriveSyncEngineFolder,
   OneDriveSyncEngineRecord,
-} from "../../../types/applications/onedrive.ts";
-import { decode } from "../../encoding/base64.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { bytesToHexString } from "../../encoding/strings.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { ApplicationError } from "../errors.ts";
-import { querySqlite } from "../sqlite.ts";
+} from "../../../types/applications/onedrive";
+import { decode } from "../../encoding/base64";
+import { EncodingError } from "../../encoding/errors";
+import { bytesToHexString } from "../../encoding/strings";
+import { unixEpochToISO } from "../../time/conversion";
+import { ApplicationError } from "../errors";
+import { querySqlite } from "../sqlite";
 
 /**
  * Function to extract SyncEngineDatabase details
@@ -75,7 +75,7 @@ function getRecords(
     );
   }
 
-  const records = [];
+  const records: OneDriveSyncEngineRecord[] = [];
   for (const value of results) {
     const record: OneDriveSyncEngineRecord = {
       parent_resource_id: value["parentResourceID"] as string,
@@ -142,7 +142,7 @@ function getFolders(
     );
   }
 
-  const folders = [];
+  const folders: OneDriveSyncEngineFolder[] = [];
   for (const value of results) {
     const folder: OneDriveSyncEngineFolder = {
       parent_resource_id: value["parentResourceID"] as string,
@@ -211,7 +211,7 @@ function getMeta(path: string): SyncMeta[] | ApplicationError {
     );
   }
 
-  const values = [];
+  const values: SyncMeta[] = [];
   for (const value of results) {
     const meta: SyncMeta = {
       created_by: value["createdBy"] as string,

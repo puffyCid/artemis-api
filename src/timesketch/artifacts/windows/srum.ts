@@ -7,8 +7,8 @@ import {
   NetworkConnectivityInfo,
   NetworkInfo,
   NotificationInfo,
-} from "../../../../types/windows/srum.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+} from "../../../../types/windows/srum";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Windows Search

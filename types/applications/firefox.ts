@@ -1,3 +1,5 @@
+import { Url } from "../http/unfold";
+
 /**
  * Firefox history is stored in a SQLITE file.
  * `artemis` uses the `sqlite` crate to read the SQLITE file. It can even read the file if Firefox is running.
@@ -10,8 +12,6 @@ export interface FirefoxHistory {
   history: RawFirefoxHistory[];
   /**Path associated with the history file */
   path: string;
-  /**User associated with the history file */
-  user: string;
 }
 
 /**
@@ -50,6 +50,7 @@ export interface RawFirefoxHistory {
   prefix: string;
   /** Host value */
   host: string;
+  unfold: Url | undefined;
 }
 
 /**
@@ -64,8 +65,6 @@ export interface FirefoxDownloads {
   downloads: RawFirefoxDownloads[];
   /**Path associated with the downloads file */
   path: string;
-  /**User associated with the downloads file */
-  user: string;
 }
 
 /**
@@ -113,4 +112,34 @@ export interface FirefoxCookies {
   raw_same_site: boolean;
   scheme_map: number;
   db_path: string;
+}
+
+export interface FirefoxFavicons {
+  icon_url: string;
+  expires: string;
+  db_path: string;
+}
+
+export interface FirefoxProfiles {
+  full_path: string;
+  version: number;
+}
+export interface FirefoxStorage {
+  repository: Respository;
+  suffix?: string;
+  group: string;
+  origin: string;
+  client_usages: string;
+  last_access: string;
+  accessed: number;
+  persisted: number;
+  db_path: string;
+}
+
+export enum Respository {
+  Persistent = "Persistent",
+  Default = "Default",
+  Private = "Private",
+  Unknown = "Unknown",
+  Temporary = "Temporary",
 }

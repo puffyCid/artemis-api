@@ -1,5 +1,5 @@
-import { LinuxError } from "../../../src/linux/errors.ts";
-import { geditRecentFiles } from "../../../src/linux/gnome/gedit.ts";
+import { LinuxError } from "../../../src/linux/errors";
+import { geditRecentFiles } from "../../../src/linux/gnome/gedit";
 
 function main() {
   const results = geditRecentFiles();

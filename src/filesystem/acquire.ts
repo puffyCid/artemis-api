@@ -1,5 +1,5 @@
-import { Output } from "../system/output.ts";
-import { FileError } from "./errors.ts";
+import { Output } from "../system/output";
+import { FileError } from "./errors";
 
 /**
  * Function to acquire a file from the system
@@ -9,12 +9,8 @@ import { FileError } from "./errors.ts";
  */
 export function acquireFile(path: string, output: Output): boolean | FileError {
   try {
-    const output_string = JSON.stringify(output);
     //@ts-ignore: Custom Artemis function
-    const status: boolean = Deno.core.ops.js_acquire_file(
-      path,
-      output_string,
-    );
+    const status: boolean = js_acquire_file(path, output);
     return status;
   } catch (err) {
     return new FileError(`ACQUIRE`, `failed to acquire file: ${err}`);

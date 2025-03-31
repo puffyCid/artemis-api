@@ -2,7 +2,7 @@
 description: Linux process metadata
 keywords:
   - linux
-  - proc meta
+  - volatile
 ---
 
 # Processes

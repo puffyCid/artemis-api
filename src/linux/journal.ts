@@ -1,5 +1,5 @@
-import { Journal } from "../../types/linux/journal.ts";
-import { LinuxError } from "./errors.ts";
+import { Journal } from "../../types/linux/journal";
+import { LinuxError } from "./errors";
 
 /**
  * Function to parse a `journal` file
@@ -9,9 +9,8 @@ import { LinuxError } from "./errors.ts";
 export function getJournal(path: string): Journal[] | LinuxError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_journal(path);
-    const journal: Journal[] = JSON.parse(data);
-    return journal;
+    const data = js_get_journal(path);
+    return data;
   } catch (err) {
     return new LinuxError(
       "JOURNAL",

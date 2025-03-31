@@ -1,7 +1,7 @@
-import { Alias, AliasTags } from "../../types/macos/alias.ts";
-import { Nom } from "../../types/nom/nom.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
-import { NomError } from "../nom/error.ts";
+import { Alias, AliasTags } from "../../types/macos/alias";
+import { Nom } from "../../types/nom/nom";
+import { extractUtf8String } from "../encoding/strings";
+import { NomError } from "../nom/error";
 import {
   Endian,
   nomSignedFourBytes,
@@ -9,10 +9,10 @@ import {
   nomUnsignedFourBytes,
   nomUnsignedOneBytes,
   nomUnsignedTwoBytes,
-} from "../nom/helpers.ts";
-import { take } from "../nom/parsers.ts";
-import { hfsToUnixEpoch, unixEpochToISO } from "../time/conversion.ts";
-import { MacosError } from "./errors.ts";
+} from "../nom/helpers";
+import { take } from "../nom/parsers";
+import { hfsToUnixEpoch, unixEpochToISO } from "../time/conversion";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse macOS `alias` data
@@ -67,7 +67,6 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   // First byte is the length of volume name
   const volume_data = nomUnsignedOneBytes(
     alias_data.nommed as Uint8Array,
-    Endian.Be,
   );
   if (volume_data instanceof NomError) {
     return new MacosError(
@@ -133,7 +132,6 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   // First byte of target name is the size of name
   const target_size = nomUnsignedOneBytes(
     alias_data.nommed as Uint8Array,
-    Endian.Be,
   );
   if (target_size instanceof NomError) {
     return new MacosError(
@@ -371,7 +369,7 @@ function parseTag(data: Uint8Array): Nom | NomError {
 
   // If size is odd. There is a padding byte
   if (result.value & 1) {
-    result = nomUnsignedOneBytes(path_data.remaining as Uint8Array, Endian.Be);
+    result = nomUnsignedOneBytes(path_data.remaining as Uint8Array);
     if (result instanceof NomError) {
       return result;
     }

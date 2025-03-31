@@ -1,5 +1,5 @@
-import { EventLogRecord } from "../../../../types/windows/eventlogs.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { EventLogRecord } from "../../../../types/windows/eventlogs";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline EventLogs

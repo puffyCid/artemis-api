@@ -3,7 +3,7 @@ for entry in */
 do
 cd $entry
 echo "Running test for $entry"
-/home/runner/.deno/bin/deno run -A build.ts
+esbuild --bundle --outfile=main.js main.ts
 if ../script_tester main.js
 then
   cd ..

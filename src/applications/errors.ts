@@ -1,4 +1,4 @@
-import { ErrorBase } from "../utils/error.ts";
+import { ErrorBase } from "../utils/error";
 
 export type ErrorName =
   | "LIBREOFFICE"

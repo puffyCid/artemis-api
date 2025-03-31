@@ -1,5 +1,5 @@
-import { Shimcache } from "../../../../types/windows/shimcache.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Shimcache } from "../../../../types/windows/shimcache";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Shimcache
@@ -9,7 +9,7 @@ import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 export function timelineShimcache(
   data: Shimcache[],
 ): TimesketchTimeline[] {
-  const entries = [];
+  const entries: TimesketchTimeline[] = [];
 
   for (const item of data) {
     let entry: TimesketchTimeline = {

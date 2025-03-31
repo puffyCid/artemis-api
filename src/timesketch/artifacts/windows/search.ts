@@ -1,5 +1,5 @@
-import { SearchEntry } from "../../../../types/windows/search.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { SearchEntry } from "../../../../types/windows/search";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Windows Search

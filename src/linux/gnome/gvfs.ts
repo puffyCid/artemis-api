@@ -1,19 +1,19 @@
-import type { GvfsEntry } from "../../../types/linux/gnome/gvfs.ts";
-import { extractUtf8String } from "../../encoding/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { readFile } from "../../filesystem/files.ts";
-import { glob } from "../../filesystem/mod.ts";
-import { NomError } from "../../nom/error.ts";
-import { Endian } from "../../nom/helpers.ts";
+import type { GvfsEntry } from "../../../types/linux/gnome/gvfs";
+import { extractUtf8String } from "../../encoding/mod";
+import { FileError } from "../../filesystem/errors";
+import { readFile } from "../../filesystem/files";
+import { glob } from "../../filesystem/mod";
+import { NomError } from "../../nom/error";
+import { Endian } from "../../nom/helpers";
 import {
   nomUnsignedEightBytes,
   nomUnsignedFourBytes,
   nomUnsignedTwoBytes,
   take,
   takeUntil,
-} from "../../nom/mod.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { LinuxError } from "../errors.ts";
+} from "../../nom/mod";
+import { unixEpochToISO } from "../../time/conversion";
+import { LinuxError } from "../errors";
 
 /**
  * Function to parse GVFS metadata files. By default will parse all GVFS metadata files at `/home/%/.local/share/gvfs-metadata/%`
@@ -85,7 +85,7 @@ export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
     const children = getChildren(
       root.children_offset,
       data,
-      [root.name],
+      [ root.name ],
       header.base_time,
       keywords,
       entry.full_path,
@@ -169,7 +169,7 @@ function extractHeader(data: Uint8Array): Header | NomError {
 
   let magic_sig = 0;
   for (let i = 0; i < magic.nommed.length; i++) {
-    magic_sig |= (magic.nommed as Uint8Array)[i] << (i * 8);
+    magic_sig |= (magic.nommed as Uint8Array)[ i ] << (i * 8);
   }
 
   const header: Header = {
@@ -179,7 +179,7 @@ function extractHeader(data: Uint8Array): Header | NomError {
     tag: tag.value,
     root_offset: root_offset.value,
     keywords_offset: keywords_offset.value,
-    base_time: base_time.value,
+    base_time: Number(base_time.value),
   };
 
   return header;
@@ -202,7 +202,7 @@ function getKeywords(
       `failed to get keyword start: ${keyword_start}`,
     );
   }
-  const keywords = [];
+  const keywords: string[] = [];
   const keyword_count = nomUnsignedFourBytes(
     keyword_start.remaining as Uint8Array,
     Endian.Be,
@@ -233,7 +233,7 @@ function getKeywords(
 
     const keyword_value = takeUntil(
       keyword_start.remaining,
-      new Uint8Array([0]),
+      new Uint8Array([ 0 ]),
     );
     if (keyword_value instanceof NomError) {
       continue;
@@ -398,7 +398,7 @@ function extractMetadata(
       );
     }
 
-    meta[keyword_value] = name;
+    meta[ keyword_value ] = name;
 
     count++;
   }
@@ -546,7 +546,7 @@ function getName(offset: number, data: Uint8Array): string | NomError {
     );
   }
 
-  const name_data = takeUntil(name_start.remaining, new Uint8Array([0]));
+  const name_data = takeUntil(name_start.remaining, new Uint8Array([ 0 ]));
   if (name_data instanceof NomError) {
     return new NomError(
       "NOM",

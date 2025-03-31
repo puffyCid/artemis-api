@@ -43,12 +43,9 @@ Usage: artemis acquire [OPTIONS] [COMMAND]
 
 Commands:
   processes          Collect processes
+  connections       Collect network connections
   filelisting        Pull filelisting
   systeminfo         Get systeminfo
-  firefoxhistory     Parse Firefox History
-  chromiumhistory    Parse Chromium History
-  firefoxdownloads   Parse Firefox Downloads
-  chromiumdownloads  Parse Chromium Downloads
   prefetch           windows: Parse Prefetch
   eventlogs          windows: Parse EventLogs
   rawfilelisting     windows: Parse NTFS to get filelisting
@@ -94,6 +91,7 @@ Options:
       --format <FORMAT>          Output format. JSON or JSONL or CSV [default: JSON]
       --output-dir <OUTPUT_DIR>  Optional output directory for storing results [default: ./tmp]
       --compress                 GZIP Compress results
+      --timeline                 Timeline parsed data. Output is always JSONL
   -h, --help                     Print help
 ```
 
@@ -175,7 +173,7 @@ function getProcesses(md5, sha1, sha256, binary_info) {
     sha1,
     sha256,
   };
-  const data = Deno.core.ops.get_processes(
+  const data = js_get_processes(
     JSON.stringify(hashes),
     binary_info,
   );
@@ -207,4 +205,4 @@ artemis -j vanilla.js
 Collecting data via JavaScript is a bit more complex than other methods. But it
 provides alot more flexiblity on what you can do with the data.
 
-See the section on [Scripting](../Intro/Scripting/deno.md) to learn more!
+See the section on [Scripting](../Intro/Scripting/boa.md) to learn more!

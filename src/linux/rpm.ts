@@ -1,26 +1,33 @@
-import { LinuxError } from "./errors.ts";
-import { RpmPackages } from "../../types/linux/rpm.ts";
-import { querySqlite } from "../applications/sqlite.ts";
-import { ApplicationError } from "../applications/errors.ts";
-import { decode, encode } from "../encoding/base64.ts";
-import { EncodingError } from "../encoding/errors.ts";
-import { NomError } from "../nom/error.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
+import { LinuxError } from "./errors";
+import { RpmPackages } from "../../types/linux/rpm";
+import { querySqlite } from "../applications/sqlite";
+import { ApplicationError } from "../applications/errors";
+import { decode, encode } from "../encoding/base64";
+import { EncodingError } from "../encoding/errors";
+import { NomError } from "../nom/error";
+import { extractUtf8String } from "../encoding/strings";
 import {
   Endian,
   nomSignedFourBytes,
   nomUnsignedFourBytes,
-} from "../nom/helpers.ts";
-import { takeUntil } from "../nom/parsers.ts";
-import { unixEpochToISO } from "../time/conversion.ts";
+  nomUnsignedOneBytes,
+} from "../nom/helpers";
+import { takeUntil } from "../nom/parsers";
+import { unixEpochToISO } from "../time/conversion";
 
 /**
  * Function to get installed RPM packages. This function only supports getting packages from the sqlite database. The historical Berkley database is not supported.
+ * @param offset What offset to start the query at
+ * @param limit How many packages to return
  * @param alt_path Optional path to the RPM sqlite database. Will default to `/var/lib/rpm/rpmdb.sqlite`
  * @returns Array of `RpmPackages` or `LinuxError`
  */
-export function getRpmInfo(alt_path?: string): RpmPackages[] | LinuxError {
-  const query = "select * from Packages";
+export function getRpmInfo(
+  offset: number,
+  limit: number,
+  alt_path?: string,
+): RpmPackages[] | LinuxError {
+  const query = `SELECT * FROM Packages LIMIT ${limit} OFFSET ${offset}`;
   let path = "/var/lib/rpm/rpmdb.sqlite";
   if (alt_path != undefined) {
     path = alt_path;
@@ -34,10 +41,10 @@ export function getRpmInfo(alt_path?: string): RpmPackages[] | LinuxError {
     );
   }
 
-  const rpm_entries = [];
+  const rpm_entries: RpmPackages[] = [];
 
   for (const entry of results) {
-    // Packages are base64 envoded binary blobs that need to be parsed
+    // Packages are base64 encoded binary blobs that need to be parsed
     const raw_bytes = decode(entry["blob"] as string);
     if (raw_bytes instanceof EncodingError) {
       console.error(`Could not base64 decode RPM binary date: ${raw_bytes}`);
@@ -283,7 +290,6 @@ function parseHeader(data: Uint8Array): HeaderInfo | LinuxError {
   if (il_data instanceof NomError) {
     return new LinuxError(`RPMPACKAGES`, `failed to get il value: ${il_data}`);
   }
-
   const il = il_data.value;
   if (il < 1) {
     return new LinuxError(
@@ -305,7 +311,7 @@ function parseHeader(data: Uint8Array): HeaderInfo | LinuxError {
   const data_end = data_start + dl;
 
   let count = 0;
-  const entries = [];
+  const entries: Entry[] = [];
 
   let entry_data = dl_data.remaining;
   while (count < il) {
@@ -464,7 +470,7 @@ function extractTagValue(
 ): string[] | number[] | bigint[] | LinuxError {
   let count_value = 1;
   let tag_data = data;
-  let values = [];
+  let values: any[] = [];
 
   if (data.length < count) {
     return new LinuxError(`RPMPACKAGES`, `count greater than remaining bytes`);
@@ -540,13 +546,12 @@ function extractTagValue(
           return values;
         }
 
-        // We nommed **until** end of string character. We still need to remove it
-        tag_data = new Uint8Array(
-          (value_data.remaining as Uint8Array).buffer.slice(
-            1,
-            value_data.remaining.length,
-          ),
-        );
+        const eol = nomUnsignedOneBytes(value_data.remaining as Uint8Array);
+        if (eol instanceof NomError) {
+          console.error(`Could not nom end of line ${eol}`);
+          break;
+        }
+        tag_data = eol.remaining;
 
         count_value++;
       }

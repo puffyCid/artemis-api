@@ -20,7 +20,7 @@ data.
 # Sample API Script
 
 ```typescript
-import { parseBom } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { parseBom } from "./artemis-api/mod";
 
 function main() {
   const path = "path to bom file";

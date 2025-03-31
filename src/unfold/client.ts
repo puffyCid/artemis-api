@@ -1,9 +1,10 @@
-import type { Url } from "../../types/http/unfold.ts";
-import { UnfoldError } from "./error.ts";
-import { Bing } from "./plugins/bing.ts";
-import { DuckDuckGo } from "./plugins/duckduckgo.ts";
-import { Google } from "./plugins/google.ts";
-import { Outlook } from "./plugins/outlook.ts";
+import type { Url } from "../../types/http/unfold";
+import { UnfoldError } from "./error";
+import { Bing } from "./plugins/bing";
+import { Dropbox } from "./plugins/dropbox";
+import { DuckDuckGo } from "./plugins/duckduckgo";
+import { Google } from "./plugins/google";
+import { Outlook } from "./plugins/outlook";
 
 /**
  * Class to extract additional metadata from a URL. Inspired by [unfurl](https://dfir.blog/introducing-unfurl/)
@@ -11,7 +12,7 @@ import { Outlook } from "./plugins/outlook.ts";
 export class Unfold {
   private url: string;
 
-  constructor(url: string) {
+  constructor (url: string) {
     this.url = url;
   }
 
@@ -45,6 +46,9 @@ export class Unfold {
     } else if (info.domain.includes("bing.com")) {
       const bing = new Bing(info);
       bing.parseBing();
+    } else if (info.domain.includes("dropbox.com")) {
+      const drop = new Dropbox(info);
+      drop.parseDropbox();
     }
 
     return info;
@@ -57,8 +61,7 @@ export class Unfold {
   private extractUrl(): Url | UnfoldError {
     try {
       //@ts-ignore: Custom Artemis function
-      const data = Deno.core.ops.url_parse(this.url);
-      const url_info: Url = JSON.parse(data);
+      const url_info: Url = js_url_parse(this.url);
       url_info.url = this.url;
       url_info.last_segment = url_info.segments.at(-1) ?? "";
       return url_info;

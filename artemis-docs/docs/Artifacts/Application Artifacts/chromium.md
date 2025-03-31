@@ -27,15 +27,7 @@ Artemis supports parsing the list of artifacts below:
 - Preferences
 - Detect Incidental Party State (DIPS)
 
-You have to use the artemis [api](../../API/overview.md) in order to collect:
-
-- Cookies
-- Autofill
-- Bookmarks
-- Login Data
-- Extensions
-- Preferences
-- Detect Incidental Party State (DIPS)
+You have to use the artemis [api](../../API/overview.md) in order to collect chromium data
 
 Other parsers:
 
@@ -46,30 +38,6 @@ References:
 - [History](https://en.wikiversity.org/wiki/Chromium_browsing_history_database)
 - [Schema](https://gist.github.com/dropmeaword/9372cbeb29e8390521c2)
 
-# TOML Collection
-
-```toml
-system = "macos"
-
-[output]
-name = "chromium_macos"
-directory = "./tmp"
-format = "json"
-compress = false
-endpoint_id = "abdc"
-collection_id = 1
-output = "local"
-
-[[artifacts]]
-artifact_name = "chromium-history"
-
-[[artifacts]]
-artifact_name = "chromium-downloads"
-```
-
-# Collection Options
-
-- N/A
 
 # Sample API Script
 
@@ -79,7 +47,7 @@ import {
   getChromiumBookmarks,
   getChromiumCookies,
   PlatformType,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const results = getChromiumCookies(PlatformType.Darwin);
@@ -92,8 +60,7 @@ function main() {
 
 # Output Structure
 
-An array of `ChromiumHistory` for history data and `ChromiumDownloads` for
-downloads data per user.
+Dependent on browser artifact user wants to parse.
 
 ```typescript
 export interface ChromiumHistory {

@@ -1,5 +1,5 @@
-import { UserAssist } from "../../../../types/windows/userassist.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { UserAssist } from "../../../../types/windows/userassist";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline UserAssist

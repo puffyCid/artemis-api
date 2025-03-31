@@ -1,8 +1,8 @@
-import { ApplicationError } from "../../applications/errors.ts";
-import { querySqlite } from "../../applications/sqlite.ts";
-import { MacosError } from "../errors.ts";
-import { MunkiApplicationUsage } from "../../../types/macos/sqlite/munki.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
+import { ApplicationError } from "../../applications/errors";
+import { querySqlite } from "../../applications/sqlite";
+import { MacosError } from "../errors";
+import { MunkiApplicationUsage } from "../../../types/macos/sqlite/munki";
+import { unixEpochToISO } from "../../time/conversion";
 
 /**
  * Function to extract application usage info from Munki database
@@ -18,7 +18,7 @@ export function munkiApplicationUsage(
     return new MacosError(`MUNKI`, `failed to query ${db}: ${results}`);
   }
 
-  const entries = [];
+  const entries: MunkiApplicationUsage[] = [];
   for (const value of results) {
     const entry: MunkiApplicationUsage = {
       event: value["event"] as string,

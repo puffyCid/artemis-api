@@ -1,5 +1,5 @@
-import { UnifiedLog } from "../../types/macos/unifiedlogs.ts";
-import { MacosError } from "./errors.ts";
+import { UnifiedLog } from "../../types/macos/unifiedlogs";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse a `Unified log` on a macOS system
@@ -13,10 +13,9 @@ export function getUnifiedLog(
 ): UnifiedLog[] | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_unified_log(path, archive_path);
+    const data = js_unified_log(path, archive_path);
 
-    const log_data: UnifiedLog[] = JSON.parse(data);
-    return log_data;
+    return data;
   } catch (err) {
     return new MacosError("UNIFIEDLOGS", `failed to parse ${path}: ${err}`);
   }

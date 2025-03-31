@@ -1,8 +1,8 @@
 import {
   SafariDownloads,
   SafariHistory,
-} from "../../../../types/macos/safari.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+} from "../../../../types/macos/safari";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Safari History

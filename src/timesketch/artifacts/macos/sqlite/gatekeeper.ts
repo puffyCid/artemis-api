@@ -1,5 +1,5 @@
-import { GatekeeperEntries } from "../../../../../types/macos/sqlite/gatekeeper.ts";
-import { TimesketchTimeline } from "../../../../../types/timesketch/timeline.ts";
+import { GatekeeperEntries } from "../../../../../types/macos/sqlite/gatekeeper";
+import { TimesketchTimeline } from "../../../../../types/timesketch/timeline";
 
 export function timelineGatekeeper(
   data: GatekeeperEntries[],

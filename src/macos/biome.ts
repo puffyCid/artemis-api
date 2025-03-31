@@ -1,14 +1,14 @@
-import { FileError } from "../filesystem/errors.ts";
-import { glob, readFile, stat } from "../filesystem/files.ts";
-import { MacosError } from "./errors.ts";
-import { take } from "../nom/parsers.ts";
-import { NomError } from "../nom/error.ts";
-import { Endian, nomUnsignedFourBytes } from "../nom/helpers.ts";
-import { nomUnsignedEightBytes } from "../nom/mod.ts";
-import { EncodingError } from "../encoding/errors.ts";
-import { Biome } from "../../types/macos/biome.ts";
-import { encode } from "../encoding/base64.ts";
-import { parseProtobuf } from "../encoding/protobufv2.ts";
+import { FileError } from "../filesystem/errors";
+import { glob, readFile, stat } from "../filesystem/files";
+import { MacosError } from "./errors";
+import { take } from "../nom/parsers";
+import { NomError } from "../nom/error";
+import { Endian, nomUnsignedFourBytes } from "../nom/helpers";
+import { nomUnsignedEightBytes } from "../nom/mod";
+import { EncodingError } from "../encoding/errors";
+import { Biome } from "../../types/macos/biome";
+import { encode } from "../encoding/base64";
+import { parseProtobuf } from "../encoding/protobuf";
 
 /**
  * A **very** experimental and simple function to parse BIOME data
@@ -17,7 +17,7 @@ import { parseProtobuf } from "../encoding/protobufv2.ts";
  * @returns Array of `Biome` objects
  */
 export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
-  let paths = [];
+  let paths: string[] = [];
   if (alt_file != undefined) {
     paths = [alt_file];
   } else {
@@ -128,7 +128,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
     let remaining_bytes = header_bytes.remaining as Uint8Array;
 
     const record_size = 32;
-    const records = [];
+    const records: BiomeRecord[] = [];
     while ((remaining_bytes as Uint8Array).byteLength >= record_size) {
       const record_bytes = new Uint8Array(remaining_bytes.buffer.slice(
         0,
@@ -281,7 +281,7 @@ function parseRecordV2(
   let remaining_bytes = footer_bytes;
   let count = 0;
 
-  const footers = [];
+  const footers: BiomeFooter[] = [];
   while (count < entries) {
     const offset = nomUnsignedFourBytes(remaining_bytes, Endian.Le);
     if (offset instanceof NomError) {
@@ -319,7 +319,7 @@ function parseRecordV2(
     const record: BiomeFooter = {
       end_offset: offset.value,
       state: state.value,
-      entry_created: created.value,
+      entry_created: Number(created.value),
     };
 
     footers.push(record);
@@ -329,7 +329,7 @@ function parseRecordV2(
   footers.reverse();
   const align = 4;
 
-  const records = [];
+  const records: BiomeRecord[] = [];
   remaining_bytes = raw_bytes;
   let previous_size = 0;
   const unknown = 4;
@@ -367,7 +367,7 @@ function parseRecordV2(
     }
     const record: BiomeRecord = {
       size,
-      created: footer.entry_created,
+      created: Number(footer.entry_created),
       created2: 0,
       protobuf_bytes: unknown_bytes.remaining,
       remaining: new Uint8Array(),

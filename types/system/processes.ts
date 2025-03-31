@@ -1,6 +1,6 @@
-import { ElfInfo } from "../linux/elf.ts";
-import { MachoInfo } from "../macos/macho.ts";
-import { PeInfo } from "../windows/pe.ts";
+import { ElfInfo } from "../linux/elf";
+import { MachoInfo } from "../macos/macho";
+import { PeInfo } from "../windows/pe";
 
 /**
  * `ProcessInfo` is an interface containing metadata on system processes.
@@ -39,5 +39,5 @@ export interface ProcessInfo {
   /**SHA256 hash of process binary */
   sha256: string;
   /**Binary metadata associated with process binary */
-  binary_info: PeInfo[] | MachoInfo[] | ElfInfo[];
+  binary_info: PeInfo | MachoInfo[] | ElfInfo | null;
 }

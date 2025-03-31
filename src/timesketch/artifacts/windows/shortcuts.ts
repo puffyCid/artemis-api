@@ -1,5 +1,5 @@
-import { Shortcut } from "../../../../types/windows/shortcuts.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Shortcut } from "../../../../types/windows/shortcuts";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Shortcut
@@ -9,7 +9,7 @@ import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
 export function timelineShortcuts(
   data: Shortcut[],
 ): TimesketchTimeline[] {
-  const entries = [];
+  const entries: TimesketchTimeline[] = [];
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
@@ -47,19 +47,19 @@ export function extractShortcutTimes(entry: Shortcut): TimeEntries[] {
   const entries: TimeEntries[] = [];
   const check_times: Record<string, string> = {};
 
-  check_times[entry.created] = "Shortcut Target Created";
-  check_times[entry.modified] === undefined
-    ? (check_times[entry.modified] = "Shortcut Target Modified")
-    : (check_times[entry.modified] = `${check_times[entry.modified]} Modified`);
+  check_times[ entry.created ] = "Shortcut Target Created";
+  check_times[ entry.modified ] === undefined
+    ? (check_times[ entry.modified ] = "Shortcut Target Modified")
+    : (check_times[ entry.modified ] = `${check_times[ entry.modified ]} Modified`);
 
-  check_times[entry.accessed] === undefined
-    ? (check_times[entry.accessed] = "Shortcut Target Accessed")
-    : (check_times[entry.accessed] = `${check_times[entry.accessed]} Accessed`);
+  check_times[ entry.accessed ] === undefined
+    ? (check_times[ entry.accessed ] = "Shortcut Target Accessed")
+    : (check_times[ entry.accessed ] = `${check_times[ entry.accessed ]} Accessed`);
 
   for (const value in check_times) {
     const entry: TimeEntries = {
       datetime: value,
-      desc: check_times[value],
+      desc: check_times[ value ],
     };
     entries.push(entry);
   }

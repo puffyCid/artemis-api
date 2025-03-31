@@ -14,7 +14,7 @@ Notable features _so far_:
 - Parsing support for large amount of forensic artifacts (40+)
 - Output to JSON or JSONL or CSV file(s)
 - Can output results to local system or upload to cloud services.
-- Embedded JavaScript runtime via [Deno](https://deno.land/)
+- Embedded JavaScript runtime via [Boa](https://boajs.dev/)
 
 The goal of this book is to provide a comprehensive guide on how to use artemis.
 
@@ -43,7 +43,6 @@ guide and [docs](../Contributing/overview.md) prior to starting.
 
 # License
 
-[artemis](https://github.com/puffycid/artemis),
-[artemis-api](https://github.com/puffycid/artemis-api), and
-[artemis-scripts](https://github.com/puffycid/artemis-scripts) are all released
+[artemis](https://github.com/puffycid/artemis) and 
+[artemis-api](https://github.com/puffycid/artemis-api) are released
 under the MIT License

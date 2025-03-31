@@ -27,8 +27,8 @@ single ESE database.
 # Sample API Script
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
+import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file

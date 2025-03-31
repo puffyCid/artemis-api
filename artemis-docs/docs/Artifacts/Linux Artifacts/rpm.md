@@ -31,14 +31,27 @@ installed RPM packages.
 # Sample API Script
 
 ```typescript
-import {
-  getRpmInfo,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { LinuxError } from "./artemis-api/src/linux/errors";
+import { getRpmInfo } from "./artemis-api/src/linux/rpm";
 
 function main() {
-  const results = getRpmInfo();
+  let offset = 0;
+  const limit = 100;
 
-  console.log(results);
+  let count = 1;
+  while (count != 0) {
+    const status = getRpmInfo(offset, limit);
+    if (status instanceof LinuxError) {
+      break;
+    }
+    if (status.length < limit) {
+      break;
+    }
+
+    offset += limit;
+    count = status.length;
+    console.log(JSON.stringify(status));
+  }
 }
 
 main();

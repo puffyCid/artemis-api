@@ -23,8 +23,7 @@ Lets walkthrough a small sample
 OST file.
 
 The guide below assumes you have cloned the artemis API repository to your local
-system. However, you may also import the API remotely, you will just need to
-change the imports paths.
+system. 
 
 The functions in this guide are documented
 [here](../Artifacts/windows.md#outlook-class)
@@ -35,7 +34,7 @@ Before we can parse an OST file we we need to initialize an instance of the
 Outlook class.
 
 ```typescript
-import { Outlook } from "./artemis-api/src/windows/outlook.ts";
+import { Outlook } from "./artemis-api/src/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";
@@ -60,7 +59,7 @@ the folder structure and read messages along the way.
 First we must get the Root folder of the OST file.
 
 ```typescript
-import { Outlook } from "./artemis-api/src/windows/outlook.ts";
+import { Outlook } from "./artemis-api/src/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";
@@ -118,9 +117,9 @@ walk the OST file!\
 Update the your TypeScript script with the code below:
 
 ```typescript
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
-import { Outlook } from "./artemis-api/src/windows/outlook.ts";
-import type { SubFolder } from "./artemis-api/types/windows/outlook.ts";
+import { WindowsError } from "./artemis-api/src/windows/errors";
+import { Outlook } from "./artemis-api/src/windows/outlook";
+import type { SubFolder } from "./artemis-api/types/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";
@@ -235,9 +234,9 @@ So now we can walkthrough and access all folders in an OST file. Now lets get
 the email messages.
 
 ```typescript
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
-import { Outlook } from "./artemis-api/src/windows/outlook.ts";
-import type { SubFolder } from "./artemis-api/types/windows/outlook.ts";
+import { WindowsError } from "./artemis-api/src/windows/errors";
+import { Outlook } from "./artemis-api/src/windows/outlook";
+import type { SubFolder } from "./artemis-api/types/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";
@@ -469,9 +468,9 @@ Lets output the content of single message based on a Subject line. Update your
 script with the code below:
 
 ```typescript
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
-import { Outlook } from "./artemis-api/src/windows/outlook.ts";
-import type { SubFolder } from "./artemis-api/types/windows/outlook.ts";
+import { WindowsError } from "./artemis-api/src/windows/errors";
+import { Outlook } from "./artemis-api/src/windows/outlook";
+import type { SubFolder } from "./artemis-api/types/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";
@@ -594,9 +593,9 @@ So now we can read all folders and messages! Now lets get the attachments!
 Update your TypeScript code with the following:
 
 ```typescript
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
-import { Outlook } from "./artemis-api/src/windows/outlook.ts";
-import type { SubFolder } from "./artemis-api/types/windows/outlook.ts";
+import { WindowsError } from "./artemis-api/src/windows/errors";
+import { Outlook } from "./artemis-api/src/windows/outlook";
+import type { SubFolder } from "./artemis-api/types/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";
@@ -721,9 +720,9 @@ the message body and properties metadata.
 To extract attachments update your code with the following:
 
 ```typescript
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
-import { Outlook } from "./artemis-api/src/windows/outlook.ts";
-import type { SubFolder } from "./artemis-api/types/windows/outlook.ts";
+import { WindowsError } from "./artemis-api/src/windows/errors";
+import { Outlook } from "./artemis-api/src/windows/outlook";
+import type { SubFolder } from "./artemis-api/types/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";

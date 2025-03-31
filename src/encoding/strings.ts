@@ -5,7 +5,7 @@
  */
 export function extractUtf8String(data: Uint8Array): string {
   //@ts-ignore: Custom Artemis function
-  const result: string = encoding.extract_utf8_string(data);
+  const result = js_extract_utf8_string(data);
   return result;
 }
 
@@ -16,7 +16,7 @@ export function extractUtf8String(data: Uint8Array): string {
  */
 export function extractUtf16String(data: Uint8Array): string {
   //@ts-ignore: Custom Artemis function
-  const result: string = encoding.extract_utf16_string(data);
+  const result = js_extract_utf16_string(data);
   return result;
 }
 
@@ -27,6 +27,6 @@ export function extractUtf16String(data: Uint8Array): string {
  */
 export function bytesToHexString(data: Uint8Array): string {
   //@ts-ignore: Custom Artemis function
-  const result: string = encoding.bytes_to_hex_string(data);
+  const result = js_bytes_to_hex_string(data);
   return result;
 }

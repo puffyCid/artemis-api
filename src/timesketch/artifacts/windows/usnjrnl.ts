@@ -1,5 +1,5 @@
-import { UsnJrnl } from "../../../../types/windows/usnjrnl.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { UsnJrnl } from "../../../../types/windows/usnjrnl";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline UsnJrnl

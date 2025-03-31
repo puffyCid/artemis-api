@@ -1,6 +1,6 @@
-import { Jumplists } from "../../../../types/windows/jumplists.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
-import { extractShortcutTimes } from "./shortcuts.ts";
+import { Jumplists } from "../../../../types/windows/jumplists";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
+import { extractShortcutTimes } from "./shortcuts";
 
 /**
  * Function to timeline Jumplists

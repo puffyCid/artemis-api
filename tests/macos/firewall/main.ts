@@ -1,5 +1,5 @@
-import { firewallStatus } from "../../../mod.ts";
-import { MacosError } from "../../../src/macos/errors.ts";
+import { firewallStatus } from "../../../mod";
+import { MacosError } from "../../../src/macos/errors";
 
 function main() {
   const results = firewallStatus();

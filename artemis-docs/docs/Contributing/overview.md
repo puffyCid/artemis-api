@@ -4,8 +4,8 @@ sidebar_position: 2
 
 # Getting Started
 
-The artemis source code is about ~78k lines of Rust code across ~645 files as of
-March 2024 (this includes tests). However its organized in a pretty simple
+The artemis source code is about ~87k lines of Rust code across ~717 files as of
+March 2025 (this includes tests). However its organized in a pretty simple
 structure.
 
 :::tip
@@ -30,13 +30,11 @@ From the `core/src/` directory
 | artifacts  | Contains the code related to parsing forensic artifacts.<br/> It is broken down by OS and application artifacts                                                                                                        |
 | filesystem | Contains code to help interact with the filesystem. It contains helper functions that can be used when adding new artifacts/features. <br/>Ex: reading/hashing files, getting file timestamps, listing files, etc      |
 | output     | Contains code related to outputting parsed data                                                                                                                                                                        |
-| runtime    | Contains code related to the embedded Deno runtime                                                                                                                                                                     |
+| runtime    | Contains code related to the embedded JS runtime                                                                                                                                                                     |
 | structs    | Contains code related to how TOML collection files are parsed. It <br/> tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
 | core.rs    | Contains the entry point to the `core` library.                                                                                                                                                                        |
 
-A basic graph of the code structure can be found
-[here](../../static/img/core.svg)
 
 # Adding New Artifacts
 
@@ -73,7 +71,7 @@ Currently all artifacts that artemis parses are statically coded in the binary
 (they are written in Rust). While this ok, it prevents us from dynamically
 updating the parser if the artifact format changes (ex: new Windows release).
 
-Currently the [JS runtime](../Intro/Scripting/deno.md) has minimal support for
+Currently the [JS runtime](../Intro/Scripting/boa.md) has minimal support for
 creating parsers. If you are interested in adding a small parser to artemis, it
 could be worth first trying to code it using the JS runtime.
 

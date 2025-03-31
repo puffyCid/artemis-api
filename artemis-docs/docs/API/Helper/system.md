@@ -84,3 +84,7 @@ then full path not needed. Args are optional.
 | ------- | -------- | --------------------------------- |
 | command | string   | Command to execute                |
 | args    | string[] | Arguements to pass to the command |
+
+### connections() -> Connection[]
+
+Function to get active network connections.

@@ -1,5 +1,5 @@
-import { Users } from "../../../../types/macos/accounts.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Users } from "../../../../types/macos/accounts";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline macos users

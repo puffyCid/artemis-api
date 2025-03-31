@@ -9,9 +9,9 @@ export interface Nom {
 }
 
 /**
- * Result of nom unsigned helper
+ * Result of nom unsigned or signed helper
  */
-export interface NomUnsigned {
+export interface NomNumber {
   /**Remaining bytes provided to nom */
   remaining: Uint8Array;
   /**Unsigned value returned by nom */
@@ -19,21 +19,21 @@ export interface NomUnsigned {
 }
 
 /**
- * Result of nom unsigned 128 byte helper
+ * Result of nom unsigned 8 or 16 byte helper
  */
 export interface NomUnsignedLarge {
   /**Remaining bytes provided to nom */
   remaining: Uint8Array;
   /**Unsigned value returned by nom */
-  value: string;
+  value: bigint;
 }
 
 /**
- * Result of nom signed helper
+ * Result of nom signed 8 or 16 byte helper
  */
-export interface NomSigned {
+export interface NomSignedLarge {
   /**Remaining bytes provided to nom */
   remaining: Uint8Array;
-  /**Signed value returned by nom */
-  value: number;
+  /**Unsigned value returned by nom */
+  value: bigint;
 }

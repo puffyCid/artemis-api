@@ -1,5 +1,5 @@
-import { LoginItems } from "../../types/macos/loginitems.ts";
-import { MacosError } from "./errors.ts";
+import { LoginItems } from "../../types/macos/loginitems";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the `LoginItems` on a macOS system
@@ -7,17 +7,11 @@ import { MacosError } from "./errors.ts";
  * @returns Array of `LoginItems` or `MacosError`
  */
 export function getLoginitems(path?: string): LoginItems[] | MacosError {
-  let item_path = "";
-  if (path != undefined) {
-    item_path = path;
-  }
-
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_loginitems(item_path);
+    const data = js_loginitems(path);
 
-    const items: LoginItems[] = JSON.parse(data);
-    return items;
+    return data;
   } catch (err) {
     return new MacosError("LOGINITEMS", `failed to parse loginitems: ${err}`);
   }

@@ -113,7 +113,7 @@ go through `filter_script`.
 The TypeScrpt code for a filter script would be something like below:
 
 ```typescript
-import { MacosFileInfo } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/macos/files.ts";
+import { MacosFileInfo } from "./artemis-api/src/macos/files";
 
 /**
  * Filters a provided file listing argument to only return Info.plist files from /Applications

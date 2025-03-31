@@ -1,5 +1,6 @@
-import { Memory } from "../../types/system/systeminfo.ts";
-import { ProcessInfo } from "../../types/system/processes.ts";
+import { Memory } from "../../types/system/systeminfo";
+import { ProcessInfo } from "../../types/system/processes";
+import { Connection } from "../../types/system/connections";
 
 /**
  * Function to get memory information
@@ -7,9 +8,8 @@ import { ProcessInfo } from "../../types/system/processes.ts";
  */
 export function memory(): Memory {
   //@ts-ignore: Custom Artemis function
-  const data = system.memory();
-  const mem: Memory = JSON.parse(data);
-  return mem;
+  const data: Memory = js_memory();
+  return data;
 }
 
 /**
@@ -32,11 +32,21 @@ export function processListing(
     sha256,
   };
   //@ts-ignore: Custom Artemis function
-  const data = Deno.core.ops.get_processes(
-    JSON.stringify(hashes),
+  const data: ProcessInfo[] = js_get_processes(
+    hashes,
     binary,
   );
-  const proc_array: ProcessInfo[] = JSON.parse(data);
 
-  return proc_array;
+  return data;
+}
+
+/**
+ * Function to get list of network connections from system
+ * @returns Array of `Connection`
+ */
+export function connections(): Connection[] {
+  //@ts-ignore: Custom Artemis function
+  const data: Connection[] = js_connections();
+
+  return data;
 }

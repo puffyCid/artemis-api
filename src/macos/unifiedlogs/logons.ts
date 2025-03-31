@@ -1,6 +1,6 @@
-import { getUnifiedLog } from "../../../mod.ts";
-import { LogonMacos } from "../../../types/macos/unifiedlogs/logons.ts";
-import { MacosError } from "../errors.ts";
+import { getUnifiedLog } from "../../../mod";
+import { LogonMacos } from "../../../types/macos/unifiedlogs/logons";
+import { MacosError } from "../errors";
 
 /**
  * Function to extract macOS logons
@@ -17,7 +17,7 @@ export function logonsMacos(
     return new MacosError(`LOGONS`, `failed to parse ${path}: ${logs}`);
   }
 
-  const logons = [];
+  const logons: LogonMacos[] = [];
   for (const entry of logs) {
     if (
       entry.process.endsWith("loginwindow") &&

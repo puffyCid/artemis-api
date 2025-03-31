@@ -7,21 +7,21 @@
  *  - https://github.com/iineva/bom
  *  - https://github.com/hogliux/bomutils
  */
-import { Bom, BomFiles } from "../../types/macos/bom.ts";
-import { extractUtf8String } from "../encoding/mod.ts";
-import { FileError } from "../filesystem/errors.ts";
-import { readFile } from "../filesystem/files.ts";
-import { NomError } from "../nom/error.ts";
+import { Bom, BomFiles } from "../../types/macos/bom";
+import { extractUtf8String } from "../encoding/mod";
+import { FileError } from "../filesystem/errors";
+import { readFile } from "../filesystem/files";
+import { NomError } from "../nom/error";
 import {
   Endian,
   nomUnsignedEightBytes,
   nomUnsignedOneBytes,
   nomUnsignedTwoBytes,
-} from "../nom/helpers.ts";
-import { nomUnsignedFourBytes, take } from "../nom/mod.ts";
-import { unixEpochToISO } from "../time/conversion.ts";
-import { MacosError } from "./errors.ts";
-import { getPlist } from "./plist.ts";
+} from "../nom/helpers";
+import { nomUnsignedFourBytes, take } from "../nom/mod";
+import { unixEpochToISO } from "../time/conversion";
+import { MacosError } from "./errors";
+import { getPlist } from "./plist";
 
 /**
  * Parse a Bill of Materials (BOM) file and get file paths described in the file. When an application (pkg) is install macOS creates a BOM file to track files the pkg creates
@@ -72,7 +72,7 @@ export function parseBom(path: string): Bom | MacosError {
     }
 
     let forward = tree_entry.index;
-    const index_list = [];
+    const index_list: TreeIndex[] = [];
     while (forward != 0) {
       let tree = parseTree(data, forward, table.pointers);
       if (tree instanceof MacosError) {
@@ -182,12 +182,12 @@ export function parseReceipt(path: string): Bom | MacosError {
 
   const receipt = plist_data as Record<string, string>;
   const bom: Bom = {
-    package_name: receipt["PackageFileName"],
-    install_data: receipt["InstallDate"],
-    package_id: receipt["PackageIdentifier"],
-    package_version: receipt["PackageVersion"],
-    install_process_name: receipt["InstallProcessName"],
-    install_prefix_path: receipt["InstallPrefixPath"],
+    package_name: receipt[ "PackageFileName" ],
+    install_data: receipt[ "InstallDate" ],
+    package_id: receipt[ "PackageIdentifier" ],
+    package_version: receipt[ "PackageVersion" ],
+    install_process_name: receipt[ "InstallProcessName" ],
+    install_prefix_path: receipt[ "InstallPrefixPath" ],
     path,
     bom_path: "",
     files: [],
@@ -196,7 +196,7 @@ export function parseReceipt(path: string): Bom | MacosError {
 }
 
 interface Header {
-  sig: number;
+  sig: bigint;
   version: number;
   number_blocks: number;
   index_table_offset: number;
@@ -373,7 +373,7 @@ function getVars(data: Uint8Array): Vars | MacosError {
       return new MacosError("BOM", `failed to parse vars index: ${index}`);
     }
 
-    const length = nomUnsignedOneBytes(index.remaining, Endian.Be);
+    const length = nomUnsignedOneBytes(index.remaining);
     if (length instanceof NomError) {
       return new MacosError("BOM", `failed to parse vars length: ${length}`);
     }
@@ -418,7 +418,7 @@ function getBlock(
     return new MacosError("BOM", `index greater than pointers length`);
   }
 
-  const pointer = pointers[index];
+  const pointer = pointers[ index ];
   if (
     pointer.address > data.length ||
     pointer.address + pointer.length > data.length
@@ -497,7 +497,7 @@ function parseTreeEntry(
     );
   }
 
-  const unknown = nomUnsignedOneBytes(block_size.remaining, Endian.Be);
+  const unknown = nomUnsignedOneBytes(block_size.remaining);
   if (unknown instanceof NomError) {
     return new MacosError(
       "BOM",
@@ -719,14 +719,14 @@ function getPathInfo(
     return new MacosError("BOM", `failed to get path data: ${path_data}`);
   }
 
-  const type_data = nomUnsignedOneBytes(path_data, Endian.Be);
+  const type_data = nomUnsignedOneBytes(path_data);
   if (type_data instanceof NomError) {
     return new MacosError("BOM", `failed to parse path type: ${type_data}`);
   }
 
   const file_type = getType(type_data.value);
 
-  const unknown = nomUnsignedOneBytes(type_data.remaining, Endian.Be);
+  const unknown = nomUnsignedOneBytes(type_data.remaining);
   if (unknown instanceof NomError) {
     return new MacosError("BOM", `failed to parse path unknown: ${unknown}`);
   }
@@ -761,7 +761,7 @@ function getPathInfo(
     return new MacosError("BOM", `failed to parse path size: ${size}`);
   }
 
-  const unknown2 = nomUnsignedOneBytes(size.remaining, Endian.Be);
+  const unknown2 = nomUnsignedOneBytes(size.remaining);
   if (unknown2 instanceof NomError) {
     return new MacosError("BOM", `failed to parse path unknown2: ${unknown2}`);
   }
@@ -835,17 +835,17 @@ interface BomData {
  * @returns Array of `Bom`
  */
 function assembleBom(files: Map<number, BomData>): BomFiles[] {
-  const boms = [];
+  const boms: BomFiles[] = [];
   const root = 0;
 
-  for (const [key, value] of files) {
+  for (const [ key, value ] of files) {
     // Root directory
     if (key === root) {
       continue;
     }
 
     let parent = value.bom_file.parent;
-    let paths = [];
+    let paths: string[] = [];
     while (parent != root) {
       const parent_path = files.get(parent);
       if (parent_path === undefined) {

@@ -7,19 +7,15 @@ An in depth guide is documented at https://puffycid.github.io/artemis-api
 
 ## Quick Start
 
-1. Download [deno](https://deno.com/runtime)
-2. Install a support text editor or IDE. Both [VSCodium](https://vscodium.com/)
-   and [VSCode](https://code.visualstudio.com/) have been tested
-3. Install the
-   [deno](https://deno.com/manual@v1.33.3/getting_started/setup_your_environment)
-   extension for you preferred text editor or IDE
-4. Create a deno project (ex: `deno init processListings`)
-5. Import `artemis-api` into your project
+1. Install a text editor or IDE that supports TypeScript. Such as  [VSCodium](https://vscodium.com/)
+   or [VSCode](https://code.visualstudio.com/)
+2. Create a TypeScript file (ex: main.ts)
+3. Import `artemis-api` into your project and start scripting!
 
 Basic example
 
 ```typescript
-import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { processListing } from "./artemis-api/mod";
 
 function main() {
   const md5 = true;
@@ -34,5 +30,3 @@ function main() {
 main();
 ```
 
-Lots of example scripts can be found at
-[artemis-scripts](https://github.com/puffycid/artemis-scripts)

@@ -1,4 +1,4 @@
-import { ErrorBase } from "../utils/error.ts";
+import { ErrorBase } from "../utils/error";
 
 export type ErrorName =
   | "ELF"
@@ -10,6 +10,7 @@ export type ErrorName =
   | "GNOME_APP_USAGE"
   | "GEDIT"
   | "GVFS"
-  | "SNAP";
+  | "SNAP"
+  | "ABRT";
 
-export class LinuxError extends ErrorBase<ErrorName> {}
+export class LinuxError extends ErrorBase<ErrorName> { }

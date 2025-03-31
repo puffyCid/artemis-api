@@ -123,6 +123,6 @@ export interface LinuxFileInfo {
   /**Depth the file from provided start point */
   depth: number;
   /**ELF binary metadata */
-  binary_info: ElfInfo[];
+  binary_info: ElfInfo;
 }
 ```

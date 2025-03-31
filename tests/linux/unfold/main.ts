@@ -1,5 +1,5 @@
-import { Unfold } from "../../../src/unfold/client.ts";
-import { UnfoldError } from "../../../src/unfold/error.ts";
+import { Unfold } from "../../../src/unfold/client";
+import { UnfoldError } from "../../../src/unfold/error";
 
 function main() {
   const client = new Unfold(
@@ -10,9 +10,8 @@ function main() {
     throw info;
   }
 
-  console.log(info);
-  if (info["partial_query"] != "artemis dfir github") {
-    throw `got ${info["partial_query"]} instead of 'artemis dfir github'`;
+  if (info[ "partial_query" ] != "artemis dfir github") {
+    throw `got ${info[ "partial_query" ]} instead of 'artemis dfir github'`;
   }
 }
 

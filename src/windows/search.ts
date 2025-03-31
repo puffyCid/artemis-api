@@ -1,5 +1,5 @@
-import { SearchEntry } from "../../types/windows/search.ts";
-import { WindowsError } from "./errors.ts";
+import { SearchEntry } from "../../types/windows/search";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse Windows Search data. Supports both ESE and SQLITE databases
@@ -14,10 +14,9 @@ export function getSearch(
 ): SearchEntry[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data: string = Deno.core.ops.get_search(path, page_limit);
+    const data = js_search(path, page_limit);
 
-    const result: SearchEntry[] = JSON.parse(data);
-    return result;
+    return data;
   } catch (err) {
     return new WindowsError("SEARCH", `failed to parse search ${path}: ${err}`);
   }

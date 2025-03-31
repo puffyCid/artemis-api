@@ -39,7 +39,7 @@ Before we can parse an ESE database we need to initialize an instance of the
 EseDatabase class. This is not too difficult :)
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
 
 function main() {
   // Provide path to the UAL file
@@ -71,8 +71,8 @@ database:
 The code below shows how to extract the Catalog from the Current.mdb database.
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
+import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
@@ -95,8 +95,8 @@ database. We can use this the help explore what kind of data exists in the
 database.
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
+import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
@@ -168,8 +168,8 @@ CLIENTS table.
 The code below shows how to extract metadata associated with the CLIENTS table.
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
+import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
@@ -201,8 +201,8 @@ associated with our table (CLIENTS). These pages will point to where our data
 is.
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
+import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
@@ -239,8 +239,8 @@ important, because **you** will decide how much memory artemis will use in order
 to parse the database to get our data.
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
+import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
@@ -298,8 +298,8 @@ Since the Current.mdb database can potentially be very large we do not want to
 parse all pages at once. We will need to parse them in chunks.
 
 ```typescript
-import { EseDatabase } from "./artemis-api/src/windows/ese.ts";
-import { WindowsError } from "./artemis-api/src/windows/errors.ts";
+import { EseDatabase } from "./artemis-api/src/windows/ese";
+import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file

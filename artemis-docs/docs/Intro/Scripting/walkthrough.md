@@ -7,33 +7,20 @@ description: A full walkthrough
 
 Lets create an simple script that will collect a process listing that returns
 only processes that are using more than 200MB of memory. Make sure you have all
-of the [prequisites](./deno.md) before getting started!
+of the [prequisites](./boa.md) before getting started!
 
-1. First we need to initialize our script. You can name it anything you want.
-
-```
-deno init process_usage
-```
-
-2. Deno created two extra files we do not need.
-   `main_bench.ts and main_test.ts`. We can delete them. In addition, lets clear
-   the main.ts and make sure its empty.
-3. Now using a text editor or IDE we need to import the necessary functions to
+1. First we need to create a project directory and name our script (ex: main.ts)
+2. Now using a text editor or IDE we need to import the necessary functions to
    collect our data. Since we are only collecting a process listing we only need
    to import one function. In the main.ts file add the following
 
 ```typescript
-import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 ```
-
-You may get a warning or error about `processListing` not found. We should be
-able to resolve this by right clicking the URL and selecting `cache module`.
-Deno will cache the entire `artemis-api` to our local system.
-
-4. Now lets call our `processListing` function!
+3. Now lets call our `processListing` function!
 
 ```typescript
-import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 
 function main() {
   const md5 = false;
@@ -56,12 +43,12 @@ four optional arguments:
 All of these arguments are optional. The default values are false. In this
 example, we will provide arguments but will still set them to false.
 
-5. Now since we have called our function, we want to now filter the data to only
+4. Now since we have called our function, we want to now filter the data to only
    include processes using more than 200MB of memory. We can use a simple for
    loop to do this
 
 ```typescript
-import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 
 function main() {
   const md5 = false;
@@ -86,10 +73,10 @@ have memory usage above 200MB. Your IDE or text editor **should** provide
 auto-complete suggestions for the process listing. This should help make
 scripting less challenging!
 
-6. Now lets return our data and make sure artemis will call our main function.
+5. Now lets return our data and make sure artemis will call our main function.
 
 ```typescript
-import { processListing } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/src/system/memory.ts";
+import { processListing } from "./artemis-api/src/system/memory";
 
 function main() {
   const md5 = false;
@@ -115,58 +102,9 @@ main();
 
 Thats it! We now have a simple script that filters a process listing.
 
-7. Now before we run our script, we need to [bundle](./bundling.md) all of the
-   code into one JavaScript file. Create the file `build.ts` in the same
-   directory as main.ts. And copy the following into build.ts:
-
-```typescript
-import * as esbuild from "https://deno.land/x/esbuild@v0.15.10/mod.js";
-import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
-
-async function main() {
-  const _result = await esbuild.build({
-    plugins: [denoPlugin()],
-    entryPoints: ["./main.ts"],
-    outfile: "main.js",
-    bundle: true,
-    format: "cjs",
-  });
-
-  esbuild.stop();
-}
-
-main();
-```
-
-The above code uses
-[esbuild Deno loader](https://deno.land/x/esbuild_deno_loader@0.6.0) to bundle
-and [transpile](https://en.wikipedia.org/wiki/Source-to-source_compiler) our
-TypeScript code into JavaScript using the Common JS `(CJS)` format
-
-8. Lets bundle the code! Execute `deno run build.ts`. Since Deno uses sandbox
-   permissions to run code you may receive prompts like the following:
-
-```
-✅ Granted read access to <CWD>.
-✅ Granted env access to "ESBUILD_BINARY_PATH".
-✅ Granted env access to "HOME".
-✅ Granted read access to "/Users/dev/Library/Caches/esbuild/bin/esbuild-darwin-64@0.15.10".
-✅ Granted run access to "/Users/dev/Library/Caches/esbuild/bin/esbuild-darwin-64@0.15.10".
-┌ ⚠️  Deno requests net access to "raw.githubusercontent.com".
-├ Requested by `fetch()` API.
-├ Run again with --allow-net to bypass this prompt.
-└ Allow? [y/n/A] (y = yes, allow; n = no, deny; A = allow all net permissions) >
-```
-
-:::tip
-
-The Deno binary will prompt for access to certain Deno APIs. If you want to
-grant automatically grant required access you can run with the following
-aguments: `deno run -A build.ts`
-
-:::
-
-9. Once Deno has finished running we should now have our `main.js` file! We can
+6. Now before we run our script, we need to [bundle](./bundling.md) all of the
+   code into one JavaScript file.
+7. Once we have bundled our script has finished running we should now have our JavaScript file! We can
    now run it with artemis! There are two ways to run JavaScript code with
    artemis:
    - Use a TOML [collection](../Collections/format.md) file
@@ -182,7 +120,7 @@ aguments: `deno run -A build.ts`
 
    For this example we will use a TOML collection file
 
-10. Base64 encode our main.js file.
+8. Base64 encode our main.js file.
     [CyberChef](https://gchq.github.io/CyberChef/) works great for this task.
     Then add our base64 blob to a TOML file with the following configuration:
 

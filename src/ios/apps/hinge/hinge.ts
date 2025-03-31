@@ -1,15 +1,15 @@
 import {
   FileType,
   ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { parseHeartbeat } from "../../analytics/firebase/heartbeat.ts";
-import { extractStatStorage } from "../../analytics/sendbird/sdk.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
-import { extractChat, extractComment, extractNotifications } from "./chat.ts";
-import { parseMetrics } from "./metrics.ts";
-import { parsePreferences, parseSupportLog } from "./preferences.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { parseHeartbeat } from "../../analytics/firebase/heartbeat";
+import { extractStatStorage } from "../../analytics/sendbird/sdk";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
+import { extractChat, extractComment, extractNotifications } from "./chat";
+import { parseMetrics } from "./metrics";
+import { parsePreferences, parseSupportLog } from "./preferences";
 
 /**
  * Function to extract Hinge app information
@@ -34,73 +34,41 @@ export function extractHingeInfo(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("Preferences/co.hinge.mobile.ios.plist")) {
       const result = parsePreferences(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_preferences",
-        output,
-      );
+      outputResults(result, "hinge_preferences", output);
       continue;
     } else if (
       info.path.includes("Application%20Support/co.hinge.mobile.ios")
     ) {
       const result = extractComment(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_support",
-        output,
-      );
+      outputResults(result, "hinge_support", output);
       continue;
     } else if (
       info.path.includes("Application Support/HingeChat.sqlite")
     ) {
       const result = extractChat(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_chat",
-        output,
-      );
+      outputResults(result, "hinge_chat", output);
       continue;
     } else if (info.path.includes("Library/Application Support/logs/")) {
       const result = parseSupportLog(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_logs",
-        output,
-      );
+      outputResults(result, "hinge_logs", output);
       continue;
     } else if (
       info.path.includes("Application Support/MetricsDataModel.sqlite")
     ) {
       const result = parseMetrics(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_metrics",
-        output,
-      );
+      outputResults(result, "hinge_metrics", output);
       continue;
     } else if (info.path.includes("HingeRecord.sqlite")) {
       const result = extractNotifications(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_record",
-        output,
-      );
+      outputResults(result, "hinge_record", output);
       continue;
     } else if (info.path.includes("google-heartbeat-storage")) {
       const result = parseHeartbeat(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_firebase_heartbeat",
-        output,
-      );
+      outputResults(result, "hinge_firebase_heartbeat", output);
       continue;
     } else if (info.path.includes("com.sendbird.sdk.stat.storage.plist")) {
       const result = extractStatStorage(target);
-      outputResults(
-        JSON.stringify(result),
-        "hinge_sendbird",
-        output,
-      );
+      outputResults(result, "hinge_sendbird", output);
       continue;
     }
 

@@ -1,4 +1,4 @@
-import { Shortcut } from "./shortcuts.ts";
+import { Shortcut } from "./shortcuts";
 
 /**
  * Windows `Jumplists` files track opened files via applications in the Taskbar or Start Menu

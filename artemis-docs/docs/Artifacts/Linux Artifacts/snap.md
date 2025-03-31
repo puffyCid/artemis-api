@@ -18,7 +18,7 @@ You have to use the artemis [api](../../API/overview.md) in order to collect
 installed Snap packages.
 
 ```typescript
-import { listSnaps } from "./artemis-api/src/linux/snap.ts";
+import { listSnaps } from "./artemis-api/src/linux/snap";
 
 function main() {
     const results = listSnaps();

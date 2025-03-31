@@ -24,8 +24,8 @@ If you are looking for a more mature tool, checkout
 Its really easy to start reviewing iTunes backups using the API.
 
 ```typescript
-import { extractBackup } from "./artemis-api/src/ios/itunes/backup.ts";
-import { Format, Output, OutputType } from "./artemis-api/src/system/output.ts";
+import { extractBackup } from "./artemis-api/src/ios/itunes/backup";
+import { Format, Output, OutputType } from "./artemis-api/src/system/output";
 
 function main() {
     const out: Output = {
@@ -82,8 +82,7 @@ Each subfolder will contain you JSON output
 
 Adding support for new apps or artifacts is not too challenging :)
 
-1. Make sure you have the tool prerequisites installed (Deno, VSCodium (or
-   VSCode))
+1. Make sure you have the tool prerequisites installed (Ex: TypeScript text editor)
 2. Clone the artemis-api repo (https://github.com/puffyCid/artemis-api.git)
 3. To add support for a new app, create a folder under
    `./src/ios/apps/<app name>`\
@@ -110,10 +109,10 @@ In our new file we would add the following code
 import {
     FileType,
     ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
 
 /**
  * Function to extract DuckDuckGo browser info

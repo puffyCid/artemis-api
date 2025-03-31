@@ -1,5 +1,5 @@
-import { Groups, Users } from "../../types/macos/accounts.ts";
-import { MacosError } from "./errors.ts";
+import { Groups, Users } from "../../types/macos/accounts";
+import { MacosError } from "./errors";
 
 /**
  * Function to parse the local `Users` on a macOS system
@@ -7,17 +7,11 @@ import { MacosError } from "./errors.ts";
  * @returns Array of `Users` or `MacosError`
  */
 export function getUsers(path?: string): Users[] | MacosError {
-  let user_path = "/var/db/dslocal/nodes/Default/users";
-  if (path != undefined) {
-    user_path = path;
-  }
-
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_users_macos(user_path);
+    const data = js_users_macos(path);
 
-    const users: Users[] = JSON.parse(data);
-    return users;
+    return data;
   } catch (err) {
     return new MacosError("ACCOUNTS", `failed to parse local users: ${err}`);
   }
@@ -29,16 +23,11 @@ export function getUsers(path?: string): Users[] | MacosError {
  * @returns Array of `Groups` or `MacosError`
  */
 export function getGroups(path?: string): Groups[] | MacosError {
-  let group_path = "/var/db/dslocal/nodes/Default/groups";
-  if (path != undefined) {
-    group_path = path;
-  }
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_groups_macos(group_path);
+    const data = js_groups_macos(path);
 
-    const groups: Groups[] = JSON.parse(data);
-    return groups;
+    return data;
   } catch (err) {
     return new MacosError("ACCOUNTS", `failed to parse local groups: ${err}`);
   }

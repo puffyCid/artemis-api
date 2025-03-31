@@ -1,14 +1,14 @@
-import { ApplicationError } from "../../applications/errors.ts";
-import { querySqlite } from "../../applications/sqlite.ts";
-import { MacosError } from "../errors.ts";
-import { glob } from "../../filesystem/files.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { MacosQuarantine } from "../../../types/macos/sqlite/quarantine.ts";
+import { ApplicationError } from "../../applications/errors";
+import { querySqlite } from "../../applications/sqlite";
+import { MacosError } from "../errors";
+import { glob } from "../../filesystem/files";
+import { FileError } from "../../filesystem/errors";
+import { MacosQuarantine } from "../../../types/macos/sqlite/quarantine";
 import {
   QuarantineEvent,
   QuarantineType,
-} from "../../../types/macos/sqlite/quarantine.ts";
-import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
+} from "../../../types/macos/sqlite/quarantine";
+import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
 
 /**
  * Function to extract macOS Quarantine Events
@@ -18,7 +18,7 @@ import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion.ts";
 export function quarantineEvents(
   alt_file?: string,
 ): MacosQuarantine[] | MacosError {
-  let paths = [];
+  let paths: string[] = [];
 
   if (alt_file != undefined) {
     paths = [alt_file];
@@ -49,7 +49,7 @@ export function quarantineEvents(
       );
     }
 
-    const entries = [];
+    const entries: QuarantineEvent[] = [];
     for (const value of results) {
       const entry: QuarantineEvent = {
         id: value["LSQuarantineEventIdentifier"] as string,

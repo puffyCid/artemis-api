@@ -1,5 +1,5 @@
-import { WindowsError } from "../../../src/windows/errors.ts";
-import { getChocolateyInfo } from "../../../src/windows/chocolatey.ts";
+import { WindowsError } from "../../../src/windows/errors";
+import { getChocolateyInfo } from "../../../src/windows/chocolatey";
 
 function main() {
   const results = getChocolateyInfo();

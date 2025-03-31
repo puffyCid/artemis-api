@@ -1,5 +1,5 @@
-import { FileInfo } from "../../types/filesystem/directory.ts";
-import { FileError } from "./errors.ts";
+import { FileInfo } from "../../types/filesystem/directory";
+import { FileError } from "./errors";
 
 /**
  * Read a provided directory and get list of files
@@ -9,9 +9,8 @@ import { FileError } from "./errors.ts";
 export async function readDir(path: string): Promise<FileInfo[] | FileError> {
   try {
     //@ts-ignore: Custom Artemis function
-    const result = await fs.readDir(path);
-    const data: FileInfo[] = JSON.parse(result);
-    return data;
+    const result = await js_read_dir(path);
+    return result;
   } catch (err) {
     return new FileError(
       "READ_DIR",

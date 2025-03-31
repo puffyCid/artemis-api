@@ -36,13 +36,13 @@ A sample script below shows how to pull a process listing and upload to
 Timesketch.
 
 ```typescript
-import { hostname, processListing } from "../../Projects/artemis-api/mod.ts";
-import { Timesketch } from "../../Projects/artemis-api/src/timesketch/client.ts";
+import { hostname, processListing } from "../../Projects/artemis-api/mod";
+import { Timesketch } from "../../Projects/artemis-api/src/timesketch/client";
 import {
   TimesketchAuth,
   TimesketchAuthType,
-} from "../../Projects/artemis-api/types/timesketch/client.ts";
-import { TimesketchArtifact } from "../../Projects/artemis-api/types/timesketch/timeline.ts";
+} from "../../Projects/artemis-api/types/timesketch/client";
+import { TimesketchArtifact } from "../../Projects/artemis-api/types/timesketch/timeline";
 
 async function main() {
   const results = processListing(true, false, false, true);
@@ -110,8 +110,8 @@ const status = await client.timelineAndUpload(
 
 :::info
 
-Artemis can only execute JavaScript code. You will need to create a
-[build.ts script](../../Intro/Scripting/bundling.md#esbuild) before you can run
+Artemis can only execute JavaScript code. You will to
+[bundle](../../Intro/Scripting/bundling.md#esbuild) this TypeScript code before you can run
 this example.
 
 :::

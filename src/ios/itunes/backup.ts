@@ -1,11 +1,11 @@
-import { getPlist, outputResults } from "../../../mod.ts";
-import { IosError } from "../error.ts";
-import { MacosError } from "../../macos/errors.ts";
-import { InfoPlist, StatusPlist } from "../../../types/ios/itunes/backup.ts";
-import { extractAppInfo, getAppPaths, parseAppItunesMetadata } from "./apps.ts";
-import { ManifestPlist } from "../../../types/ios/itunes/manifest.ts";
-import { queryDomains } from "./manifest.ts";
-import { Output } from "../../system/output.ts";
+import { getPlist, outputResults } from "../../../mod";
+import { IosError } from "../error";
+import { MacosError } from "../../macos/errors";
+import { InfoPlist, StatusPlist } from "../../../types/ios/itunes/backup";
+import { extractAppInfo, getAppPaths, parseAppItunesMetadata } from "./apps";
+import { ManifestPlist } from "../../../types/ios/itunes/manifest";
+import { queryDomains } from "./manifest";
+import { Output } from "../../system/output";
 
 /**
  * Resources:
@@ -16,28 +16,32 @@ import { Output } from "../../system/output.ts";
 /**
  * Function to parse data from an iTunes backup
  * @param path Path to iTunes backup directory
- * @returns
+ * @param output `Output` object
+ * @returns Nothing or `IosError`
  */
-export function extractBackup(path: string, output: Output) {
+export function extractBackup(
+  path: string,
+  output: Output,
+): undefined | IosError {
   const info = getInfo(path);
   if (info instanceof IosError) {
     return info;
   }
 
-  outputResults(JSON.stringify(info), "itunes_info.plist", output);
+  outputResults(info, "itunes_info.plist", output);
 
   const status = getStatus(path);
   if (status instanceof IosError) {
     return status;
   }
-  outputResults(JSON.stringify(status), "itunes_status.plist", output);
+  outputResults(status, "itunes_status.plist", output);
 
   const manifest = getManifest(path);
   if (manifest instanceof IosError) {
     return manifest;
   }
 
-  outputResults(JSON.stringify(manifest), "itunes_manifest.plist", output);
+  outputResults(manifest, "itunes_manifest.plist", output);
 
   const domains = queryDomains(path);
   if (domains instanceof IosError) {
@@ -52,7 +56,7 @@ export function extractBackup(path: string, output: Output) {
       continue;
     }
     output.name = `${output_name}_${domain.namespace}`;
-    outputResults(JSON.stringify(paths), domain.namespace, output);
+    outputResults(paths, domain.namespace, output);
     extractAppInfo(paths, domain.namespace, path, output);
   }
 }

@@ -11,26 +11,29 @@
  *  - maybe? https://github.com/hongson11698/defender-database-extract
  */
 
-import { decompress_zlib } from "../../compression/decompress.ts";
-import { CompressionError } from "../../compression/errors.ts";
-import { extractUtf16String } from "../../encoding/strings.ts";
-import { getEnvValue } from "../../environment/env.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob, readFile } from "../../filesystem/files.ts";
-import { NomError } from "../../nom/error.ts";
-import { nomUnsignedFourBytes } from "../../nom/helpers.ts";
-import { Endian, nomUnsignedTwoBytes } from "../../nom/helpers.ts";
-import { nomUnsignedOneBytes } from "../../nom/mod.ts";
-import { take, takeUntil } from "../../nom/parsers.ts";
+import { decompress_zlib } from "../../compression/decompress";
+import { CompressionError } from "../../compression/errors";
+import {
+  extractUtf16String,
+  extractUtf8String,
+} from "../../encoding/strings";
+import { getEnvValue } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
+import { glob, readFile } from "../../filesystem/files";
+import { NomError } from "../../nom/error";
+import { nomUnsignedFourBytes } from "../../nom/helpers";
+import { Endian, nomUnsignedTwoBytes } from "../../nom/helpers";
+import { nomUnsignedOneBytes } from "../../nom/mod";
+import { take, takeUntil } from "../../nom/parsers";
 import {
   Definition,
   DefinitionRule,
   RuleType,
-} from "../../../types/applications/definitions.ts";
-import { extractStrings } from "./sigs/hstr.ts";
-import { encode } from "../../encoding/base64.ts";
-import { ApplicationError } from "../errors.ts";
-import { PlatformType } from "../../../mod.ts";
+} from "../../../types/applications/definitions";
+import { extractStrings } from "./sigs/hstr";
+import { encode } from "../../encoding/base64";
+import { ApplicationError } from "../errors";
+import { PlatformType } from "../../../mod";
 
 /**
  * Function to extract Windows Definitions. (Will take a long time if you want to extract all)
@@ -44,7 +47,7 @@ export function extractDefenderRules(
   alt_file?: string,
   limit = 30,
 ): Definition[] | ApplicationError {
-  let paths = [];
+  let paths: string[] = [];
   if (alt_file != undefined) {
     paths = [alt_file];
   } else if (platform === PlatformType.Windows) {
@@ -96,7 +99,7 @@ export function extractDefenderRules(
       if (count > limit && limit != 0) {
         break;
       }
-      const results = extractRules(rules_data);
+      const results = extractRules(rules_data, platform);
       if (results instanceof ApplicationError) {
         console.error(
           `could not extract all rules from path ${entry}: ${results.cause}`,
@@ -174,7 +177,11 @@ function readVdm(path: string): Uint8Array | ApplicationError {
     zlib_offset + 8,
   );
   const wbits = 15;
-  const decom_data = decompress_zlib(new Uint8Array(compressed_data), wbits);
+  const decom_data = decompress_zlib(
+    new Uint8Array(compressed_data),
+    wbits,
+    decom_size,
+  );
   if (decom_data instanceof CompressionError) {
     return new ApplicationError(
       `DEFENDER`,
@@ -201,10 +208,14 @@ interface RulesAndNextOffset {
 /**
  * Function to extract Defender signatures
  * @param data Bytes associated with the Defender Signature
+ * @param platform OS `PlatformType`
  * @returns `RulesAndNextOffset` object which contains rules and offset to next rule
  */
-function extractRules(data: Uint8Array): RulesAndNextOffset | ApplicationError {
-  const threat_start = getStart(data);
+function extractRules(
+  data: Uint8Array,
+  platform: PlatformType,
+): RulesAndNextOffset | ApplicationError {
+  const threat_start = getStart(data, platform);
   if (threat_start instanceof ApplicationError) {
     return threat_start;
   }
@@ -231,13 +242,12 @@ function extractRules(data: Uint8Array): RulesAndNextOffset | ApplicationError {
       signatures: [],
     };
 
-    const rules = getSigValues(meta.bytes, meta.sig);
+    const rules = getSigValues(meta.bytes, meta.sig, platform);
     if (rules instanceof ApplicationError) {
       if (definition.type != RuleType.SIGNATURE_TYPE_THREAT_END) {
         definition.signatures.push(encode(meta.bytes));
         definition_rules.push(definition);
       }
-
       continue;
     }
 
@@ -268,9 +278,13 @@ interface ThreatStart {
 /**
  * Function to extract `SIGNATURE_TYPE_THREAT_BEGIN` data
  * @param data Bytes associated with the `SIGNATURE_TYPE_THREAT_BEGIN` signature
+ * @param platform OS `PlatformType`
  * @returns `ThreatStart` object or `ApplicationError`
  */
-function getStart(data: Uint8Array): ThreatStart | ApplicationError {
+function getStart(
+  data: Uint8Array,
+  platform: PlatformType,
+): ThreatStart | ApplicationError {
   const threat_start = RuleType.SIGNATURE_TYPE_THREAT_BEGIN;
   const start_sig = getSigMeta(data);
   if (start_sig instanceof ApplicationError || start_sig.sig != threat_start) {
@@ -341,7 +355,6 @@ function getStart(data: Uint8Array): ThreatStart | ApplicationError {
 
   const severity = nomUnsignedOneBytes(
     resources.remaining as Uint8Array,
-    Endian.Le,
   );
   if (severity instanceof NomError) {
     return new ApplicationError(
@@ -352,7 +365,6 @@ function getStart(data: Uint8Array): ThreatStart | ApplicationError {
 
   const action = nomUnsignedOneBytes(
     severity.remaining as Uint8Array,
-    Endian.Le,
   );
   if (action instanceof NomError) {
     return new ApplicationError(
@@ -371,7 +383,9 @@ function getStart(data: Uint8Array): ThreatStart | ApplicationError {
     counter: counter.value,
     category: category.value,
     size: start_sig.size,
-    name: extractUtf16String(name.nommed as Uint8Array),
+    name: (platform === PlatformType.Darwin)
+      ? extractUtf8String(name.nommed as Uint8Array)
+      : extractUtf16String(name.nommed as Uint8Array),
     severity: severity.value,
     action: action.value,
   };
@@ -588,11 +602,13 @@ function signatureType(sig: number): RuleType {
  * Function to get Signature values
  * @param data Bytes associated with Defender Signature
  * @param rule `RuleType` enum to determine how to extract Signature data
+ * @param platform OS Platform type
  * @returns Array of strings or `ApplicationError`
  */
 function getSigValues(
   data: Uint8Array,
   rule: RuleType,
+  platform: PlatformType,
 ): string[] | ApplicationError {
   switch (rule) {
     case RuleType.SIGNATURE_TYPE_PEHSTR:
@@ -612,7 +628,7 @@ function getSigValues(
     case RuleType.SIGNATURE_TYPE_DMGHSTR_EXT:
     case RuleType.SIGNATURE_TYPE_MDBHSTR_EXT:
       // All Rule types above are just strings
-      return extractStrings(data);
+      return extractStrings(data, platform);
     case RuleType.SIGNATURE_TYPE_RESERVED:
     case RuleType.SIGNATURE_TYPE_VOLATILE_THREAT_INFO:
     case RuleType.SIGNATURE_TYPE_VOLATILE_THREAT_ID:

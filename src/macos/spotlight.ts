@@ -1,5 +1,5 @@
-import { Spotlight, StoreMeta } from "../../types/macos/spotlight.ts";
-import { MacosError } from "./errors.ts";
+import { Spotlight, StoreMeta } from "../../types/macos/spotlight";
+import { MacosError } from "./errors";
 
 /**
  * Function to obtain the metadata to start parsing the Spotlight database.
@@ -11,9 +11,8 @@ export function setupSpotlightParser(
 ): StoreMeta | MacosError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.setup_spotlight_parser(glob_path);
-    const meta: StoreMeta = JSON.parse(data);
-    return meta;
+    const data = js_setup_spotlight_parser(glob_path);
+    return data;
   } catch (err) {
     return new MacosError(
       "SPOTLIGHT",
@@ -45,13 +44,12 @@ export function getSpotlight(
 
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_spotlight(
+    const data = js_spotlight(
       store_file,
-      JSON.stringify(meta),
+      meta,
       offset,
     );
-    const entries: Spotlight[] = JSON.parse(data);
-    return entries;
+    return data;
   } catch (err) {
     return new MacosError(
       "SPOTLIGHT",

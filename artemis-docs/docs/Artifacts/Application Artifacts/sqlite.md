@@ -20,7 +20,7 @@ SQLite information.
 ```typescript
 import {
   querySqlite,
-} from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+} from "./artemis-api/mod";
 
 function main() {
   const path = "path to sqlite file";

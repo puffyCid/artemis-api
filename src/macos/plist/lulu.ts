@@ -2,9 +2,9 @@ import {
   LuluAction,
   LuluRules,
   Rule,
-} from "../../../types/macos/plist/lulu.ts";
-import { MacosError } from "../errors.ts";
-import { getPlist } from "../plist.ts";
+} from "../../../types/macos/plist/lulu";
+import { MacosError } from "../errors";
+import { getPlist } from "../plist";
 
 /**
  * Function to extract Lulu firewall rules.
@@ -128,7 +128,7 @@ function getCodeSigning(
       continue;
     }
 
-    const entries = [];
+    const entries: string[] = [];
     // more NS.Objects
     for (const entry of value["NS.objects"]) {
       const lulu_value = objects.at(entry) as string ?? `${entry}`;

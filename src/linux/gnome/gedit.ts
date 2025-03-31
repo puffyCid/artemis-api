@@ -1,10 +1,10 @@
-import type { RecentFiles } from "../../../types/linux/gnome/gedit.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { readXml } from "../../encoding/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/mod.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { LinuxError } from "../errors.ts";
+import type { RecentFiles } from "../../../types/linux/gnome/gedit";
+import { EncodingError } from "../../encoding/errors";
+import { readXml } from "../../encoding/mod";
+import { FileError } from "../../filesystem/errors";
+import { glob } from "../../filesystem/mod";
+import { unixEpochToISO } from "../../time/conversion";
+import { LinuxError } from "../errors";
 
 /**
  * Function to extract recently open files by gedit
@@ -29,7 +29,7 @@ export function geditRecentFiles(
     );
   }
 
-  const files = [];
+  const files: RecentFiles[] = [];
 
   for (const entry of glob_paths) {
     const data = readXml(entry.full_path);
@@ -40,16 +40,16 @@ export function geditRecentFiles(
       continue;
     }
 
-    const meta = data["metadata"] as Record<
+    const meta = data[ "metadata" ] as Record<
       string,
       Record<string, Record<string, string>>[]
     >;
 
-    const docs = meta["document"];
+    const docs = meta[ "document" ];
     for (const doc of docs) {
       const recent: RecentFiles = {
-        path: doc["$"]["uri"],
-        accessed: unixEpochToISO(Number(doc["$"]["atime"])),
+        path: doc[ "$" ][ "uri" ],
+        accessed: unixEpochToISO(Number(doc[ "$" ][ "atime" ])),
         gedit_source: entry.full_path,
       };
       files.push(recent);

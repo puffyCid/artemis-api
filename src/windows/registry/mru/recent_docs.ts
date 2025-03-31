@@ -1,14 +1,14 @@
-import { Registry } from "../../../../types/windows/registry.ts";
-import { MruValues } from "../../../../types/windows/registry/recently_used.ts";
-import { ShellItems } from "../../../../types/windows/shellitems.ts";
-import { decode } from "../../../encoding/base64.ts";
-import { EncodingError } from "../../../encoding/errors.ts";
-import { extractUtf16String } from "../../../encoding/strings.ts";
-import { NomError } from "../../../nom/error.ts";
-import { take, takeUntil } from "../../../nom/parsers.ts";
-import { WindowsError } from "../../errors.ts";
-import { getShellItem } from "../../shellitems.ts";
-import { assembleMru } from "../recently_used.ts";
+import { Registry } from "../../../../types/windows/registry";
+import { MruValues } from "../../../../types/windows/registry/recently_used";
+import { ShellItems } from "../../../../types/windows/shellitems";
+import { decode } from "../../../encoding/base64";
+import { EncodingError } from "../../../encoding/errors";
+import { extractUtf16String } from "../../../encoding/strings";
+import { NomError } from "../../../nom/error";
+import { take, takeUntil } from "../../../nom/parsers";
+import { WindowsError } from "../../errors";
+import { getShellItem } from "../../shellitems";
+import { assembleMru } from "../recently_used";
 
 /**
  * Parse RecentDocs MRU keys
@@ -16,7 +16,7 @@ import { assembleMru } from "../recently_used.ts";
  * @returns Array of `MruValues` or `WindowsError`
  */
 export function recentDocs(reg_data: Registry[]): MruValues[] | WindowsError {
-  const mru_entries = [];
+  const mru_entries: Registry[] = [];
   for (const entry of reg_data) {
     if (
       !entry.path.includes(
@@ -29,7 +29,7 @@ export function recentDocs(reg_data: Registry[]): MruValues[] | WindowsError {
     mru_entries.push(entry);
   }
 
-  const mrus = [];
+  const mrus: MruValues[] = [];
   for (const entries of mru_entries) {
     for (const value of entries.values) {
       if (value.value === "MRUListEx") {

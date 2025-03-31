@@ -1,7 +1,7 @@
-import { getPlist } from "../../../mod.ts";
-import { Applications } from "../../../types/macos/plist/apps.ts";
-import { MacosError } from "../errors.ts";
-import { scanApps } from "./apps.ts";
+import { getPlist } from "../../../mod";
+import { Applications } from "../../../types/macos/plist/apps";
+import { MacosError } from "../errors";
+import { scanApps } from "./apps";
 
 /**
  * Scan the filesystem for Applications that have DockTile persistence

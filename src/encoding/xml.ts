@@ -1,4 +1,4 @@
-import { EncodingError } from "./errors.ts";
+import { EncodingError } from "./errors";
 
 /**
  * Read a XML file into a JSON object. Supports either UTF8 or UTF16 encoded XML files
@@ -8,9 +8,8 @@ import { EncodingError } from "./errors.ts";
 export function readXml(path: string): Record<string, unknown> | EncodingError {
   try {
     //@ts-ignore: Custom Artemis function
-    const result = encoding.read_xml(path);
-    const value: Record<string, unknown> = JSON.parse(result);
-    return value;
+    const result = js_read_xml(path);
+    return result;
   } catch (err) {
     return new EncodingError("READ_XML", `failed to read XML ${path}: ${err}`);
   }

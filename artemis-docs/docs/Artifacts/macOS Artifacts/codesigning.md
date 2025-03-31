@@ -18,7 +18,7 @@ Codesigning data.
 # Sample API Script
 
 ```typescript
-import { parseRequirementBlob } from "https://raw.githubusercontent.com/puffycid/artemis-api/master/mod.ts";
+import { parseRequirementBlob } from "./artemis-api/mod";
 
 function main() {
   // Need to obtain alias bytes from another file. Plist files may have Codesigning data.

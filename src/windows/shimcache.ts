@@ -1,38 +1,18 @@
-import { Shimcache } from "../../types/windows/shimcache.ts";
-import { WindowsError } from "./errors.ts";
+import { Shimcache } from "../../types/windows/shimcache";
+import { WindowsError } from "./errors";
 
 /**
  * Function to parse `Shimcache` entries on the systemdrive
+ * @param path Optional path t Registry file
  * @returns Array of `Shimcache` entries parsed from the sysystemdrive letter or `WindowsError`
  */
-export function getShimcache(): Shimcache[] | WindowsError {
+export function getShimcache(path?: string): Shimcache[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_shimcache();
+    const data = js_shimcache(path);
 
-    const results: Shimcache[] = JSON.parse(data);
-    return results;
+    return data;
   } catch (err) {
     return new WindowsError("SHIMCACHE", `failed to parse shimcache: ${err}`);
-  }
-}
-
-/**
- * Function to parse `Shimcache` entries on an alternative path
- * @param path Full path to SYSTEM file
- * @returns Array of `Shimcache` entries or `WindowsError`
- */
-export function getAltShimcache(path: string): Shimcache[] | WindowsError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = Deno.core.ops.get_alt_shimcache(path);
-
-    const results: Shimcache[] = JSON.parse(data);
-    return results;
-  } catch (err) {
-    return new WindowsError(
-      "SHIMCACHE",
-      `failed to parse shimcache at path ${path}: ${err}`,
-    );
   }
 }

@@ -1,1 +1,1 @@
-export { getEnvValue, listEnv } from "./env.ts";
+export { getEnvValue, listEnv } from "./env";

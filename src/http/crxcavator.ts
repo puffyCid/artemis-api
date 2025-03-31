@@ -1,7 +1,7 @@
-import { Browser, CrxResponse } from "../../types/http/crxcavator.ts";
-import { extractUtf8String } from "../encoding/strings.ts";
-import { ClientRequest, Protocol, request } from "./client.ts";
-import { HttpError } from "./errors.ts";
+import { Browser, CrxResponse } from "../../types/http/crxcavator";
+import { extractUtf8String } from "../encoding/strings";
+import { ClientRequest, Protocol, request } from "./client";
+import { HttpError } from "./errors";
 
 /**
  * Function to lookup browser extension reports on https://crxcavator.io

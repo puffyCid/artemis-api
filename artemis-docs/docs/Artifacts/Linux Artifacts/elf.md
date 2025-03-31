@@ -8,10 +8,10 @@ keywords:
 
 # ELF
 
-Linux Executable Linkable Format (`ELF`) is the executable format for
+The Executable Linkable Format (`ELF`) is the executable format for
 applications on Linux systems.
 
-artemis is able to parse basic metadata from `ELF` files.
+Artemis is able to parse basic metadata from `ELF` files.
 
 Other Parsers:
 

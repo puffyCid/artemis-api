@@ -3,12 +3,12 @@ import {
   FirewallApplication,
   FirewallExceptions,
   Services,
-} from "../../../types/macos/plist/firewall.ts";
-import { parseAlias } from "../alias.ts";
-import { parseRequirementBlob } from "../codesigning/blob.ts";
-import { SigningError } from "../codesigning/errors.ts";
-import { MacosError } from "../errors.ts";
-import { getPlist } from "../plist.ts";
+} from "../../../types/macos/plist/firewall";
+import { parseAlias } from "../alias";
+import { parseRequirementBlob } from "../codesigning/blob";
+import { SigningError } from "../codesigning/errors";
+import { MacosError } from "../errors";
+import { getPlist } from "../plist";
 
 /**
  * Function to get the macOS Firewall status and metadata
@@ -24,7 +24,7 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
     path = [alt_path];
   }
 
-  const firewalls = [];
+  const firewalls: Firewall[] = [];
   for (const entry of path) {
     const plist_results = getPlist(entry);
     if (
@@ -176,7 +176,7 @@ function parseApplications(
 function getExceptions(
   exceptions: Record<string, string | number>[],
 ): FirewallExceptions[] {
-  const results = [];
+  const results: FirewallExceptions[] = [];
 
   for (const entry of exceptions) {
     const path = entry["path"] as string;
@@ -199,7 +199,7 @@ function getExceptions(
  * @returns Array of `Services`
  */
 function getServices(services: Record<string, object>): Services[] {
-  const service_entires = [];
+  const service_entires: Services[] = [];
   for (const entry in services) {
     const state = services[entry] as Record<string, string>;
 
@@ -220,7 +220,7 @@ function getServices(services: Record<string, object>): Services[] {
  * @returns Array of strings
  */
 function getAuths(auths: Record<string, string>[]): string[] {
-  const entries = [];
+  const entries: string[] = [];
   for (const auth of auths) {
     entries.push(auth["id"]);
   }

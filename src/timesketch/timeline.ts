@@ -1,35 +1,35 @@
 import {
   TimesketchArtifact,
   TimesketchTimeline,
-} from "../../types/timesketch/timeline.ts";
-import { TimesketchError } from "./error.ts";
-import { ProcessInfo } from "../../types/system/processes.ts";
-import { LoginItems } from "../../types/macos/loginitems.ts";
-import { UnifiedLog } from "../../types/macos/unifiedlogs.ts";
-import { HomebrewData } from "../../types/macos/homebrew.ts";
-import { Fsevents } from "../../types/macos/fsevents.ts";
-import { Groups, Users } from "../../types/macos/accounts.ts";
-import { ExecPolicy } from "../../types/macos/execpolicy.ts";
-import { MacosFileInfo } from "../../types/macos/files.ts";
-import { WindowsFileInfo } from "../../types/windows/files.ts";
-import { LinuxFileInfo } from "../../types/linux/files.ts";
-import { SafariDownloads, SafariHistory } from "../../types/macos/safari.ts";
-import { Launchd } from "../../types/macos/launchd.ts";
-import { Emond } from "../../types/macos/emond.ts";
-import { Spotlight } from "../../types/macos/spotlight.ts";
-import { Prefetch } from "../../types/windows/prefetch.ts";
-import { Amcache } from "../../types/windows/amcache.ts";
-import { Shimcache } from "../../types/windows/shimcache.ts";
-import { Bits } from "../../types/windows/bits.ts";
-import { EventLogRecord } from "../../types/windows/eventlogs.ts";
-import { Jumplists } from "../../types/windows/jumplists.ts";
-import { Shortcut } from "../../types/windows/shortcuts.ts";
-import { RecycleBin } from "../../types/windows/recyclebin.ts";
-import { Registry } from "../../types/windows/registry.ts";
-import { Services } from "../../types/windows/services.ts";
-import { Shellbags } from "../../types/windows/shellbags.ts";
-import { RawFileInfo } from "../../types/windows/ntfs.ts";
-import { Shimdb } from "../../types/windows/shimdb.ts";
+} from "../../types/timesketch/timeline";
+import { TimesketchError } from "./error";
+import { ProcessInfo } from "../../types/system/processes";
+import { LoginItems } from "../../types/macos/loginitems";
+import { UnifiedLog } from "../../types/macos/unifiedlogs";
+import { HomebrewData } from "../../types/macos/homebrew";
+import { Fsevents } from "../../types/macos/fsevents";
+import { Groups, Users } from "../../types/macos/accounts";
+import { ExecPolicy } from "../../types/macos/execpolicy";
+import { MacosFileInfo } from "../../types/macos/files";
+import { WindowsFileInfo } from "../../types/windows/files";
+import { LinuxFileInfo } from "../../types/linux/files";
+import { SafariDownloads, SafariHistory } from "../../types/macos/safari";
+import { Launchd } from "../../types/macos/launchd";
+import { Emond } from "../../types/macos/emond";
+import { Spotlight } from "../../types/macos/spotlight";
+import { Prefetch } from "../../types/windows/prefetch";
+import { Amcache } from "../../types/windows/amcache";
+import { Shimcache } from "../../types/windows/shimcache";
+import { Bits } from "../../types/windows/bits";
+import { EventLogRecord } from "../../types/windows/eventlogs";
+import { Jumplists } from "../../types/windows/jumplists";
+import { Shortcut } from "../../types/windows/shortcuts";
+import { RecycleBin } from "../../types/windows/recyclebin";
+import { Registry } from "../../types/windows/registry";
+import { Services } from "../../types/windows/services";
+import { Shellbags } from "../../types/windows/shellbags";
+import { RawFileInfo } from "../../types/windows/ntfs";
+import { Shimdb } from "../../types/windows/shimdb";
 import {
   ApplicationInfo,
   ApplicationTimeline,
@@ -39,79 +39,79 @@ import {
   NetworkConnectivityInfo,
   NetworkInfo,
   NotificationInfo,
-} from "../../types/windows/srum.ts";
-import { SearchEntry } from "../../types/windows/search.ts";
-import { TaskData } from "../../types/windows/tasks.ts";
-import { UserAssist } from "../../types/windows/userassist.ts";
-import { UserInfo } from "../../types/windows/users.ts";
-import { UsnJrnl } from "../../types/windows/usnjrnl.ts";
-import { WmiPersist } from "../../types/windows/wmi.ts";
-import { LogonsWindows } from "../../types/windows/eventlogs/logons.ts";
-import { Journal } from "../../types/linux/journal.ts";
-import { ChromiumHistory } from "../../types/applications/chromium.ts";
+} from "../../types/windows/srum";
+import { SearchEntry } from "../../types/windows/search";
+import { TaskData } from "../../types/windows/tasks";
+import { UserAssist } from "../../types/windows/userassist";
+import { UserInfo } from "../../types/windows/users";
+import { UsnJrnl } from "../../types/windows/usnjrnl";
+import { WmiPersist } from "../../types/windows/wmi";
+import { LogonsWindows } from "../../types/windows/eventlogs/logons";
+import { Journal } from "../../types/linux/journal";
+import { ChromiumHistory } from "../../types/applications/chromium";
 
 /**
  * macOS artifact timelines
  */
-import { timelineLoginItems } from "./artifacts/macos/loginitems.ts";
-import { timelineUnifiedLogs } from "./artifacts/macos/unifiedlogs.ts";
-import { timelineHomebrew } from "./artifacts/macos/homebrew.ts";
-import { timelineFsevents } from "./artifacts/macos/fsevents.ts";
-import { timelineUsersMacos } from "./artifacts/macos/users.ts";
-import { timelineGroupsMacos } from "./artifacts/macos/groups.ts";
-import { timelineExecpolicy } from "./artifacts/macos/execpolicy.ts";
+import { timelineLoginItems } from "./artifacts/macos/loginitems";
+import { timelineUnifiedLogs } from "./artifacts/macos/unifiedlogs";
+import { timelineHomebrew } from "./artifacts/macos/homebrew";
+import { timelineFsevents } from "./artifacts/macos/fsevents";
+import { timelineUsersMacos } from "./artifacts/macos/users";
+import { timelineGroupsMacos } from "./artifacts/macos/groups";
+import { timelineExecpolicy } from "./artifacts/macos/execpolicy";
 import {
   timelineSafariDownloads,
   timelineSafariHistory,
-} from "./artifacts/macos/safari.ts";
-import { timelineLaunchd } from "./artifacts/macos/launchd.ts";
-import { timelineSpotlight } from "./artifacts/macos/spotlight.ts";
-import { timelineEmond } from "./artifacts/macos/emond.ts";
+} from "./artifacts/macos/safari";
+import { timelineLaunchd } from "./artifacts/macos/launchd";
+import { timelineSpotlight } from "./artifacts/macos/spotlight";
+import { timelineEmond } from "./artifacts/macos/emond";
 
 /**
  * Linux artifact timelines
  */
-import { timelineJournals } from "./artifacts/linux/journals.ts";
-import type { RpmPackages } from "../../types/linux/rpm.ts";
+import { timelineJournals } from "./artifacts/linux/journals";
+import type { RpmPackages } from "../../types/linux/rpm";
 
 /**
  * Application artifact timelines
  */
-import { timelineChromiumHistory } from "./artifacts/applications/chromium/history.ts";
+import { timelineChromiumHistory } from "./artifacts/applications/chromium/history";
 
 /**
  * Cross platform artifact timelines
  */
-import { timelineProcesses } from "./artifacts/processes.ts";
-import { timelineFiles } from "./artifacts/files.ts";
+import { timelineProcesses } from "./artifacts/processes";
+import { timelineFiles } from "./artifacts/files";
 
 /**
  * Windows artifact timelines
  */
-import { timelineAmcache } from "./artifacts/windows/amcache.ts";
-import { timelineShimcache } from "./artifacts/windows/shimcache.ts";
-import { timelinePrefetch } from "./artifacts/windows/prefetch.ts";
-import { timelineBits } from "./artifacts/windows/bits.ts";
-import { timelineEventLogs } from "./artifacts/windows/eventlogs.ts";
-import { timelineJumplists } from "./artifacts/windows/jumplists.ts";
-import { timelineShortcuts } from "./artifacts/windows/shortcuts.ts";
-import { timelineRecycleBin } from "./artifacts/windows/recyclebin.ts";
-import { timelineRegistry } from "./artifacts/windows/registry.ts";
-import { timelineShellbags } from "./artifacts/windows/shellbags.ts";
-import { timelineServices } from "./artifacts/windows/services.ts";
-import { timelineRawFiles } from "./artifacts/windows/ntfs.ts";
-import { timelineShimdb } from "./artifacts/windows/shimdb.ts";
-import { timelineSearch } from "./artifacts/windows/search.ts";
-import { timelineSrum } from "./artifacts/windows/srum.ts";
-import { timelineTasks } from "./artifacts/windows/tasks.ts";
-import { timelineUserAssist } from "./artifacts/windows/userassist.ts";
-import { timelineUsersWindows } from "./artifacts/windows/users.ts";
-import { timelineUsnJrnl } from "./artifacts/windows/usnjrnl.ts";
-import { timelineWmiPersist } from "./artifacts/windows/wmi.ts";
-import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons.ts";
-import { timelineGatekeeper } from "./artifacts/macos/sqlite/gatekeeper.ts";
-import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper.ts";
-import { timelineRpm } from "./artifacts/linux/rpm.ts";
+import { timelineAmcache } from "./artifacts/windows/amcache";
+import { timelineShimcache } from "./artifacts/windows/shimcache";
+import { timelinePrefetch } from "./artifacts/windows/prefetch";
+import { timelineBits } from "./artifacts/windows/bits";
+import { timelineEventLogs } from "./artifacts/windows/eventlogs";
+import { timelineJumplists } from "./artifacts/windows/jumplists";
+import { timelineShortcuts } from "./artifacts/windows/shortcuts";
+import { timelineRecycleBin } from "./artifacts/windows/recyclebin";
+import { timelineRegistry } from "./artifacts/windows/registry";
+import { timelineShellbags } from "./artifacts/windows/shellbags";
+import { timelineServices } from "./artifacts/windows/services";
+import { timelineRawFiles } from "./artifacts/windows/ntfs";
+import { timelineShimdb } from "./artifacts/windows/shimdb";
+import { timelineSearch } from "./artifacts/windows/search";
+import { timelineSrum } from "./artifacts/windows/srum";
+import { timelineTasks } from "./artifacts/windows/tasks";
+import { timelineUserAssist } from "./artifacts/windows/userassist";
+import { timelineUsersWindows } from "./artifacts/windows/users";
+import { timelineUsnJrnl } from "./artifacts/windows/usnjrnl";
+import { timelineWmiPersist } from "./artifacts/windows/wmi";
+import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons";
+import { timelineGatekeeper } from "./artifacts/macos/sqlite/gatekeeper";
+import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper";
+import { timelineRpm } from "./artifacts/linux/rpm";
 
 /**
  * Function to timeline artifacts parsed by artemis

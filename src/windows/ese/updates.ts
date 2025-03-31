@@ -1,17 +1,17 @@
-import { EseTable, TableInfo } from "../../../types/windows/ese.ts";
+import { EseTable, TableInfo } from "../../../types/windows/ese";
 import {
   Operation,
   ServerSelection,
   UpdateHistory,
-} from "../../../types/windows/ese/updates.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { decode } from "../../encoding/mod.ts";
-import { formatGuid } from "../../encoding/uuid.ts";
-import { getEnvValue } from "../../environment/env.ts";
-import { Endian } from "../../nom/helpers.ts";
-import { nomUnsignedFourBytes, take } from "../../nom/mod.ts";
-import { WindowsError } from "../errors.ts";
-import { EseDatabase } from "../ese.ts";
+} from "../../../types/windows/ese/updates";
+import { EncodingError } from "../../encoding/errors";
+import { decode } from "../../encoding/mod";
+import { formatGuid } from "../../encoding/uuid";
+import { getEnvValue } from "../../environment/env";
+import { Endian } from "../../nom/helpers";
+import { nomUnsignedFourBytes, take } from "../../nom/mod";
+import { WindowsError } from "../errors";
+import { EseDatabase } from "../ese";
 
 /**
  * Class to parse history of Windows Updates
@@ -26,7 +26,7 @@ export class Updates extends EseDatabase {
    * Contruct `Updates` to parse Windows Updates history. By default will parse updates at `\Windows\SoftwareDistribution\DataStore\DataStore.edb`. Unless you specify alternative file.
    * @param alt_path Optional alternative path to `DataStore.edb`
    */
-  constructor(alt_path?: string) {
+  constructor (alt_path?: string) {
     const default_path = getEnvValue("SystemDrive");
     let path =
       `${default_path}\\Windows\\SoftwareDistribution\\DataStore\\DataStore.edb`;
@@ -63,7 +63,7 @@ export class Updates extends EseDatabase {
       return rows;
     }
 
-    return this.parseHistory(rows[this.table]);
+    return this.parseHistory(rows[ this.table ]);
   }
 
   private setupHistory() {
@@ -87,7 +87,7 @@ export class Updates extends EseDatabase {
    * @returns Array of `UpdateHistory` entries
    */
   private parseHistory(rows: EseTable[][]): UpdateHistory[] {
-    const udpates = [];
+    const udpates: UpdateHistory[] = [];
 
     for (const row of rows) {
       const update: UpdateHistory = {
@@ -135,15 +135,15 @@ export class Updates extends EseDatabase {
           if (update_info instanceof Error) {
             console.warn(`could not parse update id info ${update_info}`);
           } else {
-            update.update_id = update_info["guid"] as string;
-            update.update_revision = update_info["revision"] as number;
+            update.update_id = update_info[ "guid" ] as string;
+            update.update_revision = update_info[ "revision" ] as number;
           }
         } else if (column.column_name === "ServerId") {
           const update_info = this.getUpdateId(column.column_data);
           if (update_info instanceof Error) {
             console.warn(`could not parse service id info ${update_info}`);
           } else {
-            update.service_id = update_info["guid"] as string;
+            update.service_id = update_info[ "guid" ] as string;
           }
         } else if (column.column_name === "ServerSelection") {
           update.server_selection = this.getServerSelection(column.column_data);
@@ -171,7 +171,7 @@ export class Updates extends EseDatabase {
     }
 
     const update_id: Record<string, string | number> = {};
-    update_id["guid"] = formatGuid(Endian.Le, guid.nommed as Uint8Array);
+    update_id[ "guid" ] = formatGuid(Endian.Le, guid.nommed as Uint8Array);
 
     if (guid.remaining.length === 0) {
       return update_id;
@@ -185,7 +185,7 @@ export class Updates extends EseDatabase {
       return revision_data;
     }
 
-    update_id["revision"] = revision_data.value;
+    update_id[ "revision" ] = revision_data.value;
     return update_id;
   }
 

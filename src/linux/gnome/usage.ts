@@ -1,10 +1,10 @@
-import type { AppUsage } from "../../../types/linux/gnome/usage.ts";
-import { EncodingError } from "../../encoding/errors.ts";
-import { readXml } from "../../encoding/mod.ts";
-import { FileError } from "../../filesystem/errors.ts";
-import { glob } from "../../filesystem/mod.ts";
-import { unixEpochToISO } from "../../time/conversion.ts";
-import { LinuxError } from "../errors.ts";
+import type { AppUsage } from "../../../types/linux/gnome/usage";
+import { EncodingError } from "../../encoding/errors";
+import { readXml } from "../../encoding/mod";
+import { FileError } from "../../filesystem/errors";
+import { glob } from "../../filesystem/mod";
+import { unixEpochToISO } from "../../time/conversion";
+import { LinuxError } from "../errors";
 
 /**
  * Function to extract GNOME Application usage
@@ -27,7 +27,7 @@ export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
     );
   }
 
-  const apps = [];
+  const apps: AppUsage[] = [];
   for (const entry of glob_paths) {
     const data = readXml(entry.full_path);
     if (data instanceof EncodingError) {
@@ -37,25 +37,25 @@ export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
       continue;
     }
 
-    const context = data["application-state"] as Record<string, unknown[]>;
+    const context = data[ "application-state" ] as Record<string, unknown[]>;
 
-    const context_entries = context["context"];
+    const context_entries = context[ "context" ];
     for (const value of context_entries) {
       const applications = value as Record<
         string,
         unknown[]
       >;
 
-      for (const app_entry of applications["application"]) {
+      for (const app_entry of applications[ "application" ]) {
         const app = app_entry as Record<
           string,
           Record<string, string>
         >;
 
         const app_usage: AppUsage = {
-          id: app["$"]["id"],
-          score: Number(app["$"]["score"]),
-          "last-seen": unixEpochToISO(Number(app["$"]["last-seen"])),
+          id: app[ "$" ][ "id" ],
+          score: Number(app[ "$" ][ "score" ]),
+          "last-seen": unixEpochToISO(Number(app[ "$" ][ "last-seen" ])),
           source: entry.full_path,
         };
 

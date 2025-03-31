@@ -64,10 +64,13 @@ Uses /var/lib/dpkg/status by default
 
 Parse the Journal files and extract entries related to sudo activity.
 
-### getRpmInfo(path) -> RpmPackages[] | LinuxError
+### getRpmInfo(offset, limit, path) -> RpmPackages[] | LinuxError
 
 Get list of installed rpm packages on the system. May provide an alternative
 full path to the rpmdb.sqlite file.
+
+You must provided an offset and the amount of packages to query from the
+database.
 
 :::info
 
@@ -84,9 +87,11 @@ because they are still using the Berkley database!
 On Fedora based distributions the sqlite file should be located at
 /var/lib/rpm/rpmdb.sqlite
 
-| Param    | Type   | Description                            |
-| -------- | ------ | -------------------------------------- |
-| alt_path | string | Optional path to the rpmdb.sqlite file |
+| Param    | Type   | Description                                                                |
+| -------- | ------ | -------------------------------------------------------------------------- |
+| offset   | number | Query offset to start at. 0 will start at the first package inthe database |
+| limit    | number | How many packages to query                                                 |
+| alt_path | string | Optional path to the rpmdb.sqlite file                                     |
 
 ### getGnomeExtensions(alt_path) -> Extension[] | LinuxError
 
@@ -127,3 +132,13 @@ for all users.
 ### listSnaps() -> Record&lt;string, SnapState&gt; | LinuxError
 
 Get a list of all installed Snap packages
+
+### extractAbrt(alt_dir) -> Abrt[] | LinuxError
+
+Extract abrt metadata about application crashes. You may provide an optional alternative directory containing abrt related files.
+
+By default all abrt crashes are parsed. Root access is required to access abrt related fiels
+
+| Param    | Type   | Description                                        |
+| -------- | ------ | -------------------------------------------------- |
+| alt_dir  | string | Alt path to abrt crash directory                   |

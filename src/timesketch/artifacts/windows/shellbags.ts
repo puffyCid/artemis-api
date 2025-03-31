@@ -1,5 +1,5 @@
-import { Shellbags } from "../../../../types/windows/shellbags.ts";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline.ts";
+import { Shellbags } from "../../../../types/windows/shellbags";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline Shellbags

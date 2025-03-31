@@ -433,17 +433,19 @@ Return a list of Windows Updates by parsing the Windows DataStore.edb database.
 | ----- | -------- | ------------------------------- |
 | pages | number[] | Array of pages to get data from |
 
-### powershellHistory(alt_path) -> History[] | History | WindowsError
+### powershellHistory(platform, alt_path) -> History[] | History | WindowsError
 
 Return PowerShell history entries for all users. Uses the systemdrive by
 default.
 
+This artifact also supports PowerShell history on macOS or Linux
 An optional alternative path to ConsoleHost_history.txt can also be provided
 instead.
 
-| Param    | Type   | Description                                   |
-| -------- | ------ | --------------------------------------------- |
-| alt_path | string | Optional full path to ConsoleHost_history.txt |
+| Param    | Type         | Description                                            |
+| -------- | ------------ | ------------------------------------------------------ |
+| platform | PlatformType | Platform type to parse history for. Default is Windows |
+| alt_path | string       | Optional full path to ConsoleHost_history.txt          |
 
 ### parseMru(ntuser_path) -> Mru[] | WindowsError
 

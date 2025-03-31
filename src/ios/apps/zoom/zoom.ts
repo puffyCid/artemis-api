@@ -1,11 +1,11 @@
 import {
   FileType,
   ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
-import { parseChat, parseMeetings } from "./preferences.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
+import { parseChat, parseMeetings } from "./preferences";
 
 /**
  * Function to parse Zoom info
@@ -30,19 +30,11 @@ export function extractZoom(
 
     if (info.path.includes("us.zoom.videomeetings.plist")) {
       const result = parseMeetings(target);
-      outputResults(
-        JSON.stringify(result),
-        "zoom_preferences_meetings",
-        output,
-      );
+      outputResults(result, "zoom_preferences_meetings", output);
       continue;
     } else if (info.path.includes("ZoomChat.plist")) {
       const result = parseChat(target);
-      outputResults(
-        JSON.stringify(result),
-        "zoom_preferences_chat",
-        output,
-      );
+      outputResults(result, "zoom_preferences_chat", output);
       continue;
     }
 

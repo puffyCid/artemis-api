@@ -1,11 +1,11 @@
 import {
   FileType,
   ManifestApp,
-} from "../../../../types/ios/itunes/manifest.ts";
-import { Output, outputResults } from "../../../system/output.ts";
-import { IosError } from "../../error.ts";
-import { parseManifestAppPlist } from "../../itunes/apps.ts";
-import { parseGeoSites } from "./webkit.ts";
+} from "../../../../types/ios/itunes/manifest";
+import { Output, outputResults } from "../../../system/output";
+import { IosError } from "../../error";
+import { parseManifestAppPlist } from "../../itunes/apps";
+import { parseGeoSites } from "./webkit";
 
 /**
  * Function to extract DuckDuckGo browser info
@@ -29,7 +29,7 @@ export function extractDuckDuckGo(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("GeolocationSites.plist")) {
       const result = parseGeoSites(target);
-      outputResults(JSON.stringify(result), "duckduckgo_geosites", output);
+      outputResults(result, "duckduckgo_geosites", output);
     }
     //console.log(info.path);
     //console.log(target);

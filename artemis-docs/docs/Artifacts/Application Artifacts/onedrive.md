@@ -33,8 +33,8 @@ You have to use the artemis [api](../../API/overview.md) in order to collect
 Microsoft Office information.
 
 ```typescript
-import { PlatformType } from "./artemis-api/mod.ts";
-import { onedriveDetails } from "./artemis-api/src/applications/onedrive/parser.ts";
+import { PlatformType } from "./artemis-api/mod";
+import { onedriveDetails } from "./artemis-api/src/applications/onedrive/parser";
 
 function main() {
   const values = onedriveDetails(PlatformType.Windows);

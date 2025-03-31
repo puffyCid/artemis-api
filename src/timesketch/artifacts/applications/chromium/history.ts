@@ -1,8 +1,8 @@
 import {
   TimesketchArtifact,
   TimesketchTimeline,
-} from "../../../../../types/timesketch/timeline.ts";
-import { ChromiumHistory } from "../../../../../types/applications/chromium.ts";
+} from "../../../../../types/timesketch/timeline";
+import { ChromiumHistory } from "../../../../../types/applications/chromium";
 
 /**
  * Function to timeline Chromium based history
