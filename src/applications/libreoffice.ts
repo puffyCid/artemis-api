@@ -33,7 +33,7 @@ export function recentFiles(
       break;
     }
     case PlatformType.Linux: {
-      path = "/home/*/.config/libreoffce/*/user/registrymodifications.xcu";
+      path = "/home/*/.config/libreoffice/*/user/registrymodifications.xcu";
     }
   }
 
@@ -60,46 +60,46 @@ export function recentFiles(
     }
 
     // Loop through the JSON arrays and objects
-    const items = xml_result["oor:items"] as Record<string, object>;
+    const items = xml_result[ "oor:items" ] as Record<string, object>;
     for (
-      const xml_entry of items["item"] as Record<
+      const xml_entry of items[ "item" ] as Record<
         string,
         Record<string, object | object[]>
       >[]
     ) {
       if (
-        xml_entry["node"] === undefined ||
-        xml_entry["node"] as object[][0] as Record<string, object>["$"] ===
+        xml_entry[ "node" ] === undefined ||
+        xml_entry[ "node" ] as object[][ 0 ] as Record<string, object>[ "$" ] ===
         undefined
       ) {
         continue;
       }
 
-      const node_object = xml_entry["node"] as unknown as Record<
+      const node_object = xml_entry[ "node" ] as unknown as Record<
         string,
         object
       >[];
-      const data = node_object[0];
+      const data = node_object[ 0 ];
       if (
-        data["$"] as unknown as Record<string, string>["oor:name"] === undefined
+        data[ "$" ] as unknown as Record<string, string>[ "oor:name" ] === undefined
       ) {
         continue;
       }
 
-      if (data["prop"] === undefined) {
+      if (data[ "prop" ] === undefined) {
         continue;
       }
 
-      const prop_data = data["prop"] as Record<string, object>[];
-      const path_data = data["$"] as Record<string, string>;
+      const prop_data = data[ "prop" ] as Record<string, object>[];
+      const path_data = data[ "$" ] as Record<string, string>;
       if (
-        path_data["oor:name"] === undefined ||
-        !path_data["oor:name"].startsWith("file")
+        path_data[ "oor:name" ] === undefined ||
+        !path_data[ "oor:name" ].startsWith("file")
       ) {
         continue;
       }
       const office: RecentFilesLibreOffice = {
-        path: path_data["oor:name"],
+        path: path_data[ "oor:name" ],
         title: "",
         filter: "",
         pinned: false,
@@ -111,26 +111,26 @@ export function recentFiles(
 
       // Finally at section containing data of interest
       for (const prop_entry of prop_data) {
-        const meta_entry = prop_entry["$"] as Record<string, object>;
-        if (meta_entry["oor:name"] as unknown as string === "Title") {
-          const title_data = prop_entry["value"] as string[];
+        const meta_entry = prop_entry[ "$" ] as Record<string, object>;
+        if (meta_entry[ "oor:name" ] as unknown as string === "Title") {
+          const title_data = prop_entry[ "value" ] as string[];
           office.title = title_data.at(0) as string;
-        } else if (meta_entry["oor:name"] as unknown as string === "Filter") {
-          const filter_data = prop_entry["value"] as string[];
+        } else if (meta_entry[ "oor:name" ] as unknown as string === "Filter") {
+          const filter_data = prop_entry[ "value" ] as string[];
           office.filter = filter_data.at(0) as string;
-        } else if (meta_entry["oor:name"] as unknown as string === "Pinned") {
-          const pin_data = prop_entry["value"] as string[];
+        } else if (meta_entry[ "oor:name" ] as unknown as string === "Pinned") {
+          const pin_data = prop_entry[ "value" ] as string[];
           office.pinned = pin_data.at(0) === "true";
-        } else if (meta_entry["oor:name"] as unknown as string === "Password") {
-          const pass_data = prop_entry["value"] as string[];
+        } else if (meta_entry[ "oor:name" ] as unknown as string === "Password") {
+          const pass_data = prop_entry[ "value" ] as string[];
           office.password = pass_data.at(0) as string;
-        } else if (meta_entry["oor:name"] as unknown as string === "ReadOnly") {
-          const read_data = prop_entry["value"] as string[];
+        } else if (meta_entry[ "oor:name" ] as unknown as string === "ReadOnly") {
+          const read_data = prop_entry[ "value" ] as string[];
           office.readonly = read_data.at(0) === "true";
         } else if (
-          meta_entry["oor:name"] as unknown as string === "Thumbnail"
+          meta_entry[ "oor:name" ] as unknown as string === "Thumbnail"
         ) {
-          const thumb_data = prop_entry["value"] as string[];
+          const thumb_data = prop_entry[ "value" ] as string[];
           office.thumbnail = thumb_data.at(0) as string;
         }
       }

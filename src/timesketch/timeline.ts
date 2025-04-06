@@ -67,17 +67,26 @@ import {
 import { timelineLaunchd } from "./artifacts/macos/launchd";
 import { timelineSpotlight } from "./artifacts/macos/spotlight";
 import { timelineEmond } from "./artifacts/macos/emond";
+import { timelineGatekeeper } from "./artifacts/macos/sqlite/gatekeeper";
+import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper";
 
 /**
  * Linux artifact timelines
  */
 import { timelineJournals } from "./artifacts/linux/journals";
 import type { RpmPackages } from "../../types/linux/rpm";
+import { timelineAbrt } from "./artifacts/linux/abrt";
+import { Abrt } from "../../types/linux/abrt";
+import { timelineRpm } from "./artifacts/linux/rpm";
 
 /**
  * Application artifact timelines
  */
 import { timelineChromiumHistory } from "./artifacts/applications/chromium/history";
+import { timelineFileHistory } from "./artifacts/applications/vscode";
+import { FileHistory } from "../../types/applications/vscode";
+import { timelineRecentFiles } from "./artifacts/applications/libreoffice";
+import { RecentFilesLibreOffice } from "../../types/applications/libreoffice";
 
 /**
  * Cross platform artifact timelines
@@ -109,9 +118,6 @@ import { timelineUsersWindows } from "./artifacts/windows/users";
 import { timelineUsnJrnl } from "./artifacts/windows/usnjrnl";
 import { timelineWmiPersist } from "./artifacts/windows/wmi";
 import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons";
-import { timelineGatekeeper } from "./artifacts/macos/sqlite/gatekeeper";
-import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper";
-import { timelineRpm } from "./artifacts/linux/rpm";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -192,14 +198,14 @@ export function timelineArtifact(
     case TimesketchArtifact.SRUM:
       return timelineSrum(
         data as
-          | ApplicationInfo[]
-          | ApplicationTimeline[]
-          | AppVfu[]
-          | EnergyInfo[]
-          | EnergyUsage[]
-          | NetworkInfo[]
-          | NetworkConnectivityInfo[]
-          | NotificationInfo[],
+        | ApplicationInfo[]
+        | ApplicationTimeline[]
+        | AppVfu[]
+        | EnergyInfo[]
+        | EnergyUsage[]
+        | NetworkInfo[]
+        | NetworkConnectivityInfo[]
+        | NotificationInfo[],
       );
     case TimesketchArtifact.SEARCH:
       return timelineSearch(data as SearchEntry[]);
@@ -224,6 +230,12 @@ export function timelineArtifact(
       return timelineChromiumHistory(data as ChromiumHistory[], artifact);
     case TimesketchArtifact.RPM:
       return timelineRpm(data as RpmPackages[]);
+    case TimesketchArtifact.VSCODE_FILEHISTORY:
+      return timelineFileHistory(data as FileHistory[]);
+    case TimesketchArtifact.LIBREOFFICE_RECENTFILES:
+      return timelineRecentFiles(data as RecentFilesLibreOffice[]);
+    case TimesketchArtifact.ABRT:
+      return timelineAbrt(data as Abrt[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

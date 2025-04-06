@@ -3,7 +3,9 @@ export interface FileHistory {
   /**Version of History format */
   version: number;
   /**To source file */
-  path: string;
+  path?: string;
+  /**Path to source file */
+  resource: string;
   /**History of source file */
   entries: Entries[];
   /**Path to history source */
@@ -20,6 +22,8 @@ interface Entries {
   timestamp: number | string;
   /**Based64 encoded file content */
   content: string;
+  source?: string;
+  sourceDescription?: string;
 }
 
 export interface Extensions {

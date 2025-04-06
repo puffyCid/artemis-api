@@ -18,7 +18,7 @@ export interface TimesketchTimeline {
    */
   data_type: string;
   /**Include any other valid JSON data */
-  [key: string]: unknown;
+  [ key: string ]: unknown;
 }
 
 export enum TimesketchArtifact {
@@ -69,4 +69,7 @@ export enum TimesketchArtifact {
   CHROME_HISTORY = "chrome-history",
   EDGE_HISTORY = "edge-history",
   RPM = "rpm",
+  VSCODE_FILEHISTORY = "vscode-filehistory",
+  LIBREOFFICE_RECENTFILES = "libreoffice-recentfils",
+  ABRT = "abrt",
 }
