@@ -14,4 +14,5 @@ export interface Biome {
    * If parsing fails, we base64 encode the protobuf data and include that
    */
   raw: Record<string, unknown>[];
+  plist_data?: Record<string, unknown>[];
 }

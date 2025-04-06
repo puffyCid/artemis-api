@@ -35,7 +35,7 @@ export function parseSupportLog(
     return new IosError(`HINGE`, `failed to read support file: ${data}`);
   }
   const entries = data.substring(0, data.length - 1).split("],");
-  const logs = [];
+  const logs: any[] = [];
   for (const entry of entries) {
     if (entry.endsWith("]")) {
       logs.push(JSON.parse(entry).at(0));
