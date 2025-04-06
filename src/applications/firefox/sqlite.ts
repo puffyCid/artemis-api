@@ -48,6 +48,10 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
             continue;
         }
         const history: RawFirefoxHistory[] = [];
+        let client: Unfold | undefined = undefined;
+        if (unfold) {
+            client = new Unfold();
+        }
         // Loop through history rows
         for (const entry of results) {
             const history_row: RawFirefoxHistory = {
@@ -71,12 +75,11 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                 host: entry[ "host" ] as string ?? "",
                 unfold: undefined
             };
-            if (unfold) {
-                const unfold_result = new Unfold(history_row.url).parseUrl();
-                if (!(unfold_result instanceof UnfoldError)) {
-                    history_row.unfold = unfold_result;
+            if (unfold && typeof client != 'undefined') {
+                const result = client.parseUrl(history_row.url);
+                if (!(result instanceof UnfoldError)) {
+                    history_row.unfold = result;
                 }
-
             }
             history.push(history_row);
         }
@@ -141,6 +144,10 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
             continue;
         }
         const downloads: RawFirefoxDownloads[] = [];
+        let client: Unfold | undefined = undefined;
+        if (unfold) {
+            client = new Unfold();
+        }
         // Loop through downloads rows
         for (const entry of results) {
             const download_row: RawFirefoxDownloads = {
@@ -180,12 +187,11 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
                     unfold: undefined
                 },
             };
-            if (unfold) {
-                const unfold_result = new Unfold(download_row.history.url).parseUrl();
-                if (!(unfold_result instanceof UnfoldError)) {
-                    download_row.history.unfold = unfold_result;
+            if (unfold && typeof client != 'undefined') {
+                const result = client.parseUrl(download_row.history.url);
+                if (!(result instanceof UnfoldError)) {
+                    download_row.history.unfold = result;
                 }
-
             }
             downloads.push(download_row);
         }

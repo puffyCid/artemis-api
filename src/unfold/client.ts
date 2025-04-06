@@ -5,23 +5,18 @@ import { Dropbox } from "./plugins/dropbox";
 import { DuckDuckGo } from "./plugins/duckduckgo";
 import { Google } from "./plugins/google";
 import { Outlook } from "./plugins/outlook";
+import { Yahoo } from "./plugins/yahoo";
 
 /**
  * Class to extract additional metadata from a URL. Inspired by [unfurl](https://dfir.blog/introducing-unfurl/)
  */
 export class Unfold {
-  private url: string;
-
-  constructor (url: string) {
-    this.url = url;
-  }
-
   /**
    * Function to parse a URL string. Will attempt to extract metadata from URL strings such as Google Search, Outlook, etc
    * @returns `Url` object or `UnfoldError`
    */
-  public parseUrl() {
-    const data = this.extractUrl();
+  public parseUrl(url: string) {
+    const data = this.extractUrl(url);
     if (data instanceof UnfoldError) {
       return data;
     }
@@ -49,6 +44,9 @@ export class Unfold {
     } else if (info.domain.includes("dropbox.com")) {
       const drop = new Dropbox(info);
       drop.parseDropbox();
+    } else if (info.domain.includes("search.yahoo.com")) {
+      const yahoo = new Yahoo(info);
+      yahoo.parseYahoo();
     }
 
     return info;
@@ -56,19 +54,20 @@ export class Unfold {
 
   /**
    * Extract data from a URL string
+   * @param url URL to parse
    * @returns `Url` object or `UnfoldError`
    */
-  private extractUrl(): Url | UnfoldError {
+  private extractUrl(url: string): Url | UnfoldError {
     try {
       //@ts-ignore: Custom Artemis function
-      const url_info: Url = js_url_parse(this.url);
-      url_info.url = this.url;
+      const url_info: Url = js_url_parse(url);
+      url_info.url = url;
       url_info.last_segment = url_info.segments.at(-1) ?? "";
       return url_info;
     } catch (err) {
       return new UnfoldError(
         "URL_PARSE",
-        `failed to parse url file ${this.url}: ${err}`,
+        `failed to parse url file ${url}: ${err}`,
       );
     }
   }
