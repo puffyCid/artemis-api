@@ -78,6 +78,8 @@ import type { RpmPackages } from "../../types/linux/rpm";
 import { timelineAbrt } from "./artifacts/linux/abrt";
 import { Abrt } from "../../types/linux/abrt";
 import { timelineRpm } from "./artifacts/linux/rpm";
+import { timelineGnomeExtensions } from "./artifacts/linux/gnome/extensions";
+import { Extension } from "../../types/linux/gnome/extensions";
 
 /**
  * Application artifact timelines
@@ -236,6 +238,8 @@ export function timelineArtifact(
       return timelineRecentFiles(data as RecentFilesLibreOffice[]);
     case TimesketchArtifact.ABRT:
       return timelineAbrt(data as Abrt[]);
+    case TimesketchArtifact.GNOME_EXTENSIONS:
+      return timelineGnomeExtensions(data as Extension[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

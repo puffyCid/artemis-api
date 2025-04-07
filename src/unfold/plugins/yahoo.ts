@@ -1,5 +1,8 @@
 import { Url } from "../../../types/http/unfold";
 
+/**
+ * Class to parse Yahoo data
+ */
 export class Yahoo {
     private url: Url;
 

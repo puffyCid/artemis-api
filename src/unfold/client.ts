@@ -1,6 +1,7 @@
 import type { Url } from "../../types/http/unfold";
 import { UnfoldError } from "./error";
 import { Bing } from "./plugins/bing";
+import { Discord } from "./plugins/discord";
 import { Dropbox } from "./plugins/dropbox";
 import { DuckDuckGo } from "./plugins/duckduckgo";
 import { Google } from "./plugins/google";
@@ -47,6 +48,9 @@ export class Unfold {
     } else if (info.domain.includes("search.yahoo.com")) {
       const yahoo = new Yahoo(info);
       yahoo.parseYahoo();
+    } else if (info.domain.includes("discord.com")) {
+      const disc = new Discord(info);
+      disc.parseDiscord();
     }
 
     return info;

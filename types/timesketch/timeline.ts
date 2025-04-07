@@ -72,4 +72,5 @@ export enum TimesketchArtifact {
   VSCODE_FILEHISTORY = "vscode-filehistory",
   LIBREOFFICE_RECENTFILES = "libreoffice-recentfils",
   ABRT = "abrt",
+  GNOME_EXTENSIONS = "gnome-extensions",
 }
