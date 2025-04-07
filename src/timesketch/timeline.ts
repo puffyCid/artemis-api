@@ -80,6 +80,10 @@ import { Abrt } from "../../types/linux/abrt";
 import { timelineRpm } from "./artifacts/linux/rpm";
 import { timelineGnomeExtensions } from "./artifacts/linux/gnome/extensions";
 import { Extension } from "../../types/linux/gnome/extensions";
+import { timelineGnomeVirtualFilesystem } from "./artifacts/linux/gnome/gvfs";
+import { GvfsEntry } from "../../types/linux/gnome/gvfs";
+import { timelineGnomeAppUsage } from "./artifacts/linux/gnome/appusage";
+import { AppUsage } from "../../types/linux/gnome/usage";
 
 /**
  * Application artifact timelines
@@ -240,6 +244,10 @@ export function timelineArtifact(
       return timelineAbrt(data as Abrt[]);
     case TimesketchArtifact.GNOME_EXTENSIONS:
       return timelineGnomeExtensions(data as Extension[]);
+    case TimesketchArtifact.GNOME_VIRTUAL_FILESYSTEM:
+      return timelineGnomeVirtualFilesystem(data as GvfsEntry[]);
+    case TimesketchArtifact.GNOME_APPLICATION_USAGE:
+      return timelineGnomeAppUsage(data as AppUsage[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

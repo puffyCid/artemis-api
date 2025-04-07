@@ -73,4 +73,6 @@ export enum TimesketchArtifact {
   LIBREOFFICE_RECENTFILES = "libreoffice-recentfils",
   ABRT = "abrt",
   GNOME_EXTENSIONS = "gnome-extensions",
+  GNOME_VIRTUAL_FILESYSTEM = "gnome-virtual-filesystem",
+  GNOME_APPLICATION_USAGE = "gnome-application-usage",
 }

@@ -23,6 +23,7 @@ export function timelineFileHistory(data: FileHistory[]): TimesketchTimeline[] {
                 history_path: item.history_path,
                 reason: entry.source ?? "",
                 description: entry.sourceDescription ?? "",
+                file_saved: entry.timestamp as string,
             };
 
             entries.push(value);
