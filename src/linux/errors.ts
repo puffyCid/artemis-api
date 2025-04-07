@@ -11,6 +11,7 @@ export type ErrorName =
   | "GEDIT"
   | "GVFS"
   | "SNAP"
-  | "ABRT";
+  | "ABRT"
+  | "EPIPHANY";
 
 export class LinuxError extends ErrorBase<ErrorName> { }

@@ -20,7 +20,7 @@ A breakdown of artifacts by OS is below.
 | --------------------------------- | ------------------- |
 | [Windows](./windows.md)           | 38                  |
 | [macOS](./macos.md)               | 41                  |
-| [Linux](./linux.md)               | 20                  |
+| [Linux](./linux.md)               | 21                  |
 | [FreeBSD](./freebsd.md)           | 7                   |
 | [Applications](./applications.md) | 7                   |
 
