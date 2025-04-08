@@ -34,6 +34,7 @@ export type ErrorName =
   | "USB"
   | "SERVICEINSTALL"
   | "OUTLOOK"
-  | "WORDWHEEL";
+  | "WORDWHEEL"
+  | "BAM";
 
 export class WindowsError extends ErrorBase<ErrorName> {}
