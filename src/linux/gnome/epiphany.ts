@@ -33,9 +33,11 @@ export class Epiphany {
 
     /**
      * Function to extract Epiphany history entries
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `EpiphanyHistory`
      */
-    public history(): EpiphanyHistory[] {
+    public history(offset = 0, limit = 100): EpiphanyHistory[] {
         const query = `SELECT 
                         urls.id AS url_id, 
                         host, 
@@ -51,7 +53,7 @@ export class Epiphany {
                         referring_visit 
                        FROM 
                         urls 
-                       INNER JOIN visits ON urls.host = visits.url`;
+                       INNER JOIN visits ON urls.host = visits.url LIMIT ${limit} OFFSET ${offset}`;
 
         const results: EpiphanyHistory[] = [];
         let client: Unfold | undefined = undefined;
@@ -96,10 +98,12 @@ export class Epiphany {
 
     /**
      * Function to extract Epiphany cookies
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `EpiphanyCookies`
      */
-    public cookies(): EpiphanyCookies[] {
-        const query = "SELECT * FROM moz_cookies";
+    public cookies(offset = 0, limit = 100): EpiphanyCookies[] {
+        const query = `SELECT * FROM moz_cookies LIMIT ${limit} OFFSET ${offset}`;
         const results: EpiphanyCookies[] = [];
 
         for (const entry of this.paths) {
