@@ -13,6 +13,20 @@ export interface UpdateHistory {
   more_info: string;
 }
 
+export interface UpdateHistoryV2 {
+  provider_id: string;
+  update_id:string;
+  time: string | null;
+  title: string | null;
+  description: string | null;
+  info_url: string | null;
+  category: string | null;
+  uninstall: boolean | null;
+  reboot: boolean | null;
+  for_os: boolean | null;
+  metadata: Record<string, unknown> | null;
+}
+
 export enum ServerSelection {
   Default = "Default",
   ManagedServer = "ManagedServer",
