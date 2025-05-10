@@ -1,10 +1,13 @@
-import { EpiphanyCookies, EpiphanyHistory, EpiphanyPermissions, EpiphanyPrint, EpiphanyProfiles, VisitType } from "../../../types/linux/gnome/epiphany";
+import { EpiphanyCookies, EpiphanyHistory, EpiphanyPermissions, EpiphanyPrint, EpiphanyProfiles, EpiphanySessions, VisitType } from "../../../types/linux/gnome/epiphany";
+import { TimesketchTimeline } from "../../../types/timesketch/timeline";
 import { ApplicationError } from "../../applications/errors";
 import { querySqlite } from "../../applications/sqlite";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/xml";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
+import { SystemError } from "../../system/error";
+import { dumpData, Output } from "../../system/output";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
@@ -70,7 +73,7 @@ export class Epiphany {
             for (const entry of data) {
                 const value: EpiphanyHistory = {
                     url_id: entry[ "url_id" ] as number,
-                    host: entry[ "host" ] as number,
+                    host_id: entry[ "host" ] as number,
                     visit_count: entry[ "visit_count" ] as number,
                     typed_count: entry[ "typed_count" ] as number,
                     last_visit_time: unixEpochToISO(entry[ "last_visit_time" ] as bigint),
@@ -78,13 +81,13 @@ export class Epiphany {
                     hidden_from_overview: Boolean(entry[ "hidden_from_overview" ] as number),
                     visit_type: this.visitType(entry[ "visit_type" ] as number),
                     db_path: db,
-                    url: entry[ "url" ] as string | null,
+                    target_url: entry[ "url" ] as string | null,
                     title: entry[ "title" ] as string | null,
                     referring_visit: entry[ "referring_visit" ] as string | null,
                     sync_id: entry[ "sync_id" ] as string | null,
                 };
-                if (this.unfold && client != undefined && value.url != null) {
-                    const status = client.parseUrl(value.url);
+                if (this.unfold && client != undefined && value.target_url != null) {
+                    const status = client.parseUrl(value.target_url);
                     if (!(status instanceof UnfoldError)) {
                         value.unfold = status;
                     }
@@ -153,8 +156,8 @@ export class Epiphany {
      * Function to parse session xml data
      * @returns Array of `Record<string, unknown>`
      */
-    public sessions(): Record<string, unknown>[] {
-        const results: Record<string, unknown>[] = [];
+    public sessions(): EpiphanySessions[] {
+        const results: EpiphanySessions[] = [];
         for (const entry of this.paths) {
             const xml_file = `${entry.full_path}/session_state.xml`;
             const xml_data = readXml(xml_file);
@@ -162,8 +165,20 @@ export class Epiphany {
                 continue;
             }
 
-            xml_data[ "session_path" ] = xml_file;
-            results.push(xml_data);
+            const entries = xml_data[ "session" ] as Record<string, Record<string, unknown>[]>;
+            for (const values of entries[ "window" ]) {
+                const embed = values[ "embed" ] as Record<string, Record<string, string>>[];
+                for (const value of embed) {
+                    const session: EpiphanySessions = {
+                        url: value[ "$" ][ "url" ],
+                        title: value[ "$" ][ "title" ],
+                        history: value[ "$" ][ "history" ],
+                        session_path: xml_file
+                    };
+
+                    results.push(session);
+                }
+            }
         }
 
         return results;
@@ -274,6 +289,132 @@ export class Epiphany {
         return results;
     }
 
+    /**
+     * Function to timeline all Epiphany artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
+     * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     */
+    public retrospect(output: Output): void {
+        let offset = 0;
+        let limit = 100;
+
+        // Get all history info
+        while (true) {
+            const entries = this.history(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            let timeline_entries: TimesketchTimeline[] = [];
+
+            for (const entry of entries) {
+                let timeline: TimesketchTimeline = {
+                    datetime: entry.last_visit_time,
+                    timestamp_desc: "Last Visit",
+                    message: entry.target_url ?? "",
+                    artifact: "GNOME Epiphany History",
+                    data_type: "linux:browser:epiphany:history:entry"
+                };
+
+                timeline = { ...timeline, ...entry };
+                if (this.unfold) {
+                    timeline = { ...timeline, ...entry.unfold };
+                    delete timeline[ "unfold" ];
+                }
+                timeline_entries.push(timeline);
+            }
+            const status = dumpData(timeline_entries, "retrospect_epiphany_history", output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline Epiphany history: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+
+        // Get all Cookies
+        while (true) {
+            const entries = this.cookies(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+
+            let timeline_entries: TimesketchTimeline[] = [];
+
+            for (const entry of entries) {
+                let timeline: TimesketchTimeline = {
+                    datetime: entry.last_accessed ?? "1970-01-01T00:00:00.000Z",
+                    timestamp_desc: "Last Accessed",
+                    message: entry.host ?? "",
+                    artifact: "GNOME Epiphany Cookie",
+                    data_type: "linux:browser:epiphany:cookie:entry"
+                };
+
+                timeline = { ...timeline, ...entry };
+                timeline_entries.push(timeline);
+            }
+            const status = dumpData(timeline_entries, "retrospect_epiphany_cookies", output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline Epiphany cookies: ${status}`);
+            }
+            offset += limit;
+        }
+
+        // Smaller data to timeline
+        let timeline_entries: TimesketchTimeline[] = [];
+
+        const sessions = this.sessions();
+        for (const entry of sessions) {
+            let timeline: TimesketchTimeline = {
+                datetime: "1970-01-01T00:00:00.000Z",
+                timestamp_desc: "N/A",
+                message: "",
+                artifact: "GNOME Epiphany Sessions",
+                data_type: "linux:browser:epiphany:sessions:entry"
+            };
+
+            if (typeof entry[ "url" ] === 'string') {
+                timeline.message = entry[ "url" ];
+            }
+
+            timeline = { ...timeline, ...entry };
+            timeline_entries.push(timeline);
+        }
+
+        const permissions = this.permissions();
+        // Get site permissions
+        for (let entry of permissions) {
+            let timeline: TimesketchTimeline = {
+                datetime: "1970-01-01T00:00:00.000Z",
+                timestamp_desc: "N/A",
+                message: entry.url,
+                artifact: "GNOME Epiphany Site Permissions",
+                data_type: "linux:browser:epiphany:permission:entry"
+            };
+
+            timeline = { ...timeline, ...entry.permissions };
+            timeline[ "file_path" ] = entry.file_path;
+            delete timeline[ "permissions" ];
+            timeline_entries.push(timeline);
+        }
+
+        const print_page = this.lastPrint();
+        for (const entry of print_page) {
+            let timeline: TimesketchTimeline = {
+                datetime: "1970-01-01T00:00:00.000Z",
+                timestamp_desc: "N/A",
+                message: entry.output,
+                artifact: "GNOME Epiphany Last Print",
+                data_type: "linux:browser:epiphany:lastprint:entry"
+            };
+
+            timeline = { ...timeline, ...entry };
+            timeline_entries.push(timeline);
+        }
+        const status = dumpData(timeline_entries, "retrospect_epiphany", output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline Epiphany last print: ${status}`);
+        }
+    }
+
 
     /**
      * Determine the URL visit type
@@ -292,6 +433,11 @@ export class Epiphany {
         }
     }
 
+    /**
+     * Function to get all user paths to Epiphany data
+     * @param alt_glob Alternative glob to directory containing Epiphany data
+     * @returns Array of `EpiphanyProfiles` or `LinuxError`
+     */
     private profiles(alt_glob?: string): EpiphanyProfiles[] | LinuxError {
         let pattern = "/home/*/.local/share/epiphany/";
         if (alt_glob != undefined) {

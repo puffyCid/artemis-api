@@ -1,9 +1,9 @@
 import { Url } from "../../http/unfold";
 
 export interface EpiphanyHistory {
-    url: string | null;
+    target_url: string | null;
     url_id: number;
-    host: number;
+    host_id: number;
     title: string | null;
     sync_id: string | null;
     visit_count: number;
@@ -65,4 +65,12 @@ export interface EpiphanyPrint {
     pages: string | number;
     collate: boolean;
     file_path: string;
+}
+
+export interface EpiphanySessions {
+    url: string;
+    title: string;
+    /**Base64 blob */
+    history: string;
+    session_path: string;
 }

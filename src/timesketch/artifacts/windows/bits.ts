@@ -11,7 +11,7 @@ import { Jobs } from "../../../../types/windows/bits";
 export function timelineBits(
   data: Bits,
 ): TimesketchTimeline[] {
-  const entries = [];
+  const entries: TimesketchTimeline[] = [];
 
   for (const item of data.bits) {
     let entry: TimesketchTimeline = {
@@ -81,27 +81,25 @@ function extractTimes(entry: BitsInfo | Jobs): TimeEntries[] {
   const entries: TimeEntries[] = [];
   const check_times: Record<string, string> = {};
 
-  check_times[entry.created] = "BITS Created";
-  check_times[entry.modified] === undefined
-    ? (check_times[entry.modified] = "BITS Modified")
-    : (check_times[entry.modified] = `${check_times[entry.modified]} Modified`);
+  check_times[ entry.created ] = "BITS Created";
+  check_times[ entry.modified ] === undefined
+    ? (check_times[ entry.modified ] = "BITS Modified")
+    : (check_times[ entry.modified ] = `${check_times[ entry.modified ]} Modified`);
 
-  check_times[entry.expiration] === undefined
-    ? (check_times[entry.expiration] = "BITS Expired")
-    : (check_times[entry.expiration] = `${
-      check_times[entry.expiration]
-    } Expired`);
+  check_times[ entry.expiration ] === undefined
+    ? (check_times[ entry.expiration ] = "BITS Expired")
+    : (check_times[ entry.expiration ] = `${check_times[ entry.expiration ]
+      } Expired`);
 
-  check_times[entry.completed] === undefined
-    ? (check_times[entry.completed] = "BITS Completed")
-    : (check_times[entry.completed] = `${
-      check_times[entry.completed]
-    } Completed`);
+  check_times[ entry.completed ] === undefined
+    ? (check_times[ entry.completed ] = "BITS Completed")
+    : (check_times[ entry.completed ] = `${check_times[ entry.completed ]
+      } Completed`);
 
   for (const value in check_times) {
     const entry: TimeEntries = {
       datetime: value,
-      desc: check_times[value],
+      desc: check_times[ value ],
     };
     entries.push(entry);
   }
