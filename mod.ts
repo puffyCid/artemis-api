@@ -13,6 +13,7 @@ export { geditRecentFiles } from "./src/linux/gnome/gedit";
 export { parseGvfs } from "./src/linux/gnome/gvfs";
 export { gnomeAppUsage } from "./src/linux/gnome/usage";
 export { extractAbrt } from "./src/linux/abrt";
+export { Epiphany } from "./src/linux/gnome/epiphany";
 
 /**
  * macOS exported functions

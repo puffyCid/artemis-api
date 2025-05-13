@@ -38,9 +38,9 @@ Depending on the the functions used will return the objects below:
 
 ```typescript
 export interface EpiphanyHistory {
-    url: string | null;
+    target_url: string | null;
     url_id: number;
-    host: number;
+    target_host: number;
     title: string | null;
     sync_id: string | null;
     visit_count: number;

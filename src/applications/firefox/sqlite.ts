@@ -10,9 +10,12 @@ import { querySqlite } from "../sqlite";
  * Get FireFox history for users
  * @param paths Array of `FirefoxProfiles`
  * @param platform OS `PlatformType`
+ * @param unfold Enable unfold parsing
+ * @param offset Starting DB offset
+ * @param limit Number of records to return
  * @returns Array of `FirefoxHistory` or `ApplicationError`
  */
-export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType, unfold: boolean): FirefoxHistory[] | ApplicationError {
+export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType, unfold: boolean, offset: number, limit: number): FirefoxHistory[] | ApplicationError {
     const query = `SELECT 
                       moz_places.id AS moz_places_id, 
                       url, 
@@ -33,7 +36,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                       moz_origins.frecency AS frequency 
                     FROM 
                       moz_places 
-                    JOIN moz_origins ON moz_places.origin_id = moz_origins.id`;
+                    JOIN moz_origins ON moz_places.origin_id = moz_origins.id LIMIT ${limit} OFFSET ${offset}`;
     const hits: FirefoxHistory[] = [];
     for (const path of paths) {
         let full_path = `${path.full_path}/places.sqlite`;
@@ -99,9 +102,12 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
  * Get FireFox downloads for users
  * @param paths Array of `FirefoxProfiles`
  * @param platform OS `PlatformType`
+ * @param unfold Enable unfold parsing
+ * @param offset Starting DB offset
+ * @param limit Number of records to return
  * @returns Array of `FirefoxDownloads` or `ApplicationError`
  */
-export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformType, unfold: boolean): FirefoxDownloads[] | ApplicationError {
+export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformType, unfold: boolean, offset: number, limit: number): FirefoxDownloads[] | ApplicationError {
     const query = `SELECT 
                       moz_annos.id AS downloads_id, 
                       place_id, 
@@ -129,7 +135,7 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
                     FROM 
                       moz_annos 
                       JOIN moz_places ON moz_annos.place_id = moz_places.id 
-                      JOIN moz_anno_attributes ON anno_attribute_id = moz_anno_attributes.id`;
+                      JOIN moz_anno_attributes ON anno_attribute_id = moz_anno_attributes.id LIMIT ${limit} OFFSET ${offset}`;
     const hits: FirefoxDownloads[] = [];
     for (const path of paths) {
         let full_path = `${path.full_path}/places.sqlite`;
@@ -211,11 +217,13 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
  * Get FireFox cookies for users
  * @param paths Array of `FirefoxProfiles`
  * @param platform OS `PlatformType`
+ * @param offset Starting DB offset
+ * @param limit Number of records to return
  * @returns Array of `FirefoxCookies` or `ApplicationError`
  */
-export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType): FirefoxCookies[] | ApplicationError {
+export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxCookies[] | ApplicationError {
     const cookies: FirefoxCookies[] = [];
-    const query = "select * from moz_cookies";
+    const query = `select * from moz_cookies LIMIT ${limit} OFFSET ${offset}`;
 
     for (const path of paths) {
         let full_path = `${path.full_path}/places.sqlite`;
@@ -273,11 +281,13 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType)
  * Get FireFox favicons for urls
  * @param paths Array of `FirefoxProfiles`
  * @param platform OS `PlatformType`
+ * @param offset Starting DB offset
+ * @param limit Number of records to return
  * @returns Array of `FirefoxFavicons` or `ApplicationError`
  */
-export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType): FirefoxFavicons[] | ApplicationError {
+export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxFavicons[] | ApplicationError {
     const favicons: FirefoxFavicons[] = [];
-    const query = "SELECT icon_url, expire_ms FROM moz_cookies";
+    const query = `SELECT icon_url, expire_ms FROM moz_cookies LIMIT ${limit} OFFSET ${offset}`;
 
     for (const path of paths) {
         let full_path = `${path.full_path}/places.sqlite`;
@@ -306,8 +316,16 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
     return favicons;
 }
 
-export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType): FirefoxStorage[] | ApplicationError {
-    const query = "SELECT respository_id, suffix, group_, origin, client_usages, usage, last_access_time, accessed, persisted FROM origin";
+/**
+ * Get FireFox storage info
+ * @param paths Array of `FirefoxProfiles`
+ * @param platform OS `PlatformType`
+ * @param offset Starting DB offset
+ * @param limit Number of records to return
+ * @returns Array of `FirefoxFavicons` or `ApplicationError`
+ */
+export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxStorage[] | ApplicationError {
+    const query = `SELECT respository_id, suffix, group_, origin, client_usages, usage, last_access_time, accessed, persisted FROM origin LIMIT ${limit} OFFSET ${offset}`;
 
     const storage: FirefoxStorage[] = [];
     for (const path of paths) {

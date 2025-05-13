@@ -47,26 +47,32 @@ export class FireFox {
 
     /**
      * Extract FireFox history
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `FirefoxHistory` or `ApplicationError`
      */
-    public history(): FirefoxHistory[] | ApplicationError {
-        return firefoxHistory(this.paths, this.platform, this.unfold);
+    public history(offset = 0, limit = 100): FirefoxHistory[] | ApplicationError {
+        return firefoxHistory(this.paths, this.platform, this.unfold, offset, limit);
     }
 
     /**
      * Extract FireFox cookies
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `FirefoxCookies` or `ApplicationError`
      */
-    public cookies(): FirefoxCookies[] | ApplicationError {
-        return firefoxCookies(this.paths, this.platform);
+    public cookies(offset = 0, limit = 100): FirefoxCookies[] | ApplicationError {
+        return firefoxCookies(this.paths, this.platform, offset, limit);
     }
 
     /**
      * Extract FireFox downloads
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `FirefoxDownloads` or `ApplicationError`
      */
-    public downloads(): FirefoxDownloads[] | ApplicationError {
-        return firefoxDownloads(this.paths, this.platform, this.unfold);
+    public downloads(offset = 0, limit = 100): FirefoxDownloads[] | ApplicationError {
+        return firefoxDownloads(this.paths, this.platform, this.unfold, offset, limit);
     }
 
     /**
@@ -79,18 +85,22 @@ export class FireFox {
 
     /**
      * Function to extract entries from `storage.sqlite`
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `FirefoxStorage` or `ApplicationError`
      */
-    public storage(): FirefoxStorage[] | ApplicationError {
-        return firefoxStorage(this.paths, this.platform);
+    public storage(offset = 0, limit = 100): FirefoxStorage[] | ApplicationError {
+        return firefoxStorage(this.paths, this.platform, offset, limit);
     }
 
     /**
      * Function to extract favicon entries
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `FirefoxFavicons` or `ApplicationError`
      */
-    public favicons(): FirefoxFavicons[] | ApplicationError {
-        return firefoxFavicons(this.paths, this.platform);
+    public favicons(offset = 0, limit = 100): FirefoxFavicons[] | ApplicationError {
+        return firefoxFavicons(this.paths, this.platform, offset, limit);
     }
 
     /**
