@@ -29,10 +29,10 @@ export function fileHistory(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       path =
-        `${drive}:\\Users\\*\\AppData\\Roaming\\*Cod*\\User\\History\\*\\entries.json`;
+        `${drive}\\Users\\*\\AppData\\Roaming\\*Cod*\\User\\History\\*\\entries.json`;
       break;
     }
     case PlatformType.Linux: {
@@ -130,7 +130,7 @@ export function getExtensions(
       case PlatformType.Windows: {
         let drive = getEnvValue("SystemDrive");
         if (drive === "") {
-          drive = "C";
+          drive = "C:";
         }
         path = `${drive}:\\Users\\*\\.vscode*\\extensions\\extensions.json`;
         break;

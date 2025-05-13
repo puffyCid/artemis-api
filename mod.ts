@@ -147,6 +147,7 @@ export { parseWordWheel } from "./src/windows/registry/wordwheel";
 export { UserAccessLogging } from "./src/windows/ese/ual";
 export { Updates } from "./src/windows/ese/updates";
 export { Outlook } from "./src/windows/outlook";
+export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
 
 /**
  * FreeBSD

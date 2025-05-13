@@ -15,8 +15,8 @@ import { getEventlogs } from "../eventlogs";
 export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
   let offset = 0;
   const limit = 10000;
-  const logon_entries = [];
-  const logoff_entries = [];
+  const logon_entries:LogonsWindows[] = [];
+  const logoff_entries:Raw4634Logoffs[] = [];
 
   const logon_eid = 4624;
   const logoff_eid = 4634;

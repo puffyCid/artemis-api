@@ -26,7 +26,7 @@ export function recentFiles(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       path =
         `${drive}:\\Users\\*\\AppData\\Roaming\\LibreOffice\\*\\user\\registrymodifications.xcu`;
