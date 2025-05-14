@@ -598,3 +598,12 @@ WordWheel entries.
 | Param | Type   | Description                |
 | ----- | ------ | -------------------------- |
 | path  | string | Glob to NTUSER.DAT file(s) |
+
+#### assembleScriptblocks(path) -> Scriptblock[] | WindowsError
+
+Parses the Windows Microsoft-Windows-PowerShell%4Operational.evtx file and reassembles PowerShell Scriptblocks.  
+You may provided an optional alternative path to Microsoft-Windows-PowerShell%4Operational.evtx.
+
+| Param | Type   | Description                                                                 |
+| ----- | ------ | --------------------------------------------------------------------------- |
+| path  | string | Optional alternative path to Microsoft-Windows-PowerShell%4Operational.evtx |

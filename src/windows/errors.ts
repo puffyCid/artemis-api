@@ -35,6 +35,7 @@ export type ErrorName =
   | "SERVICEINSTALL"
   | "OUTLOOK"
   | "WORDWHEEL"
-  | "BAM";
+  | "BAM"
+  | "SCRIPTBLOCK";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

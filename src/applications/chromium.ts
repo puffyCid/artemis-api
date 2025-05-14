@@ -237,7 +237,7 @@ export function getChromiumCookies(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Network\\Cookies`,
@@ -358,7 +358,7 @@ export function getChromiumAutofill(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Web Data`,
@@ -456,7 +456,7 @@ export function getChromiumBookmarks(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Bookmarks`,
@@ -594,7 +594,7 @@ export function chromiumExtensions(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Extensions\\*\\*\\manifest.json`,
@@ -659,7 +659,7 @@ export function getChromiumLogins(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Login Data`,
@@ -800,7 +800,7 @@ export function chromiumPreferences(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\Preferences`,
@@ -865,7 +865,7 @@ export function getChromiumDips(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\DIPS`,
@@ -1039,7 +1039,7 @@ function chromiumPaths(
     case PlatformType.Windows: {
       let drive = getEnvValue("SystemDrive");
       if (drive === "") {
-        drive = "C";
+        drive = "C:";
       }
       const win_paths = glob(
         `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data\\*\\${file}`,

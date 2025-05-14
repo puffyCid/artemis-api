@@ -127,7 +127,7 @@ export class FireFox {
             case PlatformType.Windows: {
                 let drive = getEnvValue("SystemDrive");
                 if (drive === "") {
-                    drive = "C";
+                    drive = "C:";
                 }
                 const win_paths = glob(
                     `${drive}\\Users\\*\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\*\\`,
