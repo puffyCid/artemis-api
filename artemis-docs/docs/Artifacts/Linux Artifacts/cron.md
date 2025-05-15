@@ -1,14 +1,13 @@
 ---
 description: Cron jobs on Linux
 keywords:
-  - linux
   - persistence
   - plaintext
 ---
 
 # Cron
 
-`Cron` is an application that lets users create jobs on an endpoint. It is
+Cron is an application that lets users create jobs on an endpoint. It is
 common on Unix, Linux, and macOS systems. A cron job can be configured to
 execute a command on at a specific time. It is a popular form of persistence on
 supported systems.
@@ -24,8 +23,6 @@ Refernces:
 # TOML Collection
 
 ```toml
-system = "linux" # or "macos"
-
 [output]
 name = "cron_collection"
 directory = "./tmp"
