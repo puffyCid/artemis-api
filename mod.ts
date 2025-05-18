@@ -67,6 +67,7 @@ export {
   getPythonHistory,
   getZshHistory,
 } from "./src/unix/shell_history";
+export { listKnownHosts } from "./src/unix/ssh";
 
 /**
  * Cross platform exported functions
