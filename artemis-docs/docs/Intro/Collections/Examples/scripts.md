@@ -14,8 +14,6 @@ A Windows collection script that does tha following:
 - Parses and filters BITS jobs looking for uncommon BITS jobs
 
 ```toml
-system = "windows"
-
 [output]
 name = "win_filter"
 directory = "./tmp"
@@ -65,8 +63,6 @@ The script is coded in a manner so that it can run as a filter or a normal
 script.
 
 ```toml
-system = "macos"
-
 [output]
 name = "mac_filter"
 directory = "./tmp"

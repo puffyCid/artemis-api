@@ -21,8 +21,6 @@ References:
 # TOML Collection
 
 ```toml
-system = "macos"
-
 [output]
 name = "safari_collection"
 directory = "./tmp"
@@ -31,6 +29,7 @@ compress = false
 endpoint_id = "abdc"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "safari-history"

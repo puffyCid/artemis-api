@@ -125,8 +125,6 @@ Thats it! We now have a simple script that filters a process listing.
     Then add our base64 blob to a TOML file with the following configuration:
 
 ```toml
-system = "macos" # Change this based on ur platform
-
 [output]
 name = "custom_proc_list"
 directory = "./tmp"
@@ -135,6 +133,7 @@ compress = false
 endpoint_id = "this can be anything"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "script"

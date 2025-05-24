@@ -21,7 +21,7 @@ Codesigning data.
 import { parseRequirementBlob } from "./artemis-api/mod";
 
 function main() {
-  // Need to obtain alias bytes from another file. Plist files may have Codesigning data.
+  // Need to obtain codesigning bytes from another file. Plist files may have Codesigning data.
   // Ex: The macOS Firewall artifact contains codesigning data
   const results = parseRequirementBlob(new Uint8Array());
   // The macOS command: csreq -v -r- -t < bytes.raw

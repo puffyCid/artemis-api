@@ -4,9 +4,8 @@ sidebar_position: 2
 
 # Installation
 
-Currently only Windows, macOS, and Linux binaries from
-[GitHub Releases](https://github.com/puffyCid/artemis/releases) are provided.
-Currently these binaries are **unsigned**.
+Windows, macOS, and Linux binaries may be downloaded from
+[GitHub Releases](https://github.com/puffyCid/artemis/releases)
 
 Grab the latest **stable** release
 [here](https://github.com/puffyCid/artemis/releases)
@@ -25,6 +24,18 @@ Stable releases are typically released every 2-3 months.
 Nightly and Stable versions go through the same tests and release process.
 
 :::
+
+## Packages
+As of version 0.14.0 you may also install **stable** release artemis on your system.  
+Currently supported distribution packages are:
+- RPM and DEB for Linux distros
+- PKG for macOS
+- MSI for Windows
+
+All packages except for MSI are signed. You can verify RPM and DEB files by importing the [public key](../../static/public.asc).  
+Ex: `rpm --import public.asc` and then run `rpm -q -id artemis` to check if signed
+
+On macOS you can verify the PKG is signed and notarized via `spctl --assess -vv --type install Artemis-*.pkg` or using [WhatsYourSign](https://objective-see.org/products/whatsyoursign.html)
 
 ## Supported Systems
 

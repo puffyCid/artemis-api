@@ -34,8 +34,6 @@ References:
 - [Libyal](https://github.com/libyal/libfsntfs/blob/main/documentation/New%20Technologies%20File%20System%20(NTFS).asciidoc)
 
 ```toml
-system = "windows"
-
 [output]
 name = "mft_collection"
 directory = "./tmp"
@@ -44,6 +42,7 @@ compress = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "mft"

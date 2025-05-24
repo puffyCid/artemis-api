@@ -23,9 +23,7 @@ adding a new feature:
 
 List of useful tools that could aid in development.
 
-- [Unused Features](https://github.com/TimonPost/cargo-unused-features)
 - [Audit](https://github.com/RustSec/rustsec/tree/main/cargo-audit)
-- [Geiger](https://github.com/rust-secure-code/cargo-geiger)
 - [scc](https://github.com/boyter/scc)
 - [clippy](https://github.com/rust-lang/rust-clippy)
 - [nextest](https://nexte.st/)

@@ -36,8 +36,6 @@ References:
 # TOML Collection
 
 ```toml
-system = "linux"
-
 [output]
 name = "logon_collection"
 directory = "./tmp"
@@ -46,9 +44,10 @@ compress = false
 endpoint_id = "abdc"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
-artifact_name = "logon"
+artifact_name = "logons"
 [artifacts.logons]
 # Optional
 # alt_file = ""
