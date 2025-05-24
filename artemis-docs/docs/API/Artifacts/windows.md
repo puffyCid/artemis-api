@@ -607,3 +607,12 @@ You may provided an optional alternative path to Microsoft-Windows-PowerShell%4O
 | Param | Type   | Description                                                                 |
 | ----- | ------ | --------------------------------------------------------------------------- |
 | path  | string | Optional alternative path to Microsoft-Windows-PowerShell%4Operational.evtx |
+
+#### firwallRules(path) -> FirewallRules[] | WindowsError
+
+Extract Windows Firewall rules from the SYSTEM Registry file. By default artemis will use the SYSTEM Registry on the SystemDrive.
+You may provide an optional alternative SYSTEM file.
+
+| Param | Type   | Description                                       |
+| ----- | ------ | ------------------------------------------------- |
+| path  | string | Optional alternative path to System Registry file |
