@@ -30,3 +30,43 @@ export interface Extensions {
   path: string;
   data: Record<string, unknown>[];
 }
+
+
+export interface RecentFiles {
+  path_type: RecentType;
+  path: string;
+  enabled: boolean;
+  label: string;
+  external: string;
+  storage_path: string;
+}
+
+export enum RecentType {
+  File = "File",
+  Folder = "Folder"
+}
+
+export interface VscodeStorage {
+  lastKnownMenubarData: {
+    menus: {
+      File: {
+        items: {
+          id: string;
+          label: string;
+          submenu?: {
+            items: {
+              id: string;
+              label?: string;
+              enabled?: boolean;
+              uri?: {
+                external: string;
+                path: string;
+                scheme: string;
+              };
+            }[];
+          };
+        }[];
+      };
+    };
+  };
+}

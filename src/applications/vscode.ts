@@ -1,4 +1,4 @@
-import { Extensions, FileHistory } from "../../types/applications/vscode";
+import { Extensions, FileHistory, RecentFiles, RecentType, VscodeStorage } from "../../types/applications/vscode";
 import { encode } from "../encoding/base64";
 import { encodeBytes } from "../encoding/bytes";
 import { getEnvValue } from "../environment/env";
@@ -74,13 +74,13 @@ export function fileHistory(
         case PlatformType.Darwin: {
           const dirs = path.full_path.split("/");
           const _ = dirs.pop();
-          hist_file = `${dirs.join("/")}/${json_data.entries[i].id}`;
+          hist_file = `${dirs.join("/")}/${json_data.entries[ i ].id}`;
           break;
         }
         case PlatformType.Windows: {
           const dirs = path.full_path.split("\\");
           const _ = dirs.pop();
-          hist_file = `${dirs.join("\\")}\\${json_data.entries[i].id}`;
+          hist_file = `${dirs.join("\\")}\\${json_data.entries[ i ].id}`;
           break;
         }
       }
@@ -94,10 +94,10 @@ export function fileHistory(
       }
       // Base64 encode the history data
       const history_encoded = encode(encodeBytes(history_data));
-      json_data.entries[i].timestamp = unixEpochToISO(
-        json_data.entries[i].timestamp as number,
+      json_data.entries[ i ].timestamp = unixEpochToISO(
+        json_data.entries[ i ].timestamp as number,
       );
-      json_data.entries[i].content = history_encoded;
+      json_data.entries[ i ].content = history_encoded;
     }
 
     entries.push(json_data);
@@ -119,7 +119,7 @@ export function getExtensions(
   // Get all user paths, unless alt_path is provided
   let paths: string[] = [];
   if (alt_path != undefined) {
-    paths = [alt_path];
+    paths = [ alt_path ];
   } else {
     let path = "";
     switch (platform) {
@@ -166,4 +166,82 @@ export function getExtensions(
   }
 
   return extensions;
+}
+
+/**
+ * Function to extract recent files and folders opened by VSCode. Also supports VSCodium.
+ * @param platform OS platorm to get recent files for
+ * @param alt_path Optional alternative path to `storage.json`
+ * @returns Array of `RecentFiles` or `ApplicationError`
+ */
+export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): RecentFiles[] | ApplicationError {
+  // Get all user paths, unless alt_path is provided
+  let paths: string[] = [];
+  if (alt_path != undefined) {
+    paths = [ alt_path ];
+  } else {
+    let path = "";
+    switch (platform) {
+      case PlatformType.Darwin: {
+        path = "/Users/*/Library/Application Support/*Cod*/User/globalStorage/storage.json";
+        break;
+      }
+      case PlatformType.Windows: {
+        let drive = getEnvValue("SystemDrive");
+        if (drive === "") {
+          drive = "C:";
+        }
+        path = `${drive}:\\Users\\*\\AppData\\Roaming\\*Cod*\\User\\globalStorage\\storage.json`;
+        break;
+      }
+      case PlatformType.Linux: {
+        path = "/home/*/.config/*Cod*/User/globalStorage/storage.json";
+      }
+    }
+
+    const glob_paths = glob(path);
+    if (glob_paths instanceof Error) {
+      return new ApplicationError("VSCODE", `failed to glob path: ${path}`);
+    }
+    for (const path of glob_paths) {
+      paths.push(path.full_path);
+    }
+  }
+
+  const recents: RecentFiles[] = [];
+  // Read storage.json
+  for (const entry of paths) {
+    const storage = readTextFile(entry);
+    if (storage instanceof FileError) {
+      console.warn(`Could not read storage.json file ${entry}: ${storage}`);
+      continue;
+    }
+
+    const storage_data = JSON.parse(storage) as VscodeStorage;
+    for (const item of storage_data.lastKnownMenubarData.menus.File.items) {
+      if (item.id != "submenuitem.MenubarRecentMenu" || item.submenu === undefined) {
+        continue;
+      }
+
+      for (const entries of item.submenu.items) {
+        if (entries.uri === undefined) {
+          continue;
+        }
+        const recent: RecentFiles = {
+          path_type: entries.id == "openRecentFolder" ? RecentType.Folder : RecentType.File,
+          path: entries.uri.path,
+          enabled: entries.enabled ?? false,
+          label: entries.label ?? "",
+          external: entries.uri.external,
+          storage_path: entry,
+        };
+        recents.push(recent);
+
+      }
+    }
+
+
+  }
+
+  return recents;
 }

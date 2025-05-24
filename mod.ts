@@ -102,7 +102,7 @@ export {
 export {
   FireFox,
 } from "./src/applications/firefox/fox";
-export { fileHistory, getExtensions } from "./src/applications/vscode";
+export { fileHistory, getExtensions, vscodeRecentFiles } from "./src/applications/vscode";
 export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";
 
