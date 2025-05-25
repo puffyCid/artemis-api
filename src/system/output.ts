@@ -2,9 +2,6 @@ import { SystemError } from "./error";
 
 /**
  * An interface to output data using `artemis`
- *
- * References:
- *  - https://puffycid.github.io/artemis-book/collections/format.html
  */
 export interface Output {
   /**Name of output directory */
