@@ -55,6 +55,7 @@ export function extractBackup(
     if (paths instanceof IosError) {
       continue;
     }
+    //console.log(`Namespace: ${domain.namespace} -${JSON.stringify(paths)}`);
     output.name = `${output_name}_${domain.namespace}`;
     outputResults(paths, domain.namespace, output);
     extractAppInfo(paths, domain.namespace, path, output);
@@ -77,12 +78,12 @@ function getInfo(path: string): InfoPlist | IosError {
 
   const info = result as unknown as InfoPlist;
   for (const key in info.Applications) {
-    const data = info.Applications[key].iTunesMetadata;
+    const data = info.Applications[ key ].iTunesMetadata;
     const result = parseAppItunesMetadata(Uint8Array.from(data as number[]));
     if (result instanceof IosError) {
       continue;
     }
-    info.Applications[key].iTunesMetadata = result;
+    info.Applications[ key ].iTunesMetadata = result;
   }
   return info;
 }

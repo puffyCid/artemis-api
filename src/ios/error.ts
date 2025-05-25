@@ -13,6 +13,8 @@ export type ErrorName =
   | "ZOOM"
   | "HINGE"
   | "ROOTDOMAIN"
-  | "DUCKDUCKGO";
+  | "DUCKDUCKGO"
+  | "APPLE_LINKD"
+  | "APPSTATE";
 
-export class IosError extends ErrorBase<ErrorName> {}
+export class IosError extends ErrorBase<ErrorName> { }

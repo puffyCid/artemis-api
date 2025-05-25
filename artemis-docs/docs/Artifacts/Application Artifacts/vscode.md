@@ -8,8 +8,12 @@ keywords:
 # VSCode
 
 VSCode is a popular open source text editor created by Microsoft. Artemis
-supports parsing installed extensions and getting file history from the
-application. Artemis also supports parsing the VSCodium application.
+supports parsing several components from VSCode:
+- File History
+- Installed extensions
+- Recently opened files and folders
+
+Artemis also supports parsing the [VSCodium](https://vscodium.com/) application.
 
 # Collection
 
@@ -35,8 +39,8 @@ function main() {
 
 # Output Structure
 
-An array of `FileHistory` for file history and `Extensions` for installed
-extensions.
+An array of `FileHistory` for file history, `Extensions` for installed
+extensions, `RecentFiles` for recent files and folders
 
 ```typescript
 /**History of files in VSCode */
@@ -66,5 +70,19 @@ interface Entries {
 export interface Extensions {
   path: string;
   data: Record<string, unknown>[];
+}
+
+export interface RecentFiles {
+  path_type: RecentType;
+  path: string;
+  enabled: boolean;
+  label: string;
+  external: string;
+  storage_path: string;
+}
+
+export enum RecentType {
+  File = "File",
+  Folder = "Folder"
 }
 ```

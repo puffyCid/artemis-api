@@ -13,8 +13,7 @@ Artemis supports parsing this information to obtain recently used applications.
 
 # Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to collect
-GNOME app usage.
+You have to use the artemis [api](../../API/overview.md) in order to collect GNOME app usage.
 
 ```typescript
 import { gnomeAppUsage } from "./artemis-api/src/linux/gnome/usage";

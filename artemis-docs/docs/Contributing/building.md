@@ -76,41 +76,47 @@ Full list of just commands (via `just --list`)
 
 ```just
 Available recipes:
-    build         # Build the entire artemis project.
-    complex       # Review complexity with scc
-    default       # Run cargo clippy on artemis project
-    filesystem    # Test only the FileSystem functions
-    nextest       # Test the entire artemis project using nextest
-    runtime       # Test only the JavaScript runtime
-    test          # Test the entire artemis project
-    timeline      # Test only the timelining functions
+    build                       # Build the entire artemis project.
+    complex                     # Review complexity with scc
+    default                     # Run cargo clippy on artemis project
+    filesystem                  # Test only the FileSystem functions
+    nextest                     # Test the entire artemis project using nextest
+    runtime                     # Test only the JavaScript runtime
+    test                        # Test the entire artemis project
+    timeline                    # Test only the timelining functions
 
     [artifacts]
-    ese           # Test only the ESE parsing functions
-    eventlogs     # Test only the Eventlog parsing functions
-    mft           # Test only the MFT parsing functions
-    outlook       # Test only the Outlook parsing functions
-    registry      # Test only the Registry parsing functions
-    shellitems    # Test only the ShellItems parsing functions
-    spotlight     # Test only the Spotlight parsing functions
-    wmi           # Test only the WMI parsing functions
+    ese                         # Test only the ESE parsing functions
+    eventlogs                   # Test only the Eventlog parsing functions
+    mft                         # Test only the MFT parsing functions
+    outlook                     # Test only the Outlook parsing functions
+    registry                    # Test only the Registry parsing functions
+    shellitems                  # Test only the ShellItems parsing functions
+    spotlight                   # Test only the Spotlight parsing functions
+    wmi                         # Test only the WMI parsing functions
 
     [os]
-    linux         # Test all the Linux artifacts
-    macos         # Test all the macOS artifacts
-    unix          # Test all the Unix artifacts
-    windows       # Test all the Windows artifacts
+    linux                       # Test all the Linux artifacts
+    macos                       # Test all the macOS artifacts
+    unix                        # Test all the Unix artifacts
+    windows                     # Test all the Windows artifacts
+
+    [package]
+    deb version                 # Package Artemis into DEB file
+    msi                         # Package Artemis into Windows MSI installer file
+    pkg team_id version profile # Package Artemis into macOS PKG installer file
+    rpm                         # Package Artemis into RPM file
 
     [setup]
-    setup-fedora  # Setup Artemis development environment for Fedora
-    setup-macos   # Setup Artemis development environment for macOS
-    setup-ubuntu  # Setup Artemis development environment for Ubuntu
-    setup-windows # Setup Artemis development environment for Windows
+    setup-fedora                # Setup Artemis development environment for Fedora
+    setup-macos                 # Setup Artemis development environment for macOS
+    setup-ubuntu                # Setup Artemis development environment for Ubuntu
+    setup-windows               # Setup Artemis development environment for Windows
 
     [workspace]
-    cli           # Just build the artemis binary
-    core          # Just build core library
-    slim          # Just build the artemis binary. But do not enable Yara-X
+    cli                         # Just build the artemis binary
+    core                        # Just build core library
+    slim                        # Just build the artemis binary. But do not enable Yara-X
 
 ```
 

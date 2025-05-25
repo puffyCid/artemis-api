@@ -27,8 +27,6 @@ outputting the results.
 A normal artemis script would look like something below:
 
 ```toml
-system = "macos"
-
 [output]
 name = "plist_data"
 directory = "./tmp"
@@ -37,6 +35,7 @@ compress = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "script"
@@ -57,8 +56,6 @@ toml file -> decode script -> execute script
 A filter script would look like something below:
 
 ```toml
-system = "macos"
-
 [output]
 name = "info_plist_collection"
 directory = "./tmp"

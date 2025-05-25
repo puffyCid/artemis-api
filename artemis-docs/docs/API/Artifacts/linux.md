@@ -142,3 +142,27 @@ By default all abrt crashes are parsed. Root access is required to access abrt r
 | Param    | Type   | Description                                        |
 | -------- | ------ | -------------------------------------------------- |
 | alt_dir  | string | Alt path to abrt crash directory                   |
+
+### Epiphany Browser Class
+
+A basic class to extract data from the Epiphany browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base Epiphany directory.
+
+#### history() -> EpiphanyHistory[]
+
+Extract URL history from Epiphany
+
+#### cookies() -> EpiphanyCookies[]
+
+Extract Cookies from Epiphany
+
+#### permissions() -> EpiphanyPermissions[]
+
+Extract website permissions from Epiphany
+
+#### lastPrint() -> EpiphanyPrint[]
+
+Extract last printed page from Epiphany
+
+#### sessions() -> Record&lt;string, SnapState&gt;[]
+
+Extract last session(s) from Epiphany

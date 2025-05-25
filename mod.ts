@@ -13,6 +13,7 @@ export { geditRecentFiles } from "./src/linux/gnome/gedit";
 export { parseGvfs } from "./src/linux/gnome/gvfs";
 export { gnomeAppUsage } from "./src/linux/gnome/usage";
 export { extractAbrt } from "./src/linux/abrt";
+export { Epiphany } from "./src/linux/gnome/epiphany";
 
 /**
  * macOS exported functions
@@ -66,6 +67,7 @@ export {
   getPythonHistory,
   getZshHistory,
 } from "./src/unix/shell_history";
+export { listKnownHosts } from "./src/unix/ssh";
 
 /**
  * Cross platform exported functions
@@ -100,7 +102,7 @@ export {
 export {
   FireFox,
 } from "./src/applications/firefox/fox";
-export { fileHistory, getExtensions } from "./src/applications/vscode";
+export { fileHistory, getExtensions, vscodeRecentFiles } from "./src/applications/vscode";
 export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";
 
@@ -147,6 +149,8 @@ export { parseWordWheel } from "./src/windows/registry/wordwheel";
 export { UserAccessLogging } from "./src/windows/ese/ual";
 export { Updates } from "./src/windows/ese/updates";
 export { Outlook } from "./src/windows/outlook";
+export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
+export { firewallRules } from "./src/windows/registry/firewall_rules";
 
 /**
  * FreeBSD

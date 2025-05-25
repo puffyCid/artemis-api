@@ -9,6 +9,7 @@ import { EncodingError } from "../encoding/errors";
 import { Biome } from "../../types/macos/biome";
 import { encode } from "../encoding/base64";
 import { parseProtobuf } from "../encoding/protobuf";
+import { getPlist } from "./plist";
 
 /**
  * A **very** experimental and simple function to parse BIOME data
@@ -19,7 +20,7 @@ import { parseProtobuf } from "../encoding/protobuf";
 export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
   let paths: string[] = [];
   if (alt_file != undefined) {
-    paths = [alt_file];
+    paths = [ alt_file ];
   } else {
     // Glob both local and tombstone entries
     const glob_paths = [
@@ -75,6 +76,22 @@ export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
         continue;
       }
 
+      const test = record.protobuf_bytes.buffer.slice(0, 474);
+      if (record.protobuf_bytes.slice(0, 6).toString() === new Uint8Array([ 98, 112, 108, 105, 115, 116 ]).toString()) {
+        // Sometimes BIOME files will contain binary plist instead of Protobuf data
+        const plist_data = getPlist(record.protobuf_bytes);
+        if (plist_data instanceof MacosError) {
+          continue;
+        }
+        if (Array.isArray(plist_data)) {
+          biome.plist_data = biome.plist_data?.concat(plist_data as Record<string, unknown>[]);
+          continue;
+        } else if (plist_data instanceof Uint8Array) {
+          continue;
+        }
+        biome.plist_data?.push(plist_data);
+        continue;
+      }
       const results = parseProtobuf(record.protobuf_bytes);
       if (results instanceof EncodingError) {
         console.error(
@@ -132,7 +149,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
     while ((remaining_bytes as Uint8Array).byteLength >= record_size) {
       const record_bytes = new Uint8Array(remaining_bytes.buffer.slice(
         0,
-        record_size + 1,
+        record_size,
       ));
       remaining_bytes = new Uint8Array(
         remaining_bytes.buffer.slice(record_size),
@@ -140,18 +157,13 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
 
       const biome_record = parseRecord(record_bytes, remaining_bytes);
       if (biome_record instanceof MacosError) {
-        return biome_record;
-      }
-
-      if (
-        biome_record.protobuf_bytes.at(0) === undefined ||
-        biome_record.protobuf_bytes.at(0) === 0
-      ) {
-        remaining_bytes = biome_record.remaining;
-        continue;
+        break;
       }
       remaining_bytes = biome_record.remaining;
 
+      if (biome_record.state != BiomeState.Written) {
+        continue;
+      }
       records.push(biome_record);
     }
 
@@ -211,6 +223,13 @@ interface BiomeRecord {
   created2: number;
   protobuf_bytes: Uint8Array;
   remaining: Uint8Array;
+  state: BiomeState,
+}
+
+enum BiomeState {
+  Written = 1,
+  Deleted = 3,
+  Unknown = 4,
 }
 
 /**
@@ -223,38 +242,56 @@ function parseRecord(
   raw_bytes: Uint8Array,
   remaining_bytes: Uint8Array,
 ): BiomeRecord | MacosError {
-  const four_bytes = 4;
-  const protobuf_size_buf = raw_bytes.buffer.slice(0, four_bytes + 1);
-  const protobuf_size = new DataView(protobuf_size_buf).getUint32(0, true);
-  if (protobuf_size === 0) {
+  const protobuf_size = nomUnsignedFourBytes(raw_bytes, Endian.Le);
+  if (protobuf_size instanceof NomError) {
+    return new MacosError(`BIOME`, `failed to parse protobuf size: ${protobuf_size}`);
+  }
+  if (protobuf_size.value === 0) {
     return new MacosError(`BIOME`, "protobuf size is zero");
   }
 
-  //const unknown_buf = raw_bytes.buffer.slice(4, four_bytes * 2 + 1);
-
-  const eight_bytes = 8;
-  const created_buf = raw_bytes.buffer.slice(8, eight_bytes * 2 + 1);
-  const created = new DataView(created_buf).getBigUint64(0, true);
-
-  const created2_buf = raw_bytes.buffer.slice(16, eight_bytes * 3 + 1);
-  const created2 = new DataView(created2_buf).getBigUint64(0, true);
-
-  const align = 8;
-
-  let align_size = protobuf_size % align;
-  if (align_size != 0) {
-    align_size = 8 - align_size;
+  /**
+ * Known states:
+ * 1 - Written
+ * 3 - Deleted
+ * 4 - Unknown
+ */
+  const state = nomUnsignedFourBytes(protobuf_size.remaining, Endian.Le);
+  if (state instanceof NomError) {
+    return new MacosError(
+      `BIOME`,
+      `failed to get state for version 1: ${state}`,
+    );
   }
 
-  const size = protobuf_size + align_size;
-  const proto_bytes = new Uint8Array(remaining_bytes.buffer.slice(0, size + 1));
+
+  const created = nomUnsignedEightBytes(state.remaining, Endian.Le);
+  if (created instanceof NomError) {
+    return new MacosError(`BIOME`, `failed to parse biome created: ${created}`);
+  }
+  const created2 = nomUnsignedEightBytes(created.remaining, Endian.Le);
+  if (created2 instanceof NomError) {
+    return new MacosError(`BIOME`, `failed to parse biome created2: ${created2}`);
+  }
+  const align = 8;
+  let align_size = protobuf_size.value % align;
+  if (align_size != 0) {
+    align_size = align - align_size;
+  }
+
+  const size = protobuf_size.value + align_size;
+  const proto_bytes = take(remaining_bytes, size);
+  if (proto_bytes instanceof NomError) {
+    return new MacosError(`BIOME`, `failed to parse get protobuf bytes: ${proto_bytes}`);
+  }
 
   const record: BiomeRecord = {
     size,
-    created: Number(created),
-    created2: Number(created2),
-    protobuf_bytes: proto_bytes,
-    remaining: new Uint8Array(remaining_bytes.buffer.slice(size)),
+    created: Number(created.value),
+    created2: Number(created2.value),
+    protobuf_bytes: proto_bytes.nommed as Uint8Array,
+    remaining: proto_bytes.remaining as Uint8Array,
+    state: state.value
   };
 
   return record;
@@ -332,10 +369,9 @@ function parseRecordV2(
   const records: BiomeRecord[] = [];
   remaining_bytes = raw_bytes;
   let previous_size = 0;
-  const unknown = 4;
   for (const footer of footers) {
     // Unknown State identified
-    if (footer.state === unknown) {
+    if (footer.state === BiomeState.Unknown) {
       continue;
     }
     let align_size = (footer.end_offset - previous_size) % align;
@@ -371,6 +407,7 @@ function parseRecordV2(
       created2: 0,
       protobuf_bytes: unknown_bytes.remaining,
       remaining: new Uint8Array(),
+      state: footer.state,
     };
     records.push(record);
 
@@ -378,4 +415,4 @@ function parseRecordV2(
   }
 
   return records;
-}
+};

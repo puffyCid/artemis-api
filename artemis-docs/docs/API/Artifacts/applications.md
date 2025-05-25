@@ -108,10 +108,19 @@ An altnerative glob will override the platform type.
 Get installed VSCode or VSCodium extensions. Can also provide an optional
 alternative path to the extensions.json file. Otherwise will use default paths.
 
+| Param    | Type         | Description                              |
+| -------- | ------------ | ---------------------------------------- |
+| platform | PlatformType | OS platform to parse                     |
+| path     | string       | Optional path to an extensions.json file |
+
+### vscodeRecentFiles(platform, path) -> RecentFiles[] | ApplicationError
+
+Get recent files and folders opened by VScode.
+
 | Param    | Type         | Description                             |
 | -------- | ------------ | --------------------------------------- |
-| platform | PlatformType | OS platform to parse)                   |
-| path     | string       | Optional path to a extensions.json file |
+| platform | PlatformType | OS platform to parse                    |
+| path     | string       | Optional path to a storage.json file    |
 
 ### querySqlite(path, query) -> Record&lt;string, unknown&gt;[] | ApplicationError
 

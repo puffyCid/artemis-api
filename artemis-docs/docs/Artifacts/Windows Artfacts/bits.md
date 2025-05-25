@@ -31,8 +31,6 @@ References:
 # TOML Collection
 
 ```toml
-system = "windows"
-
 [output]
 name = "bits_collection"
 directory = "./tmp"
@@ -41,6 +39,7 @@ compress = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "bits"

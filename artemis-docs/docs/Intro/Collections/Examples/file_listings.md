@@ -8,8 +8,6 @@ description: Custom Filelisting
 Windows TOML collection looking for all files created in the last 14 days
 
 ```toml
-system = "windows"
-
 [output]
 name = "recent_files"
 directory = "./tmp"
@@ -34,8 +32,6 @@ depth = 100 # How many sub directories to descend
 macOS TOML collection looking for all files created in the last 14 days
 
 ```toml
-system = "macos"
-
 [output]
 name = "recent_files"
 directory = "./tmp"

@@ -16,6 +16,7 @@ import { extractHingeInfo } from "../apps/hinge/hinge";
 import { extractZoom } from "../apps/zoom/zoom";
 import { extractHomeDomain } from "../domains/home/home";
 import { extractRootDomain } from "../domains/root/root";
+import { extractAppleLinkd } from "../domains/syscontainer/linkd";
 import { IosError } from "../error";
 
 /**
@@ -87,7 +88,7 @@ export function getAppPaths(
 
   const app = results as unknown as ManifestApp[];
   for (let i = 0; i < app.length; i++) {
-    app[i].namespace = namespace;
+    app[ i ].namespace = namespace;
   }
 
   return app;
@@ -131,7 +132,7 @@ export function parseManifestAppPlist(
     user_id: 0,
     path: "",
   };
-  for (const object of objects["$objects"] as unknown[]) {
+  for (const object of objects[ "$objects" ] as unknown[]) {
     if (typeof object === "string" && (object as string).startsWith("$")) {
       continue;
     }
@@ -145,17 +146,17 @@ export function parseManifestAppPlist(
       Object.prototype.hasOwnProperty.call(object, "LastModified")
     ) {
       const data = object as Record<string, number>;
-      meta.created = unixEpochToISO(data["Birth"]);
-      meta.changed = unixEpochToISO(data["LastStatusChange"]);
-      meta.modified = unixEpochToISO(data["LastModified"]);
-      meta.mode = data["Mode"];
-      meta.flags = data["Flags"];
-      meta.group_id = data["GroupId"];
-      meta.relative_path = data["RelativePath"];
-      meta.size = data["Size"];
-      meta.inode = data["InodeNumber"];
-      meta.user_id = data["UserID"];
-      meta.extended_attributes = data["ExtendedAttributes"];
+      meta.created = unixEpochToISO(data[ "Birth" ]);
+      meta.changed = unixEpochToISO(data[ "LastStatusChange" ]);
+      meta.modified = unixEpochToISO(data[ "LastModified" ]);
+      meta.mode = data[ "Mode" ];
+      meta.flags = data[ "Flags" ];
+      meta.group_id = data[ "GroupId" ];
+      meta.relative_path = data[ "RelativePath" ];
+      meta.size = data[ "Size" ];
+      meta.inode = data[ "InodeNumber" ];
+      meta.user_id = data[ "UserID" ];
+      meta.extended_attributes = data[ "ExtendedAttributes" ];
     }
   }
 
@@ -193,6 +194,9 @@ export function extractAppInfo(
       break;
     case "RootDomain":
       extractRootDomain(paths, db_path, output);
+      break;
+    case "SysContainerDomain-com.apple.linkd":
+      extractAppleLinkd(paths, db_path, output);
       break;
   }
 }

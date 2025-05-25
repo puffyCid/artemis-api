@@ -1,15 +1,14 @@
 ---
 description: Cron jobs on macOS
 keywords:
-  - macOS
   - persistence
   - plaintext
 ---
 
 # Cron
 
-`Cron` is an application that lets users create jobs on an endpoint. It is
-common on Unix, Linux, and macOS systems. A `Cron` job can be configured to
+Cron is an application that lets users create jobs on an endpoint. It is
+common on Unix, Linux, and macOS systems. A cron job can be configured to
 execute a command on at a specific time. It is a popular form of persistence on
 supported systems.
 
@@ -24,8 +23,6 @@ Refernces:
 # TOML Collection
 
 ```toml
-system = "macos" # or "linux"
-
 [output]
 name = "cron_collection"
 directory = "./tmp"
@@ -34,6 +31,7 @@ compress = false
 endpoint_id = "abdc"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "cron"

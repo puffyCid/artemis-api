@@ -14,7 +14,7 @@ total).
 Its recommended to run in release mode for tests. This will greatly speed up the
 tests. Tests may need to be run with root or Administrator privileges.
 
-`just test or just nextest`
+`just test` or `just nextest`
 
 :::
 
@@ -40,14 +40,12 @@ test for the artifact can also be very useful. Writing an integration is a two
    anyone could download and run themselves
 2. Create a `artifact_tester.rs` file
 
-An example `prefetch` integration test:
+An example prefetch integration test:
 
 1. TOML file created at
    `<path to repo>/artemis-core/tests/test_data/windows/prefetch.toml`
 
 ```toml
-system = "windows"
-
 [output]
 name = "prefetch_collection"
 directory = "./tmp"
@@ -56,6 +54,7 @@ compress = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "prefetch"

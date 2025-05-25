@@ -7,12 +7,12 @@ keywords:
 
 # Shortcuts
 
-Windows `Shotcut` files (`.lnk`) are files that point to another file. They
-often contain a large amount of metadata related to the target file. `Shortcut`
+Windows `Shotcut` files (.lnk extension) are files that point to another file. They
+often contain a large amount of metadata related to the target file. Shortcut
 files can be used to distribute malware and can also provide evidence of file
 interaction. The directory at
-`C:\Users\%\AppData\Roaming\Microsoft\Windows\Recent` contains multiple
-`Shortcuts` that point to files recently opened by the user.
+`C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent` contains multiple
+Shortcuts that point to files recently opened by the user.
 
 Other Parsers:
 
@@ -25,8 +25,6 @@ References:
 # TOML Collection
 
 ```toml
-system = "windows"
-
 [output]
 name = "shortcuts_collection"
 directory = "./tmp"
@@ -35,6 +33,7 @@ compress = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "shortcuts"

@@ -19,17 +19,18 @@ export function extractRootDomain(
   output: Output,
 ) {
   for (const path of app_paths) {
+    if (path.file_type != FileType.IsFile) {
+      continue;
+    }
     const info = parseManifestAppPlist(path.file);
     if (info instanceof IosError) {
       continue;
     }
-    if (path.file_type != FileType.IsFile) {
-      continue;
-    }
+
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("locationd/clients.plist")) {
       const result = parseClients(target);
-      outputResults(result, "rootdomain_locationd_clients", output);
+      outputResults(JSON.stringify(result), "rootdomain_locationd_clients", output);
       continue;
     }
     //console.log(info.path);

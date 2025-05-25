@@ -10,5 +10,5 @@
 
 5. Run the bash or batch file to execute tests
 
-See https://puffycid.github.io/artemis-api/docs/Contributing/api for more
+See https://puffycid.github.io/artemis/docs/Contributing/api for more
 details

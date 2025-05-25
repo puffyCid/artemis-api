@@ -8,8 +8,6 @@ description: The TOML collection format
 An example TOML collection is provided below:
 
 ```toml
-system = "windows"
-
 [output]
 name = "amcache_collection"
 directory = "./tmp"
@@ -79,8 +77,6 @@ If we wanted to collect more than one artifact we could use a collection like
 the one below:
 
 ```toml
-system = "windows"
-
 [output]
 name = "execution_collection"
 directory = "./tmp"
@@ -90,6 +86,7 @@ timeline = true
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
 output = "local"
+timeline = false
 
 [[artifacts]]
 artifact_name = "amcache"

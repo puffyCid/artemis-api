@@ -9,7 +9,7 @@ import { Journal } from "../../../../types/linux/journal";
 export function timelineJournals(
   data: Journal[],
 ): TimesketchTimeline[] {
-  const entries = [];
+  const entries: TimesketchTimeline[] = [];
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
@@ -21,8 +21,8 @@ export function timelineJournals(
     };
 
     entry = { ...entry, ...item };
-    entry["realtime"] = item.realtime;
-    entry["source_realtime"] = item.source_realtime;
+    entry[ "realtime" ] = item.realtime;
+    entry[ "source_realtime" ] = item.source_realtime;
 
     entries.push(entry);
   }

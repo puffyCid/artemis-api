@@ -15,7 +15,7 @@ macOS [Firewall](./firewall.md) artifact contains alias data.
 # Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
-`alias` data.
+alias data.
 
 # Sample API Script
 

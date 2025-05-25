@@ -20,7 +20,7 @@ const config = {
   url: "https://github.com",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/artemis-api",
+  baseUrl: "/artemis",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -97,12 +97,6 @@ const config = {
             label: "Contributing",
           },
           {
-            type: "docSidebar",
-            sidebarId: "apollo",
-            position: "left",
-            label: "Apollo",
-          },
-          {
             href: "https://github.com/puffyCid/artemis",
             label: "GitHub",
             position: "right",
@@ -131,9 +125,8 @@ const config = {
             ],
           },
         ],
-        copyright: `MIT Copyright © ${
-          new Date().getFullYear()
-        } puffyCid. Built with Docusaurus.`,
+        copyright: `MIT Copyright © ${new Date().getFullYear()
+          } puffyCid. Built with Docusaurus.`,
       },
       prism: {
         theme: lightTheme,

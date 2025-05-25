@@ -18,10 +18,10 @@ export function parseMetrics(
   if (result instanceof ApplicationError) {
     return new IosError(`HINGE`, `failed to query metrics: ${result}`);
   }
-  const metrics = [];
+  const metrics: any[] = [];
 
   for (const entry of result as Record<string, string>[]) {
-    const payload = entry["ZDATA"];
+    const payload = entry[ "ZDATA" ];
     const bytes = decode(payload);
     if (bytes instanceof EncodingError) {
       continue;

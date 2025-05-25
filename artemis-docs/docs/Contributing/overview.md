@@ -4,8 +4,8 @@ sidebar_position: 2
 
 # Getting Started
 
-The artemis source code is about ~87k lines of Rust code across ~717 files as of
-March 2025 (this includes tests). However its organized in a pretty simple
+The artemis source code is about ~100k lines of Rust code across ~619 files as of
+May 2025 (this includes tests). However its organized in a pretty simple
 structure.
 
 :::tip
@@ -20,8 +20,7 @@ From the root of the artemis repo:
 - `core/` workspace contains the library component of artemis. The bulk of the
   code is located here
 - `cli/` workspace contains the executable component artemis.
-- `server/` workspace contains the experimental server component of artemis. Its
-  currently experimental
+- `timeline/` workspace contains functions to timeline artifacts
 
 From the `core/src/` directory
 
@@ -61,7 +60,7 @@ allowed.
 
 :::tip
 
-Use the time functions under `utils` to help with timestamp conversions!
+Use the time functions under **utils** to help with timestamp conversions!
 
 :::
 
@@ -80,8 +79,8 @@ An simple JS parser can be found in the
 repo.
 
 However, if you want to implement a new parser for parsing common Windows
-artifacts such as `Jumplists` then that is definitely something that could be
-worth including as a static parser.
+artifacts such as *Jumplists* then that is definitely something that could be
+worth including as a Rust coded parser.
 
 When in doubt or unsure open an issue!
 
@@ -90,20 +89,23 @@ When in doubt or unsure open an issue!
 If you want add a new artifact but want to see how other artifacts are
 implemented, some suggested ones to review are:
 
-- `UserAssist`: If you want to add a new Registry artifact. The `UserAssist`
+- `UserAssist`: If you want to add a new Registry artifact. The UserAssist
   artifact is less than 300 lines (not counting tests). And includes:
   - Parsing binary data
   - Converting timestamps
   - Collecting user Registry data
-- `FsEvents`: If you want to to parse a binary file. The `FsEvents` is less than
+- `FsEvents`: If you want to to parse a binary file. The FsEvents is less than
   300 lines (not counting tests). And includes:
 
   - Parsing binary data
   - Decompressing data
   - Getting data flags
 
-    Fun fact: `FsEvents` is the first artifact created for artemis. Its the
-    oldest code in the project!
+:::info
+
+FsEvents is the first artifact created for artemis. Its the oldest code in the project!
+
+:::
 
 ## Useful Helper Functions
 
@@ -111,12 +113,12 @@ The artemis codebase contains a handful of artifacts (ex: `Registry`) that
 expose helper functions that allow other artifacts to reuse parts of that
 artifact to help get artifact specific data.
 
-For example the Windows `Registry` artifact exposes a helper function that other
-`Registry` based artifacts can leverage to help parse the `Registry`:
+For example the Windows Registry artifact exposes a helper function that other
+Registry based artifacts can leverage to help parse the Registry:
 
 - `pub(crate) fn get_registry_keys(start_path: &str, regex: &Regex, file_path: &str)`
   will read a Registry file at provided file_path and filter to based on
-  start_path and regex. If start_path and regex are empty a full `Registry`
+  start_path and regex. If start_path and regex are empty a full Registry
   listing is returned. All Regex comparisons are done in lowercase.
 
 Some other examples listed below:

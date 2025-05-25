@@ -124,6 +124,7 @@ export interface FirefoxProfiles {
   full_path: string;
   version: number;
 }
+
 export interface FirefoxStorage {
   repository: Respository;
   suffix?: string;

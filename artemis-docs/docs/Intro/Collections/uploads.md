@@ -22,8 +22,6 @@ Uploading collections to a remote serivce requires three (3) steps:
 An example TOML Collection is below:
 
 ```toml
-system = "windows"
-
 [output]
 name = "shimcache_collection"
 directory = "hostname"
@@ -87,8 +85,6 @@ High Level Steps:
 An example TOML Collection is below:
 
 ```toml
-system = "windows"
-
 [output]
 name = "shimcache_collection"
 directory = "dev-workstations"
@@ -126,8 +122,6 @@ High level steps:
 An example TOML Collection is below:
 
 ```toml
-system = "windows"
-
 [output]
 name = "shimcache_collection"
 directory = "dev-workstations"
@@ -179,8 +173,6 @@ High level steps:
 An example TOML Collection is below:
 
 ```toml
-system = "windows"
-
 [output]
 name = "shimcache_collection"
 directory = "dev-workstations"

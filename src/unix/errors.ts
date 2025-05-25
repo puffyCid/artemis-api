@@ -5,6 +5,6 @@ export type ErrorName =
   | "BASHHISTORY"
   | "ZSHHISTORY"
   | "PYTHONHISTORY"
-  | "SUDOLOGS";
+  | "SSH_KNOWN_HOSTS";
 
-export class UnixError extends ErrorBase<ErrorName> {}
+export class UnixError extends ErrorBase<ErrorName> { }

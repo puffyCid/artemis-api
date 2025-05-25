@@ -14,7 +14,7 @@ export function timelineFiles(
   data: MacosFileInfo[] | WindowsFileInfo[] | LinuxFileInfo[],
   is_windows: boolean,
 ): TimesketchTimeline[] {
-  const entries = [];
+  const entries: TimesketchTimeline[] = [];
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
@@ -58,26 +58,26 @@ function extractApiTimes(
   const check_times: Record<string, string> = {};
   const entries: TimeEntries[] = [];
 
-  check_times[entry.created] = "Created";
-  check_times[entry.modified] === undefined
-    ? (check_times[entry.modified] = "Modified")
-    : (check_times[entry.modified] = `${check_times[entry.modified]} Modified`);
+  check_times[ entry.created ] = "Created";
+  check_times[ entry.modified ] === undefined
+    ? (check_times[ entry.modified ] = "Modified")
+    : (check_times[ entry.modified ] = `${check_times[ entry.modified ]} Modified`);
 
   // Currently Rust does not support Changed timestamps on Windows :(
   if (!is_windows) {
-    check_times[entry.changed] === undefined
-      ? (check_times[entry.changed] = "Changed")
-      : (check_times[entry.changed] = `${check_times[entry.changed]} Changed`);
+    check_times[ entry.changed ] === undefined
+      ? (check_times[ entry.changed ] = "Changed")
+      : (check_times[ entry.changed ] = `${check_times[ entry.changed ]} Changed`);
   }
 
-  check_times[entry.accessed] === undefined
-    ? (check_times[entry.accessed] = "Accessed")
-    : (check_times[entry.accessed] = `${check_times[entry.accessed]} Accessed`);
+  check_times[ entry.accessed ] === undefined
+    ? (check_times[ entry.accessed ] = "Accessed")
+    : (check_times[ entry.accessed ] = `${check_times[ entry.accessed ]} Accessed`);
 
   for (const value in check_times) {
     const entry: TimeEntries = {
       datetime: value,
-      desc: check_times[value],
+      desc: check_times[ value ],
     };
     entries.push(entry);
   }

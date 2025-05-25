@@ -3,7 +3,7 @@
 This repo contains the TypeScript bindings for creating scripts for
 [artemis](https://github.com/puffycid/artemis).
 
-An in depth guide is documented at https://puffycid.github.io/artemis-api
+An in depth guide is documented at https://puffycid.github.io/artemis
 
 ## Quick Start
 

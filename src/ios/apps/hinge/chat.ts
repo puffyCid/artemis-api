@@ -63,10 +63,10 @@ export function extractNotifications(path: string): Notification[] | IosError {
     return new IosError(`HINGE`, `failed to extract notifications: ${results}`);
   }
 
-  const notifications = [];
+  const notifications: Notification[] = [];
   for (const entry of results as Record<string, string | number>[]) {
-    const timestamp = cocoatimeToUnixEpoch(entry["ZTIMESTAMP"] as number);
-    const payload = entry["ZDATA"] as string;
+    const timestamp = cocoatimeToUnixEpoch(entry[ "ZTIMESTAMP" ] as number);
+    const payload = entry[ "ZDATA" ] as string;
     const bytes = decode(payload);
     if (bytes instanceof EncodingError) {
       continue;
@@ -74,9 +74,9 @@ export function extractNotifications(path: string): Notification[] | IosError {
     const json_data = extractUtf8String(bytes);
     const value: Notification = {
       timestamp: unixEpochToISO(timestamp),
-      message_id: JSON.parse(json_data)["messageId"],
-      origin: JSON.parse(json_data)["origin"],
-      title: entry["ZTITLE"] as string,
+      message_id: JSON.parse(json_data)[ "messageId" ],
+      origin: JSON.parse(json_data)[ "origin" ],
+      title: entry[ "ZTITLE" ] as string,
     };
     notifications.push(value);
   }
