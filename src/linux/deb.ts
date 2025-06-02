@@ -23,7 +23,7 @@ export function getDebInfo(alt_path?: string): DebPackages[] | LinuxError {
   }
 
   const package_lines = status_data.split("\n");
-  const packages = [];
+  const packages: DebPackages[] = [];
   let deb: DebPackages = {
     name: "",
     version: "",
