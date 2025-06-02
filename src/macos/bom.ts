@@ -62,7 +62,7 @@ export function parseBom(path: string): Bom | MacosError {
   let boms: BomFiles[] = [];
   for (const entry of vars.vars) {
     // Only Paths entry contains our data
-    if (entry.name != "Paths") {
+    if (entry.name !== "Paths") {
       continue;
     }
 
@@ -73,7 +73,7 @@ export function parseBom(path: string): Bom | MacosError {
 
     let forward = tree_entry.index;
     const index_list: TreeIndex[] = [];
-    while (forward != 0) {
+    while (forward !== 0) {
       let tree = parseTree(data, forward, table.pointers);
       if (tree instanceof MacosError) {
         return new MacosError("BOM", `failed to get tree info: ${tree}`);
@@ -797,7 +797,7 @@ function getPathInfo(
   path.checksum = checksum.value.toString();
   path.dev_type = dev_type.value;
 
-  if (file_type != PathType.LINK) {
+  if (file_type !== PathType.LINK) {
     return path;
   }
 
@@ -846,7 +846,7 @@ function assembleBom(files: Map<number, BomData>): BomFiles[] {
 
     let parent = value.bom_file.parent;
     let paths: string[] = [];
-    while (parent != root) {
+    while (parent !== root) {
       const parent_path = files.get(parent);
       if (parent_path === undefined) {
         break;

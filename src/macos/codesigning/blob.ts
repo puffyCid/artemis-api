@@ -26,7 +26,7 @@ export function parseRequirementBlob(
   }
 
   const sig = 4208856064;
-  if (result.value != sig) {
+  if (result.value !== sig) {
     return new SigningError(
       "BLOB",
       `Invalid sigature expected 4208856064 got: ${result.value}`,

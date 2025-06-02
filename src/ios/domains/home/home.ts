@@ -21,7 +21,7 @@ export function extractHomeDomain(
   output: Output,
 ) {
   for (const path of app_paths) {
-    if (path.file_type != FileType.IsFile) {
+    if (path.file_type !== FileType.IsFile) {
       continue;
     }
 
@@ -116,7 +116,7 @@ export function extractHomeDomain(
 
 
     // Uncomment to view unsupported entries
-    console.log(info.path);
+    //console.log(info.path);
     //console.log(target);
   }
 }

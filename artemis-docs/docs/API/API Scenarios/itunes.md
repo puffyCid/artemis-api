@@ -126,7 +126,7 @@ export function extractDuckDuckGo(
     output: Output,
 ) {
     for (const path of app_paths) {
-        if (path.file_type != FileType.IsFile) {
+        if (path.file_type !== FileType.IsFile) {
             continue;
         }
         // Function to parse the binary plist in the Manifest.db file. Contains FileMetadata
@@ -237,7 +237,7 @@ a plist file we will need to import the plist parsing function to our code
 
 ```typescript
 for (const path of app_paths) {
-    if (path.file_type != FileType.IsFile) {
+    if (path.file_type !== FileType.IsFile) {
         continue;
     }
     // Function to parse the binary plist in the Manifest.db file. Contains FileMetadata

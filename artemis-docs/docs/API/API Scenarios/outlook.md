@@ -263,14 +263,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -497,14 +497,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -622,14 +622,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -749,14 +749,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,

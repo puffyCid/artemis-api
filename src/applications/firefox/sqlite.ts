@@ -78,7 +78,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                 host: entry[ "host" ] as string ?? "",
                 unfold: undefined
             };
-            if (unfold && typeof client != 'undefined') {
+            if (unfold && typeof client !== 'undefined') {
                 const result = client.parseUrl(history_row.url);
                 if (!(result instanceof UnfoldError)) {
                     history_row.unfold = result;
@@ -193,7 +193,7 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
                     unfold: undefined
                 },
             };
-            if (unfold && typeof client != 'undefined') {
+            if (unfold && typeof client !== 'undefined') {
                 const result = client.parseUrl(download_row.history.url);
                 if (!(result instanceof UnfoldError)) {
                     download_row.history.unfold = result;
@@ -257,13 +257,13 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType,
                 db_path: full_path,
             };
 
-            if (entry[ "lastAccessed" ] != undefined) {
+            if (entry[ "lastAccessed" ] !== undefined) {
                 cookie_entry.last_accessed = unixEpochToISO(Number(
                     BigInt(entry[ "lastAccessed" ] as bigint) / adjust_time,
                 ));
             }
 
-            if (entry[ "creationTime" ] != undefined) {
+            if (entry[ "creationTime" ] !== undefined) {
                 cookie_entry.creation_time = unixEpochToISO(Number(
                     BigInt(entry[ "creationTime" ] as bigint) / adjust_time,
                 ));

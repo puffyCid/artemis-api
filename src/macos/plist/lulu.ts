@@ -13,7 +13,7 @@ import { getPlist } from "../plist";
  */
 export function luluRules(alt_file?: string): LuluRules | MacosError {
   let file = "/Library/Objective-See/LuLu/rules.plist";
-  if (alt_file != undefined) {
+  if (alt_file !== undefined) {
     file = alt_file;
   }
 
@@ -32,37 +32,37 @@ export function luluRules(alt_file?: string): LuluRules | MacosError {
     rules: [],
   };
 
-  const object_data = objects["$objects"];
+  const object_data = objects[ "$objects" ];
   for (const entry of object_data) {
-    if (typeof entry != "object") {
+    if (typeof entry !== "object") {
       continue;
     }
 
     // We are looking for entries that have same object interface as `Rule`
     const rule_value = entry as unknown as Record<string, number | boolean>;
-    if (rule_value["uuid"] === undefined) {
+    if (rule_value[ "uuid" ] === undefined) {
       continue;
     }
 
     const rule: Rule = {
-      file: object_data[rule_value["name"] as number] as string,
-      uuid: object_data[rule_value["uuid"] as number] as string,
+      file: object_data[ rule_value[ "name" ] as number ] as string,
+      uuid: object_data[ rule_value[ "uuid" ] as number ] as string,
       endpoint_addr:
-        object_data[rule_value["endpointAddr"] as number] as string,
-      is_regex: rule_value["isEndpointAddrRegex"] as boolean,
-      scope: object_data[rule_value["scope"] as number] as string,
-      type: object_data[rule_value["type"] as number] as string,
-      key: object_data[rule_value["key"] as number] as string,
-      action: getAction(object_data[rule_value["action"] as number] as number),
+        object_data[ rule_value[ "endpointAddr" ] as number ] as string,
+      is_regex: rule_value[ "isEndpointAddrRegex" ] as boolean,
+      scope: object_data[ rule_value[ "scope" ] as number ] as string,
+      type: object_data[ rule_value[ "type" ] as number ] as string,
+      key: object_data[ rule_value[ "key" ] as number ] as string,
+      action: getAction(object_data[ rule_value[ "action" ] as number ] as number),
       endpoint_host:
-        object_data[rule_value["endpointHost"] as number] as string,
+        object_data[ rule_value[ "endpointHost" ] as number ] as string,
       code_signing_info: getCodeSigning(
-        object_data[rule_value["csInfo"] as number] as LuluSigning | string,
+        object_data[ rule_value[ "csInfo" ] as number ] as LuluSigning | string,
         object_data,
       ),
-      pid: object_data[rule_value["pid"] as number] as number,
+      pid: object_data[ rule_value[ "pid" ] as number ] as number,
       endpoint_port:
-        object_data[rule_value["endpointPort"] as number] as number,
+        object_data[ rule_value[ "endpointPort" ] as number ] as number,
     };
 
     rules.rules.push(rule);
@@ -105,12 +105,12 @@ function getCodeSigning(
     return cs_info;
   }
 
-  for (let i = 0; i < data["NS.keys"].length; i++) {
-    const key = objects.at(data["NS.keys"][i]) as string ?? `${i}`;
+  for (let i = 0; i < data[ "NS.keys" ].length; i++) {
+    const key = objects.at(data[ "NS.keys" ][ i ]) as string ?? `${i}`;
 
-    const value_key = data["NS.objects"].at(i);
+    const value_key = data[ "NS.objects" ].at(i);
     if (value_key === undefined) {
-      cs_info[key] = `objects value too small`;
+      cs_info[ key ] = `objects value too small`;
       continue;
     }
 
@@ -120,21 +120,21 @@ function getCodeSigning(
       | number;
     if (typeof value === "string" || typeof value === "number") {
       if (key === "signatureSigner") {
-        cs_info[key] = getSignStatus(Number(value));
+        cs_info[ key ] = getSignStatus(Number(value));
         continue;
       }
 
-      cs_info[key] = value as string;
+      cs_info[ key ] = value as string;
       continue;
     }
 
     const entries: string[] = [];
     // more NS.Objects
-    for (const entry of value["NS.objects"]) {
+    for (const entry of value[ "NS.objects" ]) {
       const lulu_value = objects.at(entry) as string ?? `${entry}`;
       entries.push(lulu_value);
     }
-    cs_info[key] = entries;
+    cs_info[ key ] = entries;
   }
 
   return cs_info;

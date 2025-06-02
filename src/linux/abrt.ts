@@ -12,7 +12,7 @@ import { unixEpochToISO } from "../time/conversion";
  */
 export async function extractAbrt(alt_dir?: string): Promise<Abrt[] | LinuxError> {
     let dir = "/var/spool/abrt";
-    if (alt_dir != undefined) {
+    if (alt_dir !== undefined) {
         dir = alt_dir;
         const result = await readAbrtDir(dir);
         if (result instanceof LinuxError) {

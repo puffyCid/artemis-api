@@ -16,7 +16,7 @@ export function powershellHistory(
   platform = PlatformType.Windows,
   alt_path?: string,
 ): History[] | History | WindowsError {
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     return parsePowershellHistory(alt_path, platform);
   }
 
@@ -31,9 +31,9 @@ export function powershellHistory(
   }
 
   if (platform === PlatformType.Darwin) {
-    glob_pattern = "/Users/*/.local/share/PowerShell/PSReadLine/ConsoleHost_history.txt"
+    glob_pattern = "/Users/*/.local/share/PowerShell/PSReadLine/ConsoleHost_history.txt";
   } else if (platform === PlatformType.Linux) {
-    glob_pattern = "/home/*/.local/share/PowerShell/PSReadLine/ConsoleHost_history.txt"
+    glob_pattern = "/home/*/.local/share/PowerShell/PSReadLine/ConsoleHost_history.txt";
   }
   const paths = glob(glob_pattern);
   if (paths instanceof FileError) {

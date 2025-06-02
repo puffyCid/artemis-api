@@ -13,8 +13,8 @@ export function wifiNetworks(alt_path?: string): Wifi[] {
     // "/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist"
   ];
 
-  if (alt_path != undefined) {
-    paths = [alt_path];
+  if (alt_path !== undefined) {
+    paths = [ alt_path ];
   }
 
   let wifis: Wifi[] = [];
@@ -41,18 +41,18 @@ function parseWifi(path: string): Wifi[] {
   for (const entry in wifi_data) {
     const wifi_value: Wifi = {
       name: entry.replace("wifi.network.ssid.", ""),
-      security: wifi_data[entry].SupportedSecurityTypes,
-      hidden: wifi_data[entry].Hidden,
-      roaming_profile: wifi_data[entry].__OSSpecific__.RoamingProfileType,
-      add_reason: wifi_data[entry].AddReason,
-      added_at: wifi_data[entry].AddedAt,
-      auto_join: wifi_data[entry].AutoJoinDisabled,
-      personal_hotspot: (wifi_data[entry].PersonalHotspot === undefined)
+      security: wifi_data[ entry ].SupportedSecurityTypes,
+      hidden: wifi_data[ entry ].Hidden,
+      roaming_profile: wifi_data[ entry ].__OSSpecific__.RoamingProfileType,
+      add_reason: wifi_data[ entry ].AddReason,
+      added_at: wifi_data[ entry ].AddedAt,
+      auto_join: wifi_data[ entry ].AutoJoinDisabled,
+      personal_hotspot: (wifi_data[ entry ].PersonalHotspot === undefined)
         ? false
-        : wifi_data[entry].PersonalHotspot as boolean,
-      joined_by_user_at: wifi_data[entry].JoinedByUserAt,
-      last_discovered: wifi_data[entry].LastDiscoveredAt,
-      updated_at: wifi_data[entry].UpdatedAt,
+        : wifi_data[ entry ].PersonalHotspot as boolean,
+      joined_by_user_at: wifi_data[ entry ].JoinedByUserAt,
+      last_discovered: wifi_data[ entry ].LastDiscoveredAt,
+      updated_at: wifi_data[ entry ].UpdatedAt,
     };
     wifis.push(wifi_value);
   }

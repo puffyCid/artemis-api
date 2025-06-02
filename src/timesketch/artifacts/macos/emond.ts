@@ -11,13 +11,13 @@ export function timelineEmond(data: Emond[]): TimesketchTimeline[] {
 
   for (let i = 0; i < data.length; i++) {
     let entry: TimesketchTimeline = {
-      datetime: "1601-01-01T00:00:00.000Z",
+      datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
-      message: data[i].name,
+      message: data[ i ].name,
       data_type: "macos:emond:entry",
       artifact: "Emond",
     };
-    entry = { ...entry, ...data[i] };
+    entry = { ...entry, ...data[ i ] };
 
     entries.push(entry);
   }

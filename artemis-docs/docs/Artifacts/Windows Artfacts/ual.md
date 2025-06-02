@@ -35,7 +35,7 @@ function main() {
 
   let role = undefined;
   for (const path of paths) {
-    if (path.filename != "SystemIdentity.mdb") {
+    if (path.filename !== "SystemIdentity.mdb") {
       continue;
     }
 

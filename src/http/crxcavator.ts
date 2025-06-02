@@ -28,7 +28,7 @@ export async function lookupExtension(
     return response;
   }
 
-  if (response.status != 200) {
+  if (response.status !== 200) {
     const message = extractUtf8String(new Uint8Array(response.body));
     return new HttpError(`REQUEST_ERROR`, `non-200 response: ${message}`);
   }
