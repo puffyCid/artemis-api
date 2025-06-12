@@ -6,7 +6,7 @@ description: Supported output formats
 # Output Formats
 
 Artemis supports three (3) types of output formats:
-[jsonl](https://jsonlines.org/), json or csv. All formats will output the
+[jsonl](https://jsonlines.org/), json, or csv. All formats will output the
 results using a random uuid for the filename such as
 68330d32-c35e-4d43-8655-1cb5e9d90b83.json
 
