@@ -9,15 +9,15 @@ It is important to understand the JavaScript runtime for artemis is **not** like
 normal JavaScript runtimes like NodeJS, Deno, Bun, etc. These runtimes are
 primarily designed to create web apps.
 
+The artemis JavaScript runtime is designed for **DFIR**.
+
 Therefore tutorials or example scripts created for other runtimes may not work
-with artemis. For example, the JavaScript function `console.table()` does not
-exist in artemis. However, the functions `console.log()` and `console.error()`
-do exist in artemis.
+with artemis. For example, common browser Web APIs like `document.getElementbyId()` will not work with artemis.
 
-The JavaScript runtime for artemis is designed specifically to assist with
-scripting for IR and forensic investigations.
+APIs found at at https://developer.mozilla.org/en-US/docs/Web/API, will not work in artemis because it is not a browser!
+Our JavaScript runtime is for DFIR investigations and not the web
 
-There are currently some additional limitations to scripting:
+There are some additional limitations to scripting:
 
 1. All scripts executed through artemis must be in JavaScript. You **cannot**
    execute TypeScrpt scripts directly. You **must** compile and bundle them into

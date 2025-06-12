@@ -107,7 +107,7 @@ just --shell pwsh.exe --shell-arg -c cli
 
 to compile artemis
 
-Please see the [Contributing](../Contributing/overview.md) documentation if you
+Please see the [Contributing](../Contributing/building.md) documentation if you
 would like to compile the entire project including optional experimental
 components
 

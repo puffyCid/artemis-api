@@ -86,6 +86,7 @@ export class Epiphany {
                     referring_visit: entry[ "referring_visit" ] as string | null,
                     sync_id: entry[ "sync_id" ] as string | null,
                 };
+
                 if (this.unfold && client !== undefined && value.target_url !== null) {
                     const status = client.parseUrl(value.target_url);
                     if (!(status instanceof UnfoldError)) {
@@ -130,6 +131,7 @@ export class Epiphany {
                     same_site: null,
                     db_path: db
                 };
+
                 if (entry[ "last_access" ] !== null) {
                     value.last_accessed = unixEpochToISO(entry[ "last_access" ] as number);
                 }

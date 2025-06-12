@@ -43,7 +43,7 @@ test for the artifact can also be very useful. Writing an integration is a two
 An example prefetch integration test:
 
 1. TOML file created at
-   `<path to repo>/artemis-core/tests/test_data/windows/prefetch.toml`
+   `<path to repo>/forensics/tests/test_data/windows/prefetch.toml`
 
 ```toml
 [output]
@@ -62,7 +62,7 @@ artifact_name = "prefetch"
 ```
 
 2. `prefetch_tester.rs` created at
-   `<path to repo>/artemis-core/tests/prefetch_tester.rs`
+   `<path to repo>/forensics/tests/prefetch_tester.rs`
 
 ```rust
 #[test]
@@ -70,7 +70,7 @@ artifact_name = "prefetch"
 fn test_prefetch_parser() {
     use std::path::PathBuf;
 
-    use artemis_core::core::parse_toml_file;
+    use forensics::core::parse_toml_file;
     let mut test_location = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     test_location.push("tests/test_data/windows/prefetch.toml");
 

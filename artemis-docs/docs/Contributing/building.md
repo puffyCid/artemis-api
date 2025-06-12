@@ -115,7 +115,7 @@ Available recipes:
 
     [workspace]
     cli                         # Just build the artemis binary
-    core                        # Just build core library
+    forensics                   # Just build core library
     slim                        # Just build the artemis binary. But do not enable Yara-X
 
 ```

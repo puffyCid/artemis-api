@@ -4,7 +4,22 @@ description: Interact with macOS Artifacts
 
 # macOS
 
-These functions can be used to pull data related to macOS artifacts
+These functions can be used to pull data related to macOS artifacts.
+
+You can access these functions by using git to clone the API [TypeScript bindings](https://github.com/puffyCid/artemis-api).  
+Then you may import them into your TypeScript code.
+
+For example:
+```typescript
+import { listApps } from "./artemis-api/mod";
+
+function main() {
+  const results = listApps();
+  console.log(JSON.stringify(results));
+}
+
+main();
+```
 
 ### getUsers(path) -> Users[] | MacosError
 

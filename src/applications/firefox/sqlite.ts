@@ -78,6 +78,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                 host: entry[ "host" ] as string ?? "",
                 unfold: undefined
             };
+
             if (unfold && typeof client !== 'undefined') {
                 const result = client.parseUrl(history_row.url);
                 if (!(result instanceof UnfoldError)) {

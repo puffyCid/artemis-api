@@ -8,7 +8,9 @@ description: Using TypeScript
 A TypeScrpt library is provided instead of JavaScript due to the enhanced
 features and ease of use TypeScrpt provides over plain JavaScript.
 
-Continuing from `get_registry()` example:
+Continuing from `get_registry()` function example. The code block below shows the API exposes a function called `get_registry()`.
+
+This function then calls `js_get_registry()`. The function js_get_registry is the actual Rust function that will parse the Registry.
 
 ```typescript
 export interface Registry {
@@ -70,17 +72,15 @@ export function get_registry(path: string): Registry[] {
 }
 ```
 
-The above TypeScrpt code shows that we can access our registered `get_registry`
-function by calling it via `js_get_registry(path);`
 
-To make scripting even easier a simple **artemis-api** library is available to
+To make scripting even easier a simple TypeScript library is available to
 import into your scripts. This allows users to create scripts without needing to
-know what functions are registered. There are two ways to use the
-**artemis-api**:
+know what functions are registered. 
 
-- Import from GitHub remotely:
-  ./artemis-api/mod.ts
-- Clone the API (https://github.com/puffyCid/artemis-api) and import locally
+In order to access the TypeScript library you just need to clone the artemis-api repo:
+- https://github.com/puffyCid/artemis-api
+
+Then just import into your TypeScript code!
 
 The example script below shows TypeScrpt code that imports the **artemis-api**
 library to parse the SOFTWARE `Registry` file to get a list of installed

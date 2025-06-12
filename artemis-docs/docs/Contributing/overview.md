@@ -17,12 +17,12 @@ Use the just command `just complex` to measure lines of Rust and complexity!\
 
 From the root of the artemis repo:
 
-- `core/` workspace contains the library component of artemis. The bulk of the
+- `forensics/` workspace contains the library component of artemis. The bulk of the
   code is located here
 - `cli/` workspace contains the executable component artemis.
 - `timeline/` workspace contains functions to timeline artifacts
 
-From the `core/src/` directory
+From the `forensics/src/` directory
 
 | Directory  | Description                                                                                                                                                                                                            |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

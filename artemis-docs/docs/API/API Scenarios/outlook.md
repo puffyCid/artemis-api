@@ -19,7 +19,7 @@ Outlook OST file.
 ## Outlook Parsing Guide
 
 Lets walkthrough a small sample
-[test](https://github.com/puffyCid/artemis/blob/main/core/tests/test_data/windows/outlook/windows11/test%40outlook.com.ost)
+[test](https://github.com/puffyCid/artemis/blob/main/forensics/tests/test_data/windows/outlook/windows11/test%40outlook.com.ost)
 OST file.
 
 The guide below assumes you have cloned the artemis API repository to your local
