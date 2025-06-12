@@ -26,52 +26,166 @@ The json output from the amcache TOML collection from the previous page would
 look like the following:
 
 ```json
-{
-  "metadata": {
-    "endpoint_id": "6c51b123-1522-4572-9f2a-0bd5abd81b82",
-    "id": 1,
-    "uuid": "41bc55e4-bc7b-4798-8808-4351092595a5",
-    "artifact_name": "amcache",
-    "complete_time": 1680466070,
-    "start_time": 1680466065,
-    "hostname": "DESKTOP-UQQDFT8",
-    "os_version": "11 (22000)",
-    "platform": "Windows",
-    "kernel_version": "22000",
-    "load_performance": {
-      "avg_one_min": 0.0,
-      "avg_five_min": 0.0,
-      "avg_fifteen_min": 0.0
+[
+  {
+    "last_modified": "2023-01-11T04:42:58.000Z",
+    "path": "C:\\Users\\bob\\Documents\\artemis-core\\target\\release\\examples\\artemis_core.exe",
+    "name": "",
+    "original_name": "",
+    "version": "",
+    "binary_type": "",
+    "product_version": "",
+    "product_name": "",
+    "language": "0",
+    "file_id": "",
+    "link_date": "1673412152",
+    "path_hash": "",
+    "program_id": "",
+    "size": "5188608",
+    "publisher": "",
+    "usn": "",
+    "sha1": "8c55942db046700a0ccddea067e3a6e3cc259424",
+    "reg_path": "{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\20000667bc",
+    "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
+    "collection_metadata": {
+      "endpoint_id": "local",
+      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "id": 0,
+      "artifact_name": "amcache",
+      "complete_time": "2025-06-12T03:59:42.000Z",
+      "start_time": "2025-06-12T03:59:42.000Z",
+      "hostname": "fedora",
+      "os_version": "42",
+      "platform": "Fedora Linux",
+      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "load_performance": {
+        "avg_one_min": 0.25,
+        "avg_five_min": 0.42,
+        "avg_fifteen_min": 0.5
+      }
     }
   },
-  "data": [
-    {
-      "first_execution": 1641252583,
-      "path": "c:\\program files (x86)\\windows kits\\10\\debuggers\\x86\\1394\\1394kdbg.sys",
-      "name": "1394kdbg.sys",
-      "original_name": "1394dbg.sys",
-      "version": "10.0.19041.685 (winbuild.160101.0800)",
-      "binary_type": "pe32_i386",
-      "product_version": "10.0.19041.685",
-      "product_name": "microsoft® windows® operating system",
-      "language": "",
-      "file_id": "",
-      "link_date": "10/28/2087 21:21:59",
-      "path_hash": "1394kdbg.sys|2912931c5988cc06",
-      "program_id": "00a68cd0bda5b35cd2f03e8556cad622f00000904",
-      "size": "38352",
-      "publisher": "microsoft corporation",
-      "usn": "4010442296",
-      "sha1": "",
-      "reg_path": "{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\1394kdbg.sys|2912931c5988cc06"
+  {
+    "last_modified": "2023-01-11T04:59:30.000Z",
+    "path": "C:\\Users\\bob\\AppData\\Local\\Temp\\{EC2593B0-35E9-431F-B4BE-FCDE81BA2590}\\AccessData_FTK_Imager_4.7.1.exe",
+    "name": "",
+    "original_name": "",
+    "version": "4.7.1.2",
+    "binary_type": "",
+    "product_version": "4.7.1.2",
+    "product_name": "AccessData FTK Imager",
+    "language": "1033",
+    "file_id": "",
+    "link_date": "1606092798",
+    "path_hash": "",
+    "program_id": "",
+    "size": "53465480",
+    "publisher": "AccessData",
+    "usn": "",
+    "sha1": "4651d3fc8bd425dd0e26487a0d5939900a2c9d43",
+    "reg_path": "{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\8000047d3b",
+    "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
+    "collection_metadata": {
+      "endpoint_id": "local",
+      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "id": 0,
+      "artifact_name": "amcache",
+      "complete_time": "2025-06-12T03:59:42.000Z",
+      "start_time": "2025-06-12T03:59:42.000Z",
+      "hostname": "fedora",
+      "os_version": "42",
+      "platform": "Fedora Linux",
+      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "load_performance": {
+        "avg_one_min": 0.25,
+        "avg_five_min": 0.42,
+        "avg_fifteen_min": 0.5
+      }
     }
-  ]
-}
+  },
+  {
+    "last_modified": "2023-01-11T04:59:29.000Z",
+    "path": "c:\\users\\bob\\downloads\\accessdata_ftk_imager_4.7.1.exe",
+    "name": "AccessData_FTK_Imager_4.7.1.exe",
+    "original_name": "accessdata_ftk_imager_(x64).exe",
+    "version": "4.7.1.2",
+    "binary_type": "pe32_i386",
+    "product_version": "4.7.1.2",
+    "product_name": "accessdata ftk imager",
+    "language": "1033",
+    "file_id": "4651d3fc8bd425dd0e26487a0d5939900a2c9d43",
+    "link_date": "11/23/2020 00:53:18",
+    "path_hash": "accessdata_ftk_i|7e1ce138b4a0a7d9",
+    "program_id": "656f546c2513d30cc1f86b30cdae6bb2300000904",
+    "size": "53465480",
+    "publisher": "accessdata",
+    "usn": "1581746848",
+    "sha1": "4651d3fc8bd425dd0e26487a0d5939900a2c9d43",
+    "reg_path": "{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\accessdata_ftk_i|7e1ce138b4a0a7d9",
+    "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
+    "collection_metadata": {
+      "endpoint_id": "local",
+      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "id": 0,
+      "artifact_name": "amcache",
+      "complete_time": "2025-06-12T03:59:42.000Z",
+      "start_time": "2025-06-12T03:59:42.000Z",
+      "hostname": "fedora",
+      "os_version": "42",
+      "platform": "Fedora Linux",
+      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "load_performance": {
+        "avg_one_min": 0.25,
+        "avg_five_min": 0.42,
+        "avg_fifteen_min": 0.5
+      }
+    }
+  },
+  {
+    "last_modified": "2023-01-11T04:57:06.000Z",
+    "path": "c:\\program files (x86)\\microsoft\\edge\\application\\msedge.exe",
+    "name": "msedge.exe",
+    "original_name": "msedge.exe",
+    "version": "108.0.1462.76",
+    "binary_type": "pe64_amd64",
+    "product_version": "108.0.1462.76",
+    "product_name": "microsoft edge",
+    "language": "1033",
+    "file_id": "57f7a64c05fbc31830754108ccb6f65bd6c0f9bc",
+    "link_date": "01/04/2023 23:15:18",
+    "path_hash": "msedge.exe|d27b57360cd4a4cf",
+    "program_id": "66afc7e33c2fa0155f7f4969e8f4ea64b00000904",
+    "size": "3879368",
+    "publisher": "microsoft corporation",
+    "usn": "1570250352",
+    "sha1": "57f7a64c05fbc31830754108ccb6f65bd6c0f9bc",
+    "reg_path": "{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\msedge.exe|d27b57360cd4a4cf",
+    "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
+    "collection_metadata": {
+      "endpoint_id": "local",
+      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "id": 0,
+      "artifact_name": "amcache",
+      "complete_time": "2025-06-12T03:59:42.000Z",
+      "start_time": "2025-06-12T03:59:42.000Z",
+      "hostname": "fedora",
+      "os_version": "42",
+      "platform": "Fedora Linux",
+      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "load_performance": {
+        "avg_one_min": 0.25,
+        "avg_five_min": 0.42,
+        "avg_fifteen_min": 0.5
+      }
+    }
+  }
+]
+
 ```
 
 All artifacts parsed by artemis will be formatted similar to the output above.
 
-- `metadata` object that contains metadata about the system. All artifacts will
+- `collection_metadata` object that contains metadata about the system. All artifacts will
   contain a metadata object
   - `endpoint_id` The ID associated with the endpoint. This is from the `TOML`
     input
@@ -90,7 +204,7 @@ All artifacts parsed by artemis will be formatted similar to the output above.
     - `avg_one_min` Average load performance for one minute
     - `avg_five_mine` Average load performance for five minutes
     - `avg_fifteen_min` Average load performance for fifteen minutes
-- `data` object that contains the artifact specific data.\
+- Artifact object that contains the parsed data.\
   See the [artifact](../../Artifacts/overview.md) chapter to see the structure
   for each artifact.\
   If you choose to execute JavaScript you can control what the data contains.
@@ -101,17 +215,15 @@ The jsonl output from the amcache TOML collection from the previous page would
 look like the following:
 
 ```jsonl
-{"metadata":{"endpoint_id":"6c51b123-1522-4572-9f2a-0bd5abd81b82","id":1,"artifact_name":"amcache","complete_time":1680467122,"start_time":1680467120,"hostname":"DESKTOP-UQQDFT8","os_version":"11 (22000)","platform":"Windows","kernel_version":"22000","load_performance":{"avg_one_min":0.0,"avg_five_min":0.0,"avg_fifteen_min":0.0},"uuid":"64702816-0f24-4e6e-a72a-118cb51c55b4"},"data":{"first_execution":1641252583,"path":"c:\\program files (x86)\\windows kits\\10\\debuggers\\x86\\1394\\1394kdbg.sys","name":"1394kdbg.sys","original_name":"1394dbg.sys","version":"10.0.19041.685 (winbuild.160101.0800)","binary_type":"pe32_i386","product_version":"10.0.19041.685","product_name":"microsoft® windows® operating system","language":"","file_id":"","link_date":"10/28/2087 21:21:59","path_hash":"1394kdbg.sys|2912931c5988cc06","program_id":"00a68cd0bda5b35cd2f03e8556cad622f00000904","size":"38352","publisher":"microsoft corporation","usn":"4010442296","sha1":"","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\1394kdbg.sys|2912931c5988cc06"}}
-{"metadata":{"endpoint_id":"6c51b123-1522-4572-9f2a-0bd5abd81b82","id":1,"artifact_name":"amcache","complete_time":1680467122,"start_time":1680467120,"hostname":"DESKTOP-UQQDFT8","os_version":"11 (22000)","platform":"Windows","kernel_version":"22000","load_performance":{"avg_one_min":0.0,"avg_five_min":0.0,"avg_fifteen_min":0.0},"uuid":"5afa02eb-1e11-48a0-993e-3bb852667db7"},"data":{"first_execution":1641252583,"path":"c:\\program files (x86)\\windows kits\\10\\debuggers\\x64\\1394\\1394kdbg.sys","name":"1394kdbg.sys","original_name":"1394dbg.sys","version":"10.0.19041.685 (winbuild.160101.0800)","binary_type":"pe64_amd64","product_version":"10.0.19041.685","product_name":"microsoft® windows® operating system","language":"","file_id":"","link_date":"11/30/2005 17:06:22","path_hash":"1394kdbg.sys|7e05880d5bf9d27b","program_id":"00a68cd0bda5b35cd2f03e8556cad622f00000904","size":"47568","publisher":"microsoft corporation","usn":"4010568800","sha1":"","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\1394kdbg.sys|7e05880d5bf9d27b"}}
-...
-{"metadata":{"endpoint_id":"6c51b123-1522-4572-9f2a-0bd5abd81b82","id":1,"artifact_name":"amcache","complete_time":1680467122,"start_time":1680467120,"hostname":"DESKTOP-UQQDFT8","os_version":"11 (22000)","platform":"Windows","kernel_version":"22000","load_performance":{"avg_one_min":0.0,"avg_five_min":0.0,"avg_fifteen_min":0.0},"uuid":"bce5fccc-9f13-40cd-bebd-95a32ead119a"},"data":{"first_execution":1641252542,"path":"c:\\program files\\git\\mingw64\\bin\\ziptool.exe","name":"ziptool.exe","original_name":"","version":"","binary_type":"pe64_amd64","product_version":"","product_name":"","language":"","file_id":"","link_date":"01/01/1970 00:00:00","path_hash":"ziptool.exe|7269435f129e6e01","program_id":"01286cf3cc5f1d161abf355f10fee583c0000ffff","size":"162258","publisher":"","usn":"3869400664","sha1":"","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\ziptool.exe|7269435f129e6e01"}}
-{"metadata":{"endpoint_id":"6c51b123-1522-4572-9f2a-0bd5abd81b82","id":1,"artifact_name":"amcache","complete_time":1680467122,"start_time":1680467120,"hostname":"DESKTOP-UQQDFT8","os_version":"11 (22000)","platform":"Windows","kernel_version":"22000","load_performance":{"avg_one_min":0.0,"avg_five_min":0.0,"avg_fifteen_min":0.0},"uuid":"8437907f-53a4-43a2-8ff4-22acb3d06d72"},"data":{"first_execution":1641252542,"path":"c:\\program files\\git\\usr\\bin\\[.exe","name":"[.exe","original_name":"","version":"","binary_type":"pe64_amd64","product_version":"","product_name":"","language":"","file_id":"","link_date":"01/01/1970 00:00:00","path_hash":"[.exe|b6eac39997c90239","program_id":"01286cf3cc5f1d161abf355f10fee583c0000ffff","size":"68322","publisher":"","usn":"3870610520","sha1":"","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\[.exe|b6eac39997c90239"}}
+{"last_modified":"2023-01-11T04:42:58.000Z","path":"C:\\Users\\bob\\Documents\\artemis-core\\target\\release\\examples\\artemis_core.exe","name":"","original_name":"","version":"","binary_type":"","product_version":"","product_name":"","language":"0","file_id":"","link_date":"1673412152","path_hash":"","program_id":"","size":"5188608","publisher":"","usn":"","sha1":"8c55942db046700a0ccddea067e3a6e3cc259424","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\20000667bc","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
+{"last_modified":"2023-01-11T04:59:30.000Z","path":"C:\\Users\\bob\\AppData\\Local\\Temp\\{EC2593B0-35E9-431F-B4BE-FCDE81BA2590}\\AccessData_FTK_Imager_4.7.1.exe","name":"","original_name":"","version":"4.7.1.2","binary_type":"","product_version":"4.7.1.2","product_name":"AccessData FTK Imager","language":"1033","file_id":"","link_date":"1606092798","path_hash":"","program_id":"","size":"53465480","publisher":"AccessData","usn":"","sha1":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\8000047d3b","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
+{"last_modified":"2023-01-11T04:59:29.000Z","path":"c:\\users\\bob\\downloads\\accessdata_ftk_imager_4.7.1.exe","name":"AccessData_FTK_Imager_4.7.1.exe","original_name":"accessdata_ftk_imager_(x64).exe","version":"4.7.1.2","binary_type":"pe32_i386","product_version":"4.7.1.2","product_name":"accessdata ftk imager","language":"1033","file_id":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","link_date":"11/23/2020 00:53:18","path_hash":"accessdata_ftk_i|7e1ce138b4a0a7d9","program_id":"656f546c2513d30cc1f86b30cdae6bb2300000904","size":"53465480","publisher":"accessdata","usn":"1581746848","sha1":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\accessdata_ftk_i|7e1ce138b4a0a7d9","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
+{"last_modified":"2023-01-11T04:57:06.000Z","path":"c:\\program files (x86)\\microsoft\\edge\\application\\msedge.exe","name":"msedge.exe","original_name":"msedge.exe","version":"108.0.1462.76","binary_type":"pe64_amd64","product_version":"108.0.1462.76","product_name":"microsoft edge","language":"1033","file_id":"57f7a64c05fbc31830754108ccb6f65bd6c0f9bc","link_date":"01/04/2023 23:15:18","path_hash":"msedge.exe|d27b57360cd4a4cf","program_id":"66afc7e33c2fa0155f7f4969e8f4ea64b00000904","size":"3879368","publisher":"microsoft corporation","usn":"1570250352","sha1":"57f7a64c05fbc31830754108ccb6f65bd6c0f9bc","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\msedge.exe|d27b57360cd4a4cf","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
 ```
 
 The jsonl output is identical to json with the following differences:
 
-- The values in `data` are split into separate lines instead of an array
-- The `uuid` is unique for each json line
+- Our JSON array is split into individual lines
 
 This data would be saved in a `<uuid>.jsonl` file
 
