@@ -31,8 +31,6 @@ filter = false
 # alt_file = "C:\\Artifacts\\Amcache.hve"
 ```
 
-- `system` Defines what OS this collection targets. This example targets Windows
-  systems. This collection will only run with the Windows version of artemis
 - `[output]` Defines the output configuration
   - `name` The output name. This can be any string value
   - `directory` The directory where the output should be written. This example
