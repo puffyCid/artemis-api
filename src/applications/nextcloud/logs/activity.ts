@@ -27,7 +27,7 @@ export function nextcloudActivityLogs(text: string, log_source: string): Nextclo
         }
 
         const timestamp = entry.split("[");
-        log.timestamp = (timestamp.at(0) ?? "1970-01-01T00:00:00.Z").trimEnd().replace(" ", "T");
+        log.timestamp = `${(timestamp.at(0) ?? "1970-01-01T00:00:00").trimEnd().replace(" ", "T")}.Z`;
         const next_values = timestamp.slice(1).join("[");
 
         if (next_values === undefined) {
