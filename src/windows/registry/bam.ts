@@ -14,33 +14,33 @@ import { getRegistry } from "../registry";
  * @returns Array of `Bam` or `WindowsError`
  */
 export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsError {
-    let path =  `${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
-    if(alt_path != undefined) {
+    let path = `${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
+    if (alt_path !== undefined) {
         path = alt_path;
     }
     const reg_data = getRegistry(path);
-    if(reg_data instanceof WindowsError) {
+    if (reg_data instanceof WindowsError) {
         return new WindowsError(`BAM`, `failed to parse ${path}: ${reg_data}`);
     }
 
     const values: Bam[] = [];
-    for(const entry of reg_data) {
-        if(!entry.path.includes("Services\\bam\\State\\UserSettings\\")) {
+    for (const entry of reg_data) {
+        if (!entry.path.includes("Services\\bam\\State\\UserSettings\\")) {
             continue;
         }
 
-        if(entry.name === "Version" || entry.name === "SequenceNumber") {
+        if (entry.name === "Version" || entry.name === "SequenceNumber") {
             continue;
         }
 
-        for(const value of entry.values) {
+        for (const value of entry.values) {
             const data = decode(value.data);
-            if(data instanceof EncodingError) {
+            if (data instanceof EncodingError) {
                 continue;
             }
 
             const timestamp = nomUnsignedEightBytes(data, Endian.Le);
-            if(timestamp instanceof NomError) {
+            if (timestamp instanceof NomError) {
                 continue;
             }
 
@@ -51,7 +51,7 @@ export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsE
                 sid: entry.name,
                 path: value.value,
                 last_execution,
-            }
+            };
 
             values.push(bam_entry);
         }

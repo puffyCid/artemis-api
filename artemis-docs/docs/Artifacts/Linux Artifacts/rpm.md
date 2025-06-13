@@ -39,7 +39,7 @@ function main() {
   const limit = 100;
 
   let count = 1;
-  while (count != 0) {
+  while (count !== 0) {
     const status = getRpmInfo(offset, limit);
     if (status instanceof LinuxError) {
       break;

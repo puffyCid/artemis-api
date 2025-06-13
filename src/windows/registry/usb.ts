@@ -17,7 +17,7 @@ import { WindowsError } from "../errors";
  * @returns Array of `UsbDevices` or `WindowsError`
  */
 export function listUsbDevices(alt_file?: string): UsbDevices[] | WindowsError {
-  if (alt_file != undefined) {
+  if (alt_file !== undefined) {
     return usbSystem(alt_file);
   }
 
@@ -60,14 +60,14 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
 
   for (let i = 0; i < usbs.length; i++) {
     for (const reg of reg_data) {
-      if (reg.path.includes(usbs[i].tracking_id) && "Partmg") {
+      if (reg.path.includes(usbs[ i ].tracking_id) && "Partmg") {
         for (const value of reg.values) {
-          if (value.value != "DiskId" || usbs[i].disk_id != "") {
+          if (value.value !== "DiskId" || usbs[ i ].disk_id !== "") {
             continue;
           }
-          usbs[i].disk_id = value.data.replace("{", "").replace("}", "");
+          usbs[ i ].disk_id = value.data.replace("{", "").replace("}", "");
         }
-      } else if (reg.path.includes(mounts) && reg.values.length != 0) {
+      } else if (reg.path.includes(mounts) && reg.values.length !== 0) {
         for (const value of reg.values) {
           const data = decode(value.data);
           if (data instanceof EncodingError) {
@@ -75,50 +75,50 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
           }
           const value_string = extractUtf16String(data);
           if (
-            value_string.includes(usbs[i].tracking_id) &&
+            value_string.includes(usbs[ i ].tracking_id) &&
             value.value.includes(":")
           ) {
-            usbs[i].drive_letter = value.value.split("\\").pop() as string;
+            usbs[ i ].drive_letter = value.value.split("\\").pop() as string;
           }
         }
       }
       if (
-        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes(usbs[ i ].tracking_id) &&
         reg.path.includes("\\USBSTOR\\") &&
         reg.name === "0064"
       ) {
         for (const value of reg.values) {
-          usbs[i].first_install = unixEpochToISO(
+          usbs[ i ].first_install = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
         }
       } else if (
-        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes(usbs[ i ].tracking_id) &&
         reg.path.includes("\\USBSTOR\\") &&
         reg.name === "0065"
       ) {
         for (const value of reg.values) {
-          usbs[i].install = unixEpochToISO(
+          usbs[ i ].install = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
         }
       } else if (
-        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes(usbs[ i ].tracking_id) &&
         reg.path.includes("\\USBSTOR\\") &&
         reg.name === "0066"
       ) {
         for (const value of reg.values) {
-          usbs[i].last_connected = unixEpochToISO(
+          usbs[ i ].last_connected = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
         }
       } else if (
-        reg.path.includes(usbs[i].tracking_id) &&
+        reg.path.includes(usbs[ i ].tracking_id) &&
         reg.path.includes("\\USBSTOR\\") &&
         reg.name === "0067"
       ) {
         for (const value of reg.values) {
-          usbs[i].last_removal = unixEpochToISO(
+          usbs[ i ].last_removal = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
         }
@@ -155,24 +155,24 @@ function usbStor(data: Registry): UsbDevices {
   const info = (data.key.split("\\").pop() as string).split("&");
   for (let i = 0; i < info.length; i++) {
     if (i === 0) {
-      entry.usb_type = info[i];
+      entry.usb_type = info[ i ];
     }
 
-    if (info[i].includes("Ven_")) {
-      entry.vendor = info[i].slice(4);
+    if (info[ i ].includes("Ven_")) {
+      entry.vendor = info[ i ].slice(4);
     }
 
-    if (info[i].includes("Prod_")) {
-      entry.product = info[i].slice(5);
+    if (info[ i ].includes("Prod_")) {
+      entry.product = info[ i ].slice(5);
     }
 
-    if (info[i].includes("Rev_")) {
-      entry.revision = info[i].slice(4);
+    if (info[ i ].includes("Rev_")) {
+      entry.revision = info[ i ].slice(4);
     }
   }
 
-  if (data.name.at(1) != undefined && data.name.at(1) != "&") {
-    entry.tracking_id = data.name.split("&")[0];
+  if (data.name.at(1) !== undefined && data.name.at(1) !== "&") {
+    entry.tracking_id = data.name.split("&")[ 0 ];
   }
 
   for (const value of data.values) {

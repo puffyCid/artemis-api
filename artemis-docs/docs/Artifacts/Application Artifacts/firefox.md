@@ -14,31 +14,34 @@ Artemis supports parsing the following artifacts from Firefox.
 - Downloads
 - Cookies
 - Addons
-
-You have to use the artemis [api](../../API/overview.md) in order to collect FireFox data
+- Website storage
+- Favicons
 
 Other parsers:
 
 - Any program that read a SQLITE database
 
-References:
+# Collection
 
-- [Schema](https://kb.mozillazine.org/Places.sqlite)
-
-
-# Sample API Script
+You have to use the artemis [api](../../API/overview.md) in order to collect FireFox data
 
 ```typescript
-import {
-  getFirefoxCookies,
-  PlatformType,
-} from "./artemis-api/mod";
+import { FireFox, PlatformType } from "./artemis-api/mod";
 
 function main() {
-  const results = getFirefoxCookies(PlatformType.Darwin);
+  const enable_unfold = true;
+  const fox = new FireFox(PlatformType.Linux, enable_unfold);
 
-  console.log(results);
+  const start = 0;
+  const limit = 300;
+  const history_data = fox.history(start, limit);
+
+  const addons = fox.addons();
+  return addons;
 }
+
+main();
+
 ```
 
 # Output Structure

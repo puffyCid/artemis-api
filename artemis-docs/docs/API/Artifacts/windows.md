@@ -6,6 +6,25 @@ description: Interact with Windows Artifacts
 
 These functions can be used to pull data related to Windows artifacts.
 
+You can access these functions by using git to clone the API [TypeScript bindings](https://github.com/puffyCid/artemis-api).  
+Then you may import them into your TypeScript code.
+
+For example:
+```typescript
+import { assembleScriptblocks } from "./artemis-api/mod";
+
+function main() {
+  const powershell_scriptblocks = assembleScriptblocks();
+  if(powershell_scriptblocks instanceof WindowsError) {
+    return;
+  }
+
+  console.log(JSON.stringify(powershell_scriptblocks));
+}
+
+main();
+```
+
 ### getAmcache() -> Amcache[] | WindowsError
 
 Parse Amcache Registry file on the systemdrive.

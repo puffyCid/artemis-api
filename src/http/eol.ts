@@ -24,7 +24,7 @@ export async function checkEolStatus(
     return response;
   }
 
-  if (response.status != 200) {
+  if (response.status !== 200) {
     const message = extractUtf8String(new Uint8Array(response.body));
     return new HttpError(`REQUEST_ERROR`, `non-200 response: ${message}`);
   }
@@ -38,13 +38,13 @@ export async function checkEolStatus(
       const status: EolStatus = {
         name,
         version,
-        latest_version: entry["latest"],
-        eol: entry["eol"],
-        lts: entry["lts"],
+        latest_version: entry[ "latest" ],
+        eol: entry[ "eol" ],
+        lts: entry[ "lts" ],
         url: `https://endoflife.date/${name}`,
-        release_date: entry["releaseDate"],
-        latest_release_date: entry["latestReleaseDate"],
-        support: entry["support"],
+        release_date: entry[ "releaseDate" ],
+        latest_release_date: entry[ "latestReleaseDate" ],
+        support: entry[ "support" ],
       };
       return status;
     }

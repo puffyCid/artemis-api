@@ -30,7 +30,7 @@ export class Updates extends EseDatabase {
     const default_path = getEnvValue("SystemDrive");
     let path =
       `${default_path}\\Windows\\SoftwareDistribution\\DataStore\\DataStore.edb`;
-    if (alt_path != undefined && alt_path.endsWith("DataStore.edb")) {
+    if (alt_path !== undefined && alt_path.endsWith("DataStore.edb")) {
       path = alt_path;
     }
 

@@ -10,7 +10,7 @@ import { LinuxError } from "./errors";
  */
 export function getDebInfo(alt_path?: string): DebPackages[] | LinuxError {
   let path = "/var/lib/dpkg/status";
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     path = alt_path;
   }
 
@@ -23,7 +23,7 @@ export function getDebInfo(alt_path?: string): DebPackages[] | LinuxError {
   }
 
   const package_lines = status_data.split("\n");
-  const packages = [];
+  const packages: DebPackages[] = [];
   let deb: DebPackages = {
     name: "",
     version: "",
@@ -58,7 +58,7 @@ export function getDebInfo(alt_path?: string): DebPackages[] | LinuxError {
     } else if (line.startsWith("Depends: ")) {
       const depends = line.substring("Depends: ".length);
       deb.dependencies = depends.split(", ");
-    } else if (line == "" && deb.name != "") {
+    } else if (line == "" && deb.name !== "") {
       packages.push(deb);
       deb = {
         name: "",

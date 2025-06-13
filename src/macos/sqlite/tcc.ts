@@ -26,8 +26,8 @@ import { unixEpochToISO } from "../../time/conversion";
  */
 export function queryTccDb(alt_db?: string): TccValues[] | MacosError {
   let dbs: string[] = [];
-  if (alt_db != undefined) {
-    dbs = [alt_db];
+  if (alt_db !== undefined) {
+    dbs = [ alt_db ];
   } else {
     // Glob for all users TCC.db files
     const user_tcc = glob(
@@ -70,35 +70,35 @@ function getTccData(data: Record<string, unknown>[], path: string): TccValues {
   const tcc_array: TccData[] = [];
   for (const entry of data) {
     const tcc_data: TccData = {
-      service: entry["service"] as string,
-      client: entry["client"] as string,
-      client_type: clientType(entry["client_type"] as number),
-      auth_value: authValue(entry["auth_value"] as number),
-      auth_reason: authReason(entry["auth_reason"] as number),
-      auth_version: entry["auth_version"] as number,
+      service: entry[ "service" ] as string,
+      client: entry[ "client" ] as string,
+      client_type: clientType(entry[ "client_type" ] as number),
+      auth_value: authValue(entry[ "auth_value" ] as number),
+      auth_reason: authReason(entry[ "auth_reason" ] as number),
+      auth_version: entry[ "auth_version" ] as number,
       cert: undefined,
-      policy_id: entry["policy_id"] as number | undefined,
+      policy_id: entry[ "policy_id" ] as number | undefined,
       indirect_object_identifier_type:
-        entry["indirect_object_identifier_type"] as number | undefined,
-      indirect_object_identifier: entry["indirect_object_identifier"] as string,
+        entry[ "indirect_object_identifier_type" ] as number | undefined,
+      indirect_object_identifier: entry[ "indirect_object_identifier" ] as string,
       indirect_object_code_identity: undefined,
-      flags: entry["flags"] as number | undefined,
-      last_modified: unixEpochToISO(entry["last_modified"] as number),
-      pid: entry["pid"] as number | null,
-      pid_version: entry["pid_version"] as number | null,
-      boot_uuid: entry["boot_uuid"] as string,
-      last_reminded: unixEpochToISO(entry["last_reminded"] as number),
+      flags: entry[ "flags" ] as number | undefined,
+      last_modified: unixEpochToISO(entry[ "last_modified" ] as number),
+      pid: entry[ "pid" ] as number | null,
+      pid_version: entry[ "pid_version" ] as number | null,
+      boot_uuid: entry[ "boot_uuid" ] as string,
+      last_reminded: unixEpochToISO(entry[ "last_reminded" ] as number),
     };
 
-    if (entry["csreq"] != undefined) {
-      const cert_info = extractCertBlob(entry["csreq"] as string);
+    if (entry[ "csreq" ] !== undefined && entry[ "csreq" ] !== null) {
+      const cert_info = extractCertBlob(entry[ "csreq" ] as string);
       if (!(cert_info instanceof MacosError)) {
         tcc_data.cert = cert_info;
       }
     }
-    if (entry["indirect_object_code_identity"] != undefined) {
+    if (entry[ "indirect_object_code_identity" ] !== undefined && entry[ "indirect_object_code_identity" ] !== null) {
       const id_info = extractCertBlob(
-        entry["indirect_object_code_identity"] as string,
+        entry[ "indirect_object_code_identity" ] as string,
       );
       if (!(id_info instanceof MacosError)) {
         tcc_data.indirect_object_code_identity = id_info;
@@ -124,7 +124,7 @@ function getTccData(data: Record<string, unknown>[], path: string): TccValues {
 function extractCertBlob(data: string): SingleRequirement | MacosError {
   const cert_bytes = decode(data);
   if (cert_bytes instanceof EncodingError) {
-    console.error(`Could not decode cert info ${cert_bytes}`);
+    console.error(`Could not decode cert info ${cert_bytes}: ${data}`);
     return new MacosError("TCC", `failed to decode cert info: ${cert_bytes}`);
   }
 

@@ -30,15 +30,15 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
         }
 
         // If empty we are done. No more entries are in the log
-        if (logs[1].length === 0) {
+        if (logs[ 1 ].length === 0) {
             break;
         }
 
         // Increase to next chunk of entries
         offset += limit;
-        const data = logs[1] as RawBlock[];
+        const data = logs[ 1 ] as RawBlock[];
         for (const entry of data) {
-            if (entry.data.Event.System.EventID != eid) {
+            if (entry.data.Event.System.EventID !== eid) {
                 continue;
             }
 
@@ -57,23 +57,23 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
                     has_copyright_string: entry.data.Event.EventData.ScriptBlockText.includes("# Copyright "),
                     hostname: entry.data.Event.System.Computer,
                     version: entry.data.Event.System.Version,
-                    activity_id: entry.data.Event.System.Correlation["#attributes"].ActivityID,
+                    activity_id: entry.data.Event.System.Correlation[ "#attributes" ].ActivityID,
                     channel: entry.data.Event.System.Channel,
-                    user_id: entry.data.Event.System.Security["#attributes"].UserID,
-                    process_id: entry.data.Event.System.Execution["#attributes"].ProcessID,
-                    threat_id: entry.data.Event.System.Execution["#attributes"].ThreadID,
-                    system_time: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+                    user_id: entry.data.Event.System.Security[ "#attributes" ].UserID,
+                    process_id: entry.data.Event.System.Execution[ "#attributes" ].ProcessID,
+                    threat_id: entry.data.Event.System.Execution[ "#attributes" ].ThreadID,
+                    system_time: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
                     created_time: entry.timestamp,
                 };
                 entries.push(record);
                 continue;
             }
 
-            if (blocks[entry.data.Event.EventData.ScriptBlockId] != undefined) {
-                blocks[entry.data.Event.EventData.ScriptBlockId].push(entry);
+            if (blocks[ entry.data.Event.EventData.ScriptBlockId ] !== undefined) {
+                blocks[ entry.data.Event.EventData.ScriptBlockId ].push(entry);
                 continue;
             }
-            blocks[entry.data.Event.EventData.ScriptBlockId] = [entry];
+            blocks[ entry.data.Event.EventData.ScriptBlockId ] = [ entry ];
         }
     }
 
@@ -93,7 +93,7 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
 
     for (const entry in data) {
         // Sort our blocks by block number. We do this to make sure we reassemble in correct order
-        data[entry].sort((x, y) => x.data.Event.EventData.MessageNumber - y.data.Event.EventData.MessageNumber);
+        data[ entry ].sort((x, y) => x.data.Event.EventData.MessageNumber - y.data.Event.EventData.MessageNumber);
         const value: Scriptblock = {
             total_parts: 0,
             message: "",
@@ -117,7 +117,7 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
             created_time: ""
         };
         let message = "";
-        for (const script of data[entry]) {
+        for (const script of data[ entry ]) {
             // Only need this info once
             if (message.length === 0) {
                 value.total_parts = script.data.Event.EventData.MessageTotal;
@@ -126,12 +126,12 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
                 value.path = script.data.Event.EventData.Path;
                 value.hostname = script.data.Event.System.Computer;
                 value.version = script.data.Event.System.Version;
-                value.activity_id = script.data.Event.System.Correlation["#attributes"].ActivityID;
+                value.activity_id = script.data.Event.System.Correlation[ "#attributes" ].ActivityID;
                 value.channel = script.data.Event.System.Channel;
-                value.user_id = script.data.Event.System.Security["#attributes"].UserID;
-                value.process_id = script.data.Event.System.Execution["#attributes"].ProcessID;
-                value.threat_id = script.data.Event.System.Execution["#attributes"].ThreadID;
-                value.system_time = script.data.Event.System.TimeCreated["#attributes"].SystemTime;
+                value.user_id = script.data.Event.System.Security[ "#attributes" ].UserID;
+                value.process_id = script.data.Event.System.Execution[ "#attributes" ].ProcessID;
+                value.threat_id = script.data.Event.System.Execution[ "#attributes" ].ThreadID;
+                value.system_time = script.data.Event.System.TimeCreated[ "#attributes" ].SystemTime;
                 value.created_time = script.timestamp;
             }
             message = message.concat(script.data.Event.EventData.ScriptBlockText);
@@ -139,7 +139,7 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
 
         value.message = message;
         value.script_length = message.length;
-        value.has_signature_block = message.includes("# SIG # End signature block")
+        value.has_signature_block = message.includes("# SIG # End signature block");
         value.has_copyright_string = message.includes("# Copyright ");
         results.push(value);
     }

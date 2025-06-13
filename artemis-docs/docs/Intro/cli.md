@@ -114,7 +114,7 @@ The artemis source code provides several pre-made TOML collection files that can
 used as examples.
 
 For example on **macOS** we downloaded the
-[processes.toml](https://github.com/puffycid/artemis/blob/main/artemis-core/tests/test_data/macos/processes.toml)
+[processes.toml](https://github.com/puffycid/artemis/blob/main/forensics/tests/test_data/macos/processes.toml)
 file from the artemis repo to the same directory as the **macOS** artemis binary
 and ran using **sudo**
 
@@ -125,7 +125,7 @@ sudo ./artemis -t processes.toml
 ```
 
 On **Windows** we downloaded the
-[processes.toml](https://github.com/puffycid/artemis/blob/main/artemis-core/tests/test_data/windows/processes.toml)
+[processes.toml](https://github.com/puffycid/artemis/blob/main/forensics/tests/test_data/windows/processes.toml)
 file from the artemis repo to the same directory as the **Windows** artemis
 binary and ran using **Administrator** privileges
 

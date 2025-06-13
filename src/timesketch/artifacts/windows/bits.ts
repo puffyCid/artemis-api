@@ -53,7 +53,7 @@ export function timelineBits(
 
   for (const item of data.carved_files) {
     let entry: TimesketchTimeline = {
-      datetime: "1601-01-01T00:00:00.000Z",
+      datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "Carved BITS File",
       message: `File: ${item.full_path} - URL: ${item.url}`,
       artifact: "BITS Carved File",

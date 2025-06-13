@@ -78,41 +78,41 @@ function getRecords(
   const records: OneDriveSyncEngineRecord[] = [];
   for (const value of results) {
     const record: OneDriveSyncEngineRecord = {
-      parent_resource_id: value["parentResourceID"] as string,
-      resource_id: value["resourceID"] as string,
-      etag: value["eTag"] as string,
-      filename: value["fileName"] as string,
+      parent_resource_id: value[ "parentResourceID" ] as string,
+      resource_id: value[ "resourceID" ] as string,
+      etag: value[ "eTag" ] as string,
+      filename: value[ "fileName" ] as string,
       path: "",
       directory: "",
-      file_status: value["fileStatus"] as number | null,
-      permissions: value["spoPermissions"] as number | null,
-      volume_id: value["volumeID"] as number | null,
-      item_index: value["itemIndex"] as number | null,
-      last_change: "1601-01-01T00:00:00.000Z",
-      size: value["size"] as number | null,
+      file_status: value[ "fileStatus" ] as number | null,
+      permissions: value[ "spoPermissions" ] as number | null,
+      volume_id: value[ "volumeID" ] as number | null,
+      item_index: value[ "itemIndex" ] as number | null,
+      last_change: "1970-01-01T00:00:00.000Z",
+      size: value[ "size" ] as number | null,
       hash_digest: "",
-      shared_item: value["sharedItem"] as string | null,
+      shared_item: value[ "sharedItem" ] as string | null,
       media_date_taken: "",
-      media_width: value["mediaWidth"] as number | null,
-      media_height: value["mediaHeight"] as number | null,
-      media_duration: value["mediaDuration"] as number | null,
+      media_width: value[ "mediaWidth" ] as number | null,
+      media_height: value[ "mediaHeight" ] as number | null,
+      media_duration: value[ "mediaDuration" ] as number | null,
       graph_metadata: "",
-      created_by: "1601-01-01T00:00:00.000Z",
-      modified_by: "1601-01-01T00:00:00.000Z",
+      created_by: "1970-01-01T00:00:00.000Z",
+      modified_by: "1970-01-01T00:00:00.000Z",
       last_write_count: 0,
       db_path: path,
     };
 
-    if (value["lastChange"] != null) {
-      record.last_change = unixEpochToISO(value["lastChange"] as number);
+    if (value[ "lastChange" ] !== null && value[ "lastChange" ] !== undefined) {
+      record.last_change = unixEpochToISO(value[ "lastChange" ] as number);
     }
-    if (value["mediaDateTaken"] != null) {
+    if (value[ "mediaDateTaken" ] !== null && value[ "mediaDateTaken" ] !== undefined) {
       record.media_date_taken = unixEpochToISO(
-        value["mediaDateTaken"] as number,
+        value[ "mediaDateTaken" ] as number,
       );
     }
-    if (value["localHashDigest"] != null) {
-      const data = decode(value["localHashDigest"] as string);
+    if (value[ "localHashDigest" ] !== null && value[ "localHashDigest" ] !== undefined) {
+      const data = decode(value[ "localHashDigest" ] as string);
       if (!(data instanceof EncodingError)) {
         record.hash_digest = bytesToHexString(data);
       }
@@ -145,15 +145,15 @@ function getFolders(
   const folders: OneDriveSyncEngineFolder[] = [];
   for (const value of results) {
     const folder: OneDriveSyncEngineFolder = {
-      parent_resource_id: value["parentResourceID"] as string,
-      resource_id: value["resourceID"] as string,
-      etag: value["eTag"] as string,
-      parent_scope_id: value["parentScopeID"] as string,
-      folder: value["folderName"] as string,
-      folder_status: value["folderStatus"] as number | null,
-      permissions: value["spoPermissions"] as number | null,
-      volume_id: value["volumeID"] as number | null,
-      item_index: value["itemIndex"] as number | null,
+      parent_resource_id: value[ "parentResourceID" ] as string,
+      resource_id: value[ "resourceID" ] as string,
+      etag: value[ "eTag" ] as string,
+      parent_scope_id: value[ "parentScopeID" ] as string,
+      folder: value[ "folderName" ] as string,
+      folder_status: value[ "folderStatus" ] as number | null,
+      permissions: value[ "spoPermissions" ] as number | null,
+      volume_id: value[ "volumeID" ] as number | null,
+      item_index: value[ "itemIndex" ] as number | null,
       parents: [],
     };
     folders.push(folder);
@@ -175,7 +175,7 @@ function getFolders(
 function getParents(id: string, folders: OneDriveSyncEngineFolder[]): string[] {
   let parents: string[] = [];
   for (const folder of folders) {
-    if (folder.resource_id != id) {
+    if (folder.resource_id !== id) {
       continue;
     }
     parents.push(folder.folder);
@@ -214,11 +214,11 @@ function getMeta(path: string): SyncMeta[] | ApplicationError {
   const values: SyncMeta[] = [];
   for (const value of results) {
     const meta: SyncMeta = {
-      created_by: value["createdBy"] as string,
-      modified_by: value["modifiedBy"] as string,
-      graph: value["graphMetadataJSON"] as string,
-      count: value["lastWriteCount"] as number,
-      id: value["resourceID"] as string,
+      created_by: value[ "createdBy" ] as string,
+      modified_by: value[ "modifiedBy" ] as string,
+      graph: value[ "graphMetadataJSON" ] as string,
+      count: value[ "lastWriteCount" ] as number,
+      id: value[ "resourceID" ] as string,
     };
     values.push(meta);
   }

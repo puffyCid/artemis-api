@@ -258,7 +258,7 @@ export function getChromiumCookies(
   }
 
   let paths: string[] = [];
-  if (path != undefined) {
+  if (path !== undefined) {
     paths = [ path ];
   } else {
     for (const glob_path of glob_paths) {
@@ -379,7 +379,7 @@ export function getChromiumAutofill(
   }
 
   let paths: string[] = [];
-  if (path != undefined) {
+  if (path !== undefined) {
     paths = [ path ];
   } else {
     for (const glob_path of glob_paths) {
@@ -477,7 +477,7 @@ export function getChromiumBookmarks(
   }
 
   let paths: string[] = [];
-  if (path != undefined) {
+  if (path !== undefined) {
     paths = [ path ];
   } else {
     for (const glob_path of glob_paths) {
@@ -680,7 +680,7 @@ export function getChromiumLogins(
   }
 
   let paths: string[] = [];
-  if (path != undefined) {
+  if (path !== undefined) {
     paths = [ path ];
   } else {
     for (const glob_path of glob_paths) {
@@ -898,7 +898,7 @@ export function getChromiumDips(
   }
 
   let paths: string[] = [];
-  if (path != undefined) {
+  if (path !== undefined) {
     paths = [ path ];
   } else {
     for (const glob_path of glob_paths) {

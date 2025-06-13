@@ -33,7 +33,7 @@ export function takeUntil(
   data: Uint8Array | string,
   input: Uint8Array | string,
 ): Nom | NomError {
-  if (typeof data != typeof input) {
+  if (typeof data !== typeof input) {
     return new NomError("NOM", "data and input must be matching types");
   }
 
@@ -77,11 +77,11 @@ export function takeWhile(
   data: string | Uint8Array,
   input: string | number,
 ): Nom | NomError {
-  if (typeof data != typeof input) {
+  if (typeof data !== typeof input) {
     return new NomError("NOM", "data and input must be matching types");
   }
 
-  if (typeof input === "string" && input.length != 1) {
+  if (typeof input === "string" && input.length !== 1) {
     return new NomError("NOM", "provided string length greater than 1");
   } else if (typeof input === "number" && input < 0) {
     return new NomError("NOM", "provided negative number");

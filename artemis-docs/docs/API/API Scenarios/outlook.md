@@ -19,7 +19,7 @@ Outlook OST file.
 ## Outlook Parsing Guide
 
 Lets walkthrough a small sample
-[test](https://github.com/puffyCid/artemis/blob/main/core/tests/test_data/windows/outlook/windows11/test%40outlook.com.ost)
+[test](https://github.com/puffyCid/artemis/blob/main/forensics/tests/test_data/windows/outlook/windows11/test%40outlook.com.ost)
 OST file.
 
 The guide below assumes you have cloned the artemis API repository to your local
@@ -263,14 +263,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -497,14 +497,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -622,14 +622,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -749,14 +749,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
