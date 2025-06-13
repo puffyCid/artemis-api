@@ -158,6 +158,49 @@ By default artemis will get the first 100 entries for all users.
 Return FireFox addons for all users. FireFox addons exists as a JSON file.  
 
 
+### Nextcloud Client Class
+
+A basic TypeScript class to extract data from the Nextcloud desktop client. You may optionally provide an alternative glob to the base Nextcloud client directory.
+
+Sample TypeScript code:
+```typescript
+import { NextcloudClient } from "./artemis-api/mod";
+import { PlatformType } from "./artemis-api/src/system/systeminfo";
+
+function main() {
+    const client = new NextcloudClient(PlatformType.Linux);
+
+    console.log(JSON.stringify(client.activityLogs()));
+}
+
+main();
+
+```
+
+#### config() -> NextcloudClientConfig[]
+
+Returns an array of Nextcloud client configs for all users. 
+
+#### syncLogs(max_size) -> NextcloudClientSyncLog[]
+
+Returns an array of sync log entries for the Nextcloud desktop client.  
+You may provide an optional max log size. By default artemis will read all sync logs less than 15MB.  
+Typically sync log(s) are ~3.6 MBs in size.
+
+| Param     | Type   | Description                    |
+| --------- | ------ | ------------------------------ |
+| max_size  | number | Max sync log file size to read |
+
+#### activityLogs(max_size) -> NextcloudClientActivityLog[] 
+
+Returns an array of activity log entries for the Nextcloud desktop client.  
+You may provide an optional max log size. By default artemis will read all activity logs less than 18MB. The Nextcloud client will compress logs with gzip once they reach ~15.6 MBs in size. Compressed log size is typically ~1.2MB.
+
+| Param     | Type   | Description                        |
+| --------- | ------ | ---------------------------------- |
+| max_size  | number | Max activity log file size to read |
+ 
+
 ### recentFiles(platform) -> History[] | ApplicationError
 
 Return a list of files opened by LibreOffice for all users.
