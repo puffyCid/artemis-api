@@ -14,7 +14,7 @@ import { LinuxError } from "../errors";
 export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
   let path = "/home/*/.local/share/gnome-shell/application_state";
 
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     path = alt_path;
   }
 

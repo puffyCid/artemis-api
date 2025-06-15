@@ -40,7 +40,7 @@ function officeMru(
   alt_file?: string,
 ): OfficeRecentFilesWindows[] | ApplicationError {
   const paths: string[] = [];
-  if (alt_file != undefined) {
+  if (alt_file !== undefined) {
     paths.push(alt_file);
   } else {
     const volume = getEnvValue("SystemDrive");
@@ -88,7 +88,7 @@ function extractMruRegistry(
   registry_file: string,
 ): OfficeRecentFilesWindows[] {
   const mrus: Registry[] = [];
-  const filter = ["\\Office\\", "\\File MRU"];
+  const filter = [ "\\Office\\", "\\File MRU" ];
   for (const entries of data) {
     if (
       !filter.every((item) => entries.path.includes(item)) ||
@@ -116,7 +116,7 @@ function extractMruRegistry(
       }
 
       const match = /T0.*]\[/;
-      let time_data = timestamp.match(match)?.[0];
+      let time_data = timestamp.match(match)?.[ 0 ];
       if (time_data === undefined) {
         console.warn(`could not match MRU path properly: ${timestamp}`);
         continue;
@@ -165,7 +165,7 @@ function officeBookmarks(
   alt_file?: string,
 ): OfficeRecentFilesMacos[] | ApplicationError {
   const paths: string[] = [];
-  if (alt_file != undefined) {
+  if (alt_file !== undefined) {
     paths.push(alt_file);
   } else {
     const glob_office =
@@ -195,11 +195,11 @@ function officeBookmarks(
     }
 
     for (const value in plist_data) {
-      const bookmark_values = plist_data[value] as Record<
+      const bookmark_values = plist_data[ value ] as Record<
         string,
         number[] | string
       >;
-      const data = bookmark_values["kBookmarkDataKey"];
+      const data = bookmark_values[ "kBookmarkDataKey" ];
       if (typeof data === "string") {
         console.warn(`got string for kBookmarkDataKey? It should be bytes`);
         continue;

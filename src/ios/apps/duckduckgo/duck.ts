@@ -23,7 +23,7 @@ export function extractDuckDuckGo(
     if (info instanceof IosError) {
       continue;
     }
-    if (path.file_type != FileType.IsFile) {
+    if (path.file_type !== FileType.IsFile) {
       continue;
     }
     const target = `${db_path}/${path.directory}/${path.fileID}`;

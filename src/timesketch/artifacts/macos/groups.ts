@@ -11,7 +11,7 @@ export function timelineGroupsMacos(data: Groups[]): TimesketchTimeline[] {
 
   for (const item of data) {
     let entry: TimesketchTimeline = {
-      datetime: "1601-01-01T00:00:00.000Z",
+      datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.name.join(""),
       artifact: "Groups",

@@ -11,7 +11,7 @@ export function timelineTasks(data: TaskData): TimesketchTimeline[] {
 
   for (const item of data.tasks) {
     const entry: TimesketchTimeline = {
-      datetime: "1601-01-01T00:00:00.000Z",
+      datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.path,
       hash: "",
@@ -20,19 +20,19 @@ export function timelineTasks(data: TaskData): TimesketchTimeline[] {
       data_type: "windows:tasks:xml:entry",
     };
 
-    entry["registration_info"] = item.registrationInfo;
-    entry["triggers"] = item.triggers;
-    entry["settings"] = item.settings;
-    entry["data"] = item.data;
-    entry["principals"] = item.principals;
-    entry["actions"] = item.actions;
+    entry[ "registration_info" ] = item.registrationInfo;
+    entry[ "triggers" ] = item.triggers;
+    entry[ "settings" ] = item.settings;
+    entry[ "data" ] = item.data;
+    entry[ "principals" ] = item.principals;
+    entry[ "actions" ] = item.actions;
 
     entries.push(entry);
   }
 
   for (const item of data.jobs) {
     let entry: TimesketchTimeline = {
-      datetime: "1601-01-01T00:00:00.000Z",
+      datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "N/A",
       message: item.path,
       artifact: "Schedule Task",

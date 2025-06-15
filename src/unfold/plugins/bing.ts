@@ -11,7 +11,7 @@ import { decodeBase64Url, extractUUID } from "./encoding";
 export class Bing {
   private url: Url;
 
-  constructor(url: Url) {
+  constructor (url: Url) {
     this.url = url;
   }
 
@@ -21,7 +21,7 @@ export class Bing {
    */
   public parseBing() {
     for (const entry of this.url.query_pairs) {
-      const [key, ...param] = entry.split("=");
+      const [ key, ...param ] = entry.split("=");
       const value = param.join("=");
       switch (key.toLowerCase()) {
         case "form": {
@@ -29,7 +29,7 @@ export class Bing {
             break;
           }
 
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
         case "sk": {
@@ -37,7 +37,7 @@ export class Bing {
             break;
           }
 
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
         case "ghpl": {
@@ -45,48 +45,48 @@ export class Bing {
             break;
           }
 
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
         case "q": {
-          this.url["search_query"] = value;
+          this.url[ "search_query" ] = value;
           break;
         }
         case "sp": {
-          this.url["suggested_position"] = value;
+          this.url[ "suggested_position" ] = value;
           break;
         }
         case "lq": {
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
         case "pq": {
-          this.url["partial_query"] = value;
+          this.url[ "partial_query" ] = value;
           break;
         }
         case "sc": {
-          this.url["suggestion_count"] = value;
+          this.url[ "suggestion_count" ] = value;
           break;
         }
         case "qs": {
-          this.url["suggestion_type"] = value;
+          this.url[ "suggestion_type" ] = value;
           break;
         }
         case "ghc": {
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
         case "cvid": {
           const uuid = value;
-          if (uuid.length != 32) {
-            this.url["conversation_id"] = value;
+          if (uuid.length !== 32) {
+            this.url[ "conversation_id" ] = value;
             break;
           }
-          this.url["conversation_id"] = extractUUID(uuid);
+          this.url[ "conversation_id" ] = extractUUID(uuid);
           break;
         }
         case "ghacc": {
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
         // A little complex
@@ -109,7 +109,7 @@ export class Bing {
             break;
           }
 
-          this.url[key] = extractUtf8String(data).split("!");
+          this.url[ key ] = extractUtf8String(data).split("!");
 
           // Remove quotes from second part of filter
           const remaining = (filter_value.remaining as string)
@@ -117,14 +117,14 @@ export class Bing {
           const values = remaining.split(" ");
           for (const entry of values) {
             const filter_values = entry.split(":");
-            this.url[`filters_${filter_values.at(0) ?? ""}`] = filter_values.at(
+            this.url[ `filters_${filter_values.at(0) ?? ""}` ] = filter_values.at(
               1,
             );
           }
           break;
         }
         case "ghsh": {
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
         case undefined: {
@@ -134,7 +134,7 @@ export class Bing {
           console.warn(
             `unknown bing key: ${key}. Value: ${value}`,
           );
-          this.url[key] = value;
+          this.url[ key ] = value;
           break;
         }
       }

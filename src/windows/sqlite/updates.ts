@@ -15,7 +15,7 @@ export function windowsUpdatesSqlite(alt_path?: string): UpdateHistoryV2[] | Win
     const default_path = getEnvValue("SystemDrive");
     let path =
         `${default_path}\\ProgramData\\USOPrivate\\UpdateStore\\store.db`;
-    if (alt_path != undefined && alt_path.endsWith("store.db")) {
+    if (alt_path !== undefined && alt_path.endsWith("store.db")) {
         path = alt_path;
     }
 
@@ -25,26 +25,26 @@ export function windowsUpdatesSqlite(alt_path?: string): UpdateHistoryV2[] | Win
     }
 
     const history: UpdateHistoryV2[] = [];
-    for(const entry of results) {
+    for (const entry of results) {
         const value: UpdateHistoryV2 = {
-            provider_id: entry["PROVIDERID"] as string,
-            update_id: entry["UPDATEID"] as string,
+            provider_id: entry[ "PROVIDERID" ] as string,
+            update_id: entry[ "UPDATEID" ] as string,
             time: null,
-            title: entry["TITLE"] as string | null,
-            description: entry["DESCRIPTION"] as string | null,
-            info_url: entry["MOREINFOURL"] as string | null,
-            category: entry["HISTORYCATEGORY"] as string | null,
-            uninstall: Boolean(entry["UNINSTALL"] as number | null),
-            reboot: Boolean(entry["WASREBOOTREQUIRED"] as number | null),
-            for_os: Boolean(entry["FOROS"] as number | null),
+            title: entry[ "TITLE" ] as string | null,
+            description: entry[ "DESCRIPTION" ] as string | null,
+            info_url: entry[ "MOREINFOURL" ] as string | null,
+            category: entry[ "HISTORYCATEGORY" ] as string | null,
+            uninstall: Boolean(entry[ "UNINSTALL" ] as number | null),
+            reboot: Boolean(entry[ "WASREBOOTREQUIRED" ] as number | null),
+            for_os: Boolean(entry[ "FOROS" ] as number | null),
             metadata: null
         };
 
-        if(entry["TIME"] != null) {
-            value.time = unixEpochToISO(BigInt(entry["TIME"] as string))
+        if (entry[ "TIME" ] !== null) {
+            value.time = unixEpochToISO(BigInt(entry[ "TIME" ] as string));
         }
-        if (entry["METADATA"] != null) {
-            value.metadata = JSON.parse(entry["METADATA"] as string);
+        if (entry[ "METADATA" ] !== null) {
+            value.metadata = JSON.parse(entry[ "METADATA" ] as string);
         }
 
         history.push(value);

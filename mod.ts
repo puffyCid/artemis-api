@@ -105,6 +105,7 @@ export {
 export { fileHistory, getExtensions, vscodeRecentFiles } from "./src/applications/vscode";
 export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";
+export { NextcloudClient } from "./src/applications/nextcloud/cloud";
 
 /**
  * Windows exported functions

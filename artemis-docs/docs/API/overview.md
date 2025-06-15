@@ -11,6 +11,8 @@ bindings to make it easier for users to script and call these functions. There
 also a handful of API functions for artifact parsers that are written in pure
 TypeScript.
 
+Checkout the [Getting started section](../Intro/Scripting/boa.md) for walkthrough on how to start scripting with artemis!
+
 The API can be broken down into two broad groups of categories:
 
 1. Highlevel helper functions. For example, functions to read files, parse XML,

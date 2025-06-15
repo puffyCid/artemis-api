@@ -16,7 +16,7 @@ export class EseDatabase {
    * Construct a EseDatabase class to interact with a Windows ESE database
    * @param path Path to the ESE database
    */
-  constructor(path: string) {
+  constructor (path: string) {
     this.path = path;
   }
 
@@ -62,7 +62,7 @@ export class EseDatabase {
 
       if (
         entry.obj_id_table === info.obj_id_table &&
-        info.table_name.length != 0 &&
+        info.table_name.length !== 0 &&
         entry.catalog_type === CatalogType.Column
       ) {
         const column_info: ColumnInfo = {
@@ -78,7 +78,7 @@ export class EseDatabase {
         info.column_info.push(column_info);
       } else if (
         entry.obj_id_table === info.obj_id_table &&
-        info.table_name.length != 0 &&
+        info.table_name.length !== 0 &&
         entry.catalog_type === CatalogType.LongValue
       ) {
         info.long_value_page = entry.column_or_father_data_page;

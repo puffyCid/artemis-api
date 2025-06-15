@@ -54,7 +54,7 @@ function extractWheel(reg: Registry[], source_path: string): WordWheelEntry[] {
 
     for (const value of entry.values) {
       if (
-        Number.isNaN(Number(value.value)) || value.data_type != "REG_BINARY"
+        Number.isNaN(Number(value.value)) || value.data_type !== "REG_BINARY"
       ) {
         continue;
       }

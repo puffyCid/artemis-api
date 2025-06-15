@@ -13,7 +13,7 @@ export function decryptAes(
   data: Uint8Array,
 ): Uint8Array | DecryptError {
   const key_length = 32;
-  if (key.length != key_length) {
+  if (key.length !== key_length) {
     return new DecryptError(
       `AES`,
       `Incorrect key length, wanted 32 bytes got: ${key.length}`,

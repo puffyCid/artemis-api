@@ -48,11 +48,10 @@ export async function circluHashlookup(
 
   if (response instanceof HttpError) {
     return response;
-  } else if (response.status != 200) {
+  } else if (response.status !== 200) {
     return new HttpError(
       `REQUEST_ERROR`,
-      `received non-200 response: ${
-        extractUtf8String(new Uint8Array(response.body))
+      `received non-200 response: ${extractUtf8String(new Uint8Array(response.body))
       }`,
     );
   }

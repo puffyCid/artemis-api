@@ -40,7 +40,7 @@ export function fileHistory(
     }
   }
 
-  if (alt_glob != undefined) {
+  if (alt_glob !== undefined) {
     path = alt_glob;
   }
 
@@ -118,7 +118,7 @@ export function getExtensions(
 ): Extensions[] | ApplicationError {
   // Get all user paths, unless alt_path is provided
   let paths: string[] = [];
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     paths = [ alt_path ];
   } else {
     let path = "";
@@ -177,7 +177,7 @@ export function getExtensions(
 export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): RecentFiles[] | ApplicationError {
   // Get all user paths, unless alt_path is provided
   let paths: string[] = [];
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     paths = [ alt_path ];
   } else {
     let path = "";
@@ -219,7 +219,7 @@ export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): Re
 
     const storage_data = JSON.parse(storage) as VscodeStorage;
     for (const item of storage_data.lastKnownMenubarData.menus.File.items) {
-      if (item.id != "submenuitem.MenubarRecentMenu" || item.submenu === undefined) {
+      if (item.id !== "submenuitem.MenubarRecentMenu" || item.submenu === undefined) {
         continue;
       }
 

@@ -22,7 +22,7 @@ export function getChocolateyInfo(
       "CHOCOLATEYINFO",
       `could not get chocolatey env variable`,
     );
-  } else if (alt_base != undefined) {
+  } else if (alt_base !== undefined) {
     base_path = alt_base;
   }
 
@@ -46,18 +46,18 @@ export function getChocolateyInfo(
 
     // Try to grab some info
     const chocolate: ChocolateyInfo = {
-      name: xml_data.package.metadata[0].id[0],
-      version: xml_data.package.metadata[0].version[0],
-      summary: typeof xml_data.package.metadata[0].summary === "undefined"
+      name: xml_data.package.metadata[ 0 ].id[ 0 ],
+      version: xml_data.package.metadata[ 0 ].version[ 0 ],
+      summary: typeof xml_data.package.metadata[ 0 ].summary === "undefined"
         ? ""
-        : xml_data.package.metadata[0].summary[0],
-      author: xml_data.package.metadata[0].authors[0],
-      license: typeof xml_data.package.metadata[0].licenseUrl === "undefined"
+        : xml_data.package.metadata[ 0 ].summary[ 0 ],
+      author: xml_data.package.metadata[ 0 ].authors[ 0 ],
+      license: typeof xml_data.package.metadata[ 0 ].licenseUrl === "undefined"
         ? ""
-        : xml_data.package.metadata[0].licenseUrl[0],
-      tags: typeof xml_data.package.metadata[0].tags === "undefined"
+        : xml_data.package.metadata[ 0 ].licenseUrl[ 0 ],
+      tags: typeof xml_data.package.metadata[ 0 ].tags === "undefined"
         ? []
-        : xml_data.package.metadata[0].tags[0].split(" "),
+        : xml_data.package.metadata[ 0 ].tags[ 0 ].split(" "),
       path: path.full_path,
     };
     packages.push(chocolate);

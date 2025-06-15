@@ -15,8 +15,10 @@ import { extractDuckDuckGo } from "../apps/duckduckgo/duck";
 import { extractHingeInfo } from "../apps/hinge/hinge";
 import { extractZoom } from "../apps/zoom/zoom";
 import { extractHomeDomain } from "../domains/home/home";
+import { extractNetworkDomain } from "../domains/network/network";
 import { extractRootDomain } from "../domains/root/root";
 import { extractAppleLinkd } from "../domains/syscontainer/linkd";
+import { extractOsAnalytics } from "../domains/syssharedcontainer/osanalytics";
 import { IosError } from "../error";
 
 /**
@@ -197,6 +199,12 @@ export function extractAppInfo(
       break;
     case "SysContainerDomain-com.apple.linkd":
       extractAppleLinkd(paths, db_path, output);
+      break;
+    case "NetworkDomain":
+      extractNetworkDomain(paths, db_path, output);
+      break;
+    case "SysSharedContainerDomain-systemgroup.com.apple.osanalytics":
+      extractOsAnalytics(paths, db_path, output);
       break;
   }
 }

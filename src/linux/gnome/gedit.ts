@@ -16,7 +16,7 @@ export function geditRecentFiles(
 ): RecentFiles[] | LinuxError {
   let path = "/home/*/.local/share/gedit/gedit-metadata.xml";
 
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     path = alt_path;
   }
 

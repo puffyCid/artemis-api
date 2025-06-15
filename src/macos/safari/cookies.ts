@@ -36,7 +36,7 @@ export function parseCookies(path: string): Cookie[] | MacosError {
   }
 
   const cook = 1802465123;
-  if (header.sig != cook) {
+  if (header.sig !== cook) {
     return new MacosError(
       `COOKIES`,
       `got wrong safari cookies sig ${path}: ${header.sig}`,

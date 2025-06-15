@@ -20,8 +20,8 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
     "/Library/Preferences/com.apple.alf.plist",
     "/usr/libexec/ApplicationFirewall/com.apple.alf.plist",
   ];
-  if (alt_path != undefined) {
-    path = [alt_path];
+  if (alt_path !== undefined) {
+    path = [ alt_path ];
   }
 
   const firewalls: Firewall[] = [];
@@ -39,13 +39,13 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
     const results = plist_results as Record<string, string>;
 
     const firewall: Firewall = {
-      allow_signed_enabled: !!results["allowsignedenabled"],
-      firewall_unload: !!results["firewallunload"],
-      logging_enabled: !!results["loggingenabled"],
-      global_state: !!results["globalstate"],
-      logging_option: !!results["loggingoption"],
-      stealth_enabled: !!results["stealthenabled"],
-      version: results["version"],
+      allow_signed_enabled: !!results[ "allowsignedenabled" ],
+      firewall_unload: !!results[ "firewallunload" ],
+      logging_enabled: !!results[ "loggingenabled" ],
+      global_state: !!results[ "globalstate" ],
+      logging_option: !!results[ "loggingoption" ],
+      stealth_enabled: !!results[ "stealthenabled" ],
+      version: results[ "version" ],
       applications: [],
       exceptions: [],
       explict_auths: [],
@@ -53,7 +53,7 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
     };
 
     const applications: Record<string, string | Uint8Array | number>[] =
-      results["applications"] as unknown as Record<
+      results[ "applications" ] as unknown as Record<
         string,
         string | Uint8Array | number
       >[];
@@ -63,18 +63,18 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
     }
 
     const exceptions: Record<string, string | number>[] =
-      results["exceptions"] as unknown as Record<string, string | number>[];
+      results[ "exceptions" ] as unknown as Record<string, string | number>[];
     firewall.exceptions = getExceptions(exceptions);
 
     const services: Record<string, object> =
-      results["firewall"] as unknown as Record<
+      results[ "firewall" ] as unknown as Record<
         string,
         object
       >;
     firewall.services = getServices(services);
 
     const auths: Record<string, string>[] =
-      results["explicitauths"] as unknown as Record<
+      results[ "explicitauths" ] as unknown as Record<
         string,
         string
       >[];
@@ -125,8 +125,8 @@ function parseApplications(
   };
 
   // First get code signing data
-  if (typeof (app["reqdata"]) === "object") {
-    const app_data = Uint8Array.from(app["reqdata"]);
+  if (typeof (app[ "reqdata" ]) === "object") {
+    const app_data = Uint8Array.from(app[ "reqdata" ]);
     const single_requirement = parseRequirementBlob(app_data);
     if (single_requirement instanceof SigningError) {
       console.error(
@@ -138,8 +138,8 @@ function parseApplications(
   }
 
   // Now get Application info which is an embedded plist
-  if (typeof (app["alias"]) === "object") {
-    const raw_plist = Uint8Array.from(app["alias"]);
+  if (typeof (app[ "alias" ]) === "object") {
+    const raw_plist = Uint8Array.from(app[ "alias" ]);
     // Parse the embedded plist
     const embedded_plist = getPlist(raw_plist);
     if (embedded_plist instanceof MacosError) {
@@ -161,8 +161,8 @@ function parseApplications(
   }
 
   // Last part is state of Firewall for application
-  if (typeof (app["state"]) === "number") {
-    firewall.block_incoming = !!app["state"];
+  if (typeof (app[ "state" ]) === "number") {
+    firewall.block_incoming = !!app[ "state" ];
   }
 
   return firewall;
@@ -179,8 +179,8 @@ function getExceptions(
   const results: FirewallExceptions[] = [];
 
   for (const entry of exceptions) {
-    const path = entry["path"] as string;
-    const state = entry["state"] as number;
+    const path = entry[ "path" ] as string;
+    const state = entry[ "state" ] as number;
 
     const except: FirewallExceptions = {
       path,
@@ -201,11 +201,11 @@ function getExceptions(
 function getServices(services: Record<string, object>): Services[] {
   const service_entires: Services[] = [];
   for (const entry in services) {
-    const state = services[entry] as Record<string, string>;
+    const state = services[ entry ] as Record<string, string>;
 
     const service: Services = {
       name: entry,
-      allowed: !!state["state"],
+      allowed: !!state[ "state" ],
     };
 
     service_entires.push(service);
@@ -222,7 +222,7 @@ function getServices(services: Record<string, object>): Services[] {
 function getAuths(auths: Record<string, string>[]): string[] {
   const entries: string[] = [];
   for (const auth of auths) {
-    entries.push(auth["id"]);
+    entries.push(auth[ "id" ]);
   }
   return entries;
 }

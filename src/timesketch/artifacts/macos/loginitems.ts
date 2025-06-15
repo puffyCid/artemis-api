@@ -15,7 +15,7 @@ export function timelineLoginItems(
     let entry: TimesketchTimeline = {
       datetime: item.created,
       timestamp_desc: "LoginItem Target Created",
-      message: item.path.length != 0
+      message: item.path.length !== 0
         ? `${item.volume_url}${item.path}`
         : `${item.app_binary}`,
       artifact: "LoginItems",

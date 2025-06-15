@@ -37,8 +37,8 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
   ];
 
   // Use user provided glob path
-  if (glob_path != undefined) {
-    paths = [glob_path];
+  if (glob_path !== undefined) {
+    paths = [ glob_path ];
   }
   const brew_receipts: HomebrewReceipt[] = [];
 
@@ -109,12 +109,12 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
         }
         const receipt_data = JSON.parse(receipt);
 
-        brew_info.installTime = unixEpochToISO(receipt_data["time"]);
+        brew_info.installTime = unixEpochToISO(receipt_data[ "time" ]);
         brew_info.installedAsDependency =
-          receipt_data["installed_as_dependency"];
-        brew_info.installedOnRequest = receipt_data["installed_on_request"];
+          receipt_data[ "installed_as_dependency" ];
+        brew_info.installedOnRequest = receipt_data[ "installed_on_request" ];
         brew_info.sourceModified = unixEpochToISO(
-          receipt_data["source_modified_time"],
+          receipt_data[ "source_modified_time" ],
         );
       }
 
@@ -138,8 +138,8 @@ export function getCasks(glob_path?: string): HomebrewFormula[] {
     "/opt/homebrew/Caskroom/*/.metadata/*/*/Casks/*.json",
   ];
 
-  if (glob_path != undefined) {
-    paths = [glob_path];
+  if (glob_path !== undefined) {
+    paths = [ glob_path ];
   }
 
   const casks: HomebrewFormula[] = [];
@@ -163,13 +163,13 @@ export function getCasks(glob_path?: string): HomebrewFormula[] {
 
         const data = JSON.parse(text);
         const formula: HomebrewFormula = {
-          description: data["desc"],
-          homepage: data["homepage"],
-          url: data["url"],
+          description: data[ "desc" ],
+          homepage: data[ "homepage" ],
+          url: data[ "url" ],
           license: "",
-          caskName: data["name"].join(" "),
+          caskName: data[ "name" ].join(" "),
           formulaPath: entry.full_path,
-          version: data["version"],
+          version: data[ "version" ],
         };
         casks.push(formula);
       }
@@ -205,9 +205,9 @@ function parseRuby(path: string): HomebrewFormula | FileError {
   const versionvalue = path.split("/");
   let version = "";
   if (path.includes("/Casks/")) {
-    version = versionvalue[versionvalue.length - 4];
+    version = versionvalue[ versionvalue.length - 4 ];
   } else {
-    version = versionvalue[versionvalue.length - 3];
+    version = versionvalue[ versionvalue.length - 3 ];
   }
 
   const rubyText = readTextFile(path);
@@ -225,28 +225,28 @@ function parseRuby(path: string): HomebrewFormula | FileError {
     formulaPath: path,
     version,
   };
-  if (typeof description?.[0] === "string") {
-    receipt.description = description?.[0].replaceAll('"', "");
+  if (typeof description?.[ 0 ] === "string") {
+    receipt.description = description?.[ 0 ].replaceAll('"', "");
   }
 
   const homepage = rubyText.match(homepage_reg);
-  if (typeof homepage?.[0] === "string") {
-    receipt.homepage = homepage?.[0].replaceAll('"', "");
+  if (typeof homepage?.[ 0 ] === "string") {
+    receipt.homepage = homepage?.[ 0 ].replaceAll('"', "");
   }
 
   const license = rubyText.match(reg_license);
-  if (typeof license?.[0] === "string") {
-    receipt.license = license?.[0].replaceAll('"', "");
+  if (typeof license?.[ 0 ] === "string") {
+    receipt.license = license?.[ 0 ].replaceAll('"', "");
   }
 
   const url = rubyText.match(reg_url);
-  if (typeof url?.[0] === "string") {
-    receipt.url = url?.[0].replaceAll('"', "");
+  if (typeof url?.[ 0 ] === "string") {
+    receipt.url = url?.[ 0 ].replaceAll('"', "");
   }
 
   const name = rubyText.match(reg_name);
-  if (typeof name?.[0] === "string" && path.includes("Cask")) {
-    receipt.caskName = name?.[0].replaceAll('"', "");
+  if (typeof name?.[ 0 ] === "string" && path.includes("Cask")) {
+    receipt.caskName = name?.[ 0 ].replaceAll('"', "");
   }
 
   return receipt;

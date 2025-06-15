@@ -18,7 +18,7 @@ export function parseIcon(data: Uint8Array): Icon[] | ImageError {
     );
   }
   const header = 1768124019;
-  if (sig.value != header) {
+  if (sig.value !== header) {
     return new ImageError(
       "ICON_ICNS",
       `not icns file wanted 1768124019, got ${sig.value}`,
@@ -35,7 +35,7 @@ export function parseIcon(data: Uint8Array): Icon[] | ImageError {
   const icons: Icon[] = [];
   let icon_data = file_len.remaining;
 
-  while (icon_data.length != 0) {
+  while (icon_data.length !== 0) {
     const icon_size = 4;
     const icon_type = take(icon_data, icon_size);
     if (icon_type instanceof Error) {
@@ -119,23 +119,23 @@ function osType(type: Uint8Array): number {
     ].includes(value)
   ) {
     return 48;
-  } else if ([OSType.it32, OSType.t8mk, OSType.ic07].includes(value)) {
+  } else if ([ OSType.it32, OSType.t8mk, OSType.ic07 ].includes(value)) {
     return 128;
-  } else if ([OSType.icp4].includes(value)) {
+  } else if ([ OSType.icp4 ].includes(value)) {
     return 16;
-  } else if ([OSType.ic08, OSType.ic13].includes(value)) {
+  } else if ([ OSType.ic08, OSType.ic13 ].includes(value)) {
     return 256;
-  } else if ([OSType.ic09, OSType.ic14].includes(value)) {
+  } else if ([ OSType.ic09, OSType.ic14 ].includes(value)) {
     return 512;
-  } else if ([OSType.ic10].includes(value)) {
+  } else if ([ OSType.ic10 ].includes(value)) {
     return 1024;
-  } else if ([OSType.ic12].includes(value)) {
+  } else if ([ OSType.ic12 ].includes(value)) {
     return 64;
-  } else if ([OSType.icsb].includes(value)) {
+  } else if ([ OSType.icsb ].includes(value)) {
     return 18;
-  } else if ([OSType.icsB].includes(value)) {
+  } else if ([ OSType.icsB ].includes(value)) {
     return 36;
-  } else if ([OSType.sb24].includes(value)) {
+  } else if ([ OSType.sb24 ].includes(value)) {
     return 24;
   } else if (
     [

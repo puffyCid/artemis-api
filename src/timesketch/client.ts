@@ -11,11 +11,14 @@ import { encodeBytes } from "../encoding/bytes";
 import { timelineArtifact } from "./timeline";
 import { TimelineResponse } from "../../types/timesketch/client";
 
+/**
+ * Class to interact with a Timesketch server instance
+ */
 export class Timesketch {
   private timesketch_auth: TimesketchAuth;
   private token: string;
   private cookie: string;
-  private timeline_name;
+  private timeline_name: string;
   private opensearch_index: string;
 
   /**
@@ -131,7 +134,7 @@ export class Timesketch {
         events: chunk.join("\n"),
       };
 
-      if (this.opensearch_index != "") {
+      if (this.opensearch_index !== "") {
         post_data[ "index_name" ] = this.opensearch_index;
       }
 
@@ -144,7 +147,7 @@ export class Timesketch {
         );
       }
 
-      if (response.status != 201) {
+      if (response.status !== 201) {
         return new TimesketchError(
           `UPLOAD`,
           `non-201 response for uploading data ${extractUtf8String(
@@ -241,7 +244,7 @@ export class Timesketch {
       );
     }
 
-    if (response.status != 200) {
+    if (response.status !== 200) {
       return new TimesketchError(
         `SKETCH_ID`,
         `non-200 response for verifying Sketch ID ${extractUtf8String(
@@ -326,7 +329,7 @@ export class Timesketch {
       );
     }
 
-    if (auth_response.status != 302) {
+    if (auth_response.status !== 302) {
       return new TimesketchError(
         `AUTH`,
         `non-302 response for auth to Timesketch ${extractUtf8String(

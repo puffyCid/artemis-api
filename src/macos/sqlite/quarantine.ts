@@ -20,8 +20,8 @@ export function quarantineEvents(
 ): MacosQuarantine[] | MacosError {
   let paths: string[] = [];
 
-  if (alt_file != undefined) {
-    paths = [alt_file];
+  if (alt_file !== undefined) {
+    paths = [ alt_file ];
   } else {
     const glob_path =
       "/Users/*/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2";
@@ -52,43 +52,43 @@ export function quarantineEvents(
     const entries: QuarantineEvent[] = [];
     for (const value of results) {
       const entry: QuarantineEvent = {
-        id: value["LSQuarantineEventIdentifier"] as string,
+        id: value[ "LSQuarantineEventIdentifier" ] as string,
         timestamp: unixEpochToISO(cocoatimeToUnixEpoch(
-          value["LSQuarantineTimeStamp"] as number,
+          value[ "LSQuarantineTimeStamp" ] as number,
         )),
-        agent_name: value["LSQuarantineAgentName"] as string,
-        type: quarantineType(value["LSQuarantineTypeNumber"] as number),
+        agent_name: value[ "LSQuarantineAgentName" ] as string,
+        type: quarantineType(value[ "LSQuarantineTypeNumber" ] as number),
         bundle_id:
-          typeof value["LSQuarantineAgentBundleIdentifier"] === "undefined" ||
-            value["LSQuarantineAgentBundleIdentifier"] === null
+          typeof value[ "LSQuarantineAgentBundleIdentifier" ] === "undefined" ||
+            value[ "LSQuarantineAgentBundleIdentifier" ] === null
             ? ""
-            : value["LSQuarantineAgentBundleIdentifier"] as string,
-        url_string: typeof value["LSQuarantineDataURLString"] === "undefined" ||
-            value["LSQuarantineDataURLString"] === null
+            : value[ "LSQuarantineAgentBundleIdentifier" ] as string,
+        url_string: typeof value[ "LSQuarantineDataURLString" ] === "undefined" ||
+          value[ "LSQuarantineDataURLString" ] === null
           ? ""
-          : value["LSQuarantineDataURLString"] as string,
+          : value[ "LSQuarantineDataURLString" ] as string,
         sender_address:
-          typeof value["LSQuarantineSenderAddress"] === "undefined" ||
-            value["LSQuarantineSenderAddress"] === null
+          typeof value[ "LSQuarantineSenderAddress" ] === "undefined" ||
+            value[ "LSQuarantineSenderAddress" ] === null
             ? ""
-            : value["LSQuarantineSenderAddress"] as string,
-        sender_name: typeof value["LSQuarantineSenderName"] === "undefined" ||
-            value["LSQuarantineSenderName"] === null
+            : value[ "LSQuarantineSenderAddress" ] as string,
+        sender_name: typeof value[ "LSQuarantineSenderName" ] === "undefined" ||
+          value[ "LSQuarantineSenderName" ] === null
           ? ""
-          : value["LSQuarantineSenderName"] as string,
-        origin_alias: typeof value["LSQuarantineOriginAlias"] === "undefined" ||
-            value["LSQuarantineOriginAlias"] === null
+          : value[ "LSQuarantineSenderName" ] as string,
+        origin_alias: typeof value[ "LSQuarantineOriginAlias" ] === "undefined" ||
+          value[ "LSQuarantineOriginAlias" ] === null
           ? ""
-          : value["LSQuarantineOriginAlias"] as string,
-        origin_title: typeof value["LSQuarantineOriginTitle"] === "undefined" ||
-            value["LSQuarantineOriginTitle"] === null
+          : value[ "LSQuarantineOriginAlias" ] as string,
+        origin_title: typeof value[ "LSQuarantineOriginTitle" ] === "undefined" ||
+          value[ "LSQuarantineOriginTitle" ] === null
           ? ""
-          : value["LSQuarantineOriginTitle"] as string,
+          : value[ "LSQuarantineOriginTitle" ] as string,
         origin_url:
-          typeof value["LSQuarantineOriginURLString"] === "undefined" ||
-            value["LSQuarantineOriginURLString"] === null
+          typeof value[ "LSQuarantineOriginURLString" ] === "undefined" ||
+            value[ "LSQuarantineOriginURLString" ] === null
             ? ""
-            : value["LSQuarantineOriginURLString"] as string,
+            : value[ "LSQuarantineOriginURLString" ] as string,
       };
 
       entries.push(entry);

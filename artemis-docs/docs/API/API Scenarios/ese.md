@@ -328,7 +328,7 @@ function main() {
 
   // Instead of using all pages at once. Divide the pages into smaller chunks and parse them
   for (const page of pages) {
-    if (page_chunks.length != chunk_limit) {
+    if (page_chunks.length !== chunk_limit) {
       page_chunks.push(page);
       continue;
     }
@@ -354,7 +354,7 @@ function main() {
   }
 
   // Just in case we have any leftover pages
-  if (page_chunks.length != 0) {
+  if (page_chunks.length !== 0) {
     const data = ese.getRows(page_chunks, info);
     if (data instanceof WindowsError) {
       return;

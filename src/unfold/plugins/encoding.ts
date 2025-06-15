@@ -29,10 +29,9 @@ export function decodeBase64Url(input: string): Uint8Array | EncodingError {
  */
 export function extractUUID(input: string): string {
   const size = 32;
-  if (input.length != size) {
+  if (input.length !== size) {
     return input;
   }
-  return `${input.slice(0, 8)}-${input.slice(8, 12)}-${input.slice(12, 16)}-${
-    input.slice(16, 20)
-  }-${input.slice(20)}`;
+  return `${input.slice(0, 8)}-${input.slice(8, 12)}-${input.slice(12, 16)}-${input.slice(16, 20)
+    }-${input.slice(20)}`;
 }
