@@ -30,7 +30,7 @@ export function nextcloudSyncLogs(text: string, version: string, sync_log_path: 
         const fields = entry.split("|");
         if (version.startsWith("3") || fields.length === 16) {
             const log: NextcloudClientSyncLog = {
-                timestamp: getTimestamp(start_time, fields.at(0) ?? ""),
+                datetime: getTimestamp(start_time, fields.at(0) ?? ""),
                 duration: getNumberValue(fields.at(1) ?? ""),
                 file: fields.at(2) ?? "",
                 instruction: getInstruction(fields.at(3) ?? ""),
@@ -46,6 +46,10 @@ export function nextcloudSyncLogs(text: string, version: string, sync_log_path: 
                 other_modified: fields.at(13) ?? "",
                 x_request_id: fields.at(14) ?? "",
                 sync_log_path,
+                data_type: "cloud:nextcloud:log:sync",
+                timestamp_desc: "File Sync",
+                artifact: "Nextcloud Sync Log",
+                message: fields.at(2) ?? "",
             };
 
             logs.push(log);

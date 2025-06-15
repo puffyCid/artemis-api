@@ -12,13 +12,16 @@ export function nextcloudActivityLogs(text: string, log_source: string): Nextclo
 
     for (const entry of lines) {
         const log: NextcloudClientActivityLog = {
-            timestamp: "",
+            datetime: "",
             category: "",
             function: "",
             source_file: "",
             source_file_line: 0,
             message: "",
-            log_source
+            log_source,
+            data_type: "cloud:nextcloud:log:activity",
+            artifact: "Nextcloud Activity Log",
+            timestamp_desc: "Activity Generated"
         };
 
         const empty = 0;
@@ -27,7 +30,9 @@ export function nextcloudActivityLogs(text: string, log_source: string): Nextclo
         }
 
         const timestamp = entry.split("[");
-        log.timestamp = `${(timestamp.at(0) ?? "1970-01-01T00:00:00").trimEnd().replace(" ", "T")}.Z`;
+        const date = `${(timestamp.at(0) ?? "1970-01-01T00:00:00").trimEnd().replace(" ", "T")}Z`;
+        // Nextcloud uses ":" instead of "."
+        log.datetime = `${date.substring(0, date.lastIndexOf(":"))}.${date.substring(date.lastIndexOf(":") + 1)}`;
         const next_values = timestamp.slice(1).join("[");
 
         if (next_values === undefined) {

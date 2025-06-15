@@ -12,8 +12,12 @@ export interface NextcloudClientConfig {
     config_path: string;
 }
 
+/**
+ * Object representing a sync log entry.  
+ * This object is Timesketch compatible.  It does **not** need to be timelined
+ */
 export interface NextcloudClientSyncLog {
-    timestamp: string;
+    datetime: string;
     duration: number;
     file: string;
     instruction: SyncInstruction;
@@ -29,6 +33,10 @@ export interface NextcloudClientSyncLog {
     other_modified: string;
     x_request_id: string;
     sync_log_path: string;
+    message: string;
+    timestamp_desc: string;
+    artifact: string;
+    data_type: string;
 }
 
 /**
@@ -54,12 +62,19 @@ export enum SyncInstruction {
     Unknown = "Unknown",
 }
 
+/**
+ * Object representing a activity log entry.  
+ * This object is Timesketch compatible.  It does **not** need to be timelined
+ */
 export interface NextcloudClientActivityLog {
-    timestamp: string;
+    datetime: string;
     category: string;
     function: string;
     source_file: string;
     source_file_line: number;
     message: string;
     log_source: string;
+    timestamp_desc: string;
+    artifact: string;
+    data_type: string;
 }
