@@ -46,9 +46,9 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
                 const record: Scriptblock = {
                     total_parts: entry.data.Event.EventData.MessageTotal,
                     message: entry.data.Event.EventData.ScriptBlockText,
-                    timestamp: entry.timestamp,
-                    datetime_desc: "EventLog Entry Created",
-                    entry_type: "windows:eventlog:scriptblock",
+                    datetime: entry.timestamp,
+                    timestamp_desc: "EventLog Entry Created",
+                    data_type: "windows:eventlog:scriptblock",
                     id: entry.data.Event.EventData.ScriptBlockId,
                     source_file: log_path,
                     path: entry.data.Event.EventData.Path,
@@ -64,6 +64,7 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
                     threat_id: entry.data.Event.System.Execution[ "#attributes" ].ThreadID,
                     system_time: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
                     created_time: entry.timestamp,
+                    artifact: "Windows PowerShell Scriptblock"
                 };
                 entries.push(record);
                 continue;
@@ -97,9 +98,9 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
         const value: Scriptblock = {
             total_parts: 0,
             message: "",
-            timestamp: "",
-            datetime_desc: "EventLog Entry Created",
-            entry_type: "windows:eventlog:scriptblock",
+            datetime: "",
+            timestamp_desc: "EventLog Entry Created",
+            data_type: "windows:eventlog:scriptblock",
             id: "",
             source_file,
             path: "",
@@ -114,14 +115,15 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
             process_id: 0,
             threat_id: 0,
             system_time: "",
-            created_time: ""
+            created_time: "",
+            artifact: "Windows PowerShell Scriptblock",
         };
         let message = "";
         for (const script of data[ entry ]) {
             // Only need this info once
             if (message.length === 0) {
                 value.total_parts = script.data.Event.EventData.MessageTotal;
-                value.timestamp = script.timestamp;
+                value.datetime = script.timestamp;
                 value.id = script.data.Event.EventData.ScriptBlockId;
                 value.path = script.data.Event.EventData.Path;
                 value.hostname = script.data.Event.System.Computer;

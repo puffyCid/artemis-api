@@ -53,7 +53,7 @@ export interface NextcloudClientConfig {
 
 /**
  * Object representing a sync log entry.  
- * This object is Timesketch compatible.  It does **not** need to be timelined
+ * This object is Timesketch compatible.  It does **not** need to be timeline
  */
 export interface NextcloudClientSyncLog {
     datetime: string;
@@ -103,7 +103,7 @@ export enum SyncInstruction {
 
 /**
  * Object representing a activity log entry.  
- * This object is Timesketch compatible.  It does **not** need to be timelined
+ * This object is Timesketch compatible.  It does **not** need to be timeline
  */
 export interface NextcloudClientActivityLog {
     datetime: string;

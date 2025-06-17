@@ -35,7 +35,7 @@ async function main() {
 
 # Output Structure
 
-An array of `Mru`
+An array of `JsShellItem`
 
 ```typescript
 export interface JsShellItem {
@@ -46,7 +46,7 @@ export interface JsShellItem {
 
 export interface ShellItems {
   /**
-   * Value of a shelltiem
+   * Value of a shellitem
    * Ex: A file path, URL, Volume, GUID, etc
    */
   value: string;
