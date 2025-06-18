@@ -41,8 +41,7 @@ filter = false
     **zip** compression.
   - `timeline` Whether to timeline the parsed data. This forces the output format to JSONL and is compatible with [Timesketch](https://timesketch.org/)
   - `endpoint_id` An ID assigned to the endpoint. This can be any string value
-  - `collection_id` A number assigned to the collection. This can be any postive
-    number
+  - `collection_id` A number assigned to the collection. This can be any postive number
   - `output` The output type. Values can be: **local**, **aws**, **gcp**, or
     **azure**
   - `url` The URL associated with either aws, gcp, or azure. This is required

@@ -49,20 +49,80 @@ look like the following:
     "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
     "collection_metadata": {
       "endpoint_id": "local",
-      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "uuid": "f526c581-fec3-4532-a5fe-f5827f1962d3",
       "id": 0,
       "artifact_name": "amcache",
-      "complete_time": "2025-06-12T03:59:42.000Z",
-      "start_time": "2025-06-12T03:59:42.000Z",
+      "complete_time": "2025-06-18T00:18:05.000Z",
+      "start_time": "2025-06-18T00:18:05.000Z",
       "hostname": "fedora",
       "os_version": "42",
       "platform": "Fedora Linux",
-      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "kernel_version": "6.14.9-300.fc42.x86_64",
       "load_performance": {
-        "avg_one_min": 0.25,
-        "avg_five_min": 0.42,
-        "avg_fifteen_min": 0.5
-      }
+        "avg_one_min": 1.61,
+        "avg_five_min": 1.25,
+        "avg_fifteen_min": 1.48
+      },
+      "version": "0.15.0",
+      "rust_version": "1.87.0",
+      "build_date": "2025-06-16",
+      "interfaces": [
+        {
+          "ip": "10.143.58.93",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "fe80::b083:5d30:90f5:6f72",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "192.168.1.116",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fe80::ad2d:695d:b9a5:8f0f",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159:5791:4251:6c65:fc08",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274:0:c547:5607:f94f:fbc6",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "192.168.124.1",
+          "mac": "52:54:00:9f:a4:c6",
+          "name": "virbr0"
+        },
+        {
+          "ip": "127.0.0.1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        },
+        {
+          "ip": "::1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        }
+      ]
     }
   },
   {
@@ -87,20 +147,80 @@ look like the following:
     "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
     "collection_metadata": {
       "endpoint_id": "local",
-      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "uuid": "f526c581-fec3-4532-a5fe-f5827f1962d3",
       "id": 0,
       "artifact_name": "amcache",
-      "complete_time": "2025-06-12T03:59:42.000Z",
-      "start_time": "2025-06-12T03:59:42.000Z",
+      "complete_time": "2025-06-18T00:18:05.000Z",
+      "start_time": "2025-06-18T00:18:05.000Z",
       "hostname": "fedora",
       "os_version": "42",
       "platform": "Fedora Linux",
-      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "kernel_version": "6.14.9-300.fc42.x86_64",
       "load_performance": {
-        "avg_one_min": 0.25,
-        "avg_five_min": 0.42,
-        "avg_fifteen_min": 0.5
-      }
+        "avg_one_min": 1.61,
+        "avg_five_min": 1.25,
+        "avg_fifteen_min": 1.48
+      },
+      "version": "0.15.0",
+      "rust_version": "1.87.0",
+      "build_date": "2025-06-16",
+      "interfaces": [
+        {
+          "ip": "10.143.58.93",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "fe80::b083:5d30:90f5:6f72",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "192.168.1.116",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fe80::ad2d:695d:b9a5:8f0f",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159:5791:4251:6c65:fc08",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274:0:c547:5607:f94f:fbc6",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "192.168.124.1",
+          "mac": "52:54:00:9f:a4:c6",
+          "name": "virbr0"
+        },
+        {
+          "ip": "127.0.0.1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        },
+        {
+          "ip": "::1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        }
+      ]
     }
   },
   {
@@ -125,20 +245,80 @@ look like the following:
     "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
     "collection_metadata": {
       "endpoint_id": "local",
-      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "uuid": "f526c581-fec3-4532-a5fe-f5827f1962d3",
       "id": 0,
       "artifact_name": "amcache",
-      "complete_time": "2025-06-12T03:59:42.000Z",
-      "start_time": "2025-06-12T03:59:42.000Z",
+      "complete_time": "2025-06-18T00:18:05.000Z",
+      "start_time": "2025-06-18T00:18:05.000Z",
       "hostname": "fedora",
       "os_version": "42",
       "platform": "Fedora Linux",
-      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "kernel_version": "6.14.9-300.fc42.x86_64",
       "load_performance": {
-        "avg_one_min": 0.25,
-        "avg_five_min": 0.42,
-        "avg_fifteen_min": 0.5
-      }
+        "avg_one_min": 1.61,
+        "avg_five_min": 1.25,
+        "avg_fifteen_min": 1.48
+      },
+      "version": "0.15.0",
+      "rust_version": "1.87.0",
+      "build_date": "2025-06-16",
+      "interfaces": [
+        {
+          "ip": "10.143.58.93",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "fe80::b083:5d30:90f5:6f72",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "192.168.1.116",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fe80::ad2d:695d:b9a5:8f0f",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159:5791:4251:6c65:fc08",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274:0:c547:5607:f94f:fbc6",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "192.168.124.1",
+          "mac": "52:54:00:9f:a4:c6",
+          "name": "virbr0"
+        },
+        {
+          "ip": "127.0.0.1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        },
+        {
+          "ip": "::1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        }
+      ]
     }
   },
   {
@@ -163,24 +343,83 @@ look like the following:
     "source_path": "/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve",
     "collection_metadata": {
       "endpoint_id": "local",
-      "uuid": "6c942039-e45a-4856-b4ec-a193d972c30f",
+      "uuid": "f526c581-fec3-4532-a5fe-f5827f1962d3",
       "id": 0,
       "artifact_name": "amcache",
-      "complete_time": "2025-06-12T03:59:42.000Z",
-      "start_time": "2025-06-12T03:59:42.000Z",
+      "complete_time": "2025-06-18T00:18:05.000Z",
+      "start_time": "2025-06-18T00:18:05.000Z",
       "hostname": "fedora",
       "os_version": "42",
       "platform": "Fedora Linux",
-      "kernel_version": "6.14.8-300.fc42.x86_64",
+      "kernel_version": "6.14.9-300.fc42.x86_64",
       "load_performance": {
-        "avg_one_min": 0.25,
-        "avg_five_min": 0.42,
-        "avg_fifteen_min": 0.5
-      }
+        "avg_one_min": 1.61,
+        "avg_five_min": 1.25,
+        "avg_fifteen_min": 1.48
+      },
+      "version": "0.15.0",
+      "rust_version": "1.87.0",
+      "build_date": "2025-06-16",
+      "interfaces": [
+        {
+          "ip": "10.143.58.93",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "fe80::b083:5d30:90f5:6f72",
+          "mac": "00:00:00:00:00:00",
+          "name": "wg0-mullvad"
+        },
+        {
+          "ip": "192.168.1.116",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fe80::ad2d:695d:b9a5:8f0f",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274::e70",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "2601:140:827f:9159:5791:4251:6c65:fc08",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "fda9:dfeb:d274:0:c547:5607:f94f:fbc6",
+          "mac": "02:59:69:e8:8b:5b",
+          "name": "wlp3s0f0"
+        },
+        {
+          "ip": "192.168.124.1",
+          "mac": "52:54:00:9f:a4:c6",
+          "name": "virbr0"
+        },
+        {
+          "ip": "127.0.0.1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        },
+        {
+          "ip": "::1",
+          "mac": "00:00:00:00:00:00",
+          "name": "lo"
+        }
+      ]
     }
   }
 ]
-
 ```
 
 All artifacts parsed by artemis will be formatted similar to the output above.
@@ -204,6 +443,13 @@ All artifacts parsed by artemis will be formatted similar to the output above.
     - `avg_one_min` Average load performance for one minute
     - `avg_five_mine` Average load performance for five minutes
     - `avg_fifteen_min` Average load performance for fifteen minutes
+  - `interfaces` Array of network interfaces on the endpoint
+    - `ip` IP address for the network interface
+    - `mac` MAC address for the network interface
+    - `name` Network interface name
+  - `version` Artemis version
+  - `rust_version` Rust version used to compile artemis
+  - `build_date` Artemis build date
 - Artifact object that contains the parsed data.\
   See the [artifact](../../Artifacts/overview.md) chapter to see the structure
   for each artifact.\
@@ -215,10 +461,10 @@ The jsonl output from the amcache TOML collection from the previous page would
 look like the following:
 
 ```jsonl
-{"last_modified":"2023-01-11T04:42:58.000Z","path":"C:\\Users\\bob\\Documents\\artemis-core\\target\\release\\examples\\artemis_core.exe","name":"","original_name":"","version":"","binary_type":"","product_version":"","product_name":"","language":"0","file_id":"","link_date":"1673412152","path_hash":"","program_id":"","size":"5188608","publisher":"","usn":"","sha1":"8c55942db046700a0ccddea067e3a6e3cc259424","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\20000667bc","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
-{"last_modified":"2023-01-11T04:59:30.000Z","path":"C:\\Users\\bob\\AppData\\Local\\Temp\\{EC2593B0-35E9-431F-B4BE-FCDE81BA2590}\\AccessData_FTK_Imager_4.7.1.exe","name":"","original_name":"","version":"4.7.1.2","binary_type":"","product_version":"4.7.1.2","product_name":"AccessData FTK Imager","language":"1033","file_id":"","link_date":"1606092798","path_hash":"","program_id":"","size":"53465480","publisher":"AccessData","usn":"","sha1":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\8000047d3b","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
-{"last_modified":"2023-01-11T04:59:29.000Z","path":"c:\\users\\bob\\downloads\\accessdata_ftk_imager_4.7.1.exe","name":"AccessData_FTK_Imager_4.7.1.exe","original_name":"accessdata_ftk_imager_(x64).exe","version":"4.7.1.2","binary_type":"pe32_i386","product_version":"4.7.1.2","product_name":"accessdata ftk imager","language":"1033","file_id":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","link_date":"11/23/2020 00:53:18","path_hash":"accessdata_ftk_i|7e1ce138b4a0a7d9","program_id":"656f546c2513d30cc1f86b30cdae6bb2300000904","size":"53465480","publisher":"accessdata","usn":"1581746848","sha1":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\accessdata_ftk_i|7e1ce138b4a0a7d9","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
-{"last_modified":"2023-01-11T04:57:06.000Z","path":"c:\\program files (x86)\\microsoft\\edge\\application\\msedge.exe","name":"msedge.exe","original_name":"msedge.exe","version":"108.0.1462.76","binary_type":"pe64_amd64","product_version":"108.0.1462.76","product_name":"microsoft edge","language":"1033","file_id":"57f7a64c05fbc31830754108ccb6f65bd6c0f9bc","link_date":"01/04/2023 23:15:18","path_hash":"msedge.exe|d27b57360cd4a4cf","program_id":"66afc7e33c2fa0155f7f4969e8f4ea64b00000904","size":"3879368","publisher":"microsoft corporation","usn":"1570250352","sha1":"57f7a64c05fbc31830754108ccb6f65bd6c0f9bc","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\msedge.exe|d27b57360cd4a4cf","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"46de79b4-6ff0-406a-b1d2-bbc9425c73e5","id":0,"artifact_name":"amcache","complete_time":"2025-06-12T04:02:07.000Z","start_time":"2025-06-12T04:02:07.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.8-300.fc42.x86_64","load_performance":{"avg_one_min":0.32,"avg_five_min":0.43,"avg_fifteen_min":0.49}}}
+{"last_modified":"2023-01-11T04:42:58.000Z","path":"C:\\Users\\bob\\Documents\\artemis-core\\target\\release\\examples\\artemis_core.exe","name":"","original_name":"","version":"","binary_type":"","product_version":"","product_name":"","language":"0","file_id":"","link_date":"1673412152","path_hash":"","program_id":"","size":"5188608","publisher":"","usn":"","sha1":"8c55942db046700a0ccddea067e3a6e3cc259424","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\20000667bc","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"f526c581-fec3-4532-a5fe-f5827f1962d3","id":0,"artifact_name":"amcache","complete_time":"2025-06-18T00:18:05.000Z","start_time":"2025-06-18T00:18:05.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.9-300.fc42.x86_64","load_performance":{"avg_one_min":1.61,"avg_five_min":1.25,"avg_fifteen_min":1.48},"version":"0.15.0","rust_version":"1.87.0","build_date":"2025-06-16","interfaces":[{"ip":"10.143.58.93","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"fe80::b083:5d30:90f5:6f72","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"192.168.1.116","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fe80::ad2d:695d:b9a5:8f0f","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159:5791:4251:6c65:fc08","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274:0:c547:5607:f94f:fbc6","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"192.168.124.1","mac":"52:54:00:9f:a4:c6","name":"virbr0"},{"ip":"127.0.0.1","mac":"00:00:00:00:00:00","name":"lo"},{"ip":"::1","mac":"00:00:00:00:00:00","name":"lo"}]}}
+{"last_modified":"2023-01-11T04:59:30.000Z","path":"C:\\Users\\bob\\AppData\\Local\\Temp\\{EC2593B0-35E9-431F-B4BE-FCDE81BA2590}\\AccessData_FTK_Imager_4.7.1.exe","name":"","original_name":"","version":"4.7.1.2","binary_type":"","product_version":"4.7.1.2","product_name":"AccessData FTK Imager","language":"1033","file_id":"","link_date":"1606092798","path_hash":"","program_id":"","size":"53465480","publisher":"AccessData","usn":"","sha1":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\File\\8195d9c8-2089-11ea-824e-806e6f6e6963\\8000047d3b","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"f526c581-fec3-4532-a5fe-f5827f1962d3","id":0,"artifact_name":"amcache","complete_time":"2025-06-18T00:18:05.000Z","start_time":"2025-06-18T00:18:05.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.9-300.fc42.x86_64","load_performance":{"avg_one_min":1.61,"avg_five_min":1.25,"avg_fifteen_min":1.48},"version":"0.15.0","rust_version":"1.87.0","build_date":"2025-06-16","interfaces":[{"ip":"10.143.58.93","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"fe80::b083:5d30:90f5:6f72","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"192.168.1.116","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fe80::ad2d:695d:b9a5:8f0f","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159:5791:4251:6c65:fc08","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274:0:c547:5607:f94f:fbc6","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"192.168.124.1","mac":"52:54:00:9f:a4:c6","name":"virbr0"},{"ip":"127.0.0.1","mac":"00:00:00:00:00:00","name":"lo"},{"ip":"::1","mac":"00:00:00:00:00:00","name":"lo"}]}}
+{"last_modified":"2023-01-11T04:59:29.000Z","path":"c:\\users\\bob\\downloads\\accessdata_ftk_imager_4.7.1.exe","name":"AccessData_FTK_Imager_4.7.1.exe","original_name":"accessdata_ftk_imager_(x64).exe","version":"4.7.1.2","binary_type":"pe32_i386","product_version":"4.7.1.2","product_name":"accessdata ftk imager","language":"1033","file_id":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","link_date":"11/23/2020 00:53:18","path_hash":"accessdata_ftk_i|7e1ce138b4a0a7d9","program_id":"656f546c2513d30cc1f86b30cdae6bb2300000904","size":"53465480","publisher":"accessdata","usn":"1581746848","sha1":"4651d3fc8bd425dd0e26487a0d5939900a2c9d43","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\accessdata_ftk_i|7e1ce138b4a0a7d9","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"f526c581-fec3-4532-a5fe-f5827f1962d3","id":0,"artifact_name":"amcache","complete_time":"2025-06-18T00:18:05.000Z","start_time":"2025-06-18T00:18:05.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.9-300.fc42.x86_64","load_performance":{"avg_one_min":1.61,"avg_five_min":1.25,"avg_fifteen_min":1.48},"version":"0.15.0","rust_version":"1.87.0","build_date":"2025-06-16","interfaces":[{"ip":"10.143.58.93","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"fe80::b083:5d30:90f5:6f72","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"192.168.1.116","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fe80::ad2d:695d:b9a5:8f0f","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159:5791:4251:6c65:fc08","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274:0:c547:5607:f94f:fbc6","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"192.168.124.1","mac":"52:54:00:9f:a4:c6","name":"virbr0"},{"ip":"127.0.0.1","mac":"00:00:00:00:00:00","name":"lo"},{"ip":"::1","mac":"00:00:00:00:00:00","name":"lo"}]}}
+{"last_modified":"2023-01-11T04:57:06.000Z","path":"c:\\program files (x86)\\microsoft\\edge\\application\\msedge.exe","name":"msedge.exe","original_name":"msedge.exe","version":"108.0.1462.76","binary_type":"pe64_amd64","product_version":"108.0.1462.76","product_name":"microsoft edge","language":"1033","file_id":"57f7a64c05fbc31830754108ccb6f65bd6c0f9bc","link_date":"01/04/2023 23:15:18","path_hash":"msedge.exe|d27b57360cd4a4cf","program_id":"66afc7e33c2fa0155f7f4969e8f4ea64b00000904","size":"3879368","publisher":"microsoft corporation","usn":"1570250352","sha1":"57f7a64c05fbc31830754108ccb6f65bd6c0f9bc","reg_path":"{11517B7C-E79D-4e20-961B-75A811715ADD}\\Root\\InventoryApplicationFile\\msedge.exe|d27b57360cd4a4cf","source_path":"/home/fedora/Projects/artemis/forensics/tests/test_data/windows/amcache/win81/Amcache.hve","collection_metadata":{"endpoint_id":"local","uuid":"f526c581-fec3-4532-a5fe-f5827f1962d3","id":0,"artifact_name":"amcache","complete_time":"2025-06-18T00:18:05.000Z","start_time":"2025-06-18T00:18:05.000Z","hostname":"fedora","os_version":"42","platform":"Fedora Linux","kernel_version":"6.14.9-300.fc42.x86_64","load_performance":{"avg_one_min":1.61,"avg_five_min":1.25,"avg_fifteen_min":1.48},"version":"0.15.0","rust_version":"1.87.0","build_date":"2025-06-16","interfaces":[{"ip":"10.143.58.93","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"fe80::b083:5d30:90f5:6f72","mac":"00:00:00:00:00:00","name":"wg0-mullvad"},{"ip":"192.168.1.116","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fe80::ad2d:695d:b9a5:8f0f","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274::e70","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"2601:140:827f:9159:5791:4251:6c65:fc08","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"fda9:dfeb:d274:0:c547:5607:f94f:fbc6","mac":"02:59:69:e8:8b:5b","name":"wlp3s0f0"},{"ip":"192.168.124.1","mac":"52:54:00:9f:a4:c6","name":"virbr0"},{"ip":"127.0.0.1","mac":"00:00:00:00:00:00","name":"lo"},{"ip":"::1","mac":"00:00:00:00:00:00","name":"lo"}]}}
 ```
 
 The jsonl output is identical to json with the following differences:
