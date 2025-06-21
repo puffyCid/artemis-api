@@ -59,11 +59,11 @@ export interface Shortcut {
   /**File attributes of target file */
   attribute_flags: string[];
   /**Standard Information created timestamp of target file */
-  created: number;
+  created: string;
   /**Standard Information accessed timestamp of target file */
-  accessed: number;
+  accessed: string;
   /**Standard Information modified timestamp of target file */
-  modified: number;
+  modified: string;
   /**Size in bytes of target file */
   file_size: number;
   /**Flag associated where target file is located. On volume or network share */
@@ -128,6 +128,14 @@ export interface Shortcut {
   shim_layer: string;
   /**Known folder GUID in shortcut */
   known_folder: string;
+  /**
+   * If the Shortcut file strings exceed 260 bytes (520 if Unicode). Then the Shortcut is marked as "abnormal".  
+   * Normally Shortcut strings can be 64KB in size.  **However**, the Windows implementation of the Shortcut file limits string sizes to 260 bytes.  
+   * If a string is larger than 260 bytes then it may be an indicator that it is malformed or was crafted malicious to try to avoid forensic tools.
+   * 
+   * Reference: https://harfanglab.io/insidethelab/sadfuture-xdspy-latest-evolution/#tid_specifications_ignored
+   */
+  is_abnormal: boolean;
 }
 
 /**
