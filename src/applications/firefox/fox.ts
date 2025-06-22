@@ -72,7 +72,7 @@ export class FireFox {
      * @returns Array of `FirefoxDownloads` or `ApplicationError`
      */
     public downloads(offset = 0, limit = 100): FirefoxDownloads[] | ApplicationError {
-        return firefoxDownloads(this.paths, this.platform, this.unfold, offset, limit);
+        return firefoxDownloads(this.paths, this.platform, offset, limit);
     }
 
     /**

@@ -7,17 +7,11 @@ import { Url } from "../http/unfold";
  * References:
  *  - https://kb.mozillazine.org/Places.sqlite
  */
-export interface FirefoxHistory {
-  /**Array of history entries */
-  history: RawFirefoxHistory[];
-  /**Path associated with the history file */
-  path: string;
-}
 
 /**
  * An interface representing the Firefox SQLITE tables: `moz_places` and `moz_origins`
  */
-export interface RawFirefoxHistory {
+export interface FirefoxHistory {
   /**SQLITE row id */
   moz_places_id: number;
   /**Page URL */
@@ -51,26 +45,13 @@ export interface RawFirefoxHistory {
   /** Host value */
   host: string;
   unfold: Url | undefined;
-}
-
-/**
- * Firefox downloads are stored in a SQLITE file
- * `Artemis` uses the `sqlite` crate to read the SQLITE file. It can even read the file if Firefox is running.
- *
- * References:
- * https://kb.mozillazine.org/Places.sqlite
- */
-export interface FirefoxDownloads {
-  /**Array of downloads entries */
-  downloads: RawFirefoxDownloads[];
-  /**Path associated with the downloads file */
-  path: string;
+  db_path: string;
 }
 
 /**
  * An interface representing the Firefox SQLITE tables: `moz_places`, `moz_origins`, `moz_annos`, `moz_anno_attributes`
  */
-export interface RawFirefoxDownloads {
+export interface FirefoxDownloads {
   /**ID for SQLITE row */
   id: number;
   /**ID to history entry */
@@ -91,8 +72,7 @@ export interface RawFirefoxDownloads {
   last_modified: string;
   /**Downloaded file name */
   name: string;
-  /**History data associated with downloaded file */
-  history: RawFirefoxHistory;
+  db_path: string;
 }
 
 export interface FirefoxCookies {

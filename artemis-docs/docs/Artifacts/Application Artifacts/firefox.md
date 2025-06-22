@@ -49,19 +49,10 @@ main();
 Dependent on browser artifact user wants to parse.
 
 ```typescript
-export interface FirefoxHistory {
-  /**Array of history entries */
-  history: RawFirefoxHistory[];
-  /**Path associated with the history file */
-  path: string;
-  /**User associated with the history file */
-  user: string;
-}
-
 /**
  * An interface representing the Firefox SQLITE tables: `moz_places` and `moz_origins`
  */
-export interface RawFirefoxHistory {
+export interface FirefoxHistory {
   /**SQLITE row id */
   moz_places_id: number;
   /**Page URL */
@@ -94,21 +85,14 @@ export interface RawFirefoxHistory {
   prefix: string;
   /** Host value */
   host: string;
-}
-
-export interface FirefoxDownloads {
-  /**Array of downloads entries */
-  downloads: RawFirefoxDownloads[];
-  /**Path associated with the downloads file */
-  path: string;
-  /**User associated with the downloads file */
-  user: string;
+  unfold: Url | undefined;
+  db_path: string;
 }
 
 /**
  * An interface representing the Firefox SQLITE tables: `moz_places`, `moz_origins`, `moz_annos`, `moz_anno_attributes`
  */
-export interface RawFirefoxDownloads {
+export interface FirefoxDownloads {
   /**ID for SQLITE row */
   id: number;
   /**ID to history entry */
@@ -129,8 +113,7 @@ export interface RawFirefoxDownloads {
   last_modified: string;
   /**Downloaded file name */
   name: string;
-  /**History data associated with downloaded file */
-  history: RawFirefoxHistory;
+  db_path: string;
 }
 
 export interface FirefoxCookies {
@@ -150,5 +133,36 @@ export interface FirefoxCookies {
   raw_same_site: boolean;
   scheme_map: number;
   db_path: string;
+}
+
+export interface FirefoxFavicons {
+  icon_url: string;
+  expires: string;
+  db_path: string;
+}
+
+export interface FirefoxProfiles {
+  full_path: string;
+  version: number;
+}
+
+export interface FirefoxStorage {
+  repository: Respository;
+  suffix?: string;
+  group: string;
+  origin: string;
+  client_usages: string;
+  last_access: string;
+  accessed: number;
+  persisted: number;
+  db_path: string;
+}
+
+export enum Respository {
+  Persistent = "Persistent",
+  Default = "Default",
+  Private = "Private",
+  Unknown = "Unknown",
+  Temporary = "Temporary",
 }
 ```

@@ -90,18 +90,17 @@ export { memory, processListing } from "./src/system/memory";
  * Application exported functions
  */
 export {
-  chromiumDownloads,
-  chromiumHistory,
   chromiumPreferences,
   getChromiumAutofill,
   getChromiumBookmarks,
   getChromiumCookies,
   getChromiumDips,
   getChromiumLogins,
-} from "./src/applications/chromium";
-export {
-  FireFox,
-} from "./src/applications/firefox/fox";
+} from "./src/applications/chromium_old";
+export { FireFox } from "./src/applications/firefox/fox";
+export { Edge } from "./src/applications/edge";
+export { Chrome } from "./src/applications/chrome";
+export { Chromium } from "./src/applications/chromium/cr";
 export { fileHistory, getExtensions, vscodeRecentFiles } from "./src/applications/vscode";
 export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";

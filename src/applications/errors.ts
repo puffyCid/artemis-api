@@ -9,6 +9,9 @@ export type ErrorName =
   | "DEFENDER"
   | "OFFICE"
   | "ONEDRIVE"
-  | "NEXTCLOUD_CLIENT";
+  | "NEXTCLOUD_CLIENT"
+  | "CHROME"
+  | "EDGE"
+  | "CHROMIUM";
 
 export class ApplicationError extends ErrorBase<ErrorName> { }

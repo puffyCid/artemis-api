@@ -1,19 +1,13 @@
 ---
-description: Google's open source browser
+description: The most popular browser
 keywords:
   - browser
   - google
 ---
 
-# Chromium
+# Chrome
 
-Chromium is a popular open source web browser created and maintained by Google.
-The Chromium codebase also used for multiple other browsers such as:
-
-- Chrome
-- Microsoft Edge
-- Opera
-- Brave
+Chrome is a popular web browser created and maintained by Google.
 
 Artemis supports parsing the list of artifacts below:
 
@@ -27,7 +21,8 @@ Artemis supports parsing the list of artifacts below:
 - Preferences
 - Detect Incidental Party State (DIPS)
 
-You have to use the artemis [api](../../API/overview.md) in order to collect Chromium data
+You have to use the artemis [api](../../API/overview.md) in order to collect Chrome data.  
+Since Chrome is based on Chromium, many of the Chrome artifacts will be identical to Chromium
 
 Other parsers:
 
@@ -42,11 +37,11 @@ References:
 # Sample API Script
 
 ```typescript
-import { Chromium } from "./artemis-api/mod";
+import { Chrome } from "./artemis-api/mod";
 import { PlatformType } from "./artemis-api/src/system/systeminfo";
 
 function main() {
-    const client = new Chromium(PlatformType.Darwin, false, BrowserType.Chromium);
+    const client = new Chrome(PlatformType.Darwin);
     console.log(JSON.stringify(client.cookies()));
 }
 

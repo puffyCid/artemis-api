@@ -1,19 +1,13 @@
 ---
-description: Google's open source browser
+description: Microsoft Edge (Chromium based)
 keywords:
   - browser
-  - google
+  - microsoft
 ---
 
-# Chromium
+# Edge
 
-Chromium is a popular open source web browser created and maintained by Google.
-The Chromium codebase also used for multiple other browsers such as:
-
-- Chrome
-- Microsoft Edge
-- Opera
-- Brave
+Edge is a popular web browser created and maintained by Microsoft.
 
 Artemis supports parsing the list of artifacts below:
 
@@ -27,7 +21,8 @@ Artemis supports parsing the list of artifacts below:
 - Preferences
 - Detect Incidental Party State (DIPS)
 
-You have to use the artemis [api](../../API/overview.md) in order to collect Chromium data
+You have to use the artemis [api](../../API/overview.md) in order to collect Edge data.  
+Since Edge is based on Chromium, many of the Edge artifacts will be identical to Chromium
 
 Other parsers:
 
@@ -42,11 +37,11 @@ References:
 # Sample API Script
 
 ```typescript
-import { Chromium } from "./artemis-api/mod";
+import { Edge } from "./artemis-api/mod";
 import { PlatformType } from "./artemis-api/src/system/systeminfo";
 
 function main() {
-    const client = new Chromium(PlatformType.Darwin, false, BrowserType.Chromium);
+    const client = new Edge(PlatformType.Darwin);
     console.log(JSON.stringify(client.cookies()));
 }
 
