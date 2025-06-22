@@ -25,36 +25,24 @@ function main() {
 main();
 ```
 
-### getAmcache() -> Amcache[] | WindowsError
+### getAmcache(path) -> Amcache[] | WindowsError
 
-Parse Amcache Registry file on the systemdrive.
+Parse Amcache Registry file on the systemdrive.  You may provide an optional alternative path to the Amcache.hve file
 
-### getAltAmcache(path) -> Amcache[] | WindowsError
+| Param | Type    | Description                           |
+| ----- | ------- | ------------------------------------- |
+| path  | string  | Optional path to an Amcache file      |
 
-Parse Amcache.hve Registry file from provided path.
-
-| Param | Type   | Description                   |
-| ----- | ------ | ----------------------------- |
-| path  | string | Full path to Amcache.hve file |
-
-### getBits(carve) -> Bits | WindowsError
+### getBits(carve, path) -> Bits | WindowsError
 
 Parse Windows [BITS](../../Artifacts/Windows%20Artfacts/bits.md) data. Supports
-carving deleted entries.
+carving deleted entries.  You may also provide an optional alternative path to the BITS database file.
 
 | Param | Type    | Description                           |
 | ----- | ------- | ------------------------------------- |
 | carve | boolean | Attempt to carve deleted BITS entries |
+| path  | string  | Optional path to a BITS file          |
 
-### getBitsPath(path, carve) -> Amcache[] | WindowsError
-
-Parse Windows [BITS](../../Artifacts/Windows%20Artfacts/bits.md) data at
-provided path. Supports carving deleted entries.
-
-| Param | Type    | Description                           |
-| ----- | ------- | ------------------------------------- |
-| path  | string  | Path to Windows BITS file             |
-| carve | boolean | Attempt to carve deleted BITS entries |
 
 ### getEventlogs(path, offset, limit, include_templates, template_file) -> EventLogRecord[] |EventLogMessage[] | WindowsError
 
@@ -70,19 +58,14 @@ required.
 | include_templates | boolean | Whether to include template strings in output. Default is false |
 | template_file     | string  | Path to a JSON template file                                    |
 
-### getJumplists() -> Jumplists[] | WindowsError
+### getJumplists(path) -> Jumplists[] | WindowsError
 
 Get all [JumpLists](../../Artifacts/Windows%20Artfacts/jumplists.md) for all
-users at default systemdrive.
+users at default systemdrive.  You may also provide an optional alternative path to a Jumplist file.
 
-### getJumplistPath(path) -> Jumplists[] | WindowsError
-
-Parse [JumpLists](../../Artifacts/Windows%20Artfacts/jumplists.md) file at
-provided path.
-
-| Param | Type   | Description           |
-| ----- | ------ | --------------------- |
-| path  | string | Path to Jumplist file |
+| Param | Type   | Description                    |
+| ----- | ------ | ------------------------------ |
+| path  | string | Optional path to Jumplist file |
 
 ### readRawFile(path) -> Uint8Array | WindowsError
 
@@ -112,27 +95,19 @@ Parse PE file at provided path.
 
 ### getPrefetch() -> Prefetch[] | WindowsError
 
-Parse all Prefetch files at default systemdrive.
+Parse all Prefetch files at default systemdrive.  You may also provide an optional alternative path to a directory containing Prefetch files.
 
-### getPrefetchPath(path) -> Prefetch[] | WindowsError
-
-Parse Prefetch files at provided directory.
-
-| Param | Type   | Description                |
-| ----- | ------ | -------------------------- |
-| path  | string | Path to Prefetch directory |
+| Param | Type   | Description.                        |
+| ----- | ------ | ----------------------------------- |
+| path  | string | Optional path to Prefetch directory |
 
 ### getRecycleBin() -> RecycleBin[] | WindowsError
 
 Parse all RecycleBin files default systemdrive.
 
-### getRecycleBinFile(path) -> RecycleBin[] | WindowsError
-
-Parse RecycleBin file at provided path.
-
-| Param | Type   | Description              |
-| ----- | ------ | ------------------------ |
-| path  | string | Path to RecycleBin file. |
+| Param | Type   | Description                      |
+| ----- | ------ | -------------------------------- |
+| path  | string | Optional path to RecycleBin file |
 
 ### getRegistry(path) -> Registry[] | WindowsError
 
@@ -157,52 +132,40 @@ usage, a higher number means higher memory usage but faster parsing.
 
 ### getServices() -> Services[] | WindowsError
 
-Parse Windows Services at default systemdrive.
+Parse Windows Services at default systemdrive.  You may also provide an optional alternative path to the SYSTEM Registry file.  
 
-### getServiceFile(path) -> Services[] | Error
+| Param | Type   | Description                                   |
+| ----- | ------ | --------------------------------------------- |
+| path  | string | Optional path to Windows SYSTEM Registry file |
 
-Parse Windows Services (SYSTEM Registry) file at provided path.
 
-| Param | Type   | Description                          |
-| ----- | ------ | ------------------------------------ |
-| path  | string | Path to Windows SYSTEM Registry file |
+### getShellbags(resolve_guids, path) -> Shellbags[] | WindowsError
 
-### getShellbags() -> Shellbags[] | WindowsError
+Parse Windows Shellbags at default systemdrive. You may enable GUID resolution (this feature only works on Windows). You may also provide an optional alternative path to the Shellbags Registry file.  
 
-Parse Windows Shellbags at default systemdrive.
+| Param         | Type   | Description                                             |
+| ------------- | ------ | ------------------------------------------------------- |
+| resolve_guids | boolean| Enable GUID resolution. Only available on Windows       |
+| path          | string | Optional path to either NTUSER.DAT or UsrClass.dat file |
 
-### getAltShellbags(path) -> Shellbags[] | WindowsError
+### getShimcache(path) -> Shimcache[] | WindowsError
 
-Parse Windows Shellbags from provided Registry file. Should be either NTUSER.DAT
-or UsrClass.dat
+Parse Windows Shimcache at default systemdrive. You may also provide an optional alternative path to the SYSTEM Registry file.
 
-| Param | Type   | Description                                         |
-| ----- | ------ | --------------------------------------------------- |
-| path  | string | Full path to either NTUSER.DAT or UsrClass.dat file |
 
-### getShimcache() -> Shimcache[] | WindowsError
+| Param | Type   | Description                               |
+| ----- | ------ | ----------------------------------------- |
+| path  | string | Optional path to the SYSTEM Registry file |
 
-Parse Windows Shimcache at default systemdrive.
 
-### getAltShimcache(path) -> Shimcache[] | WindowsError
+### getShimdb(path) -> Shimdb[] | WindowsError
 
-Parse Windows Shimcache at provided SYSTEM Registry path.
+Parse Windows ShimDB files at default systemdrive. You may also provide an optional path to a ShimDB file.
 
-| Param | Type   | Description                           |
-| ----- | ------ | ------------------------------------- |
-| path  | string | Full path to the SYSTEM Registry file |
+| Param | Type   | Description                            |
+| ----- | ------ | -------------------------------------- |
+| path  | string | Optional path to a Windows ShimDB file |
 
-### getShimdb() -> Shimdb[] | WindowsError
-
-Parse Windows ShimDB files at default systemdrive.
-
-### getCustomShimdb(path) -> Shimdb[] | WindowsError
-
-Parse Windows ShimDB file at provided path.
-
-| Param | Type   | Description                 |
-| ----- | ------ | --------------------------- |
-| path  | string | Path to Windows ShimDB file |
 
 ### getLnkFile(path) -> Shortcut | WindowsError
 
@@ -284,55 +247,44 @@ Parse notification info from Windows
 | ----- | ------ | ------------------------- |
 | path  | string | Path to Windows SRUM file |
 
-### getTasks() -> TaskData | WindowsError
+### getTasks(path) -> TaskData | WindowsError
 
-Parse Windows Schedule Tasks at default systemdrive.
+Parse Windows Schedule Tasks at default systemdrive. You may also provide an optional path to a Schedule Task file.
 
-### getTaskFile(path) -> TaskXml | TaskJob | WindowsError
+| Param | Type   | Description                                                           |
+| ----- | ------ | --------------------------------------------------------------------- |
+| path  | string | Optional path to Windows Schedule Task file. Can be either XML or Job |
 
-Parse Windows Schedule Task file at provided path. Supports XML and older binary
-Job files.
+### getUserassist(resolve, path) -> UserAssist[] | WindowsError
 
-| Param | Type   | Description                                                  |
-| ----- | ------ | ------------------------------------------------------------ |
-| path  | string | Path to Windows Schedule Task file. Can be either XML or Job |
+Parse Windows Userassist entries at default systemdrive for all users. You may enable GUID resolution lookups. You may also provide an optional path to the NTUSER.dat file.
 
-### getUserassist() -> UserAssist[] | WindowsError
+| Param   | Type    | Description                                       |
+| ------- | ------- | ------------------------------------------------- |
+| resolve | boolean | Enable GUID resolution. Only available on Windows |
+| path    | string  | Full path to NTUSER.DAT file                      |
 
-Parse Windows Userassist entries at default systemdrive.
-
-### getAltUserassist(path) -> UserAssist[] | WindowsError
-
-Parse Windows Userassist entries at path to NTUSER.DAT.
-
-| Param | Type   | Description                  |
-| ----- | ------ | ---------------------------- |
-| path  | string | Full path to NTUSER.DAT file |
-
-### getUsersWin() -> UserInfo[] | WindowsError
+### getUsersWin(path) -> UserInfo[] | WindowsError
 
 Get local Windows User accounts from SAM Registry file. Uses default systemdrive
-letter.
+letter. You may also provide an optional path to the SAM Registry file.
 
-### getAltUsersWin(path) -> UserInfo[] | WindowsError
+| Param | Type   | Description                        |
+| ----- | ------ | ---------------------------------- |
+| path  | string | Optional path to SAM Registry file |
 
-Get local Windows User accounts from provided SAM Registry path.
+### getUsnjrnl(path, drive, mft) -> UsnJrnl[] | WindowsError
 
-| Param | Type   | Description                    |
-| ----- | ------ | ------------------------------ |
-| path  | string | Full path to SAM Registry file |
+Parses Windows UsnJrnl data. Uses default systemdrive letter. You may also provide optional alternative paths for:
+- UsnJrnl file
+- Drive letter
+- MFT for path resolutions
 
-### getUsnjrnl() -> UsnJrnl[] | WindowsError
-
-Parses Windows UsnJrnl data. Uses default systemdrive letter.
-
-### getAltUsnjrnl(drive) -> UsnJrnl[] | WindowsError
-
-Parses Windows UsnJrnl data from alternative drive letter.
-
-| Param | Type   | Description                         |
-| ----- | ------ | ----------------------------------- |
-| drive | string | Drive letter to get Windows UsnJrnl |
+| Param | Type   | Description                                    |
+| ----- | ------ | ---------------------------------------------- |
+| drive | string | Optional drive letter to get Windows UsnJrnl   |
+| path  | string | Optional path to UsnJrnl file                  |
+| mft   | string | Optional path to MFT file for path resolutions |
 
 ### logons(path) -> Logons[] | WindowsError
 

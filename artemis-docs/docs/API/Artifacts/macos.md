@@ -306,12 +306,13 @@ and System TCC.db files.
 | ------ | ------ | ---------------------------- |
 | alt_db | string | Optional path to TCC.db file |
 
-### setupSpotlightParser(glob_path) -> StoreMeta | MacosError
+### Parsing macOS Spotlight
+#### setupSpotlightParser(glob_path) -> StoreMeta | MacosError
 
 Collect and setup the required data needed to parse the macOS Spotlight
 database.\
 This function must be called before a user can parse the Spotlight database
-using the JS API.
+using the API.
 
 The glob_path should point to the directory containing the Spotlight database
 files.\
@@ -324,7 +325,7 @@ Would return something like:
 | --------- | ------ | ---------------------------------------------------------------- |
 | glob_path | string | Glob path to a directory containing the Spotlight Database files |
 
-### getSpotlight(meta, store_file, offset) -> StoreMeta | MacosError
+#### getSpotlight(meta, store_file, offset) -> StoreMeta | MacosError
 
 Parse the macOS Spotlight database. The database can potentially return a large
 amount of data (5+GBs).\
@@ -340,17 +341,394 @@ If you want to the parser to start at the beginning of the Spotlight database,
 provide an offset of zero (0). Once the parser returns data, your next offset
 will now be ten (10) because it parsed **10** blocks starting at zero (0-9).
 
+:::info
+
+Spotlight organizes data in "blocks". Think of blocks as containers that contain 1 or more Spotlight entries.  
+Parsing 10 blocks does **not** mean you are only getting 10 entries.  
+
+Each block will typically contain ~50 to ~300 entries!  
+By getting 10 blocks you will be getting between ~500 to ~3000 entries!
+
+:::
+
 Finally, you must provide the full path to the Spotlight database file
 (store.db). This is typically found in in the directory provided to
 `setupSpotlightParser`\
 (ex:
 /System/Volumes/Data/.Spotlight-V100/Store-V3/123-445566-778-12384/store.db)
 
+In order to parse Spotlight data you must have **root** permissions
+
 | Param      | Type      | Description                                           |
 | ---------- | --------- | ----------------------------------------------------- |
 | meta       | StoreMeta | Spotlight metadata obtained from setupSpotlightParser |
 | store_file | string    | Full path to the store.db file                        |
 | offset     | number    | Offset to start parsing the Spotlight database        |
+
+An example script is below that will show all Spotlight entries that contain the string "Downloads" or ".pkg".  
+```typescript
+import { getSpotlight, setupSpotlightParser } from "./artemis-api/mod";
+import { MacosError } from "./artemis-api/src/macos/errors";
+import { glob } from "./artemis-api/src/filesystem/files";
+import { FileError } from "./artemis-api/src/filesystem/errors";
+
+function main() {
+    // Glob to our primary Spotlight database
+    const glob_path = "/System/Volumes/Data/.Spotlight-V100/Store-V*/*/*";
+    const values = glob(glob_path);
+    if (values instanceof FileError) {
+        console.error(values);
+        return;
+    }
+
+    let store = "";
+    // We need the full path to the store.db
+    for (const value of values) {
+        if (value.filename == "store.db") {
+            store = value.full_path;
+            break;
+        }
+    }
+
+    if (store === "") {
+      console.error("Failed to find store.db");
+      return;
+    }
+
+    // Get some initial metadata that we will need later
+    const meta = setupSpotlightParser("/System/Volumes/Data/.Spotlight-V100/Store-V*/*/*");
+    if (meta instanceof MacosError) {
+        console.error(meta);
+        return;
+    }
+
+    let offset = 0;
+    // To avoid high memory usage we can only parse 10 blocks of Spotlight data at time
+    // We can determine how many total blocks there are by viewing the meta results from setupSpotlightParser
+    // So we loop until our offset is greater than the meta.blocks value 
+    while (offset < meta.blocks.length) {
+        // Parse 10 blocks
+        const results = getSpotlight(meta, store, offset);
+        if (results instanceof MacosError) {
+            console.error(results);
+            break;
+        }
+
+        offset += 10;
+
+        console.log(`Got ${results.length} entries!`);
+        for (const entry of results) {
+            console.log(`Inode: ${entry.inode}`);
+            const downloads = JSON.stringify(entry.values);
+            if (downloads.includes("Downloads") || downloads.includes(".pkg")) {
+                console.log(downloads);
+            }
+        }
+
+    }
+
+}
+
+main();
+```
+
+Example output you may see:
+```json
+Inode: 21365561
+{
+    "_kMDItemContentModificationDateWeekday": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            3
+        ]
+    },
+    "_kMDItemContentCreationDateWeekOfMonth": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            4
+        ]
+    },
+    "_kMDItemContentModificationDateWeekOfYear": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            21
+        ]
+    },
+    "_kMDItemContentModificationDateHour": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            20
+        ]
+    },
+    "kMDItemDateAdded": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:46:33.000Z"
+        ]
+    },
+    "_kMDItemContentModificationDateWeekOfMonth": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            4
+        ]
+    },
+    "_kMDItemContentCreationDateDay": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            20
+        ]
+    },
+    "_kMDItemContentCreationDateMonth": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            5
+        ]
+    },
+    "kMDItemContentCreationDate": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:45:35.000Z"
+        ]
+    },
+    "_kMDItemContentCreationDateWeekdayOrdinal": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            3
+        ]
+    },
+    "_kMDItemContentModificationDateYear": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            2025
+        ]
+    },
+    "kMDItemDocumentIdentifier": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            0
+        ]
+    },
+    "_kMDItemContentModificationDateWeekdayOrdinal": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            3
+        ]
+    },
+    "kMDItemInterestingDate_Ranking": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:00:00.000Z"
+        ]
+    },
+    "_kMDItemCreationDate": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:45:35.000Z"
+        ]
+    },
+    "_kMDItemFromImporter": {
+        "attribute": "AttrBool",
+        "value": true
+    },
+    "kMDItemKind": {
+        "attribute": "AttrList",
+        "value": [
+            "INSTALLER_FLAT_PACKAGE\u0016\u0002",
+            "INSTALLER_FLAT_PACKAGE\u0016\u0002Base",
+            "حزمة المثبّت المسطحة\u0016\u0002ar",
+            "Paquet simple de l’instal·lador\u0016\u0002ca",
+            "Balíček instalátoru (flat)\u0016\u0002cs",
+            "Flad installeringspakke\u0016\u0002da",
+            "Einfaches Installationspaket\u0016\u0002de",
+            "Επίπεδο πακέτο του προγράμματος εγκατάστασης\u0016\u0002el",
+            "Installer flat package\u0016\u0002en",
+            "Installer flat package\u0016\u0002en_AU",
+            "Installer flat package\u0016\u0002en_GB",
+            "Paquete plano del instalador\u0016\u0002es",
+            "Paquete raso del Instalador\u0016\u0002es_419",
+            "Asentajan litteä paketti\u0016\u0002fi",
+            "Paquet brut du programme d’installation\u0016\u0002fr",
+            "Paquet brut du programme d’installation\u0016\u0002fr_CA",
+            "חבילת התקנה שטוחה\u0016\u0002he",
+            "इंस्टॉलर फ़्लैट पैकेज\u0016\u0002hi",
+            "Obični paket instalacijskog programa\u0016\u0002hr",
+            "Telepítő lapos csomag\u0016\u0002hu",
+            "Paket datar Penginstal\u0016\u0002id",
+            "Pacchetto flat Installer\u0016\u0002it",
+            "インストーラ・フラット・パッケージ\u0016\u0002ja",
+            "설치 프로그램 플랫 패키지\u0016\u0002ko",
+            "Pakej rata pemasang\u0016\u0002ms",
+            "Installatieprogramma-pakket (plat)\u0016\u0002nl",
+            "Installerer for flat pakke\u0016\u0002no",
+            "jednorodny pakiet instalacyjny\u0016\u0002pl",
+            "Pacote simples do Instalador\u0016\u0002pt",
+            "Pacote simples do Instalador\u0016\u0002pt_PT",
+            "Pachet plat Program de instalare\u0016\u0002ro",
+            "Простой установочный пакет\u0016\u0002ru",
+            "Paušálny inštalačný balík\u0016\u0002sk",
+            "Enostaven paket namestitvenega programa\u0016\u0002sl",
+            "Platt installationspaket\u0016\u0002sv",
+            "ชุดโปรแกรมตัวติดตั้งแบบ Flat\u0016\u0002th",
+            "Düz yapılı Yükleyici paketi\u0016\u0002tr",
+            "Звичайний пакет Інсталятора\u0016\u0002uk",
+            "Gói trình cài đặt phẳng\u0016\u0002vi",
+            "安装器flat软件包\u0016\u0002zh_CN",
+            "安裝程式單層套件\u0016\u0002zh_HK",
+            "安裝程式單層套件\u0016\u0002zh_TW"
+        ]
+    },
+    "_kMDItemGroupId": {
+        "attribute": "AttrVariableSizeInt",
+        "value": 18
+    },
+    "_kMDItemContentCreationDateHour": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            20
+        ]
+    },
+    "_kMDItemOwnerGroupID": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            20
+        ]
+    },
+    "_kMDItemTypeCode": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            0
+        ]
+    },
+    "_kMDItemContentCreationDateYear": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            2025
+        ]
+    },
+    "kMDItemPhysicalSize": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            25919488
+        ]
+    },
+    "_kMDItemPrescanCandidate": {
+        "attribute": "AttrBool",
+        "value": true
+    },
+    "_kMDItemIsExtensionHidden": {
+        "attribute": "AttrBool",
+        "value": false
+    },
+    "kMDItemDisplayName": {
+        "attribute": "AttrString",
+        "value": "osquery-5.17.0.pkg\u0016\u0002"
+    },
+    "kMDItemContentModificationDate": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:45:48.000Z"
+        ]
+    },
+    "_kMDItemDisplayNameWithExtensions": {
+        "attribute": "AttrString",
+        "value": "osquery-5.17.0.pkg\u0016\u0002"
+    },
+    "_kMDItemCreatorCode": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            0
+        ]
+    },
+    "kMDItemContentTypeTree": {
+        "attribute": "AttrList",
+        "value": [
+            "com.apple.installer-package-archive",
+            "public.data",
+            "public.item",
+            "public.archive"
+        ]
+    },
+    "_kMDItemContentChangeDate": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:45:48.000Z"
+        ]
+    },
+    "kMDItemContentCreationDate_Ranking": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:00:00.000Z"
+        ]
+    },
+    "_kMDItemInterestingDate": {
+        "attribute": "AttrDate",
+        "value": [
+            "2025-05-21T00:45:48.000Z"
+        ]
+    },
+    "_kMDItemContentModificationDateDay": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            20
+        ]
+    },
+    "_kMDItemContentCreationDateWeekOfYear": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            21
+        ]
+    },
+    "_kMDItemFinderFlags": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            0
+        ]
+    },
+    "kMDItemLogicalSize": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            25005632
+        ]
+    },
+    "_kMDItemOwnerUserID": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            501
+        ]
+    },
+    "_kMDItemFileName": {
+        "attribute": "AttrString",
+        "value": "osquery-5.17.0.pkg"
+    },
+    "_kMDItemTextContentIndexExists": {
+        "attribute": "AttrBool",
+        "value": false
+    },
+    "kMDItemContentType": {
+        "attribute": "AttrList",
+        "value": "com.apple.installer-package-archive"
+    },
+    "_kMDItemContentCreationDateWeekday": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            3
+        ]
+    },
+    "_kMDItemFinderLabel": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            0
+        ]
+    },
+    "_kMDItemContentModificationDateMonth": {
+        "attribute": "AttrVariableSizeIntMultiValue",
+        "value": [
+            5
+        ]
+    }
+}
+```
+
 
 ### getXprotectDefinitions(alt_path) -> XprotectEntries[] | MacosError
 
