@@ -14,6 +14,8 @@ menu with the command below:
 
 ```
 artemis -h
+A cross platform forensic parser
+
 Usage: artemis [OPTIONS] [COMMAND]
 
 Commands:

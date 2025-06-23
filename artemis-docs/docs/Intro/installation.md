@@ -26,7 +26,7 @@ Nightly and Stable versions go through the same tests and release process.
 :::
 
 ## Packages
-As of version 0.14.0 you may also install **stable** release artemis on your system.  
+As of version 0.14.0 you may also install **stable** release packages on your system.  
 Currently supported distribution packages are:
 - RPM and DEB for Linux distros
 - PKG for macOS
