@@ -19,7 +19,7 @@ installed packages.
 # Sample API Script
 
 ```typescript
-import { getPkgs } from "../Projects/artemis-api/mod";
+import { getPkgs } from "./artemis-api/mod";
 
 function main() {
     let offset = 0;

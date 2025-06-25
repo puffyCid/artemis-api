@@ -14,6 +14,7 @@ export { parseGvfs } from "./src/linux/gnome/gvfs";
 export { gnomeAppUsage } from "./src/linux/gnome/usage";
 export { extractAbrt } from "./src/linux/abrt";
 export { Epiphany } from "./src/linux/gnome/epiphany";
+export { firmwareHistory } from "./src/linux/firmware";
 
 /**
  * macOS exported functions
@@ -93,7 +94,6 @@ export {
   chromiumPreferences,
   getChromiumAutofill,
   getChromiumBookmarks,
-  getChromiumCookies,
   getChromiumDips,
   getChromiumLogins,
 } from "./src/applications/chromium_old";
