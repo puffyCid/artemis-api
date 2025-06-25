@@ -12,9 +12,9 @@ import { querySqlite } from "../sqlite";
  * @param platform OS `PlatformType`
  * @param unfold Enable unfold parsing
  * @param query SQL query to run
- * @returns Array of `ChromiumHistory` or `ApplicationError`
+ * @returns Array of `ChromiumHistory`
  */
-export function chromiumHistory(paths: ChromiumProfiles[], platform: PlatformType, unfold: boolean, query: string): ChromiumHistory[] | ApplicationError {
+export function chromiumHistory(paths: ChromiumProfiles[], platform: PlatformType, unfold: boolean, query: string): ChromiumHistory[] {
     const hits: ChromiumHistory[] = [];
     for (const path of paths) {
         let full_path = `${path.full_path}/Default/History`;
@@ -77,9 +77,9 @@ export function chromiumHistory(paths: ChromiumProfiles[], platform: PlatformTyp
  * @param paths Array of `ChromiumProfiles`
  * @param platform OS `PlatformType`
  * @param query SQL query to run
- * @returns Array of `ChromiumDownloads` or `ApplicationError`
+ * @returns Array of `ChromiumDownloads`
  */
-export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformType, query: string): ChromiumDownloads[] | ApplicationError {
+export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformType, query: string): ChromiumDownloads[] {
     const hits: ChromiumDownloads[] = [];
     for (const path of paths) {
         let full_path = `${path.full_path}/Default/History`;
@@ -88,7 +88,7 @@ export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformT
             full_path = `${path.full_path}\\Default\\History`;
         }
 
-        const results = querySqlite(path.full_path, query);
+        const results = querySqlite(full_path, query);
         if (results instanceof ApplicationError) {
             console.warn(`Failed to query ${full_path}: ${results}`);
             continue;
@@ -149,58 +149,59 @@ export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformT
  * @param paths Array of `ChromiumProfiles`
  * @param platform OS `PlatformType`
  * @param query SQL query to run
- * @returns Array of `ChromiumCookies` or `ApplicationError`
+ * @returns Array of `ChromiumCookies`
  */
-export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformType, query: string): ChromiumCookies[] | ApplicationError {
+export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformType, query: string): ChromiumCookies[] {
     const hits: ChromiumCookies[] = [];
     for (const path of paths) {
-        let full_path = `${path.full_path}/Default/Cookies`;
+        let full_paths = [`${path.full_path}/Default/Cookies`, `${path.full_path}/Default/Network/Cookies`];
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\Default\\Cookies`;
+            full_paths = [`${path.full_path}\\Default\\Network\\Cookies`, `${path.full_path}\\Default\\Cookies`];
         }
 
-        const results = querySqlite(full_path, query);
-        if (results instanceof ApplicationError) {
-            console.warn(`Failed to query ${full_path}: ${results}`);
-            continue;
-        }
-        // Loop through cookies rows
-        const adjust_time = 1000000n;
-        for (const entry of results) {
-            const cookie_entry: ChromiumCookies = {
-                creation: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry["creation_utc"] as bigint) / adjust_time),
-                )),
-                host_key: entry["host_key"] as string,
-                top_frame_site_key: entry["top_frame_site_key"] as string,
-                name: entry["name"] as string,
-                value: entry["value"] as string,
-                encrypted_value: entry["encrypted_value"] as string,
-                path: entry["path"] as string,
-                expires: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry["expires_utc"] as bigint) / adjust_time),
-                )),
-                is_secure: !!(entry["is_secure"] as number),
-                is_httponly: !!(entry["is_httponly"] as number),
-                last_access: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry["last_access_utc"] as bigint) / adjust_time),
-                )),
-                has_expires: !!(entry["has_expires"] as number),
-                is_persistent: !!(entry["is_persistent"] as number),
-                priority: entry["priority"] as number,
-                samesite: entry["samesite"] as number,
-                source_scheme: entry["source_scheme"] as number,
-                source_port: entry["source_port"] as number,
-                is_same_party: entry["is_same_party"] as number,
-                last_update: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry["last_update_utc"] as bigint) / adjust_time),
-                )),
-                db_path: full_path,
-            };
-            hits.push(cookie_entry);
+        for (const full_path of full_paths) {
+            const results = querySqlite(full_path, query);
+            if (results instanceof ApplicationError) {
+                console.warn(`Failed to query ${full_path}: ${results}`);
+                continue;
+            }
+            // Loop through cookies rows
+            const adjust_time = 1000000n;
+            for (const entry of results) {
+                const cookie_entry: ChromiumCookies = {
+                    creation: unixEpochToISO(webkitToUnixEpoch(
+                        Number(BigInt(entry["creation_utc"] as bigint) / adjust_time),
+                    )),
+                    host_key: entry["host_key"] as string,
+                    top_frame_site_key: entry["top_frame_site_key"] as string,
+                    name: entry["name"] as string,
+                    value: entry["value"] as string,
+                    encrypted_value: entry["encrypted_value"] as string,
+                    path: entry["path"] as string,
+                    expires: unixEpochToISO(webkitToUnixEpoch(
+                        Number(BigInt(entry["expires_utc"] as bigint) / adjust_time),
+                    )),
+                    is_secure: !!(entry["is_secure"] as number),
+                    is_httponly: !!(entry["is_httponly"] as number),
+                    last_access: unixEpochToISO(webkitToUnixEpoch(
+                        Number(BigInt(entry["last_access_utc"] as bigint) / adjust_time),
+                    )),
+                    has_expires: !!(entry["has_expires"] as number),
+                    is_persistent: !!(entry["is_persistent"] as number),
+                    priority: entry["priority"] as number,
+                    samesite: entry["samesite"] as number,
+                    source_scheme: entry["source_scheme"] as number,
+                    source_port: entry["source_port"] as number,
+                    is_same_party: entry["is_same_party"] as number,
+                    last_update: unixEpochToISO(webkitToUnixEpoch(
+                        Number(BigInt(entry["last_update_utc"] as bigint) / adjust_time),
+                    )),
+                    db_path: full_path,
+                };
+                hits.push(cookie_entry);
+            }
         }
     }
-
     return hits;
 }

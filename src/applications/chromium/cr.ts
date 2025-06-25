@@ -65,9 +65,9 @@ export class Chromium {
      * Extract browser history
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `ChromiumHistory` or `ApplicationError`
+     * @returns Array of `ChromiumHistory`
      */
-    public history(offset = 0, limit = 100): ChromiumHistory[] | ApplicationError {
+    public history(offset = 0, limit = 100): ChromiumHistory[] {
         const query = `SELECT 
                   urls.id AS id, 
                   urls.url AS url, 
@@ -92,9 +92,9 @@ export class Chromium {
      * Extract Chromium browser downloads.
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of browser history or `ApplicationError`
+     * @returns Array of browser history
      */
-    public downloads(offset = 0, limit = 100): ChromiumDownloads[] | ApplicationError {
+    public downloads(offset = 0, limit = 100): ChromiumDownloads[] {
         const query = `SELECT 
                       downloads.id AS downloads_id, 
                       guid, 
@@ -135,9 +135,9 @@ export class Chromium {
      * Extract Chromium browser cookies
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `ChromiumCookies` or `ApplicationError`
+     * @returns Array of `ChromiumCookies`
      */
-    public cookies(offset = 0, limit = 100): ChromiumCookies[] | ApplicationError {
+    public cookies(offset = 0, limit = 100): ChromiumCookies[] {
         const query = `SELECT * FROM cookies LIMIT ${limit} OFFSET ${offset}`;
         return chromiumCookies(this.paths, this.platform, query);
     }
@@ -186,7 +186,7 @@ export class Chromium {
      * Function to determine browser version
      * @param platform OS `PlatformType`
      * @param path Path to base browser user profile
-     * @returns Version number or `ApplicationError`
+     * @returns Version number  or `ApplicationError`
      */
     private version(platform: PlatformType, path: string, browser: ErrorName): string | ApplicationError {
         let version_path = `${path}/Last Version`;
@@ -207,7 +207,7 @@ export class Chromium {
      * @param plaform OS `PlatformType`
      * @param browser_type Chromium based `BrowserType`
      * @param browser_error `BrowserType` ErrorName
-     * @returns Glob to base directory for all users associated with the browser
+     * @returns Glob to base directory for all users associated with the browser  or `ApplicationError`
      */
     private browser_path(plaform: PlatformType, browser_type: BrowserType, browser_error: ErrorName): string | ApplicationError {
         if (plaform === PlatformType.Darwin) {
@@ -242,7 +242,7 @@ export class Chromium {
             if (browser_type === BrowserType.CHROME) {
                 return `${drive}\\Users\\*\\AppData\\Local\\Google\\Chrome\\User Data`;
             } else if (browser_type === BrowserType.EDGE) {
-                return `${drive}\\Users\\*\\AppData\\Local\\Microsoft Edge\\User Data`;
+                return `${drive}\\Users\\*\\AppData\\Local\\Microsoft\\Edge\\User Data`;
             } else if (browser_type === BrowserType.CHROMIUM) {
                 return `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data`;
             }

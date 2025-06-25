@@ -24,9 +24,9 @@ export class Edge extends Chromium {
      * Extract Edge browser history. Overrides the Chromium history method
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of browser history or `ApplicationError`
+     * @returns Array of browser history
      */
-    public override history(offset = 0, limit = 100): ChromiumHistory[] | ApplicationError {
+    public override history(offset = 0, limit = 100): ChromiumHistory[] {
         const query = `SELECT 
                   urls.id AS id, 
                   urls.url AS url, 
@@ -51,9 +51,9 @@ export class Edge extends Chromium {
         * Extract Edge browser downloads. Overrides the Chromium downloads method
         * @param [offset=0] Starting db offset. Default is zero
         * @param [limit=100] How many records to return. Default is 100
-        * @returns Array of browser history or `ApplicationError`
+        * @returns Array of browser history
         */
-    public override downloads(offset = 0, limit = 100): ChromiumDownloads[] | ApplicationError {
+    public override downloads(offset = 0, limit = 100): ChromiumDownloads[]{
         const query = `SELECT 
                       downloads.id AS downloads_id, 
                       guid, 
@@ -94,9 +94,9 @@ export class Edge extends Chromium {
      * Extract Edge browser cookies
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `ChromiumCookies` or `ApplicationError`
+     * @returns Array of `ChromiumCookies`
      */
-    public override cookies(offset = 0, limit = 100): ChromiumCookies[] | ApplicationError {
+    public override cookies(offset = 0, limit = 100): ChromiumCookies[] {
         const query = `SELECT * FROM cookies LIMIT ${limit} OFFSET ${offset}`;
         return chromiumCookies(this.paths, this.platform, query);
     }
