@@ -3,6 +3,7 @@ import { BrowserType } from "../../../types/applications/chromium";
 
 function main() {
   const chromium_client = new Chromium(PlatformType.Linux, true, BrowserType.CHROMIUM);
+  console.log(`Chromium browser info: ${JSON.stringify(chromium_client)}`);
 
   let history_hits = chromium_client.history();
   if (history_hits.length === 0) {
