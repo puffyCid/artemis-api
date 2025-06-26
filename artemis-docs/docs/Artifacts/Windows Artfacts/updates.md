@@ -22,7 +22,7 @@ Windows Updates.
 # Sample API Script
 
 ```typescript
-import { Updates } from "../../Projects/artemis-api/src/windows/ese/updates";
+import { Updates } from ".././artemis-api/src/windows/ese/updates";
 
 function main() {
   const updates = new Updates();

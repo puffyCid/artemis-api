@@ -152,7 +152,7 @@ files into one .js file using esbuild.
 
 ```javascript
 (() => {
-  // ../Projects/artemis-api/src/utils/error.ts
+  // ./artemis-api/src/utils/error.ts
   var ErrorBase = class extends Error {
     name;
     message;
@@ -163,11 +163,11 @@ files into one .js file using esbuild.
     }
   };
 
-  // ../Projects/artemis-api/src/windows/errors.ts
+  // ./artemis-api/src/windows/errors.ts
   var WindowsError = class extends ErrorBase {
   };
 
-  // ../Projects/artemis-api/src/windows/registry.ts
+  // ./artemis-api/src/windows/registry.ts
   function getRegistry(path) {
     try {
       const data = js_registry(path);

@@ -16,7 +16,7 @@ You have to use the artemis [api](../../API/overview.md) in order to collect abr
 # Sample API Script
 
 ```typescript
-import { extractAbrt } from "../Projects/artemis-api/mod";
+import { extractAbrt } from "./artemis-api/mod";
 
 async function main() {
     const results = await extractAbrt();
