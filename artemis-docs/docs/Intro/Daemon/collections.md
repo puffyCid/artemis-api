@@ -81,11 +81,11 @@ The TOML file should have the same format as [standard collection TOML file](../
     artemis will log errors and warnings. Valid options are: **warn**,
     **error**, **debug**, or **info**
 - `[[artifacts]]` A list of artifacts to collect
-  - artifact_name: Name of aritfact
+  - artifact_name: Name of artifact
   - filter: Whether to filter the artifact data through the filter_script. This
     is **optional** by default nothing is filtered. This option will send
     artifact results to your provided filter_script
-  - `[aritfacts.NAME]` Artifact configuration parameters
+  - `[artifacts.NAME]` Artifact configuration parameters
     - artifact options: Options for the artifact you want to collect
 
 

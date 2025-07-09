@@ -104,7 +104,7 @@ export interface MftEntry {
     deleted: boolean;
     /**Namespace for the entry */
     namespace: Namespace;
-    /**Attributs for the entry */
+    /**Attributes for the entry */
     attributes: AttributeFlags[];
     /**Other attributes parsed for the entry */
     attribute_list: Record<string, unknown>[];

@@ -8,7 +8,7 @@ Using the artemis API you may timeline artifacts into a standard JSONL (or JSON)
 format. Artemis uses the timeline format based on
 [Timesketch](https://timesketch.org/).
 
-The format is defind below:
+The format is defined below:
 
 ```typescript
 export interface TimesketchTimeline {

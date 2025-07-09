@@ -9,7 +9,7 @@ able to parse the Windows
 [OST](https://support.microsoft.com/en-us/office/introduction-to-outlook-data-files-pst-and-ost-222eaf92-a995-45d9-bde2-f331f60e2790)to
 extract emails and attachments.
 
-The Artemis TypeScript API allow analyts to extract messages programatically.
+The Artemis TypeScript API allow analysts to extract messages programmatically.
 However, since OST files can be **extremely** large, we want to avoid reading
 the entire file into memory.
 
@@ -710,8 +710,8 @@ attachment.
 Extracting email attachments is a very powerful scripting feature, however it is
 **important** to be aware that it can potentially spike memory usage.
 
-Remeber our limit for reading messages is 200. If we choose to just read all
-attachments (which may be ok), it can potentially spike memory usage alot. For
+Remember our limit for reading messages is 200. If we choose to just read all
+attachments (which may be ok), it can potentially spike memory usage a lot. For
 example, if each of the 200 messages we read contain a 2MB attachment and decide
 we want to read all of them.\
 Thats already 400MBs of memory just for attachments! That does not even include
@@ -926,7 +926,7 @@ You should see something like the following in your output:
 }
 ```
 
-Thats alot of data! And this is just for one attachment thats 2654 bytes in
+Thats a lot of data! And this is just for one attachment thats 2654 bytes in
 size!
 
 The actual attachment data is base64 encoded. If you

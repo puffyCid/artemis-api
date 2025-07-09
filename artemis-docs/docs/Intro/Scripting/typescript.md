@@ -5,8 +5,8 @@ description: Using TypeScript
 
 # TypeScript
 
-A TypeScrpt library is provided instead of JavaScript due to the enhanced
-features and ease of use TypeScrpt provides over plain JavaScript.
+A TypeScript library is provided instead of JavaScript due to the enhanced
+features and ease of use TypeScript provides over plain JavaScript.
 
 Continuing from `get_registry()` function example. The code block below shows the API exposes a function called `get_registry()`.
 
@@ -50,7 +50,7 @@ export interface Value {
   /**Name of Value */
   value: string;
   /**
-   * Data associated with value.  Type can be determiend by `data_type`.
+   * Data associated with value.  Type can be determined by `data_type`.
    * `REG_BINARY` is base64 encoded string
    */
   data: string;
@@ -82,7 +82,7 @@ In order to access the TypeScript library you just need to clone the artemis-api
 
 Then just import into your TypeScript code!
 
-The example script below shows TypeScrpt code that imports the **artemis-api**
+The example script below shows TypeScript code that imports the **artemis-api**
 library to parse the SOFTWARE `Registry` file to get a list of installed
 programs
 
@@ -184,5 +184,5 @@ function main() {
 main();
 ```
 
-We can then compile and bundle this TypeScrpt code to JavaScript and execute
+We can then compile and bundle this TypeScript code to JavaScript and execute
 using artemis!

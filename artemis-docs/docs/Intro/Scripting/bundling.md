@@ -12,7 +12,7 @@ multiple files that need to be combine into one .js file.
 
 A Bundler can help us perform this task.
 
-The TypeScrpt code below imports a function and the Registry interface from
+The TypeScript code below imports a function and the Registry interface from
 artemis.
 
 ```typescript
@@ -136,7 +136,7 @@ esbuild --bundle --outfile=out.js main.ts
 
 :::info
 
-esbuild can also minify JavaScript code! This can dramitically reduce the size of your script
+esbuild can also minify JavaScript code! This can dramatically reduce the size of your script
 
 ```
 esbuild --bundle --minify --outfile=out.js main.ts

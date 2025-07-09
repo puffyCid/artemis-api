@@ -59,11 +59,11 @@ filter = false
     artemis will log errors and warnings. Valid options are: **warn**,
     **error**, **debug**, or **info**
 - `[[artifacts]]` A list of artifacts to collect
-  - `artifact_name` Name of aritfact
+  - `artifact_name` Name of artifact
   - `filter` Whether to filter the artifact data through the filter_script. This
     is **optional** by default nothing is filtered. This option will send
     artifact results to your provided filter_script
-  - `[aritfacts.amcache]` Artifact configuration parameters
+  - `[artifacts.amcache]` Artifact configuration parameters
     - `alt_file` Use an alternative amcache file when collecting data. This
       configuration is **optional**
 
@@ -119,8 +119,8 @@ path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 ```
 
 - `[[artifacts]]` The second entry in our list of artifacts to collect
-  - **artifact_name** Name of aritfact
-  - `[aritfacts.shortcuts]` Artifact configuration parameters
+  - **artifact_name** Name of artifact
+  - `[artifacts.shortcuts]` Artifact configuration parameters
     - **path** Use the provided path to collect **shortcuts** data. This
       parameter is **required**
 

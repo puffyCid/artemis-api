@@ -64,7 +64,7 @@ only_templates = false # Works only on Windows
 - `only_templates` Whether artemis should only output the parsed EventLog
   template files and skip evtx files. This configuration is **required**.
 
-# Template Parsing
+# EventLog Providers ands Template Parsing
 
 Artemis uses the popular [evtx](https://github.com/omerbenamram/evtx) crate to
 parse EventLog files. However, this library does not completely return the log
@@ -87,7 +87,7 @@ evtx crate will output the following message data from an EventLog file
 }
 ```
 
-now compared to the Event Viewer on Windows
+Now compared to the Event Viewer on Windows
 
 ```
 Credential Manager credentials were read.
@@ -104,16 +104,15 @@ This event occurs when a user performs a read operation on stored credentials in
 
 In order to get the entire EventLog message, we need to parse EventLog provider
 files (PE files) and extract resource data. The Windows Registry contains
-information about EventLog providers. Artemis will perform the following high
+information about EventLog providers. If you choose to enable EventLog Provider parsing, artemis will perform the following high
 level actions to attempt to extract EventLog template strings:
 
 1. Read and parse the SOFTWARE and SYSTEM Registry files to identify EventLog
-   providers. The provider information includes information about the PE file
-   that provides the EventLog template strings
-2. Read and parse all PE files associated with EventLog providers
-3. Extract and parse MUI, MESSAGETABLE, and WEVT_TEMPLATE resources from the PE
+   providers. The Registry files point to PE files that contain EventLog Provider template strings.
+2. Next read and parse all PE files associated with EventLog providers
+3. Extract and parse the MUI, MESSAGETABLE, and WEVT_TEMPLATE resources from the PE
    files
-4. Attempt to use: MESSAGETABLE, WEVT_TEMPLATE, and the EventLog data above to
+4. Attempt to use: MESSAGETABLE, WEVT_TEMPLATE, and the evtx EventLog data to
    assemble the full EventLog message
 
 If parsing is successful artemis should return a more detailed EventLog message
@@ -142,7 +141,7 @@ also be found in several
 [blogs](https://docs.velociraptor.app/docs/forensic/event_logs/)
 
 1. No support for enum lookups. Artemis cannot lookup enum EventLog data values.
-   Ex: `IntendedPackageState - 5112. 5112 = "Installed"`. The enum number 5512
+   Ex: `IntendedPackageState - 5112`. The enum number 5512
    is converted to the value "Installed" in Event Viewer
 2. You should not try parsing EventLog files on different Windows platforms. For
    example, if you acquire a `Security.evtx` on a Windows 11 system, you should
@@ -160,30 +159,30 @@ also be found in several
    macOS. If you want to include template strings on Linux or macOS you must
    also provide a template file
 
-## Template Files
+## Template Files (aka EventLog Provider strings)
 
-The `dump_templates` option will make artemis dump the parse EventLog templates
+The `dump_templates` option will make artemis dump the parsed template strings from EventLog Providers on a Windows system
 to a JSON file. This option also requires `include_templates`. You must be on a
 Windows system in order for this to work.
 
 :::info
 
-To dump templates easily using the artemis binary you run the following on
+To include the combine EventLog message you would run the following on
 Windows.\
-`artemis.exe acquire eventlogs --include-templates --dump-templates`
+`artemis.exe acquire eventlogs --include-templates`
 
-If you only want at template file (and not evtx data) you can run the following
+If you only want a template JSON file (and not evtx data) you can run the following
 on Windows.\
 `artemis.exe acquire eventlogs --include-templates --dump-templates --only-templates`
 :::
 
 Dumping the template data will return a single JSON file that can then be used
-to parse evtx files on different platforms. Example scenario:
+to parse evtx files on different platforms. An example scenario where this could be useful:
 
-1. You dump templates on a Windows server via
+1. You dump template strings on a Windows server via
    `artemis.exe acquire eventlogs --include-templates --dump-templates --only-templates`.
-   Size will vary but ~90MBs seems normal
-2. You acquire the template file and move it to your Linux workstation
+   The JSON file size will vary but ~90MB seems typical
+2. You acquire the template JSON file and move it to your Linux workstation
 3. You acquire a 2GB `Application.evtx` file from the **same** Windows server
    and copy it to your Linux workstation
 4. Run

@@ -98,7 +98,7 @@ export interface PropertyContext {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface TableInfo {
   block_data: number[][];
@@ -114,7 +114,7 @@ export interface TableInfo {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface DescriptorData {
   node_level: string;
@@ -125,7 +125,7 @@ export interface DescriptorData {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface Node {
   node_id: string;
@@ -134,7 +134,7 @@ export interface Node {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface TableRows {
   value: undefined;
@@ -142,7 +142,7 @@ export interface TableRows {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface ColumnDescriptor {
   property_type: string;
@@ -154,7 +154,7 @@ export interface ColumnDescriptor {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface HeapNode {
   node: string;
@@ -163,7 +163,7 @@ export interface HeapNode {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface TableBranchInfo {
   node: HeapNode;
@@ -171,7 +171,7 @@ export interface TableBranchInfo {
 }
 
 /**
- * Internal structure containing information requried to extract messages
+ * Internal structure containing information required to extract messages
  */
 export interface RowsInfo {
   row_end: number;
@@ -208,7 +208,7 @@ export interface AttachmentInfo {
   name: string;
   /**Size of the attachment */
   size: number;
-  /**How the attachmented was attached */
+  /**How the attachment was attached */
   method: string;
   /**Node ID for the attachment */
   node: number;

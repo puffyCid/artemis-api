@@ -37,7 +37,7 @@ import { Registry } from "./artemis-api/src/windows/registry";
 
 A list of all exported artemis functions can be found at
 https://github.com/puffyCid/artemis-api. All artifacts supported by artemis are
-callable from TypeScrpt. The structured output produced by each artifact is
+callable from TypeScript. The structured output produced by each artifact is
 listed in the respective artifact section. For example, the structured Registry
 output returned by `getRegistry` is found in the
 [Registry artifact](../../Artifacts/Windows%20Artfacts/registry.md)

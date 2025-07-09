@@ -9,7 +9,7 @@ keywords:
 # Launchd
 
 macOS launch daemons (`launchd`) are the most common way to register
-applications for persistence on macOS. `launchd` can be registered for a singler
+applications for persistence on macOS. `launchd` can be registered for a single
 user or system wide. artemis will try to parse all known`launchd` locations by
 default.
 

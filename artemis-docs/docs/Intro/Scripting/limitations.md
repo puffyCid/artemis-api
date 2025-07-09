@@ -20,7 +20,7 @@ Our JavaScript runtime is for DFIR investigations and not the web
 There are some additional limitations to scripting:
 
 1. All scripts executed through artemis must be in JavaScript. You **cannot**
-   execute TypeScrpt scripts directly. You **must** compile and bundle them into
+   execute TypeScript scripts directly. You **must** compile and bundle them into
    one JavaScript file.
 2. The JavaScript must be in common JS format (cjs). EMCAScript (ES) module
    scripts are not supported.

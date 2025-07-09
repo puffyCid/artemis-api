@@ -8,7 +8,7 @@ keywords:
 # GNOME Application Usage
 
 GNOME is popular Linux Desktop environment pre-installed on many Linux
-distrubutions. GNOME tracks commonly used applications that a user searches.
+distributions. GNOME tracks commonly used applications that a user searches.
 Artemis supports parsing this information to obtain recently used applications.
 
 # Collection

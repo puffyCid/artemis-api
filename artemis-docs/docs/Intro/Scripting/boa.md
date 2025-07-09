@@ -9,7 +9,7 @@ A really cool capability of artemis is it contains an embedded JavaScript
 runtime thats designed specifically for DFIR! Artemis uses
 [Boa](https://boajs.dev/) a JS engine written in Rust.
 
-Using an embedded JS enginge allows us to call Rust functions from JavaScript!\
+Using an embedded JS engine allows us to call Rust functions from JavaScript!\
 For example, the artemis function `get_registry()` can be used to parse a
 provided Registry file on disk. By registering this function with Boa we can
 call this function directly from JavaScript! In addition to JavaScript, we have

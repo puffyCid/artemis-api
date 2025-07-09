@@ -15,7 +15,7 @@ Checkout the [Getting started section](../Intro/Scripting/boa.md) for walkthroug
 
 The API can be broken down into two broad groups of categories:
 
-1. Highlevel helper functions. For example, functions to read files, parse XML,
+1. High level helper functions. For example, functions to read files, parse XML,
    base64 encode and decode, etc
 
 | Category                            | Description                                         |

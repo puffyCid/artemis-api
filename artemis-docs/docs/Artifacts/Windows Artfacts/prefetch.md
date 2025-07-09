@@ -7,12 +7,10 @@ keywords:
 
 # Prefetch
 
-Windows `Prefetch` data tracks execution of applications on Windows
-Workstations. `Prefetch` files are typically located at `C:\Windows\Prefetch`.
-On Windows servers `Prefetch` is disabled and may also be disabled on systems
-with SSDs. Starting on Windows 10, the `Prefetch` files are compressed using
-`LZXPRESS Huffman`. artemis uses the Windows API to decompress the data before
-parsing `Prefetch` fiels
+Windows Prefetch data tracks execution of applications on Windows
+Workstations. Prefetch files are typically located at `C:\Windows\Prefetch`.
+On Windows servers Prefetch is disabled on servers and may also be disabled on systems
+with SSDs.
 
 Other Parsers:
 

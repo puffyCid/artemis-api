@@ -133,7 +133,7 @@ Python API library
 Some known limitations that have been observed:
 
 - Timelines get [renamed](https://github.com/google/timesketch/issues/3052).
-- Possible slowness if a timeline has alot of
+- Possible slowness if a timeline has a lot of
   [data sources](https://github.com/google/timesketch/issues/3075)
 
 Possible workarounds:
