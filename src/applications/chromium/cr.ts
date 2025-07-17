@@ -1,10 +1,11 @@
-import { BrowserType, ChromiumCookies, ChromiumDownloads, ChromiumHistory, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumCookies, ChromiumDownloads, ChromiumHistory, ChromiumProfiles } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
-import { chromiumCookies, chromiumDownloads, chromiumHistory } from "./sqlite";
+import { chromiumExtensions, chromiumPreferences } from "./json";
+import { chromiumAutofill, chromiumCookies, chromiumDownloads, chromiumHistory } from "./sqlite";
 
 /**
  * Class to extract Chromium browser information.  
@@ -17,7 +18,7 @@ export class Chromium {
     protected browser: BrowserType;
 
 
-    constructor(platform: PlatformType, unfold = false, browser: BrowserType, alt_path?: string) {
+    constructor (platform: PlatformType, unfold = false, browser: BrowserType, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         this.browser = browser;
@@ -54,11 +55,11 @@ export class Chromium {
             return;
         }
 
-        this.paths = [{
+        this.paths = [ {
             full_path: alt_path,
             version: browser_version,
             browser: this.browser,
-        }];
+        } ];
     }
 
     /**
@@ -142,6 +143,32 @@ export class Chromium {
         return chromiumCookies(this.paths, this.platform, query);
     }
 
+    /**
+     * Function to parse Chromium AutoFill information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumAutofill` 
+     */
+    public autofill(offset = 0, limit = 100): ChromiumAutofill[] {
+        const query = `SELECT name, value, date_created, date_last_used, count, value_lower from autofill LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumAutofill(this.paths, this.platform, query);
+    }
+
+    /**
+     * Get installed Chromium extensions
+     * @returns Array of parsed extensions
+     */
+    public extensions(): Record<string, unknown>[] {
+        return chromiumExtensions(this.paths, this.platform);
+    }
+
+    /**
+     * Get Chromium Preferences
+     * @returns Array of Preferences for each user
+     */
+    public preferences(): Record<string, unknown>[] {
+        return chromiumPreferences(this.paths, this.platform);
+    }
 
     /**
      * Get base path for all browser data
@@ -204,13 +231,13 @@ export class Chromium {
 
     /**
      * Function to identify base paths to Chromium based browsers
-     * @param plaform OS `PlatformType`
+     * @param platform OS `PlatformType`
      * @param browser_type Chromium based `BrowserType`
      * @param browser_error `BrowserType` ErrorName
      * @returns Glob to base directory for all users associated with the browser  or `ApplicationError`
      */
-    private browser_path(plaform: PlatformType, browser_type: BrowserType, browser_error: ErrorName): string | ApplicationError {
-        if (plaform === PlatformType.Darwin) {
+    private browser_path(platform: PlatformType, browser_type: BrowserType, browser_error: ErrorName): string | ApplicationError {
+        if (platform === PlatformType.Darwin) {
             if (browser_type === BrowserType.CHROME) {
                 return "/Users/*/Library/Application Support/Google/Chrome";
             } else if (browser_type === BrowserType.EDGE) {
@@ -222,7 +249,7 @@ export class Chromium {
             return new ApplicationError(`${browser_error}`, `Unsupported macOS browser! ${browser_type}`);
         }
 
-        if (plaform === PlatformType.Linux) {
+        if (platform === PlatformType.Linux) {
             if (browser_type === BrowserType.CHROME) {
                 return "/home/*/.config/Google/Chrome";
             } else if (browser_type === BrowserType.EDGE) {
@@ -234,7 +261,7 @@ export class Chromium {
             return new ApplicationError(`${browser_error}`, `Unsupported Linux browser! ${browser_type}`);
         }
 
-        if (plaform === PlatformType.Windows) {
+        if (platform === PlatformType.Windows) {
             let drive = getEnvValue("SystemDrive");
             if (drive === "") {
                 drive = "C:";
@@ -250,7 +277,7 @@ export class Chromium {
             return new ApplicationError(`${browser_error}`, `Unsupported Windows browser! ${browser_type}`);
         }
 
-        return new ApplicationError(`${browser_error}`, `Unsupported ${plaform} browser! ${browser_type}`);
+        return new ApplicationError(`${browser_error}`, `Unsupported ${platform} browser! ${browser_type}`);
 
     }
 }

@@ -1,8 +1,13 @@
-import { BrowserType, ChromiumCookies, ChromiumDownloads, ChromiumHistory } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumCookies, ChromiumDownloads, ChromiumHistory } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
-import { chromiumCookies, chromiumDownloads, chromiumHistory } from "./chromium/sqlite";
-import { ApplicationError } from "./errors";
+import { chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumAutofill, chromiumCookies, chromiumDownloads, chromiumHistory } from "./chromium/sqlite";
+
+type EdgeHistory = ChromiumHistory;
+type EdgeDownloads = ChromiumDownloads;
+type EdgeCookies = ChromiumCookies;
+type EdgeAutofill = ChromiumAutofill;
 
 /**
  * Class to extract Edge browser information. Since Edge is based on Chromium we can leverage the existing Chromium artifacts to parse Edge info
@@ -16,17 +21,17 @@ export class Edge extends Chromium {
      * @param alt_path Optional alternative path to directory contain FireFox data
      * @returns `Edge` instance class
      */
-    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
         super(platform, unfold, BrowserType.EDGE, alt_path);
     }
 
     /**
-     * Extract Edge browser history. Overrides the Chromium history method
+     * Extract Edge browser history.
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
      * @returns Array of browser history
      */
-    public override history(offset = 0, limit = 100): ChromiumHistory[] {
+    public override history(offset = 0, limit = 100): EdgeHistory[] {
         const query = `SELECT 
                   urls.id AS id, 
                   urls.url AS url, 
@@ -48,12 +53,12 @@ export class Edge extends Chromium {
     }
 
     /**
-        * Extract Edge browser downloads. Overrides the Chromium downloads method
+        * Extract Edge browser downloads.
         * @param [offset=0] Starting db offset. Default is zero
         * @param [limit=100] How many records to return. Default is 100
-        * @returns Array of browser history
+        * @returns Array of browser downloads
         */
-    public override downloads(offset = 0, limit = 100): ChromiumDownloads[]{
+    public override downloads(offset = 0, limit = 100): EdgeDownloads[] {
         const query = `SELECT 
                       downloads.id AS downloads_id, 
                       guid, 
@@ -94,10 +99,37 @@ export class Edge extends Chromium {
      * Extract Edge browser cookies
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `ChromiumCookies`
+     * @returns Array of `EdgeCookies`
      */
-    public override cookies(offset = 0, limit = 100): ChromiumCookies[] {
+    public override cookies(offset = 0, limit = 100): EdgeCookies[] {
         const query = `SELECT * FROM cookies LIMIT ${limit} OFFSET ${offset}`;
         return chromiumCookies(this.paths, this.platform, query);
+    }
+
+    /**
+     * Get installed Edge extensions
+     * @returns Array of parsed extensions
+     */
+    public override extensions(): Record<string, unknown>[] {
+        return chromiumExtensions(this.paths, this.platform);
+    }
+
+    /**
+     * Get Edge Preferences
+     * @returns Array of Preferences for each user
+     */
+    public override preferences(): Record<string, unknown>[] {
+        return chromiumPreferences(this.paths, this.platform);
+    }
+
+    /**
+     * Function to parse Edge AutoFill information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `EdgeAutofill` 
+     */
+    public override autofill(offset = 0, limit = 100): EdgeAutofill[] {
+        const query = `SELECT name, value, date_created, date_last_used, count, value_lower from autofill LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumAutofill(this.paths, this.platform, query);
     }
 }
