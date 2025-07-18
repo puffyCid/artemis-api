@@ -87,16 +87,6 @@ export { disks } from "./src/system/disks";
 export { cpus } from "./src/system/cpu";
 export { memory, processListing } from "./src/system/memory";
 
-/**
- * Application exported functions
- */
-export {
-  chromiumPreferences,
-  getChromiumAutofill,
-  getChromiumBookmarks,
-  getChromiumDips,
-  getChromiumLogins,
-} from "./src/applications/chromium_old";
 export { FireFox } from "./src/applications/firefox/fox";
 export { Edge } from "./src/applications/edge";
 export { Chrome } from "./src/applications/chrome";
