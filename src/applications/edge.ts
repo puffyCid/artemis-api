@@ -1,13 +1,16 @@
-import { BrowserType, ChromiumAutofill, ChromiumCookies, ChromiumDownloads, ChromiumHistory } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLogins } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
-import { chromiumExtensions, chromiumPreferences } from "./chromium/json";
-import { chromiumAutofill, chromiumCookies, chromiumDownloads, chromiumHistory } from "./chromium/sqlite";
+import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
 
 type EdgeHistory = ChromiumHistory;
 type EdgeDownloads = ChromiumDownloads;
 type EdgeCookies = ChromiumCookies;
 type EdgeAutofill = ChromiumAutofill;
+type EdgeBookmarks = ChromiumBookmarks;
+type EdgeLogins = ChromiumLogins;
+type EdgeDips = ChromiumDips;
 
 /**
  * Class to extract Edge browser information. Since Edge is based on Chromium we can leverage the existing Chromium artifacts to parse Edge info
@@ -131,5 +134,35 @@ export class Edge extends Chromium {
     public override autofill(offset = 0, limit = 100): EdgeAutofill[] {
         const query = `SELECT name, value, date_created, date_last_used, count, value_lower from autofill LIMIT ${limit} OFFSET ${offset}`;
         return chromiumAutofill(this.paths, this.platform, query);
+    }
+
+    /**
+     * Get Chrome Bookmarks
+     * @returns Array of `EdgeBookmarks` for each user
+     */
+    public override bookmarks(): EdgeBookmarks[] {
+        return chromiumBookmarks(this.paths, this.platform);
+    }
+
+    /**
+     * Function to parse Edge Login information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `EdgeLogins` 
+     */
+    public override logins(offset = 0, limit = 100): EdgeLogins[] {
+        const query = `SELECT * from logins LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumLogins(this.paths, this.platform, query);
+    }
+
+    /**
+     * Function to parse Edge Detect Incidental Party State (DIPS) information
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumDips` 
+     */
+    public dips(offset = 0, limit = 100): EdgeDips[] {
+        const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumDips(this.paths, this.platform, query);
     }
 }

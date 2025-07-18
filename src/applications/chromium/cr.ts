@@ -1,11 +1,11 @@
-import { BrowserType, ChromiumAutofill, ChromiumCookies, ChromiumDownloads, ChromiumHistory, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLogins, ChromiumProfiles } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
-import { chromiumExtensions, chromiumPreferences } from "./json";
-import { chromiumAutofill, chromiumCookies, chromiumDownloads, chromiumHistory } from "./sqlite";
+import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./json";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./sqlite";
 
 /**
  * Class to extract Chromium browser information.  
@@ -155,6 +155,28 @@ export class Chromium {
     }
 
     /**
+     * Function to parse Chromium Login information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumLogins` 
+     */
+    public logins(offset = 0, limit = 100): ChromiumLogins[] {
+        const query = `SELECT * from logins LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumLogins(this.paths, this.platform, query);
+    }
+
+    /**
+     * Function to parse Chromium Detect Incidental Party State (DIPS) information
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumDips` 
+     */
+    public dips(offset = 0, limit = 100): ChromiumDips[] {
+        const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumDips(this.paths, this.platform, query);
+    }
+
+    /**
      * Get installed Chromium extensions
      * @returns Array of parsed extensions
      */
@@ -168,6 +190,14 @@ export class Chromium {
      */
     public preferences(): Record<string, unknown>[] {
         return chromiumPreferences(this.paths, this.platform);
+    }
+
+    /**
+     * Get Chromium Bookmarks
+     * @returns Array of `ChromiumBookmarks` for each user
+     */
+    public bookmarks(): ChromiumBookmarks[] {
+        return chromiumBookmarks(this.paths, this.platform);
     }
 
     /**

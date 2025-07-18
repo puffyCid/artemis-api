@@ -42,6 +42,8 @@ export interface ChromiumHistory {
   unfold: Url | undefined;
   /**Path to the HISTORY sqlite file */
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 /**
@@ -108,6 +110,8 @@ export interface ChromiumDownloads {
   url: string;
   /**Path to the HISTORY sqlite file */
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumCookies {
@@ -132,6 +136,8 @@ export interface ChromiumCookies {
   is_same_party: number;
   last_update: string;
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumAutofill {
@@ -143,6 +149,8 @@ export interface ChromiumAutofill {
   /**Default is 1 */
   count: number;
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumBookmarks {
@@ -150,6 +158,8 @@ export interface ChromiumBookmarks {
   other: ChromiumBookmarkChildren[];
   synced: ChromiumBookmarkChildren[];
   path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumBookmarkChildren {
@@ -194,12 +204,14 @@ export interface ChromiumLogins {
   keychain_identifier?: string;
   sender_profile_image_url?: string;
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 /**
  * Detect Incidental Party State (DIPS) collects metrics on websites
  */
-export interface Dips {
+export interface ChromiumDips {
   site: string;
   first_site_storage?: string | null;
   last_site_storage?: string | null;
@@ -213,6 +225,8 @@ export interface Dips {
   last_web_authn_assertion: string | null;
   /**Path to DIPS database */
   path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumProfiles {

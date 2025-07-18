@@ -1,13 +1,16 @@
-import { BrowserType, ChromiumAutofill, ChromiumCookies, ChromiumDownloads, ChromiumHistory } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLogins } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
-import { chromiumExtensions, chromiumPreferences } from "./chromium/json";
-import { chromiumAutofill, chromiumCookies, chromiumDownloads, chromiumHistory } from "./chromium/sqlite";
+import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
 
 type ChromeHistory = ChromiumHistory;
 type ChromeDownloads = ChromiumDownloads;
 type ChromeCookies = ChromiumCookies;
 type ChromeAutofill = ChromiumAutofill;
+type ChromeBookmarks = ChromiumBookmarks;
+type ChromeLogins = ChromiumLogins;
+type ChromeDips = ChromiumDips;
 
 /**
  * Class to extract Chrome browser information. Since Chrome is based on Chromium we can leverage the existing Chromium artifacts to parse Chrome info
@@ -131,5 +134,35 @@ export class Chrome extends Chromium {
   public override autofill(offset = 0, limit = 100): ChromeAutofill[] {
     const query = `SELECT name, value, date_created, date_last_used, count, value_lower from autofill LIMIT ${limit} OFFSET ${offset}`;
     return chromiumAutofill(this.paths, this.platform, query);
+  }
+
+  /**
+   * Get Chrome Bookmarks
+   * @returns Array of `ChromeBookmarks` for each user
+   */
+  public override bookmarks(): ChromeBookmarks[] {
+    return chromiumBookmarks(this.paths, this.platform);
+  }
+
+  /**
+   * Function to parse Chrome Login information. 
+   * @param [offset=0] Starting db offset. Default is zero
+   * @param [limit=100] How many records to return. Default is 100
+   * @returns Array of `ChromeLogins` 
+   */
+  public override logins(offset = 0, limit = 100): ChromeLogins[] {
+    const query = `SELECT * from logins LIMIT ${limit} OFFSET ${offset}`;
+    return chromiumLogins(this.paths, this.platform, query);
+  }
+
+  /**
+   * Function to parse Chrome Detect Incidental Party State (DIPS) information
+   * @param [offset=0] Starting db offset. Default is zero
+   * @param [limit=100] How many records to return. Default is 100
+   * @returns Array of `ChromeDips` 
+   */
+  public dips(offset = 0, limit = 100): ChromeDips[] {
+    const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
+    return chromiumDips(this.paths, this.platform, query);
   }
 }
