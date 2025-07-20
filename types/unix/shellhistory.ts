@@ -5,12 +5,14 @@
  * A `.bash_history`file can exist per user on an endpoint
  */
 export interface BashHistory {
-  /**Array of lines associated with `.bash_history` file */
-  history: BashData[];
+  /**Line entry */
+  history: string;
+  /**Timestamp associated with line entry. Timestamps are **optional** in `.bash_history` */
+  timestamp: string;
+  /**Line number */
+  line: number;
   /**Path to `.bash_history` file */
   path: string;
-  /**User directory name */
-  user: string;
 }
 
 /**
@@ -32,27 +34,16 @@ export interface BashData {
  * A `.zsh_history`file can exist per user on an endpoint
  */
 export interface ZshHistory {
-  /**Array of lines associated with `.zs_history` file */
-  history: ZshData[];
-  /**Path to `.zsh_history` file */
-  path: string;
-  /**User directory name */
-  user: string;
-}
-
-/**
- * History data associated with `.zsh_history`
- */
-export interface ZshData {
   /**Line entry */
   history: string;
   /**Timestamp associated with line entry. Timestamps are **optional** in `.zsh_history` */
   timestamp: string;
   /**Line number */
   line: number;
-  /**Duration of command */
-  duration: number;
+  /**Path to `.zsh_history` file */
+  path: string;
 }
+
 
 /**
  * `Python` is a popular programming language.
