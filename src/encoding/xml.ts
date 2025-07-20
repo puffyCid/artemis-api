@@ -11,6 +11,6 @@ export function readXml(path: string): Record<string, unknown> | EncodingError {
     const result = js_read_xml(path);
     return result;
   } catch (err) {
-    return new EncodingError("READ_XML", `failed to read XML ${path}: ${err}`);
+    return new EncodingError("XML", `failed to read XML ${path}: ${err}`);
   }
 }

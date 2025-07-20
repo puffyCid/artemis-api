@@ -30,93 +30,45 @@ References:
 - [Bash](https://linuxhint.com/bash_command_history_usage/)
 - [Zsh](https://www.soberkoder.com/better-zsh-history/)
 
-# TOML Collection
+# Collection
 
-```toml
-[output]
-name = "shellhistory_collection"
-directory = "./tmp"
-format = "json"
-compress = false
-endpoint_id = "abdc"
-collection_id = 1
-output = "local"
-timeline = false
+You have to use the artemis [api](../../API/overview.md) in order to parse Shell History files.
 
-[[artifacts]]
-artifact_name = "shell_history"
+```typescript
+import { getBashHistory, getZshHistory, PlatformType } from "./artemis-api/mod";
+
+function main() {
+  let results = getBashHistory(PlatformType.Linux);
+  console.log(JSON.stringify(results));
+}
+
+main();
 ```
-
-# Collection Options
-
-- N/A
 
 # Output Structure
 
-An array of `BashHistory` for bash data, `ZshHistory` for zsh data, and
-`PythonHistory` for Python data per user.
+An array of `BashHistory` for bash data, `ZshHistory` for zsh data
 
 ```typescript
 export interface BashHistory {
-  /**Array of lines associated with `.bash_history` file */
-  history: BashData[];
-  /**Path to `.bash_history` file */
-  path: string;
-  /**User directory name */
-  user: string;
-}
-
-/**
- * History data associated with `.bash_history`
- */
-export interface BashData {
   /**Line entry */
   history: string;
   /**Timestamp associated with line entry. Timestamps are **optional** in `.bash_history` */
   timestamp: string;
   /**Line number */
   line: number;
+  /**Path to `.bash_history` file */
+  path: string;
 }
 
 export interface ZshHistory {
-  /**Array of lines associated with `.zs_history` file */
-  history: ZshData[];
-  /**Path to `.zsh_history` file */
-  path: string;
-  /**User directory name */
-  user: string;
-}
-
-/**
- * History data associated with `.zsh_history`
- */
-export interface ZshData {
   /**Line entry */
   history: string;
   /**Timestamp associated with line entry. Timestamps are **optional** in `.zsh_history` */
   timestamp: string;
   /**Line number */
   line: number;
-  /**Duration of command */
-  duration: number;
-}
-
-export interface PythonHistory {
-  /**Array of lines associated with `.python_history` file */
-  history: PythonData[];
-  /**Path to `.python_history` file */
+  /**Path to `.zsh_history` file */
   path: string;
-  /**User directory name */
-  user: string;
-}
-
-/**
- * History data associated with `.python_history`
- */
-export interface PythonData {
-  /**Line entry */
-  history: string;
-  /**Line number */
-  line: number;
 }
 ```

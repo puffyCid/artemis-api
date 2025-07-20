@@ -1,7 +1,6 @@
 import { GlobInfo } from "../../types/filesystem/globs";
 import {
   BashHistory,
-  PythonHistory,
   ZshHistory,
 } from "../../types/unix/shellhistory";
 import { FileError } from "../filesystem/errors";
@@ -161,23 +160,4 @@ function parseZsh(text: string, path: string): ZshHistory[] {
   }
 
   return values;
-}
-
-/**
- * Parse and get the contents of the `.python_history` file for all users on an endpoint
- * @returns Array of `PythonHistory` for each user on the endpoint or `UnixError`
- */
-export function getPythonHistory(): PythonHistory[] | UnixError {
-  try {
-    //@ts-ignore: Custom Artemis function
-    const data = js_python_history();
-
-    const history: PythonHistory[] = JSON.parse(data);
-    return history;
-  } catch (err) {
-    return new UnixError(
-      "PYTHONHISTORY",
-      `failed to parse shell history: ${err}`,
-    );
-  }
 }

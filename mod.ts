@@ -65,7 +65,6 @@ export { parseCookies } from "./src/macos/safari/cookies";
 export { getCron } from "./src/unix/cron";
 export {
   getBashHistory,
-  getPythonHistory,
   getZshHistory,
 } from "./src/unix/shell_history";
 export { listKnownHosts } from "./src/unix/ssh";

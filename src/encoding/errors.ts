@@ -1,5 +1,5 @@
 import { ErrorBase } from "../utils/error";
 
-export type ErrorName = "READ_XML" | "BASE64" | "PROTOBUF";
+export type ErrorName = "XML" | "BASE64" | "PROTOBUF" | "CSV";
 
-export class EncodingError extends ErrorBase<ErrorName> {}
+export class EncodingError extends ErrorBase<ErrorName> { }
