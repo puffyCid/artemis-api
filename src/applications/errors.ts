@@ -8,6 +8,10 @@ export type ErrorName =
   | "SQLITE"
   | "DEFENDER"
   | "OFFICE"
-  | "ONEDRIVE";
+  | "ONEDRIVE"
+  | "NEXTCLOUD_CLIENT"
+  | "CHROME"
+  | "EDGE"
+  | "CHROMIUM";
 
-export class ApplicationError extends ErrorBase<ErrorName> {}
+export class ApplicationError extends ErrorBase<ErrorName> { }

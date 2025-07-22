@@ -8,7 +8,7 @@ keywords:
 # GNOME Extensions
 
 GNOME is popular Linux Desktop environment pre-installed on many Linux
-distrubutions. ~~In order to get a better user experience~~ users often install
+distributions. ~~In order to get a better user experience~~ Users often install
 GNOME Shell extensions to enhance the Desktop environment. Artemis supports
 parsing extension metadata to obtain information on installed extensions.
 

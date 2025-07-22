@@ -14,6 +14,7 @@ export { parseGvfs } from "./src/linux/gnome/gvfs";
 export { gnomeAppUsage } from "./src/linux/gnome/usage";
 export { extractAbrt } from "./src/linux/abrt";
 export { Epiphany } from "./src/linux/gnome/epiphany";
+export { firmwareHistory } from "./src/linux/firmware";
 
 /**
  * macOS exported functions
@@ -64,7 +65,6 @@ export { parseCookies } from "./src/macos/safari/cookies";
 export { getCron } from "./src/unix/cron";
 export {
   getBashHistory,
-  getPythonHistory,
   getZshHistory,
 } from "./src/unix/shell_history";
 export { listKnownHosts } from "./src/unix/ssh";
@@ -72,7 +72,7 @@ export { listKnownHosts } from "./src/unix/ssh";
 /**
  * Cross platform exported functions
  */
-export { dumpData, outputResults } from "./src/system/output";
+export { dumpData, outputResults, Output, OutputType, Format } from "./src/system/output";
 export {
   getSysteminfo,
   hostname,
@@ -86,25 +86,14 @@ export { disks } from "./src/system/disks";
 export { cpus } from "./src/system/cpu";
 export { memory, processListing } from "./src/system/memory";
 
-/**
- * Application exported functions
- */
-export {
-  chromiumDownloads,
-  chromiumHistory,
-  chromiumPreferences,
-  getChromiumAutofill,
-  getChromiumBookmarks,
-  getChromiumCookies,
-  getChromiumDips,
-  getChromiumLogins,
-} from "./src/applications/chromium";
-export {
-  FireFox,
-} from "./src/applications/firefox/fox";
+export { FireFox } from "./src/applications/firefox/fox";
+export { Edge } from "./src/applications/edge";
+export { Chrome } from "./src/applications/chrome";
+export { Chromium } from "./src/applications/chromium/cr";
 export { fileHistory, getExtensions, vscodeRecentFiles } from "./src/applications/vscode";
 export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";
+export { NextcloudClient } from "./src/applications/nextcloud/cloud";
 
 /**
  * Windows exported functions

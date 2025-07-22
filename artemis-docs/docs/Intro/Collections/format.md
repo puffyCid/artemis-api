@@ -31,8 +31,6 @@ filter = false
 # alt_file = "C:\\Artifacts\\Amcache.hve"
 ```
 
-- `system` Defines what OS this collection targets. This example targets Windows
-  systems. This collection will only run with the Windows version of artemis
 - `[output]` Defines the output configuration
   - `name` The output name. This can be any string value
   - `directory` The directory where the output should be written. This example
@@ -43,8 +41,7 @@ filter = false
     **zip** compression.
   - `timeline` Whether to timeline the parsed data. This forces the output format to JSONL and is compatible with [Timesketch](https://timesketch.org/)
   - `endpoint_id` An ID assigned to the endpoint. This can be any string value
-  - `collection_id` A number assigned to the collection. This can be any postive
-    number
+  - `collection_id` A number assigned to the collection. This can be any postive number
   - `output` The output type. Values can be: **local**, **aws**, **gcp**, or
     **azure**
   - `url` The URL associated with either aws, gcp, or azure. This is required
@@ -62,11 +59,11 @@ filter = false
     artemis will log errors and warnings. Valid options are: **warn**,
     **error**, **debug**, or **info**
 - `[[artifacts]]` A list of artifacts to collect
-  - `artifact_name` Name of aritfact
+  - `artifact_name` Name of artifact
   - `filter` Whether to filter the artifact data through the filter_script. This
     is **optional** by default nothing is filtered. This option will send
     artifact results to your provided filter_script
-  - `[aritfacts.amcache]` Artifact configuration parameters
+  - `[artifacts.amcache]` Artifact configuration parameters
     - `alt_file` Use an alternative amcache file when collecting data. This
       configuration is **optional**
 
@@ -122,8 +119,8 @@ path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 ```
 
 - `[[artifacts]]` The second entry in our list of artifacts to collect
-  - **artifact_name** Name of aritfact
-  - `[aritfacts.shortcuts]` Artifact configuration parameters
+  - **artifact_name** Name of artifact
+  - `[artifacts.shortcuts]` Artifact configuration parameters
     - **path** Use the provided path to collect **shortcuts** data. This
       parameter is **required**
 

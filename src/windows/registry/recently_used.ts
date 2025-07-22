@@ -88,9 +88,9 @@ export function assembleMru(items: ShellItems[]): MruValues {
     return {
       filename: "",
       path: "",
-      modified: "1601-01-01T00:00:00.000Z",
-      created: "1601-01-01T00:00:00.000Z",
-      accessed: "1601-01-01T00:00:00.000Z",
+      modified: "1970-01-01T00:00:00.000Z",
+      created: "1970-01-01T00:00:00.000Z",
+      accessed: "1970-01-01T00:00:00.000Z",
       items: [],
     };
   }
@@ -99,7 +99,7 @@ export function assembleMru(items: ShellItems[]): MruValues {
     paths.push(item.value.replaceAll("\\\\", ""));
   }
   // Get last entry
-  const item = items[items.length - 1];
+  const item = items[ items.length - 1 ];
   const entry: MruValues = {
     filename: item.value,
     path: paths.join("\\"),

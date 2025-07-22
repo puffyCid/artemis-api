@@ -26,7 +26,7 @@ Nightly and Stable versions go through the same tests and release process.
 :::
 
 ## Packages
-As of version 0.14.0 you may also install **stable** release artemis on your system.  
+As of version 0.14.0 you may also install **stable** release packages on your system.  
 Currently supported distribution packages are:
 - RPM and DEB for Linux distros
 - PKG for macOS
@@ -63,7 +63,7 @@ archive and you should be able to start collecting forensic data!
 ## Build from Source
 
 You may also build artemis from [source](https://github.com/puffycid/artemis).
-In order build artemis you will need to install the Rust programming langague.
+In order build artemis you will need to install the Rust programming language.
 
 - Instructions to install Rust can be found on the
   [Rust Homepage](https://www.rust-lang.org/).
@@ -107,7 +107,7 @@ just --shell pwsh.exe --shell-arg -c cli
 
 to compile artemis
 
-Please see the [Contributing](../Contributing/overview.md) documentation if you
+Please see the [Contributing](../Contributing/building.md) documentation if you
 would like to compile the entire project including optional experimental
 components
 

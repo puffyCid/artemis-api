@@ -23,7 +23,7 @@ However, artemis does use the Windows API for a handful of artifacts:
 - Processes - The [sysinfo](https://github.com/GuillaumeGomez/sysinfo) crate is
   used to pull a process listing using Windows APIs
 - Systeminfo - The [sysinfo](https://github.com/GuillaumeGomez/sysinfo) crate is
-  also to get system information using Winodws APIs
+  also to get system information using Windows APIs
 - The Windows API is also used to decompress proprietary Windows compression
   algorithms.
   - Artemis will try the Windows API to decompress the data. However, if the

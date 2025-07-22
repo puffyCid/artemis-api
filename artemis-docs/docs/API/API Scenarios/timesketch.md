@@ -36,13 +36,13 @@ A sample script below shows how to pull a process listing and upload to
 Timesketch.
 
 ```typescript
-import { hostname, processListing } from "../../Projects/artemis-api/mod";
-import { Timesketch } from "../../Projects/artemis-api/src/timesketch/client";
+import { hostname, processListing } from ".././artemis-api/mod";
+import { Timesketch } from ".././artemis-api/src/timesketch/client";
 import {
   TimesketchAuth,
   TimesketchAuthType,
-} from "../../Projects/artemis-api/types/timesketch/client";
-import { TimesketchArtifact } from "../../Projects/artemis-api/types/timesketch/timeline";
+} from ".././artemis-api/types/timesketch/client";
+import { TimesketchArtifact } from ".././artemis-api/types/timesketch/timeline";
 
 async function main() {
   const results = processListing(true, false, false, true);
@@ -133,7 +133,7 @@ Python API library
 Some known limitations that have been observed:
 
 - Timelines get [renamed](https://github.com/google/timesketch/issues/3052).
-- Possible slowness if a timeline has alot of
+- Possible slowness if a timeline has a lot of
   [data sources](https://github.com/google/timesketch/issues/3075)
 
 Possible workarounds:

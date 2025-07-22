@@ -34,12 +34,17 @@ main();
 An array of `Scriptblock`
 
 ```typescript
+/**
+ * Object representing a sync log entry.  
+ * This object is Timesketch compatible.  It does **not** need to be timelined
+ */
 export interface Scriptblock {
     total_parts: number;
     message: string;
-    timestamp: string;
-    datetime_desc: string;
-    entry_type: string;
+    datetime: string;
+    timestamp_desc: string;
+    data_type: string;
+    artifact: string;
     id: string;
     source_file: string;
     path: string;
@@ -55,5 +60,6 @@ export interface Scriptblock {
     threat_id: number;
     system_time: string;
     created_time: string;
+}
 }
 ```

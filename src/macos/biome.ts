@@ -19,7 +19,7 @@ import { getPlist } from "./plist";
  */
 export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
   let paths: string[] = [];
-  if (alt_file != undefined) {
+  if (alt_file !== undefined) {
     paths = [ alt_file ];
   } else {
     // Glob both local and tombstone entries
@@ -132,7 +132,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
 
   // If SEGB sig is at start, then its version 2. Otherwise its version 1
   const segb_sig = 1111967059;
-  if (check_sig.value != segb_sig) {
+  if (check_sig.value !== segb_sig) {
     // Parse SEGB version 1
     const header_bytes = take(raw_bytes, header_size);
     if (header_bytes instanceof NomError) {
@@ -161,7 +161,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
       }
       remaining_bytes = biome_record.remaining;
 
-      if (biome_record.state != BiomeState.Written) {
+      if (biome_record.state !== BiomeState.Written) {
         continue;
       }
       records.push(biome_record);
@@ -275,7 +275,7 @@ function parseRecord(
   }
   const align = 8;
   let align_size = protobuf_size.value % align;
-  if (align_size != 0) {
+  if (align_size !== 0) {
     align_size = align - align_size;
   }
 
@@ -375,7 +375,7 @@ function parseRecordV2(
       continue;
     }
     let align_size = (footer.end_offset - previous_size) % align;
-    if (align_size != 0) {
+    if (align_size !== 0) {
       align_size = 4 - align_size;
     }
 

@@ -29,7 +29,7 @@ export function getRpmInfo(
 ): RpmPackages[] | LinuxError {
   const query = `SELECT * FROM Packages LIMIT ${limit} OFFSET ${offset}`;
   let path = "/var/lib/rpm/rpmdb.sqlite";
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     path = alt_path;
   }
 
@@ -45,7 +45,7 @@ export function getRpmInfo(
 
   for (const entry of results) {
     // Packages are base64 encoded binary blobs that need to be parsed
-    const raw_bytes = decode(entry["blob"] as string);
+    const raw_bytes = decode(entry[ "blob" ] as string);
     if (raw_bytes instanceof EncodingError) {
       console.error(`Could not base64 decode RPM binary date: ${raw_bytes}`);
       continue;
@@ -81,53 +81,53 @@ export function getRpmInfo(
     for (const value in rpm_tags) {
       switch (value) {
         case `${TagName.Name}`: {
-          rpm.name = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.name = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.Version}`: {
-          rpm.version = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.version = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.Release}`: {
-          rpm.release = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.release = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.SourceRpm}`: {
-          rpm.source = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.source = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.Size}`: {
-          rpm.size = (rpm_tags[value] as number[]).at(0) ?? 0;
+          rpm.size = (rpm_tags[ value ] as number[]).at(0) ?? 0;
           break;
         }
         case `${TagName.Sha1Header}`: {
-          rpm.sha1 = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.sha1 = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.Arch}`: {
-          rpm.arch = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.arch = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.InstallTime}`: {
           rpm.install_time = unixEpochToISO(
-            (rpm_tags[value] as number[]).at(0) ?? 0,
+            (rpm_tags[ value ] as number[]).at(0) ?? 0,
           );
           break;
         }
         case `${TagName.Vendor}`: {
-          rpm.vendor = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.vendor = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.Group}`: {
-          rpm.package_group = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.package_group = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.Summary}`: {
-          rpm.summary = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.summary = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
         case `${TagName.Url}`: {
-          rpm.url = (rpm_tags[value] as string[]).at(0) ?? "";
+          rpm.url = (rpm_tags[ value ] as string[]).at(0) ?? "";
           break;
         }
       }
@@ -450,7 +450,7 @@ function parseTags(
       continue;
     }
 
-    tag_values[entry.tag] = tag_value;
+    tag_values[ entry.tag ] = tag_value;
   }
 
   return tag_values;
@@ -535,7 +535,7 @@ function extractTagValue(
     case TagType.I18nString:
     case TagType.String: {
       while (count_value <= count) {
-        const value_data = takeUntil(tag_data, new Uint8Array([0]));
+        const value_data = takeUntil(tag_data, new Uint8Array([ 0 ]));
         if (value_data instanceof NomError) {
           console.error(`Could not nom string ${value_data}`);
           break;

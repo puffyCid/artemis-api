@@ -5,24 +5,14 @@
  * A `.bash_history`file can exist per user on an endpoint
  */
 export interface BashHistory {
-  /**Array of lines associated with `.bash_history` file */
-  history: BashData[];
-  /**Path to `.bash_history` file */
-  path: string;
-  /**User directory name */
-  user: string;
-}
-
-/**
- * History data associated with `.bash_history`
- */
-export interface BashData {
   /**Line entry */
   history: string;
   /**Timestamp associated with line entry. Timestamps are **optional** in `.bash_history` */
   timestamp: string;
   /**Line number */
   line: number;
+  /**Path to `.bash_history` file */
+  path: string;
 }
 
 /**
@@ -32,49 +22,12 @@ export interface BashData {
  * A `.zsh_history`file can exist per user on an endpoint
  */
 export interface ZshHistory {
-  /**Array of lines associated with `.zs_history` file */
-  history: ZshData[];
-  /**Path to `.zsh_history` file */
-  path: string;
-  /**User directory name */
-  user: string;
-}
-
-/**
- * History data associated with `.zsh_history`
- */
-export interface ZshData {
   /**Line entry */
   history: string;
   /**Timestamp associated with line entry. Timestamps are **optional** in `.zsh_history` */
   timestamp: string;
   /**Line number */
   line: number;
-  /**Duration of command */
-  duration: number;
-}
-
-/**
- * `Python` is a popular programming language.
- * For most endpoints `Python` will record commands executed in its interactive shell environment in a history file called `.python_history`
- *
- * A `.python_history`file can exist per user on an endpoint
- */
-export interface PythonHistory {
-  /**Array of lines associated with `.python_history` file */
-  history: PythonData[];
-  /**Path to `.python_history` file */
+  /**Path to `.zsh_history` file */
   path: string;
-  /**User directory name */
-  user: string;
-}
-
-/**
- * History data associated with `.python_history`
- */
-export interface PythonData {
-  /**Line entry */
-  history: string;
-  /**Line number */
-  line: number;
 }

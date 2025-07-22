@@ -54,7 +54,7 @@ interface SpotlightProperties {
   attribute: DataAttribute;
   /**
    * Data associated with the property. Type can be determined based on the attribute.
-   * **Important** `value` may also be an array containting data associated with the `attribute`
+   * **Important** `value` may also be an array containing data associated with the `attribute`
    */
   value: unknown;
 }

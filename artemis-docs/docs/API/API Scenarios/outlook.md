@@ -9,7 +9,7 @@ able to parse the Windows
 [OST](https://support.microsoft.com/en-us/office/introduction-to-outlook-data-files-pst-and-ost-222eaf92-a995-45d9-bde2-f331f60e2790)to
 extract emails and attachments.
 
-The Artemis TypeScript API allow analyts to extract messages programatically.
+The Artemis TypeScript API allow analysts to extract messages programmatically.
 However, since OST files can be **extremely** large, we want to avoid reading
 the entire file into memory.
 
@@ -19,7 +19,7 @@ Outlook OST file.
 ## Outlook Parsing Guide
 
 Lets walkthrough a small sample
-[test](https://github.com/puffyCid/artemis/blob/main/core/tests/test_data/windows/outlook/windows11/test%40outlook.com.ost)
+[test](https://github.com/puffyCid/artemis/blob/main/forensics/tests/test_data/windows/outlook/windows11/test%40outlook.com.ost)
 OST file.
 
 The guide below assumes you have cloned the artemis API repository to your local
@@ -263,14 +263,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -497,14 +497,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -622,14 +622,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -710,8 +710,8 @@ attachment.
 Extracting email attachments is a very powerful scripting feature, however it is
 **important** to be aware that it can potentially spike memory usage.
 
-Remeber our limit for reading messages is 200. If we choose to just read all
-attachments (which may be ok), it can potentially spike memory usage alot. For
+Remember our limit for reading messages is 200. If we choose to just read all
+attachments (which may be ok), it can potentially spike memory usage a lot. For
 example, if each of the 200 messages we read contain a 2MB attachment and decide
 we want to read all of them.\
 Thats already 400MBs of memory just for attachments! That does not even include
@@ -749,14 +749,14 @@ function walkFolders(folder: SubFolder, reader: Outlook, full_path: string) {
   }
 
   // If the folder has messages, lets parse them
-  if (result.message_count != 0) {
+  if (result.message_count !== 0) {
     console.log(`Total messages: ${result.message_count}`);
     const limit = 200;
     let offset = 0;
 
     // message_count is the total messages in a folder
     let count = result.message_count;
-    while (count != 0) {
+    while (count !== 0) {
       const emails = reader.readMessages(
         result.messages_table,
         offset,
@@ -926,7 +926,7 @@ You should see something like the following in your output:
 }
 ```
 
-Thats alot of data! And this is just for one attachment thats 2654 bytes in
+Thats a lot of data! And this is just for one attachment thats 2654 bytes in
 size!
 
 The actual attachment data is base64 encoded. If you

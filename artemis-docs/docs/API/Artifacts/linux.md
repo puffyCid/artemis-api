@@ -4,7 +4,27 @@ description: Interact with Linux Artifacts
 
 # Linux
 
-These functions can be used to pull data related to Linux artifacts
+These functions can be used to pull data related to Linux artifacts.
+
+You can access these functions by using git to clone the API [TypeScript bindings](https://github.com/puffyCid/artemis-api).  
+Then you may import them into your TypeScript code.
+
+For example:
+```typescript
+import { getElf } from "./artemis-api/mod";
+
+function main() {
+  const path = "/bin/ls";
+
+  const results = getElf(path);
+  if(results instanceof LinuxError) {
+    return;
+  }
+  console.log(JSON.stringify(results));
+}
+
+main();
+```
 
 ### getLogon(path) -> Logon[] | LinuxError
 
@@ -147,22 +167,90 @@ By default all abrt crashes are parsed. Root access is required to access abrt r
 
 A basic class to extract data from the Epiphany browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base Epiphany directory.
 
+Sample code below:
+```typescript
+import { Epiphany } from "./artemis-api/mod";
+
+function main() {
+    const client = new Epiphany();
+
+    const results = client.history();
+
+    const start = 0;
+    const limit = 150;
+    const values = client.cookies(start, limit);
+
+    return values;
+}
+
+main();
+```
+
 #### history() -> EpiphanyHistory[]
 
-Extract URL history from Epiphany
+Return Epiphany history for all users. Epiphany history exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying history.  
+You may provide a starting offset and limit when querying history.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
 
 #### cookies() -> EpiphanyCookies[]
 
-Extract Cookies from Epiphany
+Return Epiphany cookies for all users. Epiphany cookies exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying cookies.  
+You may provide a starting offset and limit when querying cookies.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
 
 #### permissions() -> EpiphanyPermissions[]
 
-Extract website permissions from Epiphany
+Return website permissions from Epiphany for all users. This data exists in a ini file and will survive browser history clearing.
 
 #### lastPrint() -> EpiphanyPrint[]
 
-Extract last printed page from Epiphany
+Return the last printed page from Epiphany for all users. This data exists in a ini file and will survive browser history clearing.
 
 #### sessions() -> Record&lt;string, SnapState&gt;[]
 
-Extract last session(s) from Epiphany
+Return web sessions from Epiphany for all users. This data exists in a xml file.
+
+#### retrospect(output) -> void
+
+A powerful feature that will timeline all Epiphany browser artifacts. This functionality is simlar to [Hindsight](https://github.com/obsidianforensics/hindsight).
+
+You will need to provide an Output object specifying how you want to output the results. You may only output as JSON or JSONL. **JSONL** is strongly recommended. This function returns no data, instead it outputs the results based on your Output object.
+
+Sample code below:
+```typescript
+import { Epiphany } from "./artemis-api/mod";
+import { Output } from "./artemis-api/src/system/output";
+
+function main() {
+    const client = new Epiphany();
+    const out: Output = {
+        name: "epiphany_timeline",
+        directory: "./tmp",
+        format: Format.JSONL,
+        compress: false,
+        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
+        timeline: false,
+        endpoint_id: "abc",
+        collection_id: 0,
+        output: OutputType.LOCAL,
+    }
+
+    // No data is returned. Our results and errors will appear at `./tmp/epiphany_timeline`
+    client.retrospect(out);
+
+}
+
+main();
+```

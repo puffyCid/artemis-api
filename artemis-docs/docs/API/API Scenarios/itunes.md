@@ -126,7 +126,7 @@ export function extractDuckDuckGo(
     output: Output,
 ) {
     for (const path of app_paths) {
-        if (path.file_type != FileType.IsFile) {
+        if (path.file_type !== FileType.IsFile) {
             continue;
         }
         // Function to parse the binary plist in the Manifest.db file. Contains FileMetadata
@@ -146,8 +146,8 @@ The code above registers a function called `extractDuckDuckGo` and pass several
 parameters to the function. We will review the parameters later, but you do not
 need to know how to obtain them.
 
-Afte register our function, we start to loop through our array of app_paths.
-These paths are the directories associated withe our app. Each directory should
+After register our function, we start to loop through our array of app_paths.
+These paths are the directories associated with our app. Each directory should
 have an associated binary plist that we need to parse using
 `parseManifestAppPlist`.
 
@@ -229,7 +229,7 @@ If you transpile and run the code above you should see something like below:
 ## Research!
 
 Now is the challenging part! We need to research what file we may want to parse!
-The most common types of files you will encouter are JSON, plist, and sqlite
+The most common types of files you will encounter are JSON, plist, and sqlite
 databases.
 
 Lets look at the `GeolocationSites.plist` file. It looks interesting. Since its
@@ -237,7 +237,7 @@ a plist file we will need to import the plist parsing function to our code
 
 ```typescript
 for (const path of app_paths) {
-    if (path.file_type != FileType.IsFile) {
+    if (path.file_type !== FileType.IsFile) {
         continue;
     }
     // Function to parse the binary plist in the Manifest.db file. Contains FileMetadata

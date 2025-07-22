@@ -9,7 +9,7 @@
  */
 export interface ShellItems {
   /**
-   * Value of a shelltiem
+   * Value of a shellitem
    * Ex: A file path, URL, Volume, GUID, etc
    */
   value: string;

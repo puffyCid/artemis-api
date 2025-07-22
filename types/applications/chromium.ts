@@ -1,3 +1,5 @@
+import { Url } from "../http/unfold";
+
 /**
  * Chromium history is stored in a SQLITE file.
  * `artemis` uses the `sqlite` crate to read the SQLITE file. It can even read the file if Chromium is running.
@@ -6,19 +8,11 @@
  *  - https://en.wikiversity.org/wiki/Chromium_browsing_history_database
  *  - https://gist.github.com/dropmeaword/9372cbeb29e8390521c2
  */
-export interface ChromiumHistory {
-  /**Array of history entries */
-  history: RawChromiumHistory[];
-  /**Path associated with the history file */
-  path: string;
-  /**User associated with the history file */
-  user: string;
-}
 
 /**
  * An interface representing the Chromium SQLITE tables: `urls` and `visits`
  */
-export interface RawChromiumHistory {
+export interface ChromiumHistory {
   /**Row ID value */
   id: number;
   /**Page URL */
@@ -45,28 +39,17 @@ export interface RawChromiumHistory {
   visit_duration: number;
   /**Opener visit value */
   opener_visit: number;
-}
-
-/**
- * Chromium downloads are stored in a SQLITE file
- * `Artemis` uses the `sqlite` crate to read the SQLITE file. It can even read the file if Chromium is running.
- *
- * References:
- * https://en.wikiversity.org/wiki/Chromium_browsing_history_database
- */
-export interface ChromiumDownloads {
-  /**Array of downloads entries */
-  downloads: RawChromiumDownloads[];
-  /**Path associated with the downloads file */
-  path: string;
-  /**User associated with the downloads file */
-  user: string;
+  unfold: Url | undefined;
+  /**Path to the HISTORY sqlite file */
+  db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 /**
  * An interface representing the Chromium SQLITE tables: `downloads` and  `downloads_url_chains`
  */
-export interface RawChromiumDownloads {
+export interface ChromiumDownloads {
   /**Row ID */
   id: number;
   /**GUID for download */
@@ -125,10 +108,14 @@ export interface RawChromiumDownloads {
   chain_index: number;
   /**URL for download */
   url: string;
+  /**Path to the HISTORY sqlite file */
+  db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumCookies {
-  creation: number;
+  creation: string;
   host_key: string;
   top_frame_site_key: string;
   name: string;
@@ -149,6 +136,8 @@ export interface ChromiumCookies {
   is_same_party: number;
   last_update: string;
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumAutofill {
@@ -160,6 +149,8 @@ export interface ChromiumAutofill {
   /**Default is 1 */
   count: number;
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumBookmarks {
@@ -167,6 +158,8 @@ export interface ChromiumBookmarks {
   other: ChromiumBookmarkChildren[];
   synced: ChromiumBookmarkChildren[];
   path: string;
+  /**Browser version */
+  version: string;
 }
 
 export interface ChromiumBookmarkChildren {
@@ -211,12 +204,14 @@ export interface ChromiumLogins {
   keychain_identifier?: string;
   sender_profile_image_url?: string;
   db_path: string;
+  /**Browser version */
+  version: string;
 }
 
 /**
  * Detect Incidental Party State (DIPS) collects metrics on websites
  */
-export interface Dips {
+export interface ChromiumDips {
   site: string;
   first_site_storage?: string | null;
   last_site_storage?: string | null;
@@ -230,4 +225,18 @@ export interface Dips {
   last_web_authn_assertion: string | null;
   /**Path to DIPS database */
   path: string;
+  /**Browser version */
+  version: string;
+}
+
+export interface ChromiumProfiles {
+  full_path: string;
+  version: string;
+  browser: BrowserType;
+}
+
+export enum BrowserType {
+  CHROME = "Google Chrome",
+  EDGE = "Microsoft Edge",
+  CHROMIUM = "Google Chromium"
 }

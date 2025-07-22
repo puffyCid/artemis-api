@@ -20,26 +20,20 @@ Refernces:
 
 - [Cron](https://en.wikipedia.org/wiki/Cron)
 
-# TOML Collection
+# Collection
 
-```toml
-[output]
-name = "cron_collection"
-directory = "./tmp"
-format = "json"
-compress = false
-endpoint_id = "abdc"
-collection_id = 1
-output = "local"
-timeline = false
+You have to use the artemis [api](../../API/overview.md) in order to parse Cron files.
 
-[[artifacts]]
-artifact_name = "cron"
+```typescript
+import { getCron, PlatformType } from "./artemis-api/mod";
+
+function main() {
+  const results = getCron(PlatformType.Darwin);
+  console.log(JSON.stringify(results));
+}
+
+main();
 ```
-
-# Collection Options
-
-- N/A
 
 # Output Structure
 
@@ -59,5 +53,7 @@ export interface Cron {
   weekday: string;
   /**Command to execute when cron job is triggered */
   command: string;
+  /**Path to the cron file */
+  path: string;
 }
 ```

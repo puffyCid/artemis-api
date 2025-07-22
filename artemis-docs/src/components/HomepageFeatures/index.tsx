@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import clsx from "clsx";
 import styles from "./styles.module.css";
 
@@ -14,8 +14,8 @@ const FeatureList: FeatureItem[] = [
     Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
     description: (
       <>
-        A major goal for Artemis is to be easily installed and collect data with
-        minimal system impact.
+        Artemis is designed is to be easy to use and collect data with
+        minimal system impact. Collecting data is as easy as: <b>artemis acquire prefetch</b>
       </>
     ),
   },
@@ -24,20 +24,21 @@ const FeatureList: FeatureItem[] = [
     Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
     description: (
       <>
-        Artemis supports over 30+ artficts across Linux, macOS, and Windows. You
+        Artemis supports 100+ artifacts across Linux, macOS, Windows, and FreeBSD. You
         can collect this data locally or upload to cloud services such as AWS,
         Azure, or GCP.
       </>
     ),
   },
   {
-    title: "Written in Rust with a JavaScript API",
+    title: "Rust with a TypeScript API",
     Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
     description: (
       <>
-        Artemis is coded using Rust. However, it has an embedded JS runtime that
+        Artemis is written in Rust. However, it has TypeScript API that
         can be used to script and filter collections.
       </>
+
     ),
   },
 ];

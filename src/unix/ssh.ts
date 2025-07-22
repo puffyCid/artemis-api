@@ -10,7 +10,7 @@ import { UnixError } from "./errors";
  */
 export function listKnownHosts(alt_glob?: string): KnownHosts[] | UnixError {
     let glob_path = "/home/*/.ssh/known_hosts";
-    if (alt_glob != undefined) {
+    if (alt_glob !== undefined) {
         glob_path = alt_glob;
     }
 

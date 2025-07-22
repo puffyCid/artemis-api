@@ -27,7 +27,7 @@ Artemis supports parsing the list of artifacts below:
 - Preferences
 - Detect Incidental Party State (DIPS)
 
-You have to use the artemis [api](../../API/overview.md) in order to collect chromium data
+You have to use the artemis [api](../../API/overview.md) in order to collect Chromium data
 
 Other parsers:
 
@@ -42,20 +42,15 @@ References:
 # Sample API Script
 
 ```typescript
-import {
-  getChromiumAutifill,
-  getChromiumBookmarks,
-  getChromiumCookies,
-  PlatformType,
-} from "./artemis-api/mod";
+import { Chromium } from "./artemis-api/mod";
+import { PlatformType } from "./artemis-api/src/system/systeminfo";
 
 function main() {
-  const results = getChromiumCookies(PlatformType.Darwin);
-
-  console.log(results);
-  const books = getChromiumBookmarks(PlatformType.Darwin);
-  const fill = getChromiumAutifill(PlatformType.Darwin);
+    const client = new Chromium(PlatformType.Darwin, false, BrowserType.Chromium);
+    console.log(JSON.stringify(client.cookies()));
 }
+
+main();
 ```
 
 # Output Structure
@@ -63,19 +58,10 @@ function main() {
 Dependent on browser artifact user wants to parse.
 
 ```typescript
-export interface ChromiumHistory {
-  /**Array of history entries */
-  history: RawChromiumHistory[];
-  /**Path associated with the history file */
-  path: string;
-  /**User associated with the history file */
-  user: string;
-}
-
 /**
  * An interface representing the Chromium SQLITE tables: `urls` and `visits`
  */
-export interface RawChromiumHistory {
+export interface ChromiumHistory {
   /**Row ID value */
   id: number;
   /**Page URL */
@@ -86,9 +72,9 @@ export interface RawChromiumHistory {
   visit_count: number;
   /**Typed count value */
   typed_count: number;
-  /**Last visit time */
+  /**Last visit time*/
   last_visit_time: string;
-  /**Hiden value */
+  /**Hidden value */
   hidden: number;
   /**Visits ID value */
   visits_id: number;
@@ -102,21 +88,15 @@ export interface RawChromiumHistory {
   visit_duration: number;
   /**Opener visit value */
   opener_visit: number;
-}
-
-export interface ChromiumDownloads {
-  /**Array of downloads entries */
-  downloads: RawChromiumDownloads[];
-  /**Path associated with the downloads file */
-  path: string;
-  /**User associated with the downloads file */
-  user: string;
+  unfold: Url | undefined;
+  /**Path to the HISTORY sqlite file */
+  db_path: string;
 }
 
 /**
  * An interface representing the Chromium SQLITE tables: `downloads` and  `downloads_url_chains`
  */
-export interface RawChromiumDownloads {
+export interface ChromiumDownloads {
   /**Row ID */
   id: number;
   /**GUID for download */
@@ -135,7 +115,7 @@ export interface RawChromiumDownloads {
   state: number;
   /**Danger type value */
   danger_type: number;
-  /**Interrupt reaason value */
+  /**Interrupt reason value */
   interrupt_reason: number;
   /**Raw byte hash value */
   hash: number[];
@@ -151,7 +131,7 @@ export interface RawChromiumDownloads {
   referrer: string;
   /**Download source URL */
   site_url: string;
-  /**Tabl URL */
+  /**Tab URL */
   tab_url: string;
   /**Tab referrer URL */
   tab_referrer_url: string;
@@ -175,10 +155,12 @@ export interface RawChromiumDownloads {
   chain_index: number;
   /**URL for download */
   url: string;
+  /**Path to the HISTORY sqlite file */
+  db_path: string;
 }
 
 export interface ChromiumCookies {
-  creation: number;
+  creation: string;
   host_key: string;
   top_frame_site_key: string;
   name: string;
@@ -229,7 +211,6 @@ export interface ChromiumBookmarkChildren {
   url: string;
   meta_info: Record<string, string>;
 }
-
 export interface ChromiumLogins {
   origin_url: string;
   action_url?: string;
@@ -281,5 +262,17 @@ export interface Dips {
   last_web_authn_assertion: string | null;
   /**Path to DIPS database */
   path: string;
+}
+
+export interface ChromiumProfiles {
+  full_path: string;
+  version: string;
+  browser: BrowserType;
+}
+
+export enum BrowserType {
+  CHROME = "Google Chrome",
+  EDGE = "Microsoft Edge",
+  CHROMIUM = "Google Chromium"
 }
 ```

@@ -38,7 +38,7 @@ export function onedriveDetails(
   let key_file = "";
   let sync_db = "";
   let reg_files = "";
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     odl_files = `${alt_path}*.odl*`;
     key_file = `${alt_path}general.keystore`;
     sync_db = `${alt_path}SyncEngineDatabase.db`;
@@ -193,7 +193,7 @@ function extractKeys(paths: GlobInfo[]): KeyInfo[] {
 
     const values = JSON.parse(data) as Record<string, string | number>[];
     for (const value of values) {
-      key.key = value["Key"] as string;
+      key.key = value[ "Key" ] as string;
       break;
     }
     keys.push(key);
@@ -219,7 +219,7 @@ function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
     for (const reg of values) {
       if (
         reg.path.includes("\\Software\\Microsoft\\OneDrive\\Accounts") &&
-        reg.values.length != 0
+        reg.values.length !== 0
       ) {
         // Lazy check to see if UserEmail key found in Registry Key value names
         if (!JSON.stringify(reg.values).includes("UserEmail")) {
@@ -280,17 +280,17 @@ function accountMacos(paths: GlobInfo[]): OneDriveAccount[] {
 
     for (const key in values) {
       // Lazy check if the plist data contains the data we want
-      if (!JSON.stringify(values[key]).includes("UserEmail")) {
+      if (!JSON.stringify(values[ key ]).includes("UserEmail")) {
         continue;
       }
-      const account_value = values[key] as Record<string, string | number>;
+      const account_value = values[ key ] as Record<string, string | number>;
 
       const account: OneDriveAccount = {
-        email: account_value["UserEmail"] as string,
-        device_id: account_value["OneDriveDeviceId"] as string,
-        account_id: account_value["OneAutoAccountId"] as string,
-        last_signin: "1601-01-01T00:00:00.000Z",
-        cid: account_value["cid"] as string,
+        email: account_value[ "UserEmail" ] as string,
+        device_id: account_value[ "OneDriveDeviceId" ] as string,
+        account_id: account_value[ "OneAutoAccountId" ] as string,
+        last_signin: "1970-01-01T00:00:00.000Z",
+        cid: account_value[ "cid" ] as string,
       };
       accounts.push(account);
     }

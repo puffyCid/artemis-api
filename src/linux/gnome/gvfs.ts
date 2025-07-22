@@ -23,7 +23,7 @@ import { LinuxError } from "../errors";
 export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
   let path = "/home/*/.local/share/gvfs-metadata/*";
 
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     path = alt_path;
   }
 

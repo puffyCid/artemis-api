@@ -43,7 +43,7 @@ export function recentDocs(reg_data: Registry[]): MruValues[] | WindowsError {
         continue;
       }
       // Nom until end of string character for UTF16
-      const remaining = takeUntil(data, new Uint8Array([0, 0, 0]));
+      const remaining = takeUntil(data, new Uint8Array([ 0, 0, 0 ]));
       if (remaining instanceof NomError) {
         console.error(`could not nom UTF16 filename: ${remaining}`);
         continue;
@@ -60,7 +60,7 @@ export function recentDocs(reg_data: Registry[]): MruValues[] | WindowsError {
       const filename = extractUtf16String(remaining.nommed as Uint8Array);
       const items: ShellItems[] = [];
       // MRU entries are ShellItems. Parse all ShellItem data
-      while (item_data.length != 0) {
+      while (item_data.length !== 0) {
         const item = getShellItem(item_data as Uint8Array);
         if (item instanceof WindowsError) {
           console.error(

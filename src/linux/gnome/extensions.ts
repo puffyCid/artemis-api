@@ -20,7 +20,7 @@ export function getGnomeExtensions(
     "/usr/share/gnome-shell/extensions/*/metadata.json",
   ];
 
-  if (alt_path != undefined) {
+  if (alt_path !== undefined) {
     paths = [ alt_path ];
   }
 

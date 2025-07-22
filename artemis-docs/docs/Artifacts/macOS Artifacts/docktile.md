@@ -26,7 +26,7 @@ import { dockTiles } from "./artemis-api/mod";
 
 async function main() {
   const results = await dockTiles();
-  console.log(results);
+  console.log(JSON.stringify(results));
 }
 ```
 

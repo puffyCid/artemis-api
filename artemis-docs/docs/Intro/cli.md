@@ -14,6 +14,8 @@ menu with the command below:
 
 ```
 artemis -h
+A cross platform forensic parser
+
 Usage: artemis [OPTIONS] [COMMAND]
 
 Commands:
@@ -43,7 +45,7 @@ Usage: artemis acquire [OPTIONS] [COMMAND]
 
 Commands:
   processes          Collect processes
-  connections       Collect network connections
+  connections        Collect network connections
   filelisting        Pull filelisting
   systeminfo         Get systeminfo
   prefetch           windows: Parse Prefetch
@@ -80,8 +82,6 @@ Commands:
   unifiedlogs        macos: Parse the Unified Logs
   sudologs-macos     macos: Parse Sudo log entries from Unified Logs
   spotlight          macos: Parse the Spotlight database
-  shellhistory       unix: Parse Shellhistory
-  cron               unix: Parse Cron Jobs
   sudologs-linux     linux: Grab Sudo logs
   journals           linux: Parse systemd Journal files
   logons             linux: Parse Logon files
@@ -114,7 +114,7 @@ The artemis source code provides several pre-made TOML collection files that can
 used as examples.
 
 For example on **macOS** we downloaded the
-[processes.toml](https://github.com/puffycid/artemis/blob/main/artemis-core/tests/test_data/macos/processes.toml)
+[processes.toml](https://github.com/puffycid/artemis/blob/main/forensics/tests/test_data/macos/processes.toml)
 file from the artemis repo to the same directory as the **macOS** artemis binary
 and ran using **sudo**
 
@@ -125,7 +125,7 @@ sudo ./artemis -t processes.toml
 ```
 
 On **Windows** we downloaded the
-[processes.toml](https://github.com/puffycid/artemis/blob/main/artemis-core/tests/test_data/windows/processes.toml)
+[processes.toml](https://github.com/puffycid/artemis/blob/main/forensics/tests/test_data/windows/processes.toml)
 file from the artemis repo to the same directory as the **Windows** artemis
 binary and ran using **Administrator** privileges
 
@@ -203,6 +203,6 @@ artemis -j vanilla.js
 ```
 
 Collecting data via JavaScript is a bit more complex than other methods. But it
-provides alot more flexiblity on what you can do with the data.
+provides a lot more flexibility on what you can do with the data.
 
 See the section on [Scripting](../Intro/Scripting/boa.md) to learn more!

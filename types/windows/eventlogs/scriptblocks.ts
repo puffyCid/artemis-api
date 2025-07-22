@@ -1,9 +1,14 @@
+/**
+ * Object representing a sync log entry.  
+ * This object is Timesketch compatible.  It does **not** need to be timeline
+ */
 export interface Scriptblock {
     total_parts: number;
     message: string;
-    timestamp: string;
-    datetime_desc: string;
-    entry_type: string;
+    datetime: string;
+    timestamp_desc: string;
+    data_type: string;
+    artifact: string;
     id: string;
     source_file: string;
     path: string;

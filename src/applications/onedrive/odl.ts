@@ -39,7 +39,7 @@ export function parseOdl(
   }
 
   const version_support = 3;
-  if (log_version.value != version_support) {
+  if (log_version.value !== version_support) {
     console.warn(
       `Got version ${log_version.value} for ${path}. Only version ${version_support} supported`,
     );
@@ -81,7 +81,7 @@ export function parseOdl(
     );
   }
 
-  const gzip_key = [31, 139, 8, 0];
+  const gzip_key = [ 31, 139, 8, 0 ];
   if (
     Array.from(compressed_data.remaining.slice(0, 4) as Uint8Array)
       .toString() === gzip_key.toString()

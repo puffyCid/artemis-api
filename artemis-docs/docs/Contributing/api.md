@@ -115,7 +115,7 @@ below:
 - Download
   [script_tester](https://github.com/puffyCid/artemis/releases/tag/v0.1.0)
 - Compile the
-  [script_tester](https://github.com/puffyCid/artemis/tree/main/core/examples)
+  [script_tester](https://github.com/puffyCid/artemis/tree/main/forensics/examples)
   via `cargo build --release --examples`
 
 Place the script tester binary in the folder you want to test.

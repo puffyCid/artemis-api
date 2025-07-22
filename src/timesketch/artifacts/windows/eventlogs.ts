@@ -27,7 +27,7 @@ export function timelineEventLogs(
     >;
 
     entry[ "event_identifier" ] = JSON.stringify(value_data[ "System" ][ "EventID" ]);
-    if (value_data[ "System" ][ "Provider" ] != null) {
+    if (value_data[ "System" ][ "Provider" ] !== null) {
       const provider =
         value_data[ "System" ][ "Provider" ][ "#attributes" ] as Record<
           string,
@@ -39,7 +39,7 @@ export function timelineEventLogs(
 
     entry[ "channel" ] = value_data[ "System" ][ "Channel" ];
     entry[ "computer" ] = value_data[ "System" ][ "Computer" ];
-    if (value_data[ "System" ][ "Security" ] != null) {
+    if (value_data[ "System" ][ "Security" ] !== null) {
       const user = value_data[ "System" ][ "Security" ][ "#attributes" ] as Record<
         string,
         string

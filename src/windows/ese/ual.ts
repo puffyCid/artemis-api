@@ -91,7 +91,7 @@ export class UserAccessLogging extends EseDatabase {
 
     for (const role_page of roles_ual.pages) {
       roles_limit.push(role_page);
-      if (role_page_chunk != roles_limit.length) {
+      if (role_page_chunk !== roles_limit.length) {
         continue;
       }
 
@@ -103,7 +103,7 @@ export class UserAccessLogging extends EseDatabase {
       // Match Role GUIDs with names for users
       for (const id of roles) {
         for (const entry of clients) {
-          if (entry.role_guid != id.guid) {
+          if (entry.role_guid !== id.guid) {
             continue;
           }
 
@@ -113,7 +113,7 @@ export class UserAccessLogging extends EseDatabase {
       roles_limit = [];
     }
 
-    if (roles_limit.length != 0) {
+    if (roles_limit.length !== 0) {
       const roles = roles_ual.getRoleIds(roles_limit);
       if (roles instanceof WindowsError) {
         console.warn(`Failed to parse RoleIds: ${roles}. Returning data now`);
@@ -122,7 +122,7 @@ export class UserAccessLogging extends EseDatabase {
       // Match Role GUIDs with names for users
       for (const id of roles) {
         for (const entry of clients) {
-          if (entry.role_guid != id.guid) {
+          if (entry.role_guid !== id.guid) {
             continue;
           }
 

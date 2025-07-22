@@ -63,6 +63,7 @@ format = "json"
 compress = false
 endpoint_id = "abdc"
 collection_id = 1
+timeline = false
 output = "local"
 filter_name = "apps_info_plists"
 # This script will take the files artifact below and filter it to only return Info.plist files
@@ -107,7 +108,7 @@ go through `filter_script`.
 
 :::
 
-The TypeScrpt code for a filter script would be something like below:
+The TypeScript code for a filter script would be something like below:
 
 ```typescript
 import { MacosFileInfo } from "./artemis-api/src/macos/files";

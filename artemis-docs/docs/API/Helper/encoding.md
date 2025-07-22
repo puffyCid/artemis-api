@@ -94,3 +94,13 @@ See:
 | Param     | Type       | Description        |
 | --------- | ---------- | ------------------ |
 | raw_bytes | Uint8Array | Raw protobuf bytes |
+
+### readCsv(path) -> Record&lt;string, string&gt;[] | EncodingError
+
+Read a CSV file into a JSON object. The CSV file must have a header row.
+
+| Param | Type   | Description                                               |
+| ----- | ------ | --------------------------------------------------------- |
+| path  | string | Path to CSV file to read                                  |
+| offset| number | Row to start reading at. Default is first non-header row  |
+| limit | number | How many rows to read. Default is 100                     |

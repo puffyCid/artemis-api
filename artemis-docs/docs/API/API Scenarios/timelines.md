@@ -8,7 +8,7 @@ Using the artemis API you may timeline artifacts into a standard JSONL (or JSON)
 format. Artemis uses the timeline format based on
 [Timesketch](https://timesketch.org/).
 
-The format is defind below:
+The format is defined below:
 
 ```typescript
 export interface TimesketchTimeline {
@@ -39,17 +39,17 @@ ensure the output follows **TimesketchTimeline** object above.
 A sample script below shows how to timeline launchdaemon data.
 
 ```typescript
-import { dumpData, getLaunchdDaemons } from "../../Projects/artemis-api/mod";
-import { MacosError } from "../../Projects/artemis-api/src/macos/errors";
+import { dumpData, getLaunchdDaemons } from ".././artemis-api/mod";
+import { MacosError } from ".././artemis-api/src/macos/errors";
 import {
   Format,
   Output,
   OutputType,
-} from "../../Projects/artemis-api/src/system/output";
+} from ".././artemis-api/src/system/output";
 
-import { TimesketchError } from "../../Projects/artemis-api/src/timesketch/error";
-import { timelineArtifact } from "../../Projects/artemis-api/src/timesketch/timeline";
-import { TimesketchArtifact } from "../../Projects/artemis-api/types/timesketch/timeline";
+import { TimesketchError } from ".././artemis-api/src/timesketch/error";
+import { timelineArtifact } from ".././artemis-api/src/timesketch/timeline";
+import { TimesketchArtifact } from ".././artemis-api/types/timesketch/timeline";
 
 function main() {
   const out: Output = {

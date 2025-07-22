@@ -22,6 +22,14 @@ export interface SystemInfo {
   memory: Memory;
   /**Performance information */
   performance: LoadPerformance;
+  /**Array of network interfaces on the endpoint */
+  interfaces: NetworkInterface[];
+  /**Artemis version number */
+  version: string;
+  /**Rust version used to compile artemis*/
+  rust_version: string;
+  /**Artemis binary build date */
+  build_date: string;
 }
 
 /**
@@ -90,4 +98,13 @@ export interface LoadPerformance {
   avg_five_min: number;
   /**Average load for fifteen (15) min */
   avg_fifteen_min: number;
+}
+
+export interface NetworkInterface {
+  /**IP address for the endpoint */
+  ip: string;
+  /**MAC address for the network interface */
+  mac: string;
+  /**Name of the network interface */
+  name: string;
 }

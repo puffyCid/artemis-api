@@ -10,7 +10,7 @@ import { getRegistry } from "../registry";
  */
 export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError {
     let path = "";
-    if (alt_file != undefined) {
+    if (alt_file !== undefined) {
         path = alt_file;
     } else {
         path = `${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
@@ -21,14 +21,14 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
         return new WindowsError(`FIREWALL_RULES`, `failed to parse ${path}: ${reg_data}`);
     }
 
-    const rules: FirewallRules[] = []
+    const rules: FirewallRules[] = [];
     for (const entry of reg_data) {
         if (!entry.path.endsWith("\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\FirewallRules")) {
             continue;
         }
 
         for (const value of entry.values) {
-            if (value.data_type != "REG_SZ") {
+            if (value.data_type !== "REG_SZ") {
                 continue;
             }
             const entries = value.data.split("|");
@@ -116,7 +116,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                     case undefined:
                         break;
                     default:
-                        rule[key] = key_value.at(1) ?? "";
+                        rule[ key ] = key_value.at(1) ?? "";
                         break;
                 }
             }

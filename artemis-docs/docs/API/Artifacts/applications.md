@@ -4,11 +4,30 @@ description: Interact with Application Artifacts
 
 # Applications
 
-These functions can be used to pull data related to common third-party software
+These functions can be used to pull data related to common third-party software.
 
-### getChromiumUsersHistory() -> ChromiumHistory[] | ApplicationError
+You can access these functions by using git to clone the API [TypeScript bindings](https://github.com/puffyCid/artemis-api).  
+Then you may import them into your TypeScript code.
 
-Return Chromium history for all users
+For example:
+```typescript
+import { getChromiumUsersHistory, PlatformType } from "./artemis-api/mod";
+
+function main() {
+  const results = getChromiumUsersHistory(PlatformType.Linux);
+  return results;
+}
+
+main();
+```
+
+### getChromiumUsersHistory(platform) -> ChromiumHistory[] | ApplicationError
+
+Return Chromium history for all users.
+
+| Param     | Type         | Description      |
+| --------- | ------------ | ---------------- |
+| platform  | PlatformType | OS Platform type |
 
 ### getChromiumHistory(path) -> RawChromiumHistory[] | ApplicationError
 
@@ -21,9 +40,13 @@ All Chromium derived browsers should be supported.
 | ----- | ------ | --------------------- |
 | path  | string | Chromium History file |
 
-### getChromiumUsersDownloads() -> ChromiumDownloads[] | ApplicationError
+### getChromiumUsersDownloads(platform) -> ChromiumDownloads[] | ApplicationError
 
 Return Chromium downloads for all users
+
+| Param     | Type         | Description      |
+| --------- | ------------ | ---------------- |
+| platform  | PlatformType | OS Platform type |
 
 ### getChromiumDownloads(path) -> RawChromiumDownloads[] | ApplicationError
 
@@ -45,40 +68,138 @@ JSON objects.
 | -------- | ------------ | --------------------------------------------------------- |
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 
-### getFirefoxUsersHistory() -> FirefoxHistory[] | ApplicationError
 
-Return Firefox history for all users
+### FireFox Browser Class
 
-### getFirefoxHistory(path) -> RawFirefoxHistory[] | ApplicationError
+A basic TypeScript class to extract data from the FireFox browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base FireFox directory.
 
-Get Firefox history from provided places.sqlite file. Will parse locked sqlite
-files.
+Sample TypeScript code:
+```typescript
+import { FireFox, PlatformType } from "./artemis-api/mod";
 
-| Param | Type   | Description           |
-| ----- | ------ | --------------------- |
-| path  | string | Chromium History file |
+function main() {
+  const enable_unfold = true;
+  const fox = new FireFox(PlatformType.Linux, enable_unfold);
 
-### getFirefoxUsersDownloads() -> FirefoxDownloads[] | ApplicationError
+  const start = 0;
+  const limit = 300;
+  const history_data = fox.history(start, limit);
 
-Return Firefox downloads for all users
+  const addons = fox.addons();
+  return addons;
+}
 
-### getFirefoxDownloads(path) -> RawFirefoxDownloads[] | ApplicationError
+main();
 
-Get Firefox downloads from provided places.sqlite file. Will parse locked sqlite
-files.
+```
 
-| Param | Type   | Description           |
-| ----- | ------ | --------------------- |
-| path  | string | Chromium History file |
+#### history(offset, limit) -> FirefoxHistory[] | ApplicationError
 
-### firefoxAddons(platform) -> Record&lt;string, unknown&gt;[] | ApplicationError
+Return FireFox history for all users. FireFox history exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying history.  
+You may provide a starting offset and limit when querying history.  
+By default artemis will get the first 100 entries for all users.
 
-Parse all Firefox addons (addons.json files) for all users. Returns array JSON
-objects.
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
 
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+#### cookies(offset, limit) -> FirefoxCookies[] | ApplicationError
+
+Return FireFox cookies for all users. FireFox cookies exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying cookies.  
+You may provide a starting offset and limit when querying cookies.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### downloads(offset, limit) -> FirefoxDownloads[] | ApplicationError
+
+Return FireFox file downloads for all users. FireFox file downloads exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying file downloads.  
+You may provide a starting offset and limit when querying file downloads.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### storage(offset, limit) -> FirefoxDownloads[] | ApplicationError
+
+Return FireFox storage entries for all users. FireFox storage entries exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying storage entries.  
+You may provide a starting offset and limit when querying storage entries.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### favicons(offset, limit) -> FirefoxDownloads[] | ApplicationError
+
+Return FireFox favicons for all users. FireFox favicons exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying favicons.  
+You may provide a starting offset and limit when querying favicons.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### addons() -> Record&lt;string, unknown&gt;[] | ApplicationError 
+
+Return FireFox addons for all users. FireFox addons exists as a JSON file.  
+
+
+### Nextcloud Client Class
+
+A basic TypeScript class to extract data from the Nextcloud desktop client. You may optionally provide an alternative glob to the base Nextcloud client directory.
+
+Sample TypeScript code:
+```typescript
+import { NextcloudClient } from "./artemis-api/mod";
+import { PlatformType } from "./artemis-api/src/system/systeminfo";
+
+function main() {
+    const client = new NextcloudClient(PlatformType.Linux);
+
+    console.log(JSON.stringify(client.activityLogs()));
+}
+
+main();
+
+```
+
+#### config() -> NextcloudClientConfig[]
+
+Returns an array of Nextcloud client configs for all users. 
+
+#### syncLogs(max_size) -> NextcloudClientSyncLog[]
+
+Returns an array of sync log entries for the Nextcloud desktop client.  
+You may provide an optional max log size. By default artemis will read all sync logs less than 15MB.  
+Typically sync log(s) are ~3.6 MBs in size.
+
+| Param     | Type   | Description                    |
+| --------- | ------ | ------------------------------ |
+| max_size  | number | Max sync log file size to read |
+
+#### activityLogs(max_size) -> NextcloudClientActivityLog[] 
+
+Returns an array of activity log entries for the Nextcloud desktop client.  
+You may provide an optional max log size. By default artemis will read all activity logs less than 18MB. The Nextcloud client will compress logs with gzip once they reach ~15.6 MBs in size. Compressed log size is typically ~1.2MB.
+
+| Param     | Type   | Description                        |
+| --------- | ------ | ---------------------------------- |
+| max_size  | number | Max activity log file size to read |
+ 
 
 ### recentFiles(platform) -> History[] | ApplicationError
 

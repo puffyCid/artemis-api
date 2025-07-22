@@ -39,7 +39,7 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   }
 
   const support = 2;
-  if (version.value != support) {
+  if (version.value !== support) {
     return new MacosError(
       "ALIAS",
       `unsupported alias version: ${version.value}`,
@@ -290,7 +290,7 @@ function getTags(data: Uint8Array): AliasTags {
 
   let tag_data = data;
   tag_parser:
-  while (tag != 255 && tag != -1 && tag_data.length != 0) {
+  while (tag !== 255 && tag !== -1 && tag_data.length !== 0) {
     const result = nomUnsignedTwoBytes(tag_data, Endian.Be);
     if (result instanceof NomError) {
       break;

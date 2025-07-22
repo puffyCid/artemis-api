@@ -14,7 +14,7 @@ import { FreebsdError } from "./error";
 export function getPkgs(offset: number, limit: number, alt_path?: string): Pkg[] | FreebsdError {
     const query = `SELECT * FROM packages LIMIT ${limit} OFFSET ${offset}`;
     let path = "/var/db/pkg/local.sqlite";
-    if (alt_path != undefined) {
+    if (alt_path !== undefined) {
         path = alt_path;
     }
 

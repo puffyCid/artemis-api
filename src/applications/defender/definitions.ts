@@ -48,8 +48,8 @@ export function extractDefenderRules(
   limit = 30,
 ): Definition[] | ApplicationError {
   let paths: string[] = [];
-  if (alt_file != undefined) {
-    paths = [alt_file];
+  if (alt_file !== undefined) {
+    paths = [ alt_file ];
   } else if (platform === PlatformType.Windows) {
     let drive = getEnvValue("SystemDrive");
     if (drive === "") {
@@ -96,7 +96,7 @@ export function extractDefenderRules(
     let offset = 0;
     let count = 0;
     while (offset < rules_data.byteLength) {
-      if (count > limit && limit != 0) {
+      if (count > limit && limit !== 0) {
         break;
       }
       const results = extractRules(rules_data, platform);
@@ -144,7 +144,7 @@ function readVdm(path: string): Uint8Array | ApplicationError {
   }
 
   // search for RMDX signature
-  const sig = new Uint8Array([82, 77, 68, 88]);
+  const sig = new Uint8Array([ 82, 77, 68, 88 ]);
   const sig_start = takeUntil(bytes, sig);
   if (sig_start instanceof NomError) {
     return new ApplicationError(
@@ -189,7 +189,7 @@ function readVdm(path: string): Uint8Array | ApplicationError {
     );
   }
 
-  if (decom_data.byteLength != decom_size) {
+  if (decom_data.byteLength !== decom_size) {
     return new ApplicationError(
       `DEFENDER`,
       `incorrect decompressed size, expected ${decom_size} got: ${decom_data.byteLength}`,
@@ -225,8 +225,8 @@ function extractRules(
 
   const definition_rules: DefinitionRule[] = [];
   while (
-    rule_type != RuleType.SIGNATURE_TYPE_UNKNOWN &&
-    rule_type != RuleType.SIGNATURE_TYPE_THREAT_END
+    rule_type !== RuleType.SIGNATURE_TYPE_UNKNOWN &&
+    rule_type !== RuleType.SIGNATURE_TYPE_THREAT_END
   ) {
     const sig_buffer = new Uint8Array(data.buffer.slice(offset));
     const meta = getSigMeta(sig_buffer);
@@ -244,14 +244,14 @@ function extractRules(
 
     const rules = getSigValues(meta.bytes, meta.sig, platform);
     if (rules instanceof ApplicationError) {
-      if (definition.type != RuleType.SIGNATURE_TYPE_THREAT_END) {
+      if (definition.type !== RuleType.SIGNATURE_TYPE_THREAT_END) {
         definition.signatures.push(encode(meta.bytes));
         definition_rules.push(definition);
       }
       continue;
     }
 
-    if (definition.type != RuleType.SIGNATURE_TYPE_THREAT_END) {
+    if (definition.type !== RuleType.SIGNATURE_TYPE_THREAT_END) {
       definition.signatures = rules;
       definition_rules.push(definition);
     }
@@ -287,7 +287,7 @@ function getStart(
 ): ThreatStart | ApplicationError {
   const threat_start = RuleType.SIGNATURE_TYPE_THREAT_BEGIN;
   const start_sig = getSigMeta(data);
-  if (start_sig instanceof ApplicationError || start_sig.sig != threat_start) {
+  if (start_sig instanceof ApplicationError || start_sig.sig !== threat_start) {
     return new ApplicationError(
       `DEFENDER`,
       `failed to get start sig: ${start_sig}`,
@@ -418,7 +418,7 @@ function getSigMeta(data: Uint8Array): SigMeta | ApplicationError {
   const bytes = new Uint8Array(data.buffer.slice(4, size + 1));
 
   const sig: SigMeta = {
-    sig: signatureType(data[0]),
+    sig: signatureType(data[ 0 ]),
     size,
     bytes,
   };
@@ -591,7 +591,7 @@ function signatureType(sig: number): RuleType {
     235: RuleType.SIGNATURE_TYPE_DATABASE_CATALOG,
   };
 
-  const value = sigs[sig];
+  const value = sigs[ sig ];
   if (value === undefined) {
     return RuleType.SIGNATURE_TYPE_UNKNOWN;
   }

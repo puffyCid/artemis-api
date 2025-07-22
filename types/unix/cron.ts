@@ -18,4 +18,6 @@ export interface Cron {
   weekday: string;
   /**Command to execute when cron job is triggered */
   command: string;
+  /**Path to the cron file */
+  path: string;
 }

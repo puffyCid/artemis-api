@@ -42,7 +42,7 @@ it means you forgot provide: `just --shell pwsh.exe  --shell-arg -c`
 
 :::
 
-If you would like to install the build dependencies manaully, review the Just
+If you would like to install the build dependencies manually, review the Just
 files .setup folder in the artemis repo for your platform.
 
 Artemis has been developed on:
@@ -115,14 +115,14 @@ Available recipes:
 
     [workspace]
     cli                         # Just build the artemis binary
-    core                        # Just build core library
+    forensics                   # Just build core library
     slim                        # Just build the artemis binary. But do not enable Yara-X
 
 ```
 
 ## Building for estoric platforms
 
-Artemis can be compiled for a varierty of platforms using [cross](https://github.com/cross-rs/cross). Once you have cross setup you can build artemis for:
+Artemis can be compiled for a variety of platforms using [cross](https://github.com/cross-rs/cross). Once you have cross setup you can build artemis for:
 - FreeBSD
 - Linux MUSL
 - Linux RISC-V
@@ -130,5 +130,4 @@ Artemis can be compiled for a varierty of platforms using [cross](https://github
 If you want to build for Android or NetBSD you have to disable the yara-x dependency
  - cross build --release --no-default-features
 
-If you want to build for Windows ARM. You will need a Windows ARM VM and will need to install [LLVM](https://learn.arm.com/install-guides/llvm-woa/).
-LLVM is required to compile [jsonwebtoken](https://github.com/Keats/jsonwebtoken) which artemis uses to generate JWT when uploading to GCP
+If you want to build for Windows ARM. You will need a Windows ARM VM or device and will need to install [LLVM](https://learn.arm.com/install-guides/llvm-woa/).

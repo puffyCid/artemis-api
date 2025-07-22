@@ -16,22 +16,7 @@ Notable features _so far_:
 - Can output results to local system or upload to cloud services.
 - Embedded JavaScript runtime via [Boa](https://boajs.dev/)
 
-The goal of this book is to provide a comprehensive guide on how to use artemis.
-
-Artemis is a relatively(ish) new forensic tool written from scratch. While it
-does have an extensive test suite and has been carefully developed to make sure
-the data it produces is accurate. You may want to verify its output with other
-popular DFIR tools:
-
-- The cross platform forensic tool
-  [Velociprator](https://docs.velociraptor.app/)
-
-During the development of artemis both of these tools were used to provide
-verification that the output of artemis is correct.
-
-If you looking are for free and open-source forensic tool to add to your
-forensic toolkit or to casually review forensic data or compare the results of
-other forensic tools then artemis is a great option!
+The goal of this site is to provide a comprehensive guide on how to use artemis.
 
 # Contributing
 
