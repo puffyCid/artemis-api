@@ -254,3 +254,11 @@ function main() {
 
 main();
 ```
+
+### kateRecentFiles(alt_path) -> RecentFiles[] | LinuxError
+
+Parse recently opened files by Kate.
+
+| Param    | Type   | Description                           |
+| -------- | ------ | ------------------------------------- |
+| alt_path | string | Alt path or glob to .katesession file |

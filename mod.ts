@@ -15,6 +15,7 @@ export { gnomeAppUsage } from "./src/linux/gnome/usage";
 export { extractAbrt } from "./src/linux/abrt";
 export { Epiphany } from "./src/linux/gnome/epiphany";
 export { firmwareHistory } from "./src/linux/firmware";
+export { kateRecentFiles } from "./src/linux/kde/kate";
 
 /**
  * macOS exported functions
