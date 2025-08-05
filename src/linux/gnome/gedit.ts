@@ -2,7 +2,7 @@ import type { RecentFiles } from "../../../types/linux/gnome/gedit";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/mod";
 import { FileError } from "../../filesystem/errors";
-import { glob } from "../../filesystem/mod";
+import { glob } from "../../filesystem/files";
 import { unixEpochToISO } from "../../time/conversion";
 import { LinuxError } from "../errors";
 

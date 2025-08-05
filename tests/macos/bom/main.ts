@@ -1,6 +1,6 @@
 import { parseBom } from "../../../mod";
 import { FileError } from "../../../src/filesystem/errors";
-import { glob } from "../../../src/filesystem/mod";
+import { glob } from "../../../src/filesystem/files";
 import { MacosError } from "../../../src/macos/errors";
 
 function main() {

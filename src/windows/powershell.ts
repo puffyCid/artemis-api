@@ -3,7 +3,7 @@ import { History } from "../../types/windows/powershell";
 import { getEnvValue } from "../environment/env";
 import { FileError } from "../filesystem/errors";
 import { readTextFile } from "../filesystem/files";
-import { glob } from "../filesystem/mod";
+import { glob } from "../filesystem/files";
 import { WindowsError } from "./errors";
 
 /**

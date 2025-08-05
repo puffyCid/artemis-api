@@ -163,3 +163,9 @@ export { Unfold } from "./src/unfold/client";
  */
 
 export { extractBackup } from "./src/ios/itunes/backup";
+
+/**
+ * Filesystem functions
+ */
+export { readDir } from "./src/filesystem/directory";
+export { glob, hash, readTextFile, stat, readFile, readLines } from "./src/filesystem/files";

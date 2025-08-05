@@ -1,5 +1,5 @@
 import { FileError } from "../../../../filesystem/errors";
-import { readTextFile } from "../../../../filesystem/mod";
+import { readTextFile } from "../../../../filesystem/files";
 import { MacosError } from "../../../../macos/errors";
 import { getPlist } from "../../../../macos/plist";
 import { IosError } from "../../../error";

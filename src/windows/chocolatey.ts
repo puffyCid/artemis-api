@@ -4,7 +4,7 @@ import { EncodingError } from "../encoding/errors";
 import { readXml } from "../encoding/xml";
 import { getEnvValue } from "../environment/env";
 import { FileError } from "../filesystem/errors";
-import { glob } from "../filesystem/mod";
+import { glob } from "../filesystem/files";
 import { WindowsError } from "./errors";
 
 /**

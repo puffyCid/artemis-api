@@ -85,6 +85,26 @@ export function glob(pattern: string): GlobInfo[] | FileError {
     const result = js_glob(pattern);
     return result;
   } catch (err) {
-    return new FileError("GLOB", `failed to glob pattern ${pattern}" ${err}`);
+    return new FileError("GLOB", `failed to glob pattern ${pattern}: ${err}`);
+  }
+}
+
+/**
+ * Read lines from a file
+ * @param path Path to text file to read
+ * @param offset First line to start reading from. Default is 0. Cannot be less than 0.
+ * @param limit Number of lines to read. Default is 100. Cannot be less than 0.
+ * @returns Array of strings or `FileError`
+ */
+export function readLines(path: string, offset: number = 0, limit: number = 100): string[] | FileError {
+  if (offset < 0 || limit < 0) {
+    return new FileError("READ_LINES", `neither offset (${offset}) or limit (${limit}) can be less than 0`);
+  }
+  try {
+    //@ts-ignore: Custom Artemis function
+    const result = js_read_lines(path, offset, limit);
+    return result;
+  } catch (err) {
+    return new FileError("READ_LINES", `failed to read lines for ${path}: ${err}`);
   }
 }

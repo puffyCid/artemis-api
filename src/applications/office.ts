@@ -1,6 +1,6 @@
 import { getRegistry, PlatformType } from "../../mod";
 import { FileError } from "../filesystem/errors";
-import { glob } from "../filesystem/mod";
+import { glob } from "../filesystem/files";
 import { parseBookmark } from "../macos/bookmark";
 import { BookmarkData as OfficeRecentFilesMacos } from "../../types/macos/bookmark";
 import { MacosError } from "../macos/errors";

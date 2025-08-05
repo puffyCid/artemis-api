@@ -4,7 +4,7 @@ import {
 } from "../../../types/linux/gnome/extensions";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
-import { readTextFile, stat } from "../../filesystem/mod";
+import { readTextFile, stat } from "../../filesystem/files";
 import { LinuxError } from "../errors";
 
 /**

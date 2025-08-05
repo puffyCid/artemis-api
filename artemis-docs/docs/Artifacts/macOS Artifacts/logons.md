@@ -18,7 +18,7 @@ Logon entries.
 
 ```typescript
 import { FileError } from "./artemis-api/src/filesystem/errors";
-import { glob } from "./artemis-api/src/filesystem/mod";
+import { glob } from "./artemis-api/src/filesystem/files";
 import { logonsMacos } from "./artemis-api/src/macos/unifiedlogs/logons";
 
 function main() {

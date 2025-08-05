@@ -1,6 +1,6 @@
 import { SnapState } from "../../types/linux/snap";
 import { FileError } from "../filesystem/errors";
-import { glob, readTextFile } from "../filesystem/mod";
+import { glob, readTextFile } from "../filesystem/files";
 import { LinuxError } from "./errors";
 
 /**
@@ -14,7 +14,7 @@ export function listSnaps(): Record<string, SnapState> | LinuxError {
   }
 
   const state_data = JSON.parse(state);
-  const snaps: Record<string, SnapState> = state_data["data"]["snaps"];
+  const snaps: Record<string, SnapState> = state_data[ "data" ][ "snaps" ];
 
   const glob_paths = glob("/snap/*/*/meta/snap.yaml");
   if (glob_paths instanceof FileError) {
@@ -34,19 +34,19 @@ export function listSnaps(): Record<string, SnapState> | LinuxError {
       continue;
     }
 
-    const version = matches[0];
+    const version = matches[ 0 ];
     for (const value in snaps) {
-      for (let i = 0; i < snaps[value].sequence.length; i++) {
-        const name = snaps[value].sequence[i].name;
-        const revision = snaps[value].sequence[i].revision;
+      for (let i = 0; i < snaps[ value ].sequence.length; i++) {
+        const name = snaps[ value ].sequence[ i ].name;
+        const revision = snaps[ value ].sequence[ i ].revision;
         if (
           entry.full_path.includes(name) &&
           entry.full_path.includes(`${revision}`)
         ) {
-          snaps[value].sequence[i].version =
+          snaps[ value ].sequence[ i ].version =
             version.split("version: ").at(1)?.replaceAll("'", "") ?? "";
-          snaps[value]["last-refresh-time"] = new Date(
-            snaps[value]["last-refresh-time"],
+          snaps[ value ][ "last-refresh-time" ] = new Date(
+            snaps[ value ][ "last-refresh-time" ],
           ).toISOString();
         }
       }

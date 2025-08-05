@@ -2,7 +2,7 @@ import { getPlist } from "../../../mod";
 import { Applications } from "../../../types/macos/plist/apps";
 import { FileError } from "../../filesystem/errors";
 import { glob, readFile } from "../../filesystem/files";
-import { readDir } from "../../filesystem/mod";
+import { readDir } from "../../filesystem/directory";
 import { parseIcon } from "../../images/icns";
 import { MacosError } from "../errors";
 
@@ -107,30 +107,30 @@ function parsePlist(path: string): Applications | MacosError {
   data = data as Record<string, string>;
 
   let icon_file = "";
-  if (`${data["CFBundleIconFile"]}`.includes("/")) {
-    icon_file = `${data["CFBundleIconFile"]}`;
-  } else if (`${data["CFBundleIconFile"]}`.includes("icns")) {
+  if (`${data[ "CFBundleIconFile" ]}`.includes("/")) {
+    icon_file = `${data[ "CFBundleIconFile" ]}`;
+  } else if (`${data[ "CFBundleIconFile" ]}`.includes("icns")) {
     icon_file = path.replace(
       "Info.plist",
-      `Resources/${data["CFBundleIconFile"]}`,
+      `Resources/${data[ "CFBundleIconFile" ]}`,
     );
   } else {
     icon_file = path.replace(
       "Info.plist",
-      `Resources/${data["CFBundleIconFile"]}.icns`,
+      `Resources/${data[ "CFBundleIconFile" ]}.icns`,
     );
   }
 
   const app: Applications = {
-    filename: `${data["CFBundleName"]}.app`,
+    filename: `${data[ "CFBundleName" ]}.app`,
     full_path: path.replace("/Contents/Info.plist", ""),
-    bundle_executable: `${data["CFBundleExecutable"]}`,
-    bundle_id: `${data["CFBundleIdentifier"]}`,
-    bundle_name: `${data["CFBundleName"]}`,
-    bundle_short_version: `${data["CFBundleShortVersionString"]}`,
-    bundle_version: `${data["CFBundleVersion"]}`,
-    display_name: `${data["CFBundleExecutable"]}`,
-    copyright: `${data["NSHumanReadableCopyright"]}`,
+    bundle_executable: `${data[ "CFBundleExecutable" ]}`,
+    bundle_id: `${data[ "CFBundleIdentifier" ]}`,
+    bundle_name: `${data[ "CFBundleName" ]}`,
+    bundle_short_version: `${data[ "CFBundleShortVersionString" ]}`,
+    bundle_version: `${data[ "CFBundleVersion" ]}`,
+    display_name: `${data[ "CFBundleExecutable" ]}`,
+    copyright: `${data[ "NSHumanReadableCopyright" ]}`,
     icon: readIcon(icon_file),
     info: path,
   };

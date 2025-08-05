@@ -12,7 +12,7 @@ import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/mod";
 import { FileError } from "../../filesystem/errors";
 import { readFile, readTextFile } from "../../filesystem/files";
-import { glob } from "../../filesystem/mod";
+import { glob } from "../../filesystem/files";
 import { MacosError } from "../../macos/errors";
 import { getPlist } from "../../macos/plist";
 import { unixEpochToISO } from "../../time/conversion";
