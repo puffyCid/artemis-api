@@ -36,12 +36,6 @@ export {
 export { getMacho } from "./src/macos/macho";
 export { getPlist } from "./src/macos/plist";
 export { getUnifiedLog } from "./src/macos/unifiedlogs";
-export {
-  getSafariDownloads,
-  getSafariHistory,
-  getSafariUsersDownloads,
-  getSafariUsersHistory,
-} from "./src/macos/safari";
 export { getSpotlight, setupSpotlightParser } from "./src/macos/spotlight";
 export { getSudoLogsMacos } from "./src/macos/sudo";
 export { queryTccDb } from "./src/macos/sqlite/tcc";
@@ -59,7 +53,7 @@ export { munkiApplicationUsage } from "./src/macos/sqlite/munki";
 export { quarantineEvents } from "./src/macos/sqlite/quarantine";
 export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper";
 export { parseCookies } from "./src/macos/safari/cookies";
-
+export { Safari } from "./src/macos/safari/safari";
 /**
  * Unix exported functions
  */

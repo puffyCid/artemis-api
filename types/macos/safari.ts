@@ -1,3 +1,4 @@
+import { Url } from "../http/unfold";
 import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark";
 
 /**
@@ -9,18 +10,6 @@ import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark";
  *  - https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.safari.history/
  */
 export interface SafariHistory {
-  /**Array of history entries */
-  results: RawSafariHistory[];
-  /**Path associated with the history file */
-  path: string;
-  /**User associated with the history file */
-  user: string;
-}
-
-/**
- * An interface representing the Safari SQLITE tables: `history_items` and `history_visits`
- */
-export interface RawSafariHistory {
   /**Row ID value */
   id: number;
   /**Page URL */
@@ -29,12 +18,12 @@ export interface RawSafariHistory {
   domain_expansion: string;
   /**Page visit count */
   visit_count: number;
-  /**Daily visist in raw bytes */
-  daily_visit_counts: number[];
-  /**Weekly visist in raw bytes */
-  weekly_visit_counts: number[];
+  /**Daily visits */
+  daily_visit_counts: string | null;
+  /**Weekly visits */
+  weekly_visit_counts: string | null;
   /**Autocomplete triggers for page */
-  autocomplete_triggers: number[];
+  autocomplete_triggers: number | null;
   /**Recompute visits count */
   should_recompute_derived_visit_counts: number;
   /**Visit score value */
@@ -44,13 +33,16 @@ export interface RawSafariHistory {
   /**Visit time */
   visit_time: string;
   /**Load successful value */
-  load_successful: boolean;
+  load_successful: number;
   /**Page title */
-  title: string;
+  title: string | null;
   /**Attributes value */
   attributes: number;
   /**Score value */
   score: number;
+  /**Path associated with the history file */
+  path: string;
+  unfold: Url | undefined;
 }
 
 /**
@@ -62,18 +54,6 @@ export interface RawSafariHistory {
  * https://eclecticlight.co/2020/05/21/bookmarks-a-type-of-alias-their-access-and-use/
  */
 export interface SafariDownloads {
-  /**Array of downloads entries */
-  results: RawSafariDownloads[];
-  /**Path associated with the downloads file */
-  path: string;
-  /**User associated with the downloads file */
-  user: string;
-}
-
-/**
- * An interface representing Safari downloads data
- */
-export interface RawSafariDownloads {
   /**Source URL for download */
   source_url: string;
   /**File download path */
@@ -91,7 +71,7 @@ export interface RawSafariDownloads {
   /**Path to file to run */
   path: string;
   /**Path represented as Catalog Node ID */
-  cnid_path: number;
+  cnid_path: string;
   /**Created timestamp of target file */
   created: string;
   /**Path to the volume of target file */
@@ -130,4 +110,28 @@ export interface RawSafariDownloads {
   is_executable: boolean;
   /**Does target file have file reference flag */
   file_ref_flag: boolean;
+  plist_path: string;
+  unfold: Url | undefined;
+}
+
+export interface SafariProfile {
+  full_path: string;
+  version: number;
+}
+
+export interface Cookie {
+  flag: CookieFlag;
+  domain: string;
+  name: string;
+  path: string;
+  value: string;
+  expiration: string;
+  created: string;
+}
+
+export enum CookieFlag {
+  IsSecure = "IsSecure",
+  Unknown = "Unknown",
+  IsHttp = "IsHttp",
+  IsSecureHttp = "IsSecureHttp",
 }

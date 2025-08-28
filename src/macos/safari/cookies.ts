@@ -1,4 +1,4 @@
-import { Cookie, CookieFlag } from "../../../types/macos/safari/cookies";
+import { Cookie, CookieFlag } from "../../../types/macos/safari";
 import { extractUtf8String } from "../../encoding/mod";
 import { FileError } from "../../filesystem/errors";
 import { readFile } from "../../filesystem/files";
