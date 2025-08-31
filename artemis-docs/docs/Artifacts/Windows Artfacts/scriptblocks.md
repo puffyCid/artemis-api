@@ -61,5 +61,4 @@ export interface Scriptblock {
     system_time: string;
     created_time: string;
 }
-}
 ```
