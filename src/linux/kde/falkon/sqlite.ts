@@ -38,7 +38,7 @@ export function falkonHistory(paths: FalkonProfile[], platform: PlatformType, un
                 visited: unixEpochToISO(entry["date"] as number),
                 count: entry["count"] as number,
                 message: entry["url"] as string,
-                datetime: entry["visited"] as string,
+                datetime: unixEpochToISO(entry["date"] as number),
                 timestamp_desc: "Falkon URL Visited",
                 artifact: "KDE Falkon History",
                 data_type: "linux:browser:kde:history:entry"

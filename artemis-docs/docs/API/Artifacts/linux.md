@@ -224,7 +224,7 @@ Return web sessions from Epiphany for all users. This data exists in a xml file.
 
 #### retrospect(output) -> void
 
-A powerful feature that will timeline all Epiphany browser artifacts. This functionality is simlar to [Hindsight](https://github.com/obsidianforensics/hindsight).
+A powerful feature that will timeline all Epiphany browser artifacts. This functionality is similar to [Hindsight](https://github.com/obsidianforensics/hindsight).
 
 You will need to provide an Output object specifying how you want to output the results. You may only output as JSON or JSONL. **JSONL** is strongly recommended. This function returns no data, instead it outputs the results based on your Output object.
 
@@ -314,3 +314,36 @@ By default artemis will get the first 100 entries for all users.
 #### bookmark() -> FalkonBookmark[]
 
 Return Falkon bookmarks for all users.
+
+#### retrospect(output) -> void
+
+A powerful feature that will timeline all Falkon browser artifacts. This functionality is similar to [Hindsight](https://github.com/obsidianforensics/hindsight).
+
+You will need to provide an Output object specifying how you want to output the results. You may only output as JSON or JSONL. **JSONL** is strongly recommended. This function returns no data, instead it outputs the results based on your Output object.
+
+Sample code below:
+```typescript
+import { Falkon } from "./artemis-api/mod";
+import { Output } from "./artemis-api/src/system/output";
+
+function main() {
+    const client = new Falkon();
+    const out: Output = {
+        name: "falkon_timeline",
+        directory: "./tmp",
+        format: Format.JSONL,
+        compress: false,
+        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
+        timeline: false,
+        endpoint_id: "abc",
+        collection_id: 0,
+        output: OutputType.LOCAL,
+    }
+
+    // No data is returned. Our results and errors will appear at `./tmp/falkon_timeline`
+    client.retrospect(out);
+
+}
+
+main();
+```

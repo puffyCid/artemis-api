@@ -1,6 +1,7 @@
-import { glob, readTextFile, stat } from "../../../../mod";
+import { dumpData, glob, Output, readTextFile, stat } from "../../../../mod";
 import { BookmarkLocation, FalkonBookmark, FalkonCookie, FalkonHistory, FalkonProfile } from "../../../../types/linux/kde/falkon";
 import { FileError } from "../../../filesystem/errors";
+import { SystemError } from "../../../system/error";
 import { PlatformType } from "../../../system/systeminfo";
 import { LinuxError } from "../../errors";
 import { falkonCookie, falkonHistory } from "./sqlite";
@@ -174,6 +175,50 @@ export class Falkon {
         }
 
         return hits;
+
+    }
+
+    /**
+     * Function to timeline all Falkon artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
+     * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     */
+    public retrospect(output: Output): void {
+        let offset = 0;
+        const limit = 100;
+
+        while (true) {
+            let entries = this.history(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            if (!this.unfold) {
+                entries.forEach(x=> delete x["unfold"]);
+            }
+            const status = dumpData(entries, "retrospect_falkon_history", output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline Falkon history: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.cookie(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, "retrospect_falkon_cookies", output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline Falkon cookies: ${status}`);
+            }
+            offset += limit;
+        }
+
+        const entries = this.bookmark();
+        const status = dumpData(entries, "retrospect_falkon_bookmarks", output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline Falkon bookmarks: ${status}`);
+        }
 
     }
 
