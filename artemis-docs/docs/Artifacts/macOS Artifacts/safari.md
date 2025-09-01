@@ -12,6 +12,9 @@ Safari is the builtin web browser an Apple devices. Artemis supports parsing:
 - browser history
 - download history
 - Cookies
+- Favicons
+- Bookmarks
+- Extensions
 
 References:
 
@@ -39,8 +42,8 @@ main();
 
 # Output Structure
 
-An array of `SafariHistory` for history data and `SafariDownloads` for downloads
-data per user.
+Depending on the the functions used artemis will return the objects below:
+
 
 ```typescript
 export interface SafariHistory {
@@ -77,6 +80,13 @@ export interface SafariHistory {
   /**Path associated with the history file */
   path: string;
   unfold: Url | undefined;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
 }
 
 export interface SafariDownloads {
@@ -138,6 +148,13 @@ export interface SafariDownloads {
   file_ref_flag: boolean;
   plist_path: string;
   unfold: Url | undefined;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
 }
 
 export interface Cookie {
@@ -148,5 +165,68 @@ export interface Cookie {
   value: string;
   expiration: string;
   created: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
+  [key: string]: any;
+}
+
+export enum CookieFlag {
+  IsSecure = "IsSecure",
+  Unknown = "Unknown",
+  IsHttp = "IsHttp",
+  IsSecureHttp = "IsSecureHttp",
+}
+
+export interface SafariBookmark {
+  title: string;
+  url: string;
+  description: string;
+  /**Path to the Bookmarks.plist file */
+  path: string;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
+}
+
+export interface SafariFavicon {
+  uuid: string;
+  url: string;
+  favicon_url: string;
+  created: string;
+  /**Path to the favicons.db file */
+  path: string;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
+}
+
+export interface SafariExtensions {
+  name: string;
+  key: string;
+  team_id: string;
+  accessible_origins: string[];
+  added: string;
+  enabled: boolean;
+  permissions: string[];
+  /**Path to the Extensions.plist file */
+  path: string;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
 }
 ```

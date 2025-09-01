@@ -821,7 +821,7 @@ import { Safari, PlatformType } from "./artemis-api/mod";
 
 function main() {
   const enable_unfold = true;
-  const client = new Safari(PlatformType.Linux, enable_unfold);
+  const client = new Safari(PlatformType.Darwin, enable_unfold);
 
   const start = 0;
   const limit = 300;
@@ -848,3 +848,59 @@ By default artemis will get the first 100 entries for all users.
 
 Return Safari file downloads for all users. Safari file downloads exists in a plist file.  
 
+#### favicons(offset, limit) -> SafariFavicons[]
+
+Return Safari favicons for all users. Safari favicons exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying histfaviconsory.  
+You may provide a starting offset and limit when querying favicons.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### bookmarks() -> SafariBookmark[]
+
+Return Safari bookmarks for all users.
+
+#### cookies() -> Cookie[]
+
+Return Safari cookies for all users.
+
+#### extensions() -> SafariExtensions[]
+
+Return Safari extensions for all users.
+
+#### retrospect(output) -> void
+
+A powerful feature that will timeline all Safari browser artifacts. This functionality is similar to [Hindsight](https://github.com/obsidianforensics/hindsight).
+
+You will need to provide an Output object specifying how you want to output the results. You may only output as JSON or JSONL. **JSONL** is strongly recommended. This function returns no data, instead it outputs the results based on your Output object.
+
+Sample code below:
+```typescript
+import { Safari, PlatformType } from "./artemis-api/mod";
+import { Output } from "./artemis-api/src/system/output";
+
+function main() {
+    const client = new Safari(PlatformType.Darwin);
+    const out: Output = {
+        name: "safari_timeline",
+        directory: "./tmp",
+        format: Format.JSONL,
+        compress: false,
+        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
+        timeline: false,
+        endpoint_id: "abc",
+        collection_id: 0,
+        output: OutputType.LOCAL,
+    }
+
+    // No data is returned. Our results and errors will appear at `./tmp/safari_timeline`
+    client.retrospect(out);
+
+}
+
+main();
+```

@@ -7,7 +7,10 @@ import { UnfoldError } from "../../../unfold/error";
 
 export function falkonHistory(paths: FalkonProfile[], platform: PlatformType, unfold: boolean, query: string): FalkonHistory[] {
     const hits: FalkonHistory[] = [];
-
+    let client: Unfold | undefined = undefined;
+    if (unfold) {
+        client = new Unfold();
+    }
     for (const path of paths) {
         let full_path = `${path.full_path}/browsedata.db`;
 
@@ -21,10 +24,7 @@ export function falkonHistory(paths: FalkonProfile[], platform: PlatformType, un
             continue;
         }
 
-        let client: Unfold | undefined = undefined;
-        if (unfold) {
-            client = new Unfold();
-        }
+
 
         // Loop through history rows
         for (const entry of results) {

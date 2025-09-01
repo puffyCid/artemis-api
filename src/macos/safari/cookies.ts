@@ -1,4 +1,4 @@
-import { Cookie, CookieFlag } from "../../../types/macos/safari";
+import { Cookie, CookieFlag, SafariProfile } from "../../../types/macos/safari";
 import { extractUtf8String } from "../../encoding/mod";
 import { FileError } from "../../filesystem/errors";
 import { readFile } from "../../filesystem/files";
@@ -10,8 +10,30 @@ import {
   take,
   takeUntil,
 } from "../../nom/mod";
+import { PlatformType } from "../../system/systeminfo";
 import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
 import { MacosError } from "../errors";
+
+export function safariCookies(paths: SafariProfile[], platform: PlatformType): Cookie[] {
+  let hits: Cookie[] = [];
+  for (const path of paths) {
+    let full_path = `${path.container_path}/Library/Cookies/Cookies.binarycookies`;
+    if (platform === PlatformType.Windows) {
+      full_path = `${path.container_path}\\Library/Cookies\\Cookies.binarycookies`;
+    }
+
+    const cookie = parseCookies(full_path);
+    if(cookie instanceof MacosError) {
+      console.warn(`failed to parse Safari cookie ${full_path}: ${cookie}`);
+      continue;
+    }
+
+    cookie.forEach(x => x["version"] = path.version);
+    hits = hits.concat(cookie);
+
+  }
+  return hits;
+}
 
 /**
  * Function to parse the Safari binary cookie format
@@ -44,8 +66,14 @@ export function parseCookies(path: string): Cookie[] | MacosError {
   }
 
   let cookies: Cookie[] = [];
+  let remaining = header.remaining_bytes;
   for (let i = 0; i < header.pages_count; i++) {
-    const cookie = parsePage(header.remaining_bytes, header.page_sizes[ i ]);
+    const page_bytes = take(remaining, header.page_sizes[i]);
+    if(page_bytes instanceof NomError) {
+      continue;
+    }
+    remaining = page_bytes.remaining as Uint8Array;
+    const cookie = parsePage(page_bytes.nommed as Uint8Array, header.page_sizes[i]);
     if (cookie instanceof NomError) {
       return new MacosError(
         `COOKIES`,
@@ -227,7 +255,7 @@ function parseRecord(data: Uint8Array): Cookie | NomError {
     ),
   );
 
-  time = take(input.remaining, time_size);
+  time = take(time.remaining, time_size);
   if (time instanceof NomError) {
     return time;
   }
@@ -266,6 +294,11 @@ function parseRecord(data: Uint8Array): Cookie | NomError {
     value,
     expiration,
     created,
+    message: domain,
+    datetime: created,
+    timestamp_desc: "Safari Cookie Created",
+    artifact: "Safari Cookie",
+    data_type: "macos:browser:cookie:entry"
   };
 
   return record;
@@ -277,7 +310,7 @@ function extractOffsets(data: Uint8Array, offset: number): string | NomError {
     return start;
   }
 
-  const string_data = takeUntil(start.remaining, Uint8Array.from([ 0 ]));
+  const string_data = takeUntil(start.remaining, Uint8Array.from([0]));
   if (string_data instanceof NomError) {
     return string_data;
   }
