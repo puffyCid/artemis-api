@@ -16,6 +16,7 @@ export { extractAbrt } from "./src/linux/abrt";
 export { Epiphany } from "./src/linux/gnome/epiphany";
 export { firmwareHistory } from "./src/linux/firmware";
 export { kateRecentFiles } from "./src/linux/kde/kate";
+export { Falkon } from "./src/linux/kde/falkon/falkon";
 
 /**
  * macOS exported functions

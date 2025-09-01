@@ -13,6 +13,7 @@ export type ErrorName =
   | "SNAP"
   | "ABRT"
   | "EPIPHANY"
-  | "FIRMWARE_HISTORY";
+  | "FIRMWARE_HISTORY"
+  | "FALKON";
 
 export class LinuxError extends ErrorBase<ErrorName> { }

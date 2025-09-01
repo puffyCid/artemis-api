@@ -240,3 +240,10 @@ export enum BrowserType {
   EDGE = "Microsoft Edge",
   CHROMIUM = "Google Chromium"
 }
+
+export enum ChromiumCookieType {
+  Unknown = "Unknown",
+  Http = "HTTP",
+  Script = "Script",
+  Other = "Other",
+}

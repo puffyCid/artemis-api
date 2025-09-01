@@ -186,7 +186,7 @@ function main() {
 main();
 ```
 
-#### history() -> EpiphanyHistory[]
+#### history(offset, limit) -> EpiphanyHistory[]
 
 Return Epiphany history for all users. Epiphany history exists in a sqlite database.  
 Artemis will bypass locked sqlite databases when querying history.  
@@ -198,7 +198,7 @@ By default artemis will get the first 100 entries for all users.
 | offset  | number | Starting offset when querying the sqlite database |
 | limit   | number | Max number of rows to return per user             |
 
-#### cookies() -> EpiphanyCookies[]
+#### cookies(offset, limit) -> EpiphanyCookies[]
 
 Return Epiphany cookies for all users. Epiphany cookies exists in a sqlite database.  
 Artemis will bypass locked sqlite databases when querying cookies.  
@@ -262,3 +262,55 @@ Parse recently opened files by Kate.
 | Param    | Type   | Description                           |
 | -------- | ------ | ------------------------------------- |
 | alt_path | string | Alt path or glob to .katesession file |
+
+### Falkon Browser Class
+
+A basic class to extract data from the Falkon browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base Falkon directory.
+
+Sample code below:
+```typescript
+import { Falkon } from "./artemis-api/mod";
+
+function main() {
+    const client = new Falkon();
+
+    const results = client.history();
+
+    const start = 0;
+    const limit = 150;
+    const values = client.cookies(start, limit);
+
+    return values;
+}
+
+main();
+```
+
+#### history(offset, limit) -> EpiphanyHistory[]
+
+Return Falkon history for all users. Falkon history exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying history.  
+You may provide a starting offset and limit when querying history.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### cookie(offset, limit) -> EpiphanyCookies[]
+
+Return Falkon cookies for all users. Falkon cookies exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying cookies.  
+You may provide a starting offset and limit when querying cookies.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+
+#### bookmark() -> FalkonBookmark[]
+
+Return Falkon bookmarks for all users.

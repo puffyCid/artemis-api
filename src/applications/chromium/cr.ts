@@ -17,7 +17,13 @@ export class Chromium {
     protected unfold: boolean;
     protected browser: BrowserType;
 
-
+    /**
+     * Construct a `Chromium` object that can be used to parse browser data
+     * @param platform OS `PlatformType`
+     * @param unfold Attempt to parse URLs. Default is `false`
+     * @param alt_path Optional alternative path to directory contain Chromium data
+     * @returns `Chromium` instance class
+     */
     constructor (platform: PlatformType, unfold = false, browser: BrowserType, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
