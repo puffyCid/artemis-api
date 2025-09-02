@@ -55,6 +55,7 @@ export { quarantineEvents } from "./src/macos/sqlite/quarantine";
 export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper";
 export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
+export { authorizations } from "./src/macos/sqlite/authd";
 /**
  * Unix exported functions
  */

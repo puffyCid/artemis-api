@@ -4,7 +4,7 @@ import { TimesketchTimeline } from "../../../../../types/timesketch/timeline";
 export function timelineGatekeeper(
   data: GatekeeperEntries[],
 ): TimesketchTimeline[] {
-  const entries = [];
+  const entries:TimesketchTimeline[] = [];
 
   for (const item of data) {
     if (item.object_ctime === undefined || item.path === undefined) {
