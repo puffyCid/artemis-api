@@ -21,7 +21,7 @@ export class Chrome extends Chromium {
    * Construct a `Chrome` object that can be used to parse browser data
    * @param platform OS `PlatformType`
    * @param unfold Attempt to parse URLs. Default is `false`
-   * @param alt_path Optional alternative path to directory contain FireFox data
+   * @param alt_path Optional alternative path to directory contain Chrome data
    * @returns `Chrome` instance class
    */
   constructor (platform: PlatformType, unfold = false, alt_path?: string) {

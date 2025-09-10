@@ -1,4 +1,4 @@
-import { ChromiumProfiles, ChromiumHistory, ChromiumDownloads, ChromiumCookies, ChromiumAutofill, ChromiumLogins, ChromiumDips } from "../../../types/applications/chromium";
+import { ChromiumProfiles, ChromiumHistory, ChromiumDownloads, ChromiumCookies, ChromiumAutofill, ChromiumLogins, ChromiumDips, ChromiumCookieType } from "../../../types/applications/chromium";
 import { PlatformType } from "../../system/systeminfo";
 import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
@@ -207,6 +207,22 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
     }
     return hits;
 }
+
+/**
+ * Determine Cookie Type. From `https://chromium.googlesource.com/chromium/src/net/+/refs/heads/main/cookies/cookie_constants.h#378`
+ * @param source Cookie source_type column
+ * @returns `ChromiumCookieType` enum value
+ */
+export function getChromiumCookieType(source: number): ChromiumCookieType {
+    switch(source) {
+        case 0: return ChromiumCookieType.Unknown;
+        case 1: return ChromiumCookieType.Http;
+        case 2: return ChromiumCookieType.Script;
+        case 3: return ChromiumCookieType.Other;
+        default: return ChromiumCookieType.Unknown; 
+    }
+}
+
 
 /**
  * Function to extract Autofill information from database

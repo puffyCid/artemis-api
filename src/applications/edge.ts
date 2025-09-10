@@ -21,7 +21,7 @@ export class Edge extends Chromium {
      * Construct a `Edge` object that can be used to parse browser data
      * @param platform OS `PlatformType`
      * @param unfold Attempt to parse URLs. Default is `false`
-     * @param alt_path Optional alternative path to directory contain FireFox data
+     * @param alt_path Optional alternative path to directory contain Edge data
      * @returns `Edge` instance class
      */
     constructor (platform: PlatformType, unfold = false, alt_path?: string) {

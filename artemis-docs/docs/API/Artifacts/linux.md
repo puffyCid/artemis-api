@@ -186,7 +186,7 @@ function main() {
 main();
 ```
 
-#### history() -> EpiphanyHistory[]
+#### history(offset, limit) -> EpiphanyHistory[]
 
 Return Epiphany history for all users. Epiphany history exists in a sqlite database.  
 Artemis will bypass locked sqlite databases when querying history.  
@@ -198,7 +198,7 @@ By default artemis will get the first 100 entries for all users.
 | offset  | number | Starting offset when querying the sqlite database |
 | limit   | number | Max number of rows to return per user             |
 
-#### cookies() -> EpiphanyCookies[]
+#### cookies(offset, limit) -> EpiphanyCookies[]
 
 Return Epiphany cookies for all users. Epiphany cookies exists in a sqlite database.  
 Artemis will bypass locked sqlite databases when querying cookies.  
@@ -224,7 +224,7 @@ Return web sessions from Epiphany for all users. This data exists in a xml file.
 
 #### retrospect(output) -> void
 
-A powerful feature that will timeline all Epiphany browser artifacts. This functionality is simlar to [Hindsight](https://github.com/obsidianforensics/hindsight).
+A powerful feature that will timeline all Epiphany browser artifacts. This functionality is similar to [Hindsight](https://github.com/obsidianforensics/hindsight).
 
 You will need to provide an Output object specifying how you want to output the results. You may only output as JSON or JSONL. **JSONL** is strongly recommended. This function returns no data, instead it outputs the results based on your Output object.
 
@@ -262,3 +262,88 @@ Parse recently opened files by Kate.
 | Param    | Type   | Description                           |
 | -------- | ------ | ------------------------------------- |
 | alt_path | string | Alt path or glob to .katesession file |
+
+### Falkon Browser Class
+
+A basic class to extract data from the Falkon browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base Falkon directory.
+
+Sample code below:
+```typescript
+import { Falkon } from "./artemis-api/mod";
+
+function main() {
+    const client = new Falkon();
+
+    const results = client.history();
+
+    const start = 0;
+    const limit = 150;
+    const values = client.cookies(start, limit);
+
+    return values;
+}
+
+main();
+```
+
+#### history(offset, limit) -> EpiphanyHistory[]
+
+Return Falkon history for all users. Falkon history exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying history.  
+You may provide a starting offset and limit when querying history.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### cookie(offset, limit) -> EpiphanyCookies[]
+
+Return Falkon cookies for all users. Falkon cookies exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying cookies.  
+You may provide a starting offset and limit when querying cookies.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+
+#### bookmark() -> FalkonBookmark[]
+
+Return Falkon bookmarks for all users.
+
+#### retrospect(output) -> void
+
+A powerful feature that will timeline all Falkon browser artifacts. This functionality is similar to [Hindsight](https://github.com/obsidianforensics/hindsight).
+
+You will need to provide an Output object specifying how you want to output the results. You may only output as JSON or JSONL. **JSONL** is strongly recommended. This function returns no data, instead it outputs the results based on your Output object.
+
+Sample code below:
+```typescript
+import { Falkon } from "./artemis-api/mod";
+import { Output } from "./artemis-api/src/system/output";
+
+function main() {
+    const client = new Falkon();
+    const out: Output = {
+        name: "falkon_timeline",
+        directory: "./tmp",
+        format: Format.JSONL,
+        compress: false,
+        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
+        timeline: false,
+        endpoint_id: "abc",
+        collection_id: 0,
+        output: OutputType.LOCAL,
+    }
+
+    // No data is returned. Our results and errors will appear at `./tmp/falkon_timeline`
+    client.retrospect(out);
+
+}
+
+main();
+```

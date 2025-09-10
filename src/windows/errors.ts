@@ -37,6 +37,7 @@ export type ErrorName =
   | "WORDWHEEL"
   | "BAM"
   | "SCRIPTBLOCK"
-  | "FIREWALL_RULES";
+  | "FIREWALL_RULES"
+  | "EVENTLOG_PROCESSTREE";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

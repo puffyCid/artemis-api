@@ -28,6 +28,7 @@ export type ErrorName =
   | "GAKTKEEPER"
   | "LOGONS"
   | "COOKIES"
-  | "SYSTEMSTATS";
+  | "SYSTEMSTATS"
+  | "AUTHORIZATIONS";
 
 export class MacosError extends ErrorBase<ErrorName> {}

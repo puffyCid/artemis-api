@@ -16,6 +16,7 @@ export { extractAbrt } from "./src/linux/abrt";
 export { Epiphany } from "./src/linux/gnome/epiphany";
 export { firmwareHistory } from "./src/linux/firmware";
 export { kateRecentFiles } from "./src/linux/kde/kate";
+export { Falkon } from "./src/linux/kde/falkon/falkon";
 
 /**
  * macOS exported functions
@@ -54,6 +55,7 @@ export { quarantineEvents } from "./src/macos/sqlite/quarantine";
 export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper";
 export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
+export { authorizations } from "./src/macos/sqlite/authd";
 /**
  * Unix exported functions
  */
@@ -136,6 +138,7 @@ export { Updates } from "./src/windows/ese/updates";
 export { Outlook } from "./src/windows/outlook";
 export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
 export { firewallRules } from "./src/windows/registry/firewall_rules";
+export { processTreeEventLogs } from "./src/windows/eventlogs/processtree";
 
 /**
  * FreeBSD

@@ -43,6 +43,13 @@ export interface SafariHistory {
   /**Path associated with the history file */
   path: string;
   unfold: Url | undefined;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
 }
 
 /**
@@ -112,10 +119,18 @@ export interface SafariDownloads {
   file_ref_flag: boolean;
   plist_path: string;
   unfold: Url | undefined;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
 }
 
 export interface SafariProfile {
   full_path: string;
+  container_path: string;
   version: number;
 }
 
@@ -127,6 +142,12 @@ export interface Cookie {
   value: string;
   expiration: string;
   created: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
+  [key: string]: any;
 }
 
 export enum CookieFlag {
@@ -134,4 +155,54 @@ export enum CookieFlag {
   Unknown = "Unknown",
   IsHttp = "IsHttp",
   IsSecureHttp = "IsSecureHttp",
+}
+
+export interface SafariBookmark {
+  title: string;
+  url: string;
+  description: string;
+  /**Path to the Bookmarks.plist file */
+  path: string;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
+}
+
+export interface SafariFavicon {
+  uuid: string;
+  url: string;
+  favicon_url: string;
+  created: string;
+  /**Path to the favicons.db file */
+  path: string;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
+}
+
+export interface SafariExtensions {
+  name: string;
+  key: string;
+  team_id: string;
+  accessible_origins: string[];
+  added: string;
+  enabled: boolean;
+  permissions: string[];
+  /**Path to the Extensions.plist file */
+  path: string;
+  /**Browser version */
+  version: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: string;
+  artifact: string;
+  data_type: string;
 }

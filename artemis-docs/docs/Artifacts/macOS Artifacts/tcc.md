@@ -8,7 +8,7 @@ keywords:
 # TCC
 
 The macOS Transparency, Consent, and Control (`TCC`) database contains data
-associated with permissions granted to applications. Artemis support querying
+associated with permissions granted to applications. Artemis supports querying
 the database (SQLite) and extracting permissions granted to applications.
 
 The TCC.db file can exist in multiple directories. Artemis will try to parse
