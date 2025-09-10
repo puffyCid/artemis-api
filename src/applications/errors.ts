@@ -12,6 +12,7 @@ export type ErrorName =
   | "NEXTCLOUD_CLIENT"
   | "CHROME"
   | "EDGE"
-  | "CHROMIUM";
+  | "CHROMIUM"
+  | "LEVELDB";
 
 export class ApplicationError extends ErrorBase<ErrorName> { }

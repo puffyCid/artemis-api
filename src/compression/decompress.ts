@@ -31,7 +31,7 @@ export function decompress_zlib(
 /**
  * Function to decompress gzip compressed data
  * @param data Raw bytes to decompress
- * @returns Decomprssed data or `CompressionError`
+ * @returns Decompressed data or `CompressionError`
  */
 export function decompress_gzip(
   data: Uint8Array,
@@ -42,5 +42,35 @@ export function decompress_gzip(
     return bytes;
   } catch (err) {
     return new CompressionError(`GZIP`, `failed to decompress: ${err}`);
+  }
+}
+
+/**
+ * Function to decompress snappy compressed data
+ * @param data Raw bytes to decompress
+ * @returns Decompressed data or `CompressionError`
+ */
+export function decompress_snappy(data: Uint8Array): Uint8Array | CompressionError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const bytes: Uint8Array = js_decompress_snappy(data);
+    return bytes;
+  } catch (err) {
+    return new CompressionError(`SNAPPY`, `failed to decompress: ${err}`);
+  }
+}
+
+/**
+ * Function to decompress zstd compressed data
+ * @param data Raw bytes to decompress
+ * @returns Decompressed data or `CompressionError`
+ */
+export function decompress_zstd(data: Uint8Array): Uint8Array | CompressionError {
+  try {
+    //@ts-ignore: Custom Artemis function
+    const bytes: Uint8Array = js_decompress_zstd(data);
+    return bytes;
+  } catch (err) {
+    return new CompressionError(`ZSTD`, `failed to decompress: ${err}`);
   }
 }

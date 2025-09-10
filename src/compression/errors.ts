@@ -2,6 +2,8 @@ import { ErrorBase } from "../utils/error";
 
 export type ErrorName =
   | "ZLIB"
-  | "GZIP";
+  | "GZIP"
+  | "SNAPPY"
+  | "ZSTD";
 
-export class CompressionError extends ErrorBase<ErrorName> {}
+export class CompressionError extends ErrorBase<ErrorName> { }
