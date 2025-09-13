@@ -351,6 +351,11 @@ function getTagValue(tag: ManifestTag, data: Uint8Array): TagValue | Application
 }
 
 export function parseVarInt(data: Uint8Array): TagValue | ApplicationError {
+    // If the varint length is one then 0 index is our value
+    if (data.buffer.byteLength === 1) {
+        return { value: data[ 0 ], remaining: new Uint8Array() };
+    }
+
     let var_value = 0;
     let proto_data = data;
 
@@ -396,7 +401,7 @@ function parseKey(data: Uint8Array): string {
     return extractUtf8String(data);
 }
 
-function getValueType(data: Uint8Array): ValueType {
+export function getValueType(data: Uint8Array): ValueType {
     // If the length is less than 3 then value is string by default
     // https://chromium.googlesource.com/chromium/src.git/+/62.0.3178.1/content/browser/indexed_db/leveldb_coding_scheme.md#idbkeypath-values
     if (data.byteLength <= 3) {
@@ -407,7 +412,7 @@ function getValueType(data: Uint8Array): ValueType {
         return ValueType.Unknown;
     }
     switch (result.value) {
-        case 0: return ValueType.Unknown;
+        case 0: return ValueType.Utf16;
         case 1: return ValueType.String;
         case 2: return ValueType.Date;
         case 3: return ValueType.Number;
@@ -419,7 +424,7 @@ function getValueType(data: Uint8Array): ValueType {
     }
 }
 
-function parseValue(data: Uint8Array, value_type: ValueType): string | number | boolean | unknown[] | Record<string, ProtoTag> {
+export function parseValue(data: Uint8Array, value_type: ValueType): string | number | boolean | unknown[] | Record<string, ProtoTag> {
     let input = data;
     // If Protobuf or value is very small
     // Use entire byte array
