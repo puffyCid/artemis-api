@@ -1,4 +1,6 @@
 import { readFile } from "../../../mod";
+import { LevelDbEntry, ValueType } from "../../../types/applications/level";
+import { ProtoTag } from "../../../types/encoding/protobuf";
 import { decompress_snappy, decompress_zstd } from "../../compression/decompress";
 import { CompressionError } from "../../compression/errors";
 import { extractUtf16String, extractUtf8String } from "../../encoding/strings";
@@ -9,7 +11,7 @@ import { nomUnsignedEightBytes, nomUnsignedOneBytes, take, takeUntil } from "../
 import { ApplicationError } from "../errors";
 import { getValueType, parseValue, parseVarInt } from "./wal";
 
-export function parseLdb(path: string) {
+export function parseLdb(path: string): LevelDbEntry[] | ApplicationError {
     const data = readFile(path);
     if (data instanceof FileError) {
         return new ApplicationError(`LEVELDB`, `could not read ${path}: ${data}`);
@@ -28,15 +30,12 @@ export function parseLdb(path: string) {
         return index_data;
     }
 
-    console.log(JSON.stringify(Array.from(index_data.index_data)));
-
     let shared_key = "";
     const first_key = parseKey(shared_key, index_data.index_data);
     if (first_key instanceof ApplicationError) {
         return first_key;
     }
     shared_key = first_key.key;
-    console.log(JSON.stringify(first_key));
     let remaining = first_key.remaining;
 
     const block_keys: BlockData[] = [];
@@ -49,26 +48,29 @@ export function parseLdb(path: string) {
     while (remaining.buffer.byteLength !== 0) {
         const next_key = parseKey(shared_key, remaining);
         if (next_key instanceof ApplicationError) {
-            console.error(`error: ${next_key}`);
-            console.log(JSON.stringify(Array.from(remaining)));
             break;
         }
         const block_key = parseKeyBlock(next_key.value);
         if (block_key instanceof ApplicationError) {
-            continue;
+            break;
         }
         block_keys.push(block_key);
 
 
         remaining = next_key.remaining;
-        console.log(`key: ${JSON.stringify(next_key.key)} - ${JSON.stringify(Array.from(next_key.value))}`);
     }
 
-    console.log(JSON.stringify(block_keys));
+    let values: LevelDbEntry[] = [];
     for (const entry of block_keys) {
-        parseBlock(data, entry.offset, entry.size, index_data.compression_type);
-        break;
+        const result = parseBlock(data, entry.offset, entry.size, index_data.compression_type);
+        if (result instanceof ApplicationError) {
+            console.error(result);
+            continue;
+        }
+        values = values.concat(result);
     }
+
+    return values;
 
 }
 
@@ -138,7 +140,6 @@ enum CompressionType {
 }
 
 function parseIndex(data: Uint8Array, size: number, offset: number): IndexData | ApplicationError {
-    console.log(`offset: ${offset} size: ${size}`);
     const start = take(data, offset);
     if (start instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not get index start: ${start}`);
@@ -187,13 +188,12 @@ interface KeyValueData {
     remaining: Uint8Array;
 }
 
-function parseKey(shared_key: string, data: Uint8Array, is_block = false): KeyValueData | ApplicationError {
+function parseKey(shared_key: string, data: Uint8Array): KeyValueData | ApplicationError {
     let remaining = data;
     let share_key = parseVarInt(remaining);
     if (share_key instanceof ApplicationError) {
         return share_key;
     }
-    console.log(`key value: ${share_key.value}. shared lenght is: ${shared_key.length}`);
 
     let key_value = "";
     if (share_key.value === 0) {
@@ -206,7 +206,6 @@ function parseKey(shared_key: string, data: Uint8Array, is_block = false): KeyVa
         key_value = shared_key.slice(0, share_key.value as number);
         remaining = share_key.remaining;
     }
-    console.log(`key value is: ${key_value}`);
 
     let key = parseVarInt(remaining);
     if (key instanceof ApplicationError) {
@@ -216,31 +215,6 @@ function parseKey(shared_key: string, data: Uint8Array, is_block = false): KeyVa
     const value_len = parseVarInt(key.remaining);
     if (value_len instanceof ApplicationError) {
         return value_len;
-    }
-
-    console.log(`is block: ${is_block}`);
-    if (share_key.value as number - 1 === shared_key.length && share_key.value !== 0) {
-        remaining = value_len.remaining;
-        if (!is_block) {
-            const key_state = nomUnsignedEightBytes(remaining, Endian.Le);
-            if (key_state instanceof NomError) {
-                return new ApplicationError(`LEVELDB`, `could not get key state data: ${key_state}`);
-            }
-            remaining = key_state.remaining;
-        }
-        const value_remaining = take(remaining, key.value as number);
-        if (value_remaining instanceof NomError) {
-            return new ApplicationError(`LEVELDB`, `could not get key non-shared data: ${value_remaining}`);
-        }
-        remaining = value_remaining.remaining as Uint8Array;
-
-        //https://github.com/libyal/dtformats/blob/main/documentation/LevelDB%20database%20format.asciidoc#table_block
-        const value_data = take(remaining, value_len.value as number);
-        if (value_data instanceof NomError) {
-            return new ApplicationError(`LEVELDB`, `could not get key value data: ${value_data}`);
-        }
-        console.log(`shared key is: ${shared_key}`);
-        return { key: `${shared_key.slice(0, share_key.value as number)}`, value: value_data.nommed as Uint8Array, remaining: value_data.remaining as Uint8Array };
     }
 
     if (key.value as number <= 8) {
@@ -306,7 +280,7 @@ function parseKeyBlock(data: Uint8Array): BlockData | ApplicationError {
     return { offset: offset.value as number, size: size.value as number };
 }
 
-function parseBlock(data: Uint8Array, offset: number, size: number, compression: CompressionType) {
+function parseBlock(data: Uint8Array, offset: number, size: number, compression: CompressionType): LevelDbEntry[] | ApplicationError {
     const start = take(data, offset);
     if (start instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could go to start of key block data ${start}`);
@@ -340,35 +314,178 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
         }
     }
 
-
-    // console.log(JSON.stringify(Array.from(input)));
-    const first_key_value = parseKey("", input, true);
+    const values: LevelDbEntry[] = [];
+    const first_key_value = parseBlockData("", input);
     if (first_key_value instanceof ApplicationError) {
         return first_key_value;
     }
+    const entry: LevelDbEntry = {
+        sequence: first_key_value.sequence,
+        key_type: first_key_value.key_type,
+        value_type: first_key_value.value_type,
+        value: first_key_value.value,
+        shared_key: first_key_value.shared_key,
+        entry_key: first_key_value.entry_key,
+        key: first_key_value.key
+    };
+    values.push(entry);
 
-    const value_type = getValueType(first_key_value.value);
-    const value = parseValue(first_key_value.value, value_type);
-    console.log(first_key_value.key);
     let remaining = first_key_value.remaining;
 
     let shared_key = first_key_value.key;
     while (remaining.buffer.byteLength > 1) {
-        //console.log(JSON.stringify(Array.from(remaining)));
-        const key_value = parseKey(shared_key, remaining, true);
+        const key_value = parseBlockData(shared_key, remaining);
         if (key_value instanceof ApplicationError) {
-            console.log(`error here: ${JSON.stringify(key_value)}`);
             break;
         }
         shared_key = key_value.key;
 
-        const value_type = getValueType(key_value.value);
-        const value = parseValue(key_value.value, value_type);
-        console.log(key_value.key);
+
         remaining = key_value.remaining;
-        console.log(JSON.stringify(value));
+        const level_entry: LevelDbEntry = {
+            sequence: key_value.sequence,
+            key_type: key_value.key_type,
+            value_type: key_value.value_type,
+            value: key_value.value,
+            shared_key: key_value.shared_key,
+            entry_key: key_value.entry_key,
+            key: key_value.key
+        };
+
+        values.push(level_entry);
 
     }
-    //console.log(JSON.stringify(value));
+    return values;
+}
+
+interface BlockValue {
+    shared_key: string;
+    entry_key: string;
+    key: string;
+    value: string | number | boolean | unknown[] | Record<string, ProtoTag>;
+    key_type: number;
+    value_type: ValueType;
+    remaining: Uint8Array;
+    sequence: number;
+}
+
+function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | ApplicationError {
+    let remaining = data;
+    let share_key = parseVarInt(remaining);
+    if (share_key instanceof ApplicationError) {
+        return share_key;
+    }
+    let key_value = "";
+    const first_key = 0;
+    if (share_key.value === first_key) {
+        const next_key = nomUnsignedOneBytes(remaining);
+        if (next_key instanceof NomError) {
+            return new ApplicationError(`LEVELDB`, `could not get next data: ${next_key}`);
+        }
+        remaining = next_key.remaining;
+    } else {
+        key_value = shared_key.slice(0, share_key.value as number);
+        remaining = share_key.remaining;
+    }
+
+
+    let non_shared_key = parseVarInt(remaining);
+    if (non_shared_key instanceof ApplicationError) {
+        return non_shared_key;
+    }
+
+    const value_len = parseVarInt(non_shared_key.remaining);
+    if (value_len instanceof ApplicationError) {
+        return value_len;
+    }
+    // We are done if block size is less than non_shared_key length
+    if (value_len.remaining.buffer.byteLength < (non_shared_key.value as number)) {
+        return new ApplicationError(`LEVELDB`, `incomplete block`);
+    }
+    const non_shared_data = take(value_len.remaining, non_shared_key.value as number);
+    if (non_shared_data instanceof NomError) {
+        return new ApplicationError(`LEVELDB`, `could not get non-shared key data: ${non_shared_data}`);
+    }
+    remaining = non_shared_data.remaining as Uint8Array;
+
+    const key_value_data: BlockValue = {
+        shared_key: key_value,
+        entry_key: "",
+        key: "",
+        value: "",
+        remaining: new Uint8Array(),
+        value_type: ValueType.Unknown,
+        key_type: 0,
+        sequence: 0,
+    };
+
+    const key_metadata_min_size = 8;
+    if (non_shared_key.value as number >= key_metadata_min_size) {
+        const non_shared_key = (non_shared_data.nommed as Uint8Array);
+        const key_data = new Uint8Array(non_shared_key.buffer.slice(0, non_shared_key.buffer.byteLength - key_metadata_min_size));
+        let key_string = "";
+        let entry_key = "";
+        // Sometimes key is composed of 2 strings
+        const prefix = 95;
+        // If key starts has prefix '_' then it has two parts
+        // First has end of string character?
+        const first_part = takeUntil(key_data, new Uint8Array([ 0 ]));
+        if (first_part instanceof NomError) {
+            //return new ApplicationError(`LEVELDB`, `could not get first part of key: ${first_part}`);
+            key_string = extractUtf8String(key_data);
+        } else {
+            const first_data = (first_part.remaining as Uint8Array).buffer.slice(2);
+            // If 0 the encoding is UTF16-LE. Otherwise its ASCII
+            if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([ 0 ])) {
+                key_string = `${extractUtf8String(first_part.nommed as Uint8Array)}  ${extractUtf16String(new Uint8Array(first_data))}`;
+                entry_key = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf16String(new Uint8Array(first_data))}`;
+            } else {
+                key_string = `${extractUtf8String(first_part.nommed as Uint8Array)}  ${extractUtf8String(new Uint8Array(first_data))}`;
+                entry_key = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf8String(new Uint8Array(first_data))}`;
+
+            }
+        }
+
+        key_value_data.key = `${key_value}${key_string}`;
+        key_value_data.entry_key = entry_key;
+        const key_metadata = new Uint8Array(non_shared_key.buffer.slice(non_shared_key.buffer.byteLength - key_metadata_min_size));
+
+        // Is this key type or value type?
+        // Pretty sure its key type. Documentation is unclear
+        // https://github.com/libyal/dtformats/blob/main/documentation/LevelDB%20database%20format.asciidoc#532-table-key
+        const key_type = nomUnsignedOneBytes(key_metadata);
+        if (key_type instanceof NomError) {
+            return new ApplicationError(`LEVELDB`, `could not determine key type: ${key_type}`);
+        }
+        const seq_size = 7;
+        const seq_number = take(key_type.remaining, seq_size);
+        if (seq_number instanceof NomError) {
+            return new ApplicationError(`LEVELDB`, `could not determine sequence number: ${seq_number}`);
+        }
+
+        new Uint8Array().buffer;
+
+        key_value_data.key_type = key_type.value;
+        const clean_seq = new Uint8Array(8);
+        clean_seq.set(seq_number.nommed as Uint8Array);
+        key_value_data.sequence = Number(new DataView(clean_seq.buffer).getBigUint64(0, true));
+
+    } else {
+        // If the non-shared key size is less than 8. Then there is no useful non-shared key data
+        // The key is fully cached by the shared_key
+        key_value_data.key = key_value;
+    }
+
+    const value_data = take(remaining, value_len.value as number);
+    if (value_data instanceof NomError) {
+        return new ApplicationError(`LEVELDB`, `could not get value data: ${value_data}`);
+    }
+    remaining = value_data.remaining as Uint8Array;
+
+    key_value_data.value_type = getValueType(value_data.nommed as Uint8Array);
+    key_value_data.value = parseValue(value_data.nommed as Uint8Array, key_value_data.value_type);
+    key_value_data.remaining = remaining;
+
+    return key_value_data;
 
 }

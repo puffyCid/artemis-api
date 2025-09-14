@@ -1,5 +1,15 @@
 import { ProtoTag } from "../encoding/protobuf";
 
+export interface LevelDbEntry {
+    sequence: number;
+    key_type: number;
+    value_type: ValueType;
+    value: string | number | boolean | unknown[] | Record<string, ProtoTag>;
+    shared_key: string;
+    entry_key: string;
+    key: string;
+}
+
 export interface LevelManifest {
     crc: number;
     record_type: RecordType;

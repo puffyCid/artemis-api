@@ -3,7 +3,7 @@
 //https://chromium.googlesource.com/chromium/src.git/+/62.0.3178.1/content/browser/indexed_db/leveldb_coding_scheme.md
 
 
-import { LevelManifest, WalData } from "../../../types/applications/level";
+import { LevelDbEntry, LevelManifest, WalData } from "../../../types/applications/level";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
@@ -77,7 +77,7 @@ export class LevelDb {
         return values;
     }
 
-    public tables() {
+    public tables(): LevelDbEntry[] | ApplicationError {
         let logs = `${this.path}/*.ldb`;
         if (this.platform === PlatformType.Windows) {
             logs = `${this.path}\\*.ldb`;
@@ -88,7 +88,7 @@ export class LevelDb {
             return new ApplicationError(`LEVELDB`, `could not glob for ldb ${paths}`);
         }
 
-        let values: void[] = [];
+        let values: LevelDbEntry[] = [];
         for (const path of paths) {
             if (!path.is_file) {
                 continue;
