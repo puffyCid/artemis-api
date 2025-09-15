@@ -12,6 +12,16 @@ import { parseLdb } from "./table";
 import { parseWal, parseWalManifest } from "./wal";
 
 /**
+ * TODO:
+ * 
+ * 1. Code cleanup for table.ts
+ * 2. Code cleanup for wal.ts
+ * 3. validate it works for ur sample folders
+ * 4. Create tests
+ * 5. Update docs
+ */
+
+/**
  * A class to parse a directory containing Level database files
  */
 export class LevelDb {
@@ -23,6 +33,10 @@ export class LevelDb {
         this.platform = platform;
     }
 
+    /**
+     * Determine the active manifest file for the level database
+     * @returns Current manifest file
+     */
     public current(): string | ApplicationError {
         let file = `${this.path}/CURRENT`;
         if (this.platform === PlatformType.Windows) {
@@ -37,6 +51,10 @@ export class LevelDb {
         return text.trim();
     }
 
+    /**
+     * Parse the LevelDb manifest
+     * @returns Array of `LevelManifest` or `ApplicationError`
+     */
     public manifest(): LevelManifest[] | ApplicationError {
         const target = this.current();
         if (target instanceof ApplicationError) {
@@ -49,6 +67,10 @@ export class LevelDb {
         return parseWalManifest(file);
     }
 
+    /**
+     * Parse the write ahead log for the level database
+     * @returns Array of `WalData` or `ApplicationError`
+     */
     public wal(): WalData[] | ApplicationError {
         let logs = `${this.path}/*.log`;
         if (this.platform === PlatformType.Windows) {
@@ -77,6 +99,10 @@ export class LevelDb {
         return values;
     }
 
+    /**
+     * Parse all of the level database tables
+     * @returns Array of `LevelDbEntry` or `ApplicationError`
+     */
     public tables(): LevelDbEntry[] | ApplicationError {
         let logs = `${this.path}/*.ldb`;
         if (this.platform === PlatformType.Windows) {

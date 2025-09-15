@@ -11,6 +11,11 @@ import { nomUnsignedEightBytes, nomUnsignedOneBytes, take, takeUntil } from "../
 import { ApplicationError } from "../errors";
 import { getValueType, parseValue, parseVarInt } from "./wal";
 
+/**
+ * Function to parse ldb files
+ * @param path Path to a ldb file
+ * @returns Array of `LevelDbEntry` or `ApplicationError`
+ */
 export function parseLdb(path: string): LevelDbEntry[] | ApplicationError {
     const data = readFile(path);
     if (data instanceof FileError) {
@@ -22,9 +27,6 @@ export function parseLdb(path: string): LevelDbEntry[] | ApplicationError {
         return footer;
     }
 
-    // At: https://github.com/libyal/dtformats/blob/main/documentation/LevelDB%20database%20format.asciidoc#51-table-block-handle
-    // 3. Parse??
-    // 4. Finish parsing the WAL log? Get all the entries there
     const index_data = parseIndex(data, footer.index.size, footer.index.offset);
     if (index_data instanceof ApplicationError) {
         return index_data;
@@ -35,6 +37,7 @@ export function parseLdb(path: string): LevelDbEntry[] | ApplicationError {
     if (first_key instanceof ApplicationError) {
         return first_key;
     }
+
     shared_key = first_key.key;
     let remaining = first_key.remaining;
 
@@ -84,6 +87,11 @@ interface TableBlockHandle {
     size: number;
 }
 
+/**
+ * Parse ldb footer to get initial information about the ldb file
+ * @param data Ldb bytes
+ * @returns `Footer` information associated with the ldb file
+ */
 function parseFooter(data: Uint8Array): Footer | ApplicationError {
     const footer_size = 48;
     const foot_start = take(data, data.buffer.byteLength - footer_size);
@@ -139,12 +147,18 @@ enum CompressionType {
     Zstd
 }
 
+/**
+ * Function to parse the ldb index block
+ * @param data Ldb bytes
+ * @param size Size of the index block
+ * @param offset Offset to the index block
+ * @returns `IndexData` information or `ApplicationError`
+ */
 function parseIndex(data: Uint8Array, size: number, offset: number): IndexData | ApplicationError {
     const start = take(data, offset);
     if (start instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not get index start: ${start}`);
     }
-
     const trailer = 5;
     const index_data = take(start.remaining, size + trailer);
     if (index_data instanceof NomError) {
@@ -188,6 +202,12 @@ interface KeyValueData {
     remaining: Uint8Array;
 }
 
+/**
+ * Function to parse initial keys from ldb entry
+ * @param shared_key Key string that is shared between all keys
+ * @param data Bytes associated with the key
+ * @returns `KeyValueData` or `ApplicationError`
+ */
 function parseKey(shared_key: string, data: Uint8Array): KeyValueData | ApplicationError {
     let remaining = data;
     let share_key = parseVarInt(remaining);
@@ -253,7 +273,6 @@ function parseKey(shared_key: string, data: Uint8Array): KeyValueData | Applicat
         key_string = extractUtf8String(key_data.nommed as Uint8Array);
     }
 
-    //https://github.com/libyal/dtformats/blob/main/documentation/LevelDB%20database%20format.asciidoc#table_block
     const value_data = take(key_state.remaining, value_len.value as number);
     if (value_data instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not get key value data: ${value_data}`);
@@ -266,6 +285,11 @@ interface BlockData {
     size: number;
 }
 
+/**
+ * Function to parse values associated with the initial keys. Will point to offsets that contain the actual data
+ * @param data Bytes associated with the initial leveldb keys
+ * @returns `BlockData` or `ApplicationError`
+ */
 function parseKeyBlock(data: Uint8Array): BlockData | ApplicationError {
     const offset = parseVarInt(data);
     if (offset instanceof ApplicationError) {
@@ -280,6 +304,14 @@ function parseKeyBlock(data: Uint8Array): BlockData | ApplicationError {
     return { offset: offset.value as number, size: size.value as number };
 }
 
+/**
+ * Function to parse ldb blocks and extract entries
+ * @param data ldb file bytes
+ * @param offset Offset to the block
+ * @param size Size of the block
+ * @param compression `CompressionType` used by the block
+ * @returns Array of `LevelDbEntry` or `ApplicationError`
+ */
 function parseBlock(data: Uint8Array, offset: number, size: number, compression: CompressionType): LevelDbEntry[] | ApplicationError {
     const start = take(data, offset);
     if (start instanceof NomError) {
@@ -352,6 +384,10 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
             key: key_value.key
         };
 
+        if (level_entry.sequence === 0 && level_entry.key === "" || level_entry.key.includes(" [strings] Failed to get UTF8 string: ")) {
+            continue;
+        }
+
         values.push(level_entry);
 
     }
@@ -369,6 +405,12 @@ interface BlockValue {
     sequence: number;
 }
 
+/**
+ * Function to parse block data which contains our database values
+ * @param shared_key Key string that is shared between all keys
+ * @param data Bytes associated with the block
+ * @returns `BlockValue` or `ApplicationError`
+ */
 function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | ApplicationError {
     let remaining = data;
     let share_key = parseVarInt(remaining);
@@ -425,13 +467,9 @@ function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | Appl
         const key_data = new Uint8Array(non_shared_key.buffer.slice(0, non_shared_key.buffer.byteLength - key_metadata_min_size));
         let key_string = "";
         let entry_key = "";
-        // Sometimes key is composed of 2 strings
-        const prefix = 95;
-        // If key starts has prefix '_' then it has two parts
-        // First has end of string character?
+        // First key string has end of string character?
         const first_part = takeUntil(key_data, new Uint8Array([ 0 ]));
         if (first_part instanceof NomError) {
-            //return new ApplicationError(`LEVELDB`, `could not get first part of key: ${first_part}`);
             key_string = extractUtf8String(key_data);
         } else {
             const first_data = (first_part.remaining as Uint8Array).buffer.slice(2);
@@ -442,7 +480,6 @@ function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | Appl
             } else {
                 key_string = `${extractUtf8String(first_part.nommed as Uint8Array)}  ${extractUtf8String(new Uint8Array(first_data))}`;
                 entry_key = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf8String(new Uint8Array(first_data))}`;
-
             }
         }
 
@@ -451,7 +488,7 @@ function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | Appl
         const key_metadata = new Uint8Array(non_shared_key.buffer.slice(non_shared_key.buffer.byteLength - key_metadata_min_size));
 
         // Is this key type or value type?
-        // Pretty sure its key type. Documentation is unclear
+        // Pretty sure its key type? Documentation is unclear
         // https://github.com/libyal/dtformats/blob/main/documentation/LevelDB%20database%20format.asciidoc#532-table-key
         const key_type = nomUnsignedOneBytes(key_metadata);
         if (key_type instanceof NomError) {
@@ -463,17 +500,17 @@ function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | Appl
             return new ApplicationError(`LEVELDB`, `could not determine sequence number: ${seq_number}`);
         }
 
-        new Uint8Array().buffer;
-
         key_value_data.key_type = key_type.value;
         const clean_seq = new Uint8Array(8);
         clean_seq.set(seq_number.nommed as Uint8Array);
         key_value_data.sequence = Number(new DataView(clean_seq.buffer).getBigUint64(0, true));
-
     } else {
         // If the non-shared key size is less than 8. Then there is no useful non-shared key data
         // The key is fully cached by the shared_key
         key_value_data.key = key_value;
+        const clean_seq = new Uint8Array(8);
+        clean_seq.set(non_shared_data.nommed as Uint8Array);
+        key_value_data.sequence = Number(new DataView(clean_seq.buffer).getBigUint64(0, true));
     }
 
     const value_data = take(remaining, value_len.value as number);
@@ -487,5 +524,140 @@ function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | Appl
     key_value_data.remaining = remaining;
 
     return key_value_data;
+
+}
+
+/**
+ * Function to test the leveldb ldb file parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the leveldb parsing
+ */
+export function testLevelLdb(): void {
+    const parse_block_test = readFile("../../test_data/leveldb/levelldb.raw");
+    if (parse_block_test instanceof FileError) {
+        throw parse_block_test;
+    }
+
+    const block_result = parseBlock(parse_block_test, 0, 3017, CompressionType.Snappy);
+    if (block_result instanceof ApplicationError) {
+        throw block_result;
+    }
+
+    if (block_result.length !== 61) {
+        throw `Got length ${block_result.length} expected 61.......parseBlock ❌`;
+    }
+
+    if (!JSON.stringify(block_result[ 0 ].value).includes("13401944653177090")) {
+        throw `Got value ${JSON.stringify(block_result[ 0 ].value)} expected to contain 13401944653177090.......parseBlock ❌`;
+    }
+    console.info(`  Function parseBlock ✅`);
+
+
+    const parse_block_data_test = readFile("../../test_data/leveldb/blockdata.raw");
+    if (parse_block_data_test instanceof FileError) {
+        throw parse_block_data_test;
+    }
+
+    const block_data_result = parseBlockData("", parse_block_data_test);
+    if (block_data_result instanceof ApplicationError) {
+        throw block_data_result;
+    }
+
+    if (block_data_result.key !== "META:https://192.168.1.242:9090") {
+        throw `Got key ${block_data_result.key} expected META:https://192.168.1.242:9090.......parseBlockData ❌`;
+    }
+
+    if (block_data_result.sequence !== 16) {
+        throw `Got sequence ${block_data_result.sequence} expected 16.......parseBlockData ❌`;
+    }
+
+    if (block_data_result.remaining.buffer.byteLength !== 4149) {
+        throw `Got remaining length ${block_data_result.remaining.buffer.byteLength} expected 4149.......parseBlockData ❌`;
+    }
+
+    console.info(`  Function parseBlockData ✅`);
+
+    const parse_key_block_test = [ 0, 201, 23 ];
+    const parse_key_block_result = parseKeyBlock(new Uint8Array(parse_key_block_test));
+    if (parse_key_block_result instanceof ApplicationError) {
+        throw parse_key_block_result;
+    }
+
+    if (parse_key_block_result.offset !== 0) {
+        throw `Got offset ${parse_key_block_result.offset} expected 0.......parseKeyBlock ❌`;
+    }
+
+    if (parse_key_block_result.size !== 3017) {
+        throw `Got size ${parse_key_block_result.size} expected 3017.......parseKeyBlock ❌`;
+    }
+
+    console.info(`  Function parseKeyBlock ✅`);
+
+
+    const parse_key_test = [ 0, 34, 3, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 96, 1, 255, 255, 255, 255, 255, 255, 255, 0, 201, 23, 0, 57, 5, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 84, 0, 0, 0, 0, 0, 0, 206, 23, 214, 240, 3, 0, 57, 6, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 62, 0, 0, 0, 0, 0, 0, 169, 136, 4, 234, 252, 1, 0, 9, 5, 96, 1, 255, 255, 255, 255, 255, 255, 255, 152, 133, 6, 212, 15, 0, 0, 0, 0, 40, 0, 0, 0, 105, 0, 0, 0, 171, 0, 0, 0, 4, 0, 0, 0 ];
+    const parse_key_result = parseKey("", new Uint8Array(parse_key_test));
+    if (parse_key_result instanceof ApplicationError) {
+        throw parse_key_result;
+    }
+
+    if (parse_key_result.key !== "_https://www.google.com `") {
+        throw `Got key ${parse_key_result.key} expected '_https://www.google.com \`'.......parseKey ❌`;
+    }
+
+    if (JSON.stringify(Array.from(parse_key_result.value)) !== JSON.stringify([ 0, 201, 23 ])) {
+        throw `Got value [${parse_key_result.value}] expected [0,201,23].......parseKey ❌`;
+    }
+
+    console.info(`  Function parseKey ✅`);
+
+
+    const parse_index_test = [ 208, 1, 120, 0, 34, 3, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 96, 1, 255, 9, 1, 20, 0, 201, 23, 0, 57, 5, 98, 40, 0, 104, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 84, 0, 5, 1, 28, 206, 23, 214, 240, 3, 0, 57, 6, 198, 65, 0, 0, 62, 5, 64, 44, 0, 169, 136, 4, 234, 252, 1, 0, 9, 5, 96, 1, 9, 145, 20, 255, 152, 133, 6, 212, 15, 1, 29, 60, 40, 0, 0, 0, 105, 0, 0, 0, 171, 0, 0, 0, 4, 0, 0, 0, 1, 95, 36, 244, 214, 241, 148, 6, 8, 254, 148, 6, 133, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 251, 128, 139, 36, 117, 71, 219 ];
+    const parse_index_result = parseIndex(new Uint8Array(parse_index_test), 133, 0);
+    if (parse_index_result instanceof ApplicationError) {
+        throw parse_index_result;
+    }
+
+    if (parse_index_result.compression_type !== CompressionType.Snappy) {
+        throw `Got compression type ${parse_index_result.compression_type} expected Snappy.......parseIndex ❌`;
+    }
+
+    if (parse_index_result.index_data.buffer.byteLength !== 208) {
+        throw `Got index data length ${parse_index_result.index_data.buffer.byteLength} expected 208.......parseIndex ❌`;
+    }
+
+    console.info(`  Function parseIndex ✅`);
+
+
+    const parse_foot_test = [ 241, 148, 6, 8, 254, 148, 6, 133, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 251, 128, 139, 36, 117, 71, 219 ];
+    const parse_footer_result = parseFooter(new Uint8Array(parse_foot_test));
+    if (parse_footer_result instanceof ApplicationError) {
+        throw parse_footer_result;
+    }
+
+    if (parse_footer_result.index.size !== 133) {
+        throw `Got index size ${parse_footer_result.index.size} expected 133.......parseFooter ❌`;
+    }
+
+    if (parse_footer_result.index.offset !== 100990) {
+        throw `Got index offset ${parse_footer_result.index.offset} expected 100990.......parseFooter ❌`;
+    }
+
+    console.info(`  Function parseFooter ✅`);
+
+    const parse_ldb_test = "../../test_data/leveldb/000005.ldb";
+    const parse_ldb_result = parseLdb(parse_ldb_test);
+    if (parse_ldb_result instanceof ApplicationError) {
+        throw parse_ldb_result;
+    }
+
+    if (parse_ldb_result.length != 109) {
+        throw `Got ldb entries length ${parse_ldb_result.length} expected 109.......parseLdb ❌`;
+    }
+
+    if (!JSON.stringify(parse_ldb_result[ 8 ].value).includes("13401944468429548")) {
+        throw `Got ldb entry value ${JSON.stringify(parse_ldb_result[ 8 ].value)} expected to include 13401944468429548.......parseLdb ❌`;
+    }
+
+    console.info(`  Function parseLdb ✅`);
 
 }

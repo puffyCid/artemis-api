@@ -58,3 +58,24 @@ export function geditRecentFiles(
 
   return files;
 }
+
+/**
+ * Function to test GNOME gedit parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the GNOME gedit parsing
+ */
+export function testGeditRecentFiles(): void {
+  const test = "../../test_data/linux/gnome/gedit_recent.xml";
+  const result = geditRecentFiles(test);
+  if (result instanceof LinuxError) {
+    throw result;
+  }
+
+  if (result[ 0 ].path != "file:///home/devel/Downloads/analyzeMFT-3.0.7.1/src/analyzeMFT/__init__.py") {
+    throw `Got path ${result[ 0 ].path} expected file:///home/devel/Downloads/analyzeMFT-3.0.7.1/src/analyzeMFT/__init__.py.......geditRecentFiles ❌`;
+  }
+
+  if (result[ 0 ].accessed != "2025-01-22T05:02:02.996Z") {
+    throw `Got accessed ${result[ 0 ].accessed} expected 2025-01-22T05:02:02.996Z.......geditRecentFiles ❌`;
+  }
+}

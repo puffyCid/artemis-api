@@ -1,5 +1,6 @@
 import { CompactPoint, DeletedFile, LevelManifest, LogType, ManifestTag, NewFileValue, RecordType, ValueType, WalData, WalValue } from "../../../types/applications/level";
 import { ProtoTag } from "../../../types/encoding/protobuf";
+import { encode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
 import { parseProtobuf } from "../../encoding/protobuf";
 import { extractUtf16String, extractUtf8String } from "../../encoding/strings";
@@ -62,7 +63,6 @@ export function parseWalManifest(path: string): LevelManifest[] | ApplicationErr
             }
             entry.records.push({ [ tag ]: value.value });
             tag_remaining = value.remaining;
-            console.log(JSON.stringify(entry));
         }
         remaining = record.remaining as Uint8Array;
         level_records.push(entry);
@@ -99,7 +99,6 @@ export function parseWal(path: string): WalData[] | ApplicationError {
             return new ApplicationError(`LEVELDB`, `could not get record type for ${path}: ${input}`);
         }
         const record_type = getRecordType(input.value);
-        console.log(record_type);
 
         const record = take(input.remaining, size);
         if (record instanceof NomError) {
@@ -125,7 +124,6 @@ export function parseWal(path: string): WalData[] | ApplicationError {
 }
 
 function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
-    console.log(JSON.stringify(Array.from(data)));
     let sequence = nomUnsignedEightBytes(data, Endian.Le);
     if (sequence instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not get wal sequence: ${sequence}`);
@@ -193,7 +191,6 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
             console.log(`got unknown log type: ${value_type.value}`);
             count++;
             continue;
-            //return new ApplicationError(`LEVELDB`, `got unknown log type: ${value_type.value}`);
         }
 
         const entry: WalValue = {
@@ -207,10 +204,7 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
         };
         if (entry.value_data !== null) {
             entry.value_type = getValueType(entry.value_data);
-            console.log(JSON.stringify(entry));
-
             entry.value = parseValue(entry.value_data, entry.value_type);
-            console.log(`key: ${entry.key} - ${JSON.stringify(entry.value)}`);
         }
 
         values.push(entry);
@@ -420,7 +414,18 @@ export function getValueType(data: Uint8Array): ValueType {
         case 6: return ValueType.Binary;
         case 8: return ValueType.Protobuf;
         case 15: return ValueType.Utf16;
-        default: return ValueType.Unknown;
+        default: {
+            // Default values might be strings?
+            if (Array.from(data).includes(0)) {
+                return ValueType.Utf16;
+            } else if (!extractUtf8String(result.remaining).includes("[string]")) {
+                return ValueType.String;
+            }
+            console.warn(`Unknown value type: ${result.value}`);
+            console.log(data);
+            throw 'stop';
+            return ValueType.Unknown;
+        }
     }
 }
 
@@ -447,7 +452,120 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
     if (value_type === ValueType.Utf16) {
         return extractUtf16String(input);
     }
+    // This may already be base64?
+    if (value_type === ValueType.Binary) {
+        return encode(data);
+    }
     console.log(`unknown value type: ${value_type}`);
     console.log(JSON.stringify(Array.from(data)));
     return "Unknown value";
+}
+
+export function testLevelWal(): void {
+    const parse_value_test = [ 8, 130, 194, 232, 178, 246, 159, 231, 23, 16, 85 ];
+    const parse_value_result = parseValue(new Uint8Array(parse_value_test), ValueType.Protobuf);
+    if (parse_value_result instanceof ApplicationError) {
+        throw parse_value_result;
+    }
+
+    if (parse_value_result[ "1" ].value != "13401944653177090") {
+        throw `Got value ${parse_value_result[ "1" ].value} expected 13401944653177090.......parseValue ❌`;
+    }
+    console.info(`  Function parseValue ✅`);
+
+    const value_type_test = [ 0, 1, 2, 3, 4, 6, 8, 15 ];
+    for (const entry of value_type_test) {
+        const result = getValueType(new Uint8Array([ entry, 0, 0, 0 ]));
+        if (result === ValueType.Unknown) {
+            `Got unknown value type for ${entry}.......getValueType ❌`;
+        }
+    }
+    console.info(`  Function getValueType ✅`);
+
+    const parse_key_test = [ 77, 69, 84, 65, 58, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109 ];
+    const parse_key_result = parseKey(new Uint8Array(parse_key_test));
+
+    if (parse_key_result !== "META:https://www.google.com") {
+        throw `Got key ${parse_key_result} expected META:https://www.google.com.......parseKey ❌`;
+    }
+    console.info(`  Function parseKey ✅`);
+
+    const parse_var_int_test = [ 77, 69, 84, 65, 58, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109 ];
+    const parse_var_int_result = parseVarInt(new Uint8Array(parse_var_int_test));
+    if (parse_var_int_result instanceof ApplicationError) {
+        throw parse_var_int_result;
+    }
+    if (parse_var_int_result.value !== 77) {
+        throw `Got value ${parse_var_int_result.value} expected 77.......parseVarInt ❌`;
+    }
+    console.info(`  Function parseVarInt ✅`);
+
+    const get_tag_value_test = [ 26, 108, 101, 118, 101, 108, 100, 98, 46, 66, 121, 116, 101, 119, 105, 115, 101, 67, 111, 109, 112, 97, 114, 97, 116, 111, 114, 2, 0, 3, 2, 4, 0 ];
+    const get_tag_value_result = getTagValue(ManifestTag.Comparator, new Uint8Array(get_tag_value_test));
+    if (get_tag_value_result instanceof ApplicationError) {
+        throw get_tag_value_result;
+    }
+    if (get_tag_value_result.value !== "leveldb.BytewiseComparator") {
+        throw `Got value ${get_tag_value_result.value} expected leveldb.BytewiseComparator.......getTagValue ❌`;
+    }
+    console.info(`  Function getTagValue ✅`);
+
+    const get_tag_test = [ 1, 2, 3, 4, 5, 6, 7, 9 ];
+    for (const entry of get_tag_test) {
+        const result = getTag(entry);
+        if (result === ManifestTag.Unknown) {
+            `Got unknown manifest tag for ${entry}.......getTag ❌`;
+        }
+    }
+    console.info(`  Function getTag ✅`);
+
+    const get_record_type_test = [ 1, 2, 3, 4 ];
+    for (const entry of get_record_type_test) {
+        const result = getRecordType(entry);
+        if (result === RecordType.Unknown) {
+            `Got unknown record type for ${entry}.......getRecordType ❌`;
+        }
+    }
+    console.info(`  Function getRecordType ✅`);
+
+    const parse_wal_values_test = [ 226, 45, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 12, 77, 69, 84, 65, 58, 102, 105, 108, 101, 58, 47, 47, 11, 8, 208, 186, 223, 177, 158, 197, 230, 23, 16, 36, 1, 31, 95, 102, 105, 108, 101, 58, 47, 47, 0, 1, 108, 97, 115, 116, 82, 101, 99, 101, 105, 118, 101, 100, 65, 116, 67, 111, 117, 110, 116, 101, 114, 14, 1, 49, 55, 53, 51, 57, 50, 51, 55, 48, 48, 51, 48, 55
+    ];
+    const parse_wal_values_result = parseWalValues(new Uint8Array(parse_wal_values_test));
+    if (parse_wal_values_result instanceof ApplicationError) {
+        throw parse_wal_values_result;
+    }
+
+    if (parse_wal_values_result.length != 2) {
+        throw `Got length ${parse_wal_values_result.length} expected 2.......parseWalValues ❌`;
+    }
+    if (parse_wal_values_result[ 1 ].value != 1753923700307) {
+        throw `Got value ${parse_wal_values_result[ 1 ].value} expected 1753923700307.......parseWalValues ❌`;
+    }
+    console.info(`  Function parseWalValues ✅`);
+
+    const parse_wal_result = parseWal("../../test_data/leveldb/000004.log");
+    if (parse_wal_result instanceof ApplicationError) {
+        throw parse_wal_result;
+    }
+
+    if (parse_wal_result.length != 2) {
+        throw `Got length ${parse_wal_result.length} expected 2.......parseWal ❌`;
+    }
+    if (!JSON.stringify(parse_wal_result[ 1 ].values[ 0 ].value).includes("13401945128519900")) {
+        throw `Got ${JSON.stringify(parse_wal_result[ 1 ].values[ 0 ].value)} and does not include 1753923700307.......parseWal ❌`;
+    }
+    console.info(`  Function parseWal ✅`);
+
+    const parse_manifest_result = parseWalManifest("../../test_data/leveldb/MANIFEST-000001");
+    if (parse_manifest_result instanceof ApplicationError) {
+        throw parse_wal_result;
+    }
+
+    if (parse_manifest_result.length != 1) {
+        throw `Got manifest length ${parse_manifest_result.length} expected 1.......parseWalManifest ❌`;
+    }
+    if (!JSON.stringify(parse_manifest_result[ 0 ].records[ 0 ]).includes("Comparator")) {
+        throw `Got ${JSON.stringify(parse_manifest_result[ 0 ].records[ 0 ])} and does not include Comparator.......parseWalManifest ❌`;
+    }
+    console.info(`  Function parseWalManifest ✅`);
 }
