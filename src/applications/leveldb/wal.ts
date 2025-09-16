@@ -1,4 +1,4 @@
-import { CompactPoint, DeletedFile, LevelManifest, LogType, ManifestTag, NewFileValue, RecordType, ValueType, WalData, WalValue } from "../../../types/applications/level";
+import { CompactPoint, DeletedFile, LevelDbEntry, LevelManifest, LogType, ManifestTag, NewFileValue, RecordType, ValueType, WalData, WalValue } from "../../../types/applications/level";
 import { ProtoTag } from "../../../types/encoding/protobuf";
 import { encode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
@@ -79,15 +79,15 @@ export function parseWalManifest(path: string): LevelManifest[] | ApplicationErr
 /**
  * Function to parse the LevelDb write ahead log (WAL)
  * @param path Path the Write Ahead Log (WAL)
- * @returns Array of `WalData` or `ApplicationError`
+ * @returns Array of `LevelDbEntry` or `ApplicationError`
  */
-export function parseWal(path: string): WalData[] | ApplicationError {
+export function parseWal(path: string): LevelDbEntry[] | ApplicationError {
     const data = readFile(path);
     if (data instanceof FileError) {
         return new ApplicationError(`LEVELDB`, `could not read ${path}: ${data}`);
     }
 
-    const level_records: WalData[] = [];
+    let level_records: LevelDbEntry[] = [];
     let remaining = data;
     const min_size = 7;
     while (remaining.buffer.byteLength > min_size) {
@@ -115,18 +115,14 @@ export function parseWal(path: string): WalData[] | ApplicationError {
             return new ApplicationError(`LEVELDB`, `could not get entry for ${path}: ${record}`);
         }
 
-        const values = parseWalValues(record.nommed as Uint8Array);
+        const values = parseWalValues(record.nommed as Uint8Array, path);
         if (values instanceof ApplicationError) {
             return values;
         }
 
         remaining = record.remaining as Uint8Array;
-        const entry: WalData = {
-            crc,
-            record_type,
-            values,
-        };
-        level_records.push(entry);
+
+        level_records = level_records.concat(values);
     }
 
     return level_records;
@@ -135,9 +131,10 @@ export function parseWal(path: string): WalData[] | ApplicationError {
 /**
  * Function to parse write ahead log (WAL) values
  * @param data Raw bytes associated with wal data
+ * @param path Path to WAL log file
  * @returns Array of `WalValue` or `ApplicationError`
  */
-function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
+function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | ApplicationError {
     let sequence = nomUnsignedEightBytes(data, Endian.Le);
     if (sequence instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not get wal sequence: ${sequence}`);
@@ -149,7 +146,7 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
     }
 
     let count = 0;
-    const values: WalValue[] = [];
+    const values: LevelDbEntry[] = [];
     let remaining = input.remaining;
     while (count < input.value) {
         const value_type = nomUnsignedOneBytes(remaining);
@@ -198,7 +195,7 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
             log_type = LogType.Deletion;
             console.log(remaining);
             console.log("skipping deleted");
-            throw 'need to handle deleted!';
+            //throw 'need to handle deleted!';
             count++;
             continue;
         }
@@ -207,18 +204,22 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
             return new ApplicationError(`LEVELDB`, `got unknown log type: ${value_type.value}`);
         }
 
-        const entry: WalValue = {
-            log_type,
-            key_data: key,
-            key: parseKey(key),
-            value_data: value,
-            value: 0,
+        const key_string = parseKey(key);
+        const entry: LevelDbEntry = {
+            sequence: 0,
+            key_type: 0,
             value_type: ValueType.Unknown,
-            value_type_number: value?.at(0) ?? 0
+            value: "",
+            shared_key: "",
+            origin: key_string.split(" ").at(0) ?? key_string,
+            key: key_string.split(" ").at(1) ?? key_string,
+            path
         };
-        if (entry.value_data !== null) {
-            entry.value_type = getValueType(entry.value_data);
-            entry.value = parseValue(entry.value_data, entry.value_type);
+
+        if (value !== null) {
+            entry.value_type = getValueType(value);
+            entry.value = parseValue(value, entry.value_type);
+
         }
 
         values.push(entry);
@@ -426,9 +427,9 @@ function parseKey(data: Uint8Array): string {
         const first_data = (first_part.remaining as Uint8Array).buffer.slice(2);
         // If 0 the encoding is UTF16-LE. Otherwise its ASCII
         if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([ 0 ])) {
-            return `${extractUtf8String(first_part.nommed as Uint8Array)}${extractUtf16String(new Uint8Array(first_data))}`;
+            return `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf16String(new Uint8Array(first_data))}`;
         } else {
-            return `${extractUtf8String(first_part.nommed as Uint8Array)}${extractUtf8String(new Uint8Array(first_data))}`;
+            return `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf8String(new Uint8Array(first_data))}`;
         }
     }
     return extractUtf8String(data);
@@ -585,7 +586,7 @@ export function testLevelWal(): void {
 
     const parse_wal_values_test = [ 226, 45, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 12, 77, 69, 84, 65, 58, 102, 105, 108, 101, 58, 47, 47, 11, 8, 208, 186, 223, 177, 158, 197, 230, 23, 16, 36, 1, 31, 95, 102, 105, 108, 101, 58, 47, 47, 0, 1, 108, 97, 115, 116, 82, 101, 99, 101, 105, 118, 101, 100, 65, 116, 67, 111, 117, 110, 116, 101, 114, 14, 1, 49, 55, 53, 51, 57, 50, 51, 55, 48, 48, 51, 48, 55
     ];
-    const parse_wal_values_result = parseWalValues(new Uint8Array(parse_wal_values_test));
+    const parse_wal_values_result = parseWalValues(new Uint8Array(parse_wal_values_test), "");
     if (parse_wal_values_result instanceof ApplicationError) {
         throw parse_wal_values_result;
     }
@@ -603,11 +604,11 @@ export function testLevelWal(): void {
         throw parse_wal_result;
     }
 
-    if (parse_wal_result.length != 2) {
-        throw `Got length ${parse_wal_result.length} expected 2.......parseWal ❌`;
+    if (parse_wal_result.length != 6) {
+        throw `Got length ${parse_wal_result.length} expected 6.......parseWal ❌`;
     }
-    if (!JSON.stringify(parse_wal_result[ 1 ].values[ 0 ].value).includes("13401945128519900")) {
-        throw `Got ${JSON.stringify(parse_wal_result[ 1 ].values[ 0 ].value)} and does not include 1753923700307.......parseWal ❌`;
+    if (parse_wal_result[ 1 ].value !== "0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig") {
+        throw `Got ${parse_wal_result[ 1 ].value} expected 0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig.......parseWal ❌`;
     }
     console.info(`  Function parseWal ✅`);
 

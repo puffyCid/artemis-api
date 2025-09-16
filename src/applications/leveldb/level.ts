@@ -17,7 +17,7 @@ import { parseWal, parseWalManifest } from "./wal";
  * 1. validate it works for ur sample folders
  * 2. Create more tests. Add a live test?
  * 3. fix: skipping deleted
- * 3.5 Update comments for wal.ts functions
+ * 4. Update WAL to return actual data instead of bytes :)
  * 4.5 Include references to blogs above
  * 5. DONE!
  */
@@ -72,7 +72,7 @@ export class LevelDb {
      * Parse the write ahead log for the level database
      * @returns Array of `WalData` or `ApplicationError`
      */
-    public wal(): WalData[] | ApplicationError {
+    public wal(): LevelDbEntry[] | ApplicationError {
         let logs = `${this.path}/*.log`;
         if (this.platform === PlatformType.Windows) {
             logs = `${this.path}\\*.log`;
@@ -83,7 +83,7 @@ export class LevelDb {
             return new ApplicationError(`LEVELDB`, `could not glob for logs ${paths}`);
         }
 
-        let values: WalData[] = [];
+        let values: LevelDbEntry[] = [];
         for (const path of paths) {
             if (!path.is_file) {
                 continue;

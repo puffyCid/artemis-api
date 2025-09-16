@@ -65,7 +65,7 @@ export function parseLdb(path: string): LevelDbEntry[] | ApplicationError {
 
     let values: LevelDbEntry[] = [];
     for (const entry of block_keys) {
-        const result = parseBlock(data, entry.offset, entry.size, index_data.compression_type);
+        const result = parseBlock(data, entry.offset, entry.size, index_data.compression_type, path);
         if (result instanceof ApplicationError) {
             console.error(result);
             continue;
@@ -310,9 +310,10 @@ function parseKeyBlock(data: Uint8Array): BlockData | ApplicationError {
  * @param offset Offset to the block
  * @param size Size of the block
  * @param compression `CompressionType` used by the block
+ * @param path Path to ldb file
  * @returns Array of `LevelDbEntry` or `ApplicationError`
  */
-function parseBlock(data: Uint8Array, offset: number, size: number, compression: CompressionType): LevelDbEntry[] | ApplicationError {
+function parseBlock(data: Uint8Array, offset: number, size: number, compression: CompressionType, path: string): LevelDbEntry[] | ApplicationError {
     const start = take(data, offset);
     if (start instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could go to start of key block data ${start}`);
@@ -358,7 +359,8 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
         value: first_key_value.value,
         shared_key: first_key_value.shared_key,
         origin: first_key_value.key,
-        key: first_key_value.entry_key
+        key: first_key_value.entry_key,
+        path,
     };
     values.push(entry);
 
@@ -381,7 +383,8 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
             value: key_value.value,
             shared_key: key_value.shared_key,
             origin: key_value.key.split(" ").at(0) ?? "",
-            key: key_value.key.split(" ").at(2) ?? ""
+            key: key_value.key.split(" ").at(2) ?? "",
+            path,
         };
 
         if (level_entry.sequence === 0 && level_entry.key === "" || level_entry.key.includes(" [strings] Failed to get UTF8 string: ")) {
@@ -538,7 +541,7 @@ export function testLevelLdb(): void {
         throw parse_block_test;
     }
 
-    const block_result = parseBlock(parse_block_test, 0, 3017, CompressionType.Snappy);
+    const block_result = parseBlock(parse_block_test, 0, 3017, CompressionType.Snappy, "");
     if (block_result instanceof ApplicationError) {
         throw block_result;
     }

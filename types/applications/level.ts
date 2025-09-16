@@ -8,6 +8,7 @@ export interface LevelDbEntry {
     shared_key: string;
     origin: string;
     key: string;
+    path: string;
 }
 
 export interface LevelManifest {
@@ -30,6 +31,7 @@ export interface WalValue {
     value: string | number | boolean | unknown[] | Record<string, ProtoTag>;
     value_type: ValueType;
     value_type_number: number;
+    path: string;
 }
 
 export enum LogType {
