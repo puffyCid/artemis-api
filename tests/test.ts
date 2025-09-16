@@ -9,3 +9,4 @@ export { testLevelWal } from "../src/applications/leveldb/wal";
  */
 export { testGetGnomeExtensions } from "../src/linux/gnome/extensions";
 export { testGeditRecentFiles } from "../src/linux/gnome/gedit";
+export { testRpmInfo } from "../src/linux/rpm";

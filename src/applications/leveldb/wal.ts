@@ -11,6 +11,11 @@ import { Endian, nomUnsignedEightBytes, nomUnsignedFourBytes, nomUnsignedOneByte
 import { take, takeUntil } from "../../nom/parsers";
 import { ApplicationError } from "../errors";
 
+/**
+ * Function to parse the LevelDB manifest
+ * @param path Path the LevelDb manifest
+ * @returns Array of `LevelManifest` or `ApplicationError`
+ */
 export function parseWalManifest(path: string): LevelManifest[] | ApplicationError {
     const data = readFile(path);
     if (data instanceof FileError) {
@@ -71,6 +76,11 @@ export function parseWalManifest(path: string): LevelManifest[] | ApplicationErr
     return level_records;
 }
 
+/**
+ * Function to parse the LevelDb write ahead log (WAL)
+ * @param path Path the Write Ahead Log (WAL)
+ * @returns Array of `WalData` or `ApplicationError`
+ */
 export function parseWal(path: string): WalData[] | ApplicationError {
     const data = readFile(path);
     if (data instanceof FileError) {
@@ -109,20 +119,24 @@ export function parseWal(path: string): WalData[] | ApplicationError {
         if (values instanceof ApplicationError) {
             return values;
         }
+
+        remaining = record.remaining as Uint8Array;
         const entry: WalData = {
             crc,
             record_type,
             values,
         };
-
-
-        remaining = record.remaining as Uint8Array;
         level_records.push(entry);
     }
 
     return level_records;
 }
 
+/**
+ * Function to parse write ahead log (WAL) values
+ * @param data Raw bytes associated with wal data
+ * @returns Array of `WalValue` or `ApplicationError`
+ */
 function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
     let sequence = nomUnsignedEightBytes(data, Endian.Le);
     if (sequence instanceof NomError) {
@@ -161,12 +175,12 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
 
         if (value_type.value === 1) {
             log_type = LogType.Value;
-            const value_size = nomUnsignedOneBytes(remaining);
-            if (value_size instanceof NomError) {
+            const value_size = parseVarInt(remaining);
+            if (value_size instanceof ApplicationError) {
                 return new ApplicationError(`LEVELDB`, `could not get wal value size: ${value_size}`);
             }
             const value_type = getValueType(value_size.remaining);
-            let size = value_size.value;
+            let size = value_size.value as number;
             // UTF16 uses all remaining data?
             if (value_type === ValueType.Utf16) {
                 size = value_size.remaining.byteLength;
@@ -182,15 +196,15 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
             // It seems only keys can be recovered from deleted entries
             // Skipping for now
             log_type = LogType.Deletion;
+            console.log(remaining);
             console.log("skipping deleted");
+            throw 'need to handle deleted!';
             count++;
             continue;
         }
 
         if (log_type === LogType.Unknown) {
-            console.log(`got unknown log type: ${value_type.value}`);
-            count++;
-            continue;
+            return new ApplicationError(`LEVELDB`, `got unknown log type: ${value_type.value}`);
         }
 
         const entry: WalValue = {
@@ -214,7 +228,11 @@ function parseWalValues(data: Uint8Array): WalValue[] | ApplicationError {
     return values;
 }
 
-
+/**
+ * Determine RecordType
+ * @param value Record type value
+ * @returns `RecordType` enum
+ */
 function getRecordType(value: number): RecordType {
     switch (value) {
         case 1: return RecordType.Full;
@@ -225,6 +243,11 @@ function getRecordType(value: number): RecordType {
     }
 }
 
+/**
+ * Determine ManifestTag type
+ * @param value Tag value
+ * @returns `ManifestTag` enum
+ */
 function getTag(value: number): ManifestTag {
     switch (value) {
         case 1: return ManifestTag.Comparator;
@@ -244,6 +267,12 @@ interface TagValue {
     remaining: Uint8Array;
 }
 
+/**
+ * Function to parse tag values
+ * @param tag `ManifestTag` object
+ * @param data Raw bytes associated with the tag value
+ * @returns `TagValue` or `ApplicationError`
+ */
 function getTagValue(tag: ManifestTag, data: Uint8Array): TagValue | ApplicationError {
     switch (tag) {
         case ManifestTag.Comparator: {
@@ -344,6 +373,11 @@ function getTagValue(tag: ManifestTag, data: Uint8Array): TagValue | Application
     return new ApplicationError(`LEVELDB`, `unknown tag: ${tag}`);
 }
 
+/**
+ * Function to parse varint data. Based on protobuf format
+ * @param data Raw bytes associated protobuf varint data
+ * @returns `TagValue` object or `ApplicationError`
+ */
 export function parseVarInt(data: Uint8Array): TagValue | ApplicationError {
     // If the varint length is one then 0 index is our value
     if (data.buffer.byteLength === 1) {
@@ -373,6 +407,11 @@ export function parseVarInt(data: Uint8Array): TagValue | ApplicationError {
     return { value: var_value, remaining: proto_data };
 }
 
+/**
+ * Function to parse the leveldb key string
+ * @param data Bytes associated leveldb key
+ * @returns The key string
+ */
 function parseKey(data: Uint8Array): string {
     // Sometimes key is composed of 2 strings
     const prefix = 95;
@@ -395,6 +434,11 @@ function parseKey(data: Uint8Array): string {
     return extractUtf8String(data);
 }
 
+/**
+ * Function to determine leveldb value type
+ * @param data Bytes associated value type
+ * @returns `ValueType` enum
+ */
 export function getValueType(data: Uint8Array): ValueType {
     // If the length is less than 3 then value is string by default
     // https://chromium.googlesource.com/chromium/src.git/+/62.0.3178.1/content/browser/indexed_db/leveldb_coding_scheme.md#idbkeypath-values
@@ -429,6 +473,12 @@ export function getValueType(data: Uint8Array): ValueType {
     }
 }
 
+/**
+ * Function to get leveldb value
+ * @param data Bytes associated with value
+ * @param value_type `ValueType` enum
+ * @returns string | number | boolean | unknown[] | Record<string, ProtoTag>
+ */
 export function parseValue(data: Uint8Array, value_type: ValueType): string | number | boolean | unknown[] | Record<string, ProtoTag> {
     let input = data;
     // If Protobuf or value is very small
@@ -461,6 +511,11 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
     return "Unknown value";
 }
 
+/**
+ * Function to test the leveldb wal file parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the leveldb parsing
+ */
 export function testLevelWal(): void {
     const parse_value_test = [ 8, 130, 194, 232, 178, 246, 159, 231, 23, 16, 85 ];
     const parse_value_result = parseValue(new Uint8Array(parse_value_test), ValueType.Protobuf);

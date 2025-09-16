@@ -357,8 +357,8 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
         value_type: first_key_value.value_type,
         value: first_key_value.value,
         shared_key: first_key_value.shared_key,
-        entry_key: first_key_value.entry_key,
-        key: first_key_value.key
+        origin: first_key_value.key,
+        key: first_key_value.entry_key
     };
     values.push(entry);
 
@@ -380,8 +380,8 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
             value_type: key_value.value_type,
             value: key_value.value,
             shared_key: key_value.shared_key,
-            entry_key: key_value.entry_key,
-            key: key_value.key
+            origin: key_value.key.split(" ").at(0) ?? "",
+            key: key_value.key.split(" ").at(2) ?? ""
         };
 
         if (level_entry.sequence === 0 && level_entry.key === "" || level_entry.key.includes(" [strings] Failed to get UTF8 string: ")) {

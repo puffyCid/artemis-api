@@ -14,11 +14,12 @@ import { parseWal, parseWalManifest } from "./wal";
 /**
  * TODO:
  * 
- * 1. Code cleanup for table.ts
- * 2. Code cleanup for wal.ts
- * 3. validate it works for ur sample folders
- * 4. Create tests
- * 5. Update docs
+ * 1. validate it works for ur sample folders
+ * 2. Create more tests. Add a live test?
+ * 3. fix: skipping deleted
+ * 3.5 Update comments for wal.ts functions
+ * 4.5 Include references to blogs above
+ * 5. DONE!
  */
 
 /**

@@ -78,4 +78,7 @@ export function testGeditRecentFiles(): void {
   if (result[ 0 ].accessed != "2025-01-22T05:02:02.996Z") {
     throw `Got accessed ${result[ 0 ].accessed} expected 2025-01-22T05:02:02.996Z.......geditRecentFiles ❌`;
   }
+
+  console.info(`  Function geditRecentFiles ✅`);
+
 }

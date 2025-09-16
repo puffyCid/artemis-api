@@ -6,7 +6,7 @@ export interface LevelDbEntry {
     value_type: ValueType;
     value: string | number | boolean | unknown[] | Record<string, ProtoTag>;
     shared_key: string;
-    entry_key: string;
+    origin: string;
     key: string;
 }
 
