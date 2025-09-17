@@ -370,3 +370,35 @@ contain the following artifacts:
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin)  |
 | alt_path | string       | Optional path to a directory containing OneDrive artifacts |
 | user     | string       | Optional single user to parse instead of all users         |
+
+### LevelDb Class
+
+A basic TypeScript class to extract data from LevelDb files. 
+
+Sample TypeScript code:
+```typescript
+import { LevelDb, PlatformType, } from "./artemis-api/mod";
+
+function main() {
+    const info = new LevelDb("Path to leveldb directory", PlatformType.Linux);
+    console.log(JSON.stringify(info.tables()));
+}
+
+main();
+```
+
+#### current() -> string
+
+Returns the active manifest file for the level database
+
+#### manifest() -> LevelManifest[] | ApplicationError
+
+Parse the level database manifest
+
+#### wal() -> LevelDbEntry[] | ApplicationError
+
+Parse the level database write ahead log
+
+#### tables() -> LevelDbEntry[] | ApplicationError
+
+Parse the level database write ahead log

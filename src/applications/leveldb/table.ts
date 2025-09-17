@@ -65,7 +65,7 @@ export function parseLdb(path: string): LevelDbEntry[] | ApplicationError {
 
     let values: LevelDbEntry[] = [];
     for (const entry of block_keys) {
-        const result = parseBlock(data, entry.offset, entry.size, index_data.compression_type, path);
+        const result = parseBlock(data, entry.offset, entry.size, path);
         if (result instanceof ApplicationError) {
             console.error(result);
             continue;
@@ -309,19 +309,39 @@ function parseKeyBlock(data: Uint8Array): BlockData | ApplicationError {
  * @param data ldb file bytes
  * @param offset Offset to the block
  * @param size Size of the block
- * @param compression `CompressionType` used by the block
  * @param path Path to ldb file
  * @returns Array of `LevelDbEntry` or `ApplicationError`
  */
-function parseBlock(data: Uint8Array, offset: number, size: number, compression: CompressionType, path: string): LevelDbEntry[] | ApplicationError {
+function parseBlock(data: Uint8Array, offset: number, size: number, path: string): LevelDbEntry[] | ApplicationError {
     const start = take(data, offset);
     if (start instanceof NomError) {
-        return new ApplicationError(`LEVELDB`, `could go to start of key block data ${start}`);
+        return new ApplicationError(`LEVELDB`, `could not go to start of key block data ${start}`);
     }
 
     const block_data = take(start.remaining, size);
     if (block_data instanceof NomError) {
-        return new ApplicationError(`LEVELDB`, `could get key block data ${block_data}`);
+        return new ApplicationError(`LEVELDB`, `could not get key block data ${block_data}`);
+    }
+    const is_compressed = nomUnsignedOneBytes(block_data.remaining as Uint8Array);
+    if (is_compressed instanceof NomError) {
+        return new ApplicationError(`LEVELDB`, `could not determine compression type: ${is_compressed}`);
+    }
+
+    let compression = CompressionType.None;
+    switch (is_compressed.value) {
+        case 0: {
+            compression = CompressionType.None;
+            break;
+        }
+        case 1: {
+            compression = CompressionType.Snappy;
+            break;
+        }
+        case 2: {
+            compression = CompressionType.Zstd;
+            break;
+        }
+        default: return new ApplicationError(`LEVELDB`, `unknown compression type ${is_compressed}`);
     }
 
     let input = block_data.nommed as Uint8Array;
@@ -332,7 +352,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
         case CompressionType.Snappy: {
             const decom_data = decompress_snappy(input);
             if (decom_data instanceof CompressionError) {
-                return new ApplicationError(`LEVELDB`, `could decompress snappy block data ${decom_data}`);
+                return new ApplicationError(`LEVELDB`, `could not decompress snappy block data ${decom_data}`);
             }
             input = decom_data;
             break;
@@ -340,7 +360,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, compression:
         case CompressionType.Zstd: {
             const decom_data = decompress_zstd(input);
             if (decom_data instanceof CompressionError) {
-                return new ApplicationError(`LEVELDB`, `could decompress zstd block data ${decom_data}`);
+                return new ApplicationError(`LEVELDB`, `could not decompress zstd block data ${decom_data}`);
             }
             input = decom_data;
             break;
@@ -541,7 +561,7 @@ export function testLevelLdb(): void {
         throw parse_block_test;
     }
 
-    const block_result = parseBlock(parse_block_test, 0, 3017, CompressionType.Snappy, "");
+    const block_result = parseBlock(parse_block_test, 0, 3017, "");
     if (block_result instanceof ApplicationError) {
         throw block_result;
     }

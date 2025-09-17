@@ -193,9 +193,20 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
             // It seems only keys can be recovered from deleted entries
             // Skipping for now
             log_type = LogType.Deletion;
-            console.log(remaining);
-            console.log("skipping deleted");
-            //throw 'need to handle deleted!';
+            const key_string = parseKey(key);
+
+            const entry: LevelDbEntry = {
+                sequence: 0,
+                key_type: 0,
+                value_type: ValueType.Unknown,
+                value: "",
+                shared_key: "",
+                origin: key_string.split(" ").at(0) ?? key_string,
+                key: key_string.split(" ").at(1) ?? key_string,
+                path
+            };
+            values.push(entry);
+
             count++;
             continue;
         }
@@ -219,7 +230,6 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
         if (value !== null) {
             entry.value_type = getValueType(value);
             entry.value = parseValue(value, entry.value_type);
-
         }
 
         values.push(entry);
@@ -604,8 +614,8 @@ export function testLevelWal(): void {
         throw parse_wal_result;
     }
 
-    if (parse_wal_result.length != 6) {
-        throw `Got length ${parse_wal_result.length} expected 6.......parseWal ❌`;
+    if (parse_wal_result.length != 7) {
+        throw `Got length ${parse_wal_result.length} expected 7.......parseWal ❌`;
     }
     if (parse_wal_result[ 1 ].value !== "0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig") {
         throw `Got ${parse_wal_result[ 1 ].value} expected 0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig.......parseWal ❌`;
