@@ -405,7 +405,7 @@ export function parseVarInt(data: Uint8Array): TagValue | ApplicationError {
     while (proto_data.buffer.byteLength !== 0) {
         let value = nomUnsignedOneBytes(proto_data);
         if (value instanceof NomError) {
-            return new ApplicationError(`LEVELDB`, `could not parse LogNumber ${value}`);
+            return new ApplicationError(`LEVELDB`, `could not parse varint ${value}`);
         }
         var_value += (value.value & adjust) << (shift * wire);
         shift += 1;

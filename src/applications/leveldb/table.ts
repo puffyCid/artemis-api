@@ -98,7 +98,10 @@ function parseFooter(data: Uint8Array): Footer | ApplicationError {
     if (foot_start instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not parse footer: ${foot_start}`);
     }
-    const var_data = take(foot_start.remaining, 8);
+
+    // Typically this is 8 bytes in length. However, technically it could be longer
+    // There is often 0 padding between varint data and the footer signature. So we can nom until we encounter that
+    const var_data = takeUntil(foot_start.remaining, new Uint8Array([ 0 ]));
     if (var_data instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not parse var data: ${var_data}`);
     }
