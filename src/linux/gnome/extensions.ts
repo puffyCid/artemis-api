@@ -81,4 +81,7 @@ export function testGetGnomeExtensions(): void {
   if (result[ 0 ].name != "GSConnect") {
     throw `Got extension name ${result[ 0 ].name} expected GSConnect.......getGnomeExtensions ❌`;
   }
+
+  console.info(`  Function getGnomeExtensions ✅`);
+
 }
