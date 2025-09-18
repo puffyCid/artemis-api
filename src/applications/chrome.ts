@@ -1,7 +1,8 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLogins } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
 import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumLocalStorage } from "./chromium/level";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
 
 type ChromeHistory = ChromiumHistory;
@@ -11,6 +12,7 @@ type ChromeAutofill = ChromiumAutofill;
 type ChromeBookmarks = ChromiumBookmarks;
 type ChromeLogins = ChromiumLogins;
 type ChromeDips = ChromiumDips;
+type ChromeLocalStorage = ChromiumLocalStorage;
 
 /**
  * Class to extract Chrome browser information. Since Chrome is based on Chromium we can leverage the existing Chromium artifacts to parse Chrome info
@@ -142,6 +144,14 @@ export class Chrome extends Chromium {
    */
   public override bookmarks(): ChromeBookmarks[] {
     return chromiumBookmarks(this.paths, this.platform);
+  }
+
+  /**
+   * Get Chrome Local Storage
+   * @returns Array of `ChromeLocalStorage` for each user
+   */
+  public override localStorage(): ChromeLocalStorage[] {
+    return chromiumLocalStorage(this.paths, this.platform);
   }
 
   /**

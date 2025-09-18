@@ -477,8 +477,6 @@ export function getValueType(data: Uint8Array): ValueType {
                 return ValueType.String;
             }
             console.warn(`Unknown value type: ${result.value}`);
-            console.log(data);
-            throw 'stop';
             return ValueType.Unknown;
         }
     }
@@ -517,8 +515,8 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
     if (value_type === ValueType.Binary) {
         return encode(data);
     }
-    console.log(`unknown value type: ${value_type}`);
-    console.log(JSON.stringify(Array.from(data)));
+    //console.log(`unknown value type: ${value_type}`);
+    //console.log(JSON.stringify(Array.from(data)));
     return "Unknown value";
 }
 

@@ -104,7 +104,6 @@ export class LevelDb {
             if (!path.is_file) {
                 continue;
             }
-            console.log(path.full_path);
 
             const data = parseLdb(path.full_path);
             if (data instanceof ApplicationError) {

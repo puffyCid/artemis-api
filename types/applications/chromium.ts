@@ -1,4 +1,5 @@
 import { Url } from "../http/unfold";
+import { LevelDbEntry } from "./level";
 
 /**
  * Chromium history is stored in a SQLITE file.
@@ -246,4 +247,8 @@ export enum ChromiumCookieType {
   Http = "HTTP",
   Script = "Script",
   Other = "Other",
+}
+
+export interface ChromiumLocalStorage extends LevelDbEntry {
+  version: string;
 }

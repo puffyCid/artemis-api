@@ -20,6 +20,7 @@ Artemis supports parsing the list of artifacts below:
 - Extensions
 - Preferences
 - Detect Incidental Party State (DIPS)
+- Local Storage
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Edge data.  
 Since Edge is based on Chromium, many of the Edge artifacts will be identical to Chromium

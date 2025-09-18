@@ -13,10 +13,10 @@ import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
 export function chromiumExtensions(paths: ChromiumProfiles[], platform: PlatformType): Record<string, unknown>[] {
     const hits: Record<string, unknown>[] = [];
     for (const path of paths) {
-        let full_path = `${path.full_path}/Default/*/Extensions/*/*manifest.json`;
+        let full_path = `${path.full_path}/*/*/Extensions/*/*manifest.json`;
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\Default\\*\\Extensions\\*\\*\\manifest.json`;
+            full_path = `${path.full_path}\\*\\*\\Extensions\\*\\*\\manifest.json`;
         }
 
         const ext_paths = glob(full_path);
@@ -52,23 +52,29 @@ export function chromiumPreferences(paths: ChromiumProfiles[], platform: Platfor
     const hits: Record<string, unknown>[] = [];
 
     for (const path of paths) {
-        let full_path = `${path.full_path}/Default/Preferences`;
+        let full_path = `${path.full_path}/*/Preferences`;
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\Default\\Preferences`;
+            full_path = `${path.full_path}\\*\\Preferences`;
         }
-
-        const pref = readTextFile(full_path);
-        if (pref instanceof FileError) {
-            console.warn(`could not read file ${full_path}: ${pref}`);
+        const pref_paths = glob(full_path);
+        if (pref_paths instanceof FileError) {
             continue;
         }
 
-        const data = JSON.parse(pref);
-        data[ "preference_path" ] = full_path;
-        data[ "browser_version" ] = path.version;
+        for (const entry of pref_paths) {
+            const pref = readTextFile(entry.full_path);
+            if (pref instanceof FileError) {
+                console.warn(`could not read file ${entry.full_path}: ${pref}`);
+                continue;
+            }
 
-        hits.push(data);
+            const data = JSON.parse(pref);
+            data[ "preference_path" ] = entry.full_path;
+            data[ "browser_version" ] = path.version;
+
+            hits.push(data);
+        }
     }
     return hits;
 }
@@ -83,42 +89,48 @@ export function chromiumBookmarks(paths: ChromiumProfiles[], platform: PlatformT
     const hits: ChromiumBookmarks[] = [];
 
     for (const path of paths) {
-        let full_path = `${path.full_path}/Default/Bookmarks`;
+        let full_path = `${path.full_path}/*/Bookmarks`;
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\Default\\Bookmarks`;
+            full_path = `${path.full_path}\\*\\Bookmarks`;
         }
-
-        const results = readTextFile(full_path);
-        if (results instanceof FileError) {
-            console.warn(`could not read file ${full_path}: ${results}`);
+        const book_paths = glob(full_path);
+        if (book_paths instanceof FileError) {
             continue;
         }
 
-        const books: ChromiumBookmarks = {
-            bookmark_bar: [],
-            other: [],
-            synced: [],
-            path: full_path,
-            version: path.version,
-        };
-        const book_json = JSON.parse(results);
-        const bar = book_json[ "roots" ][ "bookmark_bar" ][ "children" ] as
-            | Record<string, string | Record<string, string>[] | undefined>[]
-            | undefined;
-        books.bookmark_bar = getBookmarkChildren(bar);
+        for (const entry of book_paths) {
+            const results = readTextFile(entry.full_path);
+            if (results instanceof FileError) {
+                console.warn(`could not read file ${entry.full_path}: ${results}`);
+                continue;
+            }
 
-        const other = book_json[ "roots" ][ "other" ][ "children" ] as
-            | Record<string, string | Record<string, string>[] | undefined>[]
-            | undefined;
-        books.other = getBookmarkChildren(other);
+            const books: ChromiumBookmarks = {
+                bookmark_bar: [],
+                other: [],
+                synced: [],
+                path: entry.full_path,
+                version: path.version,
+            };
+            const book_json = JSON.parse(results);
+            const bar = book_json[ "roots" ][ "bookmark_bar" ][ "children" ] as
+                | Record<string, string | Record<string, string>[] | undefined>[]
+                | undefined;
+            books.bookmark_bar = getBookmarkChildren(bar);
 
-        const synced = book_json[ "roots" ][ "other" ][ "synced" ] as
-            | Record<string, string | Record<string, string>[] | undefined>[]
-            | undefined;
-        books.synced = getBookmarkChildren(synced);
+            const other = book_json[ "roots" ][ "other" ][ "children" ] as
+                | Record<string, string | Record<string, string>[] | undefined>[]
+                | undefined;
+            books.other = getBookmarkChildren(other);
 
-        hits.push(books);
+            const synced = book_json[ "roots" ][ "other" ][ "synced" ] as
+                | Record<string, string | Record<string, string>[] | undefined>[]
+                | undefined;
+            books.synced = getBookmarkChildren(synced);
+
+            hits.push(books);
+        }
     }
     return hits;
 }
