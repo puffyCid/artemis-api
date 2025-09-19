@@ -90,19 +90,19 @@ export function parseWal(path: string): LevelDbEntry[] | ApplicationError {
     let level_records: LevelDbEntry[] = [];
     let remaining = data;
     const min_size = 7;
+    let large_records = new Uint8Array();
     while (remaining.buffer.byteLength > min_size) {
         let input = nomUnsignedFourBytes(remaining, Endian.Le);
         if (input instanceof NomError) {
             return new ApplicationError(`LEVELDB`, `could not get CRC for ${path}: ${input}`);
         }
 
-        const crc = input.value;
+        //const crc = input.value;
         input = nomUnsignedTwoBytes(input.remaining, Endian.Le);
         if (input instanceof NomError) {
             return new ApplicationError(`LEVELDB`, `could not get size for ${path}: ${input}`);
         }
         const size = input.value;
-
 
         input = nomUnsignedOneBytes(input.remaining);
         if (input instanceof NomError) {
@@ -110,9 +110,27 @@ export function parseWal(path: string): LevelDbEntry[] | ApplicationError {
         }
         const record_type = getRecordType(input.value);
 
-        const record = take(input.remaining, size);
+        let record = take(input.remaining, size);
         if (record instanceof NomError) {
             return new ApplicationError(`LEVELDB`, `could not get entry for ${path}: ${record}`);
+        }
+
+        // Large values are split across multiple records
+        // The last large record will have record type: `RecordType.Last`
+        if (record_type === RecordType.First || record_type === RecordType.Middle) {
+            const record_part = new Uint8Array(large_records.buffer.byteLength + size);
+            record_part.set(large_records);
+            record_part.set(record.nommed as Uint8Array, large_records.buffer.byteLength);
+
+            large_records = record_part;
+            remaining = record.remaining as Uint8Array;
+
+            continue;
+        } else if (record_type === RecordType.Last) {
+            const record_part = new Uint8Array(large_records.buffer.byteLength + size);
+            record_part.set(large_records);
+            record_part.set(record.nommed as Uint8Array, large_records.buffer.byteLength);
+            record.nommed = record_part;
         }
 
         const values = parseWalValues(record.nommed as Uint8Array, path);
@@ -121,7 +139,6 @@ export function parseWal(path: string): LevelDbEntry[] | ApplicationError {
         }
 
         remaining = record.remaining as Uint8Array;
-
         level_records = level_records.concat(values);
     }
 
