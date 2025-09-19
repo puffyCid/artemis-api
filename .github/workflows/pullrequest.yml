@@ -30,17 +30,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Download script tester binary macOS
+      - name: Compile script tester binary macOS
         if: matrix.info.os == 'macOS-latest'
-        run: wget -O ./tests/macos/script_tester_macos_intel https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester_macos_intel && chmod +x ./tests/macos/script_tester_macos_intel
+        run: git clone https://github.com/puffyCid/artemis.git && cd artemis/forensics && cargo build --release --examples && cp ../target/release/examples/script_tester ../../tests/macos
 
-      - name: Download script tester binary Windows
+      - name: Compile script tester binary Windows
         if: matrix.info.os == 'windows-latest'
-        run: Invoke-WebRequest https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester.exe -OutFile .\tests\windows\script_tester.exe
+        run: git clone https://github.com/puffyCid/artemis.git && cd artemis/forensics && cargo build --release --examples && cp ../target/release/examples/script_tester ../../tests/windows
 
-      - name: Download script tester binary Linux
+      - name: Compile script tester binary Linux
         if: matrix.info.os == 'ubuntu-24.04'
-        run: wget -O ./tests/linux/script_tester https://github.com/puffyCid/artemis/releases/download/v0.1.0/script_tester && chmod +x ./tests/linux/script_tester
+        run: git clone https://github.com/puffyCid/artemis.git && cd artemis/forensics && cargo build --release --examples && cp ../target/release/examples/script_tester ../../tests/linux && cp ../target/release/examples/script_tester ../../tests/application
 
       - name: Install esbuild macOS
         if: matrix.info.os == 'macOS-latest'
@@ -54,14 +54,18 @@ jobs:
         if: matrix.info.os == 'windows-latest'
         run: npm install --save-exact --save-dev -g esbuild
 
-      - name: Compile and run tests macOS
+      - name: Compile and run macOS tests
         if: matrix.info.os == 'macOS-latest'
         run: cd tests/macos && sudo bash compile_tests.sh
 
-      - name: Compile and run tests Windows
+      - name: Compile and run Windows tests
         if: matrix.info.os == 'windows-latest'
         run: cd tests\windows && .\compile_tests.bat
       
-      - name: Compile and run tests Linux
+      - name: Compile and run Linux tests
         if: matrix.info.os == 'ubuntu-24.04'
         run: cd tests/linux && sudo bash compile_tests.sh
+
+      - name: Compile and run Application tests
+        if: matrix.info.os == 'ubuntu-24.04'
+        run: cd tests/application && sudo bash compile_tests.sh
