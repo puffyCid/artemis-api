@@ -3,10 +3,11 @@
  */
 export { testLevelLdb } from "../src/applications/leveldb/table";
 export { testLevelWal } from "../src/applications/leveldb/wal";
-
+export { testRecentFiles } from "../src/applications/libreoffice";
 /**
  * Linux exported test functions
  */
 export { testGetGnomeExtensions } from "../src/linux/gnome/extensions";
 export { testGeditRecentFiles } from "../src/linux/gnome/gedit";
 export { testRpmInfo } from "../src/linux/rpm";
+export { testFirmwareHistory } from "../src/linux/firmware";

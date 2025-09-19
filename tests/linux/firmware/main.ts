@@ -1,6 +1,6 @@
 import { firmwareHistory } from "../../../mod";
 import { LinuxError } from "../../../src/linux/errors";
-import { testFirmwareHistory } from "../../../src/linux/firmware";
+import { testFirmwareHistory } from "../../test";
 
 function main() {
     console.log('Running firmware history tests....');

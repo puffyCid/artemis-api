@@ -10,10 +10,12 @@ import { ApplicationError } from "./errors";
 /**
  * Return a list of files opened by LibreOffice for all users
  * @param platform OS Platform type to lookup
+ * @param alt_path Optional alternative path to registrymodifications.xcu
  * @returns Array of `History` entries or `ApplicationError`
  */
 export function recentFiles(
   platform: PlatformType,
+  alt_path?: string,
 ): RecentFilesLibreOffice[] | ApplicationError {
   // Get all user paths
   let path = "";
@@ -35,6 +37,10 @@ export function recentFiles(
     case PlatformType.Linux: {
       path = "/home/*/.config/libreoffice/*/user/registrymodifications.xcu";
     }
+  }
+
+  if (alt_path !== undefined) {
+    path = alt_path;
   }
 
   const paths = glob(path);
@@ -140,4 +146,24 @@ export function recentFiles(
   }
 
   return entries;
+}
+
+/**
+ * Function to test LibreOffice recent files parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the LibreOffice recent files parsing
+ */
+export function testRecentFiles(): void {
+  const test = "../../test_data/libreoffice/registrymodifications.xcu";
+  const result = recentFiles(PlatformType.Linux, test);
+  if (result instanceof ApplicationError) {
+    throw result;
+  }
+
+  if (result[ 0 ].title != "Hindsight Report (2025-09-18T00-18-20)") {
+    throw `Got title ${result[ 0 ].title} expected Hindsight Report (2025-09-18T00-18-20).......recentFiles ❌`;
+  }
+
+  console.info(`  Function recentFiles ✅`);
+
 }
