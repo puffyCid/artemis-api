@@ -4,7 +4,7 @@ do
 cd $entry
 echo "Running test for $entry"
 esbuild --bundle --outfile=main.js main.ts
-if ../script_tester_macos_intel main.js
+if ../script_tester main.js
 then
   cd ..
 else
