@@ -8,7 +8,7 @@
 
 - Ex: Windows users would place `script_tester.exe` in the Windows folder above
 
-5. Run the bash or batch file to execute tests
+5. Run the bash or PowerShell file to execute tests
 
 See https://puffycid.github.io/artemis-api/docs/Contributing/api for more
 details

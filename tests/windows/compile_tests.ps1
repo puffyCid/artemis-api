@@ -1,4 +1,4 @@
-# AI took my simple 15 line batch script and turned it into a nice ~180 PowerShell script XD
+# AI took my simple 15 line batch script and turned it into a nice ~180 line PowerShell script XD
 
 # Record start time
 $startTime = Get-Date
@@ -82,10 +82,10 @@ $slowest = $sortedResults | Select-Object -First 1
 $fastest = $sortedResults | Select-Object -Last 1
 
 if ($slowest) {
-    Write-Host ("🐢 Slowest project: {0} ({1:hh\:mm\:ss})" -f $slowest.Project, $slowest.Duration) -ForegroundColor DarkYellow
+    Write-Host ("🐢 Slowest test: {0} ({1:hh\:mm\:ss})" -f $slowest.Project, $slowest.Duration) -ForegroundColor DarkYellow
 }
 if ($fastest) {
-    Write-Host ("🚀 Fastest project: {0} ({1:hh\:mm\:ss})" -f $fastest.Project, $fastest.Duration) -ForegroundColor Cyan
+    Write-Host ("🚀 Fastest test: {0} ({1:hh\:mm\:ss})" -f $fastest.Project, $fastest.Duration) -ForegroundColor Cyan
 }
 
 # --- Average, Median & Standard Deviation ---
@@ -113,8 +113,8 @@ if ($results.Count -gt 0) {
     $stdDevTicks = [math]::Sqrt($variance)
     $stdDevTime  = [TimeSpan]::FromTicks([long]$stdDevTicks)
 
-    Write-Host ("📊 Average project duration: {0:hh\:mm\:ss}" -f $avgTime) -ForegroundColor Magenta
-    Write-Host ("📈 Median project duration:  {0:hh\:mm\:ss}" -f $medianTime) -ForegroundColor DarkCyan
+    Write-Host ("📊 Average test duration:    {0:hh\:mm\:ss}" -f $avgTime) -ForegroundColor Magenta
+    Write-Host ("📈 Median test duration:     {0:hh\:mm\:ss}" -f $medianTime) -ForegroundColor DarkCyan
     Write-Host ("📉 Std Dev of durations:     {0:hh\:mm\:ss}" -f $stdDevTime) -ForegroundColor DarkGray
 }
 
@@ -151,7 +151,7 @@ if ($results.Count -gt 0) {
 
     # --- Top 80% Projects List ---
     if ($top80List.Count -gt 0) {
-        Write-Host "`n⭐ Top 80% Projects (cumulative runtime)" -ForegroundColor Cyan
+        Write-Host "`n⭐ Top 80% tests (cumulative runtime)" -ForegroundColor Cyan
         foreach ($proj in $top80List) {
             Write-Host (" - {0} ({1:hh\:mm\:ss})" -f $proj.Project, $proj.Duration) -ForegroundColor Gray
         }

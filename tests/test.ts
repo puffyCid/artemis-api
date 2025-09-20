@@ -16,3 +16,4 @@ export { testFirmwareHistory } from "../src/linux/firmware";
  */
 
 export { testPowerShellHistory } from "../src/windows/powershell";
+export { testLogonsWindows } from "../src/windows/eventlogs/logons";
