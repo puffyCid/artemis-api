@@ -1,0 +1,3 @@
+whoami
+ls Downloads
+echo 'hello'

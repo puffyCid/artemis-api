@@ -14,11 +14,11 @@ import { LevelDb } from "../leveldb/level";
 export function chromiumLocalStorage(paths: ChromiumProfiles[], platform: PlatformType): ChromiumLocalStorage[] {
     const hits: ChromiumLocalStorage[] = [];
     for (const path of paths) {
-        let full_path = `${path.full_path}/*/Local Storage`;
+        let full_path = `${path.full_path}/*/Local Storage//leveldb`;
 
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\*\\Local Storage`;
+            full_path = `${path.full_path}\\*\\Local Storage\\leveldb`;
         }
 
         const glob_paths = glob(full_path);

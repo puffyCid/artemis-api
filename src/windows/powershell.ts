@@ -82,3 +82,34 @@ function parsePowershellHistory(path: string, platform: PlatformType): History |
 
   return ps_history;
 }
+
+/**
+ * Function to test PowerShell History parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the PowerShell History parsing
+ */
+export function testPowerShellHistory(): void {
+  const test = "../test_data/windows/powershell/history.txt";
+  const hits = powershellHistory(PlatformType.Windows, test);
+  if (hits instanceof WindowsError) {
+    throw hits;
+  }
+
+  if (hits.entries[0] !== 'whoami') {
+    throw `Got ${hits.entries[0]} expected 'whoami'.......powershellHistory ❌`
+  }
+
+  console.info(`  Function powershellHistory ✅`);
+
+
+  let values = parsePowershellHistory(test, PlatformType.Windows);
+  if (values instanceof WindowsError) {
+    throw values;
+  }
+  if (values.entries[0] !== 'whoami') {
+    throw `Got ${values.entries[0]} expected 'whoami'.......parsePowershellHistory ❌`
+  }
+
+  console.info(`  Function parsePowershellHistory ✅`);
+
+}

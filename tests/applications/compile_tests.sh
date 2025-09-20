@@ -3,7 +3,7 @@ for entry in */
 do
 cd $entry
 echo "🔥🔥🔥🔥🔥🔥 Running test for $entry 🔥🔥🔥🔥🔥🔥"
-esbuild --bundle --outfile=main.js main.ts
+esbuild --log-level=silent --bundle --outfile=main.js main.ts
 if ../script_tester main.js
 then
   cd ..

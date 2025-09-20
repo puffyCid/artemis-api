@@ -11,3 +11,8 @@ export { testGetGnomeExtensions } from "../src/linux/gnome/extensions";
 export { testGeditRecentFiles } from "../src/linux/gnome/gedit";
 export { testRpmInfo } from "../src/linux/rpm";
 export { testFirmwareHistory } from "../src/linux/firmware";
+/**
+ * Windows exported test functions
+ */
+
+export { testPowerShellHistory } from "../src/windows/powershell";
