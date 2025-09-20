@@ -40,7 +40,7 @@ jobs:
 
       - name: Compile script tester binary Linux
         if: matrix.info.os == 'ubuntu-24.04'
-        run: git clone https://github.com/puffyCid/artemis.git && cd artemis/forensics && cargo build --release --examples && cp ../target/release/examples/script_tester ../../tests/linux && cp ../target/release/examples/script_tester ../../tests/application
+        run: git clone https://github.com/puffyCid/artemis.git && cd artemis/forensics && cargo build --release --examples && cp ../target/release/examples/script_tester ../../tests/linux && cp ../target/release/examples/script_tester ../../tests/applications
 
       - name: Install esbuild macOS
         if: matrix.info.os == 'macOS-latest'
@@ -60,7 +60,7 @@ jobs:
 
       - name: Compile and run Windows tests
         if: matrix.info.os == 'windows-latest'
-        run: cd tests\windows && .\compile_tests.bat
+        run: cd tests\windows && .\compile_tests.ps1
       
       - name: Compile and run Linux tests
         if: matrix.info.os == 'ubuntu-24.04'
@@ -68,4 +68,4 @@ jobs:
 
       - name: Compile and run Application tests
         if: matrix.info.os == 'ubuntu-24.04'
-        run: cd tests/application && sudo bash compile_tests.sh
+        run: cd tests/applications && sudo bash compile_tests.sh
