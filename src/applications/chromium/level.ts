@@ -36,7 +36,7 @@ export function chromiumLocalStorage(paths: ChromiumProfiles[], platform: Platfo
             }
 
             for (const entry of entries as ChromiumLocalStorage[]) {
-                entry[ "version" ] = path.version;
+                entry["version"] = path.version;
                 hits.push(entry);
             }
 
@@ -47,7 +47,7 @@ export function chromiumLocalStorage(paths: ChromiumProfiles[], platform: Platfo
             }
 
             for (const entry of entries as ChromiumLocalStorage[]) {
-                entry[ "version" ] = path.version;
+                entry["version"] = path.version;
                 hits.push(entry);
             }
         }

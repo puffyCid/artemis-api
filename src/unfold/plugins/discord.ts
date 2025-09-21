@@ -14,7 +14,6 @@ export class Discord {
      */
     public parseDiscord() {
         if (this.url.url.includes("/channels/")) {
-            console.log(JSON.stringify(this.url.segments));
             for (let i = 0; i < this.url.segments.length; i++) {
                 const value = this.url.segments[ i ];
                 if (value === "channels") {
@@ -29,7 +28,6 @@ export class Discord {
                 const proc_id = (BigInt(value) & BigInt(0x1F000)) >> BigInt(17);
                 const increment = BigInt(value) & BigInt(0xfff);
 
-                console.log(timestamp);
                 if (i === 1) {
                     this.url[ "channel_created" ] = unixEpochToISO(timestamp);
                     this.url[ "channel_worker_id" ] = Number(worker_id);

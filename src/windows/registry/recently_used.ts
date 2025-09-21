@@ -31,7 +31,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
     );
   }
 
-  const mrus = [];
+  const mrus:Mru[] = [];
 
   const open_save_mru: Mru = {
     ntuser_path,
@@ -82,7 +82,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
  * @returns Generic `MruValues`
  */
 export function assembleMru(items: ShellItems[]): MruValues {
-  const paths = [];
+  const paths:string[] = [];
 
   if (items.length === 0) {
     return {

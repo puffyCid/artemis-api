@@ -3,7 +3,7 @@ import { ProtoTag } from "../../../types/encoding/protobuf";
 import { encode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
 import { parseProtobuf } from "../../encoding/protobuf";
-import { extractUtf16String, extractUtf8String } from "../../encoding/strings";
+import { extractUtf16String, extractUtf8String, extractUtf8StringLossy } from "../../encoding/strings";
 import { FileError } from "../../filesystem/errors";
 import { readFile } from "../../filesystem/files";
 import { NomError } from "../../nom/error";
@@ -66,7 +66,7 @@ export function parseWalManifest(path: string): LevelManifest[] | ApplicationErr
             if (value instanceof ApplicationError) {
                 return value;
             }
-            entry.records.push({ [ tag ]: value.value });
+            entry.records.push({ [tag]: value.value });
             tag_remaining = value.remaining;
         }
         remaining = record.remaining as Uint8Array;
@@ -168,6 +168,7 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
     while (count < input.value) {
         const value_type = nomUnsignedOneBytes(remaining);
         if (value_type instanceof NomError) {
+            break;
             return new ApplicationError(`LEVELDB`, `could not get wal value type: ${value_type}`);
         }
 
@@ -409,7 +410,7 @@ function getTagValue(tag: ManifestTag, data: Uint8Array): TagValue | Application
 export function parseVarInt(data: Uint8Array): TagValue | ApplicationError {
     // If the varint length is one then 0 index is our value
     if (data.buffer.byteLength === 1) {
-        return { value: data[ 0 ], remaining: new Uint8Array() };
+        return { value: data[0], remaining: new Uint8Array() };
     }
 
     let var_value = 0;
@@ -446,14 +447,14 @@ function parseKey(data: Uint8Array): string {
     // If key starts has prefix '_' then it has two parts
     if (data.at(0) === prefix) {
         // First has end of string character?
-        const first_part = takeUntil(data, new Uint8Array([ 0 ]));
+        const first_part = takeUntil(data, new Uint8Array([0]));
         if (first_part instanceof NomError) {
             return "Unknown Key";
         }
 
         const first_data = (first_part.remaining as Uint8Array).buffer.slice(2);
         // If 0 the encoding is UTF16-LE. Otherwise its ASCII
-        if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([ 0 ])) {
+        if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([0])) {
             return `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf16String(new Uint8Array(first_data))}`;
         } else {
             return `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf8String(new Uint8Array(first_data))}`;
@@ -523,7 +524,8 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
     }
 
     if (value_type === ValueType.String) {
-        return extractUtf8String(input);
+        // webpages may store non-valid UTF8
+        return extractUtf8StringLossy(input);
     }
     if (value_type === ValueType.Utf16) {
         return extractUtf16String(input);
@@ -543,27 +545,27 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
  * Or want to validate the leveldb parsing
  */
 export function testLevelWal(): void {
-    const parse_value_test = [ 8, 130, 194, 232, 178, 246, 159, 231, 23, 16, 85 ];
+    const parse_value_test = [8, 130, 194, 232, 178, 246, 159, 231, 23, 16, 85];
     const parse_value_result = parseValue(new Uint8Array(parse_value_test), ValueType.Protobuf);
     if (parse_value_result instanceof ApplicationError) {
         throw parse_value_result;
     }
 
-    if (parse_value_result[ "1" ].value != "13401944653177090") {
-        throw `Got value ${parse_value_result[ "1" ].value} expected 13401944653177090.......parseValue ❌`;
+    if (parse_value_result["1"].value != "13401944653177090") {
+        throw `Got value ${parse_value_result["1"].value} expected 13401944653177090.......parseValue ❌`;
     }
     console.info(`  Function parseValue ✅`);
 
-    const value_type_test = [ 0, 1, 2, 3, 4, 6, 8, 15 ];
+    const value_type_test = [0, 1, 2, 3, 4, 6, 8, 15];
     for (const entry of value_type_test) {
-        const result = getValueType(new Uint8Array([ entry, 0, 0, 0 ]));
+        const result = getValueType(new Uint8Array([entry, 0, 0, 0]));
         if (result === ValueType.Unknown) {
             `Got unknown value type for ${entry}.......getValueType ❌`;
         }
     }
     console.info(`  Function getValueType ✅`);
 
-    const parse_key_test = [ 77, 69, 84, 65, 58, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109 ];
+    const parse_key_test = [77, 69, 84, 65, 58, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109];
     const parse_key_result = parseKey(new Uint8Array(parse_key_test));
 
     if (parse_key_result !== "META:https://www.google.com") {
@@ -571,7 +573,7 @@ export function testLevelWal(): void {
     }
     console.info(`  Function parseKey ✅`);
 
-    const parse_var_int_test = [ 77, 69, 84, 65, 58, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109 ];
+    const parse_var_int_test = [77, 69, 84, 65, 58, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109];
     const parse_var_int_result = parseVarInt(new Uint8Array(parse_var_int_test));
     if (parse_var_int_result instanceof ApplicationError) {
         throw parse_var_int_result;
@@ -581,7 +583,7 @@ export function testLevelWal(): void {
     }
     console.info(`  Function parseVarInt ✅`);
 
-    const get_tag_value_test = [ 26, 108, 101, 118, 101, 108, 100, 98, 46, 66, 121, 116, 101, 119, 105, 115, 101, 67, 111, 109, 112, 97, 114, 97, 116, 111, 114, 2, 0, 3, 2, 4, 0 ];
+    const get_tag_value_test = [26, 108, 101, 118, 101, 108, 100, 98, 46, 66, 121, 116, 101, 119, 105, 115, 101, 67, 111, 109, 112, 97, 114, 97, 116, 111, 114, 2, 0, 3, 2, 4, 0];
     const get_tag_value_result = getTagValue(ManifestTag.Comparator, new Uint8Array(get_tag_value_test));
     if (get_tag_value_result instanceof ApplicationError) {
         throw get_tag_value_result;
@@ -591,7 +593,7 @@ export function testLevelWal(): void {
     }
     console.info(`  Function getTagValue ✅`);
 
-    const get_tag_test = [ 1, 2, 3, 4, 5, 6, 7, 9 ];
+    const get_tag_test = [1, 2, 3, 4, 5, 6, 7, 9];
     for (const entry of get_tag_test) {
         const result = getTag(entry);
         if (result === ManifestTag.Unknown) {
@@ -600,7 +602,7 @@ export function testLevelWal(): void {
     }
     console.info(`  Function getTag ✅`);
 
-    const get_record_type_test = [ 1, 2, 3, 4 ];
+    const get_record_type_test = [1, 2, 3, 4];
     for (const entry of get_record_type_test) {
         const result = getRecordType(entry);
         if (result === RecordType.Unknown) {
@@ -609,7 +611,7 @@ export function testLevelWal(): void {
     }
     console.info(`  Function getRecordType ✅`);
 
-    const parse_wal_values_test = [ 226, 45, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 12, 77, 69, 84, 65, 58, 102, 105, 108, 101, 58, 47, 47, 11, 8, 208, 186, 223, 177, 158, 197, 230, 23, 16, 36, 1, 31, 95, 102, 105, 108, 101, 58, 47, 47, 0, 1, 108, 97, 115, 116, 82, 101, 99, 101, 105, 118, 101, 100, 65, 116, 67, 111, 117, 110, 116, 101, 114, 14, 1, 49, 55, 53, 51, 57, 50, 51, 55, 48, 48, 51, 48, 55
+    const parse_wal_values_test = [226, 45, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 12, 77, 69, 84, 65, 58, 102, 105, 108, 101, 58, 47, 47, 11, 8, 208, 186, 223, 177, 158, 197, 230, 23, 16, 36, 1, 31, 95, 102, 105, 108, 101, 58, 47, 47, 0, 1, 108, 97, 115, 116, 82, 101, 99, 101, 105, 118, 101, 100, 65, 116, 67, 111, 117, 110, 116, 101, 114, 14, 1, 49, 55, 53, 51, 57, 50, 51, 55, 48, 48, 51, 48, 55
     ];
     const parse_wal_values_result = parseWalValues(new Uint8Array(parse_wal_values_test), "");
     if (parse_wal_values_result instanceof ApplicationError) {
@@ -619,8 +621,8 @@ export function testLevelWal(): void {
     if (parse_wal_values_result.length != 2) {
         throw `Got length ${parse_wal_values_result.length} expected 2.......parseWalValues ❌`;
     }
-    if (parse_wal_values_result[ 1 ].value != 1753923700307) {
-        throw `Got value ${parse_wal_values_result[ 1 ].value} expected 1753923700307.......parseWalValues ❌`;
+    if (parse_wal_values_result[1].value != 1753923700307) {
+        throw `Got value ${parse_wal_values_result[1].value} expected 1753923700307.......parseWalValues ❌`;
     }
     console.info(`  Function parseWalValues ✅`);
 
@@ -632,8 +634,8 @@ export function testLevelWal(): void {
     if (parse_wal_result.length != 7) {
         throw `Got length ${parse_wal_result.length} expected 7.......parseWal ❌`;
     }
-    if (parse_wal_result[ 1 ].value !== "0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig") {
-        throw `Got ${parse_wal_result[ 1 ].value} expected 0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig.......parseWal ❌`;
+    if (parse_wal_result[1].value !== "0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig") {
+        throw `Got ${parse_wal_result[1].value} expected 0aAFtxy5hqMZ-m5_84cwxsP9wDeMSWgnZIZV8HYeffZdqJJZVdLX0yDE4UmHJ-F18zr6wVg952cpmadDgN3LcJ7Bbac7IopaVc8pplhgtVdTuVXI4aig.......parseWal ❌`;
     }
     console.info(`  Function parseWal ✅`);
 
@@ -645,8 +647,8 @@ export function testLevelWal(): void {
     if (parse_manifest_result.length != 1) {
         throw `Got manifest length ${parse_manifest_result.length} expected 1.......parseWalManifest ❌`;
     }
-    if (!JSON.stringify(parse_manifest_result[ 0 ].records[ 0 ]).includes("Comparator")) {
-        throw `Got ${JSON.stringify(parse_manifest_result[ 0 ].records[ 0 ])} and does not include Comparator.......parseWalManifest ❌`;
+    if (!JSON.stringify(parse_manifest_result[0].records[0]).includes("Comparator")) {
+        throw `Got ${JSON.stringify(parse_manifest_result[0].records[0])} and does not include Comparator.......parseWalManifest ❌`;
     }
     console.info(`  Function parseWalManifest ✅`);
 }

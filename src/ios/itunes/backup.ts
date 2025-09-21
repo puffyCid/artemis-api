@@ -56,7 +56,6 @@ export function extractBackup(
       continue;
     }
 
-    //console.log(`Namespace: ${domain.namespace} -${JSON.stringify(paths)}`);
     output.name = `${output_name}_${domain.namespace}`;
     outputResults(paths, domain.namespace, output);
     extractAppInfo(paths, domain.namespace, path, output);

@@ -150,7 +150,6 @@ function parseZsh(text: string, path: string): ZshHistory[] {
       history.line = i;
       values.push(history);
     } else {
-      console.log(JSON.stringify(time_hit));
       const unixepoch_time = time_hit[ 1 ];
       history.history = time_hit[ 2 ];
       history.line = i;

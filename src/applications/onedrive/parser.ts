@@ -42,7 +42,7 @@ export function onedriveDetails(
     odl_files = `${alt_path}*.odl*`;
     key_file = `${alt_path}general.keystore`;
     sync_db = `${alt_path}SyncEngineDatabase.db`;
-    reg_files = `${alt_path}NTUSER.DAT`;
+    reg_files = `${alt_path}NTUSER.*`;
   }
 
   if (platform === PlatformType.Darwin && alt_path === undefined) {
@@ -63,7 +63,7 @@ export function onedriveDetails(
       `${drive}\\Users\\${user}\\AppData\\Local\\Microsoft\\OneDrive\\logs\\*\\general.keystore`;
     sync_db =
       `${drive}\\Users\\${user}\\AppData\\Local\\Microsoft\\OneDrive\\settings\\*\\SyncEngineDatabase.db`;
-    reg_files = `${drive}\\Users\\${user}\\NTUSER.DAT`;
+    reg_files = `${drive}\\Users\\${user}\\NTUSER.*`;
   }
 
   const details: OneDriveDetails = {
@@ -193,7 +193,7 @@ function extractKeys(paths: GlobInfo[]): KeyInfo[] {
 
     const values = JSON.parse(data) as Record<string, string | number>[];
     for (const value of values) {
-      key.key = value[ "Key" ] as string;
+      key.key = value["Key"] as string;
       break;
     }
     keys.push(key);
@@ -210,6 +210,9 @@ function extractKeys(paths: GlobInfo[]): KeyInfo[] {
 function accountWindows(paths: GlobInfo[]): OneDriveAccount[] {
   const accounts: OneDriveAccount[] = [];
   for (const entry of paths) {
+    if (!entry.filename.toLowerCase().endsWith("dat")) {
+      continue;
+    }
     const values = getRegistry(entry.full_path);
     if (values instanceof WindowsError) {
       console.warn(`could not parse ${entry.full_path}: ${values.message}`);
@@ -280,17 +283,17 @@ function accountMacos(paths: GlobInfo[]): OneDriveAccount[] {
 
     for (const key in values) {
       // Lazy check if the plist data contains the data we want
-      if (!JSON.stringify(values[ key ]).includes("UserEmail")) {
+      if (!JSON.stringify(values[key]).includes("UserEmail")) {
         continue;
       }
-      const account_value = values[ key ] as Record<string, string | number>;
+      const account_value = values[key] as Record<string, string | number>;
 
       const account: OneDriveAccount = {
-        email: account_value[ "UserEmail" ] as string,
-        device_id: account_value[ "OneDriveDeviceId" ] as string,
-        account_id: account_value[ "OneAutoAccountId" ] as string,
+        email: account_value["UserEmail"] as string,
+        device_id: account_value["OneDriveDeviceId"] as string,
+        account_id: account_value["OneAutoAccountId"] as string,
         last_signin: "1970-01-01T00:00:00.000Z",
-        cid: account_value[ "cid" ] as string,
+        cid: account_value["cid"] as string,
       };
       accounts.push(account);
     }

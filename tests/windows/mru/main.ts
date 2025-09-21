@@ -4,12 +4,15 @@ import { WindowsError } from "../../../src/windows/errors";
 import { parseMru } from "../../../src/windows/registry/recently_used";
 
 function main() {
-  const paths = glob("C:\\Users\\*\\NTUSER.DAT");
+  console.log('Running Windows MRU tests....');
+  console.log(' Starting live test....');
+
+  const paths = glob("C:\\Users\\*\\NTUSER.*");
   if (paths instanceof FileError) {
     throw paths;
   }
   for (const entry of paths) {
-    if (!entry.is_file || entry.full_path.includes("Default User")) {
+    if (!entry.is_file || entry.full_path.includes("Default") || !entry.filename.toLocaleLowerCase().endsWith("dat")) {
       continue;
     }
     const results = parseMru(entry.full_path);
@@ -20,6 +23,8 @@ function main() {
       throw "no entries?";
     }
   }
+  console.log(' Live test passed! 🥳\n');
+  console.log('All Windows MRU tests passed! 🥳💃🕺');
 }
 
 main();
