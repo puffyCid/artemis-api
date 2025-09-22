@@ -92,6 +92,7 @@ export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";
 export { NextcloudClient } from "./src/applications/nextcloud/cloud";
 export { LevelDb } from "./src/applications/leveldb/level";
+export { AnyDesk } from "./src/applications/anydesk/rmm";
 
 /**
  * Windows exported functions

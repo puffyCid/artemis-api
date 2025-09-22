@@ -1,8 +1,9 @@
 import { glob, PlatformType, readTextFile } from "../../../mod";
-import { AnyDeskUsers } from "../../../types/applications/anydesk";
+import { AnyDeskUsers, TraceEntry } from "../../../types/applications/anydesk";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { FileError } from "../../filesystem/errors";
 import { ApplicationError } from "../errors";
+import { readTrace } from "./trace";
 
 export class AnyDesk {
     private paths: AnyDeskUsers[];
@@ -43,6 +44,62 @@ export class AnyDesk {
         }
 
         this.paths = [ { user_path: alt_path, version: client_version, account: client_account, id: client_id } ];
+    }
+
+    /**
+     * Function to parse AnyDesk trace files. By default parses trace files at AnyDesk default paths
+     * @param is_alt If you have provided an optional alternative directory containing the AnyDesk files. Set this to true
+     * @returns Array of `TraceEntry`
+     */
+    public traceFiles(is_alt = false): TraceEntry[] {
+        let system = "/var/log/anydesk.trace";
+
+        let separator = "/";
+        if (this.platform === PlatformType.Windows) {
+            separator = "\\";
+            system = "TODO";
+        }
+
+        let hits: TraceEntry[] = [];
+        if (is_alt && this.paths.length === 1) {
+            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*`);
+            if (entries instanceof FileError) {
+                console.error(entries);
+                return hits;
+            }
+            for (const entry of entries) {
+                const values = readTrace(entry.full_path, this.paths[ 0 ]);
+                if (values instanceof ApplicationError) {
+                    console.error(values);
+                    continue;
+                }
+
+                hits = hits.concat(values);
+            }
+            return hits;
+        }
+
+        for (const entry of this.paths) {
+            let path = `${entry.user_path}${separator}anydesk.trace`;
+            const values = readTrace(path, entry);
+            if (values instanceof ApplicationError) {
+                console.error(values);
+                continue;
+            }
+
+            hits = hits.concat(values);
+        }
+        if (this.paths.length !== 0) {
+            const values = readTrace(system, this.paths[ 0 ]);
+            if (values instanceof ApplicationError) {
+                console.error(values);
+                return hits;
+            }
+            hits = hits.concat(values);
+        }
+
+        return hits;
+
     }
 
     /**
