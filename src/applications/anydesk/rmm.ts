@@ -5,6 +5,9 @@ import { FileError } from "../../filesystem/errors";
 import { ApplicationError } from "../errors";
 import { readTrace } from "./trace";
 
+/**
+ * Class to parse AnyDesk data
+ */
 export class AnyDesk {
     private paths: AnyDeskUsers[];
     private platform: PlatformType;
@@ -12,7 +15,7 @@ export class AnyDesk {
     /**
      * Construct a `AnyDesk` object that can be used to parse AnyDesk data
      * @param platform OS `PlatformType`
-     * @param alt_path Optional alternative directory that contains all AnyDesk related files
+     * @param alt_path Optional alternative directory that contains all AnyDesk related files including configs
      * @returns `AnyDesk` instance class
      */
     constructor (platform: PlatformType, alt_path?: string) {
@@ -52,7 +55,7 @@ export class AnyDesk {
      * @returns Array of `TraceEntry`
      */
     public traceFiles(is_alt = false): TraceEntry[] {
-        let system = "/var/log/anydesk.trace";
+        let system = "/var/log/*.trace";
 
         let separator = "/";
         if (this.platform === PlatformType.Windows) {
@@ -61,13 +64,17 @@ export class AnyDesk {
         }
 
         let hits: TraceEntry[] = [];
+        // If alternative directory was provided then parse all trace files
         if (is_alt && this.paths.length === 1) {
-            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*`);
+            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*.trace`);
             if (entries instanceof FileError) {
                 console.error(entries);
                 return hits;
             }
             for (const entry of entries) {
+                if (!entry.is_file) {
+                    continue;
+                }
                 const values = readTrace(entry.full_path, this.paths[ 0 ]);
                 if (values instanceof ApplicationError) {
                     console.error(values);
@@ -79,23 +86,45 @@ export class AnyDesk {
             return hits;
         }
 
+        // Try parsing trace files at default paths
         for (const entry of this.paths) {
-            let path = `${entry.user_path}${separator}anydesk.trace`;
-            const values = readTrace(path, entry);
-            if (values instanceof ApplicationError) {
-                console.error(values);
+            let path = `${entry.user_path}${separator}*.trace`;
+            const entries = glob(path);
+            if (entries instanceof FileError) {
+                console.error(entries);
                 continue;
             }
+            for (const trace_file of entries) {
+                if (!trace_file.is_file) {
+                    continue;
+                }
+                const values = readTrace(trace_file.full_path, entry);
+                if (values instanceof ApplicationError) {
+                    console.error(values);
+                    continue;
+                }
 
-            hits = hits.concat(values);
+                hits = hits.concat(values);
+            }
         }
+        // Get system trace file(s)
         if (this.paths.length !== 0) {
-            const values = readTrace(system, this.paths[ 0 ]);
-            if (values instanceof ApplicationError) {
-                console.error(values);
+            const entries = glob(system);
+            if (entries instanceof FileError) {
+                console.error(entries);
                 return hits;
             }
-            hits = hits.concat(values);
+            for (const entry of entries) {
+                if (!entry.is_file) {
+                    continue;
+                }
+                const values = readTrace(entry.full_path, this.paths[ 0 ]);
+                if (values instanceof ApplicationError) {
+                    console.error(values);
+                    return hits;
+                }
+                hits = hits.concat(values);
+            }
         }
 
         return hits;
@@ -103,10 +132,10 @@ export class AnyDesk {
     }
 
     /**
-        * Get base path for all AnyDesk data
-        * @param platform OS `PlatformType`
-        * @returns Array of `AnyDeskUsers` or `ApplicationError`
-        */
+    * Get base path for all AnyDesk data
+    * @param platform OS `PlatformType`
+    * @returns Array of `AnyDeskUsers` or `ApplicationError`
+    */
     private profiles(platform: PlatformType): AnyDeskUsers[] | ApplicationError {
         let paths: GlobInfo[] = [];
         switch (platform) {

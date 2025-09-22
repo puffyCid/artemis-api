@@ -5,6 +5,10 @@ export interface AnyDeskUsers {
     id: string;
 }
 
+/**
+ * Object representing a Trace log entry.  
+ * This object is Timesketch compatible.  It does **not** need to be timelined
+ */
 export interface TraceEntry {
     message: string;
     datetime: string;

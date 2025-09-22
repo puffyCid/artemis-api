@@ -402,3 +402,31 @@ Parse the level database write ahead log
 #### tables() -> LevelDbEntry[] | ApplicationError
 
 Parse the level database write ahead log
+
+### AnyDesk Class
+
+A basic TypeScript class to extract data from AnyDesk application. By default artemis will parse the default AnyDesk paths based on the provided PlatformType.  
+You may provide an optional alternative directory that contains the AnyDesk files. The alternative directory should contain all AnyDesk related files.
+
+Sample TypeScript code:
+```typescript
+import { AnyDesk, PlatformType } from "../artemis-api/mod";
+
+function main() {
+    console.log('Running AnyDesk tests....');
+    const results = new AnyDesk(PlatformType.Linux);
+    const used_alt_dir = true;
+    const hits = results.traceFiles(used_alt_dir);
+    console.log(JSON.stringify(hits[0]));
+}
+
+main();
+```
+
+#### traceFiles(is_alt) -> TraceEntry[]
+
+Log entries from trace log files. If you provided an optional alternative directory
+
+| Param    | Type         | Description                                                                               |
+| -------- | ------------ | ----------------------------------------------------------------------------------------- |
+| is_alt   | boolean      | Set to true if you provided an alternative directory when initializing the AnyDesk class  |

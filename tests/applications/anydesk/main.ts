@@ -1,6 +1,5 @@
 import { AnyDesk, PlatformType } from "../../../mod";
-import { ApplicationError } from "../../../src/applications/errors";
-import { testLevelLdb, testLevelWal, testReadTrace } from "../../test";
+import { testReadTrace } from "../../test";
 
 function main() {
     console.log('Running AnyDesk tests....');
