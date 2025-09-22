@@ -17,7 +17,7 @@ export interface TraceEntry {
     data_type: "applications:anydesk:trace:entry";
     path: string;
     level: string;
-    timestamp: string;
+    entry_timestamp: string;
     component: string;
     code_function: string;
     pid: number;

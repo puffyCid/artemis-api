@@ -104,7 +104,7 @@ export function readTrace(path: string, user: AnyDeskUsers): TraceEntry[] | Appl
                 data_type: "applications:anydesk:trace:entry",
                 path,
                 level,
-                timestamp,
+                entry_timestamp: timestamp,
                 component,
                 code_function,
                 pid,

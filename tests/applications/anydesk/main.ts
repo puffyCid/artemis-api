@@ -1,4 +1,4 @@
-import { AnyDesk, PlatformType } from "../../../mod";
+import { AnyDesk, dumpData, Format, Output, OutputType, PlatformType } from "../../../mod";
 import { testReadTrace } from "../../test";
 
 function main() {
@@ -21,6 +21,17 @@ function main() {
     }
     console.log(' Live test passed! 🥳\n');
 
+    const out: Output = {
+        name: "local",
+        directory: "./tmp",
+        format: Format.JSONL,
+        compress: false,
+        timeline: false,
+        endpoint_id: "",
+        collection_id: 0,
+        output: OutputType.LOCAL
+    };
+    dumpData(hits, "anydesk_logs", out);
     console.log(' Starting Trace tests....');
     testReadTrace();
     console.log(' All Trace tests passed! 🥳\n');

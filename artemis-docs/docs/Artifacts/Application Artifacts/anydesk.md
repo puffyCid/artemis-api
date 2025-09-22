@@ -18,6 +18,11 @@ Other parsers:
 
 - Any program that can read a text file
 
+# References
+
+- [RATs Review](https://www.synacktiv.com/publications/legitimate-rats-a-comprehensive-forensic-analysis-of-the-usual-suspects#anydesk)
+- [Suspicious AnyDesk Use](https://www.cybertriage.com/blog/dfir-next-steps-suspicious-anydesk-use/)
+
 # Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect AnyDesk data
@@ -57,7 +62,7 @@ export interface TraceEntry {
     data_type: "applications:anydesk:trace:entry";
     path: string;
     level: string;
-    timestamp: string;
+    entry_timestamp: string;
     component: string;
     code_function: string;
     pid: number;

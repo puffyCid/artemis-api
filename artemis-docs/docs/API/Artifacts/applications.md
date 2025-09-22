@@ -131,6 +131,10 @@ Return Chromium preferences for all users.
 
 Return Chromium bookmarks for all users.
 
+#### localStorage() -> ChromiumLocalStorage[]
+
+Return Chromium local storage data for all users.
+
 ### FireFox Browser Class
 
 A basic TypeScript class to extract data from the FireFox browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base FireFox directory.
@@ -415,8 +419,7 @@ import { AnyDesk, PlatformType } from "../artemis-api/mod";
 function main() {
     console.log('Running AnyDesk tests....');
     const results = new AnyDesk(PlatformType.Linux);
-    const used_alt_dir = true;
-    const hits = results.traceFiles(used_alt_dir);
+    const hits = results.traceFiles();
     console.log(JSON.stringify(hits[0]));
 }
 
@@ -427,6 +430,6 @@ main();
 
 Log entries from trace log files. If you provided an optional alternative directory
 
-| Param    | Type         | Description                                                                               |
-| -------- | ------------ | ----------------------------------------------------------------------------------------- |
-| is_alt   | boolean      | Set to true if you provided an alternative directory when initializing the AnyDesk class  |
+| Param    | Type         | Description                                                                                         |
+| -------- | ------------ | --------------------------------------------------------------------------------------------------- |
+| is_alt   | boolean      | Optional. Set to true if you provided an alternative directory when initializing the AnyDesk class  |
