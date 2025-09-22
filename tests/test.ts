@@ -4,6 +4,7 @@
 export { testLevelLdb } from "../src/applications/leveldb/table";
 export { testLevelWal } from "../src/applications/leveldb/wal";
 export { testRecentFiles } from "../src/applications/libreoffice";
+export { testReadTrace } from "../src/applications/anydesk/trace";
 /**
  * Linux exported test functions
  */

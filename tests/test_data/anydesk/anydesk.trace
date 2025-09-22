@@ -1,0 +1,818 @@
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - * AnyDesk Linux Startup *
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - * Build 20250909110945
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - * Prefix ad
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - 
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - Command Line params: '--tray'
+   info 2025-09-21 23:51:13.504         ad   main   7625   7625                                  main - Found GLib Version: 2.80.
+   info 2025-09-21 23:51:13.508         ad   main   7625   7625                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-21 23:51:13.508         ad   main   7625   7625                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+explode 2025-09-21 23:51:13.509       tray   main   7625   7625                   unix_base.x11_tools - Cannot open display
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - * AnyDesk Linux Startup *
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - * Build 20250909110945
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - * Prefix ad
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - 
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-21 23:51:21.191         ad   main   7700   7700                                  main - Found GLib Version: 2.80.
+   info 2025-09-21 23:51:21.197         ad   main   7700   7700                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-21 23:51:21.197         ad   main   7700   7700                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-21 23:51:21.198      front   main   7700   7700             app.named_process_starter - Spawning new process with: UID: 1000, DPY: , ID: 2, SEAT: 131312688
+   info 2025-09-21 23:51:21.199      front   main   7700   7700                                  main - Starting frontend process (7700).
+warning 2025-09-21 23:51:21.200      front   main   7706   7706        base.signal.global.shared_file - open (/proc/2471/environ) failed (13): Permission denied 
+warning 2025-09-21 23:51:21.202      front   main   7706   7706             unix_base.x11.xauth_magic - XAUTHORITY is not set, trying the default location
+  error 2025-09-21 23:51:21.238      front   main   7706   7706             unix_base.x11.xauth_magic - Cannot find Xauthority file despite all attempts, backend will probably fail
+   info 2025-09-21 23:51:21.242   frontend   main   7700   7700                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-21 23:51:21.242   frontend   main   7700   7700                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - * AnyDesk Linux Startup *
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - * Build 20250909110945
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - * Prefix ad
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - 
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - Command Line params: '--tray'
+   info 2025-09-21 23:51:21.249         ad   main   7706   7706                                  main - Found GLib Version: 2.80.
+   info 2025-09-21 23:51:21.257         ad   main   7706   7706                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-21 23:51:21.257         ad   main   7706   7706                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+explode 2025-09-21 23:51:21.262       tray   main   7706   7706                   unix_base.x11_tools - Cannot open display
+   info 2025-09-21 23:51:21.273   frontend   main   7700   7700                                   sif - Initializing license info.
+   info 2025-09-21 23:51:21.273   frontend   main   7700   7700                                   sif - License info updated: 
+   info 2025-09-21 23:51:21.276   frontend   main   7700   7700                       base.signal.hub - 16 threads.
+warning 2025-09-21 23:51:21.309   frontend   main   7700   7700                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-21 23:51:21.311   frontend   timr   7700   7712          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-21 23:51:21.372   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.372   frontend   ctrl   7700   7715                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.373   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.373   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.373   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.373   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.373   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.374   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.375   frontend   main   7700   7700                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:51:21.375   frontend   ctrl   7700   7715                     unix_app.frontend - Frontend startup.
+   info 2025-09-21 23:51:21.375   frontend   ctrl   7700   7715                     unix_app.frontend - Logging the frontend in.
+warning 2025-09-21 23:51:21.376   frontend   ctrl   7700   7715                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+  error 2025-09-21 23:51:21.387   frontend   ctrl   7700   7715              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-21 23:51:21.388   frontend   ctrl   7700   7715                     unix_app.frontend - Received process login response.
+warning 2025-09-21 23:51:21.388   frontend   ctrl   7700   7715                                   sif - Dropping out of date license response.
+   info 2025-09-21 23:51:21.432   frontend filetransfer   7700   7737                       base.task_queue - Waiting for commands.
+warning 2025-09-21 23:51:21.519   frontend   main   7700   7700                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-21 23:51:21.553   frontend    x11   7700   7708                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-21 23:51:21.553   frontend    x11   7700   7708                     base.monitor_info - Monitor 0: w/h : 3840/2242
+   info 2025-09-21 23:51:21.553   frontend    x11   7700   7708                     base.monitor_info - Monitor 0 output=33
+   info 2025-09-21 23:51:21.943   frontend   wrk0   7700   7716                                   sif - Updating license info.
+   info 2025-09-21 23:51:21.943   frontend   wrk0   7700   7716                                   sif - License info updated: free-1
+   info 2025-09-21 23:51:21.943   frontend   wrk0   7700   7716                   anymessage.provider - License changed. Requesting messages update.
+   info 2025-09-21 23:51:27.322   frontend   main   7700   7700                     one_time_password - Resetting 2FA key.
+   info 2025-09-21 23:51:27.337   frontend   main   7700   7700                     gui.privacy_panel - Unable to load user image
+   info 2025-09-21 23:56:01.474   frontend   wrk0   7700   7716                                   sif - Updating license info.
+   info 2025-09-21 23:56:01.474   frontend   wrk0   7700   7716                                   sif - License info updated: free-1
+   info 2025-09-21 23:56:01.474   frontend   wrk0   7700   7716                   anymessage.provider - License changed. Requesting messages update.
+   info 2025-09-21 23:56:01.479   frontend   main   7700   7700                     one_time_password - Resetting 2FA key.
+   info 2025-09-21 23:57:11.589   frontend   wrk0   7700   7716                                   sif - Updating license info.
+   info 2025-09-21 23:57:11.589   frontend   wrk0   7700   7716                                   sif - License info updated: free
+   info 2025-09-21 23:57:11.589   frontend   wrk0   7700   7716                   anymessage.provider - License changed. Requesting messages update.
+   info 2025-09-21 23:57:11.594   frontend   main   7700   7700                     one_time_password - Resetting 2FA key.
+   info 2025-09-21 23:59:12.311   frontend   ctrl   7700   7715                     unix_app.frontend - Frontend shutdown.
+   info 2025-09-21 23:59:13.517   frontend   ctrl   7700   7715                       base.signal.hub - Control quit.
+   info 2025-09-21 23:59:13.522   frontend   main   7700   7700               app.local_file_transfer - Stopping.
+   info 2025-09-21 23:59:13.522   frontend   main   7700   7700               app.local_file_transfer - File transfer stopped.
+   info 2025-09-21 23:59:13.547   frontend   timr   7700   7712          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-21 23:59:13.548   frontend   main   7700   7700              base.prot.job_dispatcher - 0 undelivered packets.
+warning 2025-09-21 23:59:13.548   frontend   ctrl   7700   7733                 static_stored_objects - No stored objects available.
+warning 2025-09-21 23:59:13.548   frontend   ctrl   7700   7733                         ipc_apartment - Cannot remove object (0x3f3ad45ad2c14a07, 0x27fa377da2800e1f). Key not found.
+   info 2025-09-21 23:59:13.550   frontend   main   7700   7700                                  main - Exiting normally.
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - * AnyDesk Linux Startup *
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - * Build 20250909110945
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - * Prefix ad
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - 
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-21 23:59:15.201         ad   main  10290  10290                                  main - Found GLib Version: 2.80.
+   info 2025-09-21 23:59:15.214         ad   main  10290  10290                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-21 23:59:15.215         ad   main  10290  10290                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-21 23:59:15.216      front   main  10290  10290             app.named_process_starter - Spawning new process with: UID: 1000, DPY: , ID: 2, SEAT: 936823264
+   info 2025-09-21 23:59:15.217      front   main  10290  10290                                  main - Starting frontend process (10290).
+warning 2025-09-21 23:59:15.218      front   main  10296  10296        base.signal.global.shared_file - open (/proc/2471/environ) failed (13): Permission denied 
+   info 2025-09-21 23:59:15.219   frontend   main  10290  10290                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-21 23:59:15.219   frontend   main  10290  10290                           gui.gui_app - Using std-resolution bitmaps.
+warning 2025-09-21 23:59:15.221      front   main  10296  10296             unix_base.x11.xauth_magic - XAUTHORITY is not set, trying the default location
+  error 2025-09-21 23:59:15.221      front   main  10296  10296             unix_base.x11.xauth_magic - Cannot find Xauthority file despite all attempts, backend will probably fail
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - * AnyDesk Linux Startup *
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - * Build 20250909110945
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - * Prefix ad
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - 
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - Command Line params: '--tray'
+   info 2025-09-21 23:59:15.237         ad   main  10296  10296                                  main - Found GLib Version: 2.80.
+   info 2025-09-21 23:59:15.242         ad   main  10296  10296                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-21 23:59:15.242         ad   main  10296  10296                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+explode 2025-09-21 23:59:15.243       tray   main  10296  10296                   unix_base.x11_tools - Cannot open display
+   info 2025-09-21 23:59:15.247   frontend   main  10290  10290                                   sif - Initializing license info.
+   info 2025-09-21 23:59:15.247   frontend   main  10290  10290                                   sif - License info updated: 
+   info 2025-09-21 23:59:15.251   frontend   main  10290  10290                       base.signal.hub - 16 threads.
+warning 2025-09-21 23:59:15.252   frontend   main  10290  10290                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-21 23:59:15.253   frontend   timr  10290  10301          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-21 23:59:15.315   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.315   frontend   ctrl  10290  10304                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.316   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.316   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.316   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.316   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.316   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.316   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.316   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.317   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.318   frontend   main  10290  10290                                 epoll - Choosing no-split-epoll
+   info 2025-09-21 23:59:15.318   frontend   ctrl  10290  10304                     unix_app.frontend - Frontend startup.
+   info 2025-09-21 23:59:15.318   frontend   ctrl  10290  10304                     unix_app.frontend - Logging the frontend in.
+warning 2025-09-21 23:59:15.319   frontend   ctrl  10290  10304                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+  error 2025-09-21 23:59:15.334   frontend   ctrl  10290  10304              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-21 23:59:15.335   frontend   ctrl  10290  10304                     unix_app.frontend - Received process login response.
+   info 2025-09-21 23:59:15.336   frontend   ctrl  10290  10304                                   sif - Updating license info.
+   info 2025-09-21 23:59:15.336   frontend   ctrl  10290  10304                                   sif - License info updated: free-1
+   info 2025-09-21 23:59:15.366   frontend filetransfer  10290  10327                       base.task_queue - Waiting for commands.
+warning 2025-09-21 23:59:15.404   frontend   main  10290  10290                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-21 23:59:15.435   frontend    x11  10290  10297                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-21 23:59:15.435   frontend    x11  10290  10297                     base.monitor_info - Monitor 0: w/h : 3840/2242
+   info 2025-09-21 23:59:15.435   frontend    x11  10290  10297                     base.monitor_info - Monitor 0 output=33
+   info 2025-09-21 23:59:31.249   frontend   main  10290  10290                     one_time_password - Resetting 2FA key.
+   info 2025-09-21 23:59:31.265   frontend   main  10290  10290                     gui.privacy_panel - Unable to load user image
+   info 2025-09-21 23:59:47.505   frontend   wrk1  10290  10306                                   sif - Updating license info.
+   info 2025-09-21 23:59:47.505   frontend   wrk1  10290  10306                                   sif - License info updated: free
+   info 2025-09-21 23:59:47.505   frontend   wrk1  10290  10306                   anymessage.provider - License changed. Requesting messages update.
+   info 2025-09-21 23:59:47.510   frontend   main  10290  10290                     one_time_password - Resetting 2FA key.
+   info 2025-09-22 00:01:55.258   frontend   main  10290  10290                      unix_base.polkit - Using gnome-shell for authentication.
+   info 2025-09-22 00:01:55.268   frontend   main  10290  10290                      unix_base.polkit - Using action: com.anydesk.anydesk
+   info 2025-09-22 00:12:01.957   frontend   ctrl  10290  10304                     unix_app.frontend - Relay state changed (0 -> 1).
+   info 2025-09-22 00:12:02.752   frontend   ctrl  10290  10304                     unix_app.frontend - Relay state changed (1 -> 2).
+  error 2025-09-22 00:12:03.084   frontend   wrk0  10290  10305              base.prot.packet_factory - Invalid packet received (type=122, 1 bytes).
+  error 2025-09-22 00:12:03.084   frontend   wrk0  10290  10305                        hub_ipc_socket - IPC packet deserialization failed.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      info 2025-09-22 00:23:21.891         ad   main   3024   3024                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - * Build 20250909110945
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - * Prefix ad
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - 
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - Command Line params: '--tray'
+   info 2025-09-22 00:23:21.892         ad   main   3024   3024                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 00:23:21.900         ad   main   3024   3024                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 00:23:21.900         ad   main   3024   3024                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 00:23:21.908       tray   main   3024   3024                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 00:23:21.908       tray   main   3024   3024                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 00:23:21.957       tray   main   3024   3024                       base.signal.hub - 1 threads.
+   info 2025-09-22 00:23:21.957       tray   main   3024   3024                    app.tunnel_ft_comp - Ready.
+   info 2025-09-22 00:23:22.120       tray   main   3024   3024                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:22.120       tray   ctrl   3024   3201                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:22.120       tray   main   3024   3024                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:22.120       tray   ctrl   3024   3201                      unix_app.control - Control startup.
+  error 2025-09-22 00:23:22.121       tray   ctrl   3024   3201              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:23:22.131       tray   main   3024   3199                 data_control_listener - Aborting initialization of assembly data control. (feature disabled)
+warning 2025-09-22 00:23:22.144       tray   ctrl   3024   3201                      unix_app.control - Dropping out of date license response.
+   info 2025-09-22 00:23:22.148       tray   timr   3024   3208          base.signal.local.timer_impl - Initialized master timer.
+  error 2025-09-22 00:23:22.154       tray   main   3024   3024                                  glib - gtk_widget_get_scale_factor: assertion 'GTK_IS_WIDGET (widget)' failed
+   info 2025-09-22 00:23:22.344       tray   wrk0   3024   3202                      unix_app.control - Received new license info. (free-1, 32)
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - * Build 20250909110945
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - * Prefix ad
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - 
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 00:23:28.281         ad   main   3248   3248                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 00:23:28.288         ad   main   3248   3248                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 00:23:28.288         ad   main   3248   3248                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 00:23:28.288      front   main   3248   3248                                  main - Starting frontend process (3248).
+   info 2025-09-22 00:23:28.290   frontend   main   3248   3248                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 00:23:28.290   frontend   main   3248   3248                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 00:23:28.317   frontend   main   3248   3248                                   sif - Initializing license info.
+   info 2025-09-22 00:23:28.317   frontend   main   3248   3248                                   sif - License info updated: free-1
+   info 2025-09-22 00:23:28.330   frontend   main   3248   3248                       base.signal.hub - 16 threads.
+warning 2025-09-22 00:23:28.333   frontend   main   3248   3248                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 00:23:28.335   frontend   timr   3248   3256          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:23:28.394   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.394   frontend   ctrl   3248   3259                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.394   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.394   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.394   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.394   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.394   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.394   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.395   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.395   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.395   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.395   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.395   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.395   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.395   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.396   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.396   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.396   frontend   main   3248   3248                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:23:28.396   frontend   ctrl   3248   3259                     unix_app.frontend - Frontend startup.
+   info 2025-09-22 00:23:28.396   frontend   ctrl   3248   3259                     unix_app.frontend - Logging the frontend in.
+warning 2025-09-22 00:23:28.397   frontend   ctrl   3248   3259                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+  error 2025-09-22 00:23:28.412   frontend   ctrl   3248   3259              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:23:28.414   frontend   ctrl   3248   3259                     unix_app.frontend - Received process login response.
+warning 2025-09-22 00:23:28.414   frontend   ctrl   3248   3259                                   sif - Dropping out of date license response.
+   info 2025-09-22 00:23:28.444   frontend filetransfer   3248   3282                       base.task_queue - Waiting for commands.
+warning 2025-09-22 00:23:28.506   frontend   main   3248   3248                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 00:23:28.538   frontend    x11   3248   3255                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:23:28.538   frontend    x11   3248   3255                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:23:28.538   frontend    x11   3248   3255                     base.monitor_info - Monitor 0 output=33
+   info 2025-09-22 00:53:11.233   frontend   main   3248   3248                     unix_app.frontend - Sending a connection request for address 1001025310.
+warning 2025-09-22 00:53:11.235   frontend   main   3248   3248                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 00:53:11.241   frontend   timr   3248   3826          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:11.241   frontend   timr   3248   3827          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:11.241   frontend   main   3248   3248                      audio.pa_wrapper - Connecting to PulseAudio server
+   info 2025-09-22 00:53:11.242   frontend     pa   3248   3828                      audio.pa_wrapper - Authorizing on PulseAudio server
+   info 2025-09-22 00:53:11.244   frontend     pa   3248   3828                      audio.pa_wrapper - Connection to PulseAudio server established
+   info 2025-09-22 00:53:11.245   frontend   main   3248   3248                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:11.245   frontend   main   3248   3248                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:11.245   frontend   main   3248   3248                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:11.265   frontend   main   3248   3248                     unix_app.frontend - New Session
+   info 2025-09-22 00:53:11.265   frontend   ctrl   3248   3259                  app.frontend_session - Requesting session.
+   info 2025-09-22 00:53:11.269   frontend   main   3248   3248                       gui.main_window - Hide panel 0
+  error 2025-09-22 00:53:11.304   frontend   ctrl   3248   3259              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:53:11.306   frontend    x11   3248   3255                          unix_app.xkb - Building charcode translation table.
+   info 2025-09-22 00:53:12.277   frontend   wrk1   3248   3261                  app.frontend_session - The socket was closed remotely.
+   info 2025-09-22 00:53:12.277   frontend   ctrl   3248   3259                  app.frontend_session - Stopping session.
+   info 2025-09-22 00:53:12.289   frontend   main   3248   3248                       gui.main_window - Hide panel 7
+   info 2025-09-22 00:53:12.290   frontend   ctrl   3248   3259                  app.frontend_session - Session stopped.
+   info 2025-09-22 00:53:14.121   frontend   main   3248   3248                  app.frontend_session - The user has requested a connection quit.
+   info 2025-09-22 00:53:14.131   frontend   main   3248   3248                  app.frontend_session - Deleting session.
+   info 2025-09-22 00:53:14.131   frontend   main   3248   3248                       gui.main_window - Removing all panels.
+   info 2025-09-22 00:53:14.132   frontend   main   3248   3248                      audio.pa_wrapper - Connection to PulseAudio server terminated
+   info 2025-09-22 00:53:14.133   frontend   main   3248   3248              base.prot.job_dispatcher - 0 undelivered packets.
+   info 2025-09-22 00:53:14.133   frontend   timr   3248   3827          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:53:14.133   frontend   timr   3248   3826          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:53:14.133   frontend   ctrl   3248   3259                     unix_app.frontend - Close Session
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - * Build 20250909110945
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - * Prefix ad
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - 
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - Command Line params: '--tray'
+   info 2025-09-22 00:53:31.526         ad   main   5498   5498                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 00:53:31.536         ad   main   5498   5498                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 00:53:31.536         ad   main   5498   5498                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 00:53:31.541       tray   main   5498   5498                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 00:53:31.541       tray   main   5498   5498                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 00:53:31.578       tray   main   5498   5498                       base.signal.hub - 1 threads.
+   info 2025-09-22 00:53:31.579       tray   main   5498   5498                    app.tunnel_ft_comp - Ready.
+   info 2025-09-22 00:53:31.647       tray   main   5498   5498                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:31.647       tray   ctrl   5498   5599                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:31.647       tray   main   5498   5498                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:31.647       tray   ctrl   5498   5599                      unix_app.control - Control startup.
+  error 2025-09-22 00:53:31.648       tray   ctrl   5498   5599              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:53:31.650       tray   timr   5498   5607          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:31.663       tray   main   5498   5597                 data_control_listener - Aborting initialization of assembly data control. (feature disabled)
+warning 2025-09-22 00:53:31.665       tray   ctrl   5498   5599                      unix_app.control - Dropping out of date license response.
+   info 2025-09-22 00:53:31.859       tray   wrk0   5498   5601                      unix_app.control - Received new license info. (free-1, 32)
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - * Build 20250909110945
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - * Prefix ad
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - 
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 00:53:35.334         ad   main   5991   5991                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 00:53:35.341         ad   main   5991   5991                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 00:53:35.342         ad   main   5991   5991                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 00:53:35.342      front   main   5991   5991                                  main - Starting frontend process (5991).
+   info 2025-09-22 00:53:35.344   frontend   main   5991   5991                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 00:53:35.344   frontend   main   5991   5991                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 00:53:35.371   frontend   main   5991   5991                                   sif - Initializing license info.
+   info 2025-09-22 00:53:35.371   frontend   main   5991   5991                                   sif - License info updated: free-1
+   info 2025-09-22 00:53:35.374   frontend   main   5991   5991                       base.signal.hub - 16 threads.
+warning 2025-09-22 00:53:35.375   frontend   main   5991   5991                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 00:53:35.376   frontend   timr   5991   5998          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:35.419   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.419   frontend   ctrl   5991   5999                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.420   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.420   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.420   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.420   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.420   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.420   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.435   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.435   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.435   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.435   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.436   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.436   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.436   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.436   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.436   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.436   frontend   main   5991   5991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:35.437   frontend   ctrl   5991   5999                     unix_app.frontend - Frontend startup.
+   info 2025-09-22 00:53:35.437   frontend   ctrl   5991   5999                     unix_app.frontend - Logging the frontend in.
+warning 2025-09-22 00:53:35.438   frontend   ctrl   5991   5999                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+  error 2025-09-22 00:53:35.457   frontend   ctrl   5991   5999              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:53:35.459   frontend   ctrl   5991   5999                     unix_app.frontend - Received process login response.
+warning 2025-09-22 00:53:35.459   frontend   ctrl   5991   5999                                   sif - Dropping out of date license response.
+   info 2025-09-22 00:53:35.498   frontend filetransfer   5991   6025                       base.task_queue - Waiting for commands.
+warning 2025-09-22 00:53:35.530   frontend   main   5991   5991                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 00:53:35.557   frontend    x11   5991   5997                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:35.557   frontend    x11   5991   5997                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:35.557   frontend    x11   5991   5997                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:40.767   frontend   main   5991   5991                     unix_app.frontend - Sending a connection request for address 1001025310.
+warning 2025-09-22 00:53:40.768   frontend   main   5991   5991                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 00:53:40.776   frontend   timr   5991   6048          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:40.776   frontend   timr   5991   6049          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:40.777   frontend   main   5991   5991                      audio.pa_wrapper - Connecting to PulseAudio server
+   info 2025-09-22 00:53:40.777   frontend     pa   5991   6050                      audio.pa_wrapper - Authorizing on PulseAudio server
+   info 2025-09-22 00:53:40.779   frontend     pa   5991   6050                      audio.pa_wrapper - Connection to PulseAudio server established
+   info 2025-09-22 00:53:40.780   frontend   main   5991   5991                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:40.780   frontend   main   5991   5991                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:40.780   frontend   main   5991   5991                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:40.793   frontend   main   5991   5991                     unix_app.frontend - New Session
+   info 2025-09-22 00:53:40.793   frontend   ctrl   5991   5999                  app.frontend_session - Requesting session.
+  error 2025-09-22 00:53:40.794   frontend   ctrl   5991   5999              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:53:40.798   frontend   main   5991   5991                       gui.main_window - Hide panel 0
+   info 2025-09-22 00:53:40.801   frontend    x11   5991   5997                          unix_app.xkb - Building charcode translation table.
+   info 2025-09-22 00:53:41.374   frontend   wrk1   5991   6001                  app.frontend_session - The socket was closed remotely.
+   info 2025-09-22 00:53:41.374   frontend   ctrl   5991   5999                  app.frontend_session - Stopping session.
+   info 2025-09-22 00:53:41.382   frontend   main   5991   5991                       gui.main_window - Hide panel 7
+   info 2025-09-22 00:53:41.382   frontend   ctrl   5991   5999                  app.frontend_session - Session stopped.
+   info 2025-09-22 00:53:44.415   frontend   main   5991   5991                  app.frontend_session - The user has requested a connection quit.
+   info 2025-09-22 00:53:44.427   frontend   main   5991   5991                  app.frontend_session - Deleting session.
+   info 2025-09-22 00:53:44.427   frontend   main   5991   5991                       gui.main_window - Removing all panels.
+   info 2025-09-22 00:53:44.429   frontend   main   5991   5991                      audio.pa_wrapper - Connection to PulseAudio server terminated
+   info 2025-09-22 00:53:44.430   frontend   main   5991   5991              base.prot.job_dispatcher - 0 undelivered packets.
+   info 2025-09-22 00:53:44.431   frontend   timr   5991   6049          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:53:44.431   frontend   timr   5991   6048          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:53:44.431   frontend   ctrl   5991   5999                     unix_app.frontend - Close Session
+   info 2025-09-22 00:53:46.002   frontend   main   5991   5991                     unix_app.frontend - Sending a connection request for address 1001025310.
+warning 2025-09-22 00:53:46.003   frontend   main   5991   5991                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 00:53:46.007   frontend   timr   5991   6082          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:46.007   frontend   timr   5991   6083          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:46.007   frontend   main   5991   5991                      audio.pa_wrapper - Connecting to PulseAudio server
+   info 2025-09-22 00:53:46.008   frontend     pa   5991   6084                      audio.pa_wrapper - Authorizing on PulseAudio server
+   info 2025-09-22 00:53:46.009   frontend     pa   5991   6084                      audio.pa_wrapper - Connection to PulseAudio server established
+   info 2025-09-22 00:53:46.010   frontend   main   5991   5991                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:46.010   frontend   main   5991   5991                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:46.010   frontend   main   5991   5991                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:46.020   frontend   main   5991   5991                     unix_app.frontend - New Session
+   info 2025-09-22 00:53:46.020   frontend   ctrl   5991   5999                  app.frontend_session - Requesting session.
+  error 2025-09-22 00:53:46.021   frontend   ctrl   5991   5999              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:53:46.024   frontend   main   5991   5991                       gui.main_window - Hide panel 0
+   info 2025-09-22 00:53:46.025   frontend    x11   5991   5997                          unix_app.xkb - Building charcode translation table.
+   info 2025-09-22 00:53:46.645   frontend   wrk1   5991   6001                  app.frontend_session - The socket was closed remotely.
+   info 2025-09-22 00:53:46.645   frontend   ctrl   5991   5999                  app.frontend_session - Stopping session.
+   info 2025-09-22 00:53:46.657   frontend   main   5991   5991                       gui.main_window - Hide panel 7
+   info 2025-09-22 00:53:46.657   frontend   ctrl   5991   5999                  app.frontend_session - Session stopped.
+   info 2025-09-22 00:53:47.881   frontend   main   5991   5991                  app.frontend_session - The user has requested a connection quit.
+   info 2025-09-22 00:53:48.029   frontend   main   5991   5991                  app.frontend_session - Deleting session.
+   info 2025-09-22 00:53:48.029   frontend   main   5991   5991                       gui.main_window - Removing all panels.
+   info 2025-09-22 00:53:48.031   frontend   main   5991   5991                      audio.pa_wrapper - Connection to PulseAudio server terminated
+   info 2025-09-22 00:53:48.031   frontend   main   5991   5991              base.prot.job_dispatcher - 0 undelivered packets.
+   info 2025-09-22 00:53:48.031   frontend   timr   5991   6083          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:53:48.031   frontend   timr   5991   6082          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:53:48.031   frontend   ctrl   5991   5999                     unix_app.frontend - Close Session
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - * Build 20250909110945
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - * Prefix ad
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - 
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - Command Line params: '--backend'
+   info 2025-09-22 00:53:51.118         ad   main   6086   6086                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 00:53:51.125         ad   main   6086   6086                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 00:53:51.125         ad   main   6086   6086                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 00:53:51.126       back   main   6086   6086                                  main - Starting backend process (6086).
+   info 2025-09-22 00:53:51.127    backend   main   6086   6086                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 00:53:51.127    backend   main   6086   6086                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 00:53:51.152    backend   main   6086   6086                                   sif - Initializing license info.
+   info 2025-09-22 00:53:51.152    backend   main   6086   6086                                   sif - License info updated: free-1
+   info 2025-09-22 00:53:51.156    backend   main   6086   6086                       base.signal.hub - 16 threads.
+   info 2025-09-22 00:53:51.159    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:51.159    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:51.159    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:51.160    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:51.160    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:51.160    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:51.160    backend    x11   6086   6090                          unix_app.xkb - Building charcode translation table.
+   info 2025-09-22 00:53:51.161    backend   timr   6086   6091          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:51.162    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:51.162    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:51.162    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+warning 2025-09-22 00:53:51.162    backend   main   6086   6086           desk_rt.system_event_source - Harddrive status not working, this system has no support.
+   info 2025-09-22 00:53:51.163    backend   main   6086   6086                      audio.pa_wrapper - Connecting to PulseAudio server
+   info 2025-09-22 00:53:51.163    backend     pa   6086   6092                      audio.pa_wrapper - Authorizing on PulseAudio server
+   info 2025-09-22 00:53:51.164    backend     pa   6086   6092                      audio.pa_wrapper - Connection to PulseAudio server established
+   info 2025-09-22 00:53:51.166    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:51.166    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:51.166    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:51.166    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:51.166    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:51.166    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:51.167    backend   timr   6086   6094          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:51.212    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.212    backend   ctrl   6086   6095                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.212    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.212    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.212    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.212    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.212    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.213    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.214    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.214    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.214    backend   main   6086   6086                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 00:53:51.214    backend   ctrl   6086   6095                      unix_app.backend - Backend is starting up.
+  error 2025-09-22 00:53:51.216    backend   ctrl   6086   6095              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+  error 2025-09-22 00:53:51.217    backend   ctrl   6086   6095              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:53:51.217    backend   wrk0   6086   6096                      unix_app.backend - Incoming IPC connection.
+   info 2025-09-22 00:53:51.217    backend   timr   6086   6116          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:51.217    backend   ctrl   6086   6095                   desk_rt.x11_capture - Starting capture.
+   info 2025-09-22 00:53:51.218    backend   timr   6086   6117          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:51.218    backend   wrk0   6086   6096                   app.backend_session - Initializing session.
+   info 2025-09-22 00:53:51.219    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:51.219    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:51.219    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:51.220    backend   wrk0   6086   6096                      unix_app.backend - Session count: 1
+warning 2025-09-22 00:53:51.220    backend   wrk1   6086   6097                                   sif - Dropping out of date license response.
+   info 2025-09-22 00:53:51.221    backend   ctrl   6086   6095                      unix_app.backend - Backend startup finished.
+   info 2025-09-22 00:53:51.221    backend   ctrl   6086   6095                   app.backend_session - Starting sockets.
+  error 2025-09-22 00:53:51.221    backend   ctrl   6086   6095              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 00:53:51.221    backend   wrk0   6086   6096                   app.backend_session - Incoming session request: centos (1001025310)
+   info 2025-09-22 00:53:51.221    backend   wrk0   6086   6096                   app.backend_session - Remote caps: sound_src, sound_sink, keyboard_sink, keyboard2, switch_sides, clip_paste_files, clip_src_files, block_input, request_vp_dimensions, keyboard_unicode, sysinfo, remote_restart, volatile_token, filetransfer_server, filetransfer_client, whiteboard, tcp_tunnel, privacy_feature, vpn, encoder_reset, two_factor_auth, force_remote_restart, lossless_codec, report_kbd_focus, string_input, quality_adaptive, clipboard_split, video_mode, encoder_retransmit, multi_stream_session
+   info 2025-09-22 00:53:51.221    backend   wrk0   6086   6096                   app.backend_session - Remote OS: Linux, Connection flags: direct paid 3 4 
+   info 2025-09-22 00:53:51.221    backend   wrk0   6086   6096                   app.backend_session - Remote version: 7.1.0
+   info 2025-09-22 00:53:51.221    backend   wrk0   6086   6096                   app.backend_session - Trying to register a new backend session.
+   info 2025-09-22 00:53:51.239    backend   wrk0   6086   6096                   app.backend_session - Requesting to restore permissions.
+   info 2025-09-22 00:53:51.239    backend   wrk0   6086   6096                   app.backend_session - Restoring permissions. (action: 3; state: 3)
+   info 2025-09-22 00:53:51.239    backend   wrk0   6086   6096                   app.backend_session - Initializing permissions.
+   info 2025-09-22 00:53:51.241    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.241    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.243    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.243    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.243    backend   wrk0   6086   6096                   app.backend_session - Enabling local clipboard.
+   info 2025-09-22 00:53:51.243    backend   wrk0   6086   6096                      app.clipbrd_comp - Engaging clipboard.
+   info 2025-09-22 00:53:51.243    backend   wrk0   6086   6096                      app.clipbrd_comp - Ready.
+   info 2025-09-22 00:53:51.245    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.245    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.245    backend   main   6086   6086                       clipbrd.capture - Clipboard capture running.
+   info 2025-09-22 00:53:51.249    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.249    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+warning 2025-09-22 00:53:51.249    backend   wrk0   6086   6096                   app.backend_session - Cannot set permission 4 to on. Permission is forced to off.
+   info 2025-09-22 00:53:51.254    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.254    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.256    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.256    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.258    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.258    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.260    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.260    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.264    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.264    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.265    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.265    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.267    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.267    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.270    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.270    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text.
+   info 2025-09-22 00:53:51.272    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.272    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:51.274    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.274    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:51.283    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.283    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:51.285    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.285    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:51.290    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.290    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:51.293    backend   wrk0   6086   6096                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:51.293    backend   wrk0   6086   6096                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:51.293    backend   wrk0   6086   6096                   app.backend_session - Checking capabilities.
+   info 2025-09-22 00:53:51.305    backend   wrk0   6086   6096                   app.backend_session - Acknowledging session.
+   info 2025-09-22 00:53:51.305    backend   wrk0   6086   6096                   desk_rt.auto_adjust - Route type: direct (LAN)
+warning 2025-09-22 00:53:56.043    backend   main   6086   6086        base.signal.global.shared_file - open (/etc/anydesk/system.conf.lock) failed (13): Permission denied 
+warning 2025-09-22 00:53:56.043    backend   main   6086   6086        base.signal.global.shared_file - Could not get file lock (9).
+  error 2025-09-22 00:53:56.043    backend   main   6086   6086                      config_file_lock - Could not open config file: /etc/anydesk/system.conf
+   info 2025-09-22 00:53:56.058    backend   ctrl   6086   6095                   app.backend_session - Starting session (deskrt, clipboard, chat, audio, input, tcp_tunnel).
+   info 2025-09-22 00:53:56.058    backend   ctrl   6086   6095                       desk_rt.encoder - 8 segments.
+   info 2025-09-22 00:53:56.058    backend   timr   6086   6136          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 00:53:56.062    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:56.062    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:56.063    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:56.069    backend   ctrl   6086   6095                   app.backend_session - Continuing session start.
+   info 2025-09-22 00:53:56.069    backend   ctrl   6086   6095             desk_rt.capture_component - Starting capture.
+   info 2025-09-22 00:53:56.070    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:53:56.070    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:53:56.070    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:53:56.074    backend   wrk0   6086   6096             desk_rt.capture_component - Keyboard layout changed to: unknown
+   info 2025-09-22 00:53:56.074    backend   wrk0   6086   6096             desk_rt.capture_component - Focused monitor changed: 0 (crtc_63)
+   info 2025-09-22 00:53:56.076    backend   ctrl   6086   6095                   app.keybd_sink_comp - Keyboard layout changed to: unknown
+   info 2025-09-22 00:53:56.076    backend   ctrl   6086   6095                        app.mouse_sink - Starting mouse sink.
+   info 2025-09-22 00:53:56.079    backend   wrk0   6086   6096                   desk_rt.auto_adjust - Route type: direct (LAN)
+   info 2025-09-22 00:53:56.083    backend   wrk0   6086   6096             desk_rt.capture_component - Keyboard layout changed to: unknown
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending input (11) permissions (enabled allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending audio (11) permissions (enabled allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending clipboard (11) permissions (enabled allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending block input (9) permissions (allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending SAS (0) permissions (forbidden unsupported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending file manager (11) permissions (enabled allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending lock account (9) permissions (allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending record session (9) permissions (allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending whiteboard (9) permissions (allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending TCP tunneling (10) permissions (enabled forbidden supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending VPN (11) permissions (enabled allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending privacy (4) permissions (disabled forbidden unsupported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending clipboard files (11) permissions (enabled allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending restart (9) permissions (allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending sysinfo (11) permissions (enabled allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending mouse pointer (9) permissions (allowed supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending modify_forbidden_windows (8) permissions (forbidden supported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Sending logoff_session (0) permissions (forbidden unsupported)
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                   app.backend_session - Requesting to store permissions.
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                       clipbrd.capture - Setting new capture formats: text files.
+   info 2025-09-22 00:53:56.084    backend   ctrl   6086   6095                      audio.pa_wrapper - Connecting to PulseAudio server
+   info 2025-09-22 00:53:56.084    backend     pa   6086   6137                      audio.pa_wrapper - Authorizing on PulseAudio server
+   info 2025-09-22 00:53:56.086    backend     pa   6086   6137                      audio.pa_wrapper - Connection to PulseAudio server established
+   info 2025-09-22 00:53:56.086    backend   wrk0   6086   6096                   app.backend_session - Received new mouse cursor parameters (2).
+   info 2025-09-22 00:53:56.086    backend   wrk0   6086   6096           desk_rt.system_event_source - Enabled mouse cursor
+   info 2025-09-22 00:53:56.086    backend   wrk0   6086   6096                   app.backend_session - Received new gui feedback parameters (0).
+   info 2025-09-22 00:53:56.086    backend   wrk0   6086   6096           desk_rt.system_event_source - Disabled gui feedback
+   info 2025-09-22 00:53:56.086    backend   wrk0   6086   6096                   app.backend_session - Received new audio parameters (1).
+   info 2025-09-22 00:53:56.086    backend   wrk2   6086   6098                   app.backend_session - Received new image quality (7).
+   info 2025-09-22 00:53:56.086    backend   wrk4   6086   6100                   app.backend_session - Received new video quality (20).
+   info 2025-09-22 00:53:56.087    backend   wrk7   6086   6103                   app.backend_session - Received new auto-quality preset (1).
+   info 2025-09-22 00:53:56.087    backend   wrk7   6086   6103                   desk_rt.auto_adjust - New preset: 0.
+   info 2025-09-22 00:53:56.087    backend   wrk7   6086   6103                   desk_rt.auto_adjust - Adjusting for LAN.
+   info 2025-09-22 00:53:56.087    backend   wrk7   6086   6103                   desk_rt.auto_adjust - Adjusting for >= 1.500 kb/s
+   info 2025-09-22 00:53:56.087    backend   wrk7   6086   6103                   app.backend_session - Enabling capture.
+   info 2025-09-22 00:53:56.093    backend   ctrl   6086   6095                       audio.pa_stream - Source device has been changed. Switching the capture stream to this device.
+   info 2025-09-22 00:53:56.093    backend   ctrl   6086   6095                       audio.pa_stream - Set playback device: alsa_output.pci-0000_00_1b.0.analog-stereo.
+   info 2025-09-22 00:53:56.102    backend   ctrl   6086   6095                       audio.pa_stream - Source device has been changed. Switching the capture stream to this device.
+   info 2025-09-22 00:53:56.102    backend   ctrl   6086   6095                       audio.pa_stream - Set source device: alsa_input.pci-0000_00_1b.0.analog-stereo.
+   info 2025-09-22 00:53:56.102    backend   ctrl   6086   6095                      audio.pa_wrapper - Connection to PulseAudio server terminated
+   info 2025-09-22 00:53:56.102    backend   ctrl   6086   6095                   app.backend_session - Session started (ok).
+   info 2025-09-22 00:53:56.102    backend   wrk5   6086   6101                   app.backend_session - Received new lock account parameters (0).
+   info 2025-09-22 00:53:56.122    backend   wrk1   6086   6097                       desk_rt.encoder - Format changed to 2062x1966 (X8R8G8B8).
+   info 2025-09-22 00:53:56.363    backend    x11   6086   6090                          unix_app.xkb - Building charcode translation table.
+   info 2025-09-22 00:53:56.363    backend   wrk0   6086   6096             desk_rt.capture_component - Keyboard layout changed to: en_us
+   info 2025-09-22 00:53:56.381    backend   wrk0   6086   6096                   app.backend_session - Received a thumbnail request.
+   info 2025-09-22 00:53:56.495    backend   wrk0   6086   6096                   app.backend_session - Sending a new thumbnail.
+   info 2025-09-22 00:54:00.718    backend   main   6086   6086                       clipbrd.capture - Clipboard changed.
+   info 2025-09-22 00:54:00.720    backend   main   6086   6086                       clipbrd.capture - Requesting utf8 text.
+   info 2025-09-22 00:54:00.720    backend   wrk0   6086   6096                      app.clipbrd_comp - Got a text offer (50 b).
+   info 2025-09-22 00:54:00.721    backend   main   6086   6086                          clipbrd.sink - Putting text data on the clipboard (24).
+   info 2025-09-22 00:54:07.487       tray filetransfer   5498   6148                       base.task_queue - Waiting for commands.
+warning 2025-09-22 00:54:22.933       tray   wrk0   5498   5601                 app.tunnel_ft_session - Invalid progress code (0).
+   info 2025-09-22 00:54:22.933       tray filetransfer   5498   6148                      app.prepare_task - Preparing files in '/home/ubu/.local/share'.
+   info 2025-09-22 00:54:22.933       tray filetransfer   5498   6148               app.local_file_transfer - Preparation of 1 files completed (io_ok).
+warning 2025-09-22 00:54:22.935       tray   wrk0   5498   5601                 app.tunnel_ft_session - Invalid progress code (0).
+warning 2025-09-22 00:54:22.938       tray   wrk0   5498   5601                 app.tunnel_ft_session - Invalid progress code (0).
+   info 2025-09-22 00:55:10.919       tray   wrk0   5498   5601                 app.file_progress_hub - Registered notifications.
+   info 2025-09-22 00:55:10.920       tray   wrk0   5498   5601               app.local_file_transfer - Download started (0).
+   info 2025-09-22 00:55:10.926       tray   wrk0   5498   5601               app.local_file_transfer - Download finished.
+   info 2025-09-22 00:56:32.026    backend   wrk0   6086   6096                   app.backend_session - Received a sysinfo request.
+   info 2025-09-22 00:56:32.058    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:56:32.058    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:56:32.058    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:56:32.058    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:56:32.058    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:56:32.058    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:56:45.592    backend   wrk0   6086   6096                   app.backend_session - Received a sysinfo request.
+   info 2025-09-22 00:56:45.620    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:56:45.621    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:56:45.621    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:56:45.621    backend    x11   6086   6090                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 00:56:45.621    backend    x11   6086   6090                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 00:56:45.621    backend    x11   6086   6090                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 00:57:14.134    backend   wrk1   6086   6097                   app.backend_session - The user has requested a connection quit.
+   info 2025-09-22 00:57:14.134    backend   wrk0   6086   6096                   app.backend_session - The socket was closed remotely.
+   info 2025-09-22 00:57:14.134    backend   ctrl   6086   6095                   app.backend_session - Stopping session.
+   info 2025-09-22 00:57:14.135       tray   wrk0   5498   5601               app.local_file_transfer - Stopping.
+   info 2025-09-22 00:57:14.135       tray   wrk0   5498   5601                 app.file_progress_hub - Unregistered notifications.
+   info 2025-09-22 00:57:14.135       tray   wrk0   5498   5601               app.local_file_transfer - File transfer stopped.
+   info 2025-09-22 00:57:14.138    backend   timr   6086   6136          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:57:14.138    backend   ctrl   6086   6095                      app.clipbrd_comp - Closing clipboard.
+   info 2025-09-22 00:57:14.138    backend   ctrl   6086   6095                      app.clipbrd_comp - Clearing clipboard.
+   info 2025-09-22 00:57:14.138    backend   main   6086   6086                       clipbrd.capture - Ignoring own data.
+   info 2025-09-22 00:57:14.138    backend   main   6086   6086                       clipbrd.capture - Unregistered clipboard notification.
+   info 2025-09-22 00:57:14.139    backend   ctrl   6086   6095                      app.clipbrd_comp - Clipboard closed.
+   info 2025-09-22 00:57:14.139    backend   ctrl   6086   6095                   app.backend_session - Session stopped.
+   info 2025-09-22 00:57:14.142    backend   ctrl   6086   6095                   app.backend_session - Destroying.
+   info 2025-09-22 00:57:14.142    backend   ctrl   6086   6095                   app.backend_session - Destroyed.
+   info 2025-09-22 00:57:14.142    backend   timr   6086   6117          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:57:14.142    backend   ctrl   6086   6095              base.prot.job_dispatcher - 0 undelivered packets.
+   info 2025-09-22 00:57:14.142    backend   timr   6086   6116          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:57:14.143    backend   ctrl   6086   6095                      unix_app.backend - Session count: 0 (Shutting down: False)
+   info 2025-09-22 00:59:11.581   frontend   ctrl   5991   5999                     unix_app.frontend - Frontend shutdown.
+   info 2025-09-22 00:59:11.600   frontend   ctrl   5991   5999                       base.signal.hub - Control quit.
+   info 2025-09-22 00:59:11.602   frontend   main   5991   5991               app.local_file_transfer - Stopping.
+   info 2025-09-22 00:59:11.602   frontend   main   5991   5991               app.local_file_transfer - File transfer stopped.
+   info 2025-09-22 00:59:11.618   frontend   timr   5991   5998          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 00:59:11.618   frontend   main   5991   5991              base.prot.job_dispatcher - 0 undelivered packets.
+warning 2025-09-22 00:59:11.618   frontend   ctrl   5991   6017                 static_stored_objects - No stored objects available.
+warning 2025-09-22 00:59:11.618   frontend   ctrl   5991   6017                         ipc_apartment - Cannot remove object (0x3f3ad45ad2c14a07, 0x27fa377da2800e1f). Key not found.
+   info 2025-09-22 00:59:11.619   frontend   main   5991   5991                                  main - Exiting normally.
+   info 2025-09-22 01:02:42.488       tray   main   5498   5498             app.named_process_starter - Spawning new process with: UID: 1000, DPY: , ID: 6, SEAT: 815779968
+warning 2025-09-22 01:02:42.492       tray   main   7244   7244        base.signal.global.shared_file - open (/proc/2067/environ) failed (13): Permission denied 
+   info 2025-09-22 01:02:42.504         ad   main   7244   7244                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - * Build 20250909110945
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - * Prefix ad
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - 
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - Command Line params: '--frontend'
+   info 2025-09-22 01:02:42.505         ad   main   7244   7244                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 01:02:42.510         ad   main   7244   7244                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 01:02:42.510         ad   main   7244   7244                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 01:02:42.512      front   main   7244   7244                                  main - Starting frontend process (7244).
+   info 2025-09-22 01:02:42.514   frontend   main   7244   7244                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 01:02:42.514   frontend   main   7244   7244                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 01:02:42.542   frontend   main   7244   7244                                   sif - Initializing license info.
+   info 2025-09-22 01:02:42.542   frontend   main   7244   7244                                   sif - License info updated: free-1
+   info 2025-09-22 01:02:42.545   frontend   main   7244   7244                       base.signal.hub - 16 threads.
+warning 2025-09-22 01:02:42.546   frontend   main   7244   7244                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 01:02:42.547   frontend   timr   7244   7249          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   ctrl   7244   7250                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.588   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   main   7244   7244                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:02:42.589   frontend   ctrl   7244   7250                     unix_app.frontend - Frontend startup.
+   info 2025-09-22 01:02:42.590   frontend   ctrl   7244   7250                     unix_app.frontend - Logging the frontend in.
+warning 2025-09-22 01:02:42.591   frontend   ctrl   7244   7250                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+  error 2025-09-22 01:02:42.594   frontend   ctrl   7244   7250              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 01:02:42.598   frontend   ctrl   7244   7250                     unix_app.frontend - Received process login response.
+warning 2025-09-22 01:02:42.598   frontend   ctrl   7244   7250                                   sif - Dropping out of date license response.
+   info 2025-09-22 01:02:42.628   frontend filetransfer   7244   7277                       base.task_queue - Waiting for commands.
+warning 2025-09-22 01:02:42.660   frontend   main   7244   7244                         app.user_info - Could not update user image (An unknown error occurred.). Defaulting.
+   info 2025-09-22 01:02:42.690   frontend    x11   7244   7248                     base.monitor_info - Monitor 0: x/y : 0/0
+   info 2025-09-22 01:02:42.690   frontend    x11   7244   7248                     base.monitor_info - Monitor 0: w/h : 2062/1966
+   info 2025-09-22 01:02:42.690   frontend    x11   7244   7248                     base.monitor_info - Monitor 0 output=63
+   info 2025-09-22 01:02:47.049   frontend   ctrl   7244   7250                     unix_app.frontend - Frontend shutdown.
+   info 2025-09-22 01:02:48.610   frontend   ctrl   7244   7250                       base.signal.hub - Control quit.
+   info 2025-09-22 01:02:48.613   frontend   main   7244   7244               app.local_file_transfer - Stopping.
+   info 2025-09-22 01:02:48.613   frontend   main   7244   7244               app.local_file_transfer - File transfer stopped.
+   info 2025-09-22 01:02:48.630   frontend   timr   7244   7249          base.signal.local.timer_impl - Timer wants to quit.
+   info 2025-09-22 01:02:48.630   frontend   main   7244   7244              base.prot.job_dispatcher - 0 undelivered packets.
+warning 2025-09-22 01:02:48.631   frontend   ctrl   7244   7268                 static_stored_objects - No stored objects available.
+warning 2025-09-22 01:02:48.631   frontend   ctrl   7244   7268                         ipc_apartment - Cannot remove object (0x3f3ad45ad2c14a07, 0x27fa377da2800e1f). Key not found.
+   info 2025-09-22 01:02:48.632   frontend   main   7244   7244                                  main - Exiting normally.
+   info 2025-09-22 01:03:12.528         ad   main   2991   2991                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - * Build 20250909110945
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - * Prefix ad
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - 
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - Command Line params: '--tray'
+   info 2025-09-22 01:03:12.530         ad   main   2991   2991                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 01:03:12.539         ad   main   2991   2991                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 01:03:12.539         ad   main   2991   2991                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 01:03:12.543       tray   main   2991   2991                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 01:03:12.543       tray   main   2991   2991                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 01:03:12.571       tray   main   2991   2991                       base.signal.hub - 1 threads.
+   info 2025-09-22 01:03:12.571       tray   main   2991   2991                    app.tunnel_ft_comp - Ready.
+   info 2025-09-22 01:03:12.635       tray   ctrl   2991   3091                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:03:12.635       tray   main   2991   2991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:03:12.635       tray   main   2991   2991                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:03:12.635       tray   ctrl   2991   3091                      unix_app.control - Control startup.
+  error 2025-09-22 01:03:12.636       tray   ctrl   2991   3091              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 01:03:12.640       tray   main   2991   3089                 data_control_listener - Aborting initialization of assembly data control. (feature disabled)
+warning 2025-09-22 01:03:12.655       tray   ctrl   2991   3091                      unix_app.control - Dropping out of date license response.
+   info 2025-09-22 01:03:12.670       tray   timr   2991   3111          base.signal.local.timer_impl - Initialized master timer.
+   info 2025-09-22 01:03:12.853       tray   wrk0   2991   3093                      unix_app.control - Received new license info. (free-1, 32)
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - * Build 20250909110945
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - * Prefix ad
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - 
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - Command Line params: '--tray'
+   info 2025-09-22 01:04:30.433         ad   main   3033   3033                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 01:04:30.447         ad   main   3033   3033                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 01:04:30.447         ad   main   3033   3033                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 01:04:30.450       tray   main   3033   3033                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 01:04:30.450       tray   main   3033   3033                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 01:04:30.479       tray   main   3033   3033                       base.signal.hub - 1 threads.
+   info 2025-09-22 01:04:30.479       tray   main   3033   3033                    app.tunnel_ft_comp - Ready.
+   info 2025-09-22 01:04:30.545       tray   main   3033   3033                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:04:30.545       tray   ctrl   3033   3129                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:04:30.545       tray   main   3033   3033                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:04:30.545       tray   ctrl   3033   3129                      unix_app.control - Control startup.
+  error 2025-09-22 01:04:30.546       tray   ctrl   3033   3129              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 01:04:30.550       tray   main   3033   3127                 data_control_listener - Aborting initialization of assembly data control. (feature disabled)
+   info 2025-09-22 01:04:30.568       tray   timr   3033   3156          base.signal.local.timer_impl - Initialized master timer.
+warning 2025-09-22 01:04:30.569       tray   ctrl   3033   3129                      unix_app.control - Dropping out of date license response.
+   info 2025-09-22 01:04:30.743       tray   wrk0   3033   3130                      unix_app.control - Received new license info. (free-1, 32)
+                                      info 2025-09-22 01:28:35.520         ad   main   2933   2933                         impl_selector - using avx2
+ * * * * * * * * * * * * * * * * * *
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - * AnyDesk Linux Startup *
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - * Version 7.1.0 ((unknown) ac055bc6d9fdd6c8da59916821891f164dba8e31)
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - * Build 20250909110945
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - * Prefix ad
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - * Copyright (C) 2025 AnyDesk Software GmbH *
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - 
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - Distribution Info: Ubuntu 24.04.3 LTS
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - Command Line params: '--tray'
+   info 2025-09-22 01:28:35.521         ad   main   2933   2933                                  main - Found GLib Version: 2.80.
+   info 2025-09-22 01:28:35.528         ad   main   2933   2933                       app.common_path - user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu
+
+   info 2025-09-22 01:28:35.528         ad   main   2933   2933                       app.common_path - initialized user = /home/ubu/.anydesk, system = /etc/anydesk
+   info 2025-09-22 01:28:35.534       tray   main   2933   2933                           gui.gui_app - DPI scaling: 1.00 / 1.00
+   info 2025-09-22 01:28:35.534       tray   main   2933   2933                           gui.gui_app - Using std-resolution bitmaps.
+   info 2025-09-22 01:28:35.564       tray   main   2933   2933                       base.signal.hub - 1 threads.
+   info 2025-09-22 01:28:35.564       tray   main   2933   2933                    app.tunnel_ft_comp - Ready.
+   info 2025-09-22 01:28:35.690       tray   main   2933   2933                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:28:35.690       tray   ctrl   2933   3043                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:28:35.690       tray   main   2933   2933                                 epoll - Choosing no-split-epoll
+   info 2025-09-22 01:28:35.690       tray   ctrl   2933   3043                      unix_app.control - Control startup.
+  error 2025-09-22 01:28:35.691       tray   ctrl   2933   3043              base.signal.global.event - Cannot set the subsignal count to a smaller or equal value.
+   info 2025-09-22 01:28:35.714       tray   main   2933   3040                 data_control_listener - Aborting initialization of assembly data control. (feature disabled)
+   info 2025-09-22 01:28:35.714       tray   timr   2933   3050          base.signal.local.timer_impl - Initialized master timer.
+warning 2025-09-22 01:28:35.716       tray   ctrl   2933   3043                      unix_app.control - Dropping out of date license response.
+  error 2025-09-22 01:28:35.719       tray   main   2933   2933                                  glib - gtk_widget_get_scale_factor: assertion 'GTK_IS_WIDGET (widget)' failed
+   info 2025-09-22 01:28:36.080       tray   wrk0   2933   3044                      unix_app.control - Received new license info. (free-1, 32)

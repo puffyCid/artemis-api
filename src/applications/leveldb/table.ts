@@ -101,7 +101,7 @@ function parseFooter(data: Uint8Array): Footer | ApplicationError {
 
     // Typically this is 8 bytes in length. However, technically it could be longer
     // There is often 0 padding between varint data and the footer signature. So we can nom until we encounter that
-    const var_data = takeUntil(foot_start.remaining, new Uint8Array([0]));
+    const var_data = takeUntil(foot_start.remaining, new Uint8Array([ 0 ]));
     if (var_data instanceof NomError) {
         return new ApplicationError(`LEVELDB`, `could not parse var data: ${var_data}`);
     }
@@ -258,21 +258,19 @@ function parseKey(shared_key: string, data: Uint8Array): KeyValueData | Applicat
     // Sometimes key is composed of 2 strings
     const prefix = 95;
     // If key starts has prefix '_' then it has two parts
-    if ((key_data.nommed as Uint8Array)[0] === prefix) {
+    if ((key_data.nommed as Uint8Array)[ 0 ] === prefix) {
         // First has end of string character?
-        const first_part = takeUntil(key_data.nommed, new Uint8Array([0]));
+        const first_part = takeUntil(key_data.nommed, new Uint8Array([ 0 ]));
         if (first_part instanceof NomError) {
-            if (key_data[0] === 0) {
-                key_string = extractUtf8String(key_data.nommed as Uint8Array);
-            }
+            return new ApplicationError(`LEVELDB`, `could not get first part of key: ${first_part}`);
+        }
+
+        const first_data = (first_part.remaining as Uint8Array).buffer.slice(2);
+        // If 0 the encoding is UTF16-LE. Otherwise its ASCII
+        if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([ 0 ])) {
+            key_string = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf16String(new Uint8Array(first_data))}`;
         } else {
-            const first_data = (first_part.remaining as Uint8Array).buffer.slice(2);
-            // If 0 the encoding is UTF16-LE. Otherwise its ASCII
-            if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([0])) {
-                key_string = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf16String(new Uint8Array(first_data))}`;
-            } else {
-                key_string = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf8String(new Uint8Array(first_data))}`;
-            }
+            key_string = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf8String(new Uint8Array(first_data))}`;
         }
     } else {
         key_string = extractUtf8String(key_data.nommed as Uint8Array);
@@ -382,9 +380,9 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
         key_type: first_key_value.key_type,
         value_type: first_key_value.value_type,
         value: first_key_value.value,
-        shared_key: first_key_value.shared_key.trimEnd(),
-        origin: first_key_value.key.split(" ").at(0) ?? "",
-        key: first_key_value.key.split(" ").at(2) ?? "",
+        shared_key: first_key_value.shared_key,
+        origin: first_key_value.key,
+        key: first_key_value.entry_key,
         path,
     };
     values.push(entry);
@@ -406,7 +404,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
             key_type: key_value.key_type,
             value_type: key_value.value_type,
             value: key_value.value,
-            shared_key: key_value.shared_key.trimEnd(),
+            shared_key: key_value.shared_key,
             origin: key_value.key.split(" ").at(0) ?? "",
             key: key_value.key.split(" ").at(2) ?? "",
             path,
@@ -496,13 +494,13 @@ function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | Appl
         let key_string = "";
         let entry_key = "";
         // First key string has end of string character?
-        const first_part = takeUntil(key_data, new Uint8Array([0]));
+        const first_part = takeUntil(key_data, new Uint8Array([ 0 ]));
         if (first_part instanceof NomError) {
             key_string = extractUtf8String(key_data);
         } else {
             const first_data = (first_part.remaining as Uint8Array).buffer.slice(2);
             // If 0 the encoding is UTF16-LE. Otherwise its ASCII
-            if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([0])) {
+            if (new Uint8Array((first_part.remaining as Uint8Array).buffer.slice(1, 2)) === new Uint8Array([ 0 ])) {
                 key_string = `${extractUtf8String(first_part.nommed as Uint8Array)}  ${extractUtf16String(new Uint8Array(first_data))}`;
                 entry_key = `${extractUtf8String(first_part.nommed as Uint8Array)} ${extractUtf16String(new Uint8Array(first_data))}`;
             } else {
@@ -575,8 +573,8 @@ export function testLevelLdb(): void {
         throw `Got length ${block_result.length} expected 61.......parseBlock ❌`;
     }
 
-    if (!JSON.stringify(block_result[0].value).includes("13401944653177090")) {
-        throw `Got value ${JSON.stringify(block_result[0].value)} expected to contain 13401944653177090.......parseBlock ❌`;
+    if (!JSON.stringify(block_result[ 0 ].value).includes("13401944653177090")) {
+        throw `Got value ${JSON.stringify(block_result[ 0 ].value)} expected to contain 13401944653177090.......parseBlock ❌`;
     }
     console.info(`  Function parseBlock ✅`);
 
@@ -605,7 +603,7 @@ export function testLevelLdb(): void {
 
     console.info(`  Function parseBlockData ✅`);
 
-    const parse_key_block_test = [0, 201, 23];
+    const parse_key_block_test = [ 0, 201, 23 ];
     const parse_key_block_result = parseKeyBlock(new Uint8Array(parse_key_block_test));
     if (parse_key_block_result instanceof ApplicationError) {
         throw parse_key_block_result;
@@ -622,7 +620,7 @@ export function testLevelLdb(): void {
     console.info(`  Function parseKeyBlock ✅`);
 
 
-    const parse_key_test = [0, 34, 3, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 96, 1, 255, 255, 255, 255, 255, 255, 255, 0, 201, 23, 0, 57, 5, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 84, 0, 0, 0, 0, 0, 0, 206, 23, 214, 240, 3, 0, 57, 6, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 62, 0, 0, 0, 0, 0, 0, 169, 136, 4, 234, 252, 1, 0, 9, 5, 96, 1, 255, 255, 255, 255, 255, 255, 255, 152, 133, 6, 212, 15, 0, 0, 0, 0, 40, 0, 0, 0, 105, 0, 0, 0, 171, 0, 0, 0, 4, 0, 0, 0];
+    const parse_key_test = [ 0, 34, 3, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 96, 1, 255, 255, 255, 255, 255, 255, 255, 0, 201, 23, 0, 57, 5, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 84, 0, 0, 0, 0, 0, 0, 206, 23, 214, 240, 3, 0, 57, 6, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 62, 0, 0, 0, 0, 0, 0, 169, 136, 4, 234, 252, 1, 0, 9, 5, 96, 1, 255, 255, 255, 255, 255, 255, 255, 152, 133, 6, 212, 15, 0, 0, 0, 0, 40, 0, 0, 0, 105, 0, 0, 0, 171, 0, 0, 0, 4, 0, 0, 0 ];
     const parse_key_result = parseKey("", new Uint8Array(parse_key_test));
     if (parse_key_result instanceof ApplicationError) {
         throw parse_key_result;
@@ -632,14 +630,14 @@ export function testLevelLdb(): void {
         throw `Got key ${parse_key_result.key} expected '_https://www.google.com \`'.......parseKey ❌`;
     }
 
-    if (JSON.stringify(Array.from(parse_key_result.value)) !== JSON.stringify([0, 201, 23])) {
+    if (JSON.stringify(Array.from(parse_key_result.value)) !== JSON.stringify([ 0, 201, 23 ])) {
         throw `Got value [${parse_key_result.value}] expected [0,201,23].......parseKey ❌`;
     }
 
     console.info(`  Function parseKey ✅`);
 
 
-    const parse_index_test = [208, 1, 120, 0, 34, 3, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 96, 1, 255, 9, 1, 20, 0, 201, 23, 0, 57, 5, 98, 40, 0, 104, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 84, 0, 5, 1, 28, 206, 23, 214, 240, 3, 0, 57, 6, 198, 65, 0, 0, 62, 5, 64, 44, 0, 169, 136, 4, 234, 252, 1, 0, 9, 5, 96, 1, 9, 145, 20, 255, 152, 133, 6, 212, 15, 1, 29, 60, 40, 0, 0, 0, 105, 0, 0, 0, 171, 0, 0, 0, 4, 0, 0, 0, 1, 95, 36, 244, 214, 241, 148, 6, 8, 254, 148, 6, 133, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 251, 128, 139, 36, 117, 71, 219];
+    const parse_index_test = [ 208, 1, 120, 0, 34, 3, 95, 104, 116, 116, 112, 115, 58, 47, 47, 119, 119, 119, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 0, 1, 96, 1, 255, 9, 1, 20, 0, 201, 23, 0, 57, 5, 98, 40, 0, 104, 115, 98, 95, 119, 105, 122, 46, 122, 112, 99, 46, 103, 119, 115, 45, 119, 105, 122, 45, 115, 101, 114, 112, 46, 1, 84, 0, 5, 1, 28, 206, 23, 214, 240, 3, 0, 57, 6, 198, 65, 0, 0, 62, 5, 64, 44, 0, 169, 136, 4, 234, 252, 1, 0, 9, 5, 96, 1, 9, 145, 20, 255, 152, 133, 6, 212, 15, 1, 29, 60, 40, 0, 0, 0, 105, 0, 0, 0, 171, 0, 0, 0, 4, 0, 0, 0, 1, 95, 36, 244, 214, 241, 148, 6, 8, 254, 148, 6, 133, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 251, 128, 139, 36, 117, 71, 219 ];
     const parse_index_result = parseIndex(new Uint8Array(parse_index_test), 133, 0);
     if (parse_index_result instanceof ApplicationError) {
         throw parse_index_result;
@@ -656,7 +654,7 @@ export function testLevelLdb(): void {
     console.info(`  Function parseIndex ✅`);
 
 
-    const parse_foot_test = [241, 148, 6, 8, 254, 148, 6, 133, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 251, 128, 139, 36, 117, 71, 219];
+    const parse_foot_test = [ 241, 148, 6, 8, 254, 148, 6, 133, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 251, 128, 139, 36, 117, 71, 219 ];
     const parse_footer_result = parseFooter(new Uint8Array(parse_foot_test));
     if (parse_footer_result instanceof ApplicationError) {
         throw parse_footer_result;
@@ -682,8 +680,8 @@ export function testLevelLdb(): void {
         throw `Got ldb entries length ${parse_ldb_result.length} expected 109.......parseLdb ❌`;
     }
 
-    if (!JSON.stringify(parse_ldb_result[8].value).includes("13401944468429548")) {
-        throw `Got ldb entry value ${JSON.stringify(parse_ldb_result[8].value)} expected to include 13401944468429548.......parseLdb ❌`;
+    if (!JSON.stringify(parse_ldb_result[ 8 ].value).includes("13401944468429548")) {
+        throw `Got ldb entry value ${JSON.stringify(parse_ldb_result[ 8 ].value)} expected to include 13401944468429548.......parseLdb ❌`;
     }
 
     console.info(`  Function parseLdb ✅`);
