@@ -169,19 +169,19 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
         const value_type = nomUnsignedOneBytes(remaining);
         if (value_type instanceof NomError) {
             break;
-            return new ApplicationError(`LEVELDB`, `could not get wal value type: ${value_type}`);
         }
 
         let log_type = LogType.Unknown;
         let key = new Uint8Array([]);
         let value: null | Uint8Array = null;
 
-        const key_size = nomUnsignedOneBytes(value_type.remaining);
-        if (key_size instanceof NomError) {
+        // Key size is varint value
+        const key_size = parseVarInt(value_type.remaining);
+        if (key_size instanceof ApplicationError) {
             return new ApplicationError(`LEVELDB`, `could not get wal key size: ${key_size}`);
         }
 
-        const key_data = take(key_size.remaining, key_size.value);
+        const key_data = take(key_size.remaining, key_size.value as number);
         if (key_data instanceof NomError) {
             return new ApplicationError(`LEVELDB`, `could not get wal key data: ${key_data}`);
         }
@@ -209,7 +209,6 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
             remaining = value_data.remaining as Uint8Array;
         } else if (value_type.value === 0) {
             // It seems only keys can be recovered from deleted entries
-            // Skipping for now
             log_type = LogType.Deletion;
             const key_string = parseKey(key);
 
