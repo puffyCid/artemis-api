@@ -53,7 +53,7 @@ export function oleToUnixEpoch(oletime: number): number {
 }
 
 /**
- * Convert browser WebKit time to UnixEpoch
+ * Convert browser WebKit time to UnixEpoch. You will want to ensure you webkittime is in seconds! (Divide by 1000000n)
  * @param webkittime WebKit timestamp in **seconds**
  * @returns UnixEpoch seconds
  */

@@ -1,5 +1,5 @@
 import { AnyDesk, dumpData, Format, Output, OutputType, PlatformType } from "../../../mod";
-import { testReadTrace } from "../../test";
+import { testReadConfig, testReadTrace } from "../../test";
 
 function main() {
     console.log('Running AnyDesk tests....');
@@ -10,6 +10,11 @@ function main() {
     if (hits.length !== 2872) {
         throw `Got ${hits.length} rows. Expected 2872`;
     }
+    const configs = results.configs(used_alt_dir);
+    if(configs.length !== 2) {
+        throw `Got ${hits.length} rows. Expected 2`;
+    }
+
     if (hits[ 0 ].account !== "cipice2205@dotxan.com") {
         throw `Got ${hits[ 0 ].account} account. Expected 'cipice2205@dotxan.com'`;
     }
@@ -21,24 +26,16 @@ function main() {
     }
     console.log(' Live test passed! 🥳\n');
 
-    const out: Output = {
-        name: "local",
-        directory: "./tmp",
-        format: Format.JSONL,
-        compress: false,
-        timeline: false,
-        endpoint_id: "",
-        collection_id: 0,
-        output: OutputType.LOCAL
-    };
-    dumpData(hits, "anydesk_logs", out);
     console.log(' Starting Trace tests....');
     testReadTrace();
     console.log(' All Trace tests passed! 🥳\n');
 
+    console.log(' Starting Config tests....');
+    testReadConfig();
+    console.log(' All Config tests passed! 🥳\n');
+
 
     console.log('All AnyDesk tests passed! 🥳💃🕺');
-
 }
 
 main();

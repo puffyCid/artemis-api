@@ -25,7 +25,7 @@ export class Chromium {
      * @param alt_path Optional alternative path to directory contain Chromium data
      * @returns `Chromium` instance class
      */
-    constructor (platform: PlatformType, unfold = false, browser: BrowserType, alt_path?: string) {
+    constructor (platform: PlatformType, unfold = false, browser = BrowserType.CHROMIUM, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         this.browser = browser;

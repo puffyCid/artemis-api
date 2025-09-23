@@ -1,8 +1,9 @@
 import { glob, PlatformType, readTextFile } from "../../../mod";
-import { AnyDeskUsers, TraceEntry } from "../../../types/applications/anydesk";
+import { AnyDeskUsers, Config, TraceEntry } from "../../../types/applications/anydesk";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { FileError } from "../../filesystem/errors";
 import { ApplicationError } from "../errors";
+import { readConfig } from "./conf";
 import { readTrace } from "./trace";
 
 /**
@@ -18,7 +19,7 @@ export class AnyDesk {
      * @param alt_path Optional alternative directory that contains all AnyDesk related files including configs
      * @returns `AnyDesk` instance class
      */
-    constructor (platform: PlatformType, alt_path?: string) {
+    constructor(platform: PlatformType, alt_path?: string) {
         this.platform = platform;
 
         // Get AnyDesk data based on PlatformType
@@ -46,7 +47,7 @@ export class AnyDesk {
             return;
         }
 
-        this.paths = [ { user_path: alt_path, version: client_version, account: client_account, id: client_id } ];
+        this.paths = [{ user_path: alt_path, version: client_version, account: client_account, id: client_id }];
     }
 
     /**
@@ -66,7 +67,7 @@ export class AnyDesk {
         let hits: TraceEntry[] = [];
         // If alternative directory was provided then parse all trace files
         if (is_alt && this.paths.length === 1) {
-            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*.trace`);
+            const entries = glob(`${this.paths[0].user_path}${separator}*.trace`);
             if (entries instanceof FileError) {
                 console.error(entries);
                 return hits;
@@ -75,12 +76,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readTrace(entry.full_path, this.paths[ 0 ]);
-                if (values instanceof ApplicationError) {
-                    console.error(values);
-                    continue;
-                }
-
+                const values = readTrace(entry.full_path, this.paths[0]);
                 hits = hits.concat(values);
             }
             return hits;
@@ -99,11 +95,6 @@ export class AnyDesk {
                     continue;
                 }
                 const values = readTrace(trace_file.full_path, entry);
-                if (values instanceof ApplicationError) {
-                    console.error(values);
-                    continue;
-                }
-
                 hits = hits.concat(values);
             }
         }
@@ -118,17 +109,89 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readTrace(entry.full_path, this.paths[ 0 ]);
-                if (values instanceof ApplicationError) {
-                    console.error(values);
-                    return hits;
-                }
+                const values = readTrace(entry.full_path, this.paths[0]);
                 hits = hits.concat(values);
             }
         }
 
         return hits;
 
+    }
+
+    /**
+     * Function to parse AnyDesk config files. By default parses config files at AnyDesk default paths
+     * @param is_alt If you have provided an optional alternative directory containing the AnyDesk files. Set this to true
+     * @returns Array of `Config`
+     */
+    public configs(is_alt = false): Config[] {
+        const hits: Config[] = [];
+        let system = "/etc/anydesk/*.conf";
+
+        let separator = "/";
+        if (this.platform === PlatformType.Windows) {
+            separator = "\\";
+            system = "TODO";
+        }
+
+        // If alternative directory was provided then parse all trace files
+        if (is_alt && this.paths.length === 1) {
+            const entries = glob(`${this.paths[0].user_path}${separator}*.conf`);
+            if (entries instanceof FileError) {
+                console.error(entries);
+                return hits;
+            }
+            for (const entry of entries) {
+                if (!entry.is_file) {
+                    continue;
+                }
+                const values = readConfig(entry.full_path, this.paths[0]);
+                if (values instanceof ApplicationError) {
+                    continue;
+                }
+                hits.push(values);
+            }
+            return hits;
+        }
+
+        // Try parsing conf files at default paths
+        for (const entry of this.paths) {
+            let path = `${entry.user_path}${separator}*.conf`;
+            const entries = glob(path);
+            if (entries instanceof FileError) {
+                console.error(entries);
+                continue;
+            }
+            for (const trace_file of entries) {
+                if (!trace_file.is_file) {
+                    continue;
+                }
+                const values = readConfig(trace_file.full_path, entry);
+                if (values instanceof ApplicationError) {
+                    continue;
+                }
+                hits.push(values);
+            }
+        }
+        // Get system conf file(s)
+        if (this.paths.length !== 0) {
+            const entries = glob(system);
+            if (entries instanceof FileError) {
+                console.error(entries);
+                return hits;
+            }
+            for (const entry of entries) {
+                if (!entry.is_file) {
+                    continue;
+                }
+                const values = readConfig(entry.full_path, this.paths[0]);
+                if (values instanceof ApplicationError) {
+                    continue;
+                }
+                hits.push(values);
+            }
+        }
+
+        return hits;
     }
 
     /**

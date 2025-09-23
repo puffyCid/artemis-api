@@ -1,5 +1,5 @@
 import { readFile } from "../../../mod";
-import { LevelDbEntry, ValueType } from "../../../types/applications/level";
+import { LevelDbEntry, LogType, ValueType } from "../../../types/applications/level";
 import { ProtoTag } from "../../../types/encoding/protobuf";
 import { decompress_snappy, decompress_zstd } from "../../compression/decompress";
 import { CompressionError } from "../../compression/errors";
@@ -385,6 +385,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
         origin: first_key_value.key,
         key: first_key_value.entry_key,
         path,
+        state: first_key_value.value_type !== ValueType.Unknown ? LogType.Value : LogType.Deletion
     };
     values.push(entry);
 
@@ -409,6 +410,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
             origin: key_value.key.split(" ").at(0) ?? "",
             key: key_value.key.split(" ").at(2) ?? "",
             path,
+            state: key_value.value_type !== ValueType.Unknown ? LogType.Value : LogType.Deletion
         };
 
         if (level_entry.sequence === 0 && level_entry.key === "" || level_entry.key.includes(" [strings] Failed to get UTF8 string: ")) {

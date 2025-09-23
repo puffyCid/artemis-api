@@ -9,6 +9,7 @@ export interface LevelDbEntry {
     origin: string;
     key: string;
     path: string;
+    state: string;
 }
 
 export interface LevelManifest {
@@ -59,6 +60,7 @@ export enum ValueType {
     Date = "Date",
     Binary = "Binary",
     Array = "Array",
+    /**Likely represents a deleted value */
     Unknown = "Unknown",
     Protobuf = "Protobuf",
     Utf16 = "Utf16",

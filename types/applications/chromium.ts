@@ -249,6 +249,16 @@ export enum ChromiumCookieType {
   Other = "Other",
 }
 
+/**
+ * Object representing a Local Storage LevelDb entry.  
+ * This object is Timesketch compatible.  It does **not** need to be timelined
+ */
 export interface ChromiumLocalStorage extends LevelDbEntry {
   version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType
+  timestamp_desc: "Local Storage Entry Write" | "Local Storage Write Ahead Log";
+  artifact: "Level Database";
+  data_type: "applications:leveldb:entry";
 }

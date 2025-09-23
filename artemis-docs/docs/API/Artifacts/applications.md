@@ -428,7 +428,15 @@ main();
 
 #### traceFiles(is_alt) -> TraceEntry[]
 
-Log entries from trace log files. If you provided an optional alternative directory
+Log entries from trace log files.
+
+| Param    | Type         | Description                                                                                         |
+| -------- | ------------ | --------------------------------------------------------------------------------------------------- |
+| is_alt   | boolean      | Optional. Set to true if you provided an alternative directory when initializing the AnyDesk class  |
+
+#### configs(is_alt) -> Config[]
+
+AnyDesk config information.
 
 | Param    | Type         | Description                                                                                         |
 | -------- | ------------ | --------------------------------------------------------------------------------------------------- |

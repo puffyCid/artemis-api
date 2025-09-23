@@ -220,7 +220,8 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
                 shared_key: "",
                 origin: key_string.split(" ").at(0) ?? key_string,
                 key: key_string.split(" ").at(1) ?? key_string,
-                path
+                path,
+                state: LogType.Deletion
             };
             values.push(entry);
 
@@ -241,7 +242,8 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
             shared_key: "",
             origin: key_string.split(" ").at(0) ?? key_string,
             key: key_string.split(" ").at(1) ?? key_string,
-            path
+            path,
+            state: LogType.Value
         };
 
         if (value !== null) {
@@ -524,7 +526,7 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
 
     if (value_type === ValueType.String) {
         // webpages may store non-valid UTF8
-        return extractUtf8StringLossy(input);
+        return extractUtf8StringLossy(input).replace("\u0001", "").replace("\u0000", "");
     }
     if (value_type === ValueType.Utf16) {
         return extractUtf16String(input);
@@ -533,7 +535,7 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
     if (value_type === ValueType.Binary) {
         return encode(data);
     }
-    //console.log(`unknown value type: ${value_type}`);
+    console.warn(`unknown value type: ${value_type}`);
     //console.log(JSON.stringify(Array.from(data)));
     return "Unknown value";
 }

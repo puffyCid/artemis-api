@@ -28,3 +28,12 @@ export interface TraceEntry {
     version: string;
     id: string;
 }
+
+export interface Config {
+    message: string;
+    datetime: string;
+    timestamp_desc: "Config Created";
+    artifact: "AnyDesk Config";
+    data_type: "applications:anydesk:config:entry";
+    [key:string]: string;
+}

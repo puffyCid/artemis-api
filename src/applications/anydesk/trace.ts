@@ -1,11 +1,16 @@
 import { AnyDeskUsers, TraceEntry } from "../../../types/applications/anydesk";
 import { FileError } from "../../filesystem/errors";
-import { readFile, readLines } from "../../filesystem/files";
+import { readLines } from "../../filesystem/files";
 import { NomError } from "../../nom/error";
 import { takeUntil } from "../../nom/parsers";
-import { ApplicationError } from "../errors";
 
-export function readTrace(path: string, user: AnyDeskUsers): TraceEntry[] | ApplicationError {
+/**
+ * Function to parse AnyDesk trace files
+ * @param path Path to trace file
+ * @param user User profile info associated with AnyDesk
+ * @returns Array of `TraceEntry`
+ */
+export function readTrace(path: string, user: AnyDeskUsers): TraceEntry[]  {
     const hits: TraceEntry[] = [];
     let offset = 0;
     const limit = 100;
@@ -135,9 +140,6 @@ export function readTrace(path: string, user: AnyDeskUsers): TraceEntry[] | Appl
 export function testReadTrace(): void {
     const test = "../../test_data/anydesk/anydesk.trace";
     const results = readTrace(test, { user_path: "", id: "1234", account: "adfasdf@adfads.com", version: "7.1.0" });
-    if (results instanceof ApplicationError) {
-        throw results;
-    }
 
     if (results.length !== 790) {
         throw `Got ${results.length} rows expected 790.......readTrace ❌`;
@@ -153,9 +155,6 @@ export function testReadTrace(): void {
 
     const test2 = "../../test_data/anydesk/anydesk_var_log.trace";
     const results2 = readTrace(test2, { user_path: "", id: "1234", account: "adfasdf@adfads.com", version: "7.1.0" });
-    if (results2 instanceof ApplicationError) {
-        throw results;
-    }
 
     if (results2.length !== 2082) {
         throw `Got ${results2.length} rows expected 2082.......readTrace ❌`;
@@ -170,5 +169,4 @@ export function testReadTrace(): void {
     }
 
     console.info(`  Function readTrace ✅`);
-
 }
