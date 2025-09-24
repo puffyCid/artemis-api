@@ -203,6 +203,9 @@ function officeBookmarks(
       if (typeof data === "string") {
         console.warn(`got string for kBookmarkDataKey? It should be bytes`);
         continue;
+      } else if (data === undefined) {
+        console.warn(`got undefined for kBookmarkDataKey? It should be bytes`);
+        continue;
       }
       const book_data = Uint8Array.from(data);
 

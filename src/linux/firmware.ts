@@ -49,14 +49,13 @@ export function firmwareHistory(alt_path?: string): FirmwareHistory[] | LinuxErr
         const meta = firm.metadata.split(";");
         for (const value of meta) {
             const key_value = value.split("=");
-            if (key_value.length !== 2) {
+            if (key_value.length !== 2 || key_value[ 0 ] === undefined) {
                 continue;
             }
 
             if (key_value[ 0 ] === "BootTime") {
                 firm[ key_value[ 0 ] ] = unixEpochToISO(Number(key_value[ 1 ]));
                 continue;
-
             }
 
             firm[ key_value[ 0 ] ] = key_value[ 1 ];
@@ -78,6 +77,10 @@ export function testFirmwareHistory(): void {
     const results = firmwareHistory(test);
     if (results instanceof LinuxError) {
         throw results;
+    }
+
+    if (results[ 0 ] === undefined) {
+        throw `Got device ID undefined wanted 03281da317dccd2b18de2bd1cc70a782df40ed7e.......firmwareHistory ❌`;
     }
 
     if (results[ 0 ].device_id != '03281da317dccd2b18de2bd1cc70a782df40ed7e') {

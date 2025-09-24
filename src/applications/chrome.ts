@@ -171,7 +171,7 @@ export class Chrome extends Chromium {
    * @param [limit=100] How many records to return. Default is 100
    * @returns Array of `ChromeDips` 
    */
-  public dips(offset = 0, limit = 100): ChromeDips[] {
+  public override dips(offset = 0, limit = 100): ChromeDips[] {
     const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
     return chromiumDips(this.paths, this.platform, query);
   }

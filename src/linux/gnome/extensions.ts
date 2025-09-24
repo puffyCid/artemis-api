@@ -78,6 +78,10 @@ export function testGetGnomeExtensions(): void {
     throw result;
   }
 
+  if (result[ 0 ] === undefined) {
+    throw `Got extension name undefined expected GSConnect.......getGnomeExtensions ❌`;
+  }
+
   if (result[ 0 ].name != "GSConnect") {
     throw `Got extension name ${result[ 0 ].name} expected GSConnect.......getGnomeExtensions ❌`;
   }

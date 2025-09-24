@@ -611,6 +611,10 @@ export function testRpmInfo(): void {
     throw tags_result;
   }
 
+  if (tags_result[ 1001 ] === undefined) {
+    throw `Got undefined tag result value expected 1.3.2.......parseTags ❌`;
+  }
+
   if (tags_result[ 1001 ][ 0 ] != "1.3.2") {
     throw `Got ${tags_result[ 1001 ][ 0 ]} value expected 1.3.2.......parseTags ❌`;
   }
@@ -655,6 +659,10 @@ export function testRpmInfo(): void {
 
   if (rpm_result.length != 1) {
     throw `Got ${rpm_result.length} expected 1.......getRpmInfo ❌`;
+  }
+
+  if (rpm_result[ 0 ] === undefined) {
+    throw `Got undefined name expected shim-x64.......getRpmInfo ❌`;
   }
 
   if (rpm_result[ 0 ].name != "shim-x64") {

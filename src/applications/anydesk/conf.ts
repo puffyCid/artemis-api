@@ -27,14 +27,18 @@ export function readConfig(path: string, user: AnyDeskUsers): Config | Applicati
         datetime: created,
         timestamp_desc: "Config Created",
         artifact: "AnyDesk Config",
-        data_type: "applications:anydesk:config:entry"
+        data_type: "applications:anydesk:config:entry",
+        account: user.account,
+        version: user.version,
+        id: user.id
     };
     for (const entry of results) {
         const key_value = entry.split("=", 2);
-        if(key_value.at(0) === undefined) {
+        const key = key_value.at(0);
+        if (key === undefined) {
             continue;
         }
-        value[key_value[0]] = key_value.at(1) ?? "";
+        value[ key ] = key_value.at(1) ?? "";
     }
 
     return value;
@@ -49,15 +53,15 @@ export function testReadConfig(): void {
     const test = "../../test_data/anydesk/user.conf";
     const results = readConfig(test, { user_path: "", id: "1234", account: "adfasdf@adfads.com", version: "7.1.0" });
 
-    if (results["ad.roster.discovered.view_type"] !== "2") {
-        throw `Got view_type ${results["ad.roster.discovered.view_type"]} expected 2.......readConfig ❌`;
+    if (results[ "ad.roster.discovered.view_type" ] !== "2") {
+        throw `Got view_type ${results[ "ad.roster.discovered.view_type" ]} expected 2.......readConfig ❌`;
     }
 
     const test2 = "../../test_data/anydesk/system.conf";
     const results2 = readConfig(test2, { user_path: "", id: "1234", account: "adfasdf@adfads.com", version: "7.1.0" });
 
-    if (results2["ad.inst.id"] !== "34b44fe840517fc112b20e806a28ec18") {
-        throw `Got ID ${results2["ad.inst.id"]} expected 34b44fe840517fc112b20e806a28ec18.......readConfig ❌`;
+    if (results2[ "ad.inst.id" ] !== "34b44fe840517fc112b20e806a28ec18") {
+        throw `Got ID ${results2[ "ad.inst.id" ]} expected 34b44fe840517fc112b20e806a28ec18.......readConfig ❌`;
     }
 
     console.info(`  Function readConfig ✅`);

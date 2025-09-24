@@ -171,7 +171,7 @@ export class Edge extends Chromium {
      * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `ChromiumDips` 
      */
-    public dips(offset = 0, limit = 100): EdgeDips[] {
+    public override dips(offset = 0, limit = 100): EdgeDips[] {
         const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
         return chromiumDips(this.paths, this.platform, query);
     }

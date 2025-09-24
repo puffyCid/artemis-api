@@ -95,8 +95,12 @@ export function testPowerShellHistory(): void {
     throw hits;
   }
 
-  if (hits.entries[0] !== 'whoami') {
-    throw `Got ${hits.entries[0]} expected 'whoami'.......powershellHistory ❌`
+  if (hits.entries === undefined || !Array.isArray(hits.entries)) {
+    throw `Got undefined expected an array.......powershellHistory ❌`;
+  }
+
+  if (hits.entries[ 0 ] !== 'whoami') {
+    throw `Got ${hits.entries[ 0 ]} expected 'whoami'.......powershellHistory ❌`;
   }
 
   console.info(`  Function powershellHistory ✅`);
@@ -106,8 +110,8 @@ export function testPowerShellHistory(): void {
   if (values instanceof WindowsError) {
     throw values;
   }
-  if (values.entries[0] !== 'whoami') {
-    throw `Got ${values.entries[0]} expected 'whoami'.......parsePowershellHistory ❌`
+  if (values.entries[ 0 ] !== 'whoami') {
+    throw `Got ${values.entries[ 0 ]} expected 'whoami'.......parsePowershellHistory ❌`;
   }
 
   console.info(`  Function parsePowershellHistory ✅`);

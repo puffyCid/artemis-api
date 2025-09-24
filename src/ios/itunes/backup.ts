@@ -78,6 +78,10 @@ function getInfo(path: string): InfoPlist | IosError {
 
   const info = result as unknown as InfoPlist;
   for (const key in info.Applications) {
+    if (info.Applications[ key ] === undefined) {
+      continue;
+    }
+
     const data = info.Applications[ key ].iTunesMetadata;
     const result = parseAppItunesMetadata(Uint8Array.from(data as number[]));
     if (result instanceof IosError) {

@@ -205,9 +205,9 @@ function parseRuby(path: string): HomebrewFormula | FileError {
   const versionvalue = path.split("/");
   let version = "";
   if (path.includes("/Casks/")) {
-    version = versionvalue[ versionvalue.length - 4 ];
+    version = versionvalue[ versionvalue.length - 4 ] ?? "";
   } else {
-    version = versionvalue[ versionvalue.length - 3 ];
+    version = versionvalue[ versionvalue.length - 3 ] ?? "";
   }
 
   const rubyText = readTextFile(path);

@@ -13,7 +13,7 @@ import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chr
  * Since many browsers are based on Chromium we can extend this class and reuse most of the parsers
  */
 export class Chromium {
-    protected paths: ChromiumProfiles[];
+    protected paths: ChromiumProfiles[] = [];
     protected platform: PlatformType;
     protected unfold: boolean;
     protected browser: BrowserType;

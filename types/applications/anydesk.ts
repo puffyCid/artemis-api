@@ -35,5 +35,8 @@ export interface Config {
     timestamp_desc: "Config Created";
     artifact: "AnyDesk Config";
     data_type: "applications:anydesk:config:entry";
-    [key:string]: string;
+    [ key: string ]: string;
+    account: string;
+    version: string;
+    id: string;
 }

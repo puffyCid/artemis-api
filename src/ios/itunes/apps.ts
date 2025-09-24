@@ -148,17 +148,17 @@ export function parseManifestAppPlist(
       Object.prototype.hasOwnProperty.call(object, "LastModified")
     ) {
       const data = object as Record<string, number>;
-      meta.created = unixEpochToISO(data[ "Birth" ]);
-      meta.changed = unixEpochToISO(data[ "LastStatusChange" ]);
-      meta.modified = unixEpochToISO(data[ "LastModified" ]);
-      meta.mode = data[ "Mode" ];
-      meta.flags = data[ "Flags" ];
-      meta.group_id = data[ "GroupId" ];
-      meta.relative_path = data[ "RelativePath" ];
-      meta.size = data[ "Size" ];
-      meta.inode = data[ "InodeNumber" ];
-      meta.user_id = data[ "UserID" ];
-      meta.extended_attributes = data[ "ExtendedAttributes" ];
+      meta.created = unixEpochToISO(data[ "Birth" ] ?? 0);
+      meta.changed = unixEpochToISO(data[ "LastStatusChange" ] ?? 0);
+      meta.modified = unixEpochToISO(data[ "LastModified" ] ?? 0);
+      meta.mode = data[ "Mode" ] ?? 0;
+      meta.flags = data[ "Flags" ] ?? 0;
+      meta.group_id = data[ "GroupId" ] ?? 0;
+      meta.relative_path = data[ "RelativePath" ] ?? 0;
+      meta.size = data[ "Size" ] ?? 0;
+      meta.inode = data[ "InodeNumber" ] ?? 0;
+      meta.user_id = data[ "UserID" ] ?? 0;
+      meta.extended_attributes = data[ "ExtendedAttributes" ] ?? 0;
     }
   }
 

@@ -1,4 +1,4 @@
-import { LevelDbEntry, LevelManifest, WalData } from "../../../types/applications/level";
+import { LevelDbEntry, LevelManifest } from "../../../types/applications/level";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";

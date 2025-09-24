@@ -10,7 +10,7 @@ import { readTrace } from "./trace";
  * Class to parse AnyDesk data
  */
 export class AnyDesk {
-    private paths: AnyDeskUsers[];
+    private paths: AnyDeskUsers[] = [];
     private platform: PlatformType;
 
     /**
@@ -19,7 +19,7 @@ export class AnyDesk {
      * @param alt_path Optional alternative directory that contains all AnyDesk related files including configs
      * @returns `AnyDesk` instance class
      */
-    constructor(platform: PlatformType, alt_path?: string) {
+    constructor (platform: PlatformType, alt_path?: string) {
         this.platform = platform;
 
         // Get AnyDesk data based on PlatformType
@@ -47,7 +47,7 @@ export class AnyDesk {
             return;
         }
 
-        this.paths = [{ user_path: alt_path, version: client_version, account: client_account, id: client_id }];
+        this.paths = [ { user_path: alt_path, version: client_version, account: client_account, id: client_id } ];
     }
 
     /**
@@ -67,7 +67,7 @@ export class AnyDesk {
         let hits: TraceEntry[] = [];
         // If alternative directory was provided then parse all trace files
         if (is_alt && this.paths.length === 1) {
-            const entries = glob(`${this.paths[0].user_path}${separator}*.trace`);
+            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*.trace`);
             if (entries instanceof FileError) {
                 console.error(entries);
                 return hits;
@@ -76,7 +76,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readTrace(entry.full_path, this.paths[0]);
+                const values = readTrace(entry.full_path, this.paths[ 0 ]);
                 hits = hits.concat(values);
             }
             return hits;
@@ -109,7 +109,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readTrace(entry.full_path, this.paths[0]);
+                const values = readTrace(entry.full_path, this.paths[ 0 ]);
                 hits = hits.concat(values);
             }
         }
@@ -135,7 +135,7 @@ export class AnyDesk {
 
         // If alternative directory was provided then parse all trace files
         if (is_alt && this.paths.length === 1) {
-            const entries = glob(`${this.paths[0].user_path}${separator}*.conf`);
+            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*.conf`);
             if (entries instanceof FileError) {
                 console.error(entries);
                 return hits;
@@ -144,7 +144,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readConfig(entry.full_path, this.paths[0]);
+                const values = readConfig(entry.full_path, this.paths[ 0 ]);
                 if (values instanceof ApplicationError) {
                     continue;
                 }
@@ -183,7 +183,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readConfig(entry.full_path, this.paths[0]);
+                const values = readConfig(entry.full_path, this.paths[ 0 ]);
                 if (values instanceof ApplicationError) {
                     continue;
                 }

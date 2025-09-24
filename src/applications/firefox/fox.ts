@@ -12,7 +12,7 @@ import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxHistory, fire
  * Class to extract Firefox information
  */
 export class FireFox {
-    private paths: FirefoxProfiles[];
+    private paths: FirefoxProfiles[] = [];
     private platform: PlatformType;
     private unfold: boolean;
 
