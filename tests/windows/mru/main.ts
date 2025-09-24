@@ -1,7 +1,7 @@
 import { FileError } from "../../../src/filesystem/errors";
 import { glob } from "../../../src/filesystem/files";
 import { WindowsError } from "../../../src/windows/errors";
-import { parseMru } from "../../../src/windows/registry/recently_used";
+import { parseMru, testParseMru } from "../../../src/windows/registry/recently_used";
 
 function main() {
   console.log('Running Windows MRU tests....');
@@ -24,6 +24,10 @@ function main() {
     }
   }
   console.log(' Live test passed! 🥳\n');
+
+  console.log(' Starting Windows MRU test....');
+  testParseMru();
+
   console.log('All Windows MRU tests passed! 🥳💃🕺');
 }
 

@@ -31,7 +31,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
     );
   }
 
-  const mrus:Mru[] = [];
+  const mrus: Mru[] = [];
 
   const open_save_mru: Mru = {
     ntuser_path,
@@ -82,7 +82,7 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
  * @returns Generic `MruValues`
  */
 export function assembleMru(items: ShellItems[]): MruValues {
-  const paths:string[] = [];
+  const paths: string[] = [];
 
   if (items.length === 0) {
     return {
@@ -100,6 +100,16 @@ export function assembleMru(items: ShellItems[]): MruValues {
   }
   // Get last entry
   const item = items[ items.length - 1 ];
+  if (item === undefined) {
+    return {
+      filename: "",
+      path: "",
+      modified: "1970-01-01T00:00:00.000Z",
+      created: "1970-01-01T00:00:00.000Z",
+      accessed: "1970-01-01T00:00:00.000Z",
+      items: [],
+    };
+  }
   const entry: MruValues = {
     filename: item.value,
     path: paths.join("\\"),
@@ -110,4 +120,32 @@ export function assembleMru(items: ShellItems[]): MruValues {
   };
 
   return entry;
+}
+
+/**
+ * Function to test Windows MRU parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Windows MRU parsing
+ */
+export function testParseMru(): void {
+  const test = "../../tests/test_data/windows/registry/NTUSER.DAT";
+  const results = parseMru(test);
+  if (results instanceof WindowsError) {
+    throw results;
+  }
+
+  if (results.length != 1 || results[ 0 ] === undefined) {
+    throw `Got ${results.length} entries, expected 1.......parseMru ❌`;
+  }
+
+  if (results[ 0 ].mru.length != 1 || results[ 0 ].mru[ 0 ] === undefined) {
+    throw `Got ${results[ 0 ].mru} entries, expected 1.......parseMru ❌`;
+  }
+
+  if (results[ 0 ].mru[ 0 ].filename != "") {
+    throw `Got ${results[ 0 ].mru} entries, expected 1.......parseMru ❌`;
+  }
+
+  console.info(`  Function parseMru ✅`);
+
 }
