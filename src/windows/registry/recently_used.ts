@@ -177,7 +177,7 @@ export function testParseMru(): void {
   console.info(`  Function lastVisitMru ✅`);
 
   const recent_mru: Registry[] = [{ "path": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs", "key": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", "name": "RecentDocs", "values": [], "last_modified": "2025-07-19T21:56:37.000Z", "depth": 6, "security_offset": 69216, "registry_path": "C:\\Users\\azur3\\NTUSER.dat", "registry_file": "NTUSER.dat" }];
-  const recent_values = recentDocs(recent_mru); 
+  const recent_values = recentDocs(recent_mru);
   if (recent_values instanceof WindowsError) {
     throw recent_values;
   }
@@ -187,4 +187,14 @@ export function testParseMru(): void {
   }
 
   console.info(`  Function recentDocs ✅`);
+
+  const item: ShellItems[] = [{ "value": "59031a47-3f72-44a7-89c5-5595fe6b30ee", "shell_type": "RootFolder", "created": "1970-01-01T00:00:00.000Z", "modified": "1970-01-01T00:00:00.000Z", "accessed": "1970-01-01T00:00:00.000Z", "mft_entry": 0, "mft_sequence": 0, "stores": {} }, { "value": "Projects", "shell_type": "Delegate", "created": "2025-07-10T02:16:40.000Z", "modified": "2025-07-10T02:16:52.000Z", "accessed": "2025-07-10T03:06:10.000Z", "mft_entry": 49122, "mft_sequence": 3, "stores": {} }, { "value": "artemis", "shell_type": "Directory", "created": "2025-07-10T02:16:52.000Z", "modified": "2025-07-10T02:39:38.000Z", "accessed": "2025-07-10T03:06:10.000Z", "mft_entry": 49123, "mft_sequence": 3, "stores": {} }];
+  const items = assembleMru(item);
+  if (items.created != "2025-07-10T02:16:52.000Z") {
+    throw `Got ${items.created}, expected 2025-07-10T02:16:52.000Z.......assembleMru ❌`;
+
+  }
+
+  console.info(`  Function assembleMru ✅`);
+
 }
