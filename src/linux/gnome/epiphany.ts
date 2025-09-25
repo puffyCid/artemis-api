@@ -25,7 +25,7 @@ export class Epiphany {
      * @param unfold Enable `Unfold` parsing. Default is false
      * @param alt_glob Provide an optional glob to an alternative Epiphany directory
      */
-    constructor(unfold = false, alt_glob?: string) {
+    constructor (unfold = false, alt_glob?: string) {
         this.unfold = unfold;
         const values = this.profiles(alt_glob);
         if (values instanceof LinuxError) {
@@ -72,19 +72,19 @@ export class Epiphany {
 
             for (const entry of data) {
                 const value: EpiphanyHistory = {
-                    url_id: entry["url_id"] as number,
-                    host_id: entry["host"] as number,
-                    visit_count: entry["visit_count"] as number,
-                    typed_count: entry["typed_count"] as number,
-                    last_visit_time: unixEpochToISO(entry["last_visit_time"] as bigint),
-                    thumbnail_update_time: unixEpochToISO(entry["thumbnail_update_time"] as bigint),
-                    hidden_from_overview: Boolean(entry["hidden_from_overview"] as number),
-                    visit_type: this.visitType(entry["visit_type"] as number),
+                    url_id: entry[ "url_id" ] as number,
+                    host_id: entry[ "host" ] as number,
+                    visit_count: entry[ "visit_count" ] as number,
+                    typed_count: entry[ "typed_count" ] as number,
+                    last_visit_time: unixEpochToISO(entry[ "last_visit_time" ] as bigint),
+                    thumbnail_update_time: unixEpochToISO(entry[ "thumbnail_update_time" ] as bigint),
+                    hidden_from_overview: Boolean(entry[ "hidden_from_overview" ] as number),
+                    visit_type: this.visitType(entry[ "visit_type" ] as number),
                     db_path: db,
-                    target_url: entry["url"] as string | null,
-                    title: entry["title"] as string | null,
-                    referring_visit: entry["referring_visit"] as string | null,
-                    sync_id: entry["sync_id"] as string | null,
+                    target_url: entry[ "url" ] as string | null,
+                    title: entry[ "title" ] as string | null,
+                    referring_visit: entry[ "referring_visit" ] as string | null,
+                    sync_id: entry[ "sync_id" ] as string | null,
                 };
 
                 if (this.unfold && client !== undefined && value.target_url !== null) {
@@ -119,11 +119,11 @@ export class Epiphany {
 
             for (const entry of data) {
                 const value: EpiphanyCookies = {
-                    id: entry["id"] as number,
-                    name: entry["name"] as string | null,
-                    value: entry["value"] as string | null,
-                    host: entry["host"] as string | null,
-                    path: entry["path"] as string | null,
+                    id: entry[ "id" ] as number,
+                    name: entry[ "name" ] as string | null,
+                    value: entry[ "value" ] as string | null,
+                    host: entry[ "host" ] as string | null,
+                    path: entry[ "path" ] as string | null,
                     expiry: null,
                     last_accessed: null,
                     is_secure: null,
@@ -132,20 +132,20 @@ export class Epiphany {
                     db_path: db
                 };
 
-                if (entry["last_access"] !== null) {
-                    value.last_accessed = unixEpochToISO(entry["last_access"] as number);
+                if (entry[ "last_access" ] !== null) {
+                    value.last_accessed = unixEpochToISO(entry[ "last_access" ] as number);
                 }
-                if (entry["is_secure"] !== null) {
-                    value.is_secure = Boolean(entry["is_secure"] as number);
+                if (entry[ "is_secure" ] !== null) {
+                    value.is_secure = Boolean(entry[ "is_secure" ] as number);
                 }
-                if (entry["is_http_only"] !== null) {
-                    value.is_http_only = Boolean(entry["is_http_only"] as number);
+                if (entry[ "is_http_only" ] !== null) {
+                    value.is_http_only = Boolean(entry[ "is_http_only" ] as number);
                 }
-                if (entry["same_site"] !== null) {
-                    value.same_site = Boolean(entry["same_site"] as number);
+                if (entry[ "same_site" ] !== null) {
+                    value.same_site = Boolean(entry[ "same_site" ] as number);
                 }
-                if (entry["expiry"] !== null) {
-                    value.expiry = unixEpochToISO(entry["expiry"] as number);
+                if (entry[ "expiry" ] !== null) {
+                    value.expiry = unixEpochToISO(entry[ "expiry" ] as number);
                 }
                 results.push(value);
             }
@@ -167,14 +167,14 @@ export class Epiphany {
                 continue;
             }
 
-            const entries = xml_data["session"] as Record<string, Record<string, unknown>[]>;
-            for (const values of entries["window"]) {
-                const embed = values["embed"] as Record<string, Record<string, string>>[];
+            const entries = xml_data[ "session" ] as Record<string, Record<string, unknown>[]>;
+            for (const values of entries[ "window" ]) {
+                const embed = values[ "embed" ] as Record<string, Record<string, string>>[];
                 for (const value of embed) {
                     const session: EpiphanySessions = {
-                        url: value["$"]["url"],
-                        title: value["$"]["title"],
-                        history: value["$"]["history"],
+                        url: value[ "$" ][ "url" ],
+                        title: value[ "$" ][ "title" ],
+                        history: value[ "$" ][ "history" ],
                         session_path: xml_file
                     };
 
@@ -221,7 +221,7 @@ export class Epiphany {
                         const perm_line = line.replace("'", "");
                         const perm_types = perm_line.split("=");
                         if (perm_types.length > 1) {
-                            perms.permissions[perm_types[0]] = perm_types.at(1) ?? "";
+                            perms.permissions[ perm_types[ 0 ] ] = perm_types.at(1) ?? "";
                         }
                     }
                 }
@@ -320,7 +320,7 @@ export class Epiphany {
                 if (this.unfold) {
                     timeline = { ...timeline, ...entry.unfold };
                 }
-                delete timeline["unfold"];
+                delete timeline[ "unfold" ];
                 timeline_entries.push(timeline);
             }
             const status = dumpData(timeline_entries, "retrospect_epiphany_history", output);
@@ -373,8 +373,8 @@ export class Epiphany {
                 data_type: "linux:browser:epiphany:sessions:entry"
             };
 
-            if (typeof entry["url"] === 'string') {
-                timeline.message = entry["url"];
+            if (typeof entry[ "url" ] === 'string') {
+                timeline.message = entry[ "url" ];
             }
 
             timeline = { ...timeline, ...entry };
@@ -393,8 +393,8 @@ export class Epiphany {
             };
 
             timeline = { ...timeline, ...entry.permissions };
-            timeline["file_path"] = entry.file_path;
-            delete timeline["permissions"];
+            timeline[ "file_path" ] = entry.file_path;
+            delete timeline[ "permissions" ];
             timeline_entries.push(timeline);
         }
 

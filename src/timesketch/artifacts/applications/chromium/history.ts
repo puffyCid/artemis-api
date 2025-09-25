@@ -25,17 +25,15 @@ export function timelineChromiumHistory(
       data_type: `application:${artifact.split("-").at(0)}:url`,
     };
 
-    entry[ "path" ] = item.path;
-    entry[ "user" ] = item.user;
-    for (const value of item.history) {
-      let user_entry = entry;
+    entry[ "path" ] = item.db_path;
+    let user_entry = entry;
 
-      user_entry.datetime = value.last_visit_time;
-      user_entry.message = `${value.url} | ${value.title}`;
-      user_entry = { ...user_entry, ...value };
+    user_entry.datetime = item.last_visit_time;
+    user_entry.message = `${item.url} | ${item.title}`;
+    user_entry = { ...user_entry, ...item };
 
-      entries.push(user_entry);
-    }
+    entries.push(user_entry);
+
   }
 
   return entries;

@@ -86,6 +86,9 @@ export function recentFiles(
         object
       >[];
       const data = node_object[ 0 ];
+      if (data === undefined) {
+        continue;
+      }
       if (
         data[ "$" ] as unknown as Record<string, string>[ "oor:name" ] === undefined
       ) {
@@ -158,6 +161,10 @@ export function testRecentFiles(): void {
   const result = recentFiles(PlatformType.Linux, test);
   if (result instanceof ApplicationError) {
     throw result;
+  }
+
+  if (result[ 0 ] === undefined) {
+    throw `Got title undefined expected Hindsight Report (2025-09-18T00-18-20).......recentFiles ❌`;
   }
 
   if (result[ 0 ].title != "Hindsight Report (2025-09-18T00-18-20)") {

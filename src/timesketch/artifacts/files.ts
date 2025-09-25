@@ -77,7 +77,7 @@ function extractApiTimes(
   for (const value in check_times) {
     const entry: TimeEntries = {
       datetime: value,
-      desc: check_times[ value ],
+      desc: check_times[ value ] ?? "Undefined",
     };
     entries.push(entry);
   }
