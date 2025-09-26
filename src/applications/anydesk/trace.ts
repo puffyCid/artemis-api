@@ -10,7 +10,7 @@ import { takeUntil } from "../../nom/parsers";
  * @param user User profile info associated with AnyDesk
  * @returns Array of `TraceEntry`
  */
-export function readTrace(path: string, user: AnyDeskUsers): TraceEntry[]  {
+export function readTrace(path: string, user: AnyDeskUsers): TraceEntry[] {
     const hits: TraceEntry[] = [];
     let offset = 0;
     const limit = 100;
@@ -145,12 +145,20 @@ export function testReadTrace(): void {
         throw `Got ${results.length} rows expected 790.......readTrace ❌`;
     }
 
-    if (results[ 22 ].message !== "user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu") {
-        throw `Got '${results[ 22 ].message}' rows expected 'user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu'.......readTrace ❌`;
+    if (results[22] === undefined) {
+        throw `Got undefined rows expected 'user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu'.......readTrace ❌`;
     }
 
-    if (results[ 444 ].datetime !== "2025-09-22T00:53:51.166Z") {
-        throw `Got '${results[ 444 ].datetime}' expected 2025-09-22T00:53:51.166Z.......readTrace ❌`;
+    if (results[22].message !== "user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu") {
+        throw `Got '${results[22].message}' rows expected 'user_data_dir = /home/ubu/.anydesk, logged_in_user_data_dir = /home/ubu/.anydesk, current_home = /home/ubu'.......readTrace ❌`;
+    }
+
+    if (results[444] === undefined) {
+        throw `Got undefined rows expected '2025-09-22T00:53:51.166Z'.......readTrace ❌`;
+    }
+
+    if (results[444].datetime !== "2025-09-22T00:53:51.166Z") {
+        throw `Got '${results[444].datetime}' expected 2025-09-22T00:53:51.166Z.......readTrace ❌`;
     }
 
     const test2 = "../../test_data/anydesk/anydesk_var_log.trace";
@@ -160,12 +168,20 @@ export function testReadTrace(): void {
         throw `Got ${results2.length} rows expected 2082.......readTrace ❌`;
     }
 
-    if (results2[ 22 ].message !== "Global: yes") {
-        throw `Got '${results2[ 22 ].message}' expected 'Global: yes'.......readTrace ❌`;
+    if (results2[444] === undefined) {
+        throw `Got undefined rows expected '2025-09-22T00:46:40.998Z'.......readTrace ❌`;
     }
 
-    if (results2[ 444 ].datetime !== "2025-09-22T00:46:40.998Z") {
-        throw `Got '${results2[ 444 ].datetime}' expected 2025-09-22T00:46:40.998Z.......readTrace ❌`;
+    if (results2[22] === undefined) {
+        throw `Got undefined rows expected 'Global: yes'.......readTrace ❌`;
+    }
+
+    if (results2[22].message !== "Global: yes") {
+        throw `Got '${results2[22].message}' expected 'Global: yes'.......readTrace ❌`;
+    }
+
+    if (results2[444].datetime !== "2025-09-22T00:46:40.998Z") {
+        throw `Got '${results2[444].datetime}' expected 2025-09-22T00:46:40.998Z.......readTrace ❌`;
     }
 
     console.info(`  Function readTrace ✅`);

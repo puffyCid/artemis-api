@@ -172,5 +172,4 @@ export function testRecentFiles(): void {
   }
 
   console.info(`  Function recentFiles ✅`);
-
 }

@@ -19,7 +19,7 @@ export class AnyDesk {
      * @param alt_path Optional alternative directory that contains all AnyDesk related files including configs
      * @returns `AnyDesk` instance class
      */
-    constructor (platform: PlatformType, alt_path?: string) {
+    constructor(platform: PlatformType, alt_path?: string) {
         this.platform = platform;
 
         // Get AnyDesk data based on PlatformType
@@ -47,7 +47,7 @@ export class AnyDesk {
             return;
         }
 
-        this.paths = [ { user_path: alt_path, version: client_version, account: client_account, id: client_id } ];
+        this.paths = [{ user_path: alt_path, version: client_version, account: client_account, id: client_id }];
     }
 
     /**
@@ -66,8 +66,8 @@ export class AnyDesk {
 
         let hits: TraceEntry[] = [];
         // If alternative directory was provided then parse all trace files
-        if (is_alt && this.paths.length === 1) {
-            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*.trace`);
+        if (is_alt && this.paths[0] !== undefined) {
+            const entries = glob(`${this.paths[0].user_path}${separator}*.trace`);
             if (entries instanceof FileError) {
                 console.error(entries);
                 return hits;
@@ -76,7 +76,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readTrace(entry.full_path, this.paths[ 0 ]);
+                const values = readTrace(entry.full_path, this.paths[0]);
                 hits = hits.concat(values);
             }
             return hits;
@@ -99,7 +99,7 @@ export class AnyDesk {
             }
         }
         // Get system trace file(s)
-        if (this.paths.length !== 0) {
+        if (this.paths[0] !== undefined) {
             const entries = glob(system);
             if (entries instanceof FileError) {
                 console.error(entries);
@@ -109,7 +109,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readTrace(entry.full_path, this.paths[ 0 ]);
+                const values = readTrace(entry.full_path, this.paths[0]);
                 hits = hits.concat(values);
             }
         }
@@ -125,17 +125,15 @@ export class AnyDesk {
      */
     public configs(is_alt = false): Config[] {
         const hits: Config[] = [];
-        let system = "/etc/anydesk/*.conf";
 
         let separator = "/";
         if (this.platform === PlatformType.Windows) {
             separator = "\\";
-            system = "TODO";
         }
 
         // If alternative directory was provided then parse all trace files
-        if (is_alt && this.paths.length === 1) {
-            const entries = glob(`${this.paths[ 0 ].user_path}${separator}*.conf`);
+        if (is_alt && this.paths[0] !== undefined) {
+            const entries = glob(`${this.paths[0].user_path}${separator}*.conf`);
             if (entries instanceof FileError) {
                 console.error(entries);
                 return hits;
@@ -144,7 +142,7 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readConfig(entry.full_path, this.paths[ 0 ]);
+                const values = readConfig(entry.full_path, this.paths[0]);
                 if (values instanceof ApplicationError) {
                     continue;
                 }
@@ -173,7 +171,8 @@ export class AnyDesk {
             }
         }
         // Get system conf file(s)
-        if (this.paths.length !== 0) {
+        if (this.paths[0] !== undefined && this.platform === PlatformType.Linux) {
+            let system = "/etc/anydesk/*.conf";
             const entries = glob(system);
             if (entries instanceof FileError) {
                 console.error(entries);
@@ -183,7 +182,8 @@ export class AnyDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readConfig(entry.full_path, this.paths[ 0 ]);
+                // Get user config
+                const values = readConfig(entry.full_path, this.paths[0]);
                 if (values instanceof ApplicationError) {
                     continue;
                 }
@@ -213,7 +213,30 @@ export class AnyDesk {
                 paths = linux_paths;
                 break;
             }
+            case PlatformType.Darwin: {
+                const mac_paths = glob("/Users/*/.anydesk");
+                if (mac_paths instanceof FileError) {
+                    return new ApplicationError(
+                        "ANYDESK",
+                        `failed to glob macOS paths: ${mac_paths}`,
+                    );
+                }
+                paths = mac_paths;
+                break;
+            }
+            case PlatformType.Windows: {
+                const win_paths = glob("C:\\Users\\*\\AppData\\Roaming\\AnyDesk");
+                if (win_paths instanceof FileError) {
+                    return new ApplicationError(
+                        "ANYDESK",
+                        `failed to glob Windows paths: ${win_paths}`,
+                    );
+                }
+                paths = win_paths;
+                break;
+            }
             default: {
+                console.warn(`Unsupported platform: ${platform}`)
                 return [];
             }
         }
