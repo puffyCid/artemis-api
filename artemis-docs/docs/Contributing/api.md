@@ -16,7 +16,7 @@ scripts as mentioned in [scripting](../Intro/Scripting/boa.md). You will need:
 
 - A text editor that supports TypeScript
 
-# Adding a Feature
+## Adding a Feature
 
 Please try to create an issue before working on a feature. Basic overview of
 adding a new feature:
@@ -31,7 +31,7 @@ adding a new feature:
 Please checkout available [API](../API/overview.md) functions that can be used
 to make scripting easier.
 
-# Artifact Scope
+## Artifact Scope
 
 Unlike artemis, the API does not have strict limits on what can be included. You
 may include non-forensic related artifacts or features such as:
@@ -43,79 +43,36 @@ may include non-forensic related artifacts or features such as:
   commands from the API if you want to)
 - Submit data to network services (ex: Submit hashes to VirusTotal API)
 
-# Testing Scripts Locally
+## Testing the API
 
-Currently there is no easy way to write tests for the artemis API. If you are
-working on a new feature the current recommended approach to testing your
-feature is:
+Writing tests for the TypeScript API is a bit more involved than writing tests for the Rust codebase. Creating tests for the API is a 5 step process:
 
-1. Write you feature and export it to mod.ts file located at the root of the
-   `artemis-api` repo.
-2. Create a project in a separate directory outside of `artemis-api`.
-3. Follow the [walkthrough](../Intro/Scripting/walkthrough.md) guide.
+0. Compile the test runner binary `script_runner` via `cargo build --release --examples` and place under the corresponding test folder
+1. Export a test function
+2. Register the test function in test.ts under tests/test.ts
+3. Write your test and place it under the test/ folder
+4. Run tests with compile_tests.sh or compile_tests.bat
 
-```typescript
-import { processListing } from "../../path/to/local/artemis-api/mod";
+You may place test data under test/test_data.
 
-function main() {
-  const md5 = false;
-  const sha1 = false;
-  const sha256 = false;
-  const binary_info = true;
+### Example API Test
 
-  const proc_list = processListing(md5, sha1, sha256, binary_info);
-}
-```
+The [rpm](../Artifacts/Linux%20Artifacts/rpm.md) API exposes the test function `testRpmInfo` which calls all of the RPM parsing functions and validates they return correct data.
 
-4. Test you feature with your project
-5. If everything works, open a pull request!
-
-## Testing Scripts on GitHub Actions
-
-Even though writing tests for the artemis API locally can be tricky. There is
-process to create tests to run on GitHub Actions.\
-When you open a PR it will trigger the Artemis API test suite. Ideally **if
-possible** you should include a test for you feature.
-
-Artemis API tests are located at the tests directory and are broken down by OS.
-All you need to do is create a new folder and add a main.ts and build.ts file
-and write your test.
-
-A **very basic** example is below:
+This test function is then registered in test/test.ts and used for running RPM tests from tests/linux/rpm/main.ts.
 
 ```typescript
-import { firewallStatus } from "../../../mod";
-import { MacosError } from "../../../src/macos/errors";
+import { testRpmInfo } from "../../test";
 
 function main() {
-  const results = firewallStatus();
-  if (results instanceof MacosError) {
-    throw results;
-  }
+    console.log('Running RPM tests....');
 
-  if (results.version.length === 0) {
-    throw "no version?";
-  }
+    console.log(' Starting RPM info test....');
+    testRpmInfo();
+
+    console.log(' RPM info test passed! 🥳');
+    console.log('All RPM tests passed! 🥳💃🕺');
 }
 
 main();
 ```
-
-The example above will test the macOS Firewall artifact and make sure it does
-not return an error and that the version info is not empty.
-
-You may make you test as complex or thorough as you would like. But it should at
-least always check for errors.
-
-### Testing Scripts on GitHub Actions Locally
-
-If you want to run the test scripts locally you will need one of the options
-below:
-
-- Download
-  [script_tester](https://github.com/puffyCid/artemis/releases/tag/v0.1.0)
-- Compile the
-  [script_tester](https://github.com/puffyCid/artemis/tree/main/forensics/examples)
-  via `cargo build --release --examples`
-
-Place the script tester binary in the folder you want to test.

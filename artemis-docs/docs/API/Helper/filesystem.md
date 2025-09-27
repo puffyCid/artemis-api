@@ -69,3 +69,13 @@ or uploading to cloud.
 | ------ | ------ | ----------------- |
 | path   | string | Directory to read |
 | output | Output | Output object     |
+
+### readLines(path, offset, limit) -> string[] | FileError
+
+Read lines from a text file. You may provide an offset to specific line and limit the number of lines to read.
+
+| Param  | Type    | Description                                                           |
+| ------ | ------- | --------------------------------------------------------------------- |
+| path   | string  | Text file to read                                                     |
+| offset | number  | Line to start reading file at. Must be positive number. Default is 0. |
+| limit  | number  | How many lines to read. Must be positive number. Default is 100.      | 

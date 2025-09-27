@@ -13,9 +13,9 @@ import { querySqlite } from "../sqlite";
  * @param unfold Enable unfold parsing
  * @param offset Starting DB offset
  * @param limit Number of records to return
- * @returns Array of `FirefoxHistory` or `ApplicationError`
+ * @returns Array of `FirefoxHistory`
  */
-export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType, unfold: boolean, offset: number, limit: number): FirefoxHistory[] | ApplicationError {
+export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType, unfold: boolean, offset: number, limit: number): FirefoxHistory[] {
     const query = `SELECT 
                       moz_places.id AS moz_places_id, 
                       url, 
@@ -38,6 +38,11 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                       moz_places 
                     JOIN moz_origins ON moz_places.origin_id = moz_origins.id LIMIT ${limit} OFFSET ${offset}`;
     const hits: FirefoxHistory[] = [];
+    let client: Unfold | undefined = undefined;
+    if (unfold) {
+        client = new Unfold();
+    }
+    
     for (const path of paths) {
         let full_path = `${path.full_path}/places.sqlite`;
 
@@ -50,10 +55,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
             console.warn(`Failed to query full_path: ${results}`);
             continue;
         }
-        let client: Unfold | undefined = undefined;
-        if (unfold) {
-            client = new Unfold();
-        }
+
         // Loop through history rows
         for (const entry of results) {
             const history_row: FirefoxHistory = {

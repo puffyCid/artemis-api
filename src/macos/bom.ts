@@ -182,12 +182,12 @@ export function parseReceipt(path: string): Bom | MacosError {
 
   const receipt = plist_data as Record<string, string>;
   const bom: Bom = {
-    package_name: receipt[ "PackageFileName" ],
-    install_data: receipt[ "InstallDate" ],
-    package_id: receipt[ "PackageIdentifier" ],
-    package_version: receipt[ "PackageVersion" ],
-    install_process_name: receipt[ "InstallProcessName" ],
-    install_prefix_path: receipt[ "InstallPrefixPath" ],
+    package_name: receipt[ "PackageFileName" ] ?? "",
+    install_data: receipt[ "InstallDate" ] ?? "",
+    package_id: receipt[ "PackageIdentifier" ] ?? "",
+    package_version: receipt[ "PackageVersion" ] ?? "",
+    install_process_name: receipt[ "InstallProcessName" ] ?? "",
+    install_prefix_path: receipt[ "InstallPrefixPath" ] ?? "",
     path,
     bom_path: "",
     files: [],
@@ -419,6 +419,9 @@ function getBlock(
   }
 
   const pointer = pointers[ index ];
+  if (pointer === undefined) {
+    return new MacosError("BOM", `got undefined pointer`);
+  }
   if (
     pointer.address > data.length ||
     pointer.address + pointer.length > data.length

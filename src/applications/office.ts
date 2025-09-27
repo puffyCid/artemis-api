@@ -1,6 +1,6 @@
 import { getRegistry, PlatformType } from "../../mod";
 import { FileError } from "../filesystem/errors";
-import { glob } from "../filesystem/mod";
+import { glob } from "../filesystem/files";
 import { parseBookmark } from "../macos/bookmark";
 import { BookmarkData as OfficeRecentFilesMacos } from "../../types/macos/bookmark";
 import { MacosError } from "../macos/errors";
@@ -202,6 +202,9 @@ function officeBookmarks(
       const data = bookmark_values[ "kBookmarkDataKey" ];
       if (typeof data === "string") {
         console.warn(`got string for kBookmarkDataKey? It should be bytes`);
+        continue;
+      } else if (data === undefined) {
+        console.warn(`got undefined for kBookmarkDataKey? It should be bytes`);
         continue;
       }
       const book_data = Uint8Array.from(data);

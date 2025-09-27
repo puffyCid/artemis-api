@@ -14,7 +14,7 @@ import { nextcloudSyncLogs } from "./logs/sync";
  * Class to extract Nextcloud client information
  */
 export class NextcloudClient {
-    private paths: NextcloudClientUsers[];
+    private paths: NextcloudClientUsers[] = [];
     private platform: PlatformType;
 
     /**

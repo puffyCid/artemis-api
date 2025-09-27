@@ -28,7 +28,6 @@ export function getPkgs(offset: number, limit: number, alt_path?: string): Pkg[]
 
     const pkg_entries: Pkg[] = [];
     for (const entry of results) {
-        console.log(JSON.stringify(entry));
         const pkg_entry: Pkg = {
             id: entry[ "id" ] as number,
             origin: entry[ "origin" ] as string,

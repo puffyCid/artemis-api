@@ -587,3 +587,12 @@ You may provide an optional alternative SYSTEM file.
 | Param | Type   | Description                                       |
 | ----- | ------ | ------------------------------------------------- |
 | path  | string | Optional alternative path to System Registry file |
+
+#### processTreeEventLogs(path) -> EventLogProcessTree[] | WindowsError
+
+Parses the Windows Security.evtx file and attempts to construct process trees for 4688 events.  
+You may provided an optional alternative path to Security.evtx.
+
+| Param | Type   | Description                                |
+| ----- | ------ | ------------------------------------------ |
+| path  | string | Optional alternative path to Security.evtx |

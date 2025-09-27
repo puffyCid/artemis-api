@@ -15,6 +15,8 @@ export { gnomeAppUsage } from "./src/linux/gnome/usage";
 export { extractAbrt } from "./src/linux/abrt";
 export { Epiphany } from "./src/linux/gnome/epiphany";
 export { firmwareHistory } from "./src/linux/firmware";
+export { kateRecentFiles } from "./src/linux/kde/kate";
+export { Falkon } from "./src/linux/kde/falkon/falkon";
 
 /**
  * macOS exported functions
@@ -35,12 +37,6 @@ export {
 export { getMacho } from "./src/macos/macho";
 export { getPlist } from "./src/macos/plist";
 export { getUnifiedLog } from "./src/macos/unifiedlogs";
-export {
-  getSafariDownloads,
-  getSafariHistory,
-  getSafariUsersDownloads,
-  getSafariUsersHistory,
-} from "./src/macos/safari";
 export { getSpotlight, setupSpotlightParser } from "./src/macos/spotlight";
 export { getSudoLogsMacos } from "./src/macos/sudo";
 export { queryTccDb } from "./src/macos/sqlite/tcc";
@@ -58,7 +54,8 @@ export { munkiApplicationUsage } from "./src/macos/sqlite/munki";
 export { quarantineEvents } from "./src/macos/sqlite/quarantine";
 export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper";
 export { parseCookies } from "./src/macos/safari/cookies";
-
+export { Safari } from "./src/macos/safari/safari";
+export { authorizations } from "./src/macos/sqlite/authd";
 /**
  * Unix exported functions
  */
@@ -94,6 +91,8 @@ export { fileHistory, getExtensions, vscodeRecentFiles } from "./src/application
 export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";
 export { NextcloudClient } from "./src/applications/nextcloud/cloud";
+export { LevelDb } from "./src/applications/leveldb/level";
+export { AnyDesk } from "./src/applications/anydesk/rmm";
 
 /**
  * Windows exported functions
@@ -140,6 +139,7 @@ export { Updates } from "./src/windows/ese/updates";
 export { Outlook } from "./src/windows/outlook";
 export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
 export { firewallRules } from "./src/windows/registry/firewall_rules";
+export { processTreeEventLogs } from "./src/windows/eventlogs/processtree";
 
 /**
  * FreeBSD
@@ -162,3 +162,9 @@ export { Unfold } from "./src/unfold/client";
  */
 
 export { extractBackup } from "./src/ios/itunes/backup";
+
+/**
+ * Filesystem functions
+ */
+export { readDir } from "./src/filesystem/directory";
+export { glob, hash, readTextFile, stat, readFile, readLines } from "./src/filesystem/files";

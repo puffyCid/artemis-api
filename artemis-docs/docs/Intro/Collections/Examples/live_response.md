@@ -36,18 +36,6 @@ metadata = true
 artifact_name = "systeminfo"
 
 [[artifacts]]
-artifact_name = "chromium-history"
-
-[[artifacts]]
-artifact_name = "chromium-downloads"
-
-[[artifacts]]
-artifact_name = "firefox-history"
-
-[[artifacts]]
-artifact_name = "firefox-downloads"
-
-[[artifacts]]
 artifact_name = "amcache"
 [artifacts.amcache]
 
@@ -164,12 +152,6 @@ artifact_name = "groups"
 
 [[artifacts]]
 artifact_name = "systeminfo"
-
-[[artifacts]]
-artifact_name = "safari-history"
-
-[[artifacts]]
-artifact_name = "safari-downloads"
 
 [[artifacts]]
 artifact_name = "unifiedlogs"

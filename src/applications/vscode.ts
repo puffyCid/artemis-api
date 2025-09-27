@@ -73,14 +73,14 @@ export function fileHistory(
         case PlatformType.Linux:
         case PlatformType.Darwin: {
           const dirs = path.full_path.split("/");
-          const _ = dirs.pop();
-          hist_file = `${dirs.join("/")}/${json_data.entries[ i ].id}`;
+          dirs.pop();
+          hist_file = `${dirs.join("/")}/${json_data.entries[ i ]?.id}`;
           break;
         }
         case PlatformType.Windows: {
           const dirs = path.full_path.split("\\");
-          const _ = dirs.pop();
-          hist_file = `${dirs.join("\\")}\\${json_data.entries[ i ].id}`;
+          dirs.pop();
+          hist_file = `${dirs.join("\\")}\\${json_data.entries[ i ]?.id}`;
           break;
         }
       }

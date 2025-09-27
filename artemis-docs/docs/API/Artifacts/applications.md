@@ -11,63 +11,129 @@ Then you may import them into your TypeScript code.
 
 For example:
 ```typescript
-import { getChromiumUsersHistory, PlatformType } from "./artemis-api/mod";
+import { vscodeRecentFiles, PlatformType } from "./artemis-api/mod";
 
 function main() {
-  const results = getChromiumUsersHistory(PlatformType.Linux);
+  const results = vscodeRecentFiles(PlatformType.Linux);
   return results;
 }
 
 main();
 ```
 
-### getChromiumUsersHistory(platform) -> ChromiumHistory[] | ApplicationError
+### Chromium Browser class
 
-Return Chromium history for all users.
+A basic TypeScript class to extract data from the Chromium browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base Chromium directory.
 
-| Param     | Type         | Description      |
-| --------- | ------------ | ---------------- |
-| platform  | PlatformType | OS Platform type |
+Chrome and Edge parsers can also be created and are derived from the Chromium class.
 
-### getChromiumHistory(path) -> RawChromiumHistory[] | ApplicationError
+Sample TypeScript code:
+```typescript
+import { Chromium, Edge, PlatformType } from "./artemis-api/mod";
 
-Parse the Chromium History sqlite file at provided path. Will parse locked
-sqlite files.
+function main() {
+  const enable_unfold = true;
+  const client = new Chromium(PlatformType.Linux, enable_unfold);
+  const edge = new Edge(PlatformType.Windows);
 
-All Chromium derived browsers should be supported.
+  const start = 0;
+  const limit = 300;
+  const history_data = client.history(start, limit);
 
-| Param | Type   | Description           |
-| ----- | ------ | --------------------- |
-| path  | string | Chromium History file |
+  const ext = client.extensions();
+  return ext;
+}
 
-### getChromiumUsersDownloads(platform) -> ChromiumDownloads[] | ApplicationError
+main();
+```
 
-Return Chromium downloads for all users
+#### history(offset, limit) -> ChromiumHistory[]
 
-| Param     | Type         | Description      |
-| --------- | ------------ | ---------------- |
-| platform  | PlatformType | OS Platform type |
+Return Chromium history for all users. Chromium history exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying history.  
+You may provide a starting offset and limit when querying history.  
+By default artemis will get the first 100 entries for all users.
 
-### getChromiumDownloads(path) -> RawChromiumDownloads[] | ApplicationError
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
 
-Parse the Chromium History sqlite file at provided path for downloads. Will
-parse locked sqlite files.
+#### downloads(offset, limit) -> ChromiumDownloads[]
 
-All Chromium derived browsers should be supported.
+Return Chromium downloads for all users. Chromium downloads exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying downloads.  
+You may provide a starting offset and limit when querying downloads.  
+By default artemis will get the first 100 entries for all users.
 
-| Param | Type   | Description           |
-| ----- | ------ | --------------------- |
-| path  | string | Chromium History file |
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
 
-### chromiumExtensions(platform) -> Record&lt;string, unknown&gt;[] | ApplicationError
+#### cookies(offset, limit) -> ChromiumCookies[]
 
-Parse all Chromium extensions (manifest.json files) for all users. Returns array
-JSON objects.
+Return Chromium cookies for all users. Chromium cookies exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying cookies.  
+You may provide a starting offset and limit when querying cookies.  
+By default artemis will get the first 100 entries for all users.
 
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
 
+#### autofill(offset, limit) -> ChromiumAutofill[]
+
+Return Chromium autofill for all users. Chromium autofill exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying autofill.  
+You may provide a starting offset and limit when querying autofill.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### logins(offset, limit) -> ChromiumLogins[]
+
+Return Chromium logins for all users. Chromium logins exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying logins.  
+You may provide a starting offset and limit when querying logins.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### dips(offset, limit) -> ChromiumDips[]
+
+Return Chromium Detect Incidental Party State (DIPS) for all users. Chromium DIPS exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying DIPS.  
+You may provide a starting offset and limit when querying DIPS.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### extensions() -> Record&lt;string, unknown&gt;[]
+
+Return Chromium extensions for all users.
+
+#### preferences() -> Record&lt;string, unknown&gt;[]
+
+Return Chromium preferences for all users.
+
+#### bookmarks() -> ChromiumBookmarks[]
+
+Return Chromium bookmarks for all users.
+
+#### localStorage() -> ChromiumLocalStorage[]
+
+Return Chromium local storage data for all users.
 
 ### FireFox Browser Class
 
@@ -90,10 +156,9 @@ function main() {
 }
 
 main();
-
 ```
 
-#### history(offset, limit) -> FirefoxHistory[] | ApplicationError
+#### history(offset, limit) -> FirefoxHistory[]
 
 Return FireFox history for all users. FireFox history exists in a sqlite database.  
 Artemis will bypass locked sqlite databases when querying history.  
@@ -253,83 +318,6 @@ read-only mode. In addition, this function will bypass locked SQLITE databases.
 | path  | string | Path to the sqlite db                  |
 | query | string | Query to execute against the sqlite db |
 
-### getFirefoxCookies(platform, path) -> FirefoxCookies[] | ApplicationError
-
-Get Firefox cookies for all users based on platform. Can also provide an
-optional alternative path to the Cookie sqlite database instead
-
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
-| path     | string       | Optional path to a Firefox cookie database                |
-
-### getChromiumCookies(platform, path) -> ChromiumCookies[] | ApplicationError
-
-Get Chromium cookies for all users based on platform. Can also provide an
-optional alternative path to the Cookie sqlite database. May fail if Chromium is
-running due to Chromium process locking the file.
-
-All Chromium derived browsers should be supported.
-
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
-| path     | string       | Optional path to a Chromium cookie database               |
-
-### getChromiumAutofill(platform, path) -> ChromiumAutofill[] | ApplicationError
-
-Get Chromium autofill info for all users based on platform. Can also provide an
-optional alternative path to the Web Data sqlite database.
-
-All Chromium derived browsers should be supported.
-
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
-| path     | string       | Optional path to a Chromium Web Data database             |
-
-### getChromiumBookmarks(platform, path) -> ChromiumBookmarks[] | ApplicationError
-
-Try to get Chromium bookmarks for all users based on platform. Can also provide
-an optional alternative path to the Cookie sqlite database.
-
-All Chromium derived browsers should be supported.
-
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
-| path     | string       | Optional path to a Chromium bookmark file                 |
-
-### getChromiumLogins(platform, path) -> ChromiumLogins[] | ApplicationError
-
-Get saved Login information associated with Chromium browsers
-
-All Chromium derived browsers should be supported.
-
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
-| path     | string       | Optional path to a Chromium Login Data database           |
-
-### chromiumPreferences(platform) -> Record&lt;string, unknown&gt;[] | ApplicationError
-
-Get Chromium Preferences
-
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
-
-### getChromiumDips(platform, path) -> Dips[] | ApplicationError
-
-Get Detect Incidental Party State (DIPS) info. DIPS collects metrics related to
-websites
-
-All Chromium derived browsers should be supported.
-
-| Param    | Type         | Description                                               |
-| -------- | ------------ | --------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
-| path     | string       | Optional path to a Chromium Login Data database           |
 
 ### extractDefenderRules(platform, alt_file, limit) -> DefinitionRule[] | ApplicationError
 
@@ -386,3 +374,70 @@ contain the following artifacts:
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin)  |
 | alt_path | string       | Optional path to a directory containing OneDrive artifacts |
 | user     | string       | Optional single user to parse instead of all users         |
+
+### LevelDb Class
+
+A basic TypeScript class to extract data from LevelDb files. 
+
+Sample TypeScript code:
+```typescript
+import { LevelDb, PlatformType, } from "./artemis-api/mod";
+
+function main() {
+    const info = new LevelDb("Path to leveldb directory", PlatformType.Linux);
+    console.log(JSON.stringify(info.tables()));
+}
+
+main();
+```
+
+#### current() -> string
+
+Returns the active manifest file for the level database
+
+#### manifest() -> LevelManifest[] | ApplicationError
+
+Parse the level database manifest
+
+#### wal() -> LevelDbEntry[] | ApplicationError
+
+Parse the level database write ahead log
+
+#### tables() -> LevelDbEntry[] | ApplicationError
+
+Parse the level database write ahead log
+
+### AnyDesk Class
+
+A basic TypeScript class to extract data from AnyDesk application. By default artemis will parse the default AnyDesk paths based on the provided PlatformType.  
+You may provide an optional alternative directory that contains the AnyDesk files. The alternative directory should contain all AnyDesk related files.
+
+Sample TypeScript code:
+```typescript
+import { AnyDesk, PlatformType } from "../artemis-api/mod";
+
+function main() {
+    console.log('Running AnyDesk tests....');
+    const results = new AnyDesk(PlatformType.Linux);
+    const hits = results.traceFiles();
+    console.log(JSON.stringify(hits[0]));
+}
+
+main();
+```
+
+#### traceFiles(is_alt) -> TraceEntry[]
+
+Log entries from trace log files.
+
+| Param    | Type         | Description                                                                                         |
+| -------- | ------------ | --------------------------------------------------------------------------------------------------- |
+| is_alt   | boolean      | Optional. Set to true if you provided an alternative directory when initializing the AnyDesk class  |
+
+#### configs(is_alt) -> Config[]
+
+AnyDesk config information.
+
+| Param    | Type         | Description                                                                                         |
+| -------- | ------------ | --------------------------------------------------------------------------------------------------- |
+| is_alt   | boolean      | Optional. Set to true if you provided an alternative directory when initializing the AnyDesk class  |

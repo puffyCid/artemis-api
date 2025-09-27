@@ -20,7 +20,7 @@ import { getPlist } from "./plist";
 export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
   let paths: string[] = [];
   if (alt_file !== undefined) {
-    paths = [ alt_file ];
+    paths = [alt_file];
   } else {
     // Glob both local and tombstone entries
     const glob_paths = [
@@ -76,8 +76,7 @@ export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
         continue;
       }
 
-      const test = record.protobuf_bytes.buffer.slice(0, 474);
-      if (record.protobuf_bytes.slice(0, 6).toString() === new Uint8Array([ 98, 112, 108, 105, 115, 116 ]).toString()) {
+      if (record.protobuf_bytes.slice(0, 6).toString() === new Uint8Array([98, 112, 108, 105, 115, 116]).toString()) {
         // Sometimes BIOME files will contain binary plist instead of Protobuf data
         const plist_data = getPlist(record.protobuf_bytes);
         if (plist_data instanceof MacosError) {

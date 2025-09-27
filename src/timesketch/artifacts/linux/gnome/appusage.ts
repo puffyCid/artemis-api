@@ -1,4 +1,3 @@
-import { GvfsEntry } from "../../../../../types/linux/gnome/gvfs";
 import { AppUsage } from "../../../../../types/linux/gnome/usage";
 import { TimesketchTimeline } from "../../../../../types/timesketch/timeline";
 

@@ -319,8 +319,8 @@ export class Epiphany {
                 timeline = { ...timeline, ...entry };
                 if (this.unfold) {
                     timeline = { ...timeline, ...entry.unfold };
-                    delete timeline[ "unfold" ];
                 }
+                delete timeline[ "unfold" ];
                 timeline_entries.push(timeline);
             }
             const status = dumpData(timeline_entries, "retrospect_epiphany_history", output);

@@ -98,22 +98,4 @@ sources = ["Persist"]
 [[artifacts]]
 artifact_name = "fseventsd"
 filter = true
-
-[[artifacts]]
-artifact_name = "chromium-history"
-
-[[artifacts]]
-artifact_name = "chromium-downloads"
-
-[[artifacts]]
-artifact_name = "firefox-history"
-
-[[artifacts]]
-artifact_name = "firefox-downloads"
-
-[[artifacts]]
-artifact_name = "safari-history"
-
-[[artifacts]]
-artifact_name = "safari-downloads"
 ```

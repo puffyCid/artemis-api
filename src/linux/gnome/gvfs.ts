@@ -2,7 +2,7 @@ import type { GvfsEntry } from "../../../types/linux/gnome/gvfs";
 import { extractUtf8String } from "../../encoding/mod";
 import { FileError } from "../../filesystem/errors";
 import { readFile } from "../../filesystem/files";
-import { glob } from "../../filesystem/mod";
+import { glob } from "../../filesystem/files";
 import { NomError } from "../../nom/error";
 import { Endian } from "../../nom/helpers";
 import {

@@ -135,31 +135,6 @@ optional alternative path to the shadowhash.plist file.
 | -------- | ------ | -------------------------------------------------- |
 | alt_path | String | Optional alternative path to shadowhash.plist file |
 
-### getSafariUsersHistory() -> SafariHistory[] | MacosError
-
-Return Safari history for all users
-
-### getSafariHistory(path) -> RawSafariHistory[] | MacosError
-
-Parse Safari history from provided History.db sqlite file. Supports locked
-files.
-
-| Param | Type   | Description             |
-| ----- | ------ | ----------------------- |
-| path  | string | Path to History.db file |
-
-### getSafariUsersDownloads() -> SafariDownloads[] | MacosError
-
-Return Safari downloads for all users
-
-### getSafariDownloads(path) -> RawSafariDownloads[] | MacosError
-
-Parse Safari history from provided Downloads.plist file.
-
-| Param | Type   | Description                  |
-| ----- | ------ | ---------------------------- |
-| path  | string | Path to Downloads.plist file |
-
 ### getUnifiedLog(path, archive_path) -> UnifiedLog[] | MacosError
 
 Parse a single UnifiedLog file (.tracev3) on macOS. Typically found at:
@@ -835,3 +810,97 @@ Parse binary Safri cookie at provided path.
 | Param | Type   | Description                |
 | ----- | ------ | -------------------------- |
 | path  | string | Path to binary cookie file |
+
+### Safari Browser Class
+
+A basic TypeScript class to extract data from the Safari browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base Safari directory.
+
+Sample TypeScript code:
+```typescript
+import { Safari, PlatformType } from "./artemis-api/mod";
+
+function main() {
+  const enable_unfold = true;
+  const client = new Safari(PlatformType.Darwin, enable_unfold);
+
+  const start = 0;
+  const limit = 300;
+  const history_data = client.history(start, limit);
+  console.log(JSON.stringify(history_data));
+}
+
+main();
+```
+
+#### history(offset, limit) -> SafariHistory[]
+
+Return Safari history for all users. Safari history exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying history.  
+You may provide a starting offset and limit when querying history.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### downloads() -> SafariDownloads[]
+
+Return Safari file downloads for all users. Safari file downloads exists in a plist file.  
+
+#### favicons(offset, limit) -> SafariFavicons[]
+
+Return Safari favicons for all users. Safari favicons exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying histfaviconsory.  
+You may provide a starting offset and limit when querying favicons.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### bookmarks() -> SafariBookmark[]
+
+Return Safari bookmarks for all users.
+
+#### cookies() -> Cookie[]
+
+Return Safari cookies for all users.
+
+#### extensions() -> SafariExtensions[]
+
+Return Safari extensions for all users.
+
+#### retrospect(output) -> void
+
+A powerful feature that will timeline all Safari browser artifacts. This functionality is similar to [Hindsight](https://github.com/obsidianforensics/hindsight).
+
+You will need to provide an Output object specifying how you want to output the results. You may only output as JSON or JSONL. **JSONL** is strongly recommended. This function returns no data, instead it outputs the results based on your Output object.
+
+Sample code below:
+```typescript
+import { Safari, PlatformType } from "./artemis-api/mod";
+import { Output } from "./artemis-api/src/system/output";
+
+function main() {
+    const client = new Safari(PlatformType.Darwin);
+    const out: Output = {
+        name: "safari_timeline",
+        directory: "./tmp",
+        format: Format.JSONL,
+        compress: false,
+        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
+        timeline: false,
+        endpoint_id: "abc",
+        collection_id: 0,
+        output: OutputType.LOCAL,
+    }
+
+    // No data is returned. Our results and errors will appear at `./tmp/safari_timeline`
+    client.retrospect(out);
+
+}
+
+main();
+```

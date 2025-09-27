@@ -24,7 +24,7 @@ export function timelinePrefetch(
     entries.push(entry);
     for (let i = 0; i < item.all_run_times.length; i++) {
       const old_run = Object.assign({}, entry);
-      old_run.datetime = item.all_run_times[i];
+      old_run.datetime = item.all_run_times[ i ] ?? "Undefined";
       old_run.timestamp_desc = "Prefetch Execution";
       entries.push(old_run);
     }

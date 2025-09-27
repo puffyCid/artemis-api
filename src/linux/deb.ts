@@ -1,6 +1,6 @@
 import { DebPackages } from "../../types/linux/deb";
 import { FileError } from "../filesystem/errors";
-import { readTextFile } from "../filesystem/mod";
+import { readTextFile } from "../filesystem/files";
 import { LinuxError } from "./errors";
 
 /**

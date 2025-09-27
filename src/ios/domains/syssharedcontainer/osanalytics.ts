@@ -43,17 +43,13 @@ export function extractOsAnalytics(app_paths: ManifestApp[],
             // Second object is pretty formatted
             const first_json = text.trim().split("\n", 1).at(0) ?? "";
             const second_json = JSON.parse(text.replace(first_json, ""));
-            console.log(second_json);
 
             let status = outputResults(
                 [ JSON.parse(first_json), second_json ],
                 "syssharedcontainer_apple_osanalytics_diagnostic_reports",
                 output,
             );
-            console.log(status);
             continue;
         }
-        console.log(target);
-        console.log(info.path);
     }
 }

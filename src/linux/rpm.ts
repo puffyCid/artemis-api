@@ -14,6 +14,8 @@ import {
 } from "../nom/helpers";
 import { takeUntil } from "../nom/parsers";
 import { unixEpochToISO } from "../time/conversion";
+import { readFile } from "../filesystem/files";
+import { FileError } from "../filesystem/errors";
 
 /**
  * Function to get installed RPM packages. This function only supports getting packages from the sqlite database. The historical Berkley database is not supported.
@@ -268,7 +270,7 @@ enum TagName {
   Sha1Header = 269,
   Sha256Header = 273,
 
-  // Undocumented. Seen been unsure what they are
+  // Undocumented
   /**Some kind of hash? */
   Unknown = 5097,
 }
@@ -568,4 +570,104 @@ function extractTagValue(
       return [];
     }
   }
+}
+
+/**
+ * Function to test RPM package parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the RPM package parsing
+ */
+export function testRpmInfo(): void {
+  const tag_value = "../../test_data/linux/rpm/tagvalue.raw";
+  const tag_value_data = readFile(tag_value);
+  if (tag_value_data instanceof FileError) {
+    throw tag_value_data;
+  }
+
+  const tag_value_result = extractTagValue(tag_value_data, TagType.String, 1);
+  if (tag_value_result instanceof LinuxError) {
+    throw tag_value_result;
+  }
+
+  if (tag_value_result.length != 1) {
+    throw `Got ${tag_value_result.length} entries expected 1.......extractTagValue ❌`;
+  }
+  if (tag_value_result[ 0 ] != "abrt-java-connector") {
+    throw `Got value '${tag_value_result[ 0 ]}' expected abrt-java-connector.......extractTagValue ❌`;
+  }
+  console.info(`  Function extractTagValue ✅`);
+
+  const tags = "../../test_data/linux/rpm/tags.raw";
+  const tags_data = readFile(tags);
+  if (tags_data instanceof FileError) {
+    throw tags_data;
+  }
+
+  const tags_result = parseTags(tags_data, {
+    entries: [ { "tag": 1001, "offset": 22, "entry_type": 6, "count": 1 } ],
+    "il": 74, "dl": 10626, "data_start": 1192, "data_end": 11818, "region_tag": 0, "ril": 0, "rdl": 0
+  });
+  if (tags_result instanceof LinuxError) {
+    throw tags_result;
+  }
+
+  if (tags_result[ 1001 ] === undefined) {
+    throw `Got undefined tag result value expected 1.3.2.......parseTags ❌`;
+  }
+
+  if (tags_result[ 1001 ][ 0 ] != "1.3.2") {
+    throw `Got ${tags_result[ 1001 ][ 0 ]} value expected 1.3.2.......parseTags ❌`;
+  }
+
+  console.info(`  Function parseTags ✅`);
+
+  const entries = "../../test_data/linux/rpm/entries.raw";
+  const entries_data = readFile(entries);
+  if (entries_data instanceof FileError) {
+    throw entries_data;
+  }
+
+  const entries_result = getEntries(entries_data);
+  if (entries_result instanceof LinuxError) {
+    throw entries_result;
+  }
+
+  if (entries_result.entry.tag != TagName.HeaderImutable) {
+    throw `Got tag ${entries_result.entry.tag} expected 63.......getEntries ❌`;
+  }
+
+  console.info(`  Function getEntries ✅`);
+
+  const header = new Uint8Array([ 0, 0, 0, 74, 0, 0, 41, 130, 0, 0, 0, 63, 0, 0, 0, 7, 0, 0, 27, 137, 0, 0, 0, 16, 0, 0, 0, 100, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 232, 0, 0, 0, 6, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 3, 233, 0, 0, 0, 6, 0, 0, 0, 22, 0, 0, 0, 1, 0, 0, 3, 234, 0, 0, 0, 6, 0, 0, 0, 28, 0, 0, 0, 1, 0, 0, 3, 236, 0, 0, 0, 9, 0, 0, 0, 35, 0, 0, 0, 1, 0, 0, 3, 237, 0, 0, 0, 9, 0, 0, 0, 97, 0, 0, 0, 1, 0, 0, 3, 238, 0, 0, 0, 4, 0, 0, 0, 220, 0, 0, 0, 1, 0, 0, 3, 239, 0, 0, 0, 6, 0, 0, 0, 224, 0, 0, 0, 1, 0, 0, 3, 241, 0, 0, 0, 4, 0, 0, 1, 8, 0, 0, 0, 1, 0, 0, 3, 242, 0, 0, 0, 6, 0, 0, 1, 12, 0, 0, 0, 1, 0, 0, 3, 243, 0, 0, 0, 6, 0, 0, 1, 27, 0, 0, 0, 1, 0, 0, 3, 246, 0, 0, 0, 6, 0, 0, 1, 42, 0, 0, 0, 1, 0, 0, 3, 247, 0, 0, 0, 6, 0, 0, 1, 49, 0, 0, 0, 1, 0, 0, 3, 248, 0, 0, 0, 9, 0, 0, 1, 64, 0, 0, 0, 1, 0, 0, 3, 252, 0, 0, 0, 6, 0, 0, 1, 93, 0, 0, 0, 1, 0, 0, 3, 253, 0, 0, 0, 6, 0, 0, 1, 137, 0, 0, 0, 1, 0, 0, 3, 254, 0, 0, 0, 6, 0, 0, 1, 143, 0, 0, 0, 1, 0, 0, 4, 4, 0, 0, 0, 4, 0, 0, 1, 152, 0, 0, 0, 22, 0, 0, 4, 6, 0, 0, 0, 3, 0, 0, 1, 240, 0, 0, 0, 22, 0, 0, 4, 9, 0, 0, 0, 3, 0, 0, 2, 28, 0, 0, 0, 22, 0, 0, 4, 10, 0, 0, 0, 4, 0, 0, 2, 72, 0, 0, 0, ]);
+
+  const header_result = parseHeader(header);
+  if (header_result instanceof LinuxError) {
+    throw header_result;
+  }
+
+  if (header_result.entries.length != 21) {
+    throw `Got ${header_result.entries.length} expected 21.......parseHeader ❌`;
+  }
+
+  console.info(`  Function parseHeader ✅`);
+
+  const rpm = "../../test_data/linux/rpm/rpm.sqlite";
+  const rpm_result = getRpmInfo(0, 100, rpm);
+  if (rpm_result instanceof LinuxError) {
+    throw rpm_result;
+  }
+
+  if (rpm_result.length != 1) {
+    throw `Got ${rpm_result.length} expected 1.......getRpmInfo ❌`;
+  }
+
+  if (rpm_result[ 0 ] === undefined) {
+    throw `Got undefined name expected shim-x64.......getRpmInfo ❌`;
+  }
+
+  if (rpm_result[ 0 ].name != "shim-x64") {
+    throw `Got ${rpm_result[ 0 ].name} expected shim-x64.......getRpmInfo ❌`;
+  }
+
+  console.info(`  Function getRpmInfo ✅`);
 }

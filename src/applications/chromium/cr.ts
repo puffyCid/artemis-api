@@ -1,10 +1,11 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLogins, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
 import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./json";
+import { chromiumLocalStorage } from "./level";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./sqlite";
 
 /**
@@ -12,13 +13,19 @@ import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chr
  * Since many browsers are based on Chromium we can extend this class and reuse most of the parsers
  */
 export class Chromium {
-    protected paths: ChromiumProfiles[];
+    protected paths: ChromiumProfiles[] = [];
     protected platform: PlatformType;
     protected unfold: boolean;
     protected browser: BrowserType;
 
-
-    constructor (platform: PlatformType, unfold = false, browser: BrowserType, alt_path?: string) {
+    /**
+     * Construct a `Chromium` object that can be used to parse browser data
+     * @param platform OS `PlatformType`
+     * @param unfold Attempt to parse URLs. Default is `false`
+     * @param alt_path Optional alternative path to directory contain Chromium data
+     * @returns `Chromium` instance class
+     */
+    constructor (platform: PlatformType, unfold = false, browser = BrowserType.CHROMIUM, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         this.browser = browser;
@@ -198,6 +205,14 @@ export class Chromium {
      */
     public bookmarks(): ChromiumBookmarks[] {
         return chromiumBookmarks(this.paths, this.platform);
+    }
+
+    /**
+     * Get Chromium Local Storage
+     * @returns Array of `ChromiumLocalStorage` for each user
+     */
+    public localStorage(): ChromiumLocalStorage[] {
+        return chromiumLocalStorage(this.paths, this.platform);
     }
 
     /**

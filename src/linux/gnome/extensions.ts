@@ -4,7 +4,7 @@ import {
 } from "../../../types/linux/gnome/extensions";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
-import { readTextFile, stat } from "../../filesystem/mod";
+import { readTextFile, stat } from "../../filesystem/files";
 import { LinuxError } from "../errors";
 
 /**
@@ -64,4 +64,28 @@ export function getGnomeExtensions(
   }
 
   return extensions;
+}
+
+/**
+ * Function to test GNOME extension parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the GNOME extension parsing
+ */
+export function testGetGnomeExtensions(): void {
+  const test = "../../test_data/linux/gnome/metadata.json";
+  const result = getGnomeExtensions(test);
+  if (result instanceof LinuxError) {
+    throw result;
+  }
+
+  if (result[ 0 ] === undefined) {
+    throw `Got extension name undefined expected GSConnect.......getGnomeExtensions ❌`;
+  }
+
+  if (result[ 0 ].name != "GSConnect") {
+    throw `Got extension name ${result[ 0 ].name} expected GSConnect.......getGnomeExtensions ❌`;
+  }
+
+  console.info(`  Function getGnomeExtensions ✅`);
+
 }

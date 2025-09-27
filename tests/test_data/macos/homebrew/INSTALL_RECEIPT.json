@@ -1,0 +1,177 @@
+{
+  "homebrew_version": "4.5.13-44-g46b8ef4",
+  "used_options": [],
+  "unused_options": [],
+  "built_as_bottle": true,
+  "poured_from_bottle": true,
+  "loaded_from_api": true,
+  "installed_as_dependency": false,
+  "installed_on_request": true,
+  "changed_files": [
+    "libexec/lib/node_modules/typescript/bin/tsc",
+    "libexec/lib/node_modules/typescript/bin/tsserver"
+  ],
+  "time": 1756750685,
+  "source_modified_time": 499162500,
+  "compiler": "gcc-11",
+  "aliases": [
+    "tsc"
+  ],
+  "runtime_dependencies": [
+    {
+      "full_name": "brotli",
+      "version": "1.1.0",
+      "revision": 0,
+      "bottle_rebuild": 2,
+      "pkg_version": "1.1.0",
+      "declared_directly": false
+    },
+    {
+      "full_name": "c-ares",
+      "version": "1.34.5",
+      "revision": 0,
+      "bottle_rebuild": 1,
+      "pkg_version": "1.34.5",
+      "declared_directly": false
+    },
+    {
+      "full_name": "icu4c@77",
+      "version": "77.1",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "77.1",
+      "declared_directly": false
+    },
+    {
+      "full_name": "libnghttp2",
+      "version": "1.66.0",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "1.66.0",
+      "declared_directly": false
+    },
+    {
+      "full_name": "libnghttp3",
+      "version": "1.11.0",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "1.11.0",
+      "declared_directly": false
+    },
+    {
+      "full_name": "ca-certificates",
+      "version": "2025-08-12",
+      "revision": 0,
+      "bottle_rebuild": 2,
+      "pkg_version": "2025-08-12",
+      "declared_directly": false
+    },
+    {
+      "full_name": "openssl@3",
+      "version": "3.5.2",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "3.5.2",
+      "declared_directly": false
+    },
+    {
+      "full_name": "libngtcp2",
+      "version": "1.15.1",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "1.15.1",
+      "declared_directly": false
+    },
+    {
+      "full_name": "libuv",
+      "version": "1.51.0",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "1.51.0",
+      "declared_directly": false
+    },
+    {
+      "full_name": "simdjson",
+      "version": "3.13.0",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "3.13.0",
+      "declared_directly": false
+    },
+    {
+      "full_name": "readline",
+      "version": "8.3.1",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "8.3.1",
+      "declared_directly": false
+    },
+    {
+      "full_name": "sqlite",
+      "version": "3.50.4",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "3.50.4",
+      "declared_directly": false
+    },
+    {
+      "full_name": "uvwasi",
+      "version": "0.0.21",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "0.0.21",
+      "declared_directly": false
+    },
+    {
+      "full_name": "lz4",
+      "version": "1.10.0",
+      "revision": 0,
+      "bottle_rebuild": 1,
+      "pkg_version": "1.10.0",
+      "declared_directly": false
+    },
+    {
+      "full_name": "xz",
+      "version": "5.8.1",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "5.8.1",
+      "declared_directly": false
+    },
+    {
+      "full_name": "zstd",
+      "version": "1.5.7",
+      "revision": 0,
+      "bottle_rebuild": 1,
+      "pkg_version": "1.5.7",
+      "declared_directly": false
+    },
+    {
+      "full_name": "node",
+      "version": "24.7.0",
+      "revision": 0,
+      "bottle_rebuild": 0,
+      "pkg_version": "24.7.0",
+      "declared_directly": true
+    }
+  ],
+  "source": {
+    "spec": "stable",
+    "versions": {
+      "stable": "5.9.2",
+      "head": null,
+      "version_scheme": 0
+    },
+    "path": "/Users/android/Library/Caches/Homebrew/api/formula.jws.json",
+    "tap_git_head": null,
+    "tap": "homebrew/core"
+  },
+  "arch": "arm64",
+  "built_on": {
+    "os": "Linux",
+    "os_version": "Ubuntu 22.04.5",
+    "cpu_family": "arm",
+    "glibc_version": "2.35",
+    "oldest_cpu_family": "armv8"
+  }
+}

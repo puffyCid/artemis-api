@@ -1,7 +1,8 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLogins } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
 import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumLocalStorage } from "./chromium/level";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
 
 type ChromeHistory = ChromiumHistory;
@@ -11,6 +12,7 @@ type ChromeAutofill = ChromiumAutofill;
 type ChromeBookmarks = ChromiumBookmarks;
 type ChromeLogins = ChromiumLogins;
 type ChromeDips = ChromiumDips;
+type ChromeLocalStorage = ChromiumLocalStorage;
 
 /**
  * Class to extract Chrome browser information. Since Chrome is based on Chromium we can leverage the existing Chromium artifacts to parse Chrome info
@@ -21,7 +23,7 @@ export class Chrome extends Chromium {
    * Construct a `Chrome` object that can be used to parse browser data
    * @param platform OS `PlatformType`
    * @param unfold Attempt to parse URLs. Default is `false`
-   * @param alt_path Optional alternative path to directory contain FireFox data
+   * @param alt_path Optional alternative path to directory contain Chrome data
    * @returns `Chrome` instance class
    */
   constructor (platform: PlatformType, unfold = false, alt_path?: string) {
@@ -145,6 +147,14 @@ export class Chrome extends Chromium {
   }
 
   /**
+   * Get Chrome Local Storage
+   * @returns Array of `ChromeLocalStorage` for each user
+   */
+  public override localStorage(): ChromeLocalStorage[] {
+    return chromiumLocalStorage(this.paths, this.platform);
+  }
+
+  /**
    * Function to parse Chrome Login information. 
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
@@ -161,7 +171,7 @@ export class Chrome extends Chromium {
    * @param [limit=100] How many records to return. Default is 100
    * @returns Array of `ChromeDips` 
    */
-  public dips(offset = 0, limit = 100): ChromeDips[] {
+  public override dips(offset = 0, limit = 100): ChromeDips[] {
     const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
     return chromiumDips(this.paths, this.platform, query);
   }

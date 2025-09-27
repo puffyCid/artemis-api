@@ -1,7 +1,8 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLogins } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
 import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumLocalStorage } from "./chromium/level";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
 
 type EdgeHistory = ChromiumHistory;
@@ -11,6 +12,7 @@ type EdgeAutofill = ChromiumAutofill;
 type EdgeBookmarks = ChromiumBookmarks;
 type EdgeLogins = ChromiumLogins;
 type EdgeDips = ChromiumDips;
+type EdgeLocalStorage = ChromiumLocalStorage;
 
 /**
  * Class to extract Edge browser information. Since Edge is based on Chromium we can leverage the existing Chromium artifacts to parse Edge info
@@ -21,7 +23,7 @@ export class Edge extends Chromium {
      * Construct a `Edge` object that can be used to parse browser data
      * @param platform OS `PlatformType`
      * @param unfold Attempt to parse URLs. Default is `false`
-     * @param alt_path Optional alternative path to directory contain FireFox data
+     * @param alt_path Optional alternative path to directory contain Edge data
      * @returns `Edge` instance class
      */
     constructor (platform: PlatformType, unfold = false, alt_path?: string) {
@@ -137,11 +139,19 @@ export class Edge extends Chromium {
     }
 
     /**
-     * Get Chrome Bookmarks
+     * Get Edge Bookmarks
      * @returns Array of `EdgeBookmarks` for each user
      */
     public override bookmarks(): EdgeBookmarks[] {
         return chromiumBookmarks(this.paths, this.platform);
+    }
+
+    /**
+     * Get Edge Local Storage
+     * @returns Array of `EdgeLocalStorage` for each user
+     */
+    public override localStorage(): EdgeLocalStorage[] {
+        return chromiumLocalStorage(this.paths, this.platform);
     }
 
     /**
@@ -161,7 +171,7 @@ export class Edge extends Chromium {
      * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `ChromiumDips` 
      */
-    public dips(offset = 0, limit = 100): EdgeDips[] {
+    public override dips(offset = 0, limit = 100): EdgeDips[] {
         const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
         return chromiumDips(this.paths, this.platform, query);
     }
