@@ -1,0 +1,72 @@
+{
+  "full_token": "duckduckgo",
+  "old_tokens": [],
+  "tap": "homebrew/cask",
+  "name": [
+    "DuckDuckGo"
+  ],
+  "desc": "Web browser focusing on privacy",
+  "homepage": "https://duckduckgo.com/",
+  "url": "https://staticcdn.duckduckgo.com/macos-desktop-browser/duckduckgo-1.157.0.541.dmg",
+  "url_specs": {},
+  "version": "1.157.0,541",
+  "autobump": true,
+  "no_autobump_message": null,
+  "skip_livecheck": false,
+  "installed": null,
+  "installed_time": null,
+  "bundle_version": null,
+  "bundle_short_version": null,
+  "outdated": false,
+  "sha256": "b66982d71304eeddce5bab1324e93840764e3145185cea95c1fcb9ce2b6f4e1d",
+  "artifacts": [
+    {
+      "app": [
+        "DuckDuckGo.app"
+      ]
+    },
+    {
+      "zap": [
+        {
+          "trash": [
+            "~/Library/Caches/com.duckduckgo.macos.browser",
+            "~/Library/Containers/com.duckduckgo.macos.browser",
+            "~/Library/HTTPStorages/com.duckduckgo.macos.browser",
+            "~/Library/Preferences/com.duckduckgo.macos.browser.plist",
+            "~/Library/Saved Application State/com.duckduckgo.macos.browser.savedState",
+            "~/Library/WebKit/com.duckduckgo.macos.browser"
+          ]
+        }
+      ]
+    }
+  ],
+  "caveats": null,
+  "depends_on": {
+    "macos": {
+      ">=": [
+        "11"
+      ]
+    }
+  },
+  "conflicts_with": null,
+  "container": null,
+  "rename": [],
+  "auto_updates": true,
+  "deprecated": false,
+  "deprecation_date": null,
+  "deprecation_reason": null,
+  "deprecation_replacement_formula": null,
+  "deprecation_replacement_cask": null,
+  "disabled": false,
+  "disable_date": null,
+  "disable_reason": null,
+  "disable_replacement_formula": null,
+  "disable_replacement_cask": null,
+  "tap_git_head": "d0a16499293d26df8689ee244ccf3b92e14493d6",
+  "languages": [],
+  "ruby_source_path": "Casks/d/duckduckgo.rb",
+  "ruby_source_checksum": {
+    "sha256": "8ce931fb9ca9550499510474413f9cf21620989279c3132f9dc7e92741c76964"
+  },
+  "variations": {}
+}

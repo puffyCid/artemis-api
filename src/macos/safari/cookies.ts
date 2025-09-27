@@ -68,12 +68,17 @@ export function parseCookies(path: string): Cookie[] | MacosError {
   let cookies: Cookie[] = [];
   let remaining = header.remaining_bytes;
   for (let i = 0; i < header.pages_count; i++) {
-    const page_bytes = take(remaining, header.page_sizes[i]);
+    const page_size = header.page_sizes[i];
+    if(page_size === undefined) {
+      continue;
+    }
+
+    const page_bytes = take(remaining, page_size);
     if(page_bytes instanceof NomError) {
       continue;
     }
     remaining = page_bytes.remaining as Uint8Array;
-    const cookie = parsePage(page_bytes.nommed as Uint8Array, header.page_sizes[i]);
+    const cookie = parsePage(page_bytes.nommed as Uint8Array, page_size);
     if (cookie instanceof NomError) {
       return new MacosError(
         `COOKIES`,

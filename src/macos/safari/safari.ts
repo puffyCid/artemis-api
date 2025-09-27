@@ -10,7 +10,7 @@ import { safariBookmarks, safariDownloads, safariExtensions } from "./plist";
 import { safariFavicons, safariHistory } from "./sqlite";
 
 export class Safari {
-    private paths: SafariProfile[];
+    private paths: SafariProfile[] = [];
     private unfold: boolean;
     private platform: PlatformType;
 
@@ -170,7 +170,7 @@ export class Safari {
 
         let downs = this.downloads();
         if (!this.unfold) {
-            entries.forEach(x => delete x["unfold"]);
+            downs.forEach(x => delete x["unfold"]);
         }
         status = dumpData(downs, "retrospect_safari_downloads", output);
         if (status instanceof SystemError) {
