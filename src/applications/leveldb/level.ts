@@ -54,7 +54,7 @@ export class LevelDb {
 
     /**
      * Parse the write ahead log for the level database
-     * @returns Array of `WalData` or `ApplicationError`
+     * @returns Array of `LevelDbEntry` or `ApplicationError`
      */
     public wal(): LevelDbEntry[] | ApplicationError {
         let logs = `${this.path}/*.log`;
