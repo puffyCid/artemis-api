@@ -11,10 +11,10 @@ permissions: {}
 
 jobs:
   build:
-    name: Build Documentation
+    name: Build and Deploy Documentation
     runs-on: ubuntu-latest
     permissions: 
-      contents: read
+      contents: write # Needed to publish to GitHub Pages
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5
         with:
@@ -33,13 +33,6 @@ jobs:
         run: npm run build
         working-directory: ./artemis-docs
 
-  publish:
-    name: Deploy
-    runs-on: ubuntu-latest
-    permissions: 
-      contents: write # Needed to publish to GitHub Pages
-    needs: [build]
-    steps:
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages
