@@ -596,3 +596,12 @@ You may provided an optional alternative path to Security.evtx.
 | Param | Type   | Description                                |
 | ----- | ------ | ------------------------------------------ |
 | path  | string | Optional alternative path to Security.evtx |
+
+#### wifiNetworksWindows(path) -> Wifi[] | WindowsError
+
+Parses the Windows SOFTWARE Registry file and attempts extract WiFi networks connected to.
+You may provided an optional alternative path to the SOFTWARE Registry file.
+
+| Param | Type   | Description                                |
+| ----- | ------ | ------------------------------------------ |
+| path  | string | Optional alternative path to Security.evtx |

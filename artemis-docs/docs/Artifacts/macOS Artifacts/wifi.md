@@ -7,7 +7,7 @@ keywords:
 
 # WiFi
 
-Artemis supports extract WiFi access points that the macOS system has connected
+Artemis supports extracting WiFi access points that the macOS system has connected
 to. By default it will try to parse WiFi networks at
 /Library/Preferences/com.apple.wifi.known-networks.plist.
 
