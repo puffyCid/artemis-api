@@ -38,8 +38,7 @@ function main() {
   let offset = 0;
   const limit = 100;
 
-  let count = 1;
-  while (count !== 0) {
+  while (true) {
     const status = getRpmInfo(offset, limit);
     if (status instanceof LinuxError) {
       break;
@@ -49,7 +48,6 @@ function main() {
     }
 
     offset += limit;
-    count = status.length;
     console.log(JSON.stringify(status));
   }
 }
@@ -75,5 +73,11 @@ export interface RpmPackages {
   package_group: string;
   summary: string;
   url: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "RPM Package Installed";
+  artifact: "RPM Package";
+  data_type: "linux:rpm:entry";
 }
+
 ```

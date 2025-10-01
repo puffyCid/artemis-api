@@ -37,9 +37,9 @@ export function systemExtensions(
         uuid: ext[ "uniqueID" ] as string,
         state: ext[ "state" ] as string,
         id: ext[ "identifier" ] as string,
-        version: ver[ "CFBundleVersion" ],
+        version: ver[ "CFBundleVersion" ] ?? "",
         categories: ext[ "categories" ] as string[],
-        bundle_path: bundle[ "bundlePath" ],
+        bundle_path: bundle[ "bundlePath" ] ?? "",
         team: ext[ "teamID" ] as string,
       };
       exts.push(sys_ext);

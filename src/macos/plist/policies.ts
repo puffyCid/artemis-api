@@ -51,7 +51,7 @@ export function passwordPolicy(
       const pass_policy: PasswordPolicy = {
         policy_id: policy_entry[ "policyIdentifier" ] as string,
         policy_content: policy_entry[ "policyContent" ] as string,
-        policy_description: policy_description[ "en" ],
+        policy_description: policy_description[ "en" ] ?? "",
       };
       policies.push(pass_policy);
     }

@@ -77,6 +77,11 @@ export function getRpmInfo(
       package_group: "",
       summary: "",
       url: "",
+      message: "",
+      datetime: "",
+      timestamp_desc: "RPM Package Installed",
+      artifact: "RPM Package",
+      data_type: "linux:rpm:entry"
     };
 
     // Extract the tag values
@@ -135,6 +140,8 @@ export function getRpmInfo(
       }
     }
 
+    rpm.message = `${rpm.name}-v${rpm.version} installed`;
+    rpm.datetime = rpm.install_time;
     rpm_entries.push(rpm);
   }
 

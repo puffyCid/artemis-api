@@ -65,7 +65,12 @@ async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
         data_directory: path,
         backtrace: "",
         environment: "",
-        home: ""
+        home: "",
+        message: "",
+        datetime: "",
+        timestamp_desc: "Abrt Last Occurrence",
+        artifact: "Abrt",
+        data_type: "linux:abrt:entry"
     };
     for (const entry of entries) {
         if (!entry.is_file) {
@@ -75,6 +80,7 @@ async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
         switch (entry.filename) {
             case "executable": {
                 abrt_entry.executable = readLine(entry.full_path);
+                abrt_entry.message = `${abrt_entry.executable} crashed`;
                 break;
             }
             case "cmdline": {
@@ -103,6 +109,7 @@ async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
             }
             case "last_occurrence": {
                 abrt_entry.last_occurrence = unixEpochToISO(Number(readLine(entry.full_path)));
+                abrt_entry.datetime = abrt_entry.last_occurrence;
                 break;
             }
             case "backtrace": {

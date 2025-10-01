@@ -45,5 +45,10 @@ export interface Abrt {
     backtrace: string | Record<string, unknown>;
     environment: string;
     home: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Abrt Last Occurrence";
+    artifact: "Abrt";
+    data_type: "linux:abrt:entry";
 }
 ```

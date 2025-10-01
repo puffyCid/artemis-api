@@ -74,10 +74,6 @@ import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper";
  * Linux artifact timelines
  */
 import { timelineJournals } from "./artifacts/linux/journals";
-import type { RpmPackages } from "../../types/linux/rpm";
-import { timelineAbrt } from "./artifacts/linux/abrt";
-import { Abrt } from "../../types/linux/abrt";
-import { timelineRpm } from "./artifacts/linux/rpm";
 import { timelineGnomeExtensions } from "./artifacts/linux/gnome/extensions";
 import { Extension } from "../../types/linux/gnome/extensions";
 import { timelineGnomeVirtualFilesystem } from "./artifacts/linux/gnome/gvfs";
@@ -234,14 +230,10 @@ export function timelineArtifact(
     case TimesketchArtifact.CHROME_HISTORY:
     case TimesketchArtifact.EDGE_HISTORY:
       return timelineChromiumHistory(data as ChromiumHistory[], artifact);
-    case TimesketchArtifact.RPM:
-      return timelineRpm(data as RpmPackages[]);
     case TimesketchArtifact.VSCODE_FILEHISTORY:
       return timelineFileHistory(data as FileHistory[]);
     case TimesketchArtifact.LIBREOFFICE_RECENTFILES:
       return timelineRecentFiles(data as RecentFilesLibreOffice[]);
-    case TimesketchArtifact.ABRT:
-      return timelineAbrt(data as Abrt[]);
     case TimesketchArtifact.GNOME_EXTENSIONS:
       return timelineGnomeExtensions(data as Extension[]);
     case TimesketchArtifact.GNOME_VIRTUAL_FILESYSTEM:

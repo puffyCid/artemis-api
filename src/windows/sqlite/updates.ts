@@ -2,7 +2,7 @@ import { UpdateHistoryV2 } from "../../../types/windows/ese/updates";
 import { ApplicationError } from "../../applications/errors";
 import { querySqlite } from "../../applications/sqlite";
 import { getEnvValue } from "../../environment/env";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { unixEpochToISO } from "../../time/conversion";
 import { WindowsError } from "../errors";
 
 /**

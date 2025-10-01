@@ -11,4 +11,9 @@ export interface RpmPackages {
   package_group: string;
   summary: string;
   url: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "RPM Package Installed";
+  artifact: "RPM Package";
+  data_type: "linux:rpm:entry";
 }
