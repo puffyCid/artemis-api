@@ -17,7 +17,7 @@ export interface Extension {
   /**Extension Type: User or System */
   extension_type: ExtensionType;
   /**Other JSON key entries */
-  [key: string]: unknown;
+  [ key: string ]: unknown;
   /**metadata.json created */
   created: string;
   /**metadata.json modified */
@@ -26,6 +26,11 @@ export interface Extension {
   accessed: string;
   /**metadata.json changed */
   changed: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Created";
+  artifact: "GNOME Extension";
+  data_type: "linux:gnome:extensions:entry",
 }
 
 export enum ExtensionType {

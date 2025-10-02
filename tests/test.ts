@@ -15,7 +15,7 @@ export { testGeditRecentFiles } from "../src/linux/gnome/gedit";
 export { testRpmInfo } from "../src/linux/rpm";
 export { testFirmwareHistory } from "../src/linux/firmware";
 export { testGnomeAppUsage } from "../src/linux/gnome/usage";
-
+export { testParseGvfs } from "../src/linux/gnome/gvfs";
 /**
  * Windows exported test functions
  */

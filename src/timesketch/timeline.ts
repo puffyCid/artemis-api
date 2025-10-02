@@ -74,10 +74,6 @@ import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper";
  * Linux artifact timelines
  */
 import { timelineJournals } from "./artifacts/linux/journals";
-import { timelineGnomeExtensions } from "./artifacts/linux/gnome/extensions";
-import { Extension } from "../../types/linux/gnome/extensions";
-import { timelineGnomeVirtualFilesystem } from "./artifacts/linux/gnome/gvfs";
-import { GvfsEntry } from "../../types/linux/gnome/gvfs";
 
 /**
  * Application artifact timelines
@@ -232,10 +228,6 @@ export function timelineArtifact(
       return timelineFileHistory(data as FileHistory[]);
     case TimesketchArtifact.LIBREOFFICE_RECENTFILES:
       return timelineRecentFiles(data as RecentFilesLibreOffice[]);
-    case TimesketchArtifact.GNOME_EXTENSIONS:
-      return timelineGnomeExtensions(data as Extension[]);
-    case TimesketchArtifact.GNOME_VIRTUAL_FILESYSTEM:
-      return timelineGnomeVirtualFilesystem(data as GvfsEntry[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

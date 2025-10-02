@@ -25,4 +25,9 @@ export interface GvfsEntry {
    last_change: string;
    /**GFVS file source */
    source: string;
+   message: string;
+   datetime: string;
+   timestamp_desc: "Last Changed";
+   artifact: "GNOME Virtual Filesystem";
+   data_type: "linux:gnome:gvfs:entry",
 }
