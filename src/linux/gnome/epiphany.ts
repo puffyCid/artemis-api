@@ -168,13 +168,19 @@ export class Epiphany {
             }
 
             const entries = xml_data[ "session" ] as Record<string, Record<string, unknown>[]>;
+            if (entries[ "window" ] === undefined) {
+                continue;
+            }
             for (const values of entries[ "window" ]) {
                 const embed = values[ "embed" ] as Record<string, Record<string, string>>[];
                 for (const value of embed) {
+                    if (value[ "$" ] === undefined) {
+                        continue;
+                    }
                     const session: EpiphanySessions = {
-                        url: value[ "$" ][ "url" ],
-                        title: value[ "$" ][ "title" ],
-                        history: value[ "$" ][ "history" ],
+                        url: value[ "$" ][ "url" ] ?? "",
+                        title: value[ "$" ][ "title" ] ?? "",
+                        history: value[ "$" ][ "history" ] ?? "",
                         session_path: xml_file
                     };
 
@@ -220,7 +226,7 @@ export class Epiphany {
                     } else if (line.includes("=")) {
                         const perm_line = line.replace("'", "");
                         const perm_types = perm_line.split("=");
-                        if (perm_types.length > 1) {
+                        if (perm_types.length > 1 && perm_types[ 0 ] !== undefined) {
                             perms.permissions[ perm_types[ 0 ] ] = perm_types.at(1) ?? "";
                         }
                     }

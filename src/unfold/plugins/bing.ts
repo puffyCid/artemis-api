@@ -22,6 +22,9 @@ export class Bing {
   public parseBing() {
     for (const entry of this.url.query_pairs) {
       const [ key, ...param ] = entry.split("=");
+      if (key === undefined) {
+        continue;
+      }
       const value = param.join("=");
       switch (key.toLowerCase()) {
         case "form": {
