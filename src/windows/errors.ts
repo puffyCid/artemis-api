@@ -39,6 +39,7 @@ export type ErrorName =
   | "SCRIPTBLOCK"
   | "FIREWALL_RULES"
   | "EVENTLOG_PROCESSTREE"
-  | "WIFI";
+  | "WIFI"
+  | "ADCERTIFICATES";
 
 export class WindowsError extends ErrorBase<ErrorName> {}
