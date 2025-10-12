@@ -39,20 +39,24 @@ function parseWifi(path: string): Wifi[] {
   const wifis: Wifi[] = [];
 
   for (const entry in wifi_data) {
+    const value = wifi_data[ entry ];
+    if (value === undefined) {
+      continue;
+    }
     const wifi_value: Wifi = {
       name: entry.replace("wifi.network.ssid.", ""),
-      security: wifi_data[ entry ].SupportedSecurityTypes,
-      hidden: wifi_data[ entry ].Hidden,
-      roaming_profile: wifi_data[ entry ].__OSSpecific__.RoamingProfileType,
-      add_reason: wifi_data[ entry ].AddReason,
-      added_at: wifi_data[ entry ].AddedAt,
-      auto_join: wifi_data[ entry ].AutoJoinDisabled,
-      personal_hotspot: (wifi_data[ entry ].PersonalHotspot === undefined)
+      security: value.SupportedSecurityTypes,
+      hidden: value.Hidden,
+      roaming_profile: value.__OSSpecific__.RoamingProfileType,
+      add_reason: value.AddReason,
+      added_at: value.AddedAt,
+      auto_join: value.AutoJoinDisabled,
+      personal_hotspot: (value.PersonalHotspot === undefined)
         ? false
-        : wifi_data[ entry ].PersonalHotspot as boolean,
-      joined_by_user_at: wifi_data[ entry ].JoinedByUserAt,
-      last_discovered: wifi_data[ entry ].LastDiscoveredAt,
-      updated_at: wifi_data[ entry ].UpdatedAt,
+        : value.PersonalHotspot as boolean,
+      joined_by_user_at: value.JoinedByUserAt,
+      last_discovered: value.LastDiscoveredAt,
+      updated_at: value.UpdatedAt,
     };
     wifis.push(wifi_value);
   }

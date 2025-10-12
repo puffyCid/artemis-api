@@ -33,6 +33,9 @@ export function luluRules(alt_file?: string): LuluRules | MacosError {
   };
 
   const object_data = objects[ "$objects" ];
+  if (object_data === undefined) {
+    return new MacosError(`LULU`, `Got undefined for LuLu FW objects`);
+  }
   for (const entry of object_data) {
     if (typeof entry !== "object") {
       continue;
@@ -106,7 +109,11 @@ function getCodeSigning(
   }
 
   for (let i = 0; i < data[ "NS.keys" ].length; i++) {
-    const key = objects.at(data[ "NS.keys" ][ i ]) as string ?? `${i}`;
+    const ns_value = data[ "NS.keys" ][ i ];
+    if (ns_value === undefined) {
+      continue;
+    }
+    const key = objects.at(ns_value) as string ?? `${i}`;
 
     const value_key = data[ "NS.objects" ].at(i);
     if (value_key === undefined) {
@@ -129,8 +136,12 @@ function getCodeSigning(
     }
 
     const entries: string[] = [];
+    const object_values = value[ "NS.objects" ];
+    if (object_values === undefined) {
+      continue;
+    }
     // more NS.Objects
-    for (const entry of value[ "NS.objects" ]) {
+    for (const entry of object_values) {
       const lulu_value = objects.at(entry) as string ?? `${entry}`;
       entries.push(lulu_value);
     }
