@@ -137,6 +137,7 @@ export { parseWordWheel } from "./src/windows/registry/wordwheel";
 export { UserAccessLogging } from "./src/windows/ese/ual";
 export { Updates } from "./src/windows/ese/updates";
 export { Outlook } from "./src/windows/outlook";
+export {ADCertificates} from "./src/windows/ese/certs";
 export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
 export { firewallRules } from "./src/windows/registry/firewall_rules";
 export { processTreeEventLogs } from "./src/windows/eventlogs/processtree";

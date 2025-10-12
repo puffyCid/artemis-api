@@ -26,7 +26,7 @@ export class Updates extends EseDatabase {
    * Contruct `Updates` to parse Windows Updates history. By default will parse updates at `\Windows\SoftwareDistribution\DataStore\DataStore.edb`. Unless you specify alternative file.
    * @param alt_path Optional alternative path to `DataStore.edb`
    */
-  constructor (alt_path?: string) {
+  constructor(alt_path?: string) {
     const default_path = getEnvValue("SystemDrive");
     let path =
       `${default_path}\\Windows\\SoftwareDistribution\\DataStore\\DataStore.edb`;
@@ -63,7 +63,15 @@ export class Updates extends EseDatabase {
       return rows;
     }
 
-    return this.parseHistory(rows[ this.table ]);
+    const row_data = rows[this.table];
+    if (row_data === undefined) {
+      return new WindowsError(
+        `UPDATESHISTORY`,
+        `Could not find "tbHistory" table. Got undefined`,
+      );
+    }
+
+    return this.parseHistory(row_data);
   }
 
   private setupHistory() {
@@ -135,15 +143,15 @@ export class Updates extends EseDatabase {
           if (update_info instanceof Error) {
             console.warn(`could not parse update id info ${update_info}`);
           } else {
-            update.update_id = update_info[ "guid" ] as string;
-            update.update_revision = update_info[ "revision" ] as number;
+            update.update_id = update_info["guid"] as string;
+            update.update_revision = update_info["revision"] as number;
           }
         } else if (column.column_name === "ServerId") {
           const update_info = this.getUpdateId(column.column_data);
           if (update_info instanceof Error) {
             console.warn(`could not parse service id info ${update_info}`);
           } else {
-            update.service_id = update_info[ "guid" ] as string;
+            update.service_id = update_info["guid"] as string;
           }
         } else if (column.column_name === "ServerSelection") {
           update.server_selection = this.getServerSelection(column.column_data);
@@ -171,7 +179,7 @@ export class Updates extends EseDatabase {
     }
 
     const update_id: Record<string, string | number> = {};
-    update_id[ "guid" ] = formatGuid(Endian.Le, guid.nommed as Uint8Array);
+    update_id["guid"] = formatGuid(Endian.Le, guid.nommed as Uint8Array);
 
     if (guid.remaining.length === 0) {
       return update_id;
@@ -185,7 +193,7 @@ export class Updates extends EseDatabase {
       return revision_data;
     }
 
-    update_id[ "revision" ] = revision_data.value;
+    update_id["revision"] = revision_data.value;
     return update_id;
   }
 
