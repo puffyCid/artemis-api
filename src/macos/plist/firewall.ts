@@ -45,7 +45,7 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
       global_state: !!results[ "globalstate" ],
       logging_option: !!results[ "loggingoption" ],
       stealth_enabled: !!results[ "stealthenabled" ],
-      version: results[ "version" ],
+      version: results[ "version" ] ?? "",
       applications: [],
       exceptions: [],
       explict_auths: [],
@@ -147,8 +147,8 @@ function parseApplications(
     }
 
     // If we have the raw bytes, now parse the `alias` info
-    if (embedded_plist instanceof Array) {
-      const raw_bytes = Uint8Array.from(embedded_plist);
+    if (Array.isArray(embedded_plist)) {
+      const raw_bytes = Uint8Array.from(embedded_plist as number[]);
       const alias_result = parseAlias(raw_bytes);
       if (alias_result instanceof MacosError) {
         console.error(
@@ -222,7 +222,7 @@ function getServices(services: Record<string, object>): Services[] {
 function getAuths(auths: Record<string, string>[]): string[] {
   const entries: string[] = [];
   for (const auth of auths) {
-    entries.push(auth[ "id" ]);
+    entries.push(auth[ "id" ] ?? "");
   }
   return entries;
 }

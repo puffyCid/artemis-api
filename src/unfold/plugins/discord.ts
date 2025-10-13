@@ -16,7 +16,7 @@ export class Discord {
         if (this.url.url.includes("/channels/")) {
             for (let i = 0; i < this.url.segments.length; i++) {
                 const value = this.url.segments[ i ];
-                if (value === "channels") {
+                if (value === "channels" || value === undefined) {
                     continue;
                 }
 

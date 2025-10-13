@@ -46,9 +46,15 @@ export function geditRecentFiles(
     >;
 
     const docs = meta[ "document" ];
+    if (docs === undefined) {
+      continue;
+    }
     for (const doc of docs) {
+      if (doc[ "$" ] === undefined) {
+        continue;
+      }
       const recent: RecentFiles = {
-        path: doc[ "$" ][ "uri" ],
+        path: doc[ "$" ][ "uri" ] ?? "",
         accessed: unixEpochToISO(Number(doc[ "$" ][ "atime" ])),
         gedit_source: entry.full_path,
       };
@@ -69,6 +75,10 @@ export function testGeditRecentFiles(): void {
   const result = geditRecentFiles(test);
   if (result instanceof LinuxError) {
     throw result;
+  }
+
+  if (result[ 0 ] === undefined) {
+    throw `Got undefined results`;
   }
 
   if (result[ 0 ].path != "file:///home/devel/Downloads/analyzeMFT-3.0.7.1/src/analyzeMFT/__init__.py") {

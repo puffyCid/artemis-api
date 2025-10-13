@@ -24,7 +24,7 @@ export function systemExtensions(
 
   const exts: SystemExtension[] = [];
   for (const entry in plist_data) {
-    if (entry !== "extensions") {
+    if (entry !== "extensions" || Array.isArray(plist_data)) {
       continue;
     }
 
