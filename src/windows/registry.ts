@@ -4,12 +4,14 @@ import { WindowsError } from "./errors";
 /**
  * Function to parse a `Registry` file
  * @param path Full path to a `Registry` file
+ * @param [regex=""] Optional Rust compatible regular expression to filter Registry Key paths. Registry values are not filtered
+ * @param [start_path=""] Optional Registry Key path to start
  * @returns `Registry` array or `WindowsError`
  */
-export function getRegistry(path: string): Registry[] | WindowsError {
+export function getRegistry(path: string, regex = "", start_path = ""): Registry[] | WindowsError {
   try {
     //@ts-ignore: Custom Artemis function
-    const data = js_registry(path);
+    const data = js_registry(path, regex, start_path);
 
     return data;
   } catch (err) {

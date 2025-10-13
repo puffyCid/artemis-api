@@ -25,7 +25,7 @@ export function wifiNetworksWindows(alt_path?: string): Wifi[] | WindowsError {
         path = `${drive}${path}`;
     }
 
-    const reg_entries = getRegistry(path);
+    const reg_entries = getRegistry(path, "\\\\currentversion\\\\networklist\\\\profiles\\\\\\{");
     if (reg_entries instanceof WindowsError) {
         return new WindowsError(`WIFI`, `could not parse the SOFTWARE Registry file ${reg_entries}`);
     }
