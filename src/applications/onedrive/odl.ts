@@ -1,8 +1,10 @@
+import { readFile } from "../../../mod";
 import { OneDriveLog } from "../../../types/applications/onedrive";
 import { decompress_gzip } from "../../compression/decompress";
 import { CompressionError } from "../../compression/errors";
 import { encode } from "../../encoding/base64";
 import { extractUtf8String } from "../../encoding/strings";
+import { FileError } from "../../filesystem/errors";
 import { NomError } from "../../nom/error";
 import {
   Endian,
@@ -17,7 +19,33 @@ import {
 import { unixEpochToISO } from "../../time/conversion";
 import { ApplicationError } from "../errors";
 
-export function parseOdl(
+
+/**
+ * Function to read and parse OneDrive Log files
+ * @param paths Array of `GlobInfo` to OneDrive Log files (odl)
+ * @returns Array of `OneDriveLog` entries
+ */
+export function readOdlFiles(path: string): OneDriveLog[] | ApplicationError {
+  const data = readFile(path);
+  if (data instanceof FileError) {
+    return new ApplicationError(`ONEDRIVE`, `could not read log ${path}: ${data.message}`);
+  }
+  let filename = "";
+  if (path.includes("\\")) {
+    filename = path.split("\\").pop() ?? "";
+  } else {
+    filename = path.split("/").pop() ?? "";
+  }
+
+  const logs = parseOdl(data, path, filename);
+  if (logs instanceof ApplicationError) {
+    return new ApplicationError(`ONEDRIVE`, `Failed to parse ${path}: ${logs.message}`);
+
+  }
+  return logs;
+}
+
+function parseOdl(
   data: Uint8Array,
   path: string,
   filename: string,
@@ -81,7 +109,7 @@ export function parseOdl(
     );
   }
 
-  const gzip_key = [ 31, 139, 8, 0 ];
+  const gzip_key = [31, 139, 8, 0];
   if (
     Array.from(compressed_data.remaining.slice(0, 4) as Uint8Array)
       .toString() === gzip_key.toString()

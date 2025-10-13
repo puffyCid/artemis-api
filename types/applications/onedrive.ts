@@ -87,3 +87,11 @@ export interface KeyInfo {
   path: string;
   key: string;
 }
+
+
+export interface OnedriveProfile {
+  sync_db: string[];
+  odl_files: string[];
+  key_file: string[];
+  config_file: string[];
+}

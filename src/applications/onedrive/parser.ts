@@ -19,7 +19,6 @@ import { unixEpochToISO } from "../../time/conversion";
 import { WindowsError } from "../../windows/errors";
 import { getRegistry } from "../../windows/registry";
 import { ApplicationError } from "../errors";
-import { parseOdl } from "./odl";
 import { extractSyncEngine } from "./sqlite";
 
 /**
@@ -138,15 +137,6 @@ export function readOdlFiles(paths: GlobInfo[]): OneDriveLog[] {
       );
       continue;
     }
-
-    const logs = parseOdl(data, entry.full_path, entry.filename);
-    if (logs instanceof ApplicationError) {
-      console.warn(
-        `Failed to parse ${entry.full_path}: ${logs.message}`,
-      );
-      continue;
-    }
-    drive_logs = drive_logs.concat(logs);
   }
 
   return drive_logs;

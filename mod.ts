@@ -93,6 +93,7 @@ export { querySqlite } from "./src/applications/sqlite";
 export { NextcloudClient } from "./src/applications/nextcloud/cloud";
 export { LevelDb } from "./src/applications/leveldb/level";
 export { AnyDesk } from "./src/applications/anydesk/rmm";
+export {OneDrive} from "./src/applications/onedrive/onedrive";
 
 /**
  * Windows exported functions
