@@ -49,11 +49,11 @@ jobs:
 
       - name: Install esbuild and colorama macOS
         if: matrix.info.os == 'macOS-latest'
-        run: brew install esbuild && pip3 install --user colorama
+        run: brew install esbuild && pip3 install --break-system-packages --user colorama
 
       - name: Install esbuild and colorama Linux
         if: matrix.info.os == 'ubuntu-24.04'
-        run: sudo apt install esbuild && pip3 install --user colorama
+        run: sudo apt install esbuild && pip3 install --break-system-packages --user colorama
 
       - name: Install esbuild Windows
         if: matrix.info.os == 'windows-latest'
