@@ -6,7 +6,9 @@ export { testLevelWal } from "../src/applications/leveldb/wal";
 export { testRecentFiles } from "../src/applications/libreoffice";
 export { testReadTrace } from "../src/applications/anydesk/trace";
 export { testReadConfig } from "../src/applications/anydesk/conf";
-
+export { testReadOdlFiles } from "../src/applications/onedrive/odl";
+export { testOneDrive } from "../src/applications/onedrive/onedrive";
+export {testExtractSyncEngine} from "../src/applications/onedrive/sqlite";
 /**
  * Linux exported test functions
  */

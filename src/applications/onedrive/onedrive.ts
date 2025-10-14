@@ -1,19 +1,18 @@
 import { dumpData, glob, Output, outputResults, PlatformType, readTextFile } from "../../../mod";
-import { KeyInfo, OneDriveLog, OnedriveProfile } from "../../../types/applications/onedrive";
+import { KeyInfo, OneDriveAccount, OneDriveLog, OnedriveProfile, OneDriveSyncEngineRecord } from "../../../types/applications/onedrive";
 import { getEnvValue } from "../../environment/mod";
 import { FileError } from "../../filesystem/errors";
 import { ApplicationError } from "../errors";
+import { accountMacos, accountWindows } from "./config";
 import { readOdlFiles } from "./odl";
+import { extractSyncEngine } from "./sqlite";
 
 /**
  * TODO:
- * 1. Sync db
- * 2. config files (regitry and plist)
  * 3. tests?
- *    - odl file
  *    - key file (random key)
  *    - slimmed down db?
- *    - ntuser registry file?
+ *    - ntuser registry file? musuem has lots of samples because someone uploaded them!
  */
 
 /**
@@ -49,7 +48,7 @@ export class OneDrive {
                 config_file: this.getFiles(`${alt_path}${separator}${config}`),
             }
             this.profiles.push(profile);
-
+            return;
         }
         this.setupProfiles();
     }
@@ -145,7 +144,7 @@ export class OneDrive {
      * @param [metadata_runtime=false] Append runtime metadata to the output. Default is false. Only applicable if the Output.Format is JSON or JSONL
      * @returns Array of `OneDriveLog`
      */
-    public parseOnedriveLogs(files?: string[], output?: Output, metadata_runtime = false): OneDriveLog[] {
+    public oneDriveLogs(files?: string[], output?: Output, metadata_runtime = false): OneDriveLog[] {
         let logs: OneDriveLog[] = [];
         // Check if we only want to parse a subset of logs
         if (files !== undefined) {
@@ -188,6 +187,124 @@ export class OneDrive {
             }
         }
         return logs;
+    }
+
+    /**
+     * Function to parse OneDrive Account info. By default all accounts are parsed based on how the `OneDrive` class was initialized  
+     * By default all account entries are returned. You may provide an optional `Output` object to instead output the results to a file  
+     * If results are outputted to a file. An empty array is returned
+     * @param files Optional array of specific account configs files to parse. Windows will be NTUSER.DAT. macOS will be plist files
+     * @param output Optional `Output` object to output results instead of returning them to the caller
+     * @param [metadata_runtime=false] Append runtime metadata to the output. Default is false. Only applicable if the Output.Format is JSON or JSONL
+     * @returns Array of `OneDriveAccount`
+     */
+    public oneDriveAccounts(files?: string[], output?: Output, metadata_runtime = false): OneDriveAccount[] {
+        let configs: OneDriveAccount[] = [];
+        // Check if we only want to parse a subset of accounts
+        if (files !== undefined) {
+            for (const entry of files) {
+                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry)
+                if (values instanceof ApplicationError) {
+                    console.error(`${values}`);
+                    continue;
+                }
+                if (output !== undefined) {
+                    if (metadata_runtime) {
+                        outputResults(values, "onedrive_accounts", output);
+                    } else {
+                        dumpData(values, "onedrive_accounts", output);
+                    }
+                    continue;
+                }
+                configs = configs.concat(values);
+            }
+            return configs;
+        }
+
+        // Parse all configs
+        for (const profile of this.profiles) {
+            for (const entry of profile.config_file) {
+                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry)
+                if (values instanceof ApplicationError) {
+                    console.error(`${values}`);
+                    continue;
+                }
+                if (output !== undefined) {
+                    if (metadata_runtime) {
+                        outputResults(values, "onedrive_accounts", output);
+                    } else {
+                        dumpData(values, "onedrive_accounts", output);
+                    }
+                    continue;
+                }
+                configs = configs.concat(values);
+            }
+        }
+        return configs;
+    }
+
+    /**
+     * Function to parse OneDrive Sync databases. By default all databases are parsed based on how the `OneDrive` class was initialized  
+     * By default all database entries are returned. You may provide an optional `Output` object to instead output the results to a file  
+     * If results are outputted to a file. An empty array is returned
+     * @param files Optional array of specific db files to query
+     * @param output Optional `Output` object to output results instead of returning them to the caller
+     * @param [metadata_runtime=false] Append runtime metadata to the output. Default is false. Only applicable if the Output.Format is JSON or JSONL
+     * @returns Array of `OneDriveSyncEngineRecord`
+     */
+    public oneDriveSyncDatabase(files?: string[], output?: Output, metadata_runtime = false): OneDriveSyncEngineRecord[] {
+        let db: OneDriveSyncEngineRecord[] = [];
+        // Check if we only want to parse a specific database
+        if (files !== undefined) {
+            for (const entry of files) {
+                const values = extractSyncEngine(entry);
+                if (values instanceof ApplicationError) {
+                    console.error(`${values}`);
+                    continue;
+                }
+                if (output !== undefined) {
+                    if (metadata_runtime) {
+                        outputResults(values, "onedrive_syncdb", output);
+                    } else {
+                        dumpData(values, "onedrive_syncdb", output);
+                    }
+                    continue;
+                }
+                db = db.concat(values);
+            }
+            return db;
+        }
+
+        // Parse all databases
+        for (const profile of this.profiles) {
+            for (const entry of profile.sync_db) {
+                const values = extractSyncEngine(entry);
+                if (values instanceof ApplicationError) {
+                    console.error(`${values}`);
+                    continue;
+                }
+                if (output !== undefined) {
+                    if (metadata_runtime) {
+                        outputResults(values, "onedrive_syncdb", output);
+                    } else {
+                        dumpData(values, "onedrive_syncdb", output);
+                    }
+                    continue;
+                }
+                db = db.concat(values);
+            }
+        }
+        return db;
+    }
+
+    /**
+     * Function that parses and timelines all OneDrive artifacts
+     * @param output `Object` object to output results
+     */
+    public oneDriveRetrospect(output: Output): void {
+        this.oneDriveLogs(undefined, output);
+        this.oneDriveSyncDatabase(undefined, output);
+        this.oneDriveAccounts(undefined, output);
     }
 
     /**
@@ -294,4 +411,36 @@ export class OneDrive {
 
         return files;
     }
+}
+
+/**
+ * Function to test the OneDrive class
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the OneDrive parsing
+ */
+export function testOneDrive(): void {
+    const test = "../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock";
+    const client = new OneDrive(PlatformType.Windows, undefined, test);
+
+    const status = client.oneDriveLogs();
+    if (status.length !== 367) {
+        throw `Got '${status.length}' expected "367".......OneDrive ❌`
+    }
+
+    const sync = client.oneDriveSyncDatabase();
+    if (sync.length !== 43) {
+        throw `Got '${sync.length}' expected "43".......OneDrive ❌`
+    }
+
+    const account = client.oneDriveAccounts();
+    if (account.length !== 0) {
+        throw `Got '${account.length}' expected "0".......OneDrive ❌`
+    }
+
+    const key = client.oneDriveKeys();
+    if (key.length !== 1) {
+        throw `Got '${key.length}' expected "1"......OneDrive ❌`
+    }
+
+    console.info(`  Mock OneDrive Class ✅`);
 }

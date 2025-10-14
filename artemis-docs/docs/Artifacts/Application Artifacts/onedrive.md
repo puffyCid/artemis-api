@@ -14,7 +14,7 @@ cloud. Artemis supports parsing several artifacts containing OneDrive metadata
 such as:
 
 - Basic support for OneDrive Logs (ODL files, version 3 only)
-- SQLITE files
+- SyncDatabase files
 - Registry files (NTUSER.DAT)
 - PLIST files
 
@@ -30,15 +30,25 @@ Other Parsers:
 # Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
-Microsoft Office information.
+Microsoft OneDrive information.
 
 ```typescript
-import { PlatformType } from "./artemis-api/mod";
-import { onedriveDetails } from "./artemis-api/src/applications/onedrive/parser";
+import { Format, OneDrive, Output, OutputType, PlatformType } from "./artemis-api/mod";
 
 function main() {
-  const values = onedriveDetails(PlatformType.Windows);
-  console.log(values);
+  const results = new OneDrive(PlatformType.Windows);
+  const output: Output = {
+    name: "local",
+    directory: "tmp",
+    format: Format.JSONL,
+    compress: false,
+    timeline: false,
+    endpoint_id: "",
+    collection_id: 0,
+    output: OutputType.LOCAL
+  };
+  
+  results.oneDriveRetrospect(output);
 }
 
 main();
@@ -46,16 +56,9 @@ main();
 
 # Output Structure
 
-`OneDriveDetails` object containing artifacts associated with OneDrive
+Depending on the functions called several objects can be returned
 
 ```typescript
-export interface OneDriveDetails {
-  logs: OneDriveLog[];
-  files: OneDriveSyncEngineRecord[];
-  accounts: OneDriveAccount[];
-  keys: KeyInfo[];
-}
-
 export interface OneDriveLog {
   path: string;
   filename: string;
@@ -67,23 +70,11 @@ export interface OneDriveLog {
   version: string;
   os_version: string;
   description: string;
-}
-
-export interface OneDriveSyncEngine {
-  scopes: OneDriveSyncEngineScope[];
-  records: OneDriveSyncEngineRecord[];
-}
-
-export interface OneDriveSyncEngineScope {
-  scope_id: string;
-  site_id?: string;
-  web_id?: string;
-  list_id?: string;
-  tenant_id?: string;
-  url?: string;
-  remote_path?: string;
-  permissions?: number;
-  library_type?: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: "OneDrive Log Entry Created";
+  artifact: "OneDrive Log";
+  data_type: "applications:onedrive:logs:entry";
 }
 
 export interface OneDriveSyncEngineRecord {
@@ -111,31 +102,36 @@ export interface OneDriveSyncEngineRecord {
   modified_by: string;
   last_write_count: number;
   db_path: string;
-}
-
-export interface OneDriveSyncEngineFolder {
-  parent_scope_id: string;
-  parent_resource_id: string;
-  resource_id: string;
-  etag: string;
-  folder: string;
-  folder_status: number | null;
-  permissions: number | null;
-  volume_id: number | null;
-  item_index: number | null;
-  parents: string[];
+  message: string;
+  datetime: string;
+  timestamp_desc: "OneDrive Sync Last Change";
+  artifact: "OneDrive Sync Record";
+  data_type: "applications:onedrive:sync:entry";
 }
 
 export interface OneDriveAccount {
   email: string;
   device_id: string;
   account_id: string;
+  /**Not available on macOS */
   last_signin: string;
   cid: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "OneDrive Last Signin";
+  artifact: "OneDrive Account Info";
+  data_type: "applications:onedrive:account:entry";
 }
 
 export interface KeyInfo {
   path: string;
   key: string;
+}
+
+export interface OnedriveProfile {
+  sync_db: string[];
+  odl_files: string[];
+  key_file: string[];
+  config_file: string[];
 }
 ```

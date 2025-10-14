@@ -31,14 +31,6 @@ export function wifiNetworksWindows(alt_path?: string): Wifi[] | WindowsError {
     }
 
     const profiles: Registry[] = [];
-    for (const entry of reg_entries) {
-        if (!entry.path.toLowerCase().includes("\\currentversion\\networklist\\profiles\\{")) {
-            continue;
-        }
-
-        profiles.push(entry);
-    }
-
     const networks: Wifi[] = [];
     for (const entry of profiles) {
         const net: Wifi = {

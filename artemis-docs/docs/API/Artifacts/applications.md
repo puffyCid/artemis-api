@@ -354,11 +354,10 @@ file.
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | alt_file | string       | Optional path to a MRU plist or NTUSER.DAT                |
 
-### onedriveDetails(platform, alt_path, user) -> OneDriveDetails | ApplicationError
+### OneDrive Class
 
-Extract Microsoft OneDrive artifacts. Supports both macOS and Windows. By
-default will parse OneDrive artifacts for **all** users. You may provide a
-single user as an optional arguement to only parse data for a specific user.
+A basic TypeScript class to extract OneDrive forensic artifacts. Supports both macOS and Windows.  
+By default artemis will parse OneDrive artifacts for **all** users. You may provide a single user as an optional arguement to only parse data for a specific user.
 
 You may also provide an optional alternative path to a folder containing
 OneDrive artifacts. You must include the trailing slash. The folder should
@@ -369,11 +368,88 @@ contain the following artifacts:
 - general.keystore
 - SyncEngineDatabase.db
 
-| Param    | Type         | Description                                                |
-| -------- | ------------ | ---------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin)  |
-| alt_path | string       | Optional path to a directory containing OneDrive artifacts |
-| user     | string       | Optional single user to parse instead of all users         |
+Sample TypeScript code:
+```typescript
+import { Format, OneDrive, Output, OutputType, PlatformType } from "./artemis-api/mod";
+
+function main() {
+  const results = new OneDrive(PlatformType.Windows);
+  const output: Output = {
+    name: "local",
+    directory: "tmp",
+    format: Format.JSONL,
+    compress: false,
+    timeline: false,
+    endpoint_id: "",
+    collection_id: 0,
+    output: OutputType.LOCAL
+  };
+  
+  results.oneDriveRetrospect(output);
+}
+
+main();
+```
+
+#### oneDriveProfiles() -> OnedriveProfile[]
+
+Returns an array of all file path atifacts associated with OneDrive users
+
+#### oneDriveKeys(files, output, metadata_runtime) -> KeyInfo[] 
+
+Returns an array of keys used by OneDrive. By default this function will find the keys for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of KeyInfo.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only key files from the provided array                                                                                                      |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### oneDriveAccounts(files, output, metadata_runtime) -> OneDriveAccount[] 
+
+Returns an array of OneDrive account information. By default this function will find the accounts for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of OneDriveAccount.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only account files from the provided array                                                                                                 |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### oneDriveLogs(files, output, metadata_runtime) -> OneDriveLog[] 
+
+Returns an array of OneDrive log information. By default this function will find the logs for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of OneDriveLog.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only log files from the provided array                                                                                                      |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### oneDriveSyncDatabase(files, output, metadata_runtime) -> OneDriveSyncEngineRecord[] 
+
+Returns an array of OneDrive Sync database information. By default this function will find the databases for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of OneDriveSyncEngineRecord.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only database files from the provided array                                                                                                 |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### oneDriveRetrospect(output) 
+
+A powerfull function that will timeline all supported OneDrive artifacts
+
+| Param            | Type          | Description                         |
+| ---------------- | ------------- | ----------------------------------- |
+| output           | Output        | Output object to output all results |
 
 ### LevelDb Class
 

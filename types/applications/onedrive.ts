@@ -1,10 +1,3 @@
-export interface OneDriveDetails {
-  logs: OneDriveLog[];
-  files: OneDriveSyncEngineRecord[];
-  accounts: OneDriveAccount[];
-  keys: KeyInfo[];
-}
-
 export interface OneDriveLog {
   path: string;
   filename: string;
@@ -16,23 +9,11 @@ export interface OneDriveLog {
   version: string;
   os_version: string;
   description: string;
-}
-
-export interface OneDriveSyncEngine {
-  scopes: OneDriveSyncEngineScope[];
-  records: OneDriveSyncEngineRecord[];
-}
-
-export interface OneDriveSyncEngineScope {
-  scope_id: string;
-  site_id?: string;
-  web_id?: string;
-  list_id?: string;
-  tenant_id?: string;
-  url?: string;
-  remote_path?: string;
-  permissions?: number;
-  library_type?: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: "OneDrive Log Entry Created";
+  artifact: "OneDrive Log";
+  data_type: "applications:onedrive:logs:entry";
 }
 
 export interface OneDriveSyncEngineRecord {
@@ -60,6 +41,11 @@ export interface OneDriveSyncEngineRecord {
   modified_by: string;
   last_write_count: number;
   db_path: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "OneDrive Sync Last Change";
+  artifact: "OneDrive Sync Record";
+  data_type: "applications:onedrive:sync:entry";
 }
 
 export interface OneDriveSyncEngineFolder {
@@ -79,15 +65,20 @@ export interface OneDriveAccount {
   email: string;
   device_id: string;
   account_id: string;
+  /**Not available on macOS */
   last_signin: string;
   cid: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "OneDrive Last Signin";
+  artifact: "OneDrive Account Info";
+  data_type: "applications:onedrive:account:entry";
 }
 
 export interface KeyInfo {
   path: string;
   key: string;
 }
-
 
 export interface OnedriveProfile {
   sync_db: string[];
