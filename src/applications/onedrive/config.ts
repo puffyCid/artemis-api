@@ -89,15 +89,15 @@ export function accountMacos(path: string): OneDriveAccount[] | ApplicationError
         if (!JSON.stringify(values[key]).includes("UserEmail")) {
             continue;
         }
-        const account_value = values[key] as Record<string, string | number>;
+        const account_value = values[key] as Record<string, string | number | undefined>;
 
         const account: OneDriveAccount = {
-            email: account_value["UserEmail"] as string,
-            device_id: account_value["OneDriveDeviceId"] as string,
-            account_id: account_value["OneAutoAccountId"] as string,
+            email: account_value["UserEmail"] as string | undefined ?? "",
+            device_id: account_value["OneDriveDeviceId"] as string | undefined ?? "",
+            account_id: account_value["OneAuthAccountId"] as string | undefined ?? "",
             last_signin: "1970-01-01T00:00:00.000Z",
-            cid: account_value["cid"] as string,
-            message: account_value["UserEmail"] as string,
+            cid: account_value["cid"] as string | undefined ?? "",
+            message: account_value["UserEmail"] as string | undefined ?? "",
             datetime: "1970-01-01T00:00:00.000Z",
             timestamp_desc: "OneDrive Last Signin",
             artifact: "OneDrive Account Info",

@@ -1,4 +1,4 @@
-import { dumpData, glob, Output, outputResults, PlatformType, readTextFile } from "../../../mod";
+import { dumpData, glob, Output, outputResults, platform, PlatformType, readTextFile } from "../../../mod";
 import { KeyInfo, OneDriveAccount, OneDriveLog, OnedriveProfile, OneDriveSyncEngineRecord } from "../../../types/applications/onedrive";
 import { getEnvValue } from "../../environment/mod";
 import { FileError } from "../../filesystem/errors";
@@ -302,8 +302,8 @@ export class OneDrive {
      * @param output `Object` object to output results
      */
     public oneDriveRetrospect(output: Output): void {
-        this.oneDriveLogs(undefined, output);
-        this.oneDriveSyncDatabase(undefined, output);
+       this.oneDriveLogs(undefined, output);
+       this.oneDriveSyncDatabase(undefined, output);
         this.oneDriveAccounts(undefined, output);
     }
 
@@ -402,8 +402,8 @@ export class OneDrive {
         }
 
         for (const entry of glob_files) {
-            if (entry.filename.toLocaleLowerCase().includes("ntuser.dat") &&
-                !entry.filename.toLocaleLowerCase().endsWith("dat")) {
+            if (entry.filename.toLowerCase().includes("ntuser.dat") &&
+                !entry.filename.toLowerCase().endsWith("dat")) {
                 continue;
             }
             files.push(entry.full_path);
@@ -419,8 +419,14 @@ export class OneDrive {
  * Or want to validate the OneDrive parsing
  */
 export function testOneDrive(): void {
-    const test = "../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock";
-    const client = new OneDrive(PlatformType.Windows, undefined, test);
+    let test = "../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock";
+    let plat = PlatformType.Windows;
+    if (platform().toLowerCase() === "darwin") {
+        plat = PlatformType.Darwin;
+        test = "../../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock"
+    }
+
+    const client = new OneDrive(plat, undefined, test);
 
     const status = client.oneDriveLogs();
     if (status.length !== 367) {
@@ -433,8 +439,14 @@ export function testOneDrive(): void {
     }
 
     const account = client.oneDriveAccounts();
-    if (account.length !== 0) {
+    if (account.length !== 0 && plat === PlatformType.Windows) {
         throw `Got '${account.length}' expected "0".......OneDrive ❌`
+    } else if (account.length !== 1 && plat === PlatformType.Darwin) {
+        throw `Got '${account.length}' expected "1".......OneDrive ❌`
+    }
+
+    if (plat === PlatformType.Darwin && account[0]?.account_id !== "aaaaaaaaa") {
+        throw `Got '${account[0]?.account_id}' expected "aaaaaaaaa".......OneDrive ❌`
     }
 
     const key = client.oneDriveKeys();

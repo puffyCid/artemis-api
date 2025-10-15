@@ -28,15 +28,15 @@ def run_tests():
     base_dir = Path.cwd()
     total_start = time.perf_counter()
 
-    total_projects = 0
-    passed_projects = 0
+    total_tests = 0
+    passed_tests = 0
     durations = []  # (project_name, elapsed_time)
 
     for entry in base_dir.iterdir():
         if not entry.is_dir():
             continue
 
-        total_projects += 1
+        total_tests += 1
         with pushd(entry):
             start_time = time.perf_counter()
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -63,7 +63,7 @@ def run_tests():
                 print(f"{Fore.RED}❌ Failed test for {entry.name}{Style.RESET_ALL}")
                 break
             else:
-                passed_projects += 1
+                passed_tests += 1
 
             # Duration reporting
             elapsed = time.perf_counter() - start_time
@@ -73,9 +73,9 @@ def run_tests():
     # Totals
     total_elapsed = time.perf_counter() - total_start
     print(f"\n{Fore.MAGENTA}📊 Test Summary{Style.RESET_ALL}")
-    print(f"   Total projects: {total_projects}")
-    print(f"   {Fore.GREEN}Passed: {passed_projects}{Style.RESET_ALL}")
-    print(f"   {Fore.RED}Failed: {total_projects - passed_projects}{Style.RESET_ALL}")
+    print(f"   Total tests: {total_tests}")
+    print(f"   {Fore.GREEN}Passed: {passed_tests}{Style.RESET_ALL}")
+    print(f"   {Fore.RED}Failed: {total_tests - passed_tests}{Style.RESET_ALL}")
     print(f"   Total time: {total_elapsed:.2f} seconds")
 
     # Stats
@@ -143,7 +143,7 @@ def run_tests():
                   f"→ {cum_pct:5.1f}% total")
 
     # Exit code mirrors success/failure
-    if passed_projects < total_projects:
+    if passed_tests < total_tests:
         sys.exit(1)
 
 if __name__ == "__main__":

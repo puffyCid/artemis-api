@@ -77,7 +77,7 @@ if ($results.Status -contains "Compile Failed" -or $results.Status -contains "Te
 # --- Elapsed Time ---
 Write-Host ("⏱️ Total elapsed time: {0:hh\:mm\:ss}" -f $elapsed) -ForegroundColor Magenta
 
-# --- Highlight Slowest & Fastest Projects ---
+# --- Highlight Slowest & Fastest tests ---
 $slowest = $sortedResults | Select-Object -First 1
 $fastest = $sortedResults | Select-Object -Last 1
 
@@ -149,7 +149,7 @@ if ($results.Count -gt 0) {
         }
     }
 
-    # --- Top 80% Projects List ---
+    # --- Top 80% tests List ---
     if ($top80List.Count -gt 0) {
         Write-Host "`n⭐ Top 80% tests (cumulative runtime)" -ForegroundColor Cyan
         foreach ($proj in $top80List) {

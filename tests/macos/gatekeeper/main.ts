@@ -4,7 +4,7 @@ import { MacosError } from "../../../src/macos/errors";
 function main() {
   const results = gatekeeperEntries();
   if (results instanceof MacosError) {
-    throw results;
+    throw console.log(results);
   }
 
   if (results.length === 0) {
