@@ -5,7 +5,7 @@ import { Cpus } from "../../types/system/systeminfo";
  * @returns Array of CPU information on system
  */
 export function cpus(): Cpus[] {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: Cpus[] = js_cpu();
   return data;
 }

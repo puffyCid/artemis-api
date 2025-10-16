@@ -5,7 +5,7 @@ import { SystemInfo } from "../../types/system/systeminfo";
  * @returns `SystemInfo` object
  */
 export function getSysteminfo(): SystemInfo {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: SystemInfo = js_get_systeminfo();
 
   return data;
@@ -16,7 +16,7 @@ export function getSysteminfo(): SystemInfo {
  * @returns Uptime of system in seconds
  */
 export function uptime(): number {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: number = js_uptime();
   return data;
 }
@@ -26,7 +26,7 @@ export function uptime(): number {
  * @returns Hostname of system
  */
 export function hostname(): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: string = js_hostname();
   return data;
 }
@@ -36,7 +36,7 @@ export function hostname(): string {
  * @returns OS version of the system
  */
 export function osVersion(): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: string = js_osVersion();
   return data;
 }
@@ -46,7 +46,7 @@ export function osVersion(): string {
  * @returns Kernel version of the system
  */
 export function kernelVersion(): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: string = js_kernelVersion();
   return data;
 }
@@ -62,7 +62,7 @@ export enum PlatformType {
  * @returns Platform type of the system
  */
 export function platform(): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: string = js_platform();
   return data;
 }

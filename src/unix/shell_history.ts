@@ -105,7 +105,7 @@ function parseBash(text: string, path: string): BashHistory[] {
     if (lines[ i ] === "" || lines[ i ] === undefined) {
       continue;
     }
-    let history: BashHistory = {
+    const history: BashHistory = {
       history: "",
       timestamp: "1970-01-01T00:00:00Z",
       line: 0,
@@ -137,7 +137,7 @@ function parseZsh(text: string, path: string): ZshHistory[] {
     if (lines[ i ] === "" || lines[ i ] === undefined) {
       continue;
     }
-    let history: ZshHistory = {
+    const history: ZshHistory = {
       history: "",
       timestamp: "1970-01-01T00:00:00Z",
       line: 0,

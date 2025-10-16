@@ -8,7 +8,7 @@ import { LinuxError } from "./errors";
  */
 export function getSudoLogsLinux(path = ""): Journal[] | LinuxError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_get_sudologs_linux(path);
     return data;
   } catch (err) {

@@ -23,12 +23,12 @@ export function safariCookies(paths: SafariProfile[], platform: PlatformType): C
     }
 
     const cookie = parseCookies(full_path);
-    if(cookie instanceof MacosError) {
+    if (cookie instanceof MacosError) {
       console.warn(`failed to parse Safari cookie ${full_path}: ${cookie}`);
       continue;
     }
 
-    cookie.forEach(x => x["version"] = path.version);
+    cookie.forEach(x => x[ "version" ] = path.version);
     hits = hits.concat(cookie);
 
   }
@@ -68,13 +68,13 @@ export function parseCookies(path: string): Cookie[] | MacosError {
   let cookies: Cookie[] = [];
   let remaining = header.remaining_bytes;
   for (let i = 0; i < header.pages_count; i++) {
-    const page_size = header.page_sizes[i];
-    if(page_size === undefined) {
+    const page_size = header.page_sizes[ i ];
+    if (page_size === undefined) {
       continue;
     }
 
     const page_bytes = take(remaining, page_size);
-    if(page_bytes instanceof NomError) {
+    if (page_bytes instanceof NomError) {
       continue;
     }
     remaining = page_bytes.remaining as Uint8Array;
@@ -243,7 +243,7 @@ function parseRecord(data: Uint8Array): Cookie | NomError {
   const value_offset = input.value;
 
   // Unknown
-  let unknown = nomUnsignedEightBytes(input.remaining, Endian.Le);
+  const unknown = nomUnsignedEightBytes(input.remaining, Endian.Le);
   if (unknown instanceof NomError) {
     return unknown;
   }
@@ -315,7 +315,7 @@ function extractOffsets(data: Uint8Array, offset: number): string | NomError {
     return start;
   }
 
-  const string_data = takeUntil(start.remaining, Uint8Array.from([0]));
+  const string_data = takeUntil(start.remaining, Uint8Array.from([ 0 ]));
   if (string_data instanceof NomError) {
     return string_data;
   }

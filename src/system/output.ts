@@ -54,7 +54,7 @@ export function outputResults(
   output: Output,
 ): boolean | SystemError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const status: boolean = js_output_results(
       data,
       data_name,
@@ -79,7 +79,7 @@ export function dumpData(
   output: Output,
 ): boolean | SystemError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const status: boolean = js_raw_dump(
       data,
       data_name,

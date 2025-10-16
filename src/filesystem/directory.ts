@@ -8,7 +8,7 @@ import { FileError } from "./errors";
  */
 export async function readDir(path: string): Promise<FileInfo[] | FileError> {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = await js_read_dir(path);
     return result;
   } catch (err) {

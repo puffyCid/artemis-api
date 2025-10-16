@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getServices(path?: string): Services[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_services(path);
     return data;
   } catch (err) {

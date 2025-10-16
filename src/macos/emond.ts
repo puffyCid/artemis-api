@@ -8,7 +8,7 @@ import { MacosError } from "./errors";
  */
 export function getEmond(path?: string): Emond[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_emond(path);
 
     return data;

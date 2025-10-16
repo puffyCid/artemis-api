@@ -11,7 +11,7 @@ export function getTasks(
   path?: string,
 ): TaskData | TaskJob | TaskXml | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_tasks(path);
 
     return data;

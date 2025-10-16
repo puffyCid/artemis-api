@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getJumplists(path?: string): Jumplists[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_jumplists(path);
     return data;
   } catch (err) {

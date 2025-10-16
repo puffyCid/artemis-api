@@ -10,7 +10,7 @@ import { FileError } from "./errors";
  */
 export function stat(path: string): FileInfo | FileError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_stat(path);
     return result;
   } catch (err) {
@@ -33,7 +33,7 @@ export function hash(
   sha256: boolean,
 ): Hashes | FileError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_hash(path, md5, sha1, sha256);
     return result;
   } catch (err) {
@@ -48,7 +48,7 @@ export function hash(
  */
 export function readTextFile(path: string): string | FileError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_read_text_file(path);
     return result;
   } catch (err) {
@@ -66,7 +66,7 @@ export function readTextFile(path: string): string | FileError {
  */
 export function readFile(path: string): Uint8Array | FileError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_read_file(path);
     return result;
   } catch (err) {
@@ -81,7 +81,7 @@ export function readFile(path: string): Uint8Array | FileError {
  */
 export function glob(pattern: string): GlobInfo[] | FileError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_glob(pattern);
     return result;
   } catch (err) {
@@ -101,7 +101,7 @@ export function readLines(path: string, offset: number = 0, limit: number = 100)
     return new FileError("READ_LINES", `neither offset (${offset}) or limit (${limit}) can be less than 0`);
   }
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_read_lines(path, offset, limit);
     return result;
   } catch (err) {

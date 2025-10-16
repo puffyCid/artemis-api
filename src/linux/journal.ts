@@ -8,7 +8,7 @@ import { LinuxError } from "./errors";
  */
 export function getJournal(path: string): Journal[] | LinuxError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_get_journal(path);
     return data;
   } catch (err) {

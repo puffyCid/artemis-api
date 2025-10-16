@@ -10,7 +10,7 @@ export function setupSpotlightParser(
   glob_path: string,
 ): StoreMeta | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_setup_spotlight_parser(glob_path);
     return data;
   } catch (err) {
@@ -43,7 +43,7 @@ export function getSpotlight(
   }
 
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_spotlight(
       store_file,
       meta,

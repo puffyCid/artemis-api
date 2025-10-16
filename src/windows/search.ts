@@ -13,7 +13,7 @@ export function getSearch(
   page_limit = 50,
 ): SearchEntry[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_search(path, page_limit);
 
     return data;

@@ -22,7 +22,7 @@ export class UserAccessLogging extends EseDatabase {
    * Construct a `UserAccessLogging` object based on the provided UAL file. Client.mdb and <GUID>.mdb files contain the logon information. SystemIdentity.mdb contains role information
    * @param path Path to UAL related file. Such as SystemIdentity.mdb or Current.mdb or <GUID>.mdb.
    */
-  constructor(path: string) {
+  constructor (path: string) {
     super(path);
     this.info = {
       obj_id_table: 0,
@@ -57,7 +57,7 @@ export class UserAccessLogging extends EseDatabase {
       return rows;
     }
 
-    const row_data = rows["ROLE_IDS"];
+    const row_data = rows[ "ROLE_IDS" ];
     if (row_data === undefined) {
       return new WindowsError(
         `UAL`,
@@ -90,7 +90,7 @@ export class UserAccessLogging extends EseDatabase {
     if (rows instanceof WindowsError) {
       return rows;
     }
-    const row_data = rows["CLIENTS"];
+    const row_data = rows[ "CLIENTS" ];
     if (row_data === undefined) {
       return new WindowsError(
         `UAL`,
@@ -168,16 +168,16 @@ export class UserAccessLogging extends EseDatabase {
     this.pages = pages;
   }
 
-  private setupClients(): void | WindowsError {
+  private setupClients(): void {
     const catalog = this.catalogInfo();
     if (catalog instanceof WindowsError) {
-      return catalog;
+      return;
     }
 
     this.info = this.tableInfo(catalog, "CLIENTS");
     const pages = this.getPages(this.info.table_page);
     if (pages instanceof WindowsError) {
-      return pages;
+      return;
     }
 
     this.pages = pages;

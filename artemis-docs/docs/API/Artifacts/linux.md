@@ -347,3 +347,11 @@ function main() {
 
 main();
 ```
+
+### queryLogons(alt_path) -> LastLogons[] | LinuxError
+
+Query the new wtmp sqlite database
+
+| Param    | Type   | Description      |
+| -------- | ------ | ---------------- |
+| alt_path | string | Alt path wtmp.db |

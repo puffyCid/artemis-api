@@ -8,14 +8,6 @@ import { readOdlFiles } from "./odl";
 import { extractSyncEngine } from "./sqlite";
 
 /**
- * TODO:
- * 3. tests?
- *    - key file (random key)
- *    - slimmed down db?
- *    - ntuser registry file? musuem has lots of samples because someone uploaded them!
- */
-
-/**
  * Class to parse OneDrive artifacts
  */
 export class OneDrive {
@@ -29,13 +21,13 @@ export class OneDrive {
      * @param [user="*"] Optional specific user to parse OneDrive info. Default is all users
      * @param alt_path Optional directory that contains *all* OneDrive related artifact files
      */
-    constructor(platform: PlatformType.Darwin | PlatformType.Windows, user = "*", alt_path?: string) {
+    constructor (platform: PlatformType.Darwin | PlatformType.Windows, user = "*", alt_path?: string) {
         this.platform = platform;
         this.user = user;
 
         if (alt_path !== undefined) {
             let separator = "/";
-            let config = "*.OneDriveStandaloneSuite.plist"
+            let config = "*.OneDriveStandaloneSuite.plist";
             if (this.platform === PlatformType.Windows) {
                 separator = "\\";
                 config = "NTUSER.DAT";
@@ -46,7 +38,7 @@ export class OneDrive {
                 odl_files: this.getFiles(`${alt_path}${separator}*odl*`),
                 key_file: this.getFiles(`${alt_path}${separator}general.keystore`),
                 config_file: this.getFiles(`${alt_path}${separator}${config}`),
-            }
+            };
             this.profiles.push(profile);
             return;
         }
@@ -71,7 +63,7 @@ export class OneDrive {
      * @returns Array of `KeyInfo`
      */
     public oneDriveKeys(files?: string[], output?: Output, metadata_runtime = false): KeyInfo[] {
-        let keys: KeyInfo[] = [];
+        const keys: KeyInfo[] = [];
         // If we only want to parse a subset of keys
         if (files !== undefined) {
             for (const entry of files) {
@@ -87,7 +79,7 @@ export class OneDrive {
 
                 const values = JSON.parse(data) as Record<string, string | number>[];
                 for (const value of values) {
-                    key.key = value["Key"] as string;
+                    key.key = value[ "Key" ] as string;
                     break;
                 }
                 keys.push(key);
@@ -118,7 +110,7 @@ export class OneDrive {
 
                 const values = JSON.parse(data) as Record<string, string | number>[];
                 for (const value of values) {
-                    key.key = value["Key"] as string;
+                    key.key = value[ "Key" ] as string;
                     break;
                 }
                 keys.push(key);
@@ -203,7 +195,7 @@ export class OneDrive {
         // Check if we only want to parse a subset of accounts
         if (files !== undefined) {
             for (const entry of files) {
-                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry)
+                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry);
                 if (values instanceof ApplicationError) {
                     console.error(`${values}`);
                     continue;
@@ -224,7 +216,7 @@ export class OneDrive {
         // Parse all configs
         for (const profile of this.profiles) {
             for (const entry of profile.config_file) {
-                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry)
+                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry);
                 if (values instanceof ApplicationError) {
                     console.error(`${values}`);
                     continue;
@@ -302,8 +294,8 @@ export class OneDrive {
      * @param output `Object` object to output results
      */
     public oneDriveRetrospect(output: Output): void {
-       this.oneDriveLogs(undefined, output);
-       this.oneDriveSyncDatabase(undefined, output);
+        this.oneDriveLogs(undefined, output);
+        this.oneDriveSyncDatabase(undefined, output);
         this.oneDriveAccounts(undefined, output);
     }
 
@@ -350,7 +342,7 @@ export class OneDrive {
 
         let drive = getEnvValue("HOMEDRIVE");
         if (drive === "") {
-            drive = "C:"
+            drive = "C:";
         }
         const base_users = `${drive}\\Users\\${this.user}`;
         const all_users = glob(base_users);
@@ -372,7 +364,7 @@ export class OneDrive {
             const sync_glob = `${user.full_path}\\AppData\\Local\\Microsoft\\OneDrive\\settings\\*\\SyncEngineDatabase.db`;
             profile.sync_db = this.getFiles(sync_glob);
 
-            const key_glob = `${user.full_path}\\AppData\\Local\\Microsoft\\OneDrive\\logs\\*\\general.keystore`
+            const key_glob = `${user.full_path}\\AppData\\Local\\Microsoft\\OneDrive\\logs\\*\\general.keystore`;
             profile.key_file = this.getFiles(key_glob);
 
             const config_glob = `${user.full_path}\\NTUSER.*`;
@@ -423,35 +415,35 @@ export function testOneDrive(): void {
     let plat = PlatformType.Windows;
     if (platform().toLowerCase() === "darwin") {
         plat = PlatformType.Darwin;
-        test = "../../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock"
+        test = "../../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock";
     }
 
     const client = new OneDrive(plat, undefined, test);
 
     const status = client.oneDriveLogs();
     if (status.length !== 367) {
-        throw `Got '${status.length}' expected "367".......OneDrive ❌`
+        throw `Got '${status.length}' expected "367".......OneDrive ❌`;
     }
 
     const sync = client.oneDriveSyncDatabase();
     if (sync.length !== 43) {
-        throw `Got '${sync.length}' expected "43".......OneDrive ❌`
+        throw `Got '${sync.length}' expected "43".......OneDrive ❌`;
     }
 
     const account = client.oneDriveAccounts();
     if (account.length !== 0 && plat === PlatformType.Windows) {
-        throw `Got '${account.length}' expected "0".......OneDrive ❌`
+        throw `Got '${account.length}' expected "0".......OneDrive ❌`;
     } else if (account.length !== 1 && plat === PlatformType.Darwin) {
-        throw `Got '${account.length}' expected "1".......OneDrive ❌`
+        throw `Got '${account.length}' expected "1".......OneDrive ❌`;
     }
 
-    if (plat === PlatformType.Darwin && account[0]?.account_id !== "aaaaaaaaa") {
-        throw `Got '${account[0]?.account_id}' expected "aaaaaaaaa".......OneDrive ❌`
+    if (plat === PlatformType.Darwin && account[ 0 ]?.account_id !== "aaaaaaaaa") {
+        throw `Got '${account[ 0 ]?.account_id}' expected "aaaaaaaaa".......OneDrive ❌`;
     }
 
     const key = client.oneDriveKeys();
     if (key.length !== 1) {
-        throw `Got '${key.length}' expected "1"......OneDrive ❌`
+        throw `Got '${key.length}' expected "1"......OneDrive ❌`;
     }
 
     console.info(`  Mock OneDrive Class ✅`);

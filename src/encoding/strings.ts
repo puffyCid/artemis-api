@@ -4,7 +4,7 @@
  * @returns An UTF8 string. Will return base64 encoded string if extraction fails
  */
 export function extractUtf8String(data: Uint8Array): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result = js_extract_utf8_string(data);
   return result;
 }
@@ -16,7 +16,7 @@ export function extractUtf8String(data: Uint8Array): string {
  * @returns An UTF8 string. Will return base64 encoded string if extraction fails
  */
 export function extractUtf8StringLossy(data: Uint8Array): string {
-    //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result = js_extract_utf8_string_lossy(data);
   return result;
 }
@@ -27,7 +27,7 @@ export function extractUtf8StringLossy(data: Uint8Array): string {
  * @returns An UTF16 string.Will return base64 encoded string if extraction fails
  */
 export function extractUtf16String(data: Uint8Array): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result = js_extract_utf16_string(data);
   return result;
 }
@@ -38,7 +38,7 @@ export function extractUtf16String(data: Uint8Array): string {
  * @returns A hexadecimal string
  */
 export function bytesToHexString(data: Uint8Array): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result = js_bytes_to_hex_string(data);
   return result;
 }

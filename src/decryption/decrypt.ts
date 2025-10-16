@@ -20,7 +20,7 @@ export function decryptAes(
     );
   }
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const bytes: Uint8Array = js_decrypt_aes(key, iv, data);
     return bytes;
   } catch (err) {

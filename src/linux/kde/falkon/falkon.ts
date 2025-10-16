@@ -186,7 +186,7 @@ export class Falkon {
         const limit = 100;
 
         while (true) {
-            let entries = this.history(offset, limit);
+            const entries = this.history(offset, limit);
             if (entries.length === 0) {
                 break;
             }

@@ -63,7 +63,7 @@ export class Unfold {
    */
   private extractUrl(url: string): Url | UnfoldError {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const url_info: Url = js_url_parse(url);
       url_info.url = url;
       url_info.last_segment = url_info.segments.at(-1) ?? "";

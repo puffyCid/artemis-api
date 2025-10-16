@@ -8,7 +8,7 @@ import { ClassInfo, IndexBody, Namespace, WmiPersist } from "../../types/windows
  */
 export function getWmiPersist(path?: string): WmiPersist[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_wmipersist(path);
 
     return data;
@@ -27,7 +27,7 @@ export function getWmiPersist(path?: string): WmiPersist[] | WindowsError {
  */
 export function listNamespaces(namespace = "root", indexes: IndexBody[], object_data: Uint8Array, pages: number[]): Namespace[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_list_namespaces_classes(namespace, indexes, object_data, pages, false);
 
     return data;
@@ -46,7 +46,7 @@ export function listNamespaces(namespace = "root", indexes: IndexBody[], object_
  */
 export function listClasses(namespace = "root", indexes: IndexBody[], object_data: Uint8Array, pages: number[]): Record<string, ClassInfo>[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_list_namespaces_classes(namespace, indexes, object_data, pages, true);
 
     return data;
@@ -67,7 +67,7 @@ export function listClasses(namespace = "root", indexes: IndexBody[], object_dat
  */
 export function classDescriptions(namespace: string, locale: number, class_name: string, indexes: IndexBody[], object_data: Uint8Array, pages: number[]): ClassInfo | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_class_description(namespace, locale, class_name, indexes, object_data, pages);
 
     return data;
@@ -83,7 +83,7 @@ export function classDescriptions(namespace: string, locale: number, class_name:
  */
 export function getWmiPages(map_glob: string): number[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_get_wmi_pages(map_glob);
 
     return data;
@@ -99,7 +99,7 @@ export function getWmiPages(map_glob: string): number[] | WindowsError {
  */
 export function getWmiIndexes(indexes: Uint8Array): IndexBody[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_get_wmi_indexes(indexes);
 
     return data;

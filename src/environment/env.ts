@@ -3,7 +3,7 @@
  * @returns Record<string,string> list of Environment variable values
  */
 export function listEnv(): Record<string, string> {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: Record<string, string> = js_env();
   return data;
 }
@@ -14,7 +14,7 @@ export function listEnv(): Record<string, string> {
  * @returns Value of the provided Environment variable name
  */
 export function getEnvValue(key: string): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: string = js_env_value(key);
   return data;
 }

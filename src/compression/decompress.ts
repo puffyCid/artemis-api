@@ -20,7 +20,7 @@ export function decompress_zlib(
     );
   }
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const bytes: Uint8Array = js_decompress_zlib(data, wbits, decom_size);
     return bytes;
   } catch (err) {
@@ -37,7 +37,7 @@ export function decompress_gzip(
   data: Uint8Array,
 ): Uint8Array | CompressionError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const bytes: Uint8Array = js_decompress_gzip(data);
     return bytes;
   } catch (err) {
@@ -52,7 +52,7 @@ export function decompress_gzip(
  */
 export function decompress_snappy(data: Uint8Array): Uint8Array | CompressionError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const bytes: Uint8Array = js_decompress_snappy(data);
     return bytes;
   } catch (err) {
@@ -67,7 +67,7 @@ export function decompress_snappy(data: Uint8Array): Uint8Array | CompressionErr
  */
 export function decompress_zstd(data: Uint8Array): Uint8Array | CompressionError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const bytes: Uint8Array = js_decompress_zstd(data);
     return bytes;
   } catch (err) {

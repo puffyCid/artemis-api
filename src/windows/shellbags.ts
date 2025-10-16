@@ -12,7 +12,7 @@ export function getShellbags(
   path?: string,
 ): Shellbags[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_shellbags(resolve_guids, path);
 
     return data;

@@ -6,7 +6,7 @@ import { EncodingError } from "./errors";
  * @returns Base64 encoded string
  */
 export function encode(data: Uint8Array): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result = js_base64_encode(data);
   return result;
 }
@@ -18,7 +18,7 @@ export function encode(data: Uint8Array): string {
  */
 export function decode(b64: string): Uint8Array | EncodingError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const bytes: Uint8Array = js_base64_decode(b64);
     return bytes;
   } catch (err) {

@@ -1,5 +1,5 @@
 import { FileHistory } from "../../../../types/applications/vscode";
-import { TimesketchArtifact, TimesketchTimeline } from "../../../../types/timesketch/timeline";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline VSCode File History

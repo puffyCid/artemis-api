@@ -147,7 +147,7 @@ export interface Cookie {
   timestamp_desc: string;
   artifact: string;
   data_type: string;
-  [key: string]: any;
+  [ key: string ]: unknown;
 }
 
 export enum CookieFlag {

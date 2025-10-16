@@ -10,7 +10,7 @@ export function getSudoLogsMacos(
   path?: string,
 ): UnifiedLog[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_sudologs_macos(path);
 
     return data;

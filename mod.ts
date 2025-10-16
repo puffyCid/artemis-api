@@ -17,6 +17,7 @@ export { Epiphany } from "./src/linux/gnome/epiphany";
 export { firmwareHistory } from "./src/linux/firmware";
 export { kateRecentFiles } from "./src/linux/kde/kate";
 export { Falkon } from "./src/linux/kde/falkon/falkon";
+export { queryLogons } from "./src/linux/sqlite/wtmpdb";
 
 /**
  * macOS exported functions
@@ -93,7 +94,7 @@ export { querySqlite } from "./src/applications/sqlite";
 export { NextcloudClient } from "./src/applications/nextcloud/cloud";
 export { LevelDb } from "./src/applications/leveldb/level";
 export { AnyDesk } from "./src/applications/anydesk/rmm";
-export {OneDrive} from "./src/applications/onedrive/onedrive";
+export { OneDrive } from "./src/applications/onedrive/onedrive";
 
 /**
  * Windows exported functions
@@ -138,7 +139,7 @@ export { parseWordWheel } from "./src/windows/registry/wordwheel";
 export { UserAccessLogging } from "./src/windows/ese/ual";
 export { Updates } from "./src/windows/ese/updates";
 export { Outlook } from "./src/windows/outlook";
-export {ADCertificates} from "./src/windows/ese/certs";
+export { ADCertificates } from "./src/windows/ese/certs";
 export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
 export { firewallRules } from "./src/windows/registry/firewall_rules";
 export { processTreeEventLogs } from "./src/windows/eventlogs/processtree";

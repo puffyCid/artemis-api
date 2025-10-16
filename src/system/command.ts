@@ -10,7 +10,7 @@ export function executeCommand(
   command: string,
   args: string[] = [],
 ): CommandResult | Error {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: CommandResult | Error = js_command(command, args);
   if (data instanceof Error) {
     return data;

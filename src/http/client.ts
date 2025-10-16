@@ -54,7 +54,7 @@ export async function request(
   }
 
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = await js_request(reqwest, body);
     const res: ClientResponse = result;
     return res;

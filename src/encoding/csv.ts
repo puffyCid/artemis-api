@@ -9,7 +9,7 @@ import { EncodingError } from "./errors";
  */
 export function readCsv(path: string, offset: number = 0, limit: number = 100): Record<string, string>[] | EncodingError {
     try {
-        //@ts-ignore: Custom Artemis function
+        // @ts-expect-error: Custom Artemis function
         const result = js_read_csv(path, offset, limit);
         return result;
     } catch (err) {

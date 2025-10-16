@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getLnkFile(path: string): Shortcut | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_lnk(path);
 
     return data;

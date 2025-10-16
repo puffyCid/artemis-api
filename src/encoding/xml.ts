@@ -7,7 +7,7 @@ import { EncodingError } from "./errors";
  */
 export function readXml(path: string): Record<string, unknown> | EncodingError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_read_xml(path);
     return result;
   } catch (err) {

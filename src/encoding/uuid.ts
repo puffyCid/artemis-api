@@ -8,12 +8,12 @@ import { Endian } from "../nom/helpers";
  */
 export function formatGuid(format: Endian, data: Uint8Array): string {
   if (format === Endian.Be) {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_format_guid_be_bytes(data);
     return result;
   }
 
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result = js_format_guid_le_bytes(data);
   return result;
 }
@@ -23,7 +23,7 @@ export function formatGuid(format: Endian, data: Uint8Array): string {
  * @returns A UUID string
  */
 export function generateUuid(): string {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result = js_generate_uuid();
   return result;
 }

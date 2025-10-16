@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getAmcache(path?: string): Amcache[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const results = js_amcache(path);
     return results;
   } catch (err) {

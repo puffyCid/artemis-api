@@ -8,7 +8,7 @@ import { MacosError } from "./errors";
  */
 export function getExecpolicy(path?: string): ExecPolicy[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_execpolicy(path);
 
     return data;

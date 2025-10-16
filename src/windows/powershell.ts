@@ -106,7 +106,7 @@ export function testPowerShellHistory(): void {
   console.info(`  Function powershellHistory ✅`);
 
 
-  let values = parsePowershellHistory(test, PlatformType.Windows);
+  const values = parsePowershellHistory(test, PlatformType.Windows);
   if (values instanceof WindowsError) {
     throw values;
   }

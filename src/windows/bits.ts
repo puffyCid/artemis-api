@@ -9,7 +9,7 @@ import { WindowsError } from "./errors";
  */
 export function getBits(carve: boolean, path?: string): Bits | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const results = js_bits(carve, path);
     return results;
   } catch (err) {

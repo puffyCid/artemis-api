@@ -5,7 +5,7 @@ import { Disks } from "../../types/system/systeminfo";
  * @returns Array of `Disk` information
  */
 export function disks(): Disks[] {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: Disks[] = js_disks();
   return data;
 }

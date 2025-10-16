@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getPe(path: string): PeInfo | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis functionjs_
+    // @ts-expect-error: Custom Artemis functionjs_;
     const data: PeInfo = get_pe(path);
     return data;
   } catch (err) {

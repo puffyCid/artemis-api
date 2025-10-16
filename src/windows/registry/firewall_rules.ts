@@ -32,7 +32,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                 continue;
             }
             const entries = value.data.split("|");
-            let rule: FirewallRules = {
+            const rule: FirewallRules = {
                 action: "",
                 active: false,
                 direction: Direction.Unknown,

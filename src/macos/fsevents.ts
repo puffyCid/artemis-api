@@ -8,7 +8,7 @@ import { MacosError } from "./errors";
  */
 export function getFsevents(path: string): Fsevents[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_fsevents(path);
     return data;
   } catch (err) {

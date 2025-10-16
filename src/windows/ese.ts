@@ -26,7 +26,7 @@ export class EseDatabase {
    */
   public catalogInfo(): Catalog[] | WindowsError {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const data: Catalog[] = js_get_catalog(this.path);
       return data;
     } catch (err) {
@@ -95,7 +95,7 @@ export class EseDatabase {
    */
   public getPages(first_page: number): number[] | WindowsError {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const data = js_get_pages(this.path, first_page);
 
       const results: number[] = data;
@@ -119,7 +119,7 @@ export class EseDatabase {
     info: TableInfo,
   ): Record<string, EseTable[][]> | WindowsError {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const data: Record<string, EseTable[][]> = js_page_data(
         this.path,
         pages,
@@ -151,7 +151,7 @@ export class EseDatabase {
     column_data: Record<string, boolean>,
   ): Record<string, EseTable[][]> | WindowsError {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const data: Record<string, EseTable[][]> = js_filter_page_data(
         this.path,
         pages,
@@ -183,7 +183,7 @@ export class EseDatabase {
     column_names: string[],
   ): Record<string, EseTable[][]> | WindowsError {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const data: Record<string, EseTable[][]> = js_get_table_columns(
         this.path,
         pages,

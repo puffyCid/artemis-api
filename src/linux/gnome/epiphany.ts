@@ -246,7 +246,7 @@ export class Epiphany {
         const results: EpiphanyPrint[] = [];
         for (const entry of this.paths) {
             const print_file = `${entry.full_path}/print-settings.ini`;
-            let print_data = readTextFile(print_file);
+            const print_data = readTextFile(print_file);
             if (print_data instanceof FileError) {
                 continue;
             }
@@ -303,7 +303,7 @@ export class Epiphany {
      */
     public retrospect(output: Output): void {
         let offset = 0;
-        let limit = 100;
+        const limit = 100;
 
         // Get all history info
         while (true) {
@@ -311,7 +311,7 @@ export class Epiphany {
             if (entries.length === 0) {
                 break;
             }
-            let timeline_entries: TimesketchTimeline[] = [];
+            const timeline_entries: TimesketchTimeline[] = [];
 
             for (const entry of entries) {
                 let timeline: TimesketchTimeline = {
@@ -345,7 +345,7 @@ export class Epiphany {
                 break;
             }
 
-            let timeline_entries: TimesketchTimeline[] = [];
+            const timeline_entries: TimesketchTimeline[] = [];
 
             for (const entry of entries) {
                 let timeline: TimesketchTimeline = {
@@ -367,7 +367,7 @@ export class Epiphany {
         }
 
         // Smaller data to timeline
-        let timeline_entries: TimesketchTimeline[] = [];
+        const timeline_entries: TimesketchTimeline[] = [];
 
         const sessions = this.sessions();
         for (const entry of sessions) {
@@ -389,7 +389,7 @@ export class Epiphany {
 
         const permissions = this.permissions();
         // Get site permissions
-        for (let entry of permissions) {
+        for (const entry of permissions) {
             let timeline: TimesketchTimeline = {
                 datetime: "1970-01-01T00:00:00.000Z",
                 timestamp_desc: "N/A",
