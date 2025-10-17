@@ -65,6 +65,12 @@ export function chromiumHistory(paths: ChromiumProfiles[], platform: PlatformTyp
                     unfold: undefined,
                     db_path: entry_path.full_path,
                     version: path.version,
+                    message: entry[ "url" ] as string ?? "",
+                    datetime: unixEpochToISO(webkit),
+                    timestamp_desc: "URL Visited",
+                    artifact: "URL History",
+                    data_type: `applications:${path.browser.toLowerCase()}:history:entry`,
+                    browser: path.browser,
                 };
 
                 if (unfold && typeof client !== 'undefined') {
@@ -89,6 +95,7 @@ export function chromiumHistory(paths: ChromiumProfiles[], platform: PlatformTyp
  * @param paths Array of `ChromiumProfiles`
  * @param platform OS `PlatformType`
  * @param query SQL query to run
+ * @param browser Chromium based browser type
  * @returns Array of `ChromiumDownloads`
  */
 export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformType, query: string): ChromiumDownloads[] {
@@ -155,12 +162,16 @@ export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformT
                     url: entry[ "url" ] as string ?? "",
                     db_path: entry_path.full_path,
                     version: path.version,
+                    message: `${entry[ "url" ] as string ?? ""} | ${entry[ "target_path" ] as string ?? ""}`,
+                    datetime: unixEpochToISO(start),
+                    timestamp_desc: "File Download Start",
+                    artifact: "File Download",
+                    data_type: `applications:${path.browser.toLowerCase()}:downloads:entry`,
+                    browser: path.browser,
                 };
                 hits.push(download_row);
             }
         }
-
-
     }
 
     return hits;
@@ -200,7 +211,7 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
                 for (const entry of results) {
                     const cookie_entry: ChromiumCookies = {
                         creation: unixEpochToISO(webkitToUnixEpoch(
-                            Number(BigInt(entry[ "creation_utc" ] as bigint) / adjust_time),
+                            Number(BigInt(entry[ "creation_utc" ] as bigint) / adjust_time)
                         )),
                         host_key: entry[ "host_key" ] as string,
                         top_frame_site_key: entry[ "top_frame_site_key" ] as string,
@@ -209,12 +220,12 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
                         encrypted_value: entry[ "encrypted_value" ] as string,
                         path: entry[ "path" ] as string,
                         expires: unixEpochToISO(webkitToUnixEpoch(
-                            Number(BigInt(entry[ "expires_utc" ] as bigint) / adjust_time),
+                            Number(BigInt(entry[ "expires_utc" ] as bigint) / adjust_time)
                         )),
                         is_secure: !!(entry[ "is_secure" ] as number),
                         is_httponly: !!(entry[ "is_httponly" ] as number),
                         last_access: unixEpochToISO(webkitToUnixEpoch(
-                            Number(BigInt(entry[ "last_access_utc" ] as bigint) / adjust_time),
+                            Number(BigInt(entry[ "last_access_utc" ] as bigint) / adjust_time)
                         )),
                         has_expires: !!(entry[ "has_expires" ] as number),
                         is_persistent: !!(entry[ "is_persistent" ] as number),
@@ -224,10 +235,18 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
                         source_port: entry[ "source_port" ] as number,
                         is_same_party: entry[ "is_same_party" ] as number,
                         last_update: unixEpochToISO(webkitToUnixEpoch(
-                            Number(BigInt(entry[ "last_update_utc" ] as bigint) / adjust_time),
+                            Number(BigInt(entry[ "last_update_utc" ] as bigint) / adjust_time)
                         )),
                         db_path: entry_path.full_path,
                         version: path.version,
+                        message: `Cookie name: ${entry[ "name" ] as string} | value: ${entry[ "value" ] as string}`,
+                        datetime: unixEpochToISO(webkitToUnixEpoch(
+                            Number(BigInt(entry[ "expires_utc" ] as bigint) / adjust_time)
+                        )),
+                        timestamp_desc: "Cookie Expires",
+                        artifact: "Website Cookie",
+                        data_type: `applications:${path.browser.toLowerCase()}:cookies:entry`,
+                        browser: path.browser,
                     };
                     hits.push(cookie_entry);
                 }
@@ -289,10 +308,16 @@ export function chromiumAutofill(paths: ChromiumProfiles[], platform: PlatformTy
                     date_created: unixEpochToISO(entry[ "date_created" ] as number),
                     date_last_used: unixEpochToISO(entry[ "date_last_used" ] as number),
                     count: entry[ "count" ] as number,
-                    name: entry[ "name" ] as string | undefined,
-                    value: entry[ "value" ] as string | undefined,
-                    value_lower: entry[ "value_lower" ] as string | undefined,
+                    name: entry[ "name" ] as string ?? "",
+                    value: entry[ "value" ] as string ?? "",
+                    value_lower: entry[ "value_lower" ] as string ?? "",
                     version: path.version,
+                    message: `Autofill name: ${entry[ "name" ] as string ?? ""} | value: ${entry[ "value" ] as string ?? ""}`,
+                    datetime: unixEpochToISO(entry[ "date_created" ] as number),
+                    timestamp_desc: "Autofill Created",
+                    artifact: "Website Autofill",
+                    data_type: `applications:${path.browser.toLowerCase()}:autofill:entry`,
+                    browser: path.browser,
                 };
                 hits.push(fill_entry);
             }
@@ -336,43 +361,38 @@ export function chromiumLogins(paths: ChromiumProfiles[], platform: PlatformType
                     origin_url: entry[ "origin_url" ] as string,
                     signon_realm: entry[ "signon_realm" ] as string,
                     date_created: unixEpochToISO(webkitToUnixEpoch(
-                        Number(BigInt(entry[ "date_created" ] as bigint) / adjust_time),
+                        Number(BigInt(entry[ "date_created" ] as bigint) / adjust_time)
                     )),
                     blacklisted_by_user: entry[ "blacklisted_by_user" ] as number,
                     scheme: entry[ "scheme" ] as number,
                     id: entry[ "id" ] as number,
                     date_last_used: unixEpochToISO(webkitToUnixEpoch(
-                        Number(BigInt(entry[ "date_last_used" ] as bigint) / adjust_time),
+                        Number(BigInt(entry[ "date_last_used" ] as bigint) / adjust_time)
                     )),
                     date_password_modified: unixEpochToISO(webkitToUnixEpoch(
-                        Number(BigInt(entry[ "date_password_modified" ] as bigint) / adjust_time),
+                        Number(BigInt(entry[ "date_password_modified" ] as bigint) / adjust_time)
                     )),
-                    sharing_notification_display: entry[
-                        "sharing_notification_display"
-                    ] as number,
+                    sharing_notification_display: entry[ "sharing_notification_display" ] as number,
                     db_path: entry_path.full_path,
                     action_url: entry[ "action_url" ] as string | undefined,
                     username_element: entry[ "username_element" ] as string | undefined,
                     username_value: entry[ "username_value" ] as string | undefined,
                     times_used: entry[ "times_used" ] as number | undefined,
                     icon_url: entry[ "icon_url" ] as string | undefined,
-                    possible_username_pairs: entry[ "possible_username_pairs" ] as
-                        | string
-                        | undefined,
+                    possible_username_pairs: entry[ "possible_username_pairs" ] as string |
+                        undefined,
                     federation_url: entry[ "federation_url" ] as string | undefined,
-                    generation_upload_status: entry[ "generation_upload_status" ] as
-                        | number
-                        | undefined,
-                    sender_profile_image_url: entry[ "sender_profile_image_url" ] as
-                        | string
-                        | undefined,
+                    generation_upload_status: entry[ "generation_upload_status" ] as number |
+                        undefined,
+                    sender_profile_image_url: entry[ "sender_profile_image_url" ] as string |
+                        undefined,
                     password_element: entry[ "password_element" ] as string | undefined,
                     password_type: entry[ "password_type" ] as number | undefined,
                     password_value: entry[ "password_value" ] as string | undefined,
                     date_received: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "date_received" ] === "undefined"
                             ? 0
-                            : Number(BigInt(entry[ "date_received" ] as bigint) / adjust_time),
+                            : Number(BigInt(entry[ "date_received" ] as bigint) / adjust_time)
                     )),
                     sender_email: entry[ "sender_email" ] as string | undefined,
                     sender_name: entry[ "sender_name" ] as string | undefined,
@@ -383,6 +403,14 @@ export function chromiumLogins(paths: ChromiumProfiles[], platform: PlatformType
                     moving_blocked_for: entry[ "moving_blocked_for" ] as string | undefined,
                     keychain_identifier: entry[ "keychain_identifier" ] as string | undefined,
                     version: path.version,
+                    message: entry[ "origin_url" ] as string,
+                    datetime: unixEpochToISO(webkitToUnixEpoch(
+                        Number(BigInt(entry[ "date_last_used" ] as bigint) / adjust_time)
+                    )),
+                    timestamp_desc: "Last Login",
+                    artifact: "Website Login",
+                    data_type: `applications:${path.browser.toLowerCase()}:login:entry`,
+                    browser: path.browser,
                 };
                 hits.push(login_entry);
             }
@@ -430,29 +458,29 @@ export function chromiumDips(paths: ChromiumProfiles[], platform: PlatformType, 
                         typeof entry[ "first_bounce_time" ] === "undefined" ||
                             entry[ "first_bounce_time" ] === null
                             ? 0
-                            : Number(BigInt(entry[ "first_bounce_time" ] as bigint) / adjust_time),
+                            : Number(BigInt(entry[ "first_bounce_time" ] as bigint) / adjust_time)
                     )),
                     last_bounce: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "last_bounce_time" ] === "undefined" ||
                             entry[ "last_bounce_time" ] === null
                             ? 0
-                            : Number(BigInt(entry[ "last_bounce_time" ] as bigint) / adjust_time),
+                            : Number(BigInt(entry[ "last_bounce_time" ] as bigint) / adjust_time)
                     )),
                     first_site_storage: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "first_site_storage_time" ] === "undefined" ||
                             entry[ "first_site_storage_time" ] === null
                             ? 0
                             : Number(
-                                BigInt(entry[ "first_site_storage_time" ] as bigint) / adjust_time,
-                            ),
+                                BigInt(entry[ "first_site_storage_time" ] as bigint) / adjust_time
+                            )
                     )),
                     first_stateful_bounce: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "first_stateful_bounce_time" ] === "undefined" ||
                             entry[ "first_stateful_bounce_time" ] === null
                             ? 0
                             : Number(
-                                BigInt(entry[ "first_stateful_bounce_time" ] as bigint) / adjust_time,
-                            ),
+                                BigInt(entry[ "first_stateful_bounce_time" ] as bigint) / adjust_time
+                            )
                     )),
                     first_user_interaction: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "first_user_interaction_time" ] === "undefined" ||
@@ -460,46 +488,60 @@ export function chromiumDips(paths: ChromiumProfiles[], platform: PlatformType, 
                             ? 0
                             : Number(
                                 BigInt(entry[ "first_user_interaction_time" ] as bigint) /
-                                adjust_time,
-                            ),
+                                adjust_time
+                            )
                     )),
                     first_web_authn_assertion: unixEpochToISO(webkitToUnixEpoch(
                         entry[ "first_web_authn_assertion_time" ] === null ? 0 : Number(
                             BigInt(entry[ "first_web_authn_assertion_time" ] as bigint) /
-                            adjust_time,
-                        ),
+                            adjust_time
+                        )
                     )),
                     last_site_storage: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "last_site_storage_time" ] === "undefined" ||
                             entry[ "last_site_storage_time" ] === null
                             ? 0
                             : Number(
-                                BigInt(entry[ "last_site_storage_time" ] as bigint) / adjust_time,
-                            ),
+                                BigInt(entry[ "last_site_storage_time" ] as bigint) / adjust_time
+                            )
                     )),
                     last_stateful_bounce: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "last_stateful_bounce_time" ] === "undefined" ||
                             entry[ "last_stateful_bounce_time" ] === null
                             ? 0
                             : Number(
-                                BigInt(entry[ "last_stateful_bounce_time" ] as bigint) / adjust_time,
-                            ),
+                                BigInt(entry[ "last_stateful_bounce_time" ] as bigint) / adjust_time
+                            )
                     )),
                     last_user_interaction: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry[ "last_user_interaction_time" ] === "undefined" ||
                             entry[ "last_user_interaction_time" ] === null
                             ? 0
                             : Number(
-                                BigInt(entry[ "last_user_interaction_time" ] as bigint) / adjust_time,
-                            ),
+                                BigInt(entry[ "last_user_interaction_time" ] as bigint) / adjust_time
+                            )
                     )),
                     last_web_authn_assertion: unixEpochToISO(webkitToUnixEpoch(
                         entry[ "last_web_authn_assertion_time" ] === null ? 0 : Number(
                             BigInt(entry[ "last_web_authn_assertion_time" ] as bigint) /
-                            adjust_time,
-                        ),
+                            adjust_time
+                        )
                     )),
                     version: path.version,
+                    message: entry[ "site" ] as string,
+                    datetime: unixEpochToISO(webkitToUnixEpoch(
+                        typeof entry[ "first_user_interaction_time" ] === "undefined" ||
+                            entry[ "first_user_interaction_time" ] === null
+                            ? 0
+                            : Number(
+                                BigInt(entry[ "first_user_interaction_time" ] as bigint) /
+                                adjust_time
+                            )
+                    )),
+                    timestamp_desc: "First Interaction",
+                    artifact: "Browser DIPS",
+                    data_type: `applications:${path.browser.toLowerCase()}:dips:entry`,
+                    browser: path.browser,
                 };
                 hits.push(dips_entry);
             }

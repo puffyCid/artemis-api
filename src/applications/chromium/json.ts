@@ -1,4 +1,4 @@
-import { ChromiumBookmarkChildren, ChromiumBookmarks, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BookmarkType, BrowserType, ChromiumBookmarks, ChromiumProfiles } from "../../../types/applications/chromium";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
@@ -86,7 +86,7 @@ export function chromiumPreferences(paths: ChromiumProfiles[], platform: Platfor
  * @returns Array of `ChromiumBookmarks`
  */
 export function chromiumBookmarks(paths: ChromiumProfiles[], platform: PlatformType): ChromiumBookmarks[] {
-    const hits: ChromiumBookmarks[] = [];
+    let hits: ChromiumBookmarks[] = [];
 
     for (const path of paths) {
         let full_path = `${path.full_path}/*/Bookmarks`;
@@ -106,30 +106,21 @@ export function chromiumBookmarks(paths: ChromiumProfiles[], platform: PlatformT
                 continue;
             }
 
-            const books: ChromiumBookmarks = {
-                bookmark_bar: [],
-                other: [],
-                synced: [],
-                path: entry.full_path,
-                version: path.version,
-            };
             const book_json = JSON.parse(results);
             const bar = book_json[ "roots" ][ "bookmark_bar" ][ "children" ] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined;
-            books.bookmark_bar = getBookmarkChildren(bar);
+            hits = hits.concat(getBookmarkChildren(bar, entry.full_path, path.version, BookmarkType.Bar, path.browser));
 
             const other = book_json[ "roots" ][ "other" ][ "children" ] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined;
-            books.other = getBookmarkChildren(other);
+            hits = hits.concat(getBookmarkChildren(other, entry.full_path, path.version, BookmarkType.Other, path.browser));
 
             const synced = book_json[ "roots" ][ "other" ][ "synced" ] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined;
-            books.synced = getBookmarkChildren(synced);
-
-            hits.push(books);
+            hits = hits.concat(getBookmarkChildren(synced, entry.full_path, path.version, BookmarkType.Sync, path.browser));
         }
     }
     return hits;
@@ -144,20 +135,24 @@ function getBookmarkChildren(
     book:
         | Record<string, string | Record<string, string>[] | undefined>[]
         | undefined,
-): ChromiumBookmarkChildren[] {
-    let books: ChromiumBookmarkChildren[] = [];
+    path: string,
+    version: string,
+    bookmark_type: BookmarkType,
+    browser: BrowserType
+): ChromiumBookmarks[] {
+    let books: ChromiumBookmarks[] = [];
     if (typeof book === "undefined") {
         return books;
     }
     const adjust_time = 1000000n;
     for (const entry of book) {
         if (typeof entry[ "children" ] === "undefined") {
-            const book_entry: ChromiumBookmarkChildren = {
+            const book_entry: ChromiumBookmarks = {
                 date_added: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry[ "date_added" ] as string) / adjust_time),
+                    Number(BigInt(entry[ "date_added" ] as string) / adjust_time)
                 )),
                 date_last_used: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry[ "date_last_used" ] as string) / adjust_time),
+                    Number(BigInt(entry[ "date_last_used" ] as string) / adjust_time)
                 )),
                 guid: entry[ "guid" ] as string,
                 id: Number(entry[ "id" ] as string),
@@ -165,6 +160,17 @@ function getBookmarkChildren(
                 type: entry[ "type" ] as string,
                 url: entry[ "url" ] as string,
                 meta_info: entry[ "meta_info" ] as unknown as Record<string, string>,
+                bookmark_type,
+                path,
+                version,
+                message: `Bookmark - ${entry[ "name" ] as string}`,
+                datetime: unixEpochToISO(webkitToUnixEpoch(
+                    Number(BigInt(entry[ "date_added" ] as string) / adjust_time)
+                )),
+                timestamp_desc: "Bookmark Added",
+                artifact: "Browser Bookmark",
+                data_type: `applications:${browser.toLowerCase()}:bookmark:entry`,
+                browser,
             };
             books.push(book_entry);
             continue;
@@ -175,6 +181,10 @@ function getBookmarkChildren(
                 entry[ "children" ] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined,
+                path,
+                version,
+                bookmark_type,
+                browser
             ),
         );
     }

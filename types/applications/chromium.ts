@@ -45,6 +45,12 @@ export interface ChromiumHistory {
   db_path: string;
   /**Browser version */
   version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "URL Visited";
+  artifact: "URL History";
+  data_type: string;
+  browser: BrowserType;
 }
 
 /**
@@ -113,6 +119,12 @@ export interface ChromiumDownloads {
   db_path: string;
   /**Browser version */
   version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "File Download Start";
+  artifact: "File Download";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumCookies {
@@ -139,6 +151,12 @@ export interface ChromiumCookies {
   db_path: string;
   /**Browser version */
   version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Cookie Expires";
+  artifact: "Website Cookie";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumAutofill {
@@ -152,18 +170,15 @@ export interface ChromiumAutofill {
   db_path: string;
   /**Browser version */
   version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Autofill Created";
+  artifact: "Website Autofill";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumBookmarks {
-  bookmark_bar: ChromiumBookmarkChildren[];
-  other: ChromiumBookmarkChildren[];
-  synced: ChromiumBookmarkChildren[];
-  path: string;
-  /**Browser version */
-  version: string;
-}
-
-export interface ChromiumBookmarkChildren {
   date_added: string;
   date_last_used: string;
   guid: string;
@@ -172,7 +187,25 @@ export interface ChromiumBookmarkChildren {
   type: string;
   url: string;
   meta_info: Record<string, string>;
+  bookmark_type: BookmarkType;
+  path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Bookmark Added";
+  artifact: "Browser Bookmark";
+  data_type: string;
+  browser: BrowserType;
 }
+
+export enum BookmarkType {
+  Bar = "Bookmark Bar",
+  Sync = "Synced",
+  Other = "Other",
+  Unknown = "Unknown",
+}
+
 export interface ChromiumLogins {
   origin_url: string;
   action_url?: string;
@@ -207,6 +240,12 @@ export interface ChromiumLogins {
   db_path: string;
   /**Browser version */
   version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Last Login";
+  artifact: "Website Login";
+  data_type: string;
+  browser: BrowserType;
 }
 
 /**
@@ -228,6 +267,12 @@ export interface ChromiumDips {
   path: string;
   /**Browser version */
   version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "First Interaction";
+  artifact: "Browser DIPS";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumProfiles {
@@ -257,7 +302,7 @@ export interface ChromiumLocalStorage extends LevelDbEntry {
   version: string;
   message: string;
   datetime: string;
-  browser: BrowserType
+  browser: BrowserType;
   timestamp_desc: "Local Storage Entry Write" | "Local Storage Write Ahead Log";
   artifact: "Level Database";
   data_type: "applications:leveldb:entry";

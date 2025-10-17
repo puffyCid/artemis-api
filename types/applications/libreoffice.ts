@@ -18,4 +18,9 @@ export interface RecentFilesLibreOffice {
   thumbnail: string;
   /**Path to registrymodifications.xcu */
   source: string;
+  message: string;
+  datetime: "1970-01-01T00:00:00Z";
+  timestamp_desc: "N/A";
+  artifact: "LibreOffice Recent Files",
+  data_type: "application:libreoffice:recentfiles:entry",
 }

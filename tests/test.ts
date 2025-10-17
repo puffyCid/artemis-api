@@ -31,3 +31,8 @@ export { testWindowsWifiNetworks } from "../src/windows/registry/wifi";
  */
 export { testHomebrew } from "../src/macos/homebrew";
 export { testParseBom } from "../src/macos/bom";
+
+/**
+ * HTTP exported test functions
+ */
+export { testCircluHashlookup } from "../src/http/circlu";

@@ -34,7 +34,7 @@ export function hash(
 ): Hashes | FileError {
   try {
     // @ts-expect-error: Custom Artemis function
-    const result = js_hash(path, md5, sha1, sha256);
+    const result = js_hash_file(path, md5, sha1, sha256);
     return result;
   } catch (err) {
     return new FileError("HASH", `failed to hash ${path}: ${err}`);

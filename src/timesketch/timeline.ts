@@ -48,7 +48,6 @@ import { UsnJrnl } from "../../types/windows/usnjrnl";
 import { WmiPersist } from "../../types/windows/wmi";
 import { LogonsWindows } from "../../types/windows/eventlogs/logons";
 import { Journal } from "../../types/linux/journal";
-import { ChromiumHistory } from "../../types/applications/chromium";
 
 /**
  * macOS artifact timelines
@@ -78,11 +77,8 @@ import { timelineJournals } from "./artifacts/linux/journals";
 /**
  * Application artifact timelines
  */
-import { timelineChromiumHistory } from "./artifacts/applications/chromium/history";
 import { timelineFileHistory } from "./artifacts/applications/vscode";
 import { FileHistory } from "../../types/applications/vscode";
-import { timelineRecentFiles } from "./artifacts/applications/libreoffice";
-import { RecentFilesLibreOffice } from "../../types/applications/libreoffice";
 
 /**
  * Cross platform artifact timelines
@@ -220,14 +216,8 @@ export function timelineArtifact(
     case TimesketchArtifact.JOURNALS:
     case TimesketchArtifact.SUDOLOGS_LINUX:
       return timelineJournals(data as Journal[]);
-    case TimesketchArtifact.CHROMIUM_HISTORY:
-    case TimesketchArtifact.CHROME_HISTORY:
-    case TimesketchArtifact.EDGE_HISTORY:
-      return timelineChromiumHistory(data as ChromiumHistory[], artifact);
     case TimesketchArtifact.VSCODE_FILEHISTORY:
       return timelineFileHistory(data as FileHistory[]);
-    case TimesketchArtifact.LIBREOFFICE_RECENTFILES:
-      return timelineRecentFiles(data as RecentFilesLibreOffice[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

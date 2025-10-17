@@ -12,17 +12,28 @@ export interface HashlookupResponse {
   "tar:gnome"?: string;
   "tar:uname"?: string;
   TLSH?: string;
-  PackageDescription?: string;
-  PackageMaintainer?: string;
-  PackageName?: string;
-  PackageSection?: string;
-  PackageVersion?: string;
+  ProductCode?: {
+    PackageDescription?: string;
+    PackageMaintainer?: string;
+    ProductName?: string;
+    PackageSection?: string;
+    PackageVersion?: string;
+    ApplicationType?: string;
+    MfgCode?: string;
+    Language?: string;
+  };
+
   "hashlookup:children-total"?: number;
   "hashlookup:parent-total"?: number;
   mimetype?: string;
   parents?: Record<string, string>[];
   children?: Record<string, string>[];
-  [key: string]: unknown;
+  [ key: string ]: unknown;
+}
+
+export interface MissingHash {
+  message: string;
+  query: string;
 }
 
 export enum HashType {
