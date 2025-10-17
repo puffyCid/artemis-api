@@ -37,7 +37,6 @@ main();
 ```
 
 > esbuild --bundle --outfile=main.js main.ts
-> artemis -j main.js
 
 ```
 >  artemis -j main.js
