@@ -92,6 +92,14 @@ export interface ChromiumHistory {
   unfold: Url | undefined;
   /**Path to the HISTORY sqlite file */
   db_path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "URL Visited";
+  artifact: "URL History";
+  data_type: string;
+  browser: BrowserType;
 }
 
 /**
@@ -158,6 +166,14 @@ export interface ChromiumDownloads {
   url: string;
   /**Path to the HISTORY sqlite file */
   db_path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "File Download Start";
+  artifact: "File Download";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumCookies {
@@ -182,6 +198,14 @@ export interface ChromiumCookies {
   is_same_party: number;
   last_update: string;
   db_path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Cookie Expires";
+  artifact: "Website Cookie";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumAutofill {
@@ -193,16 +217,17 @@ export interface ChromiumAutofill {
   /**Default is 1 */
   count: number;
   db_path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Autofill Created";
+  artifact: "Website Autofill";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumBookmarks {
-  bookmark_bar: ChromiumBookmarkChildren[];
-  other: ChromiumBookmarkChildren[];
-  synced: ChromiumBookmarkChildren[];
-  path: string;
-}
-
-export interface ChromiumBookmarkChildren {
   date_added: string;
   date_last_used: string;
   guid: string;
@@ -211,7 +236,25 @@ export interface ChromiumBookmarkChildren {
   type: string;
   url: string;
   meta_info: Record<string, string>;
+  bookmark_type: BookmarkType;
+  path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Bookmark Added";
+  artifact: "Browser Bookmark";
+  data_type: string;
+  browser: BrowserType;
 }
+
+export enum BookmarkType {
+  Bar = "Bookmark Bar",
+  Sync = "Synced",
+  Other = "Other",
+  Unknown = "Unknown",
+}
+
 export interface ChromiumLogins {
   origin_url: string;
   action_url?: string;
@@ -244,12 +287,20 @@ export interface ChromiumLogins {
   keychain_identifier?: string;
   sender_profile_image_url?: string;
   db_path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Last Login";
+  artifact: "Website Login";
+  data_type: string;
+  browser: BrowserType;
 }
 
 /**
  * Detect Incidental Party State (DIPS) collects metrics on websites
  */
-export interface Dips {
+export interface ChromiumDips {
   site: string;
   first_site_storage?: string | null;
   last_site_storage?: string | null;
@@ -263,6 +314,14 @@ export interface Dips {
   last_web_authn_assertion: string | null;
   /**Path to DIPS database */
   path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "First Interaction";
+  artifact: "Browser DIPS";
+  data_type: string;
+  browser: BrowserType;
 }
 
 export interface ChromiumProfiles {
@@ -275,5 +334,26 @@ export enum BrowserType {
   CHROME = "Google Chrome",
   EDGE = "Microsoft Edge",
   CHROMIUM = "Google Chromium"
+}
+
+export enum ChromiumCookieType {
+  Unknown = "Unknown",
+  Http = "HTTP",
+  Script = "Script",
+  Other = "Other",
+}
+
+/**
+ * Object representing a Local Storage LevelDb entry.  
+ * This object is Timesketch compatible.  It does **not** need to be timelined
+ */
+export interface ChromiumLocalStorage extends LevelDbEntry {
+  version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType;
+  timestamp_desc: "Local Storage Entry Write" | "Local Storage Write Ahead Log";
+  artifact: "Level Database";
+  data_type: "applications:leveldb:entry";
 }
 ```

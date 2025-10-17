@@ -37,7 +37,7 @@ An array of `RecentFilesLibreOffice` entries.
 /**
  * List of files opened by LibreOffice
  */
-interface RecentFilesLibreOffice {
+export interface RecentFilesLibreOffice {
   /**Path to file */
   path: string;
   /**Document title */
@@ -54,5 +54,10 @@ interface RecentFilesLibreOffice {
   thumbnail: string;
   /**Path to registrymodifications.xcu */
   source: string;
+  message: string;
+  datetime: "1970-01-01T00:00:00Z";
+  timestamp_desc: "N/A";
+  artifact: "LibreOffice Recent Files",
+  data_type: "application:libreoffice:recentfiles:entry",
 }
 ```
