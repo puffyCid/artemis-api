@@ -48,13 +48,26 @@ export interface FileHistory {
   /**Version of History format */
   version: number;
   /**To source file */
-  path: string;
-  /**History of source file */
-  entries: Entries[];
+  path?: string;
+  /**Path to source file */
+  resource: string;
   /**Path to history source */
   history_path: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "File Saved";
+  artifact: "File History";
+  data_type: "applications:vscode:filehistory:entry";
+  /**Name of history file */
+  id: string;
+  /**Time when file was saved */
+  file_saved: number | string;
+  /**Based64 encoded file content */
+  content?: string;
+  source?: string;
+  sourceDescription?: string;
+  [ key: string ]: unknown;
 }
-
 /**
  * Metadata related to file history entry
  */

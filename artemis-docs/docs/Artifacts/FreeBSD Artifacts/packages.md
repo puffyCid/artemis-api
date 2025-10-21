@@ -46,7 +46,7 @@ export interface Pkg {
     comment: string;
     desc: string;
     mtree_id: number | null;
-    message: string | null;
+    pkg_message: string | null;
     arch: string;
     maintainer: string;
     www: string | null;
@@ -60,5 +60,10 @@ export interface Pkg {
     dep_formula: string | null;
     vital: boolean;
     manifest_digest: string | null;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Package Installed";
+    artifact: "FreeBSD PKG";
+    data_type: "freebsd:pkg:entry";
 }
 ```

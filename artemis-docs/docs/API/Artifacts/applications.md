@@ -274,20 +274,23 @@ Return a list of files opened by LibreOffice for all users.
 | -------- | ------------ | -------------------- |
 | platform | PlatformType | OS platform to parse |
 
-### fileHistory(platform, alt_glob) -> FileHistory[] | ApplicationError
+### fileHistory(platform, include_content, alt_glob) -> FileHistory[] | ApplicationError
 
 Parse the local file history for VSCode. Returns list of history entries. Also
-supports VSCodium.
+supports VSCodium. 
 
 You may also provide an optional alternative glob path to the entries.json file.
 By default artemis will parse the default locations for VSCode.
 
-An altnerative glob will override the platform type.
+An alternative glob will override the platform type.  
+You may also choose to include the content of the history files. By default this is not included.  
+If you include the file content the output will be very large.
 
-| Param    | Type         | Description                                    |
-| -------- | ------------ | ---------------------------------------------- |
-| platform | PlatformType | OS platform to parse                           |
-| alt_glob | string       | optional alternative glob path to entries.json |
+| Param           | Type         | Description                                            |
+| --------------- | ------------ | ------------------------------------------------------ |
+| platform        | PlatformType | OS platform to parse                                   |
+| include_content | boolean      | Include content of the history files. Default is false |
+| alt_glob        | string       | optional alternative glob path to entries.json         |
 
 ### getExtensions(platform, path) -> Extensions[] | ApplicationError
 

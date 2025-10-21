@@ -1,8 +1,9 @@
 import { glob, hash } from "../../../mod";
 import { FileError } from "../../../src/filesystem/errors";
-import { circluHashlookup, testCircluHashlookup } from "../../../src/http/circlu";
+import { circluHashlookup } from "../../../src/http/circlu";
 import { HttpError } from "../../../src/http/errors";
 import { HashlookupResponse, HashType, MissingHash } from "../../../types/http/circlu";
+import { testCircluHashlookup } from "../../test";
 
 async function main() {
     console.log('Running HTTP circlu tests....');
@@ -61,7 +62,7 @@ async function main() {
     await testCircluHashlookup();
 
     console.log(' circlu test passed! 🥳');
-    console.log('All circlu history tests passed! 🥳💃🕺');
+    console.log('All circlu tests passed! 🥳💃🕺');
 }
 
 function isMissing(value: MissingHash | HashlookupResponse | HashlookupResponse[]): value is MissingHash {

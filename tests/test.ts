@@ -36,3 +36,4 @@ export { testParseBom } from "../src/macos/bom";
  * HTTP exported test functions
  */
 export { testCircluHashlookup } from "../src/http/circlu";
+export { testCheckEolStatus } from "../src/http/eol";

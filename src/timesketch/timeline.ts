@@ -75,12 +75,6 @@ import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper";
 import { timelineJournals } from "./artifacts/linux/journals";
 
 /**
- * Application artifact timelines
- */
-import { timelineFileHistory } from "./artifacts/applications/vscode";
-import { FileHistory } from "../../types/applications/vscode";
-
-/**
  * Cross platform artifact timelines
  */
 import { timelineProcesses } from "./artifacts/processes";
@@ -216,8 +210,6 @@ export function timelineArtifact(
     case TimesketchArtifact.JOURNALS:
     case TimesketchArtifact.SUDOLOGS_LINUX:
       return timelineJournals(data as Journal[]);
-    case TimesketchArtifact.VSCODE_FILEHISTORY:
-      return timelineFileHistory(data as FileHistory[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }
