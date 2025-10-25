@@ -579,6 +579,10 @@ export function testLevelLdb(): void {
         throw `Got length ${block_result.length} expected 61.......parseBlock ❌`;
     }
 
+    if (block_result[ 0 ] === undefined) {
+        throw 'Got undefined.......parseBlock ❌';
+    }
+
     if (!JSON.stringify(block_result[ 0 ].value).includes("13401944653177090")) {
         throw `Got value ${JSON.stringify(block_result[ 0 ].value)} expected to contain 13401944653177090.......parseBlock ❌`;
     }
@@ -684,6 +688,10 @@ export function testLevelLdb(): void {
 
     if (parse_ldb_result.length != 109) {
         throw `Got ldb entries length ${parse_ldb_result.length} expected 109.......parseLdb ❌`;
+    }
+
+    if (parse_ldb_result[ 8 ] === undefined) {
+        throw 'Got undefined.......parseLdb ❌';
     }
 
     if (!JSON.stringify(parse_ldb_result[ 8 ].value).includes("13401944468429548")) {
