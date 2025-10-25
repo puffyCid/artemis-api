@@ -4,6 +4,7 @@ import { Bing } from "./plugins/bing";
 import { Discord } from "./plugins/discord";
 import { Dropbox } from "./plugins/dropbox";
 import { DuckDuckGo } from "./plugins/duckduckgo";
+import { GithubUrl } from "./plugins/github";
 import { Google } from "./plugins/google";
 import { Outlook } from "./plugins/outlook";
 import { ProxmoxUrl } from "./plugins/proxmox";
@@ -31,7 +32,6 @@ export class Unfold {
    * @returns Updated `Url` object or `UnfoldError`
    */
   private extractData(info: Url): Url | UnfoldError {
-    console.log(JSON.stringify(info));
     if (info.domain.includes("duckduckgo.com")) {
       const duck = new DuckDuckGo(info);
       duck.parseDuckDuckGo();
@@ -56,6 +56,9 @@ export class Unfold {
     } else if (info.port === 8006) {
       const prox = new ProxmoxUrl(info);
       prox.parseProxmox();
+    } else if (info.domain.includes("github.com")) {
+      const git = new GithubUrl(info);
+      git.parseGithub();
     }
 
     return info;
