@@ -6,6 +6,7 @@ import { Dropbox } from "./plugins/dropbox";
 import { DuckDuckGo } from "./plugins/duckduckgo";
 import { Google } from "./plugins/google";
 import { Outlook } from "./plugins/outlook";
+import { ProxmoxUrl } from "./plugins/proxmox";
 import { Yahoo } from "./plugins/yahoo";
 
 /**
@@ -30,6 +31,7 @@ export class Unfold {
    * @returns Updated `Url` object or `UnfoldError`
    */
   private extractData(info: Url): Url | UnfoldError {
+    console.log(JSON.stringify(info));
     if (info.domain.includes("duckduckgo.com")) {
       const duck = new DuckDuckGo(info);
       duck.parseDuckDuckGo();
@@ -51,6 +53,9 @@ export class Unfold {
     } else if (info.domain.includes("discord.com")) {
       const disc = new Discord(info);
       disc.parseDiscord();
+    } else if (info.port === 8006) {
+      const prox = new ProxmoxUrl(info);
+      prox.parseProxmox();
     }
 
     return info;
