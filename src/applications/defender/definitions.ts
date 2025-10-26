@@ -49,7 +49,7 @@ export function extractDefenderRules(
 ): Definition[] | ApplicationError {
   let paths: string[] = [];
   if (alt_file !== undefined) {
-    paths = [ alt_file ];
+    paths = [alt_file];
   } else if (platform === PlatformType.Windows) {
     let drive = getEnvValue("SystemDrive");
     if (drive === "") {
@@ -135,6 +135,7 @@ export function extractDefenderRules(
  * @returns Decompressed VDM rules data
  */
 function readVdm(path: string): Uint8Array | ApplicationError {
+  console.log(path);
   const bytes = readFile(path);
   if (bytes instanceof FileError) {
     return new ApplicationError(
@@ -144,7 +145,7 @@ function readVdm(path: string): Uint8Array | ApplicationError {
   }
 
   // search for RMDX signature
-  const sig = new Uint8Array([ 82, 77, 68, 88 ]);
+  const sig = new Uint8Array([82, 77, 68, 88]);
   const sig_start = takeUntil(bytes, sig);
   if (sig_start instanceof NomError) {
     return new ApplicationError(
@@ -158,38 +159,62 @@ function readVdm(path: string): Uint8Array | ApplicationError {
     return new ApplicationError(`DEFENDER`, `defender data too small`);
   }
 
-  const byte_size = 4;
   const size_start = 24;
   const decom_size_start = 28;
 
-  const zlib_data = (sig_start.remaining as Uint8Array).buffer.slice(
-    size_start,
-    size_start + byte_size + 1,
-  );
-  const zlib_offset = new DataView(zlib_data).getUint32(0, true);
-  const decom_size_data = (sig_start.remaining as Uint8Array).buffer.slice(
-    decom_size_start,
-    decom_size_start + byte_size + 1,
-  );
-  const decom_size = new DataView(decom_size_data).getUint32(0, true);
+  const zlib_data = take(sig_start.remaining as Uint8Array, size_start);
+  if (zlib_data instanceof NomError) {
+    return new ApplicationError(
+      `DEFENDER`,
+      `could not get to zlib data for ${path}: ${zlib_data}`,
+    );
+  }
 
-  const compressed_data = (sig_start.remaining as Uint8Array).buffer.slice(
-    zlib_offset + 8,
-  );
+  const zlib_offset = nomUnsignedFourBytes(zlib_data.remaining as Uint8Array, Endian.Le);
+  if (zlib_offset instanceof NomError) {
+    return new ApplicationError(
+      `DEFENDER`,
+      `could not get to zlib offset for ${path}: ${zlib_offset}`,
+    );
+  }
+  const decom_bytes = take(sig_start.remaining as Uint8Array, decom_size_start);
+  if (decom_bytes instanceof NomError) {
+    return new ApplicationError(
+      `DEFENDER`,
+      `could not get to zlib decompressed size bytes for ${path}: ${decom_bytes}`,
+    );
+  }
+  const decom_size = nomUnsignedFourBytes(decom_bytes.remaining as Uint8Array, Endian.Le);
+  if (decom_size instanceof NomError) {
+    return new ApplicationError(
+      `DEFENDER`,
+      `could not get to zlib decompressed size for ${path}: ${decom_size}`,
+    );
+  }
+  console.info(decom_size.value);
+
+  const compressed_data = take(sig_start.remaining as Uint8Array, zlib_offset.value + 8);
+  if (compressed_data instanceof NomError) {
+    return new ApplicationError(
+      `DEFENDER`,
+      `could not get to compressed data for ${path}: ${compressed_data}`,
+    );
+  }
+
   const wbits = 15;
   const decom_data = decompress_zlib(
-    new Uint8Array(compressed_data),
+    compressed_data.remaining as Uint8Array,
     wbits,
-    decom_size,
+    decom_size.value,
   );
   if (decom_data instanceof CompressionError) {
     return new ApplicationError(
       `DEFENDER`,
-      `could decompress ${path}: ${decom_data}`,
+      `could not decompress ${path}: ${decom_data}`,
     );
   }
 
-  if (decom_data.byteLength !== decom_size) {
+  if (decom_data.byteLength !== decom_size.value) {
     return new ApplicationError(
       `DEFENDER`,
       `incorrect decompressed size, expected ${decom_size} got: ${decom_data.byteLength}`,
@@ -418,7 +443,7 @@ function getSigMeta(data: Uint8Array): SigMeta | ApplicationError {
   const bytes = new Uint8Array(data.buffer.slice(4, size + 1));
 
   const sig: SigMeta = {
-    sig: signatureType(data[ 0 ]),
+    sig: signatureType(data[0]),
     size,
     bytes,
   };
@@ -591,7 +616,7 @@ function signatureType(sig: number): RuleType {
     235: RuleType.SIGNATURE_TYPE_DATABASE_CATALOG,
   };
 
-  const value = sigs[ sig ];
+  const value = sigs[sig];
   if (value === undefined) {
     return RuleType.SIGNATURE_TYPE_UNKNOWN;
   }
