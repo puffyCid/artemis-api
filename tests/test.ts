@@ -26,6 +26,7 @@ export { testPowerShellHistory } from "../src/windows/powershell";
 export { testLogonsWindows } from "../src/windows/eventlogs/logons";
 export { testParseMru } from "../src/windows/registry/recently_used";
 export { testWindowsWifiNetworks } from "../src/windows/registry/wifi";
+export { testGetRunKeys } from "../src/windows/registry/run";
 /**
  * macOS exported test functions
  */

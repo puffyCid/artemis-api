@@ -664,3 +664,12 @@ Get list of requests attributes from the database.
 | ----- | --------- | --------------------------------------------------------- |
 | pages | number[]  | Number of pages to parse from the ESE database            |
 | info  | TableInfo | Table info object that can be obtained with the ESE class |
+
+
+### getRunKeys(path) -> RegistryRunKey[]
+
+Parse Windows Registry files and extract Run key entries. You may provide an optional path to a Registry file. By default all user NTUSER.DAT and SOFTWARE files are parsed
+
+| Param   | Type    | Description                      |
+| ------- | ------- | -------------------------------- |
+| path    | string  | Optional path to a Registry file |

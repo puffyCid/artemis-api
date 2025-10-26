@@ -144,6 +144,7 @@ export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
 export { firewallRules } from "./src/windows/registry/firewall_rules";
 export { processTreeEventLogs } from "./src/windows/eventlogs/processtree";
 export { wifiNetworksWindows } from "./src/windows/registry/wifi";
+export { getRunKeys } from "./src/windows/registry/run";
 
 /**
  * FreeBSD

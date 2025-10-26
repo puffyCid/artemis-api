@@ -1,19 +1,18 @@
 {
   "scripts": {
     "lint": "npx eslint --ext .ts ",
-    "start": "node ./build/index.js",
     "test_linux": "cd tests/linux && python compile_tests.py",
-    "test_windows": "cd tests/windows && ./compile_tests.ps1",
+    "test_windows": "cd tests/windows && powershell compile_tests.ps1",
     "test_macos": "cd tests/macos && python compile_tests.py",
     "test_application": "cd tests/applications && python compile_tests.py"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
-    "@typescript-eslint/eslint-plugin": "^8.46.1",
-    "@typescript-eslint/parser": "^8.46.1",
-    "eslint": "^9.37.0",
+    "@eslint/js": "^9.38.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.38.0",
     "globals": "^16.4.0",
     "jiti": "^2.6.1",
-    "typescript-eslint": "^8.46.1"
+    "typescript-eslint": "^8.46.2"
   }
 }
