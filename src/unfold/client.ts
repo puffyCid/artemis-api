@@ -6,6 +6,7 @@ import { Dropbox } from "./plugins/dropbox";
 import { DuckDuckGo } from "./plugins/duckduckgo";
 import { GithubUrl } from "./plugins/github";
 import { Google } from "./plugins/google";
+import { detectJsonWebToken } from "./plugins/jwt";
 import { Outlook } from "./plugins/outlook";
 import { ProxmoxUrl } from "./plugins/proxmox";
 import { Yahoo } from "./plugins/yahoo";
@@ -59,6 +60,20 @@ export class Unfold {
     } else if (info.domain.includes("github.com")) {
       const git = new GithubUrl(info);
       git.parseGithub();
+    }
+
+    // Check for possible JSON Web Tokens
+    for (const query of info.query_pairs) {
+      const [ key, ...param ] = query.split("=");
+      if (key === undefined) {
+        break;
+      }
+      const payload = param.at(0) ?? "";
+      const min_size = 400;
+      if (payload.length < min_size) {
+        continue;
+      }
+      detectJsonWebToken(payload, info);
     }
 
     return info;

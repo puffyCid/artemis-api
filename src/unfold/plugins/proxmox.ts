@@ -11,7 +11,7 @@ export class ProxmoxUrl {
     }
 
     /**
-     * Function to extract interactions with Proxmox VMS
+     * Function to extract interactions with Proxmox VMs
      */
     public parseProxmox() {
         for (const entry of this.url.query_pairs) {
