@@ -41,6 +41,7 @@ function main() {
   const history_data = client.history(start, limit);
 
   const ext = client.extensions();
+  const edge_history = edge.history();
   return ext;
 }
 
@@ -134,6 +135,10 @@ Return Chromium bookmarks for all users.
 #### localStorage() -> ChromiumLocalStorage[]
 
 Return Chromium local storage data for all users.
+
+#### sessions() -> ChromiumSession[]
+
+Return Chromium sessions for all users.
 
 ### FireFox Browser Class
 

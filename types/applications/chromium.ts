@@ -307,3 +307,85 @@ export interface ChromiumLocalStorage extends LevelDbEntry {
   artifact: "Level Database";
   data_type: "applications:leveldb:entry";
 }
+
+export interface ChromiumSession {
+  version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType;
+  timestamp_desc: "Last Active";
+  artifact: "Browser Session";
+  data_type: string;
+  session_id: string;
+  last_active: string;
+  url: string;
+  title: string;
+  session_type: SessionType;
+  path: string;
+}
+
+export enum SessionType {
+  Session = "Session",
+  Tab = "Tab",
+}
+
+export enum SessionCommand {
+  WindowType = "WindowType",
+  UpdateTabNavigation = "UpdateTabNavigation",
+  TabWindow = "TabWindow",
+  WindowBounds = "WindowBounds",
+  TabIndexInWindow = "TabIndexInWindow",
+  TabNavigationPathPrunedFromBack = "TabNavigationPathPrunedFromBack",
+  SelectedNavigationIndex = "SelectedNavigationIndex",
+  SelectedTabInIndex = "SelectedTabInIndex",
+  WindowBounds2 = "WindowBounds2",
+  TabNavigationPathPrunedFromFront = "TabNavigationPathPrunedFromFront",
+  PinnedState = "PinnedState",
+  ExtensionAppID = "ExtensionAppID",
+  WindowBounds3 = "WindowBounds3",
+  WindowAppName = "WindowAppName",
+  TabClosed = "TabClosed",
+  WindowClosed = "WindowClosed",
+  TabUserAgentOverride = "TabUserAgentOverride",
+  SessionStorageAssociated = "SessionStorageAssociated",
+  ActiveWindow = "ActiveWindow",
+  LastActiveTime = "LastActiveTime",
+  WindowWorkspace = "WindowWorkspace",
+  WindowWorkspace2 = "WindowWorkspace2",
+  TabNavigationPathPruned = "TabNavigationPathPruned",
+  TabGroup = "TabGroup",
+  TabGroupMetadata = "TabGroupMetadata",
+  TabGroupMetadata2 = "TabGroupMetadata2",
+  TabGuid = "TabGuid",
+  TabUserAgentOverride2 = "TabUserAgentOverride2",
+  TabData = "TabData",
+  WindowUserTitle = "WindowUserTitle",
+  WindowVisibleOnAllWorkspaces = "WindowVisibleOnAllWorkspaces",
+  AddTabExtraData = "AddTabExtraData",
+  AddWindowExtraData = "AddWindowExtraData",
+  PlatformSessionId = "PlatformSessionId",
+  SplitTab = "SplitTab",
+  SplitTabData = "SplitTabData",
+  Unknown = "Unknown",
+  CommandStorageBackend = "CommandStorageBackend",
+}
+
+/// https://github.com/cclgroupltd/ccl_chromium_reader/blob/552516720761397c4d482908b6b8b08130b313a1/ccl_chromium_reader/ccl_chromium_snss2.py#L39
+export enum SessionTabCommand {
+  SelectedNavigtionInTab = "SelectedNavigationInTab",
+  UpdateTabNavigation = "UpdateTabNavigation",
+  RestoredEntry = "RestoredEntry",
+  WindowDeprecated = "WindowDeprecated",
+  PinnedState = "PinnedState",
+  ExtensionAppID = "ExtensionAppID",
+  WindowAppName = "WindowAppName",
+  TabUserAgentOverride = "TabUserAgentOverride",
+  Window = "Window",
+  TabGroupData = "TabGroupData",
+  TabUserAgentOverride2 = "TabUserAgentOverride2",
+  WindowUserTitle = "WindowUserTitle",
+  CreateGroup = "CreateGroup",
+  AddTabExtraData = "AddTabExtraData",
+  Unknown = "Unknown",
+  CommandStorageBackend = "CommandStorageBackend",
+}

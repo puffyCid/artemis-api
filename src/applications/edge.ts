@@ -1,8 +1,9 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
 import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
 import { chromiumLocalStorage } from "./chromium/level";
+import { chromiumSessions } from "./chromium/sessions";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
 
 type EdgeHistory = ChromiumHistory;
@@ -13,6 +14,7 @@ type EdgeBookmarks = ChromiumBookmarks;
 type EdgeLogins = ChromiumLogins;
 type EdgeDips = ChromiumDips;
 type EdgeLocalStorage = ChromiumLocalStorage;
+type EdgeSession = ChromiumSession;
 
 /**
  * Class to extract Edge browser information. Since Edge is based on Chromium we can leverage the existing Chromium artifacts to parse Edge info
@@ -152,6 +154,14 @@ export class Edge extends Chromium {
      */
     public override localStorage(): EdgeLocalStorage[] {
         return chromiumLocalStorage(this.paths, this.platform);
+    }
+
+    /**
+     * Get Edge Sessions
+     * @returns Array of `EdgeSession` for each user
+     */
+    public override sessions(): EdgeSession[] {
+        return chromiumSessions(this.paths, this.platform);
     }
 
     /**

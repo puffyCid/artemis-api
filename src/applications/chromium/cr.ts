@@ -1,4 +1,4 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
@@ -6,6 +6,7 @@ import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
 import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./json";
 import { chromiumLocalStorage } from "./level";
+import { chromiumSessions } from "./sessions";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./sqlite";
 
 /**
@@ -213,6 +214,14 @@ export class Chromium {
      */
     public localStorage(): ChromiumLocalStorage[] {
         return chromiumLocalStorage(this.paths, this.platform);
+    }
+
+    /**
+     * Get Chromium Sessions
+     * @returns Array of `ChromiumSession` for each user
+     */
+    public sessions(): ChromiumSession[] {
+        return chromiumSessions(this.paths, this.platform);
     }
 
     /**

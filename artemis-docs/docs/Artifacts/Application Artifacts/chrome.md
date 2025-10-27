@@ -21,6 +21,7 @@ Artemis supports parsing the list of artifacts below:
 - Preferences
 - Detect Incidental Party State (DIPS)
 - Local Storage
+- Browser sessions
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Chrome data.  
 Since Chrome is based on Chromium, many of the Chrome artifacts will be identical to Chromium
@@ -350,5 +351,26 @@ export interface ChromiumLocalStorage extends LevelDbEntry {
   timestamp_desc: "Local Storage Entry Write" | "Local Storage Write Ahead Log";
   artifact: "Level Database";
   data_type: "applications:leveldb:entry";
+}
+
+export interface ChromiumSession {
+  version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType;
+  timestamp_desc: "Last Active";
+  artifact: "Browser Session";
+  data_type: string;
+  session_id: string;
+  last_active: string;
+  url: string;
+  title: string;
+  session_type: SessionType;
+  path: string;
+}
+
+export enum SessionType {
+  Session = "Session",
+  Tab = "Tab",
 }
 ```
