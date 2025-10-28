@@ -51,7 +51,7 @@ export function chromiumPreferences(paths: ChromiumProfiles[], platform: Platfor
 
             // Sites with zoomed preferences first
             const zoom_values = zoomPrefs(data, user_pref);
-            const profile = data["profile"] as undefined | Profile;
+            const profile = data[ "profile" ] as undefined | Profile;
             if (profile === undefined) {
                 continue;
             }
@@ -60,7 +60,7 @@ export function chromiumPreferences(paths: ChromiumProfiles[], platform: Platfor
             const sample = profile_info.at(0);
             if (sample !== undefined) {
                 for (let i = 0; i < zoom_values.length; i++) {
-                    const value = zoom_values[i];
+                    const value = zoom_values[ i ];
                     if (value === undefined) {
                         continue;
                     }
@@ -81,27 +81,27 @@ export function chromiumPreferences(paths: ChromiumProfiles[], platform: Platfor
 function zoomPrefs(data: Record<string, Record<string, Record<string, Record<string, Record<string, string>>>>>, prefs: Preferences): Preferences[] {
     const values: Preferences[] = [];
 
-    const partitions = data["partition"];
+    const partitions = data[ "partition" ];
     if (partitions === undefined) {
         return values;
     }
-    const levels = partitions["per_host_zoom_levels"];
+    const levels = partitions[ "per_host_zoom_levels" ];
     if (levels === undefined) {
         return values;
     }
 
-    const urls = levels["x"];
+    const urls = levels[ "x" ];
     if (urls === undefined) {
         return values;
     }
 
     for (const key in urls) {
         prefs.url = key;
-        const data = urls[key];
+        const data = urls[ key ];
         if (data === undefined) {
             continue;
         }
-        prefs.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(data["last_modified"] ?? 0n) / 1000000n)));
+        prefs.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(data[ "last_modified" ] ?? 0n) / 1000000n)));
         prefs.datetime = prefs.last_modified;
         prefs.message = key;
         values.push(Object.assign({}, prefs));
@@ -139,9 +139,8 @@ interface Profile {
             "ssl_cert_decisions": Record<string, {
                 "last_modified": string;
             }>,
-        }
-
-    }
+        };
+    } | undefined;
 }
 
 function profileInfo(data: Profile, pref: Preferences): Preferences[] {
@@ -151,12 +150,15 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
     pref.profile_id = data.edge_profile_id ?? data.enterprise_profile_guid ?? "";
 
     const values: Preferences[] = [];
+    if (data.content_settings === undefined) {
+        return [ Object.assign({}, pref) ];
+    }
     const banner = data.content_settings.exceptions.app_banner;
     for (const key in banner) {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.AppBanner;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(banner[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(banner[ key ]?.last_modified ?? 0) / 1000000n)));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -166,7 +168,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.ClientHints;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(hints[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(hints[ key ]?.last_modified ?? 0) / 1000000n)));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -176,7 +178,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.CookieControls;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(cookie[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(cookie[ key ]?.last_modified ?? 0) / 1000000n)));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -186,7 +188,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.HttpsEnforced;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(https[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(https[ key ]?.last_modified ?? 0) / 1000000n)));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -196,7 +198,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.MediaEngagement;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(media[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(media[ key ]?.last_modified ?? 0) / 1000000n)));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -206,7 +208,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.SiteEngagement;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(site[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(site[ key ]?.last_modified ?? 0) / 1000000n)));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -216,7 +218,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.SslCert;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(ssl[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(ssl[ key ]?.last_modified ?? 0) / 1000000n)));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
