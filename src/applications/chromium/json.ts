@@ -1,6 +1,6 @@
-import { BookmarkType, BrowserType, ChromiumBookmarks, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BookmarkType, BrowserType, ChromiumBookmarks, ChromiumProfiles, Extension, } from "../../../types/applications/chromium";
 import { FileError } from "../../filesystem/errors";
-import { glob, readTextFile } from "../../filesystem/files";
+import { glob, readTextFile, stat } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
 import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
 
@@ -10,13 +10,13 @@ import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
  * @param platform OS `PlatformType`
  * @returns Array of parsed extensions
  */
-export function chromiumExtensions(paths: ChromiumProfiles[], platform: PlatformType): Record<string, unknown>[] {
-    const hits: Record<string, unknown>[] = [];
+export function chromiumExtensions(paths: ChromiumProfiles[], platform: PlatformType): Extension[] {
+    const hits: Extension[] = [];
     for (const path of paths) {
-        let full_path = `${path.full_path}/*/*/Extensions/*/*manifest.json`;
+        let full_path = `${path.full_path}/*/Extensions/*/*manifest.json`;
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\*\\*\\Extensions\\*\\*\\manifest.json`;
+            full_path = `${path.full_path}\\*\\Extensions\\*\\*\\manifest.json`;
         }
 
         const ext_paths = glob(full_path);
@@ -32,55 +32,43 @@ export function chromiumExtensions(paths: ChromiumProfiles[], platform: Platform
             }
 
             const data = JSON.parse(extension);
-            data[ "manifest_path" ] = ext_entry.full_path;
-            data[ "browser_version" ] = path.version;
+            const ext_info: Extension = {
+                version: path.version,
+                message: `Extension: ${data["name"] ?? ""} | Version: ${data["version"] ?? ""}`,
+                datetime: "1970-01-01T00:00:00.000Z",
+                browser: path.browser,
+                timestamp_desc: "Extension Created",
+                artifact: "Browser Extension",
+                data_type: `applications:${path.browser.toLowerCase()}:extensions:entry`,
+                name: data["name"] ?? "",
+                author: "",
+                description: data["description"] ?? "",
+                manifest: ext_entry.full_path,
+                extension_version: data["version"] ?? "",
+            };
+            const meta = stat(ext_entry.full_path);
+            if (!(meta instanceof FileError)) {
+                ext_info.datetime = meta.created;
+            }
 
-            hits.push(data);
-
-        }
-    }
-    return hits;
-}
-
-/**
- * Get Chromium Preferences
- * @param paths Array of `ChromiumProfiles`
- * @param platform OS `PlatformType`
- * @returns Array of Preferences
- */
-export function chromiumPreferences(paths: ChromiumProfiles[], platform: PlatformType): Record<string, unknown>[] {
-    const hits: Record<string, unknown>[] = [];
-
-    for (const path of paths) {
-        let full_path = `${path.full_path}/*/Preferences`;
-
-        if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\*\\Preferences`;
-        }
-        const pref_paths = glob(full_path);
-        if (pref_paths instanceof FileError) {
-            continue;
-        }
-
-        for (const entry of pref_paths) {
-            const pref = readTextFile(entry.full_path);
-            if (pref instanceof FileError) {
-                console.warn(`could not read file ${entry.full_path}: ${pref}`);
+            if (data["author"] === undefined) {
+                hits.push(ext_info);
                 continue;
             }
 
-            const data = JSON.parse(pref);
-            data[ "preference_path" ] = entry.full_path;
-            data[ "browser_version" ] = path.version;
+            if (data["author"]["email"] !== undefined) {
+                ext_info.author = data["author"]["email"] ?? "";
+            }
 
-            hits.push(data);
+            hits.push(ext_info);
         }
     }
     return hits;
 }
 
+
 /**
- * Get Chromium Preferences
+ * Get Chromium Bookmarks
  * @param paths Array of `ChromiumProfiles`
  * @param platform OS `PlatformType`
  * @returns Array of `ChromiumBookmarks`
@@ -107,17 +95,17 @@ export function chromiumBookmarks(paths: ChromiumProfiles[], platform: PlatformT
             }
 
             const book_json = JSON.parse(results);
-            const bar = book_json[ "roots" ][ "bookmark_bar" ][ "children" ] as
+            const bar = book_json["roots"]["bookmark_bar"]["children"] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined;
             hits = hits.concat(getBookmarkChildren(bar, entry.full_path, path.version, BookmarkType.Bar, path.browser));
 
-            const other = book_json[ "roots" ][ "other" ][ "children" ] as
+            const other = book_json["roots"]["other"]["children"] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined;
             hits = hits.concat(getBookmarkChildren(other, entry.full_path, path.version, BookmarkType.Other, path.browser));
 
-            const synced = book_json[ "roots" ][ "other" ][ "synced" ] as
+            const synced = book_json["roots"]["other"]["synced"] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined;
             hits = hits.concat(getBookmarkChildren(synced, entry.full_path, path.version, BookmarkType.Sync, path.browser));
@@ -146,26 +134,25 @@ function getBookmarkChildren(
     }
     const adjust_time = 1000000n;
     for (const entry of book) {
-        if (typeof entry[ "children" ] === "undefined") {
+        if (typeof entry["children"] === "undefined") {
             const book_entry: ChromiumBookmarks = {
                 date_added: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry[ "date_added" ] as string) / adjust_time)
+                    Number(BigInt(entry["date_added"] as string) / adjust_time)
                 )),
                 date_last_used: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry[ "date_last_used" ] as string) / adjust_time)
+                    Number(BigInt(entry["date_last_used"] as string) / adjust_time)
                 )),
-                guid: entry[ "guid" ] as string,
-                id: Number(entry[ "id" ] as string),
-                name: entry[ "name" ] as string,
-                type: entry[ "type" ] as string,
-                url: entry[ "url" ] as string,
-                meta_info: entry[ "meta_info" ] as unknown as Record<string, string>,
+                guid: entry["guid"] as string,
+                id: Number(entry["id"] as string),
+                name: entry["name"] as string,
+                type: entry["type"] as string,
+                url: entry["url"] as string,
                 bookmark_type,
                 path,
                 version,
-                message: `Bookmark - ${entry[ "name" ] as string}`,
+                message: `Bookmark - ${entry["name"] as string}`,
                 datetime: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry[ "date_added" ] as string) / adjust_time)
+                    Number(BigInt(entry["date_added"] as string) / adjust_time)
                 )),
                 timestamp_desc: "Bookmark Added",
                 artifact: "Browser Bookmark",
@@ -178,7 +165,7 @@ function getBookmarkChildren(
 
         books = books.concat(
             getBookmarkChildren(
-                entry[ "children" ] as
+                entry["children"] as
                 | Record<string, string | Record<string, string>[] | undefined>[]
                 | undefined,
                 path,

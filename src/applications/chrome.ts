@@ -1,8 +1,9 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession, Extension, Preferences } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
-import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumBookmarks, chromiumExtensions } from "./chromium/json";
 import { chromiumLocalStorage } from "./chromium/level";
+import { chromiumPreferences } from "./chromium/preferences";
 import { chromiumSessions } from "./chromium/sessions";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
 
@@ -116,15 +117,15 @@ export class Chrome extends Chromium {
    * Get installed Chrome extensions
    * @returns Array of parsed extensions
    */
-  public override extensions(): Record<string, unknown>[] {
+  public override extensions(): Extension[] {
     return chromiumExtensions(this.paths, this.platform);
   }
 
   /**
    * Get Chrome Preferences
-   * @returns Array of Preferences for each user
+   * @returns Array of `Preferences` for each user
    */
-  public override preferences(): Record<string, unknown>[] {
+  public override preferences(): Preferences[] {
     return chromiumPreferences(this.paths, this.platform);
   }
 

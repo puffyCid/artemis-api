@@ -1,11 +1,14 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession, Extension, Preferences } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
+import { SystemError } from "../../system/error";
+import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
-import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./json";
+import { chromiumBookmarks, chromiumExtensions } from "./json";
 import { chromiumLocalStorage } from "./level";
+import { chromiumPreferences } from "./preferences";
 import { chromiumSessions } from "./sessions";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./sqlite";
 
@@ -26,7 +29,7 @@ export class Chromium {
      * @param alt_path Optional alternative path to directory contain Chromium data
      * @returns `Chromium` instance class
      */
-    constructor (platform: PlatformType, unfold = false, browser = BrowserType.CHROMIUM, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, browser = BrowserType.CHROMIUM, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         this.browser = browser;
@@ -63,11 +66,11 @@ export class Chromium {
             return;
         }
 
-        this.paths = [ {
+        this.paths = [{
             full_path: alt_path,
             version: browser_version,
             browser: this.browser,
-        } ];
+        }];
     }
 
     /**
@@ -188,15 +191,15 @@ export class Chromium {
      * Get installed Chromium extensions
      * @returns Array of parsed extensions
      */
-    public extensions(): Record<string, unknown>[] {
+    public extensions(): Extension[] {
         return chromiumExtensions(this.paths, this.platform);
     }
 
     /**
      * Get Chromium Preferences
-     * @returns Array of Preferences for each user
+     * @returns Array of `Preferences` for each user
      */
-    public preferences(): Record<string, unknown>[] {
+    public preferences(): Preferences[] {
         return chromiumPreferences(this.paths, this.platform);
     }
 
@@ -222,6 +225,124 @@ export class Chromium {
      */
     public sessions(): ChromiumSession[] {
         return chromiumSessions(this.paths, this.platform);
+    }
+
+    /**
+     * Function to timeline all Chromium artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
+     * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     */
+    public retrospect(output: Output): void {
+        let offset = 0;
+        const limit = 100;
+        while (true) {
+            const entries = this.history(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            if (!this.unfold) {
+                entries.forEach(x => delete x["unfold"]);
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_history`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} history: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.cookies(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_cookies`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} cookies: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.downloads(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_downloads`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} downloads: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.autofill(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_autofill`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} autofill: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.logins(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_logins`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} logins: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.dips(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_dips`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} dips: ${status}`);
+            }
+            offset += limit;
+        }
+
+        const ext = this.extensions();
+        let status = dumpData(ext, `retrospect_${this.browser}_extensions`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} extensions: ${status}`);
+        }
+
+        const prefs = this.preferences();
+        status = dumpData(prefs, `retrospect_${this.browser}_preferences`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} preferences: ${status}`);
+        }
+
+        const books = this.bookmarks();
+        status = dumpData(books, `retrospect_${this.browser}_bookmarks`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} bookmarks: ${status}`);
+        }
+
+        const level = this.localStorage();
+        status = dumpData(level, `retrospect_${this.browser}_localstorage`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} localstorage: ${status}`);
+        }
+
+        const sess = this.sessions();
+        status = dumpData(sess, `retrospect_${this.browser}_sessions`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} sessions: ${status}`);
+        }
     }
 
     /**

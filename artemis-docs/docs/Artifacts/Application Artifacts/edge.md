@@ -22,6 +22,7 @@ Artemis supports parsing the list of artifacts below:
 - Detect Incidental Party State (DIPS)
 - Local Storage
 - Browser sessions
+- Retrospect - A powerful capability that timelines all artifacts. It is based on [Hindsight](https://github.com/obsidianforensics/hindsight)
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Edge data.  
 Since Edge is based on Chromium, many of the Edge artifacts will be identical to Chromium

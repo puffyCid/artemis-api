@@ -66,6 +66,7 @@ function parseSession(path: string, session_type: SessionType, profile: Chromium
         if (payload instanceof NomError) {
             break;
         }
+
         header.remaining = payload.remaining as Uint8Array;
 
         const id = nomUnsignedOneBytes(payload.nommed as Uint8Array);
@@ -80,31 +81,30 @@ function parseSession(path: string, session_type: SessionType, profile: Chromium
             const command = getTabCommand(id.value);
             parseTabCommand(command, id.remaining, tab_command_values);
         }
-
-
     }
+
     for (const session_id in session_command_values) {
         const ses: ChromiumSession = {
             version: profile.version,
             message: "",
-            datetime: session_command_values[ session_id ]?.last_active ?? "1970-01-01T00:00:00Z",
+            datetime: session_command_values[session_id]?.last_active ?? "1970-01-01T00:00:00Z",
             browser: profile.browser,
             timestamp_desc: "Last Active",
             artifact: "Browser Session",
             data_type: `applications:${profile.browser.toLowerCase()}:session:entry`,
             session_id,
-            last_active: session_command_values[ session_id ]?.last_active ?? "1970-01-01T00:00:00Z",
+            last_active: session_command_values[session_id]?.last_active ?? "1970-01-01T00:00:00Z",
             url: "",
             title: "",
             session_type: SessionType.Session,
             path: full_path,
         };
-        for (const entry of session_command_values[ session_id ]?.commands ?? []) {
-            if (entry[ SessionCommand.UpdateTabNavigation ] === undefined) {
+        for (const entry of session_command_values[session_id]?.commands ?? []) {
+            if (entry[SessionCommand.UpdateTabNavigation] === undefined) {
                 continue;
             }
-            ses.url = (entry[ SessionCommand.UpdateTabNavigation ] as Record<string, string>)[ "url" ] ?? ":";
-            ses.title = (entry[ SessionCommand.UpdateTabNavigation ] as Record<string, string>)[ "title" ] ?? "";
+            ses.url = (entry[SessionCommand.UpdateTabNavigation] as Record<string, string>)["url"] ?? ":";
+            ses.title = (entry[SessionCommand.UpdateTabNavigation] as Record<string, string>)["title"] ?? "";
             ses.message = `Session: ${ses.url} | Page Title: ${ses.title}`;
             values.push(Object.assign({}, ses));
         }
@@ -114,24 +114,24 @@ function parseSession(path: string, session_type: SessionType, profile: Chromium
         const ses: ChromiumSession = {
             version: profile.version,
             message: "",
-            datetime: tab_command_values[ session_id ]?.last_active ?? "1970-01-01T00:00:00Z",
+            datetime: tab_command_values[session_id]?.last_active ?? "1970-01-01T00:00:00Z",
             browser: profile.browser,
             timestamp_desc: "Last Active",
             artifact: "Browser Session",
             data_type: `applications:${profile.browser.toLowerCase()}:tab:entry`,
             session_id,
-            last_active: tab_command_values[ session_id ]?.last_active ?? "1970-01-01T00:00:00Z",
+            last_active: tab_command_values[session_id]?.last_active ?? "1970-01-01T00:00:00Z",
             url: "",
             title: "",
             session_type: SessionType.Tab,
             path: full_path,
         };
-        for (const entry of tab_command_values[ session_id ]?.commands ?? []) {
-            if (entry[ SessionTabCommand.UpdateTabNavigation ] === undefined) {
+        for (const entry of tab_command_values[session_id]?.commands ?? []) {
+            if (entry[SessionTabCommand.UpdateTabNavigation] === undefined) {
                 continue;
             }
-            ses.url = (entry[ SessionTabCommand.UpdateTabNavigation ] as Record<string, string>)[ "url" ] ?? ":";
-            ses.title = (entry[ SessionTabCommand.UpdateTabNavigation ] as Record<string, string>)[ "title" ] ?? "";
+            ses.url = (entry[SessionTabCommand.UpdateTabNavigation] as Record<string, string>)["url"] ?? ":";
+            ses.title = (entry[SessionTabCommand.UpdateTabNavigation] as Record<string, string>)["title"] ?? "";
             ses.message = `Tab: ${ses.url} | Page Title: ${ses.title}`;
             values.push(Object.assign({}, ses));
         }
@@ -202,6 +202,10 @@ function getSessionCommand(id: number): SessionCommand {
         case 35: return SessionCommand.PlatformSessionId;
         case 36: return SessionCommand.SplitTab;
         case 37: return SessionCommand.SplitTabData;
+        // Chromium browsers can make there own custom commands
+        // https://github.com/cclgroupltd/ccl_chromium_reader/blob/552516720761397c4d482908b6b8b08130b313a1/ccl_chromium_reader/ccl_chromium_snss2.py#L95
+        case 131: return SessionCommand.EdgeCommand;
+        case 132: return SessionCommand.EdgeCommand2;
         case 255: return SessionCommand.CommandStorageBackend;
         default: {
             console.info(`Unknown session command ${id}`);
@@ -244,16 +248,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.WindowType: {
             const window = parseWindowType(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -262,16 +266,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.WindowAppName: {
             const window = parseWindowAppName(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -280,16 +284,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.WindowUserTitle: {
             const window = parseWindowAppName(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -298,16 +302,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.WindowWorkspace2: {
             const window = parseWindowAppName(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -316,16 +320,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.WindowVisibleOnAllWorkspaces: {
             const window = parseWindowType(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -334,16 +338,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.PinnedState: {
             const window = parseWindowType(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -352,16 +356,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.TabIndexInWindow: {
             const window = parseWindowType(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -369,18 +373,18 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         }
         case SessionCommand.TabGroup: {
             const window = parseTabGroup(bytes);
-            if (!(window instanceof ApplicationError) && window.length !== 0 && window[ 0 ] !== undefined) {
-                if (command_values[ window[ 0 ].session_id ] === undefined) {
-                    command_values[ window[ 0 ].session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+            if (!(window instanceof ApplicationError) && window.length !== 0 && window[0] !== undefined) {
+                if (command_values[window[0].session_id] === undefined) {
+                    command_values[window[0].session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
 
                 } else {
-                    command_values[ window[ 0 ].session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window[0].session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -389,16 +393,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.TabWindow: {
             const window = parseWindowType(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -407,16 +411,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.SessionStorageAssociated: {
             const window = parseSessionStorageAssociated(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -425,16 +429,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.SelectedTabInIndex: {
             const window = parseWindowType(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -443,18 +447,18 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.LastActiveTime: {
             const window = parseLastActive(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: window.last_active
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
-                    const last = command_values[ window.session_id ];
+                    const last = command_values[window.session_id];
                     if (last !== undefined) {
                         last.last_active = window.last_active;
                     }
@@ -465,16 +469,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.SelectedNavigationIndex: {
             const window = parseWindowType(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -483,16 +487,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.UpdateTabNavigation: {
             const window = parseUpdateTabNavigation(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -501,16 +505,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.ActiveWindow: {
             const window = parseSessionId(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window ] === undefined) {
-                    command_values[ window ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window] === undefined) {
+                    command_values[window] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -519,16 +523,16 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.WindowBounds3: {
             const window = parseWindowsBounds(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -537,27 +541,116 @@ function parseSessionCommand(command: SessionCommand, bytes: Uint8Array, command
         case SessionCommand.CommandStorageBackend: {
             // Contains nothing
             break;
+        } case SessionCommand.AddWindowExtraData: {
+            const window = parseWindowType(bytes);
+            if (!(window instanceof ApplicationError)) {
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
+                        last_active: ""
+                    };
+                } else {
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
+                    });
+                }
+            }
+            break;
+        }
+        case SessionCommand.TabUserAgentOverride2: {
+            const window = parseWindowAppName(bytes);
+            if (!(window instanceof ApplicationError)) {
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
+                        last_active: ""
+                    };
+                } else {
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
+                    });
+                }
+            }
+            break;
         }
         case SessionCommand.TabClosed: {
             const window = parseLastActive(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
+                    });
+                }
+            }
+            break;
+        }
+        case SessionCommand.EdgeCommand: {
+            const window = parseLastActive(bytes);
+            if (!(window instanceof ApplicationError)) {
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
+                        last_active: ""
+                    };
+                } else {
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
+                    });
+                }
+            }
+            break;
+        }
+        case SessionCommand.EdgeCommand2: {
+          const window = parseWindowType(bytes);
+            if (!(window instanceof ApplicationError)) {
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
+                        last_active: ""
+                    };
+                } else {
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
+                    });
+                }
+            }
+            break;
+        }
+        case SessionCommand.TabNavigationPathPruned: {
+          const window = parseWindowType(bytes);
+            if (!(window instanceof ApplicationError)) {
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
+                        last_active: ""
+                    };
+                } else {
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
             break;
         }
         default: {
-            console.info(`Unsupported command: ${command}`);
+            console.info(`Unsupported session command: ${command}`);
         }
     }
 }
@@ -567,18 +660,18 @@ function parseTabCommand(command: SessionTabCommand, bytes: Uint8Array, command_
         case SessionTabCommand.SelectedNavigtionInTab: {
             const window = parseLastActive(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: window.last_active
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
-                    const last = command_values[ window.session_id ];
+                    const last = command_values[window.session_id];
                     if (last !== undefined) {
                         last.last_active = window.last_active;
                     }
@@ -589,16 +682,16 @@ function parseTabCommand(command: SessionTabCommand, bytes: Uint8Array, command_
         case SessionTabCommand.UpdateTabNavigation: {
             const window = parseUpdateTabNavigation(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
@@ -611,19 +704,23 @@ function parseTabCommand(command: SessionTabCommand, bytes: Uint8Array, command_
         case SessionTabCommand.Window: {
             const window = parseWindow(bytes);
             if (!(window instanceof ApplicationError)) {
-                if (command_values[ window.session_id ] === undefined) {
-                    command_values[ window.session_id ] = {
-                        commands: [ ({
-                            [ command ]: window,
-                        }) ],
+                if (command_values[window.session_id] === undefined) {
+                    command_values[window.session_id] = {
+                        commands: [({
+                            [command]: window,
+                        })],
                         last_active: ""
                     };
                 } else {
-                    command_values[ window.session_id ]?.commands.push({
-                        [ command ]: window,
+                    command_values[window.session_id]?.commands.push({
+                        [command]: window,
                     });
                 }
             }
+            break;
+        }
+        case SessionTabCommand.TabUserAgentOverride2: {
+            // Contains array of user agents
             break;
         }
         default: {
@@ -865,8 +962,10 @@ function parseUpdateTabNavigation(bytes: Uint8Array): TabInfo | ApplicationError
     if (title_size instanceof NomError) {
         return new ApplicationError(`CHROMIUM`, `Failed to get update tab navigation url title size: ${title_size}`);
     }
+
+    const adjust_size = 2;
     // Align 4 bytes
-    adjust = title_size.value % 4;
+    adjust = (title_size.value * adjust_size) % 4;
     if (adjust !== 0) {
         adjust = 4 - adjust;
     }
@@ -875,7 +974,7 @@ function parseUpdateTabNavigation(bytes: Uint8Array): TabInfo | ApplicationError
     let remaining = title_size.remaining;
     if (title_size.value !== 0) {
         // Title data is UTF16 o.O and does NOT include end of string character
-        const title_data = take(title_size.remaining, (title_size.value + adjust) * 2);
+        const title_data = take(title_size.remaining, (title_size.value + adjust));
         if (title_data instanceof NomError) {
             return new ApplicationError(`CHROMIUM`, `Failed to get update tab navigation url title: ${title_data}`);
         }

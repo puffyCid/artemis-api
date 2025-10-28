@@ -140,6 +140,43 @@ Return Chromium local storage data for all users.
 
 Return Chromium sessions for all users.
 
+#### retrospect(output)
+
+A powerfull function that will timeline all supported Chromium artifacts
+
+| Param            | Type          | Description                         |
+| ---------------- | ------------- | ----------------------------------- |
+| output           | Output        | Output object to output all results |
+
+Sample TypeScript code:
+```typescript
+import { Chrome, Edge, Format, Output, OutputType, PlatformType } from "./artemis-api/mod";
+function main() {
+  // Unfurls URLs. Based on [Unfurl](https://github.com/obsidianforensics/unfurl)
+  const enable_unfold = true;
+  const client = new Edge(PlatformType.Windows, enable_unfold);
+  const out: Output = {
+    name: "browsers",
+    directory: "./tmp",
+    format: Format.JSONL,
+    compress: false,
+    timeline: false,
+    endpoint_id: "",
+    collection_id: 0,
+    output: OutputType.LOCAL
+  };
+
+  // All artifacts will be parsed and timelined to JSONL
+  client.retrospect(out);
+
+  const chrome_client = new Chrome(PlatformType.Windows, enable_unfold);
+  // All artifacts will be parsed and timelined to JSONL
+  chrome_client.retrospect(out);
+}
+
+main();
+```
+
 ### FireFox Browser Class
 
 A basic TypeScript class to extract data from the FireFox browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base FireFox directory.

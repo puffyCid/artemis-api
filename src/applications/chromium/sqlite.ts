@@ -214,11 +214,11 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
                             Number(BigInt(entry[ "creation_utc" ] as bigint) / adjust_time)
                         )),
                         host_key: entry[ "host_key" ] as string,
-                        top_frame_site_key: entry[ "top_frame_site_key" ] as string,
-                        name: entry[ "name" ] as string,
-                        value: entry[ "value" ] as string,
+                        top_frame_site_key: entry[ "top_frame_site_key" ] as string | undefined ?? "",
+                        name: entry[ "name" ] as string | undefined ?? "",
+                        value: entry[ "value" ] as string | undefined ?? "",
                         encrypted_value: entry[ "encrypted_value" ] as string,
-                        path: entry[ "path" ] as string,
+                        path: entry[ "path" ] as string | undefined ?? "",
                         expires: unixEpochToISO(webkitToUnixEpoch(
                             Number(BigInt(entry[ "expires_utc" ] as bigint) / adjust_time)
                         )),
@@ -233,13 +233,13 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
                         samesite: entry[ "samesite" ] as number,
                         source_scheme: entry[ "source_scheme" ] as number,
                         source_port: entry[ "source_port" ] as number,
-                        is_same_party: entry[ "is_same_party" ] as number,
+                        is_same_party: entry[ "is_same_party" ] as number | undefined ?? 0,
                         last_update: unixEpochToISO(webkitToUnixEpoch(
                             Number(BigInt(entry[ "last_update_utc" ] as bigint) / adjust_time)
                         )),
                         db_path: entry_path.full_path,
                         version: path.version,
-                        message: `Cookie name: ${entry[ "name" ] as string} | value: ${entry[ "value" ] as string}`,
+                        message: `Cookie name: ${entry[ "name" ] as string} | value: ${entry[ "value" ] as string | undefined ?? ""}`,
                         datetime: unixEpochToISO(webkitToUnixEpoch(
                             Number(BigInt(entry[ "expires_utc" ] as bigint) / adjust_time)
                         )),
@@ -530,11 +530,11 @@ export function chromiumDips(paths: ChromiumProfiles[], platform: PlatformType, 
                     version: path.version,
                     message: entry[ "site" ] as string,
                     datetime: unixEpochToISO(webkitToUnixEpoch(
-                        typeof entry[ "first_user_interaction_time" ] === "undefined" ||
-                            entry[ "first_user_interaction_time" ] === null
+                        typeof entry[ "first_site_storage_time" ] === "undefined" ||
+                            entry[ "first_site_storage_time" ] === null
                             ? 0
                             : Number(
-                                BigInt(entry[ "first_user_interaction_time" ] as bigint) /
+                                BigInt(entry[ "first_site_storage_time" ] as bigint) /
                                 adjust_time
                             )
                     )),

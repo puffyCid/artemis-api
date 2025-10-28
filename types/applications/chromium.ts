@@ -186,7 +186,6 @@ export interface ChromiumBookmarks {
   name: string;
   type: string;
   url: string;
-  meta_info: Record<string, string>;
   bookmark_type: BookmarkType;
   path: string;
   /**Browser version */
@@ -368,6 +367,8 @@ export enum SessionCommand {
   SplitTabData = "SplitTabData",
   Unknown = "Unknown",
   CommandStorageBackend = "CommandStorageBackend",
+  EdgeCommand = "EdgeCommand",
+  EdgeCommand2 = "EdgeCommand2",
 }
 
 /// https://github.com/cclgroupltd/ccl_chromium_reader/blob/552516720761397c4d482908b6b8b08130b313a1/ccl_chromium_reader/ccl_chromium_snss2.py#L39
@@ -388,4 +389,49 @@ export enum SessionTabCommand {
   AddTabExtraData = "AddTabExtraData",
   Unknown = "Unknown",
   CommandStorageBackend = "CommandStorageBackend",
+}
+
+export interface Preferences {
+  version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType;
+  timestamp_desc: "Last Modified";
+  artifact: "User Preferences";
+  data_type: string;
+  path: string;
+  exception_category: ExceptionCategory;
+  created_version: string;
+  profile_id: string;
+  preferences_created: string;
+  name: string;
+  url: string;
+  last_modified: string;
+}
+
+export enum ExceptionCategory {
+  AppBanner = "App Banner",
+  ClientHints = "Client Hints",
+  CookieControls = "Cookie Controls",
+  HttpsEnforced = "HTTPS Enforced",
+  MediaEngagement = "Media Engagement",
+  SiteEngagement = "Site Engagement",
+  SslCert = "SSL Cert Desicions",
+  Zoom = "Zoom Level",
+}
+
+export interface Extension {
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType;
+  timestamp_desc: "Extension Created";
+  artifact: "Browser Extension";
+  data_type: string;
+  name: string;
+  author: string;
+  description: string;
+  manifest: string;
+  extension_version: string;
 }
