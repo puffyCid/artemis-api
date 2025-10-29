@@ -13,7 +13,7 @@ import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
 export function chromiumExtensions(paths: ChromiumProfiles[], platform: PlatformType): Extension[] {
     const hits: Extension[] = [];
     for (const path of paths) {
-        let full_path = `${path.full_path}/*/Extensions/*/*manifest.json`;
+        let full_path = `${path.full_path}/*/Extensions/*/*/manifest.json`;
 
         if (platform === PlatformType.Windows) {
             full_path = `${path.full_path}\\*\\Extensions\\*\\*\\manifest.json`;
