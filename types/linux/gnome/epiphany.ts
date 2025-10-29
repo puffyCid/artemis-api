@@ -15,6 +15,11 @@ export interface EpiphanyHistory {
     referring_visit: string | null;
     db_path: string;
     unfold?: Url;
+    message: string;
+    datetime: string;
+    timestamp_desc: "URL Visited";
+    artifact: "URL History";
+    data_type: "linux:gnome:epiphany:history:entry",
 }
 
 /**
@@ -32,12 +37,22 @@ export interface EpiphanyCookies {
     is_http_only: boolean | null;
     same_site: boolean | null;
     db_path: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Cookie Expires";
+    artifact: "Website Cookie";
+    data_type: "linux:browser:epiphany:cookie:entry",
 }
 
 export interface EpiphanyPermissions {
     url: string;
     permissions: Record<string, string>;
     file_path: string;
+    message: string;
+    datetime: "1970-01-01T00:00:00.000Z",
+    timestamp_desc: "N/A";
+    artifact: "GNOME Epiphany Site Permission";
+    data_type: "linux:browser:epiphany:permissions:entry",
 }
 
 export enum VisitType {
@@ -65,6 +80,11 @@ export interface EpiphanyPrint {
     pages: string | number;
     collate: boolean;
     file_path: string;
+    message: string;
+    datetime: "1970-01-01T00:00:00.000Z",
+    timestamp_desc: "N/A";
+    artifact: "GNOME Epiphany Last Print";
+    data_type: "linux:browser:epiphany:cookie:entry",
 }
 
 export interface EpiphanySessions {
@@ -73,4 +93,9 @@ export interface EpiphanySessions {
     /**Base64 blob */
     history: string;
     session_path: string;
+    message: string;
+    datetime: "1970-01-01T00:00:00.000Z",
+    timestamp_desc: "N/A";
+    artifact: "GNOME Epiphany Session";
+    data_type: "linux:browser:epiphany:session:entry",
 }
