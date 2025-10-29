@@ -3,7 +3,7 @@ import { HttpError } from "../../../src/http/errors";
 import { checkEolStatus } from "../../../src/http/eol";
 
 async function main() {
-    console.log('Running HTTP circlu tests....');
+    console.log('Running HTTP End of Life tests....');
     console.log(' Starting live test....');
     const app = "libreoffice";
     const version = "25.2";
