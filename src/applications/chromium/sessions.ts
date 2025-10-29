@@ -741,6 +741,24 @@ function parseTabCommand(command: SessionTabCommand, bytes: Uint8Array, command_
             // Contains array of user agents
             break;
         }
+        case SessionTabCommand.ExtensionAppID: {
+            const window = parseSessionStorageAssociated(bytes);
+            if (!(window instanceof ApplicationError)) {
+                if (command_values[ window.session_id ] === undefined) {
+                    command_values[ window.session_id ] = {
+                        commands: [ ({
+                            [ command ]: window,
+                        }) ],
+                        last_active: ""
+                    };
+                } else {
+                    command_values[ window.session_id ]?.commands.push({
+                        [ command ]: window,
+                    });
+                }
+            }
+            break;
+        }
         default: {
             console.info(`Unsupported tab command: ${command}`);
         }
