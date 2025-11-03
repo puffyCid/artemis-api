@@ -178,3 +178,46 @@ function getBookmarkChildren(
 
     return books;
 }
+
+/**
+ * Function to test the Chromium JSON file parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Chromium JSON parsing
+ */
+export function testChromiumJsonFiles(): void {
+    const path: ChromiumProfiles = {
+        full_path: "../../test_data/edge",
+        version: "141",
+        browser: BrowserType.EDGE
+    };
+    const ext = chromiumExtensions([path], PlatformType.Darwin);
+    if (ext.length !== 3) {
+        throw `Got length ${ext.length} expected 3.......chromiumExtensions ❌`;
+    }
+    if (ext[0]?.name != "__MSG_extName__") {
+        throw `Got name ${ext[0]?.name} expected "__MSG_extName__".......chromiumExtensions ❌`;
+    }
+    console.info(`  Function chromiumExtensions ✅`);
+
+    const book = chromiumBookmarks([path], PlatformType.Darwin);
+    if (book.length !== 1) {
+        throw `Got length ${book.length} expected 1.......chromiumBookmarks ❌`;
+    }
+
+    if (book[0]?.message != "Bookmark - Download the DuckDuckGo Browser for Mac") {
+        throw `Got message ${book[0]?.message} expected "Bookmark - Download the DuckDuckGo Browser for Mac".......chromiumBookmarks ❌`;
+    }
+
+    if (book[0]?.date_added != "2025-11-02T22:47:41.000Z") {
+        throw `Got date ${book[0]?.date_added} expected "2025-11-02T22:47:41.000Z".......chromiumBookmarks ❌`;
+    }
+
+    console.info(`  Function chromiumBookmarks ✅`);
+
+    const child = getBookmarkChildren(undefined, "", "", BookmarkType.Bar, BrowserType.EDGE);
+    if (child.length !== 0) {
+        throw `Got length ${child.length} expected 0.......getBookmarkChildren ❌`;
+    }
+
+    console.info(`  Function getBookmarkChildren ✅`);
+}

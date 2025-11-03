@@ -9,6 +9,11 @@ export { testReadConfig } from "../src/applications/anydesk/conf";
 export { testReadOdlFiles } from "../src/applications/onedrive/odl";
 export { testOneDrive } from "../src/applications/onedrive/onedrive";
 export { testExtractSyncEngine } from "../src/applications/onedrive/sqlite";
+export { testChromiumJsonFiles } from "../src/applications/chromium/json";
+export { testChromiumPreferences } from "../src/applications/chromium/preferences";
+export { testChromiumLocalStorage } from "../src/applications/chromium/level";
+export { testChromiumSessions } from "../src/applications/chromium/sessions";
+
 /**
  * Linux exported test functions
  */
@@ -19,6 +24,7 @@ export { testFirmwareHistory } from "../src/linux/firmware";
 export { testGnomeAppUsage } from "../src/linux/gnome/usage";
 export { testParseGvfs } from "../src/linux/gnome/gvfs";
 export { testQueryLogons } from "../src/linux/sqlite/wtmpdb";
+
 /**
  * Windows exported test functions
  */
@@ -27,6 +33,7 @@ export { testLogonsWindows } from "../src/windows/eventlogs/logons";
 export { testParseMru } from "../src/windows/registry/recently_used";
 export { testWindowsWifiNetworks } from "../src/windows/registry/wifi";
 export { testGetRunKeys } from "../src/windows/registry/run";
+
 /**
  * macOS exported test functions
  */

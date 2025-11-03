@@ -1,4 +1,4 @@
-import { ChromiumLocalStorage, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumLocalStorage, ChromiumProfiles } from "../../../types/applications/chromium";
 import { ValueType } from "../../../types/applications/level";
 import { ProtoTag } from "../../../types/encoding/protobuf";
 import { FileError } from "../../filesystem/errors";
@@ -121,4 +121,32 @@ export function chromiumLocalStorage(paths: ChromiumProfiles[], platform: Platfo
     }
 
     return hits;
+}
+
+/**
+ * Function to test the Chromium Local Storage parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Chromium Local Storage parsing
+ */
+export function testChromiumLocalStorage(): void {
+    const path: ChromiumProfiles = {
+        full_path: "../../test_data/edge",
+        version: "141",
+        browser: BrowserType.EDGE
+    };
+
+    const level = chromiumLocalStorage([path], PlatformType.Darwin);
+    if (level.length !== 587) {
+        throw `Got length ${level.length} expected 587.......chromiumLocalStorage ❌`;
+    }
+
+    if (level[345]?.message !== "Origin: _https://microsoftedge.microsoft.com | Key: logs.esw_13: {\"logTime\":\"2025-11-02T22:33:21.650Z\",\"logLevel\":\"debug\",\"eventName\":\"GetCuratedList\",\"sessionId\":\"d2fcef2f-7b0c-41d3-9c74-2fb980239265\",\"message\":\"[\\\"Started fetching curated list for: Edge_Extensions_Productivity_V2 and page no:1\\\"]\"}") {
+        throw `Got message ${level[345]?.message} expected "Origin: _https://microsoftedge.microsoft.com | Key: logs.esw_13: {\"logTime\":\"2025-11-02T22:33:21.650Z\",\"logLevel\":\"debug\",\"eventName\":\"GetCuratedList\",\"sessionId\":\"d2fcef2f-7b0c-41d3-9c74-2fb980239265\",\"message\":\"[\\\"Started fetching curated list for: Edge_Extensions_Productivity_V2 and page no:1\\\"]\"}".......chromiumLocalStorage ❌`;
+    }
+
+    if (level[257]?.origin !== "_https://www.cnn.com") {
+        throw `Got origin ${level[257]?.origin} expected "_https://www.cnn.com".......chromiumLocalStorage ❌`;
+    }
+
+    console.info(`  Function chromiumLocalStorage ✅`);
 }
