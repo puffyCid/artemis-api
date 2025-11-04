@@ -46,6 +46,11 @@ export interface FirefoxHistory {
   host: string;
   unfold: Url | undefined;
   db_path: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "URL Visited";
+  artifact: "URL History";
+  data_type: "application:firefox:history:entry";
 }
 
 /**
@@ -72,32 +77,74 @@ export interface FirefoxDownloads {
   last_modified: string;
   /**Downloaded file name */
   name: string;
+  /**SQLITE row id */
+  moz_places_id: number;
+  /**Page URL */
+  url: string;
+  /**Page title */
+  title: string;
+  /**URL in reverse */
+  rev_host: string;
+  /**Page visit count */
+  visit_count: number;
+  /**Hidden value */
+  hidden: number;
+  /**Typed value */
+  typed: number;
+  /**Frequency value */
+  frequency: number;
+  /**Last visit time */
+  last_visit_date: string;
+  /**GUID for entry */
+  guid: string;
+  /**Foreign count value */
+  foreign_count: number;
+  /**Hash of URL */
+  url_hash: number;
+  /**Page description */
+  description: string;
+  /**Preview image URL value */
+  preview_image_url: string;
   db_path: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "File Download Start";
+  artifact: "File Download";
+  data_type: "application:firefox:downloads:entry";
 }
 
 export interface FirefoxCookies {
   id: number;
   origin_attributes: string;
-  name?: string;
-  value?: string;
-  host?: string;
-  path?: string;
-  expiry?: number;
-  last_accessed?: string;
-  creation_time?: string;
-  is_secure?: boolean;
-  is_http_only?: boolean;
+  name: string;
+  value: string;
+  host: string;
+  path: string;
+  expiry: string;
+  last_accessed: string;
+  creation_time: string;
+  is_secure: boolean;
+  is_http_only: boolean;
   in_browser_element: boolean;
   same_site: boolean;
-  raw_same_site: boolean;
   scheme_map: number;
   db_path: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Cookie Expires";
+  artifact: "Website Cookie";
+  data_type: "application:firefox:cookies:entry";
 }
 
 export interface FirefoxFavicons {
   icon_url: string;
   expires: string;
   db_path: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Favicon Expires";
+  artifact: "URL Favicon";
+  data_type: "application:firefox:favicons:entry";
 }
 
 export interface FirefoxProfiles {
@@ -115,6 +162,11 @@ export interface FirefoxStorage {
   accessed: number;
   persisted: number;
   db_path: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Website Storage Last Accessed";
+  artifact: "Website Storage";
+  data_type: "application:firefox:storage:entry";
 }
 
 export enum Respository {
@@ -123,4 +175,23 @@ export enum Respository {
   Private = "Private",
   Unknown = "Unknown",
   Temporary = "Temporary",
+}
+
+export interface FirefoxAddons {
+  installed: string;
+  updated: string;
+  active: boolean;
+  visible: boolean;
+  author: string;
+  version: string;
+  path: string;
+  db_path: string;
+  message: string;
+  datetime: string;
+  name: string;
+  description: string;
+  creator: string;
+  timestamp_desc: "Extension Installed";
+  artifact: "Browser Extension";
+  data_type: "application:firefox:extension:entry";
 }

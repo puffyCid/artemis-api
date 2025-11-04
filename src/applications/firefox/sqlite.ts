@@ -42,7 +42,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
     if (unfold) {
         client = new Unfold();
     }
-    
+
     for (const path of paths) {
         let full_path = `${path.full_path}/places.sqlite`;
 
@@ -68,7 +68,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                 typed: entry["typed"] as number ?? 0,
                 frequency: entry["frequency"] as number ?? 0,
                 last_visit_date: unixEpochToISO(
-                    entry["last_visit_date"] as bigint ?? 0,
+                    entry["last_visit_date"] as bigint ?? 0
                 ),
                 guid: entry["guid"] as string ?? "",
                 foreign_count: entry["foreign_count"] as number ?? 0,
@@ -79,6 +79,13 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                 host: entry["host"] as string ?? "",
                 unfold: undefined,
                 db_path: full_path,
+                message: entry["url"] as string ?? "",
+                datetime: unixEpochToISO(
+                    entry["last_visit_date"] as bigint ?? 0
+                ),
+                timestamp_desc: "URL Visited",
+                artifact: "URL History",
+                data_type: "application:firefox:history:entry"
             };
 
             if (unfold && typeof client !== 'undefined') {
@@ -102,7 +109,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
  * @param limit Number of records to return
  * @returns Array of `FirefoxDownloads` or `ApplicationError`
  */
-export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxDownloads[] | ApplicationError {
+export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxDownloads[] {
     const query = `SELECT 
                       moz_annos.id AS downloads_id, 
                       place_id, 
@@ -155,14 +162,38 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
                 expiration: entry["expiration"] as number ?? 0,
                 download_type: entry["download_type"] as number ?? 0,
                 date_added: unixEpochToISO(
-                    entry["date_added"] as bigint ?? 0,
+                    entry["date_added"] as bigint ?? 0
                 ),
                 last_modified: unixEpochToISO(
-                    entry["last_modified"] as bigint ?? 0,
+                    entry["last_modified"] as bigint ?? 0
                 ),
                 name: entry["name"] as string ?? "",
                 db_path: full_path,
+                message: "",
+                datetime: unixEpochToISO(
+                    entry["date_added"] as bigint ?? 0
+                ),
+                timestamp_desc: "File Download Start",
+                artifact: "File Download",
+                data_type: "application:firefox:downloads:entry",
+                moz_places_id: entry["moz_places_id"] as number ?? 0,
+                url: entry["url"] as string ?? "",
+                title: entry["title"] as string ?? "",
+                rev_host: entry["rev_host"] as string ?? "",
+                visit_count: entry["visit_count"] as number ?? 0,
+                hidden: entry["hidden"] as number ?? 0,
+                typed: entry["typed"] as number ?? 0,
+                frequency: entry["frequency"] as number ?? 0,
+                last_visit_date: unixEpochToISO(
+                    entry["last_visit_date"] as bigint ?? 0
+                ),
+                guid: entry["guid"] as string ?? "",
+                foreign_count: entry["foreign_count"] as number ?? 0,
+                url_hash: entry["url_hash"] as number ?? 0,
+                description: entry["description"] as string ?? "",
+                preview_image_url: entry["preview_image_url"] as string ?? "",
             };
+            download_row.message = `File download from: ${download_row.url} | File: ${download_row.name}`
 
             hits.push(download_row);
         }
@@ -179,23 +210,22 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
  * @param limit Number of records to return
  * @returns Array of `FirefoxCookies` or `ApplicationError`
  */
-export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxCookies[] | ApplicationError {
+export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxCookies[] {
     const cookies: FirefoxCookies[] = [];
     const query = `select * from moz_cookies LIMIT ${limit} OFFSET ${offset}`;
 
     for (const path of paths) {
-        let full_path = `${path.full_path}/places.sqlite`;
+        let full_path = `${path.full_path}/cookies.sqlite`;
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\places.sqlite`;
+            full_path = `${path.full_path}\\cookies.sqlite`;
         }
 
         const results = querySqlite(full_path, query);
         if (results instanceof ApplicationError) {
-            console.warn(`Failed to query ${full_path}: ${results}`);
+            console.warn(`Failed to query ${full_path}: ${results.message}`);
             continue;
         }
-        const adjust_time: bigint = 1000000n;
 
         for (const entry of results) {
             const cookie_entry: FirefoxCookies = {
@@ -203,30 +233,33 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType,
                 origin_attributes: entry["originAttributes"] as string,
                 in_browser_element: !!(entry["inBrowserElement"] as number),
                 same_site: !!(entry["sameSite"] as number),
-                raw_same_site: !!(entry["rawSameSite"] as number),
-                scheme_map: entry["rawSameSite"] as number,
-                name: entry["name"] as string | undefined,
-                value: entry["value"] as string | undefined,
-                path: entry["path"] as string | undefined,
-                expiry: entry["expiry"] as number | undefined,
-                is_secure: !!(entry["isSecure"] as number | undefined),
-                is_http_only: !!(entry["isSecure"] as number | undefined),
-                host: entry["host"] as string | undefined,
+                scheme_map: entry["schemeMap"] as number,
+                name: entry["name"] as string ?? "",
+                value: entry["value"] as string  ?? "",
+                path: entry["path"] as string  ?? "",
+                expiry: unixEpochToISO(
+                    (entry["expiry"] as bigint ?? 0)
+                ),
+                is_secure: !!(entry["isSecure"] as number ?? 0),
+                is_http_only: !!(entry["isHttpOnly"] as number ?? 0),
+                host: entry["host"] as string ?? "",
                 db_path: full_path,
+                message: "",
+                datetime: unixEpochToISO(
+                    entry["expiry"] as bigint ?? 0
+                ),
+                timestamp_desc: "Cookie Expires",
+                artifact: "Website Cookie",
+                data_type: "application:firefox:cookies:entry",
+                last_accessed: unixEpochToISO(
+                    (entry["lastAccessed"] as bigint ?? 0)
+                ),
+                creation_time: unixEpochToISO(
+                    (entry["creationTime"] as bigint ?? 0)
+                )
             };
 
-            if (entry["lastAccessed"] !== undefined) {
-                cookie_entry.last_accessed = unixEpochToISO(Number(
-                    BigInt(entry["lastAccessed"] as bigint) / adjust_time,
-                ));
-            }
-
-            if (entry["creationTime"] !== undefined) {
-                cookie_entry.creation_time = unixEpochToISO(Number(
-                    BigInt(entry["creationTime"] as bigint) / adjust_time,
-                ));
-            }
-
+            cookie_entry.message = `Cookie from ${cookie_entry.host} | Value: ${cookie_entry.value}`
             cookies.push(cookie_entry);
         }
 
@@ -243,15 +276,15 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType,
  * @param limit Number of records to return
  * @returns Array of `FirefoxFavicons` or `ApplicationError`
  */
-export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxFavicons[] | ApplicationError {
+export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxFavicons[] {
     const favicons: FirefoxFavicons[] = [];
-    const query = `SELECT icon_url, expire_ms FROM moz_cookies LIMIT ${limit} OFFSET ${offset}`;
+    const query = `SELECT icon_url, expire_ms FROM moz_icons LIMIT ${limit} OFFSET ${offset}`;
 
     for (const path of paths) {
-        let full_path = `${path.full_path}/places.sqlite`;
+        let full_path = `${path.full_path}/favicons.sqlite`;
 
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\places.sqlite`;
+            full_path = `${path.full_path}\\favicons.sqlite`;
         }
 
         const results = querySqlite(full_path, query);
@@ -265,6 +298,11 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
                 icon_url: entry["icon_url"] as string,
                 expires: unixEpochToISO(entry["expire_ms"] as number),
                 db_path: full_path,
+                datetime: unixEpochToISO(entry["expire_ms"] as number),
+                timestamp_desc: "Favicon Expires",
+                artifact: "URL Favicon",
+                data_type: "application:firefox:favicons:entry",
+                message: `Favicon: ${entry["icon_url"]}`
             };
 
             favicons.push(fav_entry);
@@ -282,8 +320,8 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
  * @param limit Number of records to return
  * @returns Array of `FirefoxFavicons` or `ApplicationError`
  */
-export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxStorage[] | ApplicationError {
-    const query = `SELECT respository_id, suffix, group_, origin, client_usages, usage, last_access_time, accessed, persisted FROM origin LIMIT ${limit} OFFSET ${offset}`;
+export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxStorage[] {
+    const query = `SELECT repository_id, suffix, group_, origin, client_usages, usage, last_access_time, accessed, persisted FROM origin LIMIT ${limit} OFFSET ${offset}`;
 
     const storage: FirefoxStorage[] = [];
     for (const path of paths) {
@@ -302,14 +340,19 @@ export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType,
         for (const entry of results) {
             const fav_entry: FirefoxStorage = {
                 db_path: full_path,
-                repository: getRepo(entry["respository_id"] as number),
+                repository: getRepo(entry["repository_id"] as number),
                 group: entry["group_"] as string,
                 origin: entry["origin"] as string,
                 client_usages: entry["client_usages"] as string,
                 last_access: unixEpochToISO(entry["last_access_time"] as number),
                 accessed: entry["accessed"] as number,
                 persisted: entry["persisted"] as number,
-                suffix: entry["suffix"] as string ?? undefined
+                suffix: entry["suffix"] as string ?? undefined,
+                datetime: unixEpochToISO(entry["last_access_time"] as number),
+                timestamp_desc: "Website Storage Last Accessed",
+                artifact: "Website Storage",
+                data_type: "application:firefox:storage:entry",
+                message: `Storage for ${entry["origin"]}`
             };
 
             storage.push(fav_entry);
