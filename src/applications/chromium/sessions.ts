@@ -872,6 +872,11 @@ function parseWindowType(bytes: Uint8Array): WindowType | ApplicationError {
     return window;
 }
 
+/**
+ * Parse the WindowAppName info
+ * @param bytes Bytes associated with the WindowType. Should always be 12 bytes
+ * @returns `WindowType` object or `ApplicationError`
+ */
 function parseWindowAppName(bytes: Uint8Array): WindowType | ApplicationError {
     const size = nomUnsignedFourBytes(bytes, Endian.Le);
     if (size instanceof NomError) {
@@ -883,6 +888,11 @@ function parseWindowAppName(bytes: Uint8Array): WindowType | ApplicationError {
     return parseWindowType(size.remaining);
 }
 
+/**
+ * Parse the TabGroup info
+ * @param bytes Bytes associated with the TabGroup
+ * @returns Array of `WindowType` or `Application Error`
+ */
 function parseTabGroup(bytes: Uint8Array): WindowType[] | ApplicationError {
     const limit = 4;
     let count = 0;
@@ -916,6 +926,11 @@ interface SessionStorageAssociated {
     value: string;
 }
 
+/**
+ * Parse the session storage associated info. Usually contains a string
+ * @param bytes Bytes assocaited with SessionStorageAssociated
+ * @returns `SessionStorageAssociated` object or `ApplicationError` object
+ */
 function parseSessionStorageAssociated(bytes: Uint8Array): SessionStorageAssociated | ApplicationError {
     let size = nomUnsignedFourBytes(bytes, Endian.Le);
     if (size instanceof NomError) {
@@ -950,6 +965,11 @@ interface LastActive {
     last_active: string;
 }
 
+/**
+ * Parse the last active timestamp
+ * @param bytes Bytes assocaited with LastActive
+ * @returns `LastActive` object or `ApplicationError` object
+ */
 function parseLastActive(bytes: Uint8Array): LastActive | ApplicationError {
     const session = nomUnsignedFourBytes(bytes, Endian.Le);
     if (session instanceof NomError) {
@@ -975,6 +995,11 @@ function parseLastActive(bytes: Uint8Array): LastActive | ApplicationError {
     return last;
 }
 
+/**
+ * Get the session ID value
+ * @param bytes Bytes associated with the session ID
+ * @returns Session ID or `ApplicationError
+ */
 function parseSessionId(bytes: Uint8Array): number | ApplicationError {
     const session = nomUnsignedFourBytes(bytes, Endian.Le);
     if (session instanceof NomError) {
@@ -993,6 +1018,11 @@ interface TabNavigation {
     unknown5: number;
 }
 
+/**
+ * Parse the windows bound info. 
+ * @param bytes Bytes associted with TabNavigation
+ * @returns `TabNavigation` object or `ApplicationError`
+ */
 function parseWindowsBounds(bytes: Uint8Array): TabNavigation | ApplicationError {
     const session = nomUnsignedFourBytes(bytes, Endian.Le);
     if (session instanceof NomError) {
@@ -1043,6 +1073,11 @@ interface TabInfo {
     title: string;
 }
 
+/**
+ * Parse the Tab Navigation info. Usually contains page info like URL and page title and alot more
+ * @param bytes Bytes associated with TabInfo
+ * @returns `TabInfo` object or `ApplicationError`
+ */
 function parseUpdateTabNavigation(bytes: Uint8Array): TabInfo | ApplicationError {
     const size = nomUnsignedFourBytes(bytes, Endian.Le);
     if (size instanceof NomError) {
@@ -1110,11 +1145,11 @@ function parseUpdateTabNavigation(bytes: Uint8Array): TabInfo | ApplicationError
     if (state_size instanceof NomError) {
         return new ApplicationError(`CHROMIUM`, `Failed to get update tab navigation url state size: ${state_size}`);
     }
-    // A very complex format
-    const state_data = take(state_size.remaining, state_size.value);
-    if (state_data instanceof NomError) {
-        return new ApplicationError(`CHROMIUM`, `Failed to get update tab navigation url state data: ${state_data}`);
-    }
+    // A very complex format. Currently not parsing. *Might* contain info like URL referrer, User agent, additional timestamps
+    // const state_data = take(state_size.remaining, state_size.value);
+    // if (state_data instanceof NomError) {
+    //    return new ApplicationError(`CHROMIUM`, `Failed to get update tab navigation url state data: ${state_data}`);
+    // }
 
     const info: TabInfo = {
         session_id: session_id.value,
@@ -1133,6 +1168,11 @@ interface Window {
     window_timestamp: string;
 }
 
+/**
+ * Parse the Window session command
+ * @param bytes Bytes associated with the Window command
+ * @returns `Window` object or `ApplicationError`
+ */
 function parseWindow(bytes: Uint8Array): Window | ApplicationError {
     const session = nomUnsignedFourBytes(bytes, Endian.Le);
     if (session instanceof NomError) {
@@ -1181,17 +1221,17 @@ export function testChromiumSessions(): void {
     };
 
     const sess = chromiumSessions([path], PlatformType.Darwin);
-    if (sess.length !== 16) {
-        throw `Got length ${sess.length} expected 16.......chromiumSessions ❌`;
+    if (sess.length !== 115) {
+        throw `Got length ${sess.length} expected 115.......chromiumSessions ❌`;
     }
 
-    if (sess[12]?.message !== "Tab: https://www.bing.com/search?pglt=2083&q=arstechnica&cvid=eece5b7948e44b3f839c683e2e56523f&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQLhhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEDSAQgxMzI4ajBqMagCALACAA&FORM=ANNTA1&PC=U531 | Page Title: ") {
-        throw `Got message "${sess[12]?.message}" expected "Tab: https://www.bing.com/search?pglt=2083&q=arstechnica&cvid=eece5b7948e44b3f839c683e2e56523f&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQLhhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEDSAQgxMzI4ajBqMagCALACAA&FORM=ANNTA1&PC=U531 | Page Title: ".......chromiumSessions ❌`;
+    if (sess[12]?.message !== "Session: https://www.washingtonpost.com/politics/2025/11/02/nuclear-testing-trump-energy-secretary/ | Page Title: Trump energy secretary says no nuclear b") {
+        throw `Got message "${sess[12]?.message}" expected "Session: https://www.washingtonpost.com/politics/2025/11/02/nuclear-testing-trump-energy-secretary/ | Page Title: Trump energy secretary says no nuclear b".......chromiumSessions ❌`;
     }
 
 
-    if (sess[0]?.message != "Session: https://www.bing.com/search?pglt=2083&q=washinstpost&cvid=35f223efd00e471eaf05a8ff3e372d17&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQABhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEDSAQgyMzE4ajBqMagCALACAA&FORM=ANNTA1&PC=U531 | Page Title: ") {
-        throw `Got message ${sess[0]?.message} expected "Session: https://www.bing.com/search?pglt=2083&q=washinstpost&cvid=35f223efd00e471eaf05a8ff3e372d17&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQABhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEDSAQgyMzE4ajBqMagCALACAA&FORM=ANNTA1&PC=U531 | Page Title: ".......chromiumSessions ❌`;
+    if (sess[0]?.message != "Session: edge://newtab/ | Page Title: New T") {
+        throw `Got message ${sess[0]?.message} expected "Session: edge://newtab/ | Page Title: New T".......chromiumSessions ❌`;
     }
 
     console.info(`  Function chromiumSessions ✅`);
@@ -1202,12 +1242,12 @@ export function testChromiumSessions(): void {
         throw results.message;
     }
 
-    if (results.length !== 8) {
-        throw `Got length ${results.length} expected 8.......parseSession ❌`;
+    if (results.length !== 58) {
+        throw `Got length ${results.length} expected 58.......parseSession ❌`;
     }
 
-    if (results[7]?.message != "Session: https://www.bing.com/search?q=artemis+dfir&cvid=04e764335c13498faa1fb33db375ef8d&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQABhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEDSAQgxNTgzajBqNKgCBLACAQ&FORM=ANAB01&PC=U531 | Page Title: ") {
-        throw `Got message ${results[7]?.message} expected "Session: https://www.bing.com/search?q=artemis+dfir&cvid=04e764335c13498faa1fb33db375ef8d&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOTIGCAEQABhAMgYIAhAAGEAyBggDEAAYQDIGCAQQABhAMgYIBRAAGEAyBggGEAAYQDIGCAcQABhAMgYICBAAGEDSAQgxNTgzajBqNKgCBLACAQ&FORM=ANAB01&PC=U531 | Page Title: ".......parseSession ❌`;
+    if (results[7]?.message != "Session: https://www.washingtonpost.com/ | Page Title: The Washington Post - Breaking news and latest headlines") {
+        throw `Got message ${results[7]?.message} expected "Session: https://www.washingtonpost.com/ | Page Title: The Washington Post - Breaking news and latest headlines".......parseSession ❌`;
     }
 
     console.info(`  Function parseSession ✅`);
@@ -1258,7 +1298,7 @@ export function testChromiumSessions(): void {
 
     console.info(`  Function parseTabCommand ✅`);
 
-    const info = parseWindowType(new Uint8Array([1, 0, 0, 0, 2, 0, 0, 0]));
+    let info = parseWindowType(new Uint8Array([1, 0, 0, 0, 2, 0, 0, 0]));
     if (info instanceof ApplicationError) {
         throw info.message;
     }
@@ -1269,4 +1309,90 @@ export function testChromiumSessions(): void {
 
     console.info(`  Function parseWindowType ✅`);
 
+    info = parseWindowAppName(new Uint8Array([8, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0]));
+    if (info instanceof ApplicationError) {
+        throw info.message;
+    }
+
+    if (info.index !== 2) {
+        throw `Got index ${info.index} expected 2.......parseWindowAppName ❌`;
+    }
+
+    console.info(`  Function parseWindowAppName ✅`);
+
+    const tab_group = parseTabGroup(new Uint8Array([8, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0]));
+    if (tab_group instanceof ApplicationError) {
+        throw tab_group.message;
+    }
+
+    if (tab_group.length !== 4) {
+        throw `Got index ${tab_group.length} expected 4.......parseTabGroup ❌`;
+    }
+
+    console.info(`  Function parseTabGroup ✅`);
+
+    const url_bytes = parseSessionStorageAssociated(new Uint8Array([44, 0, 0, 0, 208, 120, 213, 109, 36, 0, 0, 0, 97, 102, 100, 99, 50, 50, 54, 100, 95, 99, 55, 57, 51, 95, 52, 97, 51, 52, 95, 97, 49, 51, 50, 95, 50, 100, 102, 100, 99, 99, 50, 53, 56, 97, 57, 50]));
+    if (url_bytes instanceof ApplicationError) {
+        throw url_bytes.message;
+    }
+
+    if (url_bytes.value !== "afdc226d_c793_4a34_a132_2dfdcc258a92") {
+        throw `Got value ${url_bytes.value} expected "afdc226d_c793_4a34_a132_2dfdcc258a92".......parseSessionStorageAssociated ❌`;
+    }
+    console.info(`  Function parseSessionStorageAssociated ✅`);
+
+    const last_active = parseLastActive(new Uint8Array([81, 121, 213, 109, 0, 0, 0, 0, 59, 250, 123, 137, 58, 161, 47, 0]));
+    if (last_active instanceof ApplicationError) {
+        throw last_active.message;
+    }
+
+    if (last_active.last_active !== "2025-11-02T22:38:12.000Z") {
+        throw `Got time ${last_active.last_active} expected "2025-11-02T22:38:12.000Z".......parseLastActive ❌`;
+    }
+    console.info(`  Function parseLastActive ✅`);
+
+    const session_id = parseSessionId(new Uint8Array([1, 0, 0, 0]));
+    if (session_id instanceof ApplicationError) {
+        throw session_id.message;
+    }
+
+    if (session_id !== 1) {
+        throw `Got ID ${session_id} expected "1".......parseSessionId ❌`;
+    }
+    console.info(`  Function parseSessionId ✅`);
+
+    const navigate = parseWindowsBounds(new Uint8Array([11, 121, 213, 109, 22, 0, 0, 0, 22, 0, 0, 0, 0, 15, 0, 0, 56, 4, 0, 0, 1, 0, 0, 0]));
+    if (navigate instanceof ApplicationError) {
+        throw navigate.message;
+    }
+
+    if (navigate.session_id !== 1842706699) {
+        throw `Got ID ${navigate.session_id} expected "1842706699".......parseWindowsBounds ❌`;
+    }
+    console.info(`  Function parseWindowsBounds ✅`);
+
+    const bytes = readFile("../../test_data/edge/v141/raw/tab_url.raw");
+    if (bytes instanceof FileError) {
+        throw bytes.message;
+    }
+
+    const tab_url = parseUpdateTabNavigation(bytes);
+    if (tab_url instanceof ApplicationError) {
+        throw tab_url.message;
+    }
+
+    if (tab_url.url != "edge://newtab/") {
+        throw `Got URL ${tab_url.url} expected "edge://newtab/".......parseUpdateTabNavigation ❌`;
+    }
+    console.info(`  Function parseUpdateTabNavigation ✅`);
+
+    const win = parseWindow(new Uint8Array([11, 121, 213, 109, 22, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+    if (win instanceof ApplicationError) {
+        throw win.message;
+    }
+
+    if (win.session_id !== 1842706699) {
+        throw `Got ID ${win.session_id} expected "1842706699".......parseWindow ❌`;
+    }
+    console.info(`  Function parseWindow ✅`);
 }

@@ -1,5 +1,5 @@
 import { Edge, Format, Output, OutputType, PlatformType } from "../../../mod";
-import { testChromiumJsonFiles, testChromiumLocalStorage, testChromiumPreferences, testChromiumSessions } from "../../test";
+import { testChromiumJsonFiles, testChromiumLocalStorage, testChromiumPreferences, testChromiumSessions, testChromiumSqlite } from "../../test";
 
 function main() {
     console.log('Running Microsoft Edge tests....');
@@ -36,9 +36,11 @@ function main() {
     testChromiumSessions();
     console.log(' Microsoft Edge Sessions tests passed! 🥳\n');
 
+    console.log('Starting Microsoft Edge SQLITE tests....');
+    testChromiumSqlite();
+    console.log(' Microsoft Edge SQLITE tests passed! 🥳\n');
+
     console.log('All Microsoft Edge tests passed! 🥳💃🕺');
-
-
 }
 
 main();

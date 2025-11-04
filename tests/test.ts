@@ -13,6 +13,7 @@ export { testChromiumJsonFiles } from "../src/applications/chromium/json";
 export { testChromiumPreferences } from "../src/applications/chromium/preferences";
 export { testChromiumLocalStorage } from "../src/applications/chromium/level";
 export { testChromiumSessions } from "../src/applications/chromium/sessions";
+export { testChromiumSqlite } from "../src/applications/chromium/sqlite";
 
 /**
  * Linux exported test functions
