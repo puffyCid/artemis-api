@@ -328,6 +328,10 @@ export enum SessionType {
   Tab = "Tab",
 }
 
+/**
+ * Browsers developers can add more
+ * Default list is at: https://source.chromium.org/chromium/chromium/src/+/main:components/sessions/core/session_service_commands.cc;l=28;drc=38321ee39cd73ac2d9d4400c56b90613dee5fe29
+ */
 export enum SessionCommand {
   WindowType = "WindowType",
   UpdateTabNavigation = "UpdateTabNavigation",
@@ -369,6 +373,8 @@ export enum SessionCommand {
   CommandStorageBackend = "CommandStorageBackend",
   EdgeCommand = "EdgeCommand",
   EdgeCommand2 = "EdgeCommand2",
+  EdgeCommand3 = "EdgeCommand3",
+  EdgeCommand4 = "EdgeCommand4",
 }
 
 /// https://github.com/cclgroupltd/ccl_chromium_reader/blob/552516720761397c4d482908b6b8b08130b313a1/ccl_chromium_reader/ccl_chromium_snss2.py#L39

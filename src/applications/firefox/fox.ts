@@ -1,8 +1,10 @@
-import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
+import { FirefoxAddons, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
+import { SystemError } from "../../system/error";
+import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { firefoxAddons } from "./addons";
@@ -23,7 +25,7 @@ export class FireFox {
      * @param alt_path Optional alternative path to directory contain FireFox data
      * @returns `FireFox` instance class
      */
-    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         if (alt_path === undefined) {
@@ -39,19 +41,19 @@ export class FireFox {
             return;
         }
 
-        this.paths = [ {
+        this.paths = [{
             full_path: alt_path,
             version: fox_version
-        } ];
+        }];
     }
 
     /**
      * Extract FireFox history
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `FirefoxHistory` or `ApplicationError`
+     * @returns Array of `FirefoxHistory` 
      */
-    public history(offset = 0, limit = 100): FirefoxHistory[] | ApplicationError {
+    public history(offset = 0, limit = 100): FirefoxHistory[] {
         return firefoxHistory(this.paths, this.platform, this.unfold, offset, limit);
     }
 
@@ -59,9 +61,9 @@ export class FireFox {
      * Extract FireFox cookies
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `FirefoxCookies` or `ApplicationError`
+     * @returns Array of `FirefoxCookies` 
      */
-    public cookies(offset = 0, limit = 100): FirefoxCookies[] | ApplicationError {
+    public cookies(offset = 0, limit = 100): FirefoxCookies[] {
         return firefoxCookies(this.paths, this.platform, offset, limit);
     }
 
@@ -69,17 +71,17 @@ export class FireFox {
      * Extract FireFox downloads
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `FirefoxDownloads` or `ApplicationError`
+     * @returns Array of `FirefoxDownloads` 
      */
-    public downloads(offset = 0, limit = 100): FirefoxDownloads[] | ApplicationError {
+    public downloads(offset = 0, limit = 100): FirefoxDownloads[] {
         return firefoxDownloads(this.paths, this.platform, offset, limit);
     }
 
     /**
      * Extract FireFox addons
-     * @returns Array of `JSON` objects or `ApplicationError`
+     * @returns Array of `JSON` objects 
      */
-    public addons(): Record<string, unknown>[] | ApplicationError {
+    public addons(): FirefoxAddons[] {
         return firefoxAddons(this.paths, this.platform);
     }
 
@@ -87,9 +89,9 @@ export class FireFox {
      * Function to extract entries from `storage.sqlite`
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `FirefoxStorage` or `ApplicationError`
+     * @returns Array of `FirefoxStorage` 
      */
-    public storage(offset = 0, limit = 100): FirefoxStorage[] | ApplicationError {
+    public storage(offset = 0, limit = 100): FirefoxStorage[] {
         return firefoxStorage(this.paths, this.platform, offset, limit);
     }
 
@@ -97,10 +99,80 @@ export class FireFox {
      * Function to extract favicon entries
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
-     * @returns Array of `FirefoxFavicons` or `ApplicationError`
+     * @returns Array of `FirefoxFavicons`
      */
-    public favicons(offset = 0, limit = 100): FirefoxFavicons[] | ApplicationError {
+    public favicons(offset = 0, limit = 100): FirefoxFavicons[] {
         return firefoxFavicons(this.paths, this.platform, offset, limit);
+    }
+
+    /**
+    * Function to timeline all Firefox artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
+    * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+    */
+    public retrospect(output: Output): void {
+        let offset = 0;
+        const limit = 100;
+
+        while (true) {
+            const entries = this.history(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            if (!this.unfold) {
+                entries.forEach(x => delete x["unfold"]);
+            }
+            const status = dumpData(entries, `retrospect_firefox_history`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline firefox history: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+
+        while (true) {
+            const entries = this.cookies(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_firefox_cookies`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline firefox cookies: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.favicons(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_firefox_favicons`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline firefox favicons: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.storage(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_firefox_storage`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline firefox storage: ${status}`);
+            }
+            offset += limit;
+        }
+
+        const ext = this.addons();
+        const status = dumpData(ext, `retrospect_firefox_extensions`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline firefox extensions: ${status}`);
+        }
     }
 
     /**

@@ -264,6 +264,13 @@ By default artemis will get the first 100 entries for all users.
 
 Return FireFox addons for all users. FireFox addons exists as a JSON file.  
 
+#### retrospect(output)
+
+A powerfull function that will timeline all supported FireFox artifacts
+
+| Param            | Type          | Description                         |
+| ---------------- | ------------- | ----------------------------------- |
+| output           | Output        | Output object to output all results |
 
 ### Nextcloud Client Class
 

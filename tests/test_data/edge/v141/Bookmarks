@@ -1,0 +1,51 @@
+{
+   "checksum": "359879469ecb660a2fa6e05a3a5fe7f7",
+   "checksum_sha256": "4df1933136417896028f9cb9a3353a90305779b2194f74752bd5e44e80a0cb3b",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13406597261328535",
+            "date_last_used": "0",
+            "guid": "77fe6201-2001-45ec-b8a3-497f7f3a9742",
+            "id": "6",
+            "name": "Download the DuckDuckGo Browser for Mac",
+            "show_icon": false,
+            "source": "user_add",
+            "type": "url",
+            "url": "https://duckduckgo.com/mac?origin=funnel_home_bing__hero",
+            "visit_count": 1
+         } ],
+         "date_added": "13406597214566635",
+         "date_last_used": "0",
+         "date_modified": "13406597261328535",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Favorites Bar",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13406597214566635",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other Favorites",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13406597214566635",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile Favorites",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
