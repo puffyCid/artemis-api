@@ -15,6 +15,7 @@ export type ErrorName =
   | "EPIPHANY"
   | "FIRMWARE_HISTORY"
   | "FALKON"
-  | "WTMPDB";
+  | "WTMPDB"
+  | "EXT4";
 
 export class LinuxError extends ErrorBase<ErrorName> { }

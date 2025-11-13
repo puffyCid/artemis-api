@@ -18,6 +18,7 @@ export { firmwareHistory } from "./src/linux/firmware";
 export { kateRecentFiles } from "./src/linux/kde/kate";
 export { Falkon } from "./src/linux/kde/falkon/falkon";
 export { queryLogons } from "./src/linux/sqlite/wtmpdb";
+export { readRawFileExt4, readRawDirExt4, readRawInodeExt4 } from "./src/linux/ext4";
 
 /**
  * macOS exported functions
@@ -57,6 +58,7 @@ export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper";
 export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
 export { authorizations } from "./src/macos/sqlite/authd";
+
 /**
  * Unix exported functions
  */

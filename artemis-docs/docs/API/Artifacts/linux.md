@@ -355,3 +355,35 @@ Query the new wtmp sqlite database
 | Param    | Type   | Description      |
 | -------- | ------ | ---------------- |
 | alt_path | string | Alt path wtmp.db |
+
+
+### readRawFileExt4(path, device) -> Uint8Array | LinuxError
+
+Read a file at provided path by parsing the EXT4 filesystem. You will need to provide a device file to read. Ex: /dev/sda1
+
+| Param | Type    | Description         |
+| ------ | ------ | ------------------- |
+| path   | string | Path to file read   |
+| device | string | Path to device file |
+
+### readRawInodeExt4(inode, device) -> Uint8Array | LinuxError
+
+Read a file at provided inode by parsing the EXT4 filesystem. You will need to provide a device file to read. Ex: /dev/sda1
+
+| Param | Type   | Description         |
+| ----- | ------ | ------------------- |
+| path  | string | Path to file read   |
+| inode | string | Path to device file |
+
+
+### readRawDirExt4(path, start, device) -> FileEntry[] | LinuxError
+
+Search for files or directories at provided path by parsing the EXT4 filesystem. You will need to provide a device file to read. Ex: /dev/sda1
+
+You may provide a starting to begin the search. The path string may be any valid Rust regex string
+
+| Param | Type    | Description             |
+| ------ | ------ | ----------------------- |
+| path   | string | Path to file read       |
+| start  | string | Path to start searching |
+| device | string | Path to device file     |
