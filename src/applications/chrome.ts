@@ -1,11 +1,11 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession, Extension, Preferences } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
 import { chromiumBookmarks, chromiumExtensions } from "./chromium/json";
 import { chromiumLocalStorage } from "./chromium/level";
 import { chromiumPreferences } from "./chromium/preferences";
 import { chromiumSessions } from "./chromium/sessions";
-import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumFavicons, chromiumHistory, chromiumLogins, chromiumShortcuts } from "./chromium/sqlite";
 
 type ChromeHistory = ChromiumHistory;
 type ChromeDownloads = ChromiumDownloads;
@@ -16,6 +16,9 @@ type ChromeLogins = ChromiumLogins;
 type ChromeDips = ChromiumDips;
 type ChromeLocalStorage = ChromiumLocalStorage;
 type ChromeSession = ChromiumSession;
+type ChromeFavicons = ChromiumFavicons;
+type ChromeShortcuts = ChromiumShortcuts;
+
 /**
  * Class to extract Chrome browser information. Since Chrome is based on Chromium we can leverage the existing Chromium artifacts to parse Chrome info
  */
@@ -28,7 +31,7 @@ export class Chrome extends Chromium {
    * @param alt_path Optional alternative path to directory contain Chrome data
    * @returns `Chrome` instance class
    */
-  constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+  constructor(platform: PlatformType, unfold = false, alt_path?: string) {
     super(platform, unfold, BrowserType.CHROME, alt_path);
   }
 
@@ -146,6 +149,28 @@ export class Chrome extends Chromium {
    */
   public override bookmarks(): ChromeBookmarks[] {
     return chromiumBookmarks(this.paths, this.platform);
+  }
+
+  /**
+    * Function to parse Chrome Favicons information. 
+    * @param [offset=0] Starting db offset. Default is zero
+    * @param [limit=100] How many records to return. Default is 100
+    * @returns Array of `ChromeFavicons` 
+    */
+  public override favicons(offset?: number, limit?: number): ChromeFavicons[] {
+    const query = `SELECT url, last_updated FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id LIMIT ${limit} OFFSET ${offset}`;
+    return chromiumFavicons(this.paths, this.platform, query);
+  }
+
+  /**
+   * Function to parse Chrome Shortcut information. 
+   * @param [offset=0] Starting db offset. Default is zero
+   * @param [limit=100] How many records to return. Default is 100
+   * @returns Array of `ChromeShortcuts` 
+   */
+  public override shortcuts(offset = 0, limit = 100): ChromeShortcuts[] {
+    const query = `SELECT id, text, fill_into_edit, url, contents, description, type, keyword, last_access_time FROM omni_box_shortcuts LIMIT ${limit} OFFSET ${offset}`;
+    return chromiumShortcuts(this.paths, this.platform, query);
   }
 
   /**

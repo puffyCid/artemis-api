@@ -1,4 +1,4 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession, Extension, Preferences } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
@@ -10,7 +10,7 @@ import { chromiumBookmarks, chromiumExtensions } from "./json";
 import { chromiumLocalStorage } from "./level";
 import { chromiumPreferences } from "./preferences";
 import { chromiumSessions } from "./sessions";
-import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./sqlite";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumFavicons, chromiumHistory, chromiumLogins, chromiumShortcuts } from "./sqlite";
 
 /**
  * Class to extract Chromium browser information.  
@@ -166,6 +166,28 @@ export class Chromium {
     }
 
     /**
+     * Function to parse Chromium Favicons information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumFavicons` 
+     */
+    public favicons(offset = 0, limit = 100): ChromiumFavicons[] {
+        const query = `SELECT url, last_updated FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumFavicons(this.paths, this.platform, query);
+    }
+
+    /**
+     * Function to parse Chromium Shortcut information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumShortcuts` 
+     */
+    public shortcuts(offset = 0, limit = 100): ChromiumShortcuts[] {
+        const query = `SELECT id, text, fill_into_edit, url, contents, description, type, keyword, last_access_time FROM omni_box_shortcuts LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumShortcuts(this.paths, this.platform, query);
+    }
+
+    /**
      * Function to parse Chromium Login information. 
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
@@ -310,6 +332,32 @@ export class Chromium {
             const status = dumpData(entries, `retrospect_${this.browser}_dips`, output);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} dips: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.favicons(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_favicons`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} favicons: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.shortcuts(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_shortcuts`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} shortcuts: ${status}`);
             }
             offset += limit;
         }

@@ -1,4 +1,4 @@
-import { ChromiumProfiles, ChromiumHistory, ChromiumDownloads, ChromiumCookies, ChromiumAutofill, ChromiumLogins, ChromiumDips, ChromiumCookieType, BrowserType } from "../../../types/applications/chromium";
+import { ChromiumProfiles, ChromiumHistory, ChromiumDownloads, ChromiumCookies, ChromiumAutofill, ChromiumLogins, ChromiumDips, ChromiumCookieType, BrowserType, ChromiumFavicons, ChromiumShortcuts, ShortcutType } from "../../../types/applications/chromium";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
@@ -255,6 +255,182 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
         }
     }
     return hits;
+}
+
+/**
+ * Get Favicons for websites
+ * @param paths Array of `ChromiumProfiles`
+ * @param platform OS `PlatformType`
+ * @param query SQL query to run
+ * @returns Array of `ChromiumFavicons`
+ */
+export function chromiumFavicons(paths: ChromiumProfiles[], platform: PlatformType, query: string): ChromiumFavicons[] {
+    const hits: ChromiumFavicons[] = [];
+    for (const path of paths) {
+        let full_path = `${path.full_path}/*/Favicons`;
+
+
+        if (platform === PlatformType.Windows) {
+            full_path = `${path.full_path}\\*\\Favicons`;
+        }
+        const glob_paths = glob(full_path);
+        if (glob_paths instanceof FileError) {
+            console.warn(`Failed to glob ${full_path}: ${glob_paths}`);
+            continue;
+        }
+        for (const entry_path of glob_paths) {
+            const results = querySqlite(entry_path.full_path, query);
+            if (results instanceof ApplicationError) {
+                console.warn(`Failed to query ${entry_path.full_path}: ${results}`);
+                continue;
+            }
+            // Loop through favicon rows
+            for (const entry of results) {
+                const adjust = 1000000;
+                const last_update = webkitToUnixEpoch(
+                    (entry["last_updated"] as number ?? 0) / adjust,
+                );
+                let url = "Favicon URL Null";
+                if (typeof entry["url"] === 'string') {
+                    url = entry["url"];
+                }
+
+                const download_row: ChromiumFavicons = {
+                    db_path: entry_path.full_path,
+                    version: path.version,
+                    message: `Favicon for ${url}`,
+                    datetime: unixEpochToISO(last_update),
+                    data_type: `applications:${path.browser.toLowerCase()}:favicons:entry`,
+                    browser: path.browser,
+                    last_update: unixEpochToISO(last_update),
+                    url,
+                    timestamp_desc: "Favicon Updated",
+                    artifact: "Website Favicon"
+                };
+                hits.push(download_row);
+            }
+        }
+    }
+
+    return hits;
+}
+
+/**
+ * Get Shortcuts for websites
+ * @param paths Array of `ChromiumProfiles`
+ * @param platform OS `PlatformType`
+ * @param query SQL query to run
+ * @returns Array of `ChromiumShortcuts`
+ */
+export function chromiumShortcuts(paths: ChromiumProfiles[], platform: PlatformType, query: string): ChromiumShortcuts[] {
+    const hits: ChromiumShortcuts[] = [];
+    for (const path of paths) {
+        let full_path = `${path.full_path}/*/Shortcuts`;
+
+
+        if (platform === PlatformType.Windows) {
+            full_path = `${path.full_path}\\*\\Shortcuts`;
+        }
+        const glob_paths = glob(full_path);
+        if (glob_paths instanceof FileError) {
+            console.warn(`Failed to glob ${full_path}: ${glob_paths}`);
+            continue;
+        }
+        for (const entry_path of glob_paths) {
+            const results = querySqlite(entry_path.full_path, query);
+            if (results instanceof ApplicationError) {
+                console.warn(`Failed to query ${entry_path.full_path}: ${results}`);
+                continue;
+            }
+            // Loop through favicon rows
+            for (const entry of results) {
+                const adjust = 1000000;
+                const last_update = webkitToUnixEpoch(
+                    (entry["last_access_time"] as number ?? 0) / adjust,
+                );
+                let short_type = -1;
+                if (typeof entry["type"] === 'number') {
+                    short_type = entry["type"];
+                }
+                let url = "Shortcut URL Null";
+                if (typeof entry["url"] === 'string') {
+                    url = entry["url"];
+                }
+                const download_row: ChromiumShortcuts = {
+                    db_path: entry_path.full_path,
+                    version: path.version,
+                    message: `Shortcut for ${url}`,
+                    datetime: unixEpochToISO(last_update),
+                    data_type: `applications:${path.browser.toLowerCase()}:shortcuts:entry`,
+                    browser: path.browser,
+                    last_update: unixEpochToISO(last_update),
+                    url,
+                    text: entry["text"] as string | undefined ?? "",
+                    contents: entry["contents"] as string | undefined ?? "",
+                    fill_into_edit: entry["fill_into_edit"] as string | undefined ?? "",
+                    shortcut_id: entry["id"] as string | undefined ?? "",
+                    keyword: entry["keyword"] as string | undefined ?? "",
+                    shortcut_type: getShortcut(short_type),
+                    description: entry["description"] as string | undefined ?? "",
+                    timestamp_desc: "Shortcut Last Access",
+                    artifact: "Website Shortcut"
+                };
+                hits.push(download_row);
+            }
+        }
+    }
+
+    return hits;
+}
+
+/**
+ * Get ShortcutType for websites
+ * @param value enum value of the shortcut
+ */
+function getShortcut(value: number): ShortcutType {
+    switch (value) {
+        case 0: return ShortcutType.Typed;
+        case 1: return ShortcutType.History;
+        case 2: return ShortcutType.HistoryTitle;
+        case 3: return ShortcutType.HistoryBody;
+        case 4: return ShortcutType.HistoryKeyword;
+        case 5: return ShortcutType.Suggest;
+        case 6: return ShortcutType.SearchUrl;
+        case 7: return ShortcutType.SearchHistory;
+        case 8: return ShortcutType.SearchSuggest;
+        case 9: return ShortcutType.SearchSuggestEntity
+        case 10: return ShortcutType.SearchTail;
+        case 11: return ShortcutType.SearchPersonalized;
+        case 12: return ShortcutType.SearchProfile;
+        case 13: return ShortcutType.SearchEngine;
+        case 14: return ShortcutType.ExtensionApp;
+        case 15: return ShortcutType.UserContact;
+        case 16: return ShortcutType.Bookmark;
+        case 17: return ShortcutType.SuggestPersonalized;
+        case 18: return ShortcutType.Calculator;
+        case 19: return ShortcutType.Clipboard;
+        case 20: return ShortcutType.Voice;
+        case 21: return ShortcutType.Physical;
+        case 22: return ShortcutType.PhysicalOverflow;
+        case 23: return ShortcutType.Tab;
+        case 24: return ShortcutType.Document;
+        case 25: return ShortcutType.Pedal;
+        case 26: return ShortcutType.ClipboardText;
+        case 27: return ShortcutType.ClipboardImage;
+        case 28: return ShortcutType.TitleSuggest;
+        case 29: return ShortcutType.TitleNavSuggest;
+        case 30: return ShortcutType.OpenTab;
+        case 31: return ShortcutType.HistoryCluster;
+        case 32: return ShortcutType.Null;
+        case 33: return ShortcutType.Starter;
+        case 34: return ShortcutType.MostVisited;
+        case 35: return ShortcutType.Repeatable;
+        case 36: return ShortcutType.HistoryEmbed;
+        case 37: return ShortcutType.Enterprise;
+        case 38: return ShortcutType.HistoryEmbedAnswers;
+        case 39: return ShortcutType.TabGroup;
+        default: return ShortcutType.Unkonwn;
+    }
 }
 
 /**
@@ -664,9 +840,31 @@ export function testChromiumSqlite(): void {
 
     query = `SELECT * FROM bounces`;
     const dip = chromiumDips([path], PlatformType.Darwin, query);
-    if (dip.length !== 0) {
-        throw `Got length ${dip.length} expected 0.......chromiumDips ❌`;
+    if (dip.length !== 33) {
+        throw `Got length ${dip.length} expected 33.......chromiumDips ❌`;
     }
 
     console.info(`  Function chromiumDips ✅`);
+
+    query = `SELECT url, last_updated FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id`;
+    const favi = chromiumFavicons([path], PlatformType.Darwin, query);
+    if (favi.length !== 60) {
+        throw `Got length ${favi.length} expected 60.......chromiumFavicons ❌`;
+    }
+    if (favi[0]?.message !== "Favicon for chrome-extension://lmijmgnfconjockjeepmlmkkibfgjmla/pages/shared/resources/images/icons/extension/favicon.ico") {
+        throw `Got url ${favi[0]?.message} expected wanted "Favicon for chrome-extension://lmijmgnfconjockjeepmlmkkibfgjmla/pages/shared/resources/images/icons/extension/favicon.ico".......chromiumFavicons ❌`;
+    }
+
+    console.info(`  Function chromiumFavicons ✅`);
+
+    query = `SELECT id,text,fill_into_edit,url,contents,description,type,keyword,last_access_time FROM omni_box_shortcuts`;
+    const short = chromiumShortcuts([path], PlatformType.Darwin, query);
+    if (short.length !== 98) {
+        throw `Got length ${short.length} expected 60.......chromiumShortcuts ❌`;
+    }
+    if (short[17]?.message !== "Shortcut for https://www.bing.com/search?q=sharphound+github&FORM=ANAB01&PC=U531") {
+        throw `Got url ${short[17]?.message} expected wanted "Shortcut for https://www.bing.com/search?q=sharphound+github&FORM=ANAB01&PC=U531".......chromiumShortcuts ❌`;
+    }
+
+    console.info(`  Function chromiumShortcuts ✅`);
 }

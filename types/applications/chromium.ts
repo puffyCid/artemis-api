@@ -159,6 +159,86 @@ export interface ChromiumCookies {
   browser: BrowserType;
 }
 
+export interface ChromiumFavicons {
+  last_update: string;
+  url: string;
+  db_path: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Favicon Updated";
+  artifact: "Website Favicon";
+  data_type: string;
+  browser: BrowserType;
+}
+
+export interface ChromiumShortcuts {
+  last_update: string;
+  url: string;
+  text: string;
+  contents: string;
+  fill_into_edit: string;
+  shortcut_id: string;
+  keyword: string;
+  shortcut_type: ShortcutType;
+  db_path: string;
+  description: string;
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Shortcut Last Access";
+  artifact: "Website Shortcut";
+  data_type: string;
+  browser: BrowserType;
+}
+
+/// From: https://chromium.googlesource.com/chromium/src/+/refs/heads/main/components/omnibox/browser/autocomplete_match_type.h#30
+export enum ShortcutType {
+  Typed = "URL Typed",
+  History = "URL History",
+  HistoryTitle = "History Title",
+  HistoryBody = "History Body",
+  HistoryKeyword = "History Keyword",
+  Suggest = "Suggested URL",
+  SearchUrl = "URL Searched",
+  SearchHistory = "Search History",
+  SearchSuggest = "Search Suggestion",
+  SearchTail = "Search Suggestion Tail",
+  SearchPersonalized = "Search Personalization",
+  SearchProfile = "Search Google+", // lol
+  SearchEngine = "Search with other Engine",
+  ExtensionApp = "Extension Application",
+  UserContact = "User Contact",
+  Bookmark = "Browser bookmark",
+  SuggestPersonalized = "Personlized Suggestion",
+  Calculator = "Calculator",
+  Clipboard = "Clipboard URL",
+  Voice = "Voice Suggestion",
+  Physical = "Physical Web",
+  PhysicalOverflow = "Multiple physical web",
+  Tab = "Tab Search",
+  Document = "Document Suggestion",
+  Pedal = "Pedal Match",
+  ClipboardText = "Clipboard text",
+  ClipboardImage = "Clipboard image",
+  TitleSuggest = "Suggested query title",
+  TitleNavSuggest = "Suggested navigation title",
+  OpenTab = "Opened Tab",
+  HistoryCluster = "History cluster suggestion",
+  Null = "Null suggestion",
+  Starter = "URL suggestion for starter keyword",
+  MostVisited = "Most visited site",
+  Repeatable = "Organic Repeatable Query",
+  HistoryEmbed = "Past page embedded in query",
+  Enterprise = "Search Enterprise policy",
+  TabGroup = "Tab group",
+  HistoryEmbedAnswers = "History embedded answers",
+  SearchSuggestEntity = "Search suggestion for entity",
+  Unkonwn = "Unknown",
+}
+
 export interface ChromiumAutofill {
   name?: string;
   value?: string;
