@@ -34,6 +34,7 @@ export { testLogonsWindows } from "../src/windows/eventlogs/logons";
 export { testParseMru } from "../src/windows/registry/recently_used";
 export { testWindowsWifiNetworks } from "../src/windows/registry/wifi";
 export { testGetRunKeys } from "../src/windows/registry/run";
+export { testServiceInstalls } from "../src/windows/eventlogs/services";
 
 /**
  * macOS exported test functions

@@ -514,9 +514,9 @@ Parse SYSTEM Registry to get list of USB devices that have been connected
 
 Parse Windows System.evtx file to extract Service Install events.
 
-| Param | Type   | Description                  |
-| ----- | ------ | ---------------------------- |
-| path  | string | Path to the System.evtx file |
+| Param | Type   | Description                         |
+| ----- | ------ | ----------------------------------- |
+| path  | string | Option path to the System.evtx file |
 
 ### Outlook Class
 
