@@ -97,6 +97,7 @@ export { NextcloudClient } from "./src/applications/nextcloud/cloud";
 export { LevelDb } from "./src/applications/leveldb/level";
 export { AnyDesk } from "./src/applications/anydesk/rmm";
 export { OneDrive } from "./src/applications/onedrive/onedrive";
+export { Syncthing } from "./src/applications/syncthing";
 
 /**
  * Windows exported functions
