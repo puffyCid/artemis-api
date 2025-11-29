@@ -137,13 +137,8 @@ export function timelineArtifact(
       return timelineGatekeeper(data as GatekeeperEntries[]);
     case TimesketchArtifact.FILES:
       return timelineFiles(
-        data as MacosFileInfo[] | LinuxFileInfo[],
+        data as MacosFileInfo[] | LinuxFileInfo[] | WindowsFileInfo[],
         false,
-      );
-    case TimesketchArtifact.FILES_WINDOWS:
-      return timelineFiles(
-        data as WindowsFileInfo[],
-        true,
       );
     case TimesketchArtifact.EMOND:
       return timelineEmond(data as Emond[]);

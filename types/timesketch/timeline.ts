@@ -30,10 +30,7 @@ export enum TimesketchArtifact {
   USERS_MACOS = "users-macos",
   GROUPS_MACOS = "groups-macos",
   EXECPOLICY = "execpolicy",
-  /**Use `FILES_WINDOWS` for Windows filelistings */
   FILES = "files",
-  /**Use `FILES` for macOS or Linux filelistings */
-  FILES_WINDOWS = "files",
   SUDOLOGS_MACOS = "sudologs-macos",
   EMOND = "emond",
   SPOTLIGHT = "spotlight",
