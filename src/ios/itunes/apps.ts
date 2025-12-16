@@ -19,6 +19,7 @@ import { extractNetworkDomain } from "../domains/network/network";
 import { extractRootDomain } from "../domains/root/root";
 import { extractAppleLinkd } from "../domains/syscontainer/linkd";
 import { extractOsAnalytics } from "../domains/syssharedcontainer/osanalytics";
+import { extractWireless } from "../domains/wireless/wireless";
 import { IosError } from "../error";
 
 /**
@@ -205,6 +206,9 @@ export function extractAppInfo(
       break;
     case "SysSharedContainerDomain-systemgroup.com.apple.osanalytics":
       extractOsAnalytics(paths, db_path, output);
+      break;
+    case "WirelessDomain":
+      extractWireless(paths, db_path, output);
       break;
   }
 }

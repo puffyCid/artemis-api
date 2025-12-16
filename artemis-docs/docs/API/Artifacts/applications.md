@@ -569,3 +569,26 @@ AnyDesk config information.
 | Param    | Type         | Description                                                                                         |
 | -------- | ------------ | --------------------------------------------------------------------------------------------------- |
 | is_alt   | boolean      | Optional. Set to true if you provided an alternative directory when initializing the AnyDesk class  |
+
+### Syncthing Class
+
+A basic TypeScript class to extract data from Syncthing logs. 
+
+Sample TypeScript code:
+```typescript
+import { PlatformType, Syncthing } from "./artemis-api/mod";
+
+
+function main() {
+  const client = new Syncthing(PlatformType.Linux);
+  const results = client.logs();
+  console.log(JSON.stringify(results));
+}
+
+main();
+```
+
+
+#### logs() -> SyncthingLogs[]
+
+Return all plaintext log entries for the Syncthing application

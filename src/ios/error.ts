@@ -15,6 +15,7 @@ export type ErrorName =
   | "ROOTDOMAIN"
   | "DUCKDUCKGO"
   | "APPLE_LINKD"
-  | "APPSTATE";
+  | "APPSTATE"
+  | "DATAUSAGE";
 
 export class IosError extends ErrorBase<ErrorName> { }

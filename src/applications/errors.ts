@@ -16,6 +16,7 @@ export type ErrorName =
   | "LEVELDB"
   | "ANYDESK"
   | "COMET"
-  | "BRAVE";
+  | "BRAVE"
+  | "SYNCTHING";
 
 export class ApplicationError extends ErrorBase<ErrorName> { }

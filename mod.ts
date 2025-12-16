@@ -99,6 +99,7 @@ export { AnyDesk } from "./src/applications/anydesk/rmm";
 export { OneDrive } from "./src/applications/onedrive/onedrive";
 export { Comet } from "./src/applications/comet";
 export { Brave } from "./src/applications/brave";
+export { Syncthing } from "./src/applications/syncthing";
 
 /**
  * Windows exported functions

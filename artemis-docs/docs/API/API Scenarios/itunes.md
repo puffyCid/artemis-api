@@ -36,6 +36,7 @@ function main() {
         compress: false,
         endpoint_id: "",
         collection_id: 0,
+        timeline: false,
         output: OutputType.LOCAL,
     };
     const result = extractBackup(

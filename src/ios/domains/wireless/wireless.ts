@@ -1,20 +1,19 @@
-import { getPlist, } from "../../../../mod";
 import {
     FileType,
     ManifestApp,
 } from "../../../../types/ios/itunes/manifest";
-import { MacosError } from "../../../macos/errors";
 import { Output, outputResults } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
+import { extractDataUsage } from "./sqlite";
 
 /**
- * Function to extract NetworkDomain info
+ * Function to extract Wireless info
  * @param app_paths Array of `ManifestApp`
  * @param db_path iTunes backup directory
  * @param output `Output` configuration object
  */
-export function extractNetworkDomain(
+export function extractWireless(
     app_paths: ManifestApp[],
     db_path: string,
     output: Output,
@@ -31,18 +30,21 @@ export function extractNetworkDomain(
 
         const target = `${db_path}/${path.directory}/${path.fileID}`;
 
-        if (info.path.endsWith("com.apple.symptomsd.plist")) {
-            const plist_data = getPlist(target);
-            if (plist_data instanceof MacosError) {
+        if (info.path.endsWith("DataUsage.sqlite")) {
+            const data = extractDataUsage(target);
+            if (data instanceof IosError) {
                 continue;
             }
-
             outputResults(
-                plist_data,
-                "networkdomain_apple_symptomsd_preferences",
+                data,
+                "wirelessdomain_apple_datausage_sqlite",
                 output,
             );
             continue;
         }
+
+        // Uncomment to view unsupported entries
+        //console.log(info.path);
+        //console.log(target);
     }
 }
