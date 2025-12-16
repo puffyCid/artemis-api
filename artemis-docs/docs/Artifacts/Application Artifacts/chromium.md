@@ -337,7 +337,9 @@ export interface ChromiumProfiles {
 export enum BrowserType {
   CHROME = "Google Chrome",
   EDGE = "Microsoft Edge",
-  CHROMIUM = "Google Chromium"
+  CHROMIUM = "Google Chromium",
+  COMET = "Perplexity Comet",
+  BRAVE = "Brave",
 }
 
 export enum ChromiumCookieType {

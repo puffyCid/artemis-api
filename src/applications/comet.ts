@@ -7,41 +7,41 @@ import { chromiumPreferences } from "./chromium/preferences";
 import { chromiumSessions } from "./chromium/sessions";
 import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumFavicons, chromiumHistory, chromiumLogins, chromiumShortcuts } from "./chromium/sqlite";
 
-type ChromeHistory = ChromiumHistory;
-type ChromeDownloads = ChromiumDownloads;
-type ChromeCookies = ChromiumCookies;
-type ChromeAutofill = ChromiumAutofill;
-type ChromeBookmarks = ChromiumBookmarks;
-type ChromeLogins = ChromiumLogins;
-type ChromeDips = ChromiumDips;
-type ChromeLocalStorage = ChromiumLocalStorage;
-type ChromeSession = ChromiumSession;
-type ChromeFavicons = ChromiumFavicons;
-type ChromeShortcuts = ChromiumShortcuts;
+type CometHistory = ChromiumHistory;
+type CometDownloads = ChromiumDownloads;
+type CometCookies = ChromiumCookies;
+type CometAutofill = ChromiumAutofill;
+type CometBookmarks = ChromiumBookmarks;
+type CometLogins = ChromiumLogins;
+type CometDips = ChromiumDips;
+type CometLocalStorage = ChromiumLocalStorage;
+type CometSession = ChromiumSession;
+type CometFavicons = ChromiumFavicons;
+type CometShortcuts = ChromiumShortcuts;
 
 /**
- * Class to extract Chrome browser information. Since Chrome is based on Chromium we can leverage the existing Chromium artifacts to parse Chrome info
+ * Class to extract Comet browser information. Since Comet is based on Chromium we can leverage the existing Chromium artifacts to parse Comet info
  */
-export class Chrome extends Chromium {
+export class Comet extends Chromium {
 
   /**
-   * Construct a `Chrome` object that can be used to parse browser data
+   * Construct a `Comet` object that can be used to parse browser data
    * @param platform OS `PlatformType`
    * @param unfold Attempt to parse URLs. Default is `false`
-   * @param alt_path Optional alternative path to directory contain Chrome data
-   * @returns `Chrome` instance class
+   * @param alt_path Optional alternative path to directory contain Comet data
+   * @returns `Comet` instance class
    */
   constructor(platform: PlatformType, unfold = false, alt_path?: string) {
-    super(platform, unfold, BrowserType.CHROME, alt_path);
+    super(platform, unfold, BrowserType.COMET, alt_path);
   }
 
   /**
-   * Extract Chrome browser history.
+   * Extract Comet browser history.
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
    * @returns Array of browser history
    */
-  public override history(offset = 0, limit = 100): ChromeHistory[] {
+  public override history(offset = 0, limit = 100): CometHistory[] {
     const query = `SELECT 
                   urls.id AS id, 
                   urls.url AS url, 
@@ -63,12 +63,12 @@ export class Chrome extends Chromium {
   }
 
   /**
-   * Extract Chrome browser downloads.
+   * Extract Comet browser downloads.
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
    * @returns Array of browser downloads
    */
-  public override downloads(offset = 0, limit = 100): ChromeDownloads[] {
+  public override downloads(offset = 0, limit = 100): CometDownloads[] {
     const query = `SELECT 
                   downloads.id AS downloads_id, 
                   guid, 
@@ -106,18 +106,18 @@ export class Chrome extends Chromium {
   }
 
   /**
-   * Extract Chrome browser cookies
+   * Extract Comet browser cookies
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
-   * @returns Array of `ChromeCookies`
+   * @returns Array of `CometCookies`
    */
-  public override cookies(offset = 0, limit = 100): ChromeCookies[] {
+  public override cookies(offset = 0, limit = 100): CometCookies[] {
     const query = `SELECT * FROM cookies LIMIT ${limit} OFFSET ${offset}`;
     return chromiumCookies(this.paths, this.platform, query);
   }
 
   /**
-   * Get installed Chrome extensions
+   * Get installed Comet extensions
    * @returns Array of parsed extensions
    */
   public override extensions(): Extension[] {
@@ -125,7 +125,7 @@ export class Chrome extends Chromium {
   }
 
   /**
-   * Get Chrome Preferences
+   * Get Comet Preferences
    * @returns Array of `Preferences` for each user
    */
   public override preferences(): Preferences[] {
@@ -133,80 +133,80 @@ export class Chrome extends Chromium {
   }
 
   /**
-   * Function to parse Chrome AutoFill information. 
+   * Function to parse Comet AutoFill information. 
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
-   * @returns Array of `ChromeAutofill` 
+   * @returns Array of `CometAutofill` 
    */
-  public override autofill(offset = 0, limit = 100): ChromeAutofill[] {
+  public override autofill(offset = 0, limit = 100): CometAutofill[] {
     const query = `SELECT name, value, date_created, date_last_used, count, value_lower from autofill LIMIT ${limit} OFFSET ${offset}`;
     return chromiumAutofill(this.paths, this.platform, query);
   }
 
   /**
-   * Get Chrome Bookmarks
-   * @returns Array of `ChromeBookmarks` for each user
+   * Get Comet Bookmarks
+   * @returns Array of `CometBookmarks` for each user
    */
-  public override bookmarks(): ChromeBookmarks[] {
+  public override bookmarks(): CometBookmarks[] {
     return chromiumBookmarks(this.paths, this.platform);
   }
 
   /**
-    * Function to parse Chrome Favicons information. 
+    * Function to parse Comet Favicons information. 
     * @param [offset=0] Starting db offset. Default is zero
     * @param [limit=100] How many records to return. Default is 100
-    * @returns Array of `ChromeFavicons` 
+    * @returns Array of `CometFavicons` 
     */
-  public override favicons(offset?: number, limit?: number): ChromeFavicons[] {
+  public override favicons(offset?: number, limit?: number): CometFavicons[] {
     const query = `SELECT url, last_updated, page_url FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id JOIN icon_mapping ON icon_mapping.icon_id = favicons.id LIMIT ${limit} OFFSET ${offset}`;
     return chromiumFavicons(this.paths, this.platform, query);
   }
 
   /**
-   * Function to parse Chrome Shortcut information. 
+   * Function to parse Comet Shortcut information. 
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
-   * @returns Array of `ChromeShortcuts` 
+   * @returns Array of `CometShortcuts` 
    */
-  public override shortcuts(offset = 0, limit = 100): ChromeShortcuts[] {
+  public override shortcuts(offset = 0, limit = 100): CometShortcuts[] {
     const query = `SELECT id, text, fill_into_edit, url, contents, description, type, keyword, last_access_time FROM omni_box_shortcuts LIMIT ${limit} OFFSET ${offset}`;
     return chromiumShortcuts(this.paths, this.platform, query);
   }
 
   /**
-   * Get Chrome Local Storage
-   * @returns Array of `ChromeLocalStorage` for each user
+   * Get Comet Local Storage
+   * @returns Array of `CometLocalStorage` for each user
    */
-  public override localStorage(): ChromeLocalStorage[] {
+  public override localStorage(): CometLocalStorage[] {
     return chromiumLocalStorage(this.paths, this.platform);
   }
 
   /**
-   * Get Chrome Sessions
-   * @returns Array of `ChromeSession` for each user
+   * Get Comet Sessions
+   * @returns Array of `CometSession` for each user
    */
-  public override sessions(): ChromeSession[] {
+  public override sessions(): CometSession[] {
     return chromiumSessions(this.paths, this.platform);
   }
 
   /**
-   * Function to parse Chrome Login information. 
+   * Function to parse Comet Login information. 
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
-   * @returns Array of `ChromeLogins` 
+   * @returns Array of `CometLogins` 
    */
-  public override logins(offset = 0, limit = 100): ChromeLogins[] {
+  public override logins(offset = 0, limit = 100): CometLogins[] {
     const query = `SELECT * from logins LIMIT ${limit} OFFSET ${offset}`;
     return chromiumLogins(this.paths, this.platform, query);
   }
 
   /**
-   * Function to parse Chrome Detect Incidental Party State (DIPS) information
+   * Function to parse Comet Detect Incidental Party State (DIPS) information
    * @param [offset=0] Starting db offset. Default is zero
    * @param [limit=100] How many records to return. Default is 100
-   * @returns Array of `ChromeDips` 
+   * @returns Array of `CometDips` 
    */
-  public override dips(offset = 0, limit = 100): ChromeDips[] {
+  public override dips(offset = 0, limit = 100): CometDips[] {
     const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
     return chromiumDips(this.paths, this.platform, query);
   }

@@ -291,14 +291,22 @@ export function chromiumFavicons(paths: ChromiumProfiles[], platform: PlatformTy
                     (entry["last_updated"] as number ?? 0) / adjust,
                 );
                 let url = "Favicon URL Null";
+                let page_url = "Favicon Page Null";
+                let message = url;
                 if (typeof entry["url"] === 'string') {
                     url = entry["url"];
+                    message = url;
+                }
+                if (typeof entry["page_url"] === 'string') {
+                    page_url = entry["page_url"];
+                    message = page_url;
                 }
 
                 const download_row: ChromiumFavicons = {
                     db_path: entry_path.full_path,
                     version: path.version,
-                    message: `Favicon for ${url}`,
+                    page_url,
+                    message: `Favicon for ${message}`,
                     datetime: unixEpochToISO(last_update),
                     data_type: `applications:${path.browser.toLowerCase()}:favicons:entry`,
                     browser: path.browser,

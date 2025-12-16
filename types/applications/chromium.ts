@@ -162,6 +162,7 @@ export interface ChromiumCookies {
 export interface ChromiumFavicons {
   last_update: string;
   url: string;
+  page_url: string;
   db_path: string;
   /**Browser version */
   version: string;
@@ -363,7 +364,9 @@ export interface ChromiumProfiles {
 export enum BrowserType {
   CHROME = "Google Chrome",
   EDGE = "Microsoft Edge",
-  CHROMIUM = "Google Chromium"
+  CHROMIUM = "Google Chromium",
+  COMET = "Perplexity Comet",
+  BRAVE = "Brave",
 }
 
 export enum ChromiumCookieType {

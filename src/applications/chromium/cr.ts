@@ -48,6 +48,14 @@ export class Chromium {
                 browser_error = new ApplicationError("CHROMIUM", "").name;
                 break;
             }
+            case BrowserType.COMET: {
+                browser_error = new ApplicationError("COMET", "").name;
+                break;
+            }
+            case BrowserType.BRAVE: {
+                browser_error = new ApplicationError("BRAVE", "").name;
+                break;
+            }
             default: {
                 break;
             }
@@ -172,7 +180,7 @@ export class Chromium {
      * @returns Array of `ChromiumFavicons` 
      */
     public favicons(offset = 0, limit = 100): ChromiumFavicons[] {
-        const query = `SELECT url, last_updated FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id LIMIT ${limit} OFFSET ${offset}`;
+        const query = `SELECT url, last_updated, page_url FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id JOIN icon_mapping ON icon_mapping.icon_id = favicons.id LIMIT ${limit} OFFSET ${offset}`;
         return chromiumFavicons(this.paths, this.platform, query);
     }
 
@@ -467,6 +475,10 @@ export class Chromium {
                 return "/Users/*/Library/Application Support/Microsoft Edge";
             } else if (browser_type === BrowserType.CHROMIUM) {
                 return "/Users/*/Library/Application Support/Chromium";
+            } else if (browser_type === BrowserType.COMET) {
+                return "/Users/*/Library/Application Support/Perplexity/Comet";
+            } else if (browser_type === BrowserType.BRAVE) {
+                return "/Users/*/Library/Application Support/BraveSoftware/Brave-Browser";
             }
 
             return new ApplicationError(`${browser_error}`, `Unsupported macOS browser! ${browser_type}`);
@@ -479,6 +491,10 @@ export class Chromium {
                 return "/home/*/.config/Microsoft Edge";
             } else if (browser_type === BrowserType.CHROMIUM) {
                 return "/home/*/.config/chromium/";
+            } else if (browser_type === BrowserType.COMET) {
+                return "/home/*/.config/Perplexity/Comet";
+            } else if (browser_type === BrowserType.BRAVE) {
+                return "/home/*/.config/BraveSoftware/Brave-Browser";
             }
 
             return new ApplicationError(`${browser_error}`, `Unsupported Linux browser! ${browser_type}`);
@@ -495,6 +511,10 @@ export class Chromium {
                 return `${drive}\\Users\\*\\AppData\\Local\\Microsoft\\Edge\\User Data`;
             } else if (browser_type === BrowserType.CHROMIUM) {
                 return `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data`;
+            } else if (browser_type === BrowserType.COMET) {
+                return `${drive}\\Users\\*\\AppData\\Local\\Perplexity\\Comet\\User Data`;
+            } else if (browser_type === BrowserType.BRAVE) {
+                return `${drive}\\Users\\*\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data`;
             }
 
             return new ApplicationError(`${browser_error}`, `Unsupported Windows browser! ${browser_type}`);

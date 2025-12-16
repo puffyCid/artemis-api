@@ -1,13 +1,12 @@
 ---
-description: Microsoft Edge (Chromium based)
+description: Perplexity AI Browser
 keywords:
   - browser
-  - microsoft
 ---
 
-# Edge
+# Comet
 
-Edge is a popular web browser created and maintained by Microsoft.
+Comet is a AI focus web browser created and maintained by Perplexity.
 
 Artemis supports parsing the list of artifacts below:
 
@@ -26,8 +25,8 @@ Artemis supports parsing the list of artifacts below:
 - Shortcuts
 - Retrospect - A powerful capability that timelines all artifacts. It is based on [Hindsight](https://github.com/obsidianforensics/hindsight)
 
-You have to use the artemis [api](../../API/overview.md) in order to collect Edge data.  
-Since Edge is based on Chromium, many of the Edge artifacts will be identical to Chromium
+You have to use the artemis [api](../../API/overview.md) in order to collect Comet data.  
+Since Comet is based on Chromium, many of the Comet artifacts will be identical to Chromium
 
 Other parsers:
 
@@ -42,11 +41,11 @@ References:
 # Sample API Script
 
 ```typescript
-import { Edge } from "./artemis-api/mod";
+import { Comet } from "./artemis-api/mod";
 import { PlatformType } from "./artemis-api/src/system/systeminfo";
 
 function main() {
-    const client = new Edge(PlatformType.Darwin);
+    const client = new Comet(PlatformType.Darwin);
     console.log(JSON.stringify(client.cookies()));
 }
 

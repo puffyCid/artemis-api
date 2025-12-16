@@ -150,7 +150,7 @@ export class Edge extends Chromium {
      * @returns Array of `EdgeFavicons` 
      */
     public override favicons(offset?: number, limit?: number): EdgeFavicons[] {
-        const query = `SELECT url, last_updated FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id LIMIT ${limit} OFFSET ${offset}`;
+        const query = `SELECT url, last_updated, page_url FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id JOIN icon_mapping ON icon_mapping.icon_id = favicons.id LIMIT ${limit} OFFSET ${offset}`;
         return chromiumFavicons(this.paths, this.platform, query);
     }
 
