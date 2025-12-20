@@ -1,13 +1,12 @@
 ---
-description: Microsoft Edge (Chromium based)
+description: Brave browser
 keywords:
   - browser
-  - microsoft
 ---
 
-# Edge
+# Brave
 
-Edge is a popular web browser created and maintained by Microsoft.
+Brave is an open source web browser created and maintained by Brave Software.
 
 Artemis supports parsing the list of artifacts below:
 
@@ -26,8 +25,8 @@ Artemis supports parsing the list of artifacts below:
 - Shortcuts
 - Retrospect - A powerful capability that timelines all artifacts. It is based on [Hindsight](https://github.com/obsidianforensics/hindsight)
 
-You have to use the artemis [api](../../API/overview.md) in order to collect Edge data.  
-Since Edge is based on Chromium, many of the Edge artifacts will be identical to Chromium
+You have to use the artemis [api](../../API/overview.md) in order to collect Brave data.  
+Since Brave is based on Chromium, many of the Brave artifacts will be identical to Chromium
 
 Other parsers:
 
@@ -42,11 +41,11 @@ References:
 # Sample API Script
 
 ```typescript
-import { Edge } from "./artemis-api/mod";
+import { Brave } from "./artemis-api/mod";
 import { PlatformType } from "./artemis-api/src/system/systeminfo";
 
 function main() {
-    const client = new Edge(PlatformType.Darwin);
+    const client = new Brave(PlatformType.Darwin);
     console.log(JSON.stringify(client.cookies()));
 }
 
