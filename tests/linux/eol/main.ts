@@ -14,8 +14,8 @@ async function main() {
     if (result.url !== "https://endoflife.date/libreoffice") {
         throw console.log(`Got empty URL wanted ${result.url}`);
     }
-    if (result.latest_release_date !== "2025-09-01") {
-        throw console.log(`Got empty URL wanted ${result.latest_release_date}`);
+    if (result.eol !== "2025-11-30") {
+        throw console.log(`Got EOL "${result.eol}". Wanted: 2025-11-30`);
     }
     console.log(' Live test passed! 🥳\n');
 
