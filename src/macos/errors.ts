@@ -29,6 +29,7 @@ export type ErrorName =
   | "LOGONS"
   | "COOKIES"
   | "SYSTEMSTATS"
-  | "AUTHORIZATIONS";
+  | "AUTHORIZATIONS"
+  | "STATS";
 
 export class MacosError extends ErrorBase<ErrorName> {}

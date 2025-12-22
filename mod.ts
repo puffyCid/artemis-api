@@ -58,6 +58,7 @@ export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper";
 export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
 export { authorizations } from "./src/macos/sqlite/authd";
+export { parseSystemStats } from "./src/macos/systemstats";
 
 /**
  * Unix exported functions

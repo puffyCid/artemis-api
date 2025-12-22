@@ -904,3 +904,11 @@ function main() {
 
 main();
 ```
+
+### parseSystemStats(alt_file) -> SystemStats[] | MacosError
+
+Parse a stats files and try to extract data. 
+
+| Param          | Type    | Description                                       |
+| -------------- | ------- | ------------------------------------------------- |
+| alt_file       | string  | Optional path to an alternative stats file        |
