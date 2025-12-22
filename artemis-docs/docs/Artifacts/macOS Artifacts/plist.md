@@ -17,7 +17,7 @@ most common.
 You have to use the artemis [api](../../API/overview.md) in order to parse plist files.
 
 ```typescript
-import { dockTiles } from "./artemis-api/mod";
+import { getPlist } from "./artemis-api/mod";
 
 function main() {
   const results = getPlist("test.plist");
