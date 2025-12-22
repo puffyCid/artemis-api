@@ -12,12 +12,18 @@ macOS property lists (`plist`) are the primary format for application
 configurations. The contents of `plists` can be: xml, json, or binary. XML is
 most common.
 
-# TOML Collection
+# Collection
 
-There is no way to collect `plist` data with artemis instead it is an feature
-for scripting. See the [scripts](../../Intro/Scripting/scripts.md) chapter for
-examples.
+You have to use the artemis [api](../../API/overview.md) in order to parse plist files.
 
+```typescript
+import { dockTiles } from "./artemis-api/mod";
+
+function main() {
+  const results = getPlist("test.plist");
+  console.log(JSON.stringify(results));
+}
+```
 # Configuration Optaions
 
 N/A

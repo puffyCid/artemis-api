@@ -12,6 +12,22 @@ import { take } from "../nom/parsers";
 import { unixEpochToISO } from "../time/conversion";
 import { MacosError } from "./errors";
 
+
+/**
+ * TODO:
+ * 1. Add wall time to the abosolute timestamp (field 10?)
+ * 2. Extract more protobuf fields
+ * 3. Add uuid parsing
+ * 4. Support decompressing gzip data
+ *    - binary plists may be found the gzip data
+ * You can compare with systemstats command on macos `systemstats --show-events --all-process-data -f /var/db/systemstats/`
+ * 
+ * 
+ * Reaearch field values:
+ *  field 1: ID? Seems to increment by one
+ *  field 10: Wall time that gets added to the abosolute time to get actual timestamp?
+ */
+
 /**
  * Function to extract macOS system stats
  * @param alt_file Optional alternative path to stats file(safari)
