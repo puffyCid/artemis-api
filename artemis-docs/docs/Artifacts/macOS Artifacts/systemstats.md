@@ -15,7 +15,7 @@ Stats files are stored in binary format that contains
 [Protobuf](https://protobuf.dev/) data at `/var/db/systemstats`. It is very difficult (nearly impossible)
 to parse Protobuf data perfectly without the associated Proto file.
 
-Currently artemis limited correlation after parsing protobuf data. 
+Currently artemis does limited correlation after parsing protobuf data. 
 
 # Collection
 
