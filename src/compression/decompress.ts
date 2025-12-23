@@ -74,3 +74,18 @@ export function decompress_zstd(data: Uint8Array): Uint8Array | CompressionError
     return new CompressionError(`ZSTD`, `failed to decompress: ${err}`);
   }
 }
+
+/**
+ * Function to decompress lzvn compressed data
+ * @param data Raw bytes to decompress
+ * @returns Decompressed data or `CompressionError`
+ */
+export function decompress_lzvn(data: Uint8Array): Uint8Array | CompressionError {
+  try {
+    // @ts-expect-error: Custom Artemis function
+    const bytes: Uint8Array = js_decompress_lzvn(data);
+    return bytes;
+  } catch (err) {
+    return new CompressionError(`LZVN`, `failed to decompress: ${err}`);
+  }
+}
