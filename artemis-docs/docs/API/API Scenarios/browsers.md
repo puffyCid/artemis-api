@@ -58,7 +58,7 @@ function main() {
         /** JSONL is the easiest format to upload to Timesketch */
         format: Format.JSONL,
         compress: false,
-        /** This can be set to false. The artemsi API will automatically timeline for us */
+        /** This can be set to false. The artemis API will automatically timeline for us */
         timeline: false,
         endpoint_id: "",
         collection_id: 0,
@@ -126,7 +126,7 @@ function main() {
         /** JSONL is the easiest format to upload to Timesketch */
         format: Format.JSONL,
         compress: false,
-        /** This can be set to false. The artemsi API will automatically timeline for us */
+        /** This can be set to false. The artemis API will automatically timeline for us */
         timeline: false,
         endpoint_id: "",
         collection_id: 0,
@@ -193,7 +193,7 @@ function main() {
         /** JSONL is the easiest format to upload to Timesketch */
         format: Format.JSONL,
         compress: false,
-        /** This can be set to false. The artemsi API will automatically timeline for us */
+        /** This can be set to false. The artemis API will automatically timeline for us */
         timeline: false,
         endpoint_id: "",
         collection_id: 0,
