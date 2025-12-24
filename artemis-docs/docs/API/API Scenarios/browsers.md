@@ -2,7 +2,7 @@
 description: How to extract data from browsers
 ---
 
-# Browswer Artifacts
+# Browser Artifacts
 
 Artemis supports extracting forensic artifacts for a lot of different browser applications:
 
