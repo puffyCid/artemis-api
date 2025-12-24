@@ -145,7 +145,7 @@ esbuild --bundle --minify --outfile=out.js main.ts
 :::
 
 
-The above commands will use the main.ts file and bundle all of its pre-requisite
+The above commands will use the main.ts file and bundle all of its prerequisite
 files into one .js file using esbuild.
 
 ### Output

@@ -7,7 +7,7 @@ description: A full walkthrough
 
 Lets create an simple script that will collect a process listing that returns
 only processes that are using more than 200MB of memory. Make sure you have all
-of the [prequisites](./boa.md) before getting started!
+of the [prerequisites](./boa.md) before getting started!
 
 1. First we need to create a project directory and name our script (ex: main.ts)
 2. Now using a text editor or IDE we need to import the necessary functions to

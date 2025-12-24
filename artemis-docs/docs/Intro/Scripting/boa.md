@@ -31,7 +31,7 @@ All three let you script forensic collections and parsing
 
 :::
 
-# Prequisites for Scripting.
+# Prerequisites for Scripting.
 
 1. A text-editor or IDE that supports TypeScript.
    [VSCodium](https://vscodium.com/) and
