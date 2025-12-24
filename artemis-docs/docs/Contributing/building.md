@@ -36,9 +36,16 @@ Windows users will need to add extra arguments to the just command:\
 `just --shell pwsh.exe --shell-arg -c`
 
 On Windows if you get an error like:\
-`error: Recipe _wasm could not be run because just could not find the shell: program not found`
+`error: Recipe _cargo-plugins could not be run because just could not find the shell: program not found`
 
 it means you forgot provide: `just --shell pwsh.exe  --shell-arg -c`
+
+:::
+
+
+:::info
+
+If you are using a Windows ARM device. Winget is suggested instead of Chocolatey
 
 :::
 

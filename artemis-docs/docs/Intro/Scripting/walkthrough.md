@@ -104,14 +104,14 @@ Thats it! We now have a simple script that filters a process listing.
 
 6. Now before we run our script, we need to [bundle](./bundling.md) all of the
    code into one JavaScript file.
-7. Once we have bundled our script has finished running we should now have our JavaScript file! We can
-   now run it with artemis! There are two ways to run JavaScript code with
+7. Once we have bundled our script we should now have our JavaScript file! We can
+   now run it with artemis. There are two ways to run JavaScript code with
    artemis:
    - Use a TOML [collection](../Collections/format.md) file
    - run directly via `artemis -j <path to main.js>`
 
    There are slight differences between both options. If we use a TOML
-   collection file, artemis will handle the output format for us based on the
+   collection file, artemis will handle any output format for us based on the
    TOML configuration.
 
    If we decide to run the JavaScript code directly, we would need to include
@@ -139,7 +139,7 @@ timeline = false
 artifact_name = "script"
 [artifacts.script]
 name = "proc_memory_usage_list"
-script = "Ly8gaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B1ZmZ5Y2lkL2FydGVtaXMtYXBpL21hc3Rlci9zcmMvc3lzdGVtL21lbW9yeS50cwpmdW5jdGlvbiBwcm9jZXNzTGlzdGluZyhtZDUgPSBmYWxzZSwgc2hhMSA9IGZhbHNlLCBzaGEyNTYgPSBmYWxzZSwgYmluYXJ5ID0gZmFsc2UpIHsKICBjb25zdCBoYXNoZXMgPSB7CiAgICBtZDUsCiAgICBzaGExLAogICAgc2hhMjU2CiAgfTsKICBjb25zdCBkYXRhID0gRGVuby5jb3JlLm9wcy5nZXRfcHJvY2Vzc2VzKAogICAgaGFzaGVzLAogICAgYmluYXJ5CiAgKTsKICBjb25zdCBwcm9jX2FycmF5ID0gSlNPTi5wYXJzZShkYXRhKTsKICByZXR1cm4gcHJvY19hcnJheTsKfQoKLy8gbWFpbi50cwpmdW5jdGlvbiBtYWluKCkgewogIGNvbnN0IG1kNSA9IGZhbHNlOwogIGNvbnN0IHNoYTEgPSBmYWxzZTsKICBjb25zdCBzaGEyNTYgPSBmYWxzZTsKICBjb25zdCBiaW5hcnlfaW5mbyA9IHRydWU7CiAgY29uc3QgcHJvY19saXN0ID0gcHJvY2Vzc0xpc3RpbmcobWQ1LCBzaGExLCBzaGEyNTYsIGJpbmFyeV9pbmZvKTsKICBjb25zdCBmaWx0ZXJfbGlzdCA9IFtdOwogIGZvciAoY29uc3QgZW50cnkgb2YgcHJvY19saXN0KSB7CiAgICBpZiAoZW50cnkubWVtb3J5X3VzYWdlID4gMTUpIHsKICAgICAgY29uc29sZS5sb2coYEhpZ2ggbWVtb3J5IHVzYWdlICR7ZW50cnl9YCk7CiAgICAgIGZpbHRlcl9saXN0LnB1c2goZW50cnkpOwogICAgfQogIH0KICByZXR1cm4gZmlsdGVyX2xpc3Q7Cn0KbWFpbigpOwo="
+script = "Ly8gaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3B1ZmZ5Y2lkL2FydGVtaXMtYXBpL21hc3Rlci9zcmMvc3lzdGVtL21lbW9yeS50cwpmdW5jdGlvbiBwcm9jZXNzTGlzdGluZyhtZDUgPSBmYWxzZSwgc2hhMSA9IGZhbHNlLCBzaGEyNTYgPSBmYWxzZSwgYmluYXJ5ID0gZmFsc2UpIHsKICBjb25zdCBoYXNoZXMgPSB7CiAgICBtZDUsCiAgICBzaGExLAogICAgc2hhMjU2CiAgfTsKICBjb25zdCBkYXRhID0ganNfZ2V0X3Byb2Nlc3NlcygKICAgIGhhc2hlcywKICAgIGJpbmFyeQogICk7CiAgcmV0dXJuIGRhdGE7Cn0KCi8vIG1haW4udHMKZnVuY3Rpb24gbWFpbigpIHsKICBjb25zdCBtZDUgPSBmYWxzZTsKICBjb25zdCBzaGExID0gZmFsc2U7CiAgY29uc3Qgc2hhMjU2ID0gZmFsc2U7CiAgY29uc3QgYmluYXJ5X2luZm8gPSBmYWxzZTsKICBjb25zdCBwcm9jX2xpc3QgPSBwcm9jZXNzTGlzdGluZyhtZDUsIHNoYTEsIHNoYTI1NiwgYmluYXJ5X2luZm8pOwogIGNvbnN0IGZpbHRlcl9saXN0ID0gW107CiAgZm9yIChjb25zdCBlbnRyeSBvZiBwcm9jX2xpc3QpIHsKICAgIGlmIChlbnRyeS5tZW1vcnlfdXNhZ2UgPiAyMDAyMDQ4NjQpIHsKICAgICAgY29uc29sZS5sb2coYEhpZ2ggbWVtb3J5IHVzYWdlICR7ZW50cnkubmFtZX1gKTsKICAgICAgZmlsdGVyX2xpc3QucHVzaChlbnRyeSk7CiAgICB9CiAgfQogIHJldHVybiBmaWx0ZXJfbGlzdDsKfQptYWluKCk7Cg=="
 ```
 
 11. Now run our TOML file collection with artemis!
@@ -178,43 +178,22 @@ Snippet below:
 
 ```json
 {
-  "metadata": {
-    "endpoint_id": "this can be anything",
-    "uuid": "4f58d2e4-d2fa-4e91-9dcb-8bbe44c2efdb",
-    "id": 1,
-    "artifact_name": "proc_memory_usage_list",
-    "complete_time": 1694831851,
-    "start_time": 1694831851,
-    "hostname": "dev-MBP.lan",
-    "os_version": "13.4.1",
-    "platform": "Darwin",
-    "kernel_version": "22.5.0",
-    "load_performance": {
-      "avg_one_min": 1.74755859375,
-      "avg_five_min": 1.62744140625,
-      "avg_fifteen_min": 1.6484375
-    }
-  },
-  "data": [
-    {
-      "full_path": "/Applications/VSCodium.app/Contents/Frameworks/VSCodium Helper (Renderer).app/Contents/MacOS/VSCodium Helper (Renderer)",
-      "name": "VSCodium Helper (Renderer)",
-      "path": "/Applications/VSCodium.app/Contents/Frameworks/VSCodium Helper (Renderer).app/Contents/MacOS",
-      "pid": 924,
-      "ppid": 910,
-      "environment": "MallocNanoZone=0 USER=dev COMMAND_MODE=unix2003 __CFBundleIdentifier=com.vscodium PATH=/usr/bin:/bin:/usr/sbin:/sbin LOGNAME=dev SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.EMaeAUplCi/Listeners HOME=/Users/dev SHELL=/bin/zsh TMPDIR=/var/folders/ms/hq39v4_x1sq20cz108g3_6cw0000gn/T/ __CF_USER_TEXT_ENCODING=0x1F5:0x0:0x0 XPC_SERVICE_NAME=application.com.vscodium.52768860.61870812 XPC_FLAGS=0x0 ORIGINAL_XDG_CURRENT_DESKTOP=undefined VSCODE_CWD=/ VSCODE_NLS_CONFIG={\"locale\":\"en-us\",\"osLocale\":\"en-us\",\"availableLanguages\":{},\"_languagePackSupport\":true} VSCODE_CODE_CACHE_PATH=/Users/dev/Library/Application Support/VSCodium/CachedData/13ae69686c4390a9aee7b71b44337eb488319f26 VSCODE_IPC_HOOK=/Users/dev/Library/Application Support/VSCodium/1.82-main.sock VSCODE_PID=910 OS_ACTIVITY_MODE=disable",
-      "status": "Runnable",
-      "arguments": " --type=renderer --user-data-dir=/Users/dev/Library/Application Support/VSCodium --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --bypasscsp-schemes --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --streaming-schemes --app-path=/Applications/VSCodium.app/Contents/Resources/app --enable-sandbox --enable-blink-features=HighlightAPI --lang=en-US --num-raster-threads=4 --enable-zero-copy --enable-gpu-memory-buffer-compositor-resources --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1694820653253440 --launch-time-ticks=1314885816 --shared-files --field-trial-handle=1718379636,r,10495113946754946208,8514878387345791811,262144 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess --vscode-window-config=vscode:15d59b34-a78d-4dc2-963f-171fa490be8d --seatbelt-client=62",
-      "memory_usage": 573014016,
-      "virtual_memory_usage": 1252417200128.0,
-      "start_time": 1694821968,
-      "uid": "501",
-      "gid": "20",
-      "md5": "",
-      "sha1": "",
-      "sha256": "",
-      "binary_info": []
-    }
-  ]
+  "full_path": "/Applications/VSCodium.app/Contents/Frameworks/VSCodium Helper (Renderer).app/Contents/MacOS/VSCodium Helper (Renderer)",
+  "name": "VSCodium Helper (Renderer)",
+  "path": "/Applications/VSCodium.app/Contents/Frameworks/VSCodium Helper (Renderer).app/Contents/MacOS",
+  "pid": 924,
+  "ppid": 910,
+  "environment": "MallocNanoZone=0 USER=dev COMMAND_MODE=unix2003 __CFBundleIdentifier=com.vscodium PATH=/usr/bin:/bin:/usr/sbin:/sbin LOGNAME=dev SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.EMaeAUplCi/Listeners HOME=/Users/dev SHELL=/bin/zsh TMPDIR=/var/folders/ms/hq39v4_x1sq20cz108g3_6cw0000gn/T/ __CF_USER_TEXT_ENCODING=0x1F5:0x0:0x0 XPC_SERVICE_NAME=application.com.vscodium.52768860.61870812 XPC_FLAGS=0x0 ORIGINAL_XDG_CURRENT_DESKTOP=undefined VSCODE_CWD=/ VSCODE_NLS_CONFIG={\"locale\":\"en-us\",\"osLocale\":\"en-us\",\"availableLanguages\":{},\"_languagePackSupport\":true} VSCODE_CODE_CACHE_PATH=/Users/dev/Library/Application Support/VSCodium/CachedData/13ae69686c4390a9aee7b71b44337eb488319f26 VSCODE_IPC_HOOK=/Users/dev/Library/Application Support/VSCodium/1.82-main.sock VSCODE_PID=910 OS_ACTIVITY_MODE=disable",
+  "status": "Runnable",
+  "arguments": " --type=renderer --user-data-dir=/Users/dev/Library/Application Support/VSCodium --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --bypasscsp-schemes --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --streaming-schemes --app-path=/Applications/VSCodium.app/Contents/Resources/app --enable-sandbox --enable-blink-features=HighlightAPI --lang=en-US --num-raster-threads=4 --enable-zero-copy --enable-gpu-memory-buffer-compositor-resources --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1694820653253440 --launch-time-ticks=1314885816 --shared-files --field-trial-handle=1718379636,r,10495113946754946208,8514878387345791811,262144 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess --vscode-window-config=vscode:15d59b34-a78d-4dc2-963f-171fa490be8d --seatbelt-client=62",
+  "memory_usage": 573014016,
+  "virtual_memory_usage": 1252417200128.0,
+  "start_time": 1694821968,
+  "uid": "501",
+  "gid": "20",
+  "md5": "",
+  "sha1": "",
+  "sha256": "",
+  "binary_info": []
 }
 ```

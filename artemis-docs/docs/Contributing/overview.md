@@ -4,8 +4,8 @@ sidebar_position: 2
 
 # Getting Started
 
-The artemis source code is about ~100k lines of Rust code across ~619 files as of
-May 2025 (this includes tests). However its organized in a pretty simple
+The artemis source code is about ~88k lines of Rust code across ~690 files as of
+December 2025 (this includes tests). However its organized in a pretty simple
 structure.
 
 :::tip
