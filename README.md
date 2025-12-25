@@ -27,7 +27,7 @@ function main() {
 
   const proc_list = processListing(md5, sha1, sha256, binary_info);
   for(const entry of proc_list) {
-    console.log(`Process name is ${entry.name}`r);
+    console.log(`Process name is ${entry.name}`);
   }
 
   return proc_list;
