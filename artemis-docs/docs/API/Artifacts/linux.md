@@ -157,7 +157,7 @@ Get a list of all installed Snap packages
 
 Extract abrt metadata about application crashes. You may provide an optional alternative directory containing abrt related files.
 
-By default all abrt crashes are parsed. Root access is required to access abrt related fiels
+By default all abrt crashes are parsed. Root access is required to access abrt related files
 
 | Param    | Type   | Description                                        |
 | -------- | ------ | -------------------------------------------------- |

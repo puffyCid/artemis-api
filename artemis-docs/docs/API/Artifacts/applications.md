@@ -142,7 +142,7 @@ Return Chromium sessions for all users.
 
 #### retrospect(output)
 
-A powerfull function that will timeline all supported Chromium artifacts
+A powerful function that will timeline all supported Chromium artifacts
 
 | Param            | Type          | Description                         |
 | ---------------- | ------------- | ----------------------------------- |
@@ -409,7 +409,7 @@ file.
 ### OneDrive Class
 
 A basic TypeScript class to extract OneDrive forensic artifacts. Supports both macOS and Windows.  
-By default artemis will parse OneDrive artifacts for **all** users. You may provide a single user as an optional arguement to only parse data for a specific user.
+By default artemis will parse OneDrive artifacts for **all** users. You may provide a single user as an optional argument to only parse data for a specific user.
 
 You may also provide an optional alternative path to a folder containing
 OneDrive artifacts. You must include the trailing slash. The folder should
@@ -457,7 +457,7 @@ You may also provide an optional Output object to output results to a file inste
 | ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | files            | string[]      | Parse only key files from the provided array                                                                                                      |
 | output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
-| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
 
 #### oneDriveAccounts(files, output, metadata_runtime) -> OneDriveAccount[] 
 
@@ -469,7 +469,7 @@ You may also provide an optional Output object to output results to a file inste
 | ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | files            | string[]      | Parse only account files from the provided array                                                                                                 |
 | output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
-| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
 
 #### oneDriveLogs(files, output, metadata_runtime) -> OneDriveLog[] 
 
@@ -481,7 +481,7 @@ You may also provide an optional Output object to output results to a file inste
 | ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | files            | string[]      | Parse only log files from the provided array                                                                                                      |
 | output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
-| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
 
 #### oneDriveSyncDatabase(files, output, metadata_runtime) -> OneDriveSyncEngineRecord[] 
 
@@ -493,11 +493,11 @@ You may also provide an optional Output object to output results to a file inste
 | ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | files            | string[]      | Parse only database files from the provided array                                                                                                 |
 | output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
-| metadata_runtime | boolean       | Specificy if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
 
-#### oneDriveRetrospect(output) 
+#### retrospect(output) 
 
-A powerfull function that will timeline all supported OneDrive artifacts
+A powerful function that will timeline all supported OneDrive artifacts
 
 | Param            | Type          | Description                         |
 | ---------------- | ------------- | ----------------------------------- |

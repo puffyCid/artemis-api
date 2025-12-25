@@ -46,7 +46,7 @@ An example payload is below:
 
 ## Configuration Response
 
-The artemis daemon expects a response continaing the following:
+The artemis daemon expects a response containing the following:
 
 ```json
 {

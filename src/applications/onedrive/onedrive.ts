@@ -293,7 +293,7 @@ export class OneDrive {
      * Function that parses and timelines all OneDrive artifacts
      * @param output `Object` object to output results
      */
-    public oneDriveRetrospect(output: Output): void {
+    public retrospect(output: Output): void {
         this.oneDriveLogs(undefined, output);
         this.oneDriveSyncDatabase(undefined, output);
         this.oneDriveAccounts(undefined, output);

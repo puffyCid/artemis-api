@@ -13,7 +13,7 @@ Nom is a powerful parsing framework but can be a little complex when first
 starting. It works on both plaintext and binary data. Artemis mainly uses it for
 binary data. But parts of the artemis-api will support plaintext as well.
 
-An highlevel overview of the way nom works:
+An high level overview of the way nom works:
 
 1. You give nom X bytes and tell nom to "eat" (nom) Y bytes
 2. Nom wil consume Y bytes then return Y bytes AND the **remaining** X bytes
@@ -34,7 +34,7 @@ assert!(consumed, [0,1]); // we consumed the first 2 bytes!
 
 :::warning
 
-Using nom might add additional overhead to your script. Everytime you use nom,
+Using nom might add additional overhead to your script. Every time you use nom,
 artemis needs to send JS data to Rust code. If your JS script is slow, try
 parsing the raw bytes using only JS (ex: .slice() or buffer.slice())
 
@@ -43,77 +43,77 @@ native JS to parse some data.
 
 :::
 
-### nomUnsignedFourBytes(data, endianess) -> NomUnsigned | NomError
+### nomUnsignedFourBytes(data, endianness) -> NomUnsigned | NomError
 
 Nom helper to parse four bytes into unsigned 32 bit integer
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
-### nomUnsignedEightBytes(data, endianess) -> NomUnsigned | NomError
+### nomUnsignedEightBytes(data, endianness) -> NomUnsigned | NomError
 
 Nom helper to parse eight bytes into unsigned 64 bit integer
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
-### nomUnsignedTwoBytes(data, endianess) -> NomUnsigned | NomError
+### nomUnsignedTwoBytes(data, endianness) -> NomUnsigned | NomError
 
 Nom helper to parse two bytes into unsigned 16 bit integer
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
-### nomUnsignedOneBytes(data, endianess) -> NomUnsigned | NomError
+### nomUnsignedOneBytes(data, endianness) -> NomUnsigned | NomError
 
 Nom helper to parse one bytes into unsigned 8 bit integer
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
-### nomUnsignedSixteenBytes(data, endianess) -> NomUnsignedLarge | NomError
+### nomUnsignedSixteenBytes(data, endianness) -> NomUnsignedLarge | NomError
 
 Nom helper to parse sixteen bytes into unsigned 128 bit integer as a string
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
-### nomSignedFourBytes(data, endianess) -> NomSigned | NomError
+### nomSignedFourBytes(data, endianness) -> NomSigned | NomError
 
 Nom helper to parse four bytes into signed 32 bit integer
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
-### nomSignedEightBytes(data, endianess) -> NomSigned | NomError
+### nomSignedEightBytes(data, endianness) -> NomSigned | NomError
 
 Nom helper to parse eight bytes into signed 64 bit integer
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
-### nomSignedTwoBytes(data, endianess) -> NomSigned | NomError
+### nomSignedTwoBytes(data, endianness) -> NomSigned | NomError
 
 Nom helper to parse two bytes into signed 16 bit integer
 
-| Param     | Type       | Description             |
-| --------- | ---------- | ----------------------- |
-| data      | Uint8Array | Bytes to provide to nom |
-| endianess | Endian     | Endian type of data     |
+| Param      | Type       | Description             |
+| ---------- | ---------- | ----------------------- |
+| data       | Uint8Array | Bytes to provide to nom |
+| endianness | Endian     | Endian type of data     |
 
 ### take(data, input) -> Nom | NomError
 
@@ -137,7 +137,7 @@ function main() {
 
   // We nommed ("consumed") the length of `hello`
   console.assert(nom_data.nommed, "Hello");
-  // We stil have some string data remaining
+  // We still have some string data remaining
   console.assert(nom_data.remaining, " TypeScript!");
 }
 ```
@@ -189,7 +189,7 @@ function. If the `input` does not exist, you will get an error.
 | data  | string OR Uint8Array | String or bytes to provide to nom               |
 | input | string OR Uint8Array | Nom data until input. Must be same type as data |
 
-Psuedo-code example below:
+Pseudo-code example below:
 
 ```typescript
 function main() {
@@ -206,7 +206,7 @@ function main() {
     return first_data;
   }
 
-  // Now we have arrived at first_data sig. We dont care about anything we consumed to get here
+  // Now we have arrived at first_data sig. We don't care about anything we consumed to get here
   // We have **NOT** consumed the signature yet!
   const sig = nomUnsignedFourBytes(first_data.remaining, Endian.Le);
   // Could technically skip this since, `takUntil` has guaranteed that we have 4 bytes remaining. Since we searched for `[1, 23, 33, 56]`
@@ -243,7 +243,7 @@ function.
 | data  | string OR Uint8Array | String or bytes to provide to nom                                                                              |
 | input | string OR number     | Nom data until input. Must be single character if data is string or a number (&lt;= 255) if data is Uint8Array |
 
-Psuedo-code example below:
+Pseudo-code example below:
 
 ```typescript
 function main() {
