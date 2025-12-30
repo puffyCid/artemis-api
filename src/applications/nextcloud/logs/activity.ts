@@ -42,13 +42,13 @@ export function nextcloudActivityLogs(text: string, log_source: string): Nextclo
 
         log.category = (values.at(0) ?? "").trim();
         log.function = (values.at(1) ?? "").trim();
-        let source = (values.at(2) ?? "");
+        const source = (values.at(2) ?? "");
         if (source === "") {
             continue;
         }
 
         log.source_file = source.split(":").at(0) ?? "";
-        log.source_file_line = Number(source.split(":").at(1)) ?? 0;
+        log.source_file_line = Number(source.split(":").at(1));
         log.message = values.slice(3).join(" ").replace("]:", "").trim();
 
         logs.push(log);

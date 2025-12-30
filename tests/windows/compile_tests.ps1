@@ -1,17 +1,51 @@
-# AI took my simple 15 line batch script and turned it into a nice ~180 line PowerShell script XD
+param(
+    [string]$test = ""
+)
+
+# If a folder name is provided, run tests only for that subdirectory of the current directory
+# If empty, run tests for all immediate subdirectories
+$cwd = Get-Location
+
+if ($test -ne "") {
+    $targetDir = Get-ChildItem -Directory | Where-Object { $_.Name -ieq $test }
+    if (-not $targetDir) {
+        Write-Host "Error: No subdirectory named '$test' found in $($cwd.Path)" -ForegroundColor Red
+        exit 2
+    }
+    $dirs = @($targetDir)
+} else {
+    $dirs = Get-ChildItem -Directory
+    if ($dirs.Count -eq 0) {
+        Write-Host "No subdirectories found in $($cwd.Path)" -ForegroundColor Yellow
+    }
+}
 
 # Record start time
 $startTime = Get-Date
 
-# Compile and test all TypeScript files in subdirectories
+# Compile and test all TypeScript files in selected subdirectories
 $results = @()
 
-foreach ($dir in Get-ChildItem -Directory) {
+foreach ($dir in $dirs) {
     $projStart = Get-Date
     Write-Host "🔥🔥🔥🔥🔥🔥 Running test for $($dir.Name) 🔥🔥🔥🔥🔥🔥"
 
+    $inTs  = Join-Path $dir.FullName "main.ts"
+    $outJs = Join-Path $dir.FullName "main.js"
+
+    if (-not (Test-Path -LiteralPath $inTs)) {
+        Write-Host "⚠️  Skipping $($dir.Name): $inTs not found" -ForegroundColor Yellow
+        $projEnd = Get-Date
+        $results += [PSCustomObject]@{
+            Project  = $dir.Name
+            Status   = "No Source"
+            Duration = $projEnd - $projStart
+        }
+        continue
+    }
+
     # Compile TypeScript with esbuild
-    esbuild --log-level=silent --bundle --outfile="$($dir.FullName)\main.js" "$($dir.FullName)\main.ts"
+    esbuild --log-level=silent --bundle --outfile="$outJs" "$inTs"
     $compileExit = $LASTEXITCODE
 
     if ($compileExit -ne 0) {
@@ -26,7 +60,7 @@ foreach ($dir in Get-ChildItem -Directory) {
     }
 
     # Run the tester only if compile succeeded
-    & .\script_tester.exe "$($dir.FullName)\main.js"
+    & .\script_tester.exe "$outJs"
     $testExit = $LASTEXITCODE
     $projEnd  = Get-Date
 
@@ -61,9 +95,11 @@ $sortedResults = $results | Sort-Object Duration -Descending
 foreach ($r in $sortedResults) {
     $line = "{0,-20} {1,-15} {2:hh\:mm\:ss}" -f $r.Project, $r.Status, $r.Duration
     switch ($r.Status) {
-        "Passed"        { Write-Host $line -ForegroundColor Green }
-        "Test Failed"   { Write-Host $line -ForegroundColor Red }
-        "Compile Failed"{ Write-Host $line -ForegroundColor Yellow }
+        "Passed"         { Write-Host $line -ForegroundColor Green }
+        "Test Failed"    { Write-Host $line -ForegroundColor Red }
+        "Compile Failed" { Write-Host $line -ForegroundColor Yellow }
+        "No Source"      { Write-Host $line -ForegroundColor DarkYellow }
+        default          { Write-Host $line }
     }
 }
 
@@ -77,7 +113,7 @@ if ($results.Status -contains "Compile Failed" -or $results.Status -contains "Te
 # --- Elapsed Time ---
 Write-Host ("⏱️ Total elapsed time: {0:hh\:mm\:ss}" -f $elapsed) -ForegroundColor Magenta
 
-# --- Highlight Slowest & Fastest Projects ---
+# --- Highlight Slowest & Fastest tests ---
 $slowest = $sortedResults | Select-Object -First 1
 $fastest = $sortedResults | Select-Object -Last 1
 
@@ -139,9 +175,11 @@ if ($results.Count -gt 0) {
         }
         $line = "{0,-20} {1,-15} {2,6:N1}%  (Cumulative: {3,6:N1}%){4}" -f $r.Project, $bar, $percent, $cumulative, $marker
         switch ($r.Status) {
-            "Passed"        { Write-Host $line -ForegroundColor Green }
-            "Test Failed"   { Write-Host $line -ForegroundColor Red }
-            "Compile Failed"{ Write-Host $line -ForegroundColor Yellow }
+            "Passed"         { Write-Host $line -ForegroundColor Green }
+            "Test Failed"    { Write-Host $line -ForegroundColor Red }
+            "Compile Failed" { Write-Host $line -ForegroundColor Yellow }
+            "No Source"      { Write-Host $line -ForegroundColor DarkYellow }
+            default          { Write-Host $line }
         }
 
         if ($cumulative -le 80) {
@@ -149,7 +187,7 @@ if ($results.Count -gt 0) {
         }
     }
 
-    # --- Top 80% Projects List ---
+    # --- Top 80% tests List ---
     if ($top80List.Count -gt 0) {
         Write-Host "`n⭐ Top 80% tests (cumulative runtime)" -ForegroundColor Cyan
         foreach ($proj in $top80List) {

@@ -39,7 +39,7 @@ export function takeUntil(
 
   if (typeof data === "string" && typeof input === "string") {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const result = js_nom_take_until_string(
         data,
         input,
@@ -51,7 +51,7 @@ export function takeUntil(
   }
 
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_nom_take_until_bytes(
       data,
       input,
@@ -89,7 +89,7 @@ export function takeWhile(
 
   if (typeof data === "string" && typeof input === "string") {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const result: Nom = js_nom_take_while_string(
         data,
         input,
@@ -101,7 +101,7 @@ export function takeWhile(
     }
   }
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_nom_take_while_bytes(
       data,
       input,

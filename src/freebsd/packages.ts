@@ -36,7 +36,7 @@ export function getPkgs(offset: number, limit: number, alt_path?: string): Pkg[]
             comment: entry[ "comment" ] as string,
             desc: entry[ "desc" ] as string,
             mtree_id: entry[ "mtree_id" ] as number | null,
-            message: entry[ "message" ] as string | null,
+            pkg_message: entry[ "message" ] as string | null,
             arch: entry[ "arch" ] as string,
             maintainer: entry[ "maintainer" ] as string,
             www: entry[ "message" ] as string | null,
@@ -50,6 +50,11 @@ export function getPkgs(offset: number, limit: number, alt_path?: string): Pkg[]
             dep_formula: entry[ "dep_formula" ] as string | null,
             vital: Boolean(entry[ "vital" ]),
             manifest_digest: entry[ "manifest_digest" ] as string | null,
+            message: `Package ${entry[ "name" ] as string} version ${entry[ "version" ] as string} installed`,
+            datetime: unixEpochToISO(entry[ "time" ] as number ?? 0),
+            timestamp_desc: "Package Installed",
+            artifact: "FreeBSD PKG",
+            data_type: "freebsd:pkg:entry"
         };
         pkg_entries.push(pkg_entry);
     }

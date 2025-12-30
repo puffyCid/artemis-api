@@ -10,7 +10,7 @@
 import { Bom, BomFiles } from "../../types/macos/bom";
 import { extractUtf8String } from "../encoding/mod";
 import { FileError } from "../filesystem/errors";
-import { readFile } from "../filesystem/files";
+import { readFile, readTextFile } from "../filesystem/files";
 import { NomError } from "../nom/error";
 import {
   Endian,
@@ -182,12 +182,12 @@ export function parseReceipt(path: string): Bom | MacosError {
 
   const receipt = plist_data as Record<string, string>;
   const bom: Bom = {
-    package_name: receipt[ "PackageFileName" ] ?? "",
-    install_data: receipt[ "InstallDate" ] ?? "",
-    package_id: receipt[ "PackageIdentifier" ] ?? "",
-    package_version: receipt[ "PackageVersion" ] ?? "",
-    install_process_name: receipt[ "InstallProcessName" ] ?? "",
-    install_prefix_path: receipt[ "InstallPrefixPath" ] ?? "",
+    package_name: receipt["PackageFileName"] ?? "",
+    install_data: receipt["InstallDate"] ?? "",
+    package_id: receipt["PackageIdentifier"] ?? "",
+    package_version: receipt["PackageVersion"] ?? "",
+    install_process_name: receipt["InstallProcessName"] ?? "",
+    install_prefix_path: receipt["InstallPrefixPath"] ?? "",
     path,
     bom_path: "",
     files: [],
@@ -204,6 +204,7 @@ interface Header {
   var_offset: number;
   var_length: number;
 }
+
 /**
  * Parse the Header of the BOM file
  * @param data raw BOM bytes
@@ -418,7 +419,7 @@ function getBlock(
     return new MacosError("BOM", `index greater than pointers length`);
   }
 
-  const pointer = pointers[ index ];
+  const pointer = pointers[index];
   if (pointer === undefined) {
     return new MacosError("BOM", `got undefined pointer`);
   }
@@ -841,7 +842,7 @@ function assembleBom(files: Map<number, BomData>): BomFiles[] {
   const boms: BomFiles[] = [];
   const root = 0;
 
-  for (const [ key, value ] of files) {
+  for (const [key, value] of files) {
     // Root directory
     if (key === root) {
       continue;
@@ -873,4 +874,209 @@ function assembleBom(files: Map<number, BomData>): BomFiles[] {
   }
 
   return boms;
+}
+
+
+export function testParseBom(): void {
+  const bom_test = "../../test_data/macos/bom/io.osquery.agent.bom";
+  const results = parseBom(bom_test);
+  if (results instanceof MacosError) {
+    throw console.log(results);
+  }
+
+  if (results.files.length !== 266) {
+    throw `Got ${results.files.length} wanted "266".......parseBom ❌`;
+  }
+
+  if (results.files[3]?.path !== "./usr") {
+    throw `Got ${results.files[3]?.path} wanted "./usr".......parseBom ❌`;
+  }
+  console.info(`  Function parseBom ✅`);
+
+  const test = "../../test_data/macos/bom/io.osquery.agent.plist";
+  const recpeit = parseReceipt(test);
+  if (recpeit instanceof MacosError) {
+    throw console.log(recpeit);
+  }
+
+  if (recpeit.package_id !== "io.osquery.agent") {
+    throw `Got ${recpeit.package_id} wanted "io.osquery.agent".......parseReceipt ❌`;
+  }
+  console.info(`  Function parseReceipt ✅`);
+
+  const data = readFile(bom_test);
+  if (data instanceof FileError) {
+    throw console.log(data);
+  }
+
+  const header = parseHeader(data);
+  if (header instanceof MacosError) {
+    throw console.log(header);
+  }
+
+  if (header.index_table_offset != 53928) {
+    throw `Got ${header.index_table_offset} wanted "53928".......parseHeader ❌`;
+  }
+
+  if (header.sig != 4778122750494470757n) {
+    throw `Got ${header.sig} wanted "4778122750494470757".......parseHeader ❌`;
+  }
+  console.info(`  Function parseHeader ✅`);
+
+  const pointers = "../../test_data/macos/bom/pointers.raw";
+  const point_data = readFile(pointers);
+  if (point_data instanceof FileError) {
+    throw console.log(point_data);
+  }
+
+  const point_info = getPointers(point_data);
+  if (point_info instanceof MacosError) {
+    throw console.log(point_info);
+  }
+
+  if (point_info.pointers.length != 2730) {
+    throw `Got ${point_info.pointers.length} wanted "2730".......getPointers ❌`;
+  }
+
+  if (point_info.pointers[280]?.address != 18646) {
+    throw `Got ${point_info.pointers[280]?.address} wanted "18646".......getPointers ❌`;
+  }
+
+  console.info(`  Function getPointers ✅`);
+
+  const vars = "../../test_data/macos/bom/vars.raw";
+  const vars_data = readFile(vars);
+  if (vars_data instanceof FileError) {
+    throw console.log(vars_data);
+  }
+
+  const vars_info = getVars(vars_data);
+  if (vars_info instanceof MacosError) {
+    throw console.log(vars_info);
+  }
+
+  if (vars_info.vars.length != 5) {
+    throw `Got ${vars_info.vars.length} wanted "5".......getVars ❌`;
+  }
+
+  if (vars_info.vars[3]?.name != "VIndex") {
+    throw `Got ${vars_info.vars[3]?.name} wanted "VIndex".......getVars ❌`;
+  }
+
+  console.info(`  Function getVars ✅`);
+
+  const block = getBlock(data, 2, point_info.pointers);
+  if (block instanceof MacosError) {
+    throw console.log(block);
+  }
+
+  if (block.byteLength !== 21) {
+    throw `Got ${block.byteLength} wanted "21".......getBlock ❌`;
+  }
+  console.info(`  Function getBlock ✅`);
+
+  const tree_entry = parseTreeEntry(data, 2, point_info.pointers);
+  if (tree_entry instanceof MacosError) {
+    throw console.log(tree_entry);
+  }
+
+  if (tree_entry.path_count !== 266) {
+    throw `Got ${tree_entry.path_count} wanted "266".......parseTreeEntry ❌`;
+  }
+  console.info(`  Function parseTreeEntry ✅`);
+
+
+  const tree = parseTree(data, 3, point_info.pointers);
+  if (tree instanceof MacosError) {
+    throw console.log(tree);
+  }
+
+  if (!tree.is_leaf) {
+    throw `Got ${tree.is_leaf} wanted "false".......parseTree ❌`;
+  }
+  console.info(`  Function parseTree ✅`);
+
+  const index = "../../test_data/macos/bom/tree_index.raw";
+  const index_data = readFile(index);
+  if (index_data instanceof FileError) {
+    throw console.log(index_data);
+  }
+
+  const index_info = parseTreeIndex(index_data);
+  if (index_info instanceof MacosError) {
+    throw console.log(index_info);
+  }
+
+  if (index_info.tree_index.value_index != 13) {
+    throw `Got ${index_info.tree_index.value_index} wanted "13".......parseTreeIndex ❌`;
+  }
+  if (index_info.tree_index.key_index != 12) {
+    throw `Got ${index_info.tree_index.key_index} wanted "12".......parseTreeIndex ❌`;
+  }
+  console.info(`  Function parseTreeIndex ✅`);
+
+  const file = getFile(new Uint8Array([0, 0, 0, 26, 103, 114, 117, 98, 101, 110, 118, 46, 97, 117, 103, 0]));
+  if (file instanceof MacosError) {
+    throw console.log(file);
+  }
+
+  if (file.name !== "grubenv.aug") {
+    throw `Got ${file.name} wanted "grubenv.aug".......getFile ❌`;
+  }
+  if (file.parent !== 26) {
+    throw `Got ${file.parent} wanted "26".......getFile ❌`;
+  }
+  console.info(`  Function getFile ✅`);
+
+  const path = getPath(new Uint8Array([0, 0, 0, 1, 0, 0, 0, 11]));
+  if (path instanceof MacosError) {
+    throw console.log(path);
+  }
+
+  if (path.id !== 1) {
+    throw `Got ${path.id} wanted "1".......getPath ❌`;
+  }
+  if (path.index !== 11) {
+    throw `Got ${path.index} wanted "11".......getPath ❌`;
+  }
+  console.info(`  Function getPath ✅`);
+
+  const path_info = getPathInfo(data, 11, point_info.pointers);
+  if (path_info instanceof MacosError) {
+    throw console.log(path_info);
+  }
+
+  if (path_info.type !== PathType.DIR) {
+    throw `Got ${path_info.type} wanted "DIRECTORY".......getPathInfo ❌`;
+  }
+
+  if (path_info.size !== 160) {
+    throw `Got ${path_info.size} wanted "160".......getPathInfo ❌`;
+  }
+  console.info(`  Function getPathInfo ✅`);
+
+  const types = [1, 2, 3, 4];
+  for (const entry of types) {
+    if (getType(entry) === PathType.UNKNOWN) {
+      throw `Got Unknown type!.......getType ❌`
+    }
+  }
+  console.info(`  Function getType ✅`);
+
+
+  const json = "../../test_data/macos/bom/bom.json";
+  const json_data = readTextFile(json);
+  if (json_data instanceof FileError) {
+    throw console.log(json_data);
+  }
+
+  const bom = assembleBom(new Map(Object.entries(JSON.parse(json_data)) as unknown as Map<number, BomData>))
+  if (bom instanceof MacosError) {
+    throw console.log(bom);
+  }
+  if (bom.length !== 266) {
+    throw `Got ${results.files.length} wanted "266".......assembleBom ❌`;
+  }
+  console.info(`  Function assembleBom ✅`);
+
 }

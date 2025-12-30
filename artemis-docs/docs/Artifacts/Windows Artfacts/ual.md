@@ -15,16 +15,15 @@ This database is **not** related to to the M365 UAL (Unified Audit Logging).
 
 # Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to collect UAL
-keys.
+You have to use the artemis [api](../../API/overview.md) in order to collect UAL keys.
 
 # Sample API Script
 
 ```typescript
-import { FileError } from ".././artemis-api/src/filesystem/errors";
-import { glob } from ".././artemis-api/src/filesystem/files";
-import { WindowsError } from ".././artemis-api/src/windows/errors";
-import { UserAccessLogging } from ".././artemis-api/src/windows/ese/ual";
+import { FileError } from "./artemis-api/src/filesystem/errors";
+import { glob } from "./artemis-api/src/filesystem/files";
+import { WindowsError } from "./artemis-api/src/windows/errors";
+import { UserAccessLogging } from "./artemis-api/src/windows/ese/ual";
 
 function main() {
   const glob_path = "C:\\System32\\LogFiles\\Sum\\*.mdb";

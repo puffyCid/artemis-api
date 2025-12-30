@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<application-state>
+  <context id="">
+    <application id="org.gnome.SystemMonitor.desktop" score="0.875" last-seen="1759106666"/>
+    <application id="org.freedesktop.problems.applet.desktop" score="0" last-seen="0"/>
+    <application id="libreoffice-startcenter.desktop" score="0.125" last-seen="1759006855"/>
+    <application id="org.gnome.Music.desktop" score="0" last-seen="1758505176"/>
+    <application id="org.gnome.Geary.desktop" score="8.9453125" last-seen="1758992051"/>
+    <application id="codium.desktop" score="2655.90625" last-seen="1759372036"/>
+    <application id="org.gnome.Settings.desktop" score="0" last-seen="1758495676"/>
+    <application id="org.gnome.Epiphany.desktop" score="727.88996643572432" last-seen="1759371840"/>
+    <application id="org.gnome.Calculator.desktop" score="2.953125" last-seen="1758681052"/>
+    <application id="org.freedesktop.GnomeAbrt.desktop" score="4.25" last-seen="1759368626"/>
+    <application id="org.keepassxc.KeePassXC.desktop" score="350" last-seen="1759372039"/>
+    <application id="com.nextcloud.desktopclient.nextcloud.desktop" score="0" last-seen="1758505126"/>
+    <application id="org.gnome.Loupe.desktop" score="0.25" last-seen="1758583483"/>
+    <application id="0ad.desktop" score="0" last-seen="1758074457"/>
+    <application id="imhex.desktop" score="90.75" last-seen="1758254683"/>
+    <application id="org.gnome.Terminal.desktop" score="5964.0829067865152" last-seen="1759371821"/>
+    <application id="org.gnome.Boxes.desktop" score="178.125" last-seen="1758996488"/>
+    <application id="org.gnome.Nautilus.desktop" score="3805.6747640337171" last-seen="1759371194"/>
+    <application id="org.gnome.Evince.desktop" score="0.75" last-seen="1758583498"/>
+    <application id="org.mozilla.firefox.desktop" score="17330.353750852533" last-seen="1759372027"/>
+    <application id="org.gnome.GHex.desktop" score="10.125" last-seen="1758171713"/>
+    <application id="libreoffice-calc.desktop" score="21.125" last-seen="1759006922"/>
+    <application id="org.gnome.gedit.desktop" score="340.02651720323081" last-seen="1759371878"/>
+  </context>
+</application-state>

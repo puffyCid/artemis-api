@@ -16,7 +16,7 @@ export function getPlist(
   // Parse bytes containing plist data
   if (path instanceof Uint8Array) {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const data = js_plist_data(path);
 
       const plist_data: Record<string, unknown> | number[] | Record<
@@ -30,7 +30,7 @@ export function getPlist(
   }
 
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_plist(path);
     const plist_data: Record<string, unknown> | number[] | Record<
       string,

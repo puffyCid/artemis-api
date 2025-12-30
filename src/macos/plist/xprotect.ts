@@ -65,7 +65,7 @@ function extractXprotectEntries(
           break;
         case "LaunchServices": {
           const launch = xprotect[ key ] as Record<string, string>;
-          entry.launch_type = launch[ "LSItemContentType" ];
+          entry.launch_type = launch[ "LSItemContentType" ] ?? "";
           break;
         }
         case "Matches":

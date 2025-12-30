@@ -8,7 +8,7 @@ import { MacosError } from "./errors";
  */
 export function getLoginitems(path?: string): LoginItems[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_loginitems(path);
 
     return data;

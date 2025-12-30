@@ -17,6 +17,8 @@ export { Epiphany } from "./src/linux/gnome/epiphany";
 export { firmwareHistory } from "./src/linux/firmware";
 export { kateRecentFiles } from "./src/linux/kde/kate";
 export { Falkon } from "./src/linux/kde/falkon/falkon";
+export { queryLogons } from "./src/linux/sqlite/wtmpdb";
+export { readRawFileExt4, readRawDirExt4, readRawInodeExt4 } from "./src/linux/ext4";
 
 /**
  * macOS exported functions
@@ -56,6 +58,8 @@ export { gatekeeperEntries } from "./src/macos/sqlite/gatekeeper";
 export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
 export { authorizations } from "./src/macos/sqlite/authd";
+export { parseSystemStats } from "./src/macos/systemstats";
+
 /**
  * Unix exported functions
  */
@@ -93,6 +97,10 @@ export { querySqlite } from "./src/applications/sqlite";
 export { NextcloudClient } from "./src/applications/nextcloud/cloud";
 export { LevelDb } from "./src/applications/leveldb/level";
 export { AnyDesk } from "./src/applications/anydesk/rmm";
+export { OneDrive } from "./src/applications/onedrive/onedrive";
+export { Comet } from "./src/applications/comet";
+export { Brave } from "./src/applications/brave";
+export { Syncthing } from "./src/applications/syncthing";
 
 /**
  * Windows exported functions
@@ -137,9 +145,14 @@ export { parseWordWheel } from "./src/windows/registry/wordwheel";
 export { UserAccessLogging } from "./src/windows/ese/ual";
 export { Updates } from "./src/windows/ese/updates";
 export { Outlook } from "./src/windows/outlook";
+export { ADCertificates } from "./src/windows/ese/certs";
 export { assembleScriptblocks } from "./src/windows/eventlogs/scriptblocks";
 export { firewallRules } from "./src/windows/registry/firewall_rules";
 export { processTreeEventLogs } from "./src/windows/eventlogs/processtree";
+export { wifiNetworksWindows } from "./src/windows/registry/wifi";
+export { getRunKeys } from "./src/windows/registry/run";
+export { serviceInstalls } from "./src/windows/eventlogs/services";
+export { getEventlogProviders } from "./src/windows/registry/eventlog_providers";
 
 /**
  * FreeBSD

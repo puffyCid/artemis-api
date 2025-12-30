@@ -21,7 +21,7 @@ export class Safari {
      * @param alt_path Optional alternative path to directory containing Safari data
      * @returns `Safari` instance class
      */
-    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
         this.unfold = unfold;
         this.platform = platform;
         if (alt_path === undefined) {
@@ -33,11 +33,11 @@ export class Safari {
             return;
         }
 
-        this.paths = [{
+        this.paths = [ {
             full_path: alt_path,
             container_path: alt_path,
             version: 0
-        }];
+        } ];
 
     }
 
@@ -126,12 +126,12 @@ export class Safari {
         const limit = 100;
 
         while (true) {
-            let entries = this.history(offset, limit);
+            const entries = this.history(offset, limit);
             if (entries.length === 0) {
                 break;
             }
             if (!this.unfold) {
-                entries.forEach(x => delete x["unfold"]);
+                entries.forEach(x => delete x[ "unfold" ]);
             }
             const status = dumpData(entries, "retrospect_safari_history", output);
             if (status instanceof SystemError) {
@@ -142,7 +142,7 @@ export class Safari {
 
         offset = 0;
         while (true) {
-            let entries = this.favicons(offset, limit);
+            const entries = this.favicons(offset, limit);
             if (entries.length === 0) {
                 break;
             }
@@ -162,22 +162,22 @@ export class Safari {
         }
 
 
-        let entries = this.bookmarks();
+        const entries = this.bookmarks();
         status = dumpData(entries, "retrospect_safari_bookmarks", output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari bookmarks: ${status}`);
         }
 
-        let downs = this.downloads();
+        const downs = this.downloads();
         if (!this.unfold) {
-            downs.forEach(x => delete x["unfold"]);
+            downs.forEach(x => delete x[ "unfold" ]);
         }
         status = dumpData(downs, "retrospect_safari_downloads", output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari downloads: ${status}`);
         }
 
-        let exts = this.extensions();
+        const exts = this.extensions();
         status = dumpData(exts, "retrospect_safari_extensions", output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari extensions: ${status}`);
@@ -228,7 +228,7 @@ export class Safari {
             return new MacosError(`SAFARI`, `got array for Safari Info.plist`);
         }
 
-        const version = info["CFBundleShortVersionString"] as string;
+        const version = info[ "CFBundleShortVersionString" ] as string;
         return Number(version);
     }
 }

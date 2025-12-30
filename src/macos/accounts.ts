@@ -8,7 +8,7 @@ import { MacosError } from "./errors";
  */
 export function getUsers(path?: string): Users[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_users_macos(path);
 
     return data;
@@ -24,7 +24,7 @@ export function getUsers(path?: string): Users[] | MacosError {
  */
 export function getGroups(path?: string): Groups[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_groups_macos(path);
 
     return data;

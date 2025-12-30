@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "lint": "npx eslint --ext .ts ",
+    "test_linux": "cd tests/linux && python compile_tests.py",
+    "test_windows": "cd tests/windows && powershell compile_tests.ps1",
+    "test_macos": "cd tests/macos && python compile_tests.py",
+    "test_application": "cd tests/applications && python compile_tests.py"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.50.1",
+    "@typescript-eslint/parser": "^8.50.1",
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
+    "typescript-eslint": "^8.50.1"
+  }
+}

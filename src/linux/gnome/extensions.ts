@@ -59,6 +59,8 @@ export function getGnomeExtensions(
       } else {
         ext_data.extension_type = ExtensionType.Unknown;
       }
+      ext_data.message = ext_data.name;
+      ext_data.datetime = ext_data.created;
       extensions.push(ext_data);
     }
   }
@@ -87,5 +89,4 @@ export function testGetGnomeExtensions(): void {
   }
 
   console.info(`  Function getGnomeExtensions ✅`);
-
 }

@@ -8,7 +8,7 @@ import { MacosError } from "./errors";
  */
 export function parseBookmark(data: Uint8Array): BookmarkData | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const results = js_bookmark(data);
     return results;
   } catch (err) {

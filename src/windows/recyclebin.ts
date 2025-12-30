@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getRecycleBin(path?: string): RecycleBin[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_recycle_bin(path);
 
     return data;

@@ -66,6 +66,8 @@ export interface Disks {
   available_space: number;
   /**If disk is removable */
   removable: boolean;
+  /**Path to the disk. Ex: /dev/sda1 */
+  name: string;
 }
 
 /**

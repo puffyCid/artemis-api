@@ -16,7 +16,7 @@ import { unixEpochToISO } from "../../time/conversion";
 import { LinuxError } from "../errors";
 
 /**
- * Function to parse GVFS metadata files. By default will parse all GVFS metadata files at `/home/%/.local/share/gvfs-metadata/%`
+ * Function to parse GVFS metadata files. By default will parse all GVFS metadata files at `/home/%/.local/share/gvfs-metadata/*`
  * @param alt_path Alternative path (or glob) to a GVFS file
  * @returns Array of `GVFSEntry` or `LinuxError`
  */
@@ -169,7 +169,11 @@ function extractHeader(data: Uint8Array): Header | NomError {
 
   let magic_sig = 0;
   for (let i = 0; i < magic.nommed.length; i++) {
-    magic_sig |= (magic.nommed as Uint8Array)[ i ] << (i * 8);
+    const entry = (magic.nommed as Uint8Array)[ i ];
+    if (entry === undefined) {
+      continue;
+    }
+    magic_sig |= entry << (i * 8);
   }
 
   const header: Header = {
@@ -508,6 +512,11 @@ function getChildren(
       last_change: unixEpochToISO(last_change.value + base_time),
       path: `${parents.join("/")}/${name}`.replace("//", "/"),
       source,
+      message: `${parents.join("/")}/${name}`.replace("//", "/"),
+      datetime: unixEpochToISO(last_change.value + base_time),
+      timestamp_desc: "Last Changed",
+      artifact: "GNOME Virtual Filesystem",
+      data_type: "linux:gnome:gvfs:entry"
     };
 
     children.push(child);
@@ -556,4 +565,120 @@ function getName(offset: number, data: Uint8Array): string | NomError {
 
   const name = extractUtf8String(name_data.nommed as Uint8Array);
   return name;
+}
+
+/**
+ * Function to test GNOME GVFS parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the GNOME GVFS parsing
+ */
+export function testParseGvfs(): void {
+  const test = "../../test_data/linux/gnome/gvfs.raw";
+  const result = parseGvfs(test);
+  if (result instanceof LinuxError) {
+    throw result;
+  }
+
+  if (result.length != 5) {
+    throw `Got ${result.length} expected 5.......parseGvfs ❌`;
+  }
+  if (result[ 4 ] === undefined) {
+    throw `Got GVFS path undefined expected "/storage/emulated/0/Music/NewPipe".......parseGvfs ❌`;
+  }
+
+  if (result[ 4 ].path != "/storage/emulated/0/Music/NewPipe") {
+    throw `Got path ${result[ 4 ].path} expected "/storage/emulated/0/Music/NewPipe".......parseGvfs ❌`;
+  }
+
+  console.info(`  Function parseGvfs ✅`);
+
+  const header = new Uint8Array([ 218, 26, 109, 101, 116, 97, 1, 0, 0, 0, 0, 0, 158, 169, 70, 67, 0, 0, 0, 104, 0, 0, 0, 32, 0, 0, 0, 0, 103, 15, 6, 27, 0, 0, 0, 2, 0, 0, 0, 77, 0, 0, 0, 44, 110, 97, 117, 116, 105, 108, 117, 115, 45, 105, 99, 111, 110, 45, 118, 105, 101, 119, 45, 115, 111, 114, 116, 45, 114, 101, 118, 101, 114, 115, 101, 100, 0, 110, 97, 117, 116, 105, 108, 117, 115, 45, 105, 99, 111, 110, 45, 118, 105, 101, 119, 45, 115, 111, 114, 116, 45, 98, 121, 0, 0, 0, 0, 120, 0, 0, 0, 124, 0, 0, 1, 12, 0, 0, 0, 0, 47, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 144, 0, 0, 0, 152, 0, 0, 1, 16, 0, 0, 0, 0, 115, 116, 111, 114, 97, 103, 101, 0, 0, 0, 0, 1, 0, 0, 0, 172, 0, 0, 0, 184, 0, 0, 1, 20, 0, 0, 0, 0, 101, 109, 117, 108, 97, 116, 101, 100, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 204, 0, 0, 0, 208, 0, 0, 1, 24, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 228, 0, 0, 0, 236, 0, 0, 1, 28, 0, 0, 0, 0, 77, 117, 115, 105, 99, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0, 1, 32, 0, 0, 0, 1, 78, 101, 119, 80, 105, 112, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 52, 0, 0, 0, 1, 0, 0, 1, 66, 100, 97, 116, 101, 95, 109, 111, 100, 105, 102, 105, 101, 100, 0, 116, 114, 117, 101, 0, 0 ]);
+  const header_results = extractHeader(header);
+  if (header_results instanceof NomError) {
+    throw header_results;
+  }
+
+  if (header_results.base_time !== 1729037851) {
+    throw `Got base time ${header_results.base_time} expected "1729037851".......extractHeader ❌`;
+  }
+
+  console.info(`  Function extractHeader ✅`);
+
+  const bytes = readFile(test);
+  if (bytes instanceof FileError) {
+    throw bytes;
+  }
+
+  const keywords = getKeywords(bytes, 32);
+  if (keywords instanceof NomError) {
+    throw keywords;
+  }
+
+  if (keywords.length !== 2) {
+    throw `Got ${keywords.length} expected 2.......getKeywords ❌`;
+  }
+
+  if (keywords[ 1 ] === undefined) {
+    throw `Got GVFS keyworkds undefined expected "nautilus-icon-view-sort-reversed".......getKeywords ❌`;
+  }
+
+  if (keywords[ 1 ] != "nautilus-icon-view-sort-reversed") {
+    throw `Got ${keywords[ 1 ]} expected "nautilus-icon-view-sort-reversed".......getKeywords ❌`;
+  }
+  console.info(`  Function getKeywords ✅`);
+
+  const root = getRoot(bytes, 104, 1729037851);
+  if (root instanceof NomError) {
+    throw root;
+  }
+
+  if (root.name !== "/") {
+    throw `Got ${root.name} expected "/".......getRoot ❌`;
+  }
+
+  if (root.last_change != "2024-10-16T00:17:31.000Z") {
+    throw `Got ${root.last_change} expected "2024-10-16T00:17:31.000Z".......getRoot ❌`;
+  }
+  console.info(`  Function getRoot ✅`);
+
+  const meta = extractMetadata(288, bytes, [ "nautilus-icon-view-sort-by", "nautilus-icon-view-sort-reversed" ]);
+  if (meta instanceof NomError) {
+    throw meta;
+  }
+
+
+  if (meta[ "nautilus-icon-view-sort-by" ] !== "date_modified") {
+    throw `Got ${meta[ "nautilus-icon-view-sort-by" ]} expected "date_modified".......extractMetadata ❌`;
+  }
+
+  if (meta[ "nautilus-icon-view-sort-reversed" ] !== "true") {
+    throw `Got ${meta[ "nautilus-icon-view-sort-reversed" ]} expected "true".......extractMetadata ❌`;
+  }
+  console.info(`  Function extractMetadata ✅`);
+
+  const child = getChildren(124, bytes, [ "/" ], 1729037851, [ "nautilus-icon-view-sort-by", "nautilus-icon-view-sort-reversed" ], "test");
+  if (child instanceof NomError) {
+    throw child;
+  }
+
+  if (child.length !== 5) {
+    throw `Got ${child.length} expected 5.......getChildren ❌`;
+  }
+
+  if (child[ 0 ]?.message !== "/storage") {
+    throw `Got ${child[ 0 ]?.message} expected "/storage".......getChildren ❌`;
+  }
+  console.info(`  Function getChildren ✅`);
+
+  const name = getName(120, bytes);
+  if (name instanceof NomError) {
+    throw name;
+  }
+
+
+  if (name !== "/") {
+    throw `Got ${name} expected "/".......getName ❌`;
+  }
+  console.info(`  Function getName ✅`);
+
 }

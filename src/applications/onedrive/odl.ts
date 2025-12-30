@@ -1,8 +1,10 @@
+import { readFile } from "../../../mod";
 import { OneDriveLog } from "../../../types/applications/onedrive";
 import { decompress_gzip } from "../../compression/decompress";
 import { CompressionError } from "../../compression/errors";
 import { encode } from "../../encoding/base64";
 import { extractUtf8String } from "../../encoding/strings";
+import { FileError } from "../../filesystem/errors";
 import { NomError } from "../../nom/error";
 import {
   Endian,
@@ -17,7 +19,33 @@ import {
 import { unixEpochToISO } from "../../time/conversion";
 import { ApplicationError } from "../errors";
 
-export function parseOdl(
+
+/**
+ * Function to read and parse OneDrive Log files
+ * @param paths Array of `GlobInfo` to OneDrive Log files (odl)
+ * @returns Array of `OneDriveLog` entries
+ */
+export function readOdlFiles(path: string): OneDriveLog[] | ApplicationError {
+  const data = readFile(path);
+  if (data instanceof FileError) {
+    return new ApplicationError(`ONEDRIVE`, `could not read log ${path}: ${data.message}`);
+  }
+  let filename = "";
+  if (path.includes("\\")) {
+    filename = path.split("\\").pop() ?? "";
+  } else {
+    filename = path.split("/").pop() ?? "";
+  }
+
+  const logs = parseOdl(data, path, filename);
+  if (logs instanceof ApplicationError) {
+    return new ApplicationError(`ONEDRIVE`, `Failed to parse ${path}: ${logs.message}`);
+
+  }
+  return logs;
+}
+
+function parseOdl(
   data: Uint8Array,
   path: string,
   filename: string,
@@ -81,7 +109,7 @@ export function parseOdl(
     );
   }
 
-  const gzip_key = [ 31, 139, 8, 0 ];
+  const gzip_key = [31, 139, 8, 0];
   if (
     Array.from(compressed_data.remaining.slice(0, 4) as Uint8Array)
       .toString() === gzip_key.toString()
@@ -207,6 +235,7 @@ function odl_entry(
     }
 
     entry.created = unixEpochToISO(timestamp.value);
+    entry.datetime = entry.created;
     entry.version = version;
     entry.os_version = os_version;
     entry.filename = filename;
@@ -313,6 +342,11 @@ function parseData(
     version: "",
     os_version: "",
     description,
+    message: `${code_file}: ${function_value}`,
+    datetime: "",
+    timestamp_desc: "OneDrive Log Entry Created",
+    artifact: "OneDrive Log",
+    data_type: "applications:onedrive:logs:entry"
   };
 
   return entry;
@@ -391,4 +425,90 @@ function parseDescription(
     desc: `${extractUtf8String(desc.nommed as Uint8Array)}: ${values}`,
     remaining,
   };
+}
+
+/**
+ * Function to test the OneDrive ODL file parsing
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the OneDrive ODL parsing
+ */
+export function testReadOdlFiles(): void {
+  const test = "../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/logs/Personal/SyncEngine-2024-09-23.1348.7960.2.odlgz";
+  let results = readOdlFiles(test);
+  if (results instanceof ApplicationError) {
+    throw results;
+  }
+
+  if (results.length !== 4910) {
+    throw `Got "${results.length}" expected 4910.......readOdlFiles ❌`
+  }
+
+  if (results[23]?.message !== "LoggingAPI.cpp: LoggingSetCommonDatapoint") {
+    throw `Got '${results[23]?.message}' expected "LoggingAPI.cpp: LoggingSetCommonDatapoint".......readOdlFiles ❌`
+  }
+
+  console.info(`  Function readOdlFiles ✅`);
+
+  const data = readFile(test);
+  if (data instanceof FileError) {
+    throw data;
+  }
+
+  results = parseOdl(data, "anything", "i want");
+  if (results instanceof ApplicationError) {
+    throw results;
+  }
+
+  if (results.length !== 4910) {
+    throw `Got "${results.length}" expected 4910.......parseOdl ❌`
+  }
+
+  if (results[83]?.message !== "BaseHost.cpp: BaseHost::Initialize") {
+    throw `Got '${results[83]?.message}' expected "BaseHost.cpp: BaseHost::Initialize".......parseOdl ❌`
+  }
+
+  console.info(`  Function parseOdl ✅`);
+
+  const decom_test = "../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/decom_data.raw";
+  const decom_data = readFile(decom_test);
+  if (decom_data instanceof FileError) {
+    throw data;
+  }
+
+  results = odl_entry(decom_data, "anything", "i want", "totally real path", "super file");
+  if (results instanceof ApplicationError) {
+    throw results;
+  }
+
+  if (results[390]?.datetime !== "2024-09-23T13:48:25.571Z") {
+    throw `Got '${results[390]?.datetime}' expected "2024-09-23T13:48:25.571Z".......odl_entry ❌`
+  }
+  console.info(`  Function odl_entry ✅`);
+
+
+  let desc_data = [190, 3, 59, 127, 95, 139, 9, 68, 159, 205, 101, 6, 103, 167, 150, 69, 224, 251, 193, 2, 1, 0, 0, 0, 14, 0, 0, 0, 76, 111, 103, 103, 105, 110, 103, 65, 80, 73, 46, 99, 112, 112, 36, 6, 0, 0, 30, 0, 0, 0, 85, 112, 100, 97, 116, 101, 79, 98, 102, 117, 115, 99, 97, 116, 105, 111, 110, 69, 110, 99, 114, 121, 112, 116, 105, 111, 110, 75, 101, 121, 14, 0, 0, 0, 76, 111, 103, 79, 98, 102, 117, 115, 99, 97, 116, 105, 111, 110, 22, 0, 0, 0, 82, 101, 116, 114, 105, 101, 118, 101, 79, 98, 102, 117, 115, 99, 97, 116, 105, 111, 110, 75, 101, 121, 7, 0, 0, 0, 83, 117, 99, 99, 101, 115, 115, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const entry = parseData(new Uint8Array(desc_data), 0);
+  if (entry instanceof ApplicationError) {
+    throw entry;
+  }
+
+  if (entry.code_file !== "LoggingAPI.cpp") {
+    throw `Got '${entry.code_file}' expected "LoggingAPI.cpp".......parseData ❌`
+  }
+  if (entry.params !== "DgAAAExvZ09iZnVzY2F0aW9uFgAAAFJldHJpZXZlT2JmdXNjYXRpb25LZXkHAAAAU3VjY2VzcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==") {
+    throw `Got '${entry.params}' expected "DgAAAExvZ09iZnVzY2F0aW9uFgAAAFJldHJpZXZlT2JmdXNjYXRpb25LZXkHAAAAU3VjY2VzcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==".......parseData ❌`
+  }
+  console.info(`  Function parseData ✅`);
+
+
+  desc_data = [1, 37, 0, 85, 110, 114, 101, 103, 105, 115, 116, 101, 114, 105, 110, 103, 32, 79, 110, 101, 68, 114, 105, 118, 101, 32, 110, 97, 109, 101, 115, 112, 97, 99, 101, 32, 114, 111, 111, 116, 15, 115, 110, 97, 109, 101, 115, 112, 97, 99, 101, 82, 111, 111, 116, 73, 100, 21, 0, 0, 0, 78, 97, 109, 101, 115, 112, 97, 99, 101, 82, 111, 111, 116, 85, 116, 105, 108, 46, 99, 112, 112, 87, 1, 0, 0, 50, 0, 0, 0, 78, 97, 109, 101, 115, 112, 97, 99, 101, 82, 111, 111, 116, 85, 116, 105, 108, 58, 58, 85, 110, 114, 101, 103, 105, 115, 116, 101, 114, 79, 110, 101, 68, 114, 105, 118, 101, 78, 97, 109, 101, 115, 112, 97, 99, 101, 82, 111, 111, 116, 38, 0, 0, 0, 123, 48, 49, 56, 68, 53, 67, 54, 54, 45, 52, 53, 51, 51, 45, 52, 51, 48, 55, 45, 57, 66, 53, 51, 45, 50, 50, 52, 68, 69, 50, 69, 68, 49, 70, 69, 54, 125];
+  const desc = parseDescription(new Uint8Array(desc_data));
+  if (desc instanceof ApplicationError) {
+    throw desc;
+  }
+
+  if (desc.desc !== "Unregistering OneDrive namespace root: namespaceRootId;") {
+    throw `Got '${desc.desc}' expected "Unregistering OneDrive namespace root: namespaceRootId;".......parseDescription ❌`
+  }
+  console.info(`  Function parseDescription ✅`);
 }

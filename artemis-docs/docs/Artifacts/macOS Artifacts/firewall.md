@@ -23,7 +23,7 @@ import {
   firewallStatus,
 } from "./artemis-api/mod";
 
-async function main() {
+function main() {
   const results = firewallStatus();
   console.log(results);
 }

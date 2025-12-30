@@ -12,7 +12,7 @@ export function getUnifiedLog(
   archive_path?: string,
 ): UnifiedLog[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_unified_log(path, archive_path);
 
     return data;

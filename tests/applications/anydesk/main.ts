@@ -1,4 +1,4 @@
-import { AnyDesk, dumpData, Format, Output, OutputType, PlatformType } from "../../../mod";
+import { AnyDesk, PlatformType } from "../../../mod";
 import { testReadConfig, testReadTrace } from "../../test";
 
 function main() {
@@ -11,7 +11,7 @@ function main() {
         throw `Got ${hits.length} rows. Expected 2872`;
     }
     const configs = results.configs(used_alt_dir);
-    if(configs.length !== 2) {
+    if (configs.length !== 2) {
         throw `Got ${hits.length} rows. Expected 2`;
     }
 

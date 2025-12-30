@@ -23,7 +23,7 @@ main();
 
 ### getUsers(path) -> Users[] | MacosError
 
-Return all local users on macOS sysem. Can provide an optional alternative path
+Return all local users on macOS system. Can provide an optional alternative path
 to directory containing users. Otherwise will use default path on system
 /var/db/dslocal/nodes/Default/users
 
@@ -33,7 +33,7 @@ to directory containing users. Otherwise will use default path on system
 
 ### getGroup(path) -> Groups[] | MacosError
 
-Return all local groups on macOS sysem. Can provide an optional alternative path
+Return all local groups on macOS system. Can provide an optional alternative path
 to directory containing groups. Otherwise will use default path on system
 /var/db/dslocal/nodes/Default/groups
 
@@ -233,7 +233,7 @@ Get list of joined Wifi networks on macOS. Requires root access.
 By default it will try to parse WiFi networks at
 /Library/Preferences/com.apple.wifi.known-networks.plist.
 
-You may also provide an optional alnternative path to
+You may also provide an optional alternative path to
 com.apple.wifi.known-networks.plist.
 
 | Param    | Type   | Description                                                           |
@@ -308,7 +308,7 @@ To prevent excessive memory usage, this function will parse the database in
 blocks (chunks).
 
 It will parse **10** blocks at a time before returning the results. The
-`StoreMeta` value obtaind from setupSpotlightParser, contains the **TOTAL**
+`StoreMeta` value obtained from setupSpotlightParser, contains the **TOTAL**
 amount of blocks in the Spotlight database! You must loop through the blocks and
 track what block offset the parser should start at!
 
@@ -904,3 +904,11 @@ function main() {
 
 main();
 ```
+
+### parseSystemStats(alt_file) -> SystemStats[] | MacosError
+
+Parse a stats files and try to extract data. 
+
+| Param          | Type    | Description                                       |
+| -------------- | ------- | ------------------------------------------------- |
+| alt_file       | string  | Optional path to an alternative stats file        |

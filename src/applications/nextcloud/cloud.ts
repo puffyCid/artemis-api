@@ -11,7 +11,7 @@ import { nextcloudActivityLogs } from "./logs/activity";
 import { nextcloudSyncLogs } from "./logs/sync";
 
 /**
- * Class to extract Nextcloud client information
+ * Class to extract NextCloud client information
  */
 export class NextcloudClient {
     private paths: NextcloudClientUsers[] = [];
@@ -27,7 +27,7 @@ export class NextcloudClient {
         this.platform = platform;
 
         if (alt_path === undefined) {
-            const results = this.profiles(platform);
+            const results = this.profiles();
             if (results instanceof ApplicationError) {
                 return;
             }
@@ -46,12 +46,11 @@ export class NextcloudClient {
 
     /**
     * Get base path for all Nextcloud clients data
-    * @param platform OS `PlatformType`
     * @returns Array of `NextcloudClientUsers` or `ApplicationError`
     */
-    private profiles(platform: PlatformType): NextcloudClientUsers[] | ApplicationError {
+    private profiles(): NextcloudClientUsers[] | ApplicationError {
         let paths: GlobInfo[] = [];
-        switch (platform) {
+        switch (this.platform) {
             case PlatformType.Linux: {
                 const linux_paths = glob("/home/*/.config/Nextcloud");
                 if (linux_paths instanceof FileError) {

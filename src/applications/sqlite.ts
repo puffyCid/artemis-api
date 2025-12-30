@@ -11,7 +11,7 @@ export function querySqlite(
   query: string,
 ): Record<string, unknown>[] | ApplicationError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_query_sqlite(path, query);
 
     return data;

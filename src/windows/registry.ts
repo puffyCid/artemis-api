@@ -4,12 +4,14 @@ import { WindowsError } from "./errors";
 /**
  * Function to parse a `Registry` file
  * @param path Full path to a `Registry` file
+ * @param [regex=""] Optional Rust compatible regular expression to filter Registry Key paths. All regex comparisons are done in lowercase. Registry values are not filtered
+ * @param [start_path=""] Optional Registry Key path to start
  * @returns `Registry` array or `WindowsError`
  */
-export function getRegistry(path: string): Registry[] | WindowsError {
+export function getRegistry(path: string, regex = "", start_path = ""): Registry[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
-    const data = js_registry(path);
+    // @ts-expect-error: Custom Artemis function
+    const data = js_registry(path, regex.toLowerCase(), start_path);
 
     return data;
   } catch (err) {
@@ -34,7 +36,7 @@ export function lookupSecurityKey(
     return new WindowsError("REGISTRY", "Cannot use negative offset or zero!");
   }
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_sk_info(path, offset);
 
     return data;

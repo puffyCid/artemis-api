@@ -20,7 +20,7 @@ export function getSrumApplicationInfo(
 ): ApplicationInfo[] | WindowsError {
   try {
     const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA89}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     return data;
@@ -42,7 +42,7 @@ export function getSrumApplicationTimeline(
 ): ApplicationTimeline[] | WindowsError {
   try {
     const name = "{5C8CF1C7-7257-4F13-B223-970EF5939312}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     return data;
@@ -62,7 +62,7 @@ export function getSrumApplicationTimeline(
 export function getSrumApplicationVfu(path: string): AppVfu[] | WindowsError {
   try {
     const name = "{7ACBBAA3-D029-4BE4-9A7A-0885927F1D8F}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     return data;
@@ -82,7 +82,7 @@ export function getSrumApplicationVfu(path: string): AppVfu[] | WindowsError {
 export function getSrumEnergyInfo(path: string): EnergyInfo[] | WindowsError {
   try {
     const name = "{DA73FB89-2BEA-4DDC-86B8-6E048C6DA477}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     return data;
@@ -102,11 +102,11 @@ export function getSrumEnergyInfo(path: string): EnergyInfo[] | WindowsError {
 export function getSrumEnergyUsage(path: string): EnergyUsage[] | WindowsError {
   try {
     let name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     name = "{FEE4E14F-02A9-4550-B5CE-5FA2DA202E37}LT";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data_lt: string = js_srum(path, name);
 
     const srum_all = data.concat(data_lt);
@@ -127,7 +127,7 @@ export function getSrumEnergyUsage(path: string): EnergyUsage[] | WindowsError {
 export function getSrumNetworkInfo(path: string): NetworkInfo[] | WindowsError {
   try {
     const name = "{973F5D5C-1D90-4944-BE8E-24B94231A174}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     return data;
@@ -149,7 +149,7 @@ export function getSrumNetworkConnectivity(
 ): NetworkConnectivityInfo[] | WindowsError {
   try {
     const name = "{DD6636C4-8929-4683-974E-22C046A43763}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     return data;
@@ -171,7 +171,7 @@ export function getSrumNotifications(
 ): NotificationInfo[] | WindowsError {
   try {
     const name = "{D10CA2FE-6FCF-4F6D-848E-B2E99266FA86}";
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_srum(path, name);
 
     return data;

@@ -196,5 +196,4 @@ export function testParseMru(): void {
   }
 
   console.info(`  Function assembleMru ✅`);
-
 }

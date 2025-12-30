@@ -4,7 +4,7 @@
  * @returns Encode string into bytes
  */
 export function encodeBytes(data: string): Uint8Array {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const result: Uint8Array = js_encode_bytes(data);
   return result;
 }

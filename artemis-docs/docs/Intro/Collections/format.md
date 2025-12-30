@@ -144,7 +144,7 @@ artifact_name = "shortcuts"
 path = "E:\\Users\\rust\\Downloads"
 ```
 
-However, providing the same artifact mutliple times can be repetitive. See the
+However, providing the same artifact multiple times can be repetitive. See the
 chapter on [scripting](../Scripting/boa.md) to see how we can automate and
 enhance artifact collection using artemis and a tiny amount of JavaScript!
 

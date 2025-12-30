@@ -1,12 +1,16 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
+import { SystemError } from "../../system/error";
+import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
-import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./json";
+import { chromiumBookmarks, chromiumExtensions } from "./json";
 import { chromiumLocalStorage } from "./level";
-import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./sqlite";
+import { chromiumPreferences } from "./preferences";
+import { chromiumSessions } from "./sessions";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumFavicons, chromiumHistory, chromiumLogins, chromiumShortcuts } from "./sqlite";
 
 /**
  * Class to extract Chromium browser information.  
@@ -25,7 +29,7 @@ export class Chromium {
      * @param alt_path Optional alternative path to directory contain Chromium data
      * @returns `Chromium` instance class
      */
-    constructor (platform: PlatformType, unfold = false, browser = BrowserType.CHROMIUM, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, browser = BrowserType.CHROMIUM, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         this.browser = browser;
@@ -42,6 +46,14 @@ export class Chromium {
             }
             case BrowserType.CHROMIUM: {
                 browser_error = new ApplicationError("CHROMIUM", "").name;
+                break;
+            }
+            case BrowserType.COMET: {
+                browser_error = new ApplicationError("COMET", "").name;
+                break;
+            }
+            case BrowserType.BRAVE: {
+                browser_error = new ApplicationError("BRAVE", "").name;
                 break;
             }
             default: {
@@ -62,11 +74,11 @@ export class Chromium {
             return;
         }
 
-        this.paths = [ {
+        this.paths = [{
             full_path: alt_path,
             version: browser_version,
             browser: this.browser,
-        } ];
+        }];
     }
 
     /**
@@ -162,6 +174,28 @@ export class Chromium {
     }
 
     /**
+     * Function to parse Chromium Favicons information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumFavicons` 
+     */
+    public favicons(offset = 0, limit = 100): ChromiumFavicons[] {
+        const query = `SELECT url, last_updated, page_url FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id JOIN icon_mapping ON icon_mapping.icon_id = favicons.id LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumFavicons(this.paths, this.platform, query);
+    }
+
+    /**
+     * Function to parse Chromium Shortcut information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `ChromiumShortcuts` 
+     */
+    public shortcuts(offset = 0, limit = 100): ChromiumShortcuts[] {
+        const query = `SELECT id, text, fill_into_edit, url, contents, description, type, keyword, last_access_time FROM omni_box_shortcuts LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumShortcuts(this.paths, this.platform, query);
+    }
+
+    /**
      * Function to parse Chromium Login information. 
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
@@ -187,15 +221,15 @@ export class Chromium {
      * Get installed Chromium extensions
      * @returns Array of parsed extensions
      */
-    public extensions(): Record<string, unknown>[] {
+    public extensions(): Extension[] {
         return chromiumExtensions(this.paths, this.platform);
     }
 
     /**
      * Get Chromium Preferences
-     * @returns Array of Preferences for each user
+     * @returns Array of `Preferences` for each user
      */
-    public preferences(): Record<string, unknown>[] {
+    public preferences(): Preferences[] {
         return chromiumPreferences(this.paths, this.platform);
     }
 
@@ -213,6 +247,158 @@ export class Chromium {
      */
     public localStorage(): ChromiumLocalStorage[] {
         return chromiumLocalStorage(this.paths, this.platform);
+    }
+
+    /**
+     * Get Chromium Sessions
+     * @returns Array of `ChromiumSession` for each user
+     */
+    public sessions(): ChromiumSession[] {
+        return chromiumSessions(this.paths, this.platform);
+    }
+
+    /**
+     * Function to timeline all Chromium artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
+     * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     */
+    public retrospect(output: Output): void {
+        let offset = 0;
+        const limit = 100;
+        while (true) {
+            const entries = this.history(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            if (!this.unfold) {
+                entries.forEach(x => delete x["unfold"]);
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_history`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} history: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.cookies(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_cookies`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} cookies: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.downloads(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_downloads`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} downloads: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.autofill(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_autofill`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} autofill: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.logins(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_logins`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} logins: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.dips(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_dips`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} dips: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.favicons(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_favicons`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} favicons: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+        while (true) {
+            const entries = this.shortcuts(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_${this.browser}_shortcuts`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline ${this.browser} shortcuts: ${status}`);
+            }
+            offset += limit;
+        }
+
+        const ext = this.extensions();
+        let status = dumpData(ext, `retrospect_${this.browser}_extensions`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} extensions: ${status}`);
+        }
+
+        const prefs = this.preferences();
+        status = dumpData(prefs, `retrospect_${this.browser}_preferences`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} preferences: ${status}`);
+        }
+
+        const books = this.bookmarks();
+        status = dumpData(books, `retrospect_${this.browser}_bookmarks`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} bookmarks: ${status}`);
+        }
+
+        const level = this.localStorage();
+        status = dumpData(level, `retrospect_${this.browser}_localstorage`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} localstorage: ${status}`);
+        }
+
+        const sess = this.sessions();
+        status = dumpData(sess, `retrospect_${this.browser}_sessions`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} sessions: ${status}`);
+        }
     }
 
     /**
@@ -289,6 +475,10 @@ export class Chromium {
                 return "/Users/*/Library/Application Support/Microsoft Edge";
             } else if (browser_type === BrowserType.CHROMIUM) {
                 return "/Users/*/Library/Application Support/Chromium";
+            } else if (browser_type === BrowserType.COMET) {
+                return "/Users/*/Library/Application Support/Perplexity/Comet";
+            } else if (browser_type === BrowserType.BRAVE) {
+                return "/Users/*/Library/Application Support/BraveSoftware/Brave-Browser";
             }
 
             return new ApplicationError(`${browser_error}`, `Unsupported macOS browser! ${browser_type}`);
@@ -301,6 +491,10 @@ export class Chromium {
                 return "/home/*/.config/Microsoft Edge";
             } else if (browser_type === BrowserType.CHROMIUM) {
                 return "/home/*/.config/chromium/";
+            } else if (browser_type === BrowserType.COMET) {
+                return "/home/*/.config/Perplexity/Comet";
+            } else if (browser_type === BrowserType.BRAVE) {
+                return "/home/*/.config/BraveSoftware/Brave-Browser";
             }
 
             return new ApplicationError(`${browser_error}`, `Unsupported Linux browser! ${browser_type}`);
@@ -317,6 +511,10 @@ export class Chromium {
                 return `${drive}\\Users\\*\\AppData\\Local\\Microsoft\\Edge\\User Data`;
             } else if (browser_type === BrowserType.CHROMIUM) {
                 return `${drive}\\Users\\*\\AppData\\Local\\Chromium\\User Data`;
+            } else if (browser_type === BrowserType.COMET) {
+                return `${drive}\\Users\\*\\AppData\\Local\\Perplexity\\Comet\\User Data`;
+            } else if (browser_type === BrowserType.BRAVE) {
+                return `${drive}\\Users\\*\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data`;
             }
 
             return new ApplicationError(`${browser_error}`, `Unsupported Windows browser! ${browser_type}`);

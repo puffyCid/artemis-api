@@ -514,9 +514,9 @@ Parse SYSTEM Registry to get list of USB devices that have been connected
 
 Parse Windows System.evtx file to extract Service Install events.
 
-| Param | Type   | Description                  |
-| ----- | ------ | ---------------------------- |
-| path  | string | Path to the System.evtx file |
+| Param | Type   | Description                         |
+| ----- | ------ | ----------------------------------- |
+| path  | string | Option path to the System.evtx file |
 
 ### Outlook Class
 
@@ -596,3 +596,80 @@ You may provided an optional alternative path to Security.evtx.
 | Param | Type   | Description                                |
 | ----- | ------ | ------------------------------------------ |
 | path  | string | Optional alternative path to Security.evtx |
+
+#### wifiNetworksWindows(path) -> Wifi[] | WindowsError
+
+Parses the Windows SOFTWARE Registry file and attempts extract WiFi networks connected to.
+You may provided an optional alternative path to the SOFTWARE Registry file.
+
+| Param | Type   | Description                                |
+| ----- | ------ | ------------------------------------------ |
+| path  | string | Optional alternative path to Security.evtx |
+
+### ADCertificates Class
+
+A basic class to help interact and extract data from AD Certificates ESE databases.
+
+Sample TypeScript code:
+```typescript
+import { ADCertificates } from "./artemis-api/mod";
+import { WindowsError } from "./artemis-api/src/windows/errors";
+
+function main() {
+    // You may also provide an optional alternative path to the ESE database
+    const client = new ADCertificates();
+    const catalog = client.catalogInfo();
+    if (catalog instanceof WindowsError) {
+        return;
+    }
+    const first_page = client.tableInfo(catalog, "Certificates").table_page;
+    const cert_pages = client.getPages(first_page);
+    if (cert_pages instanceof WindowsError) {
+        return;
+    }
+    // Depending on size of EDB file you should customize the number of pages you use
+    // The larger the pages array the more memory required
+    // 100 pages should be a reasonable default
+    const certs = client.getCertificates(cert_pages, client.tableInfo(catalog, "Certificates"))
+    console.log(JSON.stringify(certs));
+}
+
+main();
+```
+
+#### getCertificates(pages, info) -> Certificates[] | WindowsError
+
+Get list of certificates from the database.
+
+| Param | Type      | Description                                               |
+| ----- | --------- | --------------------------------------------------------- |
+| pages | number[]  | Number of pages to parse from the ESE database            |
+| info  | TableInfo | Table info object that can be obtained with the ESE class |
+
+
+#### getRequests(pages, info) -> Requests[] | WindowsError
+
+Get list of requests from the database.
+
+| Param | Type      | Description                                               |
+| ----- | --------- | --------------------------------------------------------- |
+| pages | number[]  | Number of pages to parse from the ESE database            |
+| info  | TableInfo | Table info object that can be obtained with the ESE class |
+
+#### requestAttributes(pages, info) -> RequestAttributes[] | WindowsError
+
+Get list of requests attributes from the database.
+
+| Param | Type      | Description                                               |
+| ----- | --------- | --------------------------------------------------------- |
+| pages | number[]  | Number of pages to parse from the ESE database            |
+| info  | TableInfo | Table info object that can be obtained with the ESE class |
+
+
+### getRunKeys(path) -> RegistryRunKey[]
+
+Parse Windows Registry files and extract Run key entries. You may provide an optional path to a Registry file. By default all user NTUSER.DAT and SOFTWARE files are parsed
+
+| Param   | Type    | Description                      |
+| ------- | ------- | -------------------------------- |
+| path    | string  | Optional path to a Registry file |

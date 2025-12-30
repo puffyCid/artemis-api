@@ -7,7 +7,7 @@ import { MacosError } from "./errors";
  */
 export function getLaunchdDaemons(): Launchd[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_launchd_daemons();
 
     return data;
@@ -22,7 +22,7 @@ export function getLaunchdDaemons(): Launchd[] | MacosError {
  */
 export function getLaunchdAgents(): Launchd[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_launchd_agents();
 
     return data;

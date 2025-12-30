@@ -3,6 +3,7 @@ description: Linux logon info
 keywords:
   - linux
   - binary
+  - sqlite
 ---
 
 # Logons
@@ -14,15 +15,7 @@ information on Linux:
 - wtmp - Historical logons
 - btmp - Failed logons
 - utmp - Users currently logged on
-
-In addition, [Journal](./journals.md) files may also contain logon information
-Currently artemis supports all three (3) files above when obtaining Logon
-information. When collecting Logon information artemis will only parse: wtmp,
-utmp, and btmp files.
-
-If you want to check for logons in `Journal` files, you can try to apply a
-[filter](../../Intro/Scripting/filterscripts.md) to the [Journal](./journals.md)
-artifact
+- wtmp.db - Historical logons (Requires Artemis API)
 
 Other Parsers:
 
@@ -90,5 +83,23 @@ export interface Logon {
   ip: string;
   /**Status of logon entry: `Success` or `Failed` */
   status: string;
+}
+
+An array of `LastLogons` entries when querying the wtmp.db file
+
+export interface LastLogons {
+    id: number;
+    type: number;
+    user: string;
+    login: string;
+    logout: string;
+    tty: string;
+    remote: string;
+    service: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "User Logon";
+    artifact: "wtmpdb Logons";
+    data_type: "linux:wtmpdb:entry";
 }
 ```

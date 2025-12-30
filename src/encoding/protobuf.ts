@@ -10,7 +10,7 @@ export function parseProtobuf(
   data: Uint8Array,
 ): Record<string, ProtoTag> | EncodingError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_parse_protobuf(data);
     return result;
   } catch (err) {

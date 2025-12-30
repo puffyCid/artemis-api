@@ -1,4 +1,4 @@
-import { getPlist, parseCookies, queryTccDb } from "../../../../mod";
+import { getPlist, } from "../../../../mod";
 import {
     FileType,
     ManifestApp,

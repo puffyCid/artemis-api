@@ -57,7 +57,15 @@ export class UserAccessLogging extends EseDatabase {
       return rows;
     }
 
-    return this.parseIds(rows[ "ROLE_IDS" ]);
+    const row_data = rows[ "ROLE_IDS" ];
+    if (row_data === undefined) {
+      return new WindowsError(
+        `UAL`,
+        `Could not find data from "ROLE_IDS" table. Got undefined`,
+      );
+    }
+
+    return this.parseIds(row_data);
   }
 
   /**
@@ -82,8 +90,15 @@ export class UserAccessLogging extends EseDatabase {
     if (rows instanceof WindowsError) {
       return rows;
     }
+    const row_data = rows[ "CLIENTS" ];
+    if (row_data === undefined) {
+      return new WindowsError(
+        `UAL`,
+        `Could not find data from "CLIENTS" table. Got undefined`,
+      );
+    }
 
-    const clients = this.parseClients(rows[ "CLIENTS" ]);
+    const clients = this.parseClients(row_data);
     let roles_limit: number[] = [];
     if (roles_ual === undefined) {
       return clients;
@@ -153,7 +168,7 @@ export class UserAccessLogging extends EseDatabase {
     this.pages = pages;
   }
 
-  private setupClients(): void | WindowsError {
+  private setupClients(): void {
     const catalog = this.catalogInfo();
     if (catalog instanceof WindowsError) {
       return;

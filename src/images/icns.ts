@@ -78,6 +78,9 @@ export function parseIcon(data: Uint8Array): Icon[] | ImageError {
  */
 function osType(type: Uint8Array): number {
   const value = extractUtf8String(type) as OSType;
+  if(value.startsWith("[strings]")) {
+    return 0;
+  }
 
   if (
     [

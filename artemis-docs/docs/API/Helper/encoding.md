@@ -69,20 +69,20 @@ Generates a UUID v4 hyphenated string
 
 ### formatGuid(format, data) -> string
 
-Format provided bytes into a GUID hyphenated string based on provided Endianess.
+Format provided bytes into a GUID hyphenated string based on provided Endianness.
 Must provide exactly 16 bytes. Windows is commonly Little Endian. macOS is
 commonly Big Endian
 
 | Param  | Type       | Description                 |
 | ------ | ---------- | --------------------------- |
-| format | Endian     | Endianess type LE or BE     |
+| format | Endian     | Endianness type LE or BE     |
 | data   | Uint8Array | Raw bytes to format to GUID |
 
 ### parseProtobufBytes(raw_bytes) -> Record&lt;string, unknown&gt; | EncodingError
 
 An **experimental** protobuf parser. Artemis will attempt to parse the provided
 protobuf bytes and return a JSON object. Binary protobuf data is a blackbox, it
-is typically not possible to perfectly parse protobuf data perfectly everytime.
+is typically not possible to perfectly parse protobuf data perfectly every time.
 
 Artemis will return a JSON object if it can parse the entire data
 

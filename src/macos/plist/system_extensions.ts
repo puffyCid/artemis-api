@@ -24,7 +24,7 @@ export function systemExtensions(
 
   const exts: SystemExtension[] = [];
   for (const entry in plist_data) {
-    if (entry !== "extensions") {
+    if (entry !== "extensions" || Array.isArray(plist_data)) {
       continue;
     }
 
@@ -37,9 +37,9 @@ export function systemExtensions(
         uuid: ext[ "uniqueID" ] as string,
         state: ext[ "state" ] as string,
         id: ext[ "identifier" ] as string,
-        version: ver[ "CFBundleVersion" ],
+        version: ver[ "CFBundleVersion" ] ?? "",
         categories: ext[ "categories" ] as string[],
-        bundle_path: bundle[ "bundlePath" ],
+        bundle_path: bundle[ "bundlePath" ] ?? "",
         team: ext[ "teamID" ] as string,
       };
       exts.push(sys_ext);

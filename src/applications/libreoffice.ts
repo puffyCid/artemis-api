@@ -116,6 +116,11 @@ export function recentFiles(
         readonly: false,
         thumbnail: "",
         source: path.full_path,
+        message: path_data[ "oor:name" ],
+        timestamp_desc: "N/A",
+        artifact: "LibreOffice Recent Files",
+        data_type: "application:libreoffice:recentfiles:entry",
+        datetime: "1970-01-01T00:00:00Z"
       };
 
       // Finally at section containing data of interest
@@ -163,12 +168,15 @@ export function testRecentFiles(): void {
     throw result;
   }
 
-  if (result[ 0 ] === undefined) {
+  if (result[ 0 ]?.title === undefined) {
     throw `Got title undefined expected Hindsight Report (2025-09-18T00-18-20).......recentFiles ❌`;
   }
 
   if (result[ 0 ].title != "Hindsight Report (2025-09-18T00-18-20)") {
     throw `Got title ${result[ 0 ].title} expected Hindsight Report (2025-09-18T00-18-20).......recentFiles ❌`;
+  }
+  if (result[ 0 ].message != "file:///home/test/Downloads/Hindsight%20Report%20(2025-09-18T00-18-20).xlsx") {
+    throw `Got message ${result[ 0 ].message} expected "file:///home/test/Downloads/Hindsight%20Report%20(2025-09-18T00-18-20).xlsx").......recentFiles ❌`;
   }
 
   console.info(`  Function recentFiles ✅`);

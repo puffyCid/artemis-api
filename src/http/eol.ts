@@ -13,7 +13,7 @@ export async function checkEolStatus(
   name: string,
   version: string,
 ): Promise<EolStatus | HttpError> {
-  const url = `https://endoflife.date/api/${name.toLocaleLowerCase()}.json`;
+  const url = `https://endoflife.date/api/${name.toLowerCase()}.json`;
   const client: ClientRequest = {
     url,
     protocol: Protocol.GET,
@@ -54,4 +54,32 @@ export async function checkEolStatus(
     `REQUEST_ERROR`,
     `no match for the software ${name} and version ${version}`,
   );
+}
+
+/**
+ * Function to test End of Life API  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the End of Life API
+ */
+export async function testCheckEolStatus(): Promise<void> {
+  const application = "firefox";
+  const version = "130";
+  const result = await checkEolStatus(application, version);
+  if (result instanceof HttpError) {
+    throw console.log(result);
+  }
+
+  if (result.url !== "https://endoflife.date/firefox") {
+    throw console.log(`Got ${result.url} expected "https://endoflife.date/firefox".......checkEolStatus ❌`);
+  }
+
+  if (result.lts !== false) {
+    throw console.log(`Got ${result.lts} expected "false".......checkEolStatus ❌`);
+  }
+
+  if (result.release_date !== "2024-09-03") {
+    throw console.log(`Got ${result.release_date} expected "2024-09-03".......checkEolStatus ❌`);
+  }
+  console.info(`  Function checkEolStatus ✅`);
+
 }

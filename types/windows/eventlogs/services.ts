@@ -9,6 +9,11 @@ export interface ServiceInstalls {
   process_id: number;
   thread_id: number;
   sid: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Windows Service Installed";
+  artifact: "EventLog Service 7045";
+  data_type: "windows:eventlog:system:service";
 }
 
 export interface RawService7045 {

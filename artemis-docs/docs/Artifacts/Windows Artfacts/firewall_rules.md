@@ -1,5 +1,6 @@
 ---
 description: Windows Firewall Rules
+keywords:
   - windows
   - registry
 ---

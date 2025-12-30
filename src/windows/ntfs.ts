@@ -10,7 +10,7 @@ import { WindowsError } from "./errors";
  */
 export function readRawFile(path: string): Uint8Array | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data: Uint8Array = js_read_raw_file(path);
     return data;
   } catch (err) {
@@ -32,7 +32,7 @@ export function readAdsData(
   ads_name: string,
 ): Uint8Array | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data: Uint8Array = js_read_ads(
       path,
       ads_name,

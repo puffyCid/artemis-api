@@ -41,6 +41,7 @@ function main() {
   const history_data = client.history(start, limit);
 
   const ext = client.extensions();
+  const edge_history = edge.history();
   return ext;
 }
 
@@ -135,6 +136,47 @@ Return Chromium bookmarks for all users.
 
 Return Chromium local storage data for all users.
 
+#### sessions() -> ChromiumSession[]
+
+Return Chromium sessions for all users.
+
+#### retrospect(output)
+
+A powerful function that will timeline all supported Chromium artifacts
+
+| Param            | Type          | Description                         |
+| ---------------- | ------------- | ----------------------------------- |
+| output           | Output        | Output object to output all results |
+
+Sample TypeScript code:
+```typescript
+import { Chrome, Edge, Format, Output, OutputType, PlatformType } from "./artemis-api/mod";
+function main() {
+  // Unfurls URLs. Based on [Unfurl](https://github.com/obsidianforensics/unfurl)
+  const enable_unfold = true;
+  const client = new Edge(PlatformType.Windows, enable_unfold);
+  const out: Output = {
+    name: "browsers",
+    directory: "./tmp",
+    format: Format.JSONL,
+    compress: false,
+    timeline: false,
+    endpoint_id: "",
+    collection_id: 0,
+    output: OutputType.LOCAL
+  };
+
+  // All artifacts will be parsed and timelined to JSONL
+  client.retrospect(out);
+
+  const chrome_client = new Chrome(PlatformType.Windows, enable_unfold);
+  // All artifacts will be parsed and timelined to JSONL
+  chrome_client.retrospect(out);
+}
+
+main();
+```
+
 ### FireFox Browser Class
 
 A basic TypeScript class to extract data from the FireFox browser. You may optionally enable Unfold URL parsing (default is disabled) and provide an alternative glob to the base FireFox directory.
@@ -222,6 +264,13 @@ By default artemis will get the first 100 entries for all users.
 
 Return FireFox addons for all users. FireFox addons exists as a JSON file.  
 
+#### retrospect(output)
+
+A powerfull function that will timeline all supported FireFox artifacts
+
+| Param            | Type          | Description                         |
+| ---------------- | ------------- | ----------------------------------- |
+| output           | Output        | Output object to output all results |
 
 ### Nextcloud Client Class
 
@@ -274,20 +323,23 @@ Return a list of files opened by LibreOffice for all users.
 | -------- | ------------ | -------------------- |
 | platform | PlatformType | OS platform to parse |
 
-### fileHistory(platform, alt_glob) -> FileHistory[] | ApplicationError
+### fileHistory(platform, include_content, alt_glob) -> FileHistory[] | ApplicationError
 
 Parse the local file history for VSCode. Returns list of history entries. Also
-supports VSCodium.
+supports VSCodium. 
 
 You may also provide an optional alternative glob path to the entries.json file.
 By default artemis will parse the default locations for VSCode.
 
-An altnerative glob will override the platform type.
+An alternative glob will override the platform type.  
+You may also choose to include the content of the history files. By default this is not included.  
+If you include the file content the output will be very large.
 
-| Param    | Type         | Description                                    |
-| -------- | ------------ | ---------------------------------------------- |
-| platform | PlatformType | OS platform to parse                           |
-| alt_glob | string       | optional alternative glob path to entries.json |
+| Param           | Type         | Description                                            |
+| --------------- | ------------ | ------------------------------------------------------ |
+| platform        | PlatformType | OS platform to parse                                   |
+| include_content | boolean      | Include content of the history files. Default is false |
+| alt_glob        | string       | optional alternative glob path to entries.json         |
 
 ### getExtensions(platform, path) -> Extensions[] | ApplicationError
 
@@ -354,11 +406,10 @@ file.
 | platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin) |
 | alt_file | string       | Optional path to a MRU plist or NTUSER.DAT                |
 
-### onedriveDetails(platform, alt_path, user) -> OneDriveDetails | ApplicationError
+### OneDrive Class
 
-Extract Microsoft OneDrive artifacts. Supports both macOS and Windows. By
-default will parse OneDrive artifacts for **all** users. You may provide a
-single user as an optional arguement to only parse data for a specific user.
+A basic TypeScript class to extract OneDrive forensic artifacts. Supports both macOS and Windows.  
+By default artemis will parse OneDrive artifacts for **all** users. You may provide a single user as an optional argument to only parse data for a specific user.
 
 You may also provide an optional alternative path to a folder containing
 OneDrive artifacts. You must include the trailing slash. The folder should
@@ -369,11 +420,88 @@ contain the following artifacts:
 - general.keystore
 - SyncEngineDatabase.db
 
-| Param    | Type         | Description                                                |
-| -------- | ------------ | ---------------------------------------------------------- |
-| platform | PlatformType | OS platform to parse. Supports Windows and macOS (Darwin)  |
-| alt_path | string       | Optional path to a directory containing OneDrive artifacts |
-| user     | string       | Optional single user to parse instead of all users         |
+Sample TypeScript code:
+```typescript
+import { Format, OneDrive, Output, OutputType, PlatformType } from "./artemis-api/mod";
+
+function main() {
+  const results = new OneDrive(PlatformType.Windows);
+  const output: Output = {
+    name: "local",
+    directory: "tmp",
+    format: Format.JSONL,
+    compress: false,
+    timeline: false,
+    endpoint_id: "",
+    collection_id: 0,
+    output: OutputType.LOCAL
+  };
+  
+  results.oneDriveRetrospect(output);
+}
+
+main();
+```
+
+#### oneDriveProfiles() -> OnedriveProfile[]
+
+Returns an array of all file path atifacts associated with OneDrive users
+
+#### oneDriveKeys(files, output, metadata_runtime) -> KeyInfo[] 
+
+Returns an array of keys used by OneDrive. By default this function will find the keys for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of KeyInfo.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only key files from the provided array                                                                                                      |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### oneDriveAccounts(files, output, metadata_runtime) -> OneDriveAccount[] 
+
+Returns an array of OneDrive account information. By default this function will find the accounts for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of OneDriveAccount.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only account files from the provided array                                                                                                 |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### oneDriveLogs(files, output, metadata_runtime) -> OneDriveLog[] 
+
+Returns an array of OneDrive log information. By default this function will find the logs for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of OneDriveLog.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only log files from the provided array                                                                                                      |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### oneDriveSyncDatabase(files, output, metadata_runtime) -> OneDriveSyncEngineRecord[] 
+
+Returns an array of OneDrive Sync database information. By default this function will find the databases for all users. You may provide a specific subset of files or users instead of all users.
+
+You may also provide an optional Output object to output results to a file instead of returning an array of OneDriveSyncEngineRecord.
+
+| Param            | Type          | Description                                                                                                                                       |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| files            | string[]      | Parse only database files from the provided array                                                                                                 |
+| output           | Output        | Output object to output all results to a file instead of return an array                                                                          |
+| metadata_runtime | boolean       | Specify if artemis should append runtime metadata when outputting to a file based on the Output object. Default is no metadata will be appended |
+
+#### retrospect(output) 
+
+A powerful function that will timeline all supported OneDrive artifacts
+
+| Param            | Type          | Description                         |
+| ---------------- | ------------- | ----------------------------------- |
+| output           | Output        | Output object to output all results |
 
 ### LevelDb Class
 
@@ -441,3 +569,26 @@ AnyDesk config information.
 | Param    | Type         | Description                                                                                         |
 | -------- | ------------ | --------------------------------------------------------------------------------------------------- |
 | is_alt   | boolean      | Optional. Set to true if you provided an alternative directory when initializing the AnyDesk class  |
+
+### Syncthing Class
+
+A basic TypeScript class to extract data from Syncthing logs. 
+
+Sample TypeScript code:
+```typescript
+import { PlatformType, Syncthing } from "./artemis-api/mod";
+
+
+function main() {
+  const client = new Syncthing(PlatformType.Linux);
+  const results = client.logs();
+  console.log(JSON.stringify(results));
+}
+
+main();
+```
+
+
+#### logs() -> SyncthingLogs[]
+
+Return all plaintext log entries for the Syncthing application

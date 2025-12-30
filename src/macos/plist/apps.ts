@@ -7,11 +7,12 @@ import { parseIcon } from "../../images/icns";
 import { MacosError } from "../errors";
 
 /**
- * Returns a very simple App listing on the system. Searches user installed Apps, System Apps, default Homebrew paths (/usr/local/Cellar, /opt/homebrew/Cellar).
+ * Returns a very simple App listing on the system. Searches user installed Apps, System Apps, default Homebrew paths (/usr/local/Cellar, /opt/homebrew/Cellar).  
  * Use `scanApps()` if you want to scan the entire filesystem for Apps
+ * @param [skip_icon=false] Skip parsing of the App icon. Default is false
  * @returns Array of `Applications`
  */
-export function listApps(): Applications[] {
+export function listApps(skip_icon = false): Applications[] {
   const app_paths = [
     "/Applications/*/Contents/Info.plist",
     "/System/Applications/*/Contents/Info.plist",
@@ -20,7 +21,7 @@ export function listApps(): Applications[] {
   ];
   let all_apps: Applications[] = [];
   for (const path of app_paths) {
-    const results = getApps(path);
+    const results = getApps(path, skip_icon);
     if (results instanceof MacosError) {
       continue;
     }
@@ -32,11 +33,12 @@ export function listApps(): Applications[] {
 
 /**
  * Scans the entire filesystem under /System and tries to parse all Applications. Includes embedded Apps, Frameworks, and any file that ends with `%/Contents/Info.plist`
+ * @param [skip_icon=false]  Skip parsing of the App icon. Default is false
  * @returns Array of `Applications`
  */
-export async function scanApps(): Promise<Applications[]> {
+export async function scanApps(skip_icon = false): Promise<Applications[]> {
   const apps: Applications[] = [];
-  await iterateVolumes("/System", apps);
+  await iterateVolumes("/System", apps, skip_icon);
 
   return apps;
 }
@@ -45,8 +47,9 @@ export async function scanApps(): Promise<Applications[]> {
  * Walk the entire filesystem to look for Applications
  * @param path Path to read
  * @param apps Array of `Applications` to track
+ * @param skip_icon Skip parsing of the App icon data
  */
-async function iterateVolumes(path: string, apps: Applications[]) {
+async function iterateVolumes(path: string, apps: Applications[], skip_icon: boolean) {
   const entries = await readDir(path);
   if (entries instanceof FileError) {
     return;
@@ -55,7 +58,7 @@ async function iterateVolumes(path: string, apps: Applications[]) {
   for (const entry of entries) {
     if (entry.full_path.endsWith("Contents/Info.plist") && entry.is_file) {
       try {
-        const app = parsePlist(entry.full_path);
+        const app = parsePlist(entry.full_path, skip_icon);
         if (app instanceof Error) {
           continue;
         }
@@ -67,7 +70,7 @@ async function iterateVolumes(path: string, apps: Applications[]) {
     }
 
     if (entry.is_directory) {
-      await iterateVolumes(entry.full_path, apps);
+      await iterateVolumes(entry.full_path, apps, skip_icon);
     }
   }
 }
@@ -75,16 +78,17 @@ async function iterateVolumes(path: string, apps: Applications[]) {
 /**
  * Get Application information by parse `Info.plist` file
  * @param path Path to glob for applications
+ * @param skip_icon Skip parsing the App icon data
  * @returns Array of `Applications` or `MacosError`
  */
-function getApps(path: string): Applications[] | MacosError {
+function getApps(path: string, skip_icon: boolean): Applications[] | MacosError {
   const glob_paths = glob(path);
   if (glob_paths instanceof FileError) {
     return new MacosError(`PLIST`, `Failed to glob for plists: ${glob_paths}`);
   }
   const apps: Applications[] = [];
   for (const entry of glob_paths) {
-    const app = parsePlist(entry.full_path);
+    const app = parsePlist(entry.full_path, skip_icon);
     if (app instanceof MacosError) {
       continue;
     }
@@ -96,9 +100,10 @@ function getApps(path: string): Applications[] | MacosError {
 /**
  * Parse the `Info.plist` file
  * @param path Path to `Info.plist`
+ * @param skip_icon Skip parsing the App icon data
  * @returns `Applications` info or error
  */
-function parsePlist(path: string): Applications | MacosError {
+function parsePlist(path: string, skip_icon: boolean): Applications | MacosError {
   let data = getPlist(path);
   if (data instanceof Error || data instanceof Uint8Array) {
     console.error(`Failed to parse plist ${path}: ${data}`);
@@ -131,7 +136,7 @@ function parsePlist(path: string): Applications | MacosError {
     bundle_version: `${data[ "CFBundleVersion" ]}`,
     display_name: `${data[ "CFBundleExecutable" ]}`,
     copyright: `${data[ "NSHumanReadableCopyright" ]}`,
-    icon: readIcon(icon_file),
+    icon: !skip_icon ? readIcon(icon_file) : "",
     info: path,
   };
 

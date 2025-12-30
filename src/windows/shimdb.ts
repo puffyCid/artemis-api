@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getShimdb(path?: string): Shimdb[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_shimdb(path);
 
     return data;

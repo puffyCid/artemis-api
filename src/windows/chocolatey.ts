@@ -43,21 +43,25 @@ export function getChocolateyInfo(
       console.warn(`failed to parse ${path.full_path}: ${xml_data.message}`);
       continue;
     }
+    const entry = xml_data.package.metadata.at(0);
+    if (entry === undefined) {
+      continue;
+    }
 
     // Try to grab some info
     const chocolate: ChocolateyInfo = {
-      name: xml_data.package.metadata[ 0 ].id[ 0 ],
-      version: xml_data.package.metadata[ 0 ].version[ 0 ],
-      summary: typeof xml_data.package.metadata[ 0 ].summary === "undefined"
+      name: entry.id[ 0 ] ?? "",
+      version: entry.version[ 0 ] ?? "",
+      summary: typeof entry.summary === "undefined"
         ? ""
-        : xml_data.package.metadata[ 0 ].summary[ 0 ],
-      author: xml_data.package.metadata[ 0 ].authors[ 0 ],
-      license: typeof xml_data.package.metadata[ 0 ].licenseUrl === "undefined"
+        : entry.summary[ 0 ] ?? "",
+      author: entry.authors[ 0 ] ?? "",
+      license: typeof entry.licenseUrl === "undefined"
         ? ""
-        : xml_data.package.metadata[ 0 ].licenseUrl[ 0 ],
-      tags: typeof xml_data.package.metadata[ 0 ].tags === "undefined"
+        : entry.licenseUrl[ 0 ] ?? "",
+      tags: typeof entry.tags === "undefined"
         ? []
-        : xml_data.package.metadata[ 0 ].tags[ 0 ].split(" "),
+        : (entry.tags[ 0 ] ?? "").split(" "),
       path: path.full_path,
     };
     packages.push(chocolate);

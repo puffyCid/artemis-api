@@ -3,6 +3,7 @@
         /* Visit https://aka.ms/tsconfig to read more about this file */
         /* Language and Environment */
         "target": "es2024", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+        "module": "nodenext",
         /* JavaScript Support */
         "allowJs": false, /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
         "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */

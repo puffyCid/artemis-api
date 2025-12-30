@@ -7,7 +7,7 @@ import { Connection } from "../../types/system/connections";
  * @returns `Memory` information on the system
  */
 export function memory(): Memory {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: Memory = js_memory();
   return data;
 }
@@ -31,7 +31,7 @@ export function processListing(
     sha1,
     sha256,
   };
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: ProcessInfo[] = js_get_processes(
     hashes,
     binary,
@@ -45,7 +45,7 @@ export function processListing(
  * @returns Array of `Connection`
  */
 export function connections(): Connection[] {
-  //@ts-ignore: Custom Artemis function
+  // @ts-expect-error: Custom Artemis function
   const data: Connection[] = js_connections();
 
   return data;

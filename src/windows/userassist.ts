@@ -12,7 +12,7 @@ export function getUserassist(
   path?: string,
 ): UserAssist[] | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_userassist(resolve, path);
 
     return data;

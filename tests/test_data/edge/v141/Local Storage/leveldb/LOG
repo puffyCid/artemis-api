@@ -1,0 +1,36 @@
+2025/11/02-17:30:12.761 418c Reusing MANIFEST /Users/android/Library/Application Support/Microsoft Edge/Profile 1/Local Storage/leveldb/MANIFEST-000001
+2025/11/02-17:30:12.769 418c Recovering log #3
+2025/11/02-17:30:12.769 418c Reusing old log /Users/android/Library/Application Support/Microsoft Edge/Profile 1/Local Storage/leveldb/000003.log 
+2025/11/02-17:31:10.766 418f Level-0 table #5: started
+2025/11/02-17:31:10.788 418f Level-0 table #5: 31387 bytes OK
+2025/11/02-17:31:10.792 418f Delete type=0 #3
+2025/11/02-17:31:58.745 418f Level-0 table #7: started
+2025/11/02-17:31:58.754 418f Level-0 table #7: 28218 bytes OK
+2025/11/02-17:31:58.769 418f Delete type=0 #4
+2025/11/02-17:34:13.298 418f Level-0 table #9: started
+2025/11/02-17:34:13.307 418f Level-0 table #9: 122687 bytes OK
+2025/11/02-17:34:13.310 418f Delete type=0 #6
+2025/11/02-17:34:43.557 418f Level-0 table #11: started
+2025/11/02-17:34:43.561 418f Level-0 table #11: 36554 bytes OK
+2025/11/02-17:34:43.571 418f Delete type=0 #8
+2025/11/02-17:35:41.817 418f Level-0 table #13: started
+2025/11/02-17:35:41.832 418f Level-0 table #13: 29479 bytes OK
+2025/11/02-17:35:41.834 418f Delete type=0 #10
+2025/11/02-17:38:36.311 418f Level-0 table #15: started
+2025/11/02-17:38:36.329 418f Level-0 table #15: 50105 bytes OK
+2025/11/02-17:38:36.338 418f Delete type=0 #12
+2025/11/02-17:38:36.340 418f Compacting 4@0 + 1@1 files
+2025/11/02-17:38:36.351 418f Generated table #16@0: 362 keys, 179583 bytes
+2025/11/02-17:38:36.351 418f Compacted 4@0 + 1@1 files => 179583 bytes
+2025/11/02-17:38:36.354 418f compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/11/02-17:38:36.356 418f Delete type=2 #15
+2025/11/02-17:38:36.356 418f Delete type=2 #7
+2025/11/02-17:38:36.356 418f Delete type=2 #13
+2025/11/02-17:38:36.356 418f Delete type=2 #11
+2025/11/02-17:38:36.356 418f Delete type=2 #9
+2025/11/02-17:39:36.314 418f Level-0 table #18: started
+2025/11/02-17:39:36.327 418f Level-0 table #18: 41979 bytes OK
+2025/11/02-17:39:36.334 418f Delete type=0 #14
+2025/11/02-17:40:12.140 418f Level-0 table #20: started
+2025/11/02-17:40:12.163 418f Level-0 table #20: 38941 bytes OK
+2025/11/02-17:40:12.166 418f Delete type=0 #17

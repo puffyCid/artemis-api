@@ -1,9 +1,11 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
-import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumBookmarks, chromiumExtensions } from "./chromium/json";
 import { chromiumLocalStorage } from "./chromium/level";
-import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
+import { chromiumPreferences } from "./chromium/preferences";
+import { chromiumSessions } from "./chromium/sessions";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumFavicons, chromiumHistory, chromiumLogins, chromiumShortcuts } from "./chromium/sqlite";
 
 type EdgeHistory = ChromiumHistory;
 type EdgeDownloads = ChromiumDownloads;
@@ -13,6 +15,9 @@ type EdgeBookmarks = ChromiumBookmarks;
 type EdgeLogins = ChromiumLogins;
 type EdgeDips = ChromiumDips;
 type EdgeLocalStorage = ChromiumLocalStorage;
+type EdgeSession = ChromiumSession;
+type EdgeFavicons = ChromiumFavicons;
+type EdgeShortcuts = ChromiumShortcuts;
 
 /**
  * Class to extract Edge browser information. Since Edge is based on Chromium we can leverage the existing Chromium artifacts to parse Edge info
@@ -26,7 +31,7 @@ export class Edge extends Chromium {
      * @param alt_path Optional alternative path to directory contain Edge data
      * @returns `Edge` instance class
      */
-    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
         super(platform, unfold, BrowserType.EDGE, alt_path);
     }
 
@@ -115,15 +120,15 @@ export class Edge extends Chromium {
      * Get installed Edge extensions
      * @returns Array of parsed extensions
      */
-    public override extensions(): Record<string, unknown>[] {
+    public override extensions(): Extension[] {
         return chromiumExtensions(this.paths, this.platform);
     }
 
     /**
      * Get Edge Preferences
-     * @returns Array of Preferences for each user
+     * @returns Array of `Preferences` for each user
      */
-    public override preferences(): Record<string, unknown>[] {
+    public override preferences(): Preferences[] {
         return chromiumPreferences(this.paths, this.platform);
     }
 
@@ -136,6 +141,28 @@ export class Edge extends Chromium {
     public override autofill(offset = 0, limit = 100): EdgeAutofill[] {
         const query = `SELECT name, value, date_created, date_last_used, count, value_lower from autofill LIMIT ${limit} OFFSET ${offset}`;
         return chromiumAutofill(this.paths, this.platform, query);
+    }
+
+    /**
+     * Function to parse Edge Favicons information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `EdgeFavicons` 
+     */
+    public override favicons(offset?: number, limit?: number): EdgeFavicons[] {
+        const query = `SELECT url, last_updated, page_url FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id JOIN icon_mapping ON icon_mapping.icon_id = favicons.id LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumFavicons(this.paths, this.platform, query);
+    }
+
+    /**
+     * Function to parse Edge Shortcut information. 
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `EdgeShortcuts` 
+     */
+    public override shortcuts(offset = 0, limit = 100): EdgeShortcuts[] {
+        const query = `SELECT id, text, fill_into_edit, url, contents, description, type, keyword, last_access_time FROM omni_box_shortcuts LIMIT ${limit} OFFSET ${offset}`;
+        return chromiumShortcuts(this.paths, this.platform, query);
     }
 
     /**
@@ -152,6 +179,14 @@ export class Edge extends Chromium {
      */
     public override localStorage(): EdgeLocalStorage[] {
         return chromiumLocalStorage(this.paths, this.platform);
+    }
+
+    /**
+     * Get Edge Sessions
+     * @returns Array of `EdgeSession` for each user
+     */
+    public override sessions(): EdgeSession[] {
+        return chromiumSessions(this.paths, this.platform);
     }
 
     /**

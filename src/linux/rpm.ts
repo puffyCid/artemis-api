@@ -77,6 +77,11 @@ export function getRpmInfo(
       package_group: "",
       summary: "",
       url: "",
+      message: "",
+      datetime: "",
+      timestamp_desc: "RPM Package Installed",
+      artifact: "RPM Package",
+      data_type: "linux:rpm:entry"
     };
 
     // Extract the tag values
@@ -135,6 +140,8 @@ export function getRpmInfo(
       }
     }
 
+    rpm.message = `${rpm.name}-v${rpm.version} installed`;
+    rpm.datetime = rpm.install_time;
     rpm_entries.push(rpm);
   }
 
@@ -202,9 +209,9 @@ enum TagName {
   DirIndexes = 1116,
   BaseNames = 1117,
   DirNames = 1118,
-  DistUrl = 1023,
+  DistUrl = 1123,
   PayloadCompressor = 1125,
-  PayloadFlags = 1026,
+  PayloadFlags = 1126,
 
   //Private Tag values. All optional
   HeaderImutable = 63,
@@ -225,7 +232,6 @@ enum TagName {
   OldFileNames = 1027,
   FileRdevs = 1033,
   FileModifiedTime = 1034,
-  FileMD5s = 1035,
   FileLinkToS = 1036,
   FileUsername = 1039,
   FileDevices = 1042,
@@ -472,7 +478,7 @@ function extractTagValue(
 ): string[] | number[] | bigint[] | LinuxError {
   let count_value = 1;
   let tag_data = data;
-  let values: any[] = [];
+  let values: unknown[] = [];
 
   if (data.length < count) {
     return new LinuxError(`RPMPACKAGES`, `count greater than remaining bytes`);
@@ -487,12 +493,12 @@ function extractTagValue(
       values.push(
         extractUtf8String(new Uint8Array(value_data)),
       );
-      return values;
+      return values as string[];
     }
     case TagType.Int8: {
       const value_data = tag_data.buffer.slice(0, count);
       values = Array.from(new Uint8Array(value_data));
-      return values;
+      return values as number[];
     }
     case TagType.Int16: {
       const size = 2;
@@ -505,7 +511,7 @@ function extractTagValue(
         values.push(value_data);
         count_value++;
       }
-      return values;
+      return values as number[];
     }
     case TagType.Int32: {
       const size = 4;
@@ -518,7 +524,7 @@ function extractTagValue(
         values.push(value_data);
         count_value++;
       }
-      return values;
+      return values as number[];
     }
     case TagType.Int64: {
       const size = 8;
@@ -531,7 +537,7 @@ function extractTagValue(
         values.push(value_data);
         count_value++;
       }
-      return values;
+      return values as bigint[];
     }
     case TagType.StringArray:
     case TagType.I18nString:
@@ -545,7 +551,7 @@ function extractTagValue(
         values.push(extractUtf8String(value_data.nommed as Uint8Array));
         // Check if we reached end
         if (value_data.remaining.length === 0) {
-          return values;
+          return values as string[];
         }
 
         const eol = nomUnsignedOneBytes(value_data.remaining as Uint8Array);
@@ -557,13 +563,13 @@ function extractTagValue(
 
         count_value++;
       }
-      return values;
+      return values as string[];
     }
     case TagType.Bin: {
       // For binary data, the count is actually the size of the data
       const value_data = tag_data.buffer.slice(0, count);
       values.push(encode(new Uint8Array(value_data)));
-      return values;
+      return values as string[];
     }
     default: {
       console.warn(`Unknown TagType ${tag_type} with count ${count}`);

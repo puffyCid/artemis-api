@@ -4,8 +4,11 @@ import { Bing } from "./plugins/bing";
 import { Discord } from "./plugins/discord";
 import { Dropbox } from "./plugins/dropbox";
 import { DuckDuckGo } from "./plugins/duckduckgo";
+import { GithubUrl } from "./plugins/github";
 import { Google } from "./plugins/google";
+import { detectJsonWebToken } from "./plugins/jwt";
 import { Outlook } from "./plugins/outlook";
+import { ProxmoxUrl } from "./plugins/proxmox";
 import { Yahoo } from "./plugins/yahoo";
 
 /**
@@ -51,6 +54,26 @@ export class Unfold {
     } else if (info.domain.includes("discord.com")) {
       const disc = new Discord(info);
       disc.parseDiscord();
+    } else if (info.port === 8006) {
+      const prox = new ProxmoxUrl(info);
+      prox.parseProxmox();
+    } else if (info.domain.includes("github.com")) {
+      const git = new GithubUrl(info);
+      git.parseGithub();
+    }
+
+    // Check for possible JSON Web Tokens
+    for (const query of info.query_pairs) {
+      const [ key, ...param ] = query.split("=");
+      if (key === undefined) {
+        break;
+      }
+      const payload = param.at(0) ?? "";
+      const min_size = 400;
+      if (payload.length < min_size) {
+        continue;
+      }
+      detectJsonWebToken(payload, info);
     }
 
     return info;
@@ -63,7 +86,7 @@ export class Unfold {
    */
   private extractUrl(url: string): Url | UnfoldError {
     try {
-      //@ts-ignore: Custom Artemis function
+      // @ts-expect-error: Custom Artemis function
       const url_info: Url = js_url_parse(url);
       url_info.url = url;
       url_info.last_segment = url_info.segments.at(-1) ?? "";

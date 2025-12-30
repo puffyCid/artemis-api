@@ -32,7 +32,7 @@ export function getEventlogs(
     );
   }
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const results = js_eventlogs(
       path,
       offset,

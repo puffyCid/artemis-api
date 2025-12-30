@@ -8,7 +8,7 @@ import { MacosError } from "./errors";
  */
 export function getMacho(path: string): MachoInfo[] | MacosError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_macho(path);
     return data;
   } catch (err) {

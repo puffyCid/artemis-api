@@ -43,7 +43,7 @@ export class Timesketch {
   public async timelineAndUpload(
     data: unknown,
     artifact: TimesketchArtifact,
-  ): Promise<void | TimesketchError> {
+  ): Promise<undefined | TimesketchError> {
     const timeline_data = timelineArtifact(data, artifact);
     if (timeline_data instanceof TimesketchError) {
       return timeline_data;
@@ -61,7 +61,7 @@ export class Timesketch {
   public async upload(
     data: TimesketchTimeline[],
     artifact: string,
-  ): Promise<void | TimesketchError> {
+  ): Promise<undefined | TimesketchError> {
     if (data.length === 0) {
       return new TimesketchError(`ARTIFACT`, `zero values for ${artifact}`);
     }
@@ -96,7 +96,7 @@ export class Timesketch {
   private async uploadTimeline(
     data: TimesketchTimeline[],
     artifact: string,
-  ): Promise<void | TimesketchError> {
+  ): Promise<undefined | TimesketchError> {
     if (this.timeline_name === "") {
       this.timeline_name = artifact;
     }
@@ -176,7 +176,7 @@ export class Timesketch {
    */
   private async createSketch(
     artifact: string,
-  ): Promise<void | TimesketchError> {
+  ): Promise<undefined | TimesketchError> {
     if (this.timesketch_auth.sketch_name === undefined) {
       this.timesketch_auth.sketch_name = artifact;
     }
@@ -222,7 +222,7 @@ export class Timesketch {
    * Function to verify if provided Sketch ID exists
    * @returns `TimesketchError` if we cannot verify the Sketch ID
    */
-  private async verifySketchId(): Promise<void | TimesketchError> {
+  private async verifySketchId(): Promise<undefined | TimesketchError> {
     const headers = {
       "X-Csrftoken": this.token,
       Cookie: this.cookie,
@@ -267,7 +267,7 @@ export class Timesketch {
    * Function to authenticate to Timesketch
    * @returns `TimesketchError` if authentication failed
    */
-  private async authTimesketch(): Promise<void | TimesketchError> {
+  private async authTimesketch(): Promise<undefined | TimesketchError> {
     const client: ClientRequest = {
       url: `${this.timesketch_auth.url}/login/`,
       protocol: Protocol.GET,

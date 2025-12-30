@@ -20,7 +20,7 @@ export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsE
     }
     const reg_data = getRegistry(path);
     if (reg_data instanceof WindowsError) {
-        return new WindowsError(`BAM`, `failed to parse ${path}: ${reg_data}`);
+        return new WindowsError(`BAM`, `failed to parse ${path}: ${reg_data.message}`);
     }
 
     const values: Bam[] = [];

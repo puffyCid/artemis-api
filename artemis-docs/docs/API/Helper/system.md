@@ -53,7 +53,7 @@ Returns true on success or SystemError.
 
 ### getSysteminfo() -> SystemInfo
 
-Function to pull systeminfo data
+Function to pull system info data
 
 ### uptime() -> number
 
@@ -83,7 +83,7 @@ then full path not needed. Args are optional.
 | Param   | Type     | Description                       |
 | ------- | -------- | --------------------------------- |
 | command | string   | Command to execute                |
-| args    | string[] | Arguements to pass to the command |
+| args    | string[] | Arguments to pass to the command  |
 
 ### connections() -> Connection[]
 

@@ -13,7 +13,7 @@ export function getLogon(path: string): Logon[] | LinuxError {
     return new LinuxError("LOGON", `provided non-logon file ${path}`);
   }
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const data = js_get_logon(path);
 
     return data;

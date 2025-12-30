@@ -8,7 +8,8 @@ import { scanApps } from "./apps";
  * @returns Array of `Applications` that contain DockTile entries
  */
 export async function dockTiles(): Promise<Applications[]> {
-  const apps = await scanApps();
+  const skip_icons = true;
+  const apps = await scanApps(skip_icons);
   const dockTileApps = checkDockPersistence(apps);
 
   return dockTileApps;
@@ -33,8 +34,9 @@ function checkDockPersistence(apps: Applications[]): Applications[] {
       continue;
     }
 
+    const check = JSON.stringify(data).toLowerCase();
     // Easy way to check for any DockTile Plugins
-    if (!JSON.stringify(data).toLowerCase().includes("docktileplugin")) {
+    if (!check.includes("docktileplugin") && !check.includes("docktile")) {
       continue;
     }
 

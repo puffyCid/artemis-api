@@ -34,7 +34,7 @@ export function listKnownHosts(alt_glob?: string): KnownHosts[] | UnixError {
 
             const value = line.split(" ");
 
-            let host: KnownHosts = {
+            const host: KnownHosts = {
                 target: value.at(0) ?? "",
                 algorithm: value.at(1) ?? "",
                 data: value.at(2) ?? "",

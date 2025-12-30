@@ -48,7 +48,6 @@ import { UsnJrnl } from "../../types/windows/usnjrnl";
 import { WmiPersist } from "../../types/windows/wmi";
 import { LogonsWindows } from "../../types/windows/eventlogs/logons";
 import { Journal } from "../../types/linux/journal";
-import { ChromiumHistory } from "../../types/applications/chromium";
 
 /**
  * macOS artifact timelines
@@ -74,25 +73,6 @@ import { GatekeeperEntries } from "../../types/macos/sqlite/gatekeeper";
  * Linux artifact timelines
  */
 import { timelineJournals } from "./artifacts/linux/journals";
-import type { RpmPackages } from "../../types/linux/rpm";
-import { timelineAbrt } from "./artifacts/linux/abrt";
-import { Abrt } from "../../types/linux/abrt";
-import { timelineRpm } from "./artifacts/linux/rpm";
-import { timelineGnomeExtensions } from "./artifacts/linux/gnome/extensions";
-import { Extension } from "../../types/linux/gnome/extensions";
-import { timelineGnomeVirtualFilesystem } from "./artifacts/linux/gnome/gvfs";
-import { GvfsEntry } from "../../types/linux/gnome/gvfs";
-import { timelineGnomeAppUsage } from "./artifacts/linux/gnome/appusage";
-import { AppUsage } from "../../types/linux/gnome/usage";
-
-/**
- * Application artifact timelines
- */
-import { timelineChromiumHistory } from "./artifacts/applications/chromium/history";
-import { timelineFileHistory } from "./artifacts/applications/vscode";
-import { FileHistory } from "../../types/applications/vscode";
-import { timelineRecentFiles } from "./artifacts/applications/libreoffice";
-import { RecentFilesLibreOffice } from "../../types/applications/libreoffice";
 
 /**
  * Cross platform artifact timelines
@@ -157,13 +137,8 @@ export function timelineArtifact(
       return timelineGatekeeper(data as GatekeeperEntries[]);
     case TimesketchArtifact.FILES:
       return timelineFiles(
-        data as MacosFileInfo[] | LinuxFileInfo[],
+        data as MacosFileInfo[] | LinuxFileInfo[] | WindowsFileInfo[],
         false,
-      );
-    case TimesketchArtifact.FILES_WINDOWS:
-      return timelineFiles(
-        data as WindowsFileInfo[],
-        true,
       );
     case TimesketchArtifact.EMOND:
       return timelineEmond(data as Emond[]);
@@ -230,24 +205,6 @@ export function timelineArtifact(
     case TimesketchArtifact.JOURNALS:
     case TimesketchArtifact.SUDOLOGS_LINUX:
       return timelineJournals(data as Journal[]);
-    case TimesketchArtifact.CHROMIUM_HISTORY:
-    case TimesketchArtifact.CHROME_HISTORY:
-    case TimesketchArtifact.EDGE_HISTORY:
-      return timelineChromiumHistory(data as ChromiumHistory[], artifact);
-    case TimesketchArtifact.RPM:
-      return timelineRpm(data as RpmPackages[]);
-    case TimesketchArtifact.VSCODE_FILEHISTORY:
-      return timelineFileHistory(data as FileHistory[]);
-    case TimesketchArtifact.LIBREOFFICE_RECENTFILES:
-      return timelineRecentFiles(data as RecentFilesLibreOffice[]);
-    case TimesketchArtifact.ABRT:
-      return timelineAbrt(data as Abrt[]);
-    case TimesketchArtifact.GNOME_EXTENSIONS:
-      return timelineGnomeExtensions(data as Extension[]);
-    case TimesketchArtifact.GNOME_VIRTUAL_FILESYSTEM:
-      return timelineGnomeVirtualFilesystem(data as GvfsEntry[]);
-    case TimesketchArtifact.GNOME_APPLICATION_USAGE:
-      return timelineGnomeAppUsage(data as AppUsage[]);
     default:
       return new TimesketchError(`ARTIFACT`, `unknown artifact ${artifact}`);
   }

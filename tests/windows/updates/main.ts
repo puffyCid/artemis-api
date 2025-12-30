@@ -3,6 +3,8 @@ import { Updates } from "../../../src/windows/ese/updates";
 
 function main() {
   const client = new Updates();
+  console.log('Running Windows Update History tests....');
+  console.log(' Starting live test....');
   const results = client.updateHistory(client.pages);
 
   if (results instanceof WindowsError) {
@@ -12,6 +14,9 @@ function main() {
 
     throw results;
   }
+  console.log(' Live test passed! 🥳\n');
+  console.log('All Windows Update History tests passed! 🥳💃🕺');
+
 }
 
 main();

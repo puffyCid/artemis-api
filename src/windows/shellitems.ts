@@ -8,7 +8,7 @@ import { WindowsError } from "./errors";
  */
 export function getShellItem(data: Uint8Array): JsShellItem | WindowsError {
   try {
-    //@ts-ignore: Custom Artemis function
+    // @ts-expect-error: Custom Artemis function
     const result = js_shellitems(data);
     const item: JsShellItem = {
       item: result.item as ShellItems,

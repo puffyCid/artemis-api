@@ -1,4 +1,4 @@
-import { Extensions, FileHistory, RecentFiles, RecentType, VscodeStorage } from "../../types/applications/vscode";
+import { Entries, Extensions, FileHistory, RecentFiles, RecentType, VscodeStorage } from "../../types/applications/vscode";
 import { encode } from "../encoding/base64";
 import { encodeBytes } from "../encoding/bytes";
 import { getEnvValue } from "../environment/env";
@@ -11,11 +11,13 @@ import { ApplicationError } from "./errors";
 /**
  * Return the local file history for all VSCode files. Also supports VSCodium.
  * @param platform OS Platform type to lookup
+ * @param [include_content=false] Base64 the file history content. Default is false. If enabled expect that output to be very large
  * @param alt_glob Alternative glob path to `entries.json`
  * @returns Array of `FileHistory` entries or `ApplicationError`
  */
 export function fileHistory(
   platform: PlatformType,
+  include_content = false,
   alt_glob?: string,
 ): FileHistory[] | ApplicationError {
   // Get all user paths
@@ -65,42 +67,65 @@ export function fileHistory(
     // Parse JSON file into the FileHistory format
     const json_data: FileHistory = JSON.parse(string_data);
     json_data.history_path = path.full_path;
+    const file_entries = json_data[ "entries" ] as Entries[];
 
     // Loop through each history entry and read the contents
-    for (let i = 0; i < json_data.entries.length; i++) {
+    for (let i = 0; i < file_entries.length; i++) {
+      const entry = file_entries[ i ];
+      if (entry === undefined) {
+        continue;
+      }
       let hist_file = "";
       switch (platform) {
         case PlatformType.Linux:
         case PlatformType.Darwin: {
           const dirs = path.full_path.split("/");
           dirs.pop();
-          hist_file = `${dirs.join("/")}/${json_data.entries[ i ]?.id}`;
+          hist_file = `${dirs.join("/")}/${file_entries[ i ]?.id}`;
           break;
         }
         case PlatformType.Windows: {
           const dirs = path.full_path.split("\\");
           dirs.pop();
-          hist_file = `${dirs.join("\\")}\\${json_data.entries[ i ]?.id}`;
+          hist_file = `${dirs.join("\\")}\\${file_entries[ i ]?.id}`;
           break;
         }
       }
-      // Read file data
-      const history_data = readTextFile(hist_file);
-      if (history_data instanceof FileError) {
-        console.warn(
-          `Could not read history file ${hist_file}: ${history_data}`,
-        );
-        continue;
+      if (include_content) {
+        // Read file data
+        const history_data = readTextFile(hist_file);
+        if (history_data instanceof FileError) {
+          console.warn(
+            `Could not read history file ${hist_file}: ${history_data}`,
+          );
+          continue;
+        }
+        // Base64 encode the history data
+        const history_encoded = encode(encodeBytes(history_data));
+        entry.content = history_encoded;
       }
-      // Base64 encode the history data
-      const history_encoded = encode(encodeBytes(history_data));
-      json_data.entries[ i ].timestamp = unixEpochToISO(
-        json_data.entries[ i ].timestamp as number,
-      );
-      json_data.entries[ i ].content = history_encoded;
-    }
 
-    entries.push(json_data);
+      entry.timestamp = unixEpochToISO(
+        entry.timestamp as number,
+      );
+      const flat_data: FileHistory = {
+        version: json_data.version,
+        resource: json_data.resource,
+        history_path: json_data.history_path,
+        message: `${json_data.resource} - History Entry: ${entry.id}`,
+        datetime: entry.timestamp,
+        timestamp_desc: "File Saved",
+        artifact: "File History",
+        data_type: "applications:vscode:filehistory:entry",
+        id: entry.id,
+        file_saved: entry.timestamp,
+        content: entry.content ?? "",
+        path: hist_file,
+        source: entry.source ?? "",
+        sourceDescription: entry.sourceDescription ?? ""
+      };
+      entries.push(flat_data);
+    }
   }
 
   return entries;
@@ -239,8 +264,6 @@ export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): Re
 
       }
     }
-
-
   }
 
   return recents;

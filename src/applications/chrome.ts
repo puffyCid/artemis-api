@@ -1,9 +1,11 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
 import { Chromium } from "./chromium/cr";
-import { chromiumBookmarks, chromiumExtensions, chromiumPreferences } from "./chromium/json";
+import { chromiumBookmarks, chromiumExtensions } from "./chromium/json";
 import { chromiumLocalStorage } from "./chromium/level";
-import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumHistory, chromiumLogins } from "./chromium/sqlite";
+import { chromiumPreferences } from "./chromium/preferences";
+import { chromiumSessions } from "./chromium/sessions";
+import { chromiumAutofill, chromiumCookies, chromiumDips, chromiumDownloads, chromiumFavicons, chromiumHistory, chromiumLogins, chromiumShortcuts } from "./chromium/sqlite";
 
 type ChromeHistory = ChromiumHistory;
 type ChromeDownloads = ChromiumDownloads;
@@ -13,6 +15,9 @@ type ChromeBookmarks = ChromiumBookmarks;
 type ChromeLogins = ChromiumLogins;
 type ChromeDips = ChromiumDips;
 type ChromeLocalStorage = ChromiumLocalStorage;
+type ChromeSession = ChromiumSession;
+type ChromeFavicons = ChromiumFavicons;
+type ChromeShortcuts = ChromiumShortcuts;
 
 /**
  * Class to extract Chrome browser information. Since Chrome is based on Chromium we can leverage the existing Chromium artifacts to parse Chrome info
@@ -26,7 +31,7 @@ export class Chrome extends Chromium {
    * @param alt_path Optional alternative path to directory contain Chrome data
    * @returns `Chrome` instance class
    */
-  constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+  constructor(platform: PlatformType, unfold = false, alt_path?: string) {
     super(platform, unfold, BrowserType.CHROME, alt_path);
   }
 
@@ -115,15 +120,15 @@ export class Chrome extends Chromium {
    * Get installed Chrome extensions
    * @returns Array of parsed extensions
    */
-  public override extensions(): Record<string, unknown>[] {
+  public override extensions(): Extension[] {
     return chromiumExtensions(this.paths, this.platform);
   }
 
   /**
    * Get Chrome Preferences
-   * @returns Array of Preferences for each user
+   * @returns Array of `Preferences` for each user
    */
-  public override preferences(): Record<string, unknown>[] {
+  public override preferences(): Preferences[] {
     return chromiumPreferences(this.paths, this.platform);
   }
 
@@ -147,11 +152,41 @@ export class Chrome extends Chromium {
   }
 
   /**
+    * Function to parse Chrome Favicons information. 
+    * @param [offset=0] Starting db offset. Default is zero
+    * @param [limit=100] How many records to return. Default is 100
+    * @returns Array of `ChromeFavicons` 
+    */
+  public override favicons(offset?: number, limit?: number): ChromeFavicons[] {
+    const query = `SELECT url, last_updated, page_url FROM favicons JOIN favicon_bitmaps ON favicons.id = favicon_bitmaps.id JOIN icon_mapping ON icon_mapping.icon_id = favicons.id LIMIT ${limit} OFFSET ${offset}`;
+    return chromiumFavicons(this.paths, this.platform, query);
+  }
+
+  /**
+   * Function to parse Chrome Shortcut information. 
+   * @param [offset=0] Starting db offset. Default is zero
+   * @param [limit=100] How many records to return. Default is 100
+   * @returns Array of `ChromeShortcuts` 
+   */
+  public override shortcuts(offset = 0, limit = 100): ChromeShortcuts[] {
+    const query = `SELECT id, text, fill_into_edit, url, contents, description, type, keyword, last_access_time FROM omni_box_shortcuts LIMIT ${limit} OFFSET ${offset}`;
+    return chromiumShortcuts(this.paths, this.platform, query);
+  }
+
+  /**
    * Get Chrome Local Storage
    * @returns Array of `ChromeLocalStorage` for each user
    */
   public override localStorage(): ChromeLocalStorage[] {
     return chromiumLocalStorage(this.paths, this.platform);
+  }
+
+  /**
+   * Get Chrome Sessions
+   * @returns Array of `ChromeSession` for each user
+   */
+  public override sessions(): ChromeSession[] {
+    return chromiumSessions(this.paths, this.platform);
   }
 
   /**
