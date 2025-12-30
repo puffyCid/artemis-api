@@ -3,186 +3,125 @@ sidebar_position: 2
 description: Using TypeScript
 ---
 
-# TypeScript
+# TypeScript 
 
-A TypeScript library is provided instead of JavaScript due to the enhanced
-features and ease of use TypeScript provides over plain JavaScript.
-
-Continuing from `get_registry()` function example. The code block below shows the API exposes a function called `get_registry()`.
-
-This function then calls `js_get_registry()`. The function js_get_registry is the actual Rust function that will parse the Registry.
-
-```typescript
-export interface Registry {
-  /**
-   * Full path to `Registry` key and name.
-   * Ex: ` ROOT\...\CurrentVersion\Run`
-   */
-  path: string;
-  /**
-   * Path to Key
-   * Ex: ` ROOT\...\CurrentVersion`
-   */
-  key: string;
-  /**
-   * Key name
-   * Ex: `Run`
-   */
-  name: string;
-  /**
-   * Values associated with key name
-   * Ex: `Run => Vmware`. Where Run is the `key` name and `Vmware` is the value name
-   */
-  values: Value[];
-  /**Timestamp of when the path was last modified */
-  last_modified: number;
-  /**Depth of key name */
-  depth: number;
-}
-
-/**
- * The value data associated with Registry key
- * References:
- *   https://github.com/libyal/libregf
- *   https://github.com/msuhanov/regf/blob/master/Windows%20registry%20file%20format%20specification.md
- */
-export interface Value {
-  /**Name of Value */
-  value: string;
-  /**
-   * Data associated with value.  Type can be determined by `data_type`.
-   * `REG_BINARY` is base64 encoded string
-   */
-  data: string;
-  /**Value type */
-  data_type: string;
-}
-
-/**
- * Function to parse a `Registry` file
- * @param path Full path to a `Registry` file
- * @returns Array of `Registry` entries
- */
-export function get_registry(path: string): Registry[] {
-  // Array of JSON objects
-  const data = js_get_registry(path);
-  const reg_array: Registry[] = JSON.parse(data);
-
-  return reg_array;
-}
-```
-
-
-To make scripting even easier a simple TypeScript library is available to
-import into your scripts. This allows users to create scripts without needing to
-know what functions are registered. 
+To make scripting even easier a simple TypeScript library is available that can be used to create scripts. 
+This allows users to create scripts without needing to
+know what Rust functions are registered and allow us to avoid writing JavaScript. 
 
 In order to access the TypeScript library you just need to clone the artemis-api repo:
 - https://github.com/puffyCid/artemis-api
 
 Then just import into your TypeScript code!
 
-The example script below shows TypeScript code that imports the **artemis-api**
-library to parse the SOFTWARE `Registry` file to get a list of installed
-programs
+## Examples
+
+### Beginner
+
+Lets start with a very simple example that adds two numbers:
+
+1. Create a file called main.ts and add the following:
 
 ```typescript
-import { getRegistry } from "./artemis-api/mod";
-import { Registry } from "./artemis-api/src/windows/registry";
-
-interface InstalledPrograms {
-  name: string;
-  version: string;
-  install_location: string;
-  install_source: string;
-  language: string;
-  publisher: string;
-  install_string: string;
-  install_date: string;
-  uninstall_string: string;
-  url_info: string;
-  reg_path: string;
-}
-
-function grab_info(reg: Registry[]): InstalledPrograms[] {
-  const programs: InstalledPrograms[] = [];
-  const min_size = 3;
-  for (const entries of reg) {
-    if (entries.values.length < min_size) {
-      continue;
-    }
-    const program: InstalledPrograms = {
-      name: "",
-      version: "",
-      install_location: "",
-      install_source: "",
-      language: "",
-      publisher: "",
-      install_string: "",
-      install_date: "",
-      uninstall_string: "",
-      url_info: "",
-      reg_path: entries.path,
-    };
-
-    for (const value of entries.values) {
-      switch (value.value) {
-        case "DisplayName":
-          program.name = value.data;
-          break;
-        case "DisplayVersion":
-          program.version = value.data;
-          break;
-        case "InstallDate":
-          program.install_date = value.data;
-          break;
-        case "InstallLocation":
-          program.install_location = value.data;
-          break;
-        case "InstallSource":
-          program.install_source = value.data;
-          break;
-        case "Language":
-          program.language = value.data;
-          break;
-        case "Publisher":
-          program.publisher = value.data;
-          break;
-        case "UninstallString":
-          program.uninstall_string = value.data;
-          break;
-        case "URLInfoAbout":
-          program.url_info = value.data;
-          break;
-        default:
-          continue;
-      }
-    }
-    programs.push(program);
-  }
-  return programs;
-}
-
 function main() {
-  const path = "C:\\Windows\\System32\\config\\SOFTWARE";
 
-  const reg = getRegistry(path);
-  const programs: Registry[] = [];
-  for (const entries of reg) {
-    if (
-      !entries.path.includes(
-        "Microsoft\\Windows\\CurrentVersion\\Uninstall",
-      )
-    ) {
-      continue;
-    }
-    programs.push(entries);
-  }
-  return grab_info(programs);
+  console.log(`Hello world!`);
+  console.log(`2 + 2 = ${2 + 2}`);
+}
+main();
+```
+
+This example is so simple, that we do not even need to compile to JavaScript.
+
+You can run it with `artemis -j main.ts`
+
+You should get the following output:
+```
+> artemis -j main.ts 
+[artemis] Starting artemis collection!
+Hello world!
+2 + 2 = 4
+[artemis] Finished artemis collection!
+```
+
+### Lets get silly
+
+JavaScript is loosely typed language. It does not prevent odd or silly scenarios. Lets update code above and rename our file: main.ts to main.js.
+
+```javascript
+function main() {
+  console.log(`Hello world!`);
+  console.log(`2 + true = ${2 + true}`);
+
+  console.log("Why am I a " + typeof + "");
+  console.log(`0o38 - 0o37 = ${038 - 037}`);
 }
 
 main();
 ```
 
-We can then compile and bundle this TypeScript code to JavaScript and execute
-using artemis!
+You can run it with `artemis -j main.js`
+
+You should get the following output:
+```
+> artemis -j main.js
+[artemis] Starting artemis collection!
+Hello world!
+2 + true = 3
+Why am I a number
+038 - 037 = 7
+[artemis] Finished artemis collection!
+```
+
+### Lets get serious
+
+TypeScript provides static type checking to help catch common errors in JavaScript code. 
+
+If you rename main.js back to main.ts your text editor should highlight a few errors. 
+
+Lets clean the code up again to try to remove the errors:
+
+```typescript
+function main() {
+  console.log(`Hello world!`);
+  console.log(`2 + 2 = ${2 + 2}`);
+  console.log(`Octal: 0o38 - 0o37 = ${parseInt('038', 8) - parseInt('037', 8)} `);
+}
+
+main();
+```
+
+Again this example is really simple, you can run it with `artemis -j main.ts`
+
+You should get the following output:
+```
+> artemis -j main.ts
+[artemis] Starting artemis collection!
+Hello world!
+2 + 2 = 4
+0o38 - 0o37 = -28 
+[artemis] Finished artemis collection!
+```
+
+## References
+
+The examples above show very simple usage on coding in TypeScript and JavaScript.  
+There are a lot of online resources to help get started learning TypeScript.
+
+The most useful is the official TypeScript homepage:
+- https://www.typescriptlang.org/
+
+Other resources:
+- https://en.wikipedia.org/wiki/TypeScript
+- https://en.wikipedia.org/wiki/JavaScript
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+
+
+:::important
+
+The artemis TypeScript/JavaScript runtime is designed for DFIR investigations. 
+Most online documentation and tutorials assume TypeScript is being used with NodeJS, Deno, or Bun!
+
+Artemis does not have any web APIs, node modules, browser APIs, etc.
+
+:::

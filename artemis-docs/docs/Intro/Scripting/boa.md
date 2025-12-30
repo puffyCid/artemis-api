@@ -13,11 +13,11 @@ Using an embedded JS engine allows us to call Rust functions from JavaScript!\
 For example, the artemis function `get_registry()` can be used to parse a
 provided Registry file on disk. By registering this function with Boa we can
 call this function directly from JavaScript! In addition to JavaScript, we have
-[TypeScript](https://www.typescriptlang.org/) bindings that we can leverage!
+[TypeScript](https://www.typescriptlang.org/) bindings that we can leverage that makes scripting even easier!
 
 To summarize:
 
-1. We can create a script using TypeScript and call Rust functions directly
+1. We can create a script using TypeScript and call artemis Rust functions directly
 2. Compile TypeScript to JavaScript
 3. Execute JavaScript using artemis
 
@@ -31,7 +31,7 @@ All three let you script forensic collections and parsing
 
 :::
 
-# Prerequisites for Scripting.
+## Prerequisites for Scripting.
 
 1. A text-editor or IDE that supports TypeScript.
    [VSCodium](https://vscodium.com/) and

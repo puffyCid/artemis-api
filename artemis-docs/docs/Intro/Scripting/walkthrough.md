@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 4
 description: A full walkthrough
 ---
 
@@ -26,7 +26,7 @@ function main() {
   const md5 = false;
   const sha1 = false;
   const sha256 = false;
-  const binary_info = true;
+  const binary_info = false;
 
   const proc_list = processListing(md5, sha1, sha256, binary_info);
 }
@@ -82,7 +82,7 @@ function main() {
   const md5 = false;
   const sha1 = false;
   const sha256 = false;
-  const binary_info = true;
+  const binary_info = false;
 
   const proc_list = processListing(md5, sha1, sha256, binary_info);
 
@@ -94,6 +94,7 @@ function main() {
     }
   }
 
+  // Now we are returning data back to artemis!
   return filter_list;
 }
 
