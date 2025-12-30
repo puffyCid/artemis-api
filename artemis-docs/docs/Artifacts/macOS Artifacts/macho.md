@@ -8,8 +8,8 @@ keywords:
 
 # Macho
 
-macOS Mach object (`macho`) is the executable format for applications on macOS.
-artemis is able to parse basic metadata from `macho` files.
+macOS Mach object (macho) is the executable format for applications on macOS.
+artemis is able to parse basic metadata from macho files.
 
 Other Parsers:
 
@@ -24,13 +24,13 @@ References:
 
 # TOML Collection
 
-There is no way to collect just `macho` data with artemis instead it is an
-optional feature for the macOS `filelisting` and `processes` artifacts.
+There is no way to collect just macho data with artemis instead it is an
+optional feature for the macOS filelisting and processes artifacts.
 
-However, it is possible to directly parse `macho` files by using JavaScript. See
-the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
+However, it is possible to directly parse macho files by using TypeScript. See the
+[API](../../API/overview.md) documentation for details.
 
-# Configuration Optaions
+# Configuration Options
 
 N/A
 

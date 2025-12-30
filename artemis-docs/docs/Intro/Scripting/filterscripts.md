@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 7
 description: Filtering scripts
 ---
 
@@ -24,7 +24,7 @@ artemis to pass the artifact data as an argument to our script. So, instead of
 returning 100,000 files, we pass that data as an argument to our script before
 outputting the results.
 
-A normal artemis script would look like something below:
+A normal artemis TOML script would look like something below:
 
 ```toml
 [output]
@@ -53,7 +53,7 @@ toml file -> decode script -> execute script
 
 :::
 
-A filter script would look like something below:
+A filter TOML script would look like something below:
 
 ```toml
 [output]
@@ -108,6 +108,8 @@ go through `filter_script`.
 
 :::
 
+## Examples
+### Advanced
 The TypeScript code for a filter script would be something like below:
 
 ```typescript
