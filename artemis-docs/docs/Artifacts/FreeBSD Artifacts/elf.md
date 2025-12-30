@@ -29,8 +29,8 @@ There is no way to collect just ELF data with artemis instead it is an optional
 feature for the [filelisting](./files.md) and [processes](./processes.md)
 artifacts.
 
-However, it is possible to directly parse ELF files by using JavaScript. See the
-[scripts](../../Intro/Scripting/scripts.md) chapter for examples.
+However, it is possible to directly parse ELF files by using TypeScript. See the
+[API](../../API/overview.md) documentation for details.
 
 # Configuration Options
 

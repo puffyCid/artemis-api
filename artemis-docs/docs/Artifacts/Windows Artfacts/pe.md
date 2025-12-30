@@ -8,8 +8,8 @@ keywords:
 
 # Portable Executable
 
-Windows Portable Executable (`PE`) is executable format for applications on
-Windows. artemis is able to parse basic metadata from `PE` files using the
+Windows Portable Executable (PE) is executable format for applications on
+Windows. artemis is able to parse basic metadata from PE files using the
 [pelite](https://crates.io/crates/pelite) crate.
 
 Other Parsers:
@@ -25,20 +25,20 @@ References:
 
 # TOML Collection
 
-There is no way to collect just `PE` data with artemis instead it is an optional
-feature for the Windows `filelisting`, `rawfilelisting`, and `processes`
+There is no way to collect just PE data with artemis instead it is an optional
+feature for the Windows filelisting, rawfilelisting, and processes
 artifacts.
 
-However, it is possible to directly parse `PE` files by using JavaScript. See
-the [scripts](../../Intro/Scripting/scripts.md) chapter for examples.
+However, it is possible to directly parse PE files by using TypeScript. See the
+[API](../../API/overview.md) documentation for details.
 
-# Collection Optaions
+# Collection Options
 
 N/A
 
 # Output Structure
 
-An object containing `PE` info
+An object containing PE info
 
 ```typescript
 export interface PeInfo {
