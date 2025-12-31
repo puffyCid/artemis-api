@@ -22,12 +22,12 @@ References:
 - [Cookies](https://github.com/libyal/dtformats/blob/main/documentation/Safari%20Cookies.asciidoc)
 
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 Safari data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { PlatformType, Safari } from "./artemis-api/mod";
@@ -40,7 +40,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Depending on the the functions used artemis will return the objects below:
 

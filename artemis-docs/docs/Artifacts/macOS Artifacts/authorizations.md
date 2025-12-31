@@ -11,12 +11,12 @@ The macOS authorization database at /private/var/db/auth.db contains operations
 associated with sensitive permissions. Artemis supports querying
 the database (SQLite) and extracting the entries.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Authorizations
 data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { authorizations } from "./artemis-api/mod";
@@ -29,7 +29,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Authorizations` entries.
 

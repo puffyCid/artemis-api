@@ -23,7 +23,7 @@ References:
 - [Velociraptor](https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/System/Services.yaml)
 - [Libyal](https://winreg-kb.readthedocs.io/en/latest/sources/system-keys/Services-and-drivers.html)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -42,13 +42,13 @@ artifact_name = "services"
 # alt_file = "C:\\Artifacts\\SYSTEM"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative SYSTEM Registry file. This configuration
   is **optional**. By default artemis will parse the SYSTEM Registry at the
   default location.
 
-# Output Structure
+## Output Structure
 
 An array of `Services` entries
 

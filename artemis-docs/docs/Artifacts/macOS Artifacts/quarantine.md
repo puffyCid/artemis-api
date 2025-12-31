@@ -13,12 +13,12 @@ These events are tracked in a sqlite file at:
 
 - ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 `Quarantine Event` data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { quarantineEvents } from "./artemis-api/mod";
@@ -29,7 +29,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `MacosQuarantine` objects
 

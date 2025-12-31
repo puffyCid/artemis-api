@@ -10,12 +10,12 @@ keywords:
 Artemis can extract some parts of macOS `Codesigning` metadata. Currently it
 only supports parsing the Requirements blob from Codesigning metadata.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 Codesigning data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { parseRequirementBlob } from "./artemis-api/mod";
@@ -30,7 +30,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `SingleRequirement` object structure
 

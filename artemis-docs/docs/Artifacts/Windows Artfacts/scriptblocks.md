@@ -11,11 +11,11 @@ Artemis supports extracting and reassembling PowerShell Scriptblock entries from
 
 Artemis can read each of these log entries and reconstruct the original script.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to reassemble PowerShell Scriptblocks.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { assembleScriptblocks } from "./artemis-api/mod";
@@ -29,7 +29,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Scriptblock`
 

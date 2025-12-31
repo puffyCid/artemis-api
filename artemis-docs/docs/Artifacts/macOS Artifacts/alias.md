@@ -12,12 +12,12 @@ macOS `alias` data is similar to Windows `Shortcut` artifacts. It points to
 another file on the system. Alias data is sometimes found in plist files. The
 macOS [Firewall](./firewall.md) artifact contains alias data.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 alias data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { parseAlias } from "./artemis-api/mod";
@@ -30,7 +30,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An `alias` object structure
 

@@ -11,12 +11,12 @@ keywords:
 Artemis supports parsing macOS Firewall information. It can get a list of
 applications that allow or block incoming connections.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get
 Firewall information.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -29,7 +29,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `Firewall` object structure
 

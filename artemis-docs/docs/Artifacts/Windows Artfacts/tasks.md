@@ -29,7 +29,7 @@ References:
 - [Libyal](https://github.com/libyal/dtformats/blob/main/documentation/Job%20file%20format.asciidoc)
 - [Microsoft](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-tsch/0d6383e4-de92-43e7-b0bb-a60cfa36379f)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -49,13 +49,13 @@ artifact_name = "tasks"
 # alt_file = "C:\\Artifacts\\At1.job"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative Schedule Task file. This configuration is
   **optional**. By default artemis will parse all Schedule Task files at their
   default location.
 
-# Output Structure
+## Output Structure
 
 Collection of `TaskData`
 

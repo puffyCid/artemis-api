@@ -10,7 +10,7 @@ Syncthing is a popular open source peer to peer file synchronization application
 
 Artemis supports parsing Syncthing logs on Linux platforms.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Syncthing client data
 
@@ -28,7 +28,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Dependent on artifacts the user wants to parse.
 

@@ -16,12 +16,12 @@ MRU keys:
 - Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRU
 - Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect MRU
 keys.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -36,7 +36,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Mru`
 

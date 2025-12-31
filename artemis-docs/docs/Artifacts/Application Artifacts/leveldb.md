@@ -16,12 +16,12 @@ Artemis supports parsing and extracting entries from LevelDb.
 - https://chromium.googlesource.com/chromium/src.git/+/62.0.3178.1/content/browser/indexed_db/leveldb_coding_scheme.md
 
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 SQLite information.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { LevelDb, PlatformType, } from "./artemis-api/mod";
@@ -34,7 +34,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `LevelDbEntry` entries.
 

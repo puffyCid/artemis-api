@@ -11,7 +11,7 @@ GNOME is popular Linux Desktop environment pre-installed on many Linux
 distributions. GNOME tracks commonly used applications that a user searches.
 Artemis supports parsing this information to obtain recently used applications.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect GNOME app usage.
 
@@ -26,7 +26,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `AppUsage` entries.
 

@@ -19,7 +19,7 @@ References:
 - [ExecPolicy Info](https://eclecticlight.co/2023/03/13/ventura-has-changed-app-quarantine-with-a-new-xattr/)
 - [Policy Internals](https://knight.sc/reverse%20engineering/2019/02/20/syspolicyd-internals.html)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -39,13 +39,13 @@ artifact_name = "execpolicy"
 # alt_file = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Use an alternative file to the ExecPolicy database. This
   configuration is **optional**. By default artemis will read the default
   ExecPolicy database at `/var/db/SystemPolicyConfiguration/ExecPolicy`
 
-# Output Structure
+## Output Structure
 
 An array of `ExecPolicy` entries
 

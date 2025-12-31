@@ -27,7 +27,7 @@ References:
 - [Libyal](https://github.com/libyal/libregf)
 - [Registry Format](https://github.com/msuhanov/regf/blob/master/Windows%20registry%20file%20format%20specification.md)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -51,7 +51,7 @@ system_hives = true # SYSTEM, SOFTWARE, SAM, SECURITY
 # path_regex = "" # Registry is converted to lowercase before all comparison operations. So any regex input will also be converted to lowercase
 ```
 
-# Collection Options
+## Collection Options
 
 - `user_hives` Parse all user Registry files `NTUSER.DAT` and `UsrClass.dat`.
   This configuration is **required**
@@ -63,7 +63,7 @@ system_hives = true # SYSTEM, SOFTWARE, SAM, SECURITY
   comparisons are first converted to lowercase. This configuration is
   **optional**. Default is no Regex
 
-# Output Structure
+## Output Structure
 
 An array of `Registry` entries for each parsed file
 

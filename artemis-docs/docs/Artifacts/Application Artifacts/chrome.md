@@ -26,20 +26,14 @@ Artemis supports parsing the list of artifacts below:
 - Shortcuts
 - Retrospect - A powerful capability that timelines all artifacts. It is based on [Hindsight](https://github.com/obsidianforensics/hindsight)
 
+
+## Collection
+
 You have to use the artemis [api](../../API/overview.md) in order to collect Chrome data.  
 Since Chrome is based on Chromium, many of the Chrome artifacts will be identical to Chromium
 
-Other parsers:
 
-- Any program that read a SQLITE database
-
-References:
-
-- [History](https://en.wikiversity.org/wiki/Chromium_browsing_history_database)
-- [Schema](https://gist.github.com/dropmeaword/9372cbeb29e8390521c2)
-
-
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { Chrome } from "./artemis-api/mod";
@@ -53,7 +47,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Dependent on browser artifact user wants to parse.
 

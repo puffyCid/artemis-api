@@ -24,7 +24,7 @@ References:
 
 - [Libyal](https://github.com/libyal/libfsntfs/blob/main/documentation/New%20Technologies%20File%20System%20(NTFS).asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -60,7 +60,7 @@ path_regex = ""
 filename_regex = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `drive_letter` Drive letter to use to parse the NTFS file system. This
   configuration is **required**
@@ -83,7 +83,7 @@ filename_regex = ""
 - `file_regex` Only return entres that match the provided regex. This
   configuration is **optional**. Default is no Regex
 
-# Output Structure
+## Output Structure
 
 An array of `WindowsRawFileInfo` entries
 

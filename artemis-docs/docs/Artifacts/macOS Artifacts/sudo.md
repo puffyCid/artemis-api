@@ -22,7 +22,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -42,11 +42,11 @@ artifact_name = "sudologs-macos"
 # logarchive_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `logarchive_path` Path to a logarchive formatted directory. This configuration
   is **optional**
 
-# Output Structure
+## Output Structure
 
 An array of [UnifiedLog](./unifiedlogs.md) entries associated with sudo activity

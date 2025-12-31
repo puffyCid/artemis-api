@@ -22,7 +22,7 @@ References:
 
 - [Libyal](https://github.com/libyal/dtformats/blob/main/documentation/MacOS%20File%20System%20Events%20Disk%20Log%20Stream%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -42,13 +42,13 @@ artifact_name = "fseventsd"
 # alt_file = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Use an alternative FsEvent file. This configuration is
   **optional**. By default artemis will read the default locations for FsEvent
   files
 
-# Output Structure
+## Output Structure
 
 An array of `Fsevents` entries
 

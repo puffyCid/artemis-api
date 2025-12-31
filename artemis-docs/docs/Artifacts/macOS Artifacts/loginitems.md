@@ -28,7 +28,7 @@ References:
 - [macOS Persistence](https://www.sentinelone.com/blog/how-malware-persists-on-macos/)
 - [Bookmarks](https://michaellynn.github.io/2015/10/24/apples-bookmarkdata-exposed/)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -48,12 +48,12 @@ artifact_name = "loginitems"
 # alt_file = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Use an alternative LoginItem file. This configuration is
   **optional**. By default artemis will read default locations for LoginItems
 
-# Output Structure
+## Output Structure
 
 An array of `LoginItem` entries
 

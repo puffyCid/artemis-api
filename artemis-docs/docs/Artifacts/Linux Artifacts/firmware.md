@@ -9,11 +9,11 @@ keywords:
 
 Artemis supports querying the [fwupd](https://fwupd.org/) pending.db files for information related to pending firmware updates. 
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect abrt crashes.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { firmwareHistory } from "./artemis-api/mod";
@@ -26,7 +26,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `FirmwareHistory` entries.
 

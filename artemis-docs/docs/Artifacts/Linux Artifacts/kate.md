@@ -10,7 +10,7 @@ keywords:
 Kate is a popular text editor for the KDE Desktop environment. Artemis
 supports parsing recently opened files by Kate.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 recent opened files by Kate.
@@ -26,7 +26,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `RecentFiles` entries.
 

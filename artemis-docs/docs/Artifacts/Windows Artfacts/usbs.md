@@ -15,12 +15,12 @@ References:
 
 - [Truth about USBs](https://www.sans.org/blog/the-truth-about-usb-device-serial-numbers/)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 USBs keys.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { listUsbDevices } from "./artemis-api/src/windows/registry/usb";
@@ -31,7 +31,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `UsbDevices`
 

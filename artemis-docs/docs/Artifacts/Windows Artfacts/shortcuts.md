@@ -22,7 +22,7 @@ References:
 
 - [Libyal](https://github.com/libyal/liblnk/blob/main/documentation/Windows%20Shortcut%20File%20(LNK)%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -41,12 +41,12 @@ artifact_name = "shortcuts"
 path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 ```
 
-# Collection Options
+## Collection Options
 
 - `path` Target path where artemis should parse `Shortcut` files. This
   configuration is **required**
 
-# Output Structure
+## Output Structure
 
 A `Shortcut` object structure
 

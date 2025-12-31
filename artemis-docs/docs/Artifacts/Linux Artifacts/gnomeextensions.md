@@ -12,13 +12,13 @@ distributions. ~~In order to get a better user experience~~ Users often install
 GNOME Shell extensions to enhance the Desktop environment. Artemis supports
 parsing extension metadata to obtain information on installed extensions.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 installed GNOME extensions. By default the API will parse user and system
 installed extensions.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { getGnomeExtensions } from "./artemis-api/src/linux/gnome/extensions";
@@ -31,7 +31,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Extension` entries.
 

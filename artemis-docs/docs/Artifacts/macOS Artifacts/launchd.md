@@ -29,7 +29,7 @@ References:
 - [launchd](https://www.launchd.info/)
 - `man launchd.plist`
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -49,12 +49,12 @@ artifact_name = "launchd"
 # alt_file = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Use an alternative Launchd file. This configuration is
   **optional**. By default artemis will read all Launchd Daemons and Agents
 
-# Output Structure
+## Output Structure
 
 An array of `Launchd` entries
 

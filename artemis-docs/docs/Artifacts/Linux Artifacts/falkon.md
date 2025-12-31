@@ -15,7 +15,7 @@ supports parsing several types of Falkon browser data:
 - Cookies
 - Bookmarks
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 Falkon browser data.
@@ -32,7 +32,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Depending on the the functions used artemis will return the objects below:
 

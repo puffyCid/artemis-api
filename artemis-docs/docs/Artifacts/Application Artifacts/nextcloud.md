@@ -14,7 +14,7 @@ Artemis supports parsing Nextcloud desktop client on Linux platforms. Supported 
 - Sync logs
 - Activity logs
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Nextcloud client data
 
@@ -32,7 +32,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Dependent on artifacts the user wants to parse.
 

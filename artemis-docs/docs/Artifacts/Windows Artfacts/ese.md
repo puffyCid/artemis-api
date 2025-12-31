@@ -19,12 +19,12 @@ applications such as:
 
 Artemis supports parsing both unlocked and locked ESE databases.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse a
 single ESE database.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { EseDatabase } from "./artemis-api/src/windows/ese";
@@ -47,7 +47,7 @@ function main() {
 }
 ```
 
-# Output Structures
+## Output Structures
 
 Depending on functions used the artemis API will returning the following objects
 

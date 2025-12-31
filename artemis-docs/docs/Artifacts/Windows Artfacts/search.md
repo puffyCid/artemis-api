@@ -37,7 +37,7 @@ References:
 - [libyal](https://github.com/libyal/esedb-kb/blob/main/documentation/Windows%20Search.asciidoc)
 - [Windows Search](https://en.wikipedia.org/wiki/Windows_Search)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -57,13 +57,13 @@ artifact_name = "search"
 # alt_path = "C:\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` An alternative path to the `Search` ESE or SQLITE database. This
   configuration is **optional**. By default artemis will use
   `%systemdrive%\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb`
 
-# Output Structure
+## Output Structure
 
 An array of `SearchEntry` entries
 

@@ -25,7 +25,7 @@ References:
 - [Shimcache](https://www.mandiant.com/resources/blog/caching-out-the-val)
 - [Libyal](https://github.com/libyal/winreg-kb/blob/main/docs/sources/system-keys/Application-compatibility-cache.md)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -45,13 +45,13 @@ artifact_name = "shimcache"
 # alt_file = "C:\\Artifacts\\SYSTEM"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative SYSTEM Registry file. This configuration
   is **optional**. By default artemis will parse the SYSTEM Registry file at the
   default location.
 
-# Output Structure
+## Output Structure
 
 An array of `Shimcache` entries
 

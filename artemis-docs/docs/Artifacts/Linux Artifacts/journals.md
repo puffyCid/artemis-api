@@ -24,7 +24,7 @@ References:
 - [Journal format](https://systemd.io/JOURNAL_FILE_FORMAT/)
 - [Arch Wiki](https://wiki.archlinux.org/title/Systemd/Journal)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -44,12 +44,12 @@ artifact_name = "journals"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Path to a directory containing Journal files. This configuration is
   **optional**
 
-# Output Structure
+## Output Structure
 
 An array of `Journal` entries
 

@@ -10,12 +10,12 @@ keywords:
 Artemis supports extracting Service Install events from the Windows EventLog
 System.evtx file.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 Service Install entries.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { serviceInstalls } from "./artemis-api/src/windows/eventlogs/services";
@@ -30,7 +30,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `ServiceInstalls`
 

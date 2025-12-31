@@ -19,7 +19,7 @@ References:
 
 - [Libyal](https://winreg-kb.readthedocs.io/en/latest/sources/explorer-keys/User-assist.html)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -40,7 +40,7 @@ artifact_name = "userassist"
 # resolve_descriptions = true
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative NTUSER.DAT Registry file. This
   configuration is **optional**. By default artemis will parse UserAssist for
@@ -49,7 +49,7 @@ artifact_name = "userassist"
   attempt to parse the SYSTEM hive to lookup folder descriptions. This
   configuration is **optional**. Default is **false**.
 
-# Output Structure
+## Output Structure
 
 An array of `UserAssist` entries
 

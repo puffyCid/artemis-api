@@ -24,7 +24,7 @@ References:
 
 - [Libyal](https://github.com/libyal/libevtx/blob/main/documentation/Windows%20XML%20Event%20Log%20(EVTX).asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -49,7 +49,7 @@ dump_templates = false # Works only on Windows
 only_templates = false # Works only on Windows
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to an EventLog file. This configuration is **optional**.
   By default artemis will parse all Event Logs on the system under the default
@@ -192,7 +192,7 @@ to parse evtx files on different platforms. An example scenario where this could
 If artemis fails to assemble the full EventLog message for any reason, it will
 fallback to the raw EventLog data obtained from the evtx file.
 
-# Output Structure
+## Output Structure
 
 Depending on options provided there are several different structures that
 artemis can produce.

@@ -22,7 +22,7 @@ References:
 
 - [Libyal](https://github.com/libyal/libfwsi/blob/main/documentation/Windows%20Shell%20Item%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -43,7 +43,7 @@ resolve_guids = true
 # alt_file = "C:\\Artifacts\\UsrClass.dat"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative UsrClass.dat or NTUSER.DAT Registry file.
   This configuration is **optional**. By default artemis will parse Shellbags
@@ -55,7 +55,7 @@ resolve_guids = true
   - If **true**:
     `"resolve_path": "This PC\C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current",`
 
-# Output Structure
+## Output Structure
 
 An array of `Shellbag` entries
 

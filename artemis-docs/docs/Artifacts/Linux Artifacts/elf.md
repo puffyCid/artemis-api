@@ -23,7 +23,7 @@ References:
 - [LIEF](https://lief-project.github.io/)
 - [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)
 
-# TOML Collection
+## TOML Collection
 
 There is no way to collect just ELF data with artemis instead it is an optional
 feature for the Linux [filelisting](./files.md) and [processes](./processes.md)
@@ -32,11 +32,11 @@ artifacts.
 However, it is possible to directly parse ELF files by using TypeScript. See the
 [API](../../API/overview.md) documentation for details.
 
-# Configuration Options
+## Collection Options
 
 N/A
 
-# Output Structure
+## Output Structure
 
 An array of `ElfInfo` entries
 

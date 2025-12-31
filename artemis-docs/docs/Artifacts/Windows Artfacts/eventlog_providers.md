@@ -9,11 +9,11 @@ keywords:
 
 Artemis supports extracting the registered Windows EventLog providers from the Windows SYSTEM and SOFTWARE Registry files.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect EventLog providers rules.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { getEventlogProviders } from "./artemis-api/mod";
@@ -26,7 +26,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `RegistryEventlogProviders`
 

@@ -18,12 +18,12 @@ Homebrew paths.
 
 You may also provide an optional alternative path to Homebrew directory.,
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get
 installed Homebrew applications.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -44,7 +44,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `HomebrewData` object structure
 

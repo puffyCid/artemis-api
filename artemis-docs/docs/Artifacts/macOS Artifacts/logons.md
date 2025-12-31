@@ -9,12 +9,12 @@ keywords:
 
 Artemis supports extracting Logon entries from the macOS Unified Log.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 Logon entries.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { FileError } from "./artemis-api/src/filesystem/errors";
@@ -38,7 +38,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `LogonMacos`
 

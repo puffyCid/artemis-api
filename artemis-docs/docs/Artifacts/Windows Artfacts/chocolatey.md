@@ -10,12 +10,12 @@ keywords:
 Chocolatey is an open source package manager for Windows. Artemis supports
 getting a list of installed Chocolatey packages on the system.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get
 installed Chocolatey packages.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -29,7 +29,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `ChocolateyInfo`
 

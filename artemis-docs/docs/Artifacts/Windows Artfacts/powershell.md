@@ -17,12 +17,12 @@ By default artemis will try to parse PowerShell history for all users at:
 
 You may also provide an optional alternative path to ConsoleHost_history.txt.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 Logon entries.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -36,7 +36,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `History` or a single `History` object if an alternative path is
 provided

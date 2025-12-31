@@ -45,7 +45,7 @@ References:
 - [Spotlight](https://en.wikipedia.org/wiki/Spotlight_(Apple))
 - [libyal](https://github.com/libyal/dtformats/blob/main/documentation/Apple%20Spotlight%20store%20database%20file%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -74,14 +74,14 @@ artifact_name = "spotlight"
 include_additional = true
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Alternative path to a Spotlight database. This configuration is
   **optional**
 - `include_additional` Artemis will parse additional known Spotlight database
   locations. This configuration is **optional**
 
-# Output Structure
+## Output Structure
 
 An array of `Spotlight` entries
 

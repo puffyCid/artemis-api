@@ -23,7 +23,7 @@ References:
 - [ShimDB](https://www.geoffchappell.com/studies/windows/win32/apphelp/sdb/index.htm)
 - [ShimDB Persistence](https://www.mandiant.com/resources/blog/fin7-shim-databases-persistence)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -43,12 +43,12 @@ artifact_name = "shimdb"
 # alt_file = "C:\\Artifacts\\bad.sdb"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative ShimDB file. This configuration is
   **optional**. By default artemis will ShimDB files at their default locations.
 
-# Output Structure
+## Output Structure
 
 An array of `ShimDB` entries
 

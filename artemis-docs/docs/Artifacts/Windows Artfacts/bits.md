@@ -28,7 +28,7 @@ References:
 - [Background Intelligent Transfer Service](https://en.wikipedia.org/wiki/Background_Intelligent_Transfer_Service)
 - [BITS](https://www.mandiant.com/resources/blog/attacker-use-of-windows-background-intelligent-transfer-service)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -49,14 +49,14 @@ carve = true
 # alt_path = "D:\\ProgramData\\Microsoft\\Network\\Downloader\\qmgr.db"
 ```
 
-# Collection Options
+## Collection Options
 
 - `carve` Boolean value to carve deleted `BITS` jobs and files from `qmgr.db`
 - `alt_path` Use an alternative path to the `qmgr.db` file. This configuration
   is **optional**. By default artemis will use
   `%systemdrive%\ProgramData\Microsoft\Network\Downloader\qmgr.db`
 
-# Output Structure
+## Output Structure
 
 A `Bits` object that contains an array of jobs and carved jobs and files
 

@@ -10,12 +10,12 @@ keywords:
 Artemis supports extracting Logon entries from the Windows EventLog
 Security.evtx file. Artemis will try to correlate logon and logoff entries.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 Logon entries.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -32,7 +32,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Logons`
 

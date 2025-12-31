@@ -19,7 +19,7 @@ Other Parsers:
 References:
 [Libyal](https://github.com/libyal/libscca/blob/main/documentation/Windows%20Prefetch%20File%20(PF)%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -39,13 +39,13 @@ artifact_name = "prefetch"
 # alt_dir = "C:\\Artifacts"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_dir` Full path to an alternative directory containing Prefetch files.
   This configuration is **optional**. By default artemis parse all Prefetch
   files on the system at the default location
 
-# Output Structure
+## Output Structure
 
 An array of `Prefetch` entries
 

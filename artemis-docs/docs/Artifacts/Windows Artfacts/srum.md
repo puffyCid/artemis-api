@@ -24,7 +24,7 @@ References:
 - [Libyal](https://github.com/libyal/esedb-kb/blob/main/documentation/System%20Resource%20Usage%20Monitor%20(SRUM).asciidoc)
 - [Velociraptor](https://velociraptor.velocidex.com/digging-into-the-system-resource-usage-monitor-srum-afbadb1a375)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -44,13 +44,13 @@ artifact_name = "srum"
 # alt_path = "C:\Windows\System32\srum\SRUDB.dat"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` An alternative path to the `SRUM` ESE database. This configuration
   is **optional**. By default artemis will use
   `%systemdrive%\Windows\System32\srum\SRUDB.dat`
 
-# Output Structure
+## Output Structure
 
 An array of entries based on each `SRUM` table
 

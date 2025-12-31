@@ -29,7 +29,7 @@ References:
 - [libyal](https://github.com/libyal/dtformats/blob/main/documentation/Windows%20Recycle.Bin%20file%20formats.asciidoc)
 - [RecycleBin](https://cybersecurity.att.com/blogs/security-essentials/digital-dumpster-diving-exploring-the-intricacies-of-recycle-bin-forensics)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -48,12 +48,12 @@ artifact_name = "recyclebin"
 # alt_file = "C:\\Artifacts\\$IAC12F"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative RecycleBin file. This configuration is
   **optional**. By default artemis will parse all RecycleBin files on the system
 
-# Output Structure
+## Output Structure
 
 An array of `RecycleBin` entries
 

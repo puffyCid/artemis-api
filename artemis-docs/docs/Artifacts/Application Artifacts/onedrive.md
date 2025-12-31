@@ -27,7 +27,7 @@ Other Parsers:
 
 - [OneDrive Explorer](https://github.com/Beercow/OneDriveExplorer)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 Microsoft OneDrive information.
@@ -54,7 +54,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Depending on the functions called several objects can be returned
 

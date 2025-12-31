@@ -22,7 +22,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -42,11 +42,11 @@ artifact_name = "sudologs-linux"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Path to a directory containing Journal files. This configuration is
   **optional**
 
-# Output Structure
+## Output Structure
 
 An array of [Journal](./journals.md) entries containing sudo activity

@@ -22,7 +22,7 @@ References:
 - [UsnJrnl](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-usn_record_v2?redirectedfrom=MSDN)
 - [Libyal](https://github.com/libyal/libfsntfs/blob/main/documentation/New%20Technologies%20File%20System%20(NTFS).asciidoc#usn_change_journal)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -43,14 +43,14 @@ artifact_name = "usnjrnl"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_drive` Expects a single character value. Will use an alternative drive
   letter when parsing `UsnJrnl`. This configuration is **optional**. By default
   artemis will use the `%systemdrive%` value (typically `C`)
 - `alt_path` Full path to $J file. This configuration is **optional**.
 
-# Output Structure
+## Output Structure
 
 An array of `UsnJrnl` entries
 

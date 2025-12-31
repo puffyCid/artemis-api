@@ -23,12 +23,12 @@ because they are still using the Berkley database.
 
 :::
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 installed RPM packages.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { LinuxError } from "./artemis-api/src/linux/errors";
@@ -55,7 +55,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `RpmPackages` entries.
 

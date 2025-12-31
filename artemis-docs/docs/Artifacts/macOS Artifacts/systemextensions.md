@@ -16,12 +16,12 @@ By default artemis will try to extract installed extensions at
 /Library/SystemExtensions/db.plist. However, you may also provide an optional
 alternative path to db.plist.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get
 installed System extensions.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -35,7 +35,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `SystemExtension`
 

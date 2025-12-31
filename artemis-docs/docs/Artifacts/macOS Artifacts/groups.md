@@ -19,7 +19,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -39,13 +39,13 @@ artifact_name = "groups-macos"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Use an alternative Groups path. This configuration is **optional**.
   By default artemis will read all Groups at
   `/var/db/dslocal/nodes/Default/groups`
 
-# Output Structure
+## Output Structure
 
 An array of `Groups` entries
 

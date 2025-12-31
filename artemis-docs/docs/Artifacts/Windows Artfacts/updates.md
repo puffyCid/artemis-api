@@ -14,12 +14,12 @@ default artemis will try to parse the ESE database at:
 
 You may also provide an alternative path to DataStore.edb.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 Windows Updates.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { Updates } from ".././artemis-api/src/windows/ese/updates";
@@ -32,7 +32,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `UpdateHistory`
 

@@ -14,12 +14,12 @@ Example artifacts include:
 - LoginItems
 - Office MRU files
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 `Bookmark` data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { parseBookmark } from "./artemis-api/src/macos/bookmark";
@@ -30,7 +30,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `BookmarkData` object structure
 
