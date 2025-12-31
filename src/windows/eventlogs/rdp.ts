@@ -64,7 +64,7 @@ function rdpLogs(path: string): RdpEvents | WindowsError {
         // `getEventlogs` returns a tuple. The second value contains our raw eventlog data
         // First value is empty because we did not enable provider strings
         const records = events[1];
-        if (records.length === 0) {
+        if (records.length === 0 || records.length < limit) {
             break;
         }
 
