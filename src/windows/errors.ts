@@ -40,6 +40,7 @@ export type ErrorName =
   | "FIREWALL_RULES"
   | "EVENTLOG_PROCESSTREE"
   | "WIFI"
-  | "ADCERTIFICATES";
+  | "ADCERTIFICATES"
+  | "RDPLOGONS";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

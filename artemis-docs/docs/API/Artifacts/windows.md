@@ -673,3 +673,14 @@ Parse Windows Registry files and extract Run key entries. You may provide an opt
 | Param   | Type    | Description                      |
 | ------- | ------- | -------------------------------- |
 | path    | string  | Optional path to a Registry file |
+
+
+### rdpLogons(path) -> RegistryRunKey[]
+
+Parse Windows RDP logons. You may provide an optional path to a Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file. By default artemis will check the SystemDrive volume for the Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx.
+
+Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx
+
+| Param   | Type    | Description                                                                                    |
+| ------- | ------- | ---------------------------------------------------------------------------------------------- |
+| path    | string  | Optional path to Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file |

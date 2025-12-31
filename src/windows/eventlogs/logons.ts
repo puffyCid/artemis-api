@@ -30,7 +30,7 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
         `failed to parse eventlog ${path}: ${logs}`,
       );
     }
-    const recordsData = logs[ 1 ];
+    const recordsData = logs[1];
     if (recordsData.length === 0) {
       break;
     }
@@ -42,20 +42,25 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
     for (const record of records) {
       // Parse Logon entries
       if (record.data.Event.System.EventID === logon_eid && isLogon(record)) {
+        const logon_event = record.data.Event.EventData;
         const entry: LogonsWindows = {
-          logon_type: checkLogonType(record.data.Event.EventData.LogonType),
-          sid: record.data.Event.EventData.TargetUserSid,
-          account_name: record.data.Event.EventData.TargetUserName,
-          account_domain: record.data.Event.EventData.TargetDomainName,
-          logon_id: record.data.Event.EventData.TargetLogonId,
-          logon_process: record.data.Event.EventData.LogonProcessName,
-          authentication_package:
-            record.data.Event.EventData.AuthenticationPackageName,
-          source_ip: record.data.Event.EventData.IpAddress,
-          source_workstation: record.data.Event.EventData.WorkstationName,
-          logon_time: record.timestamp,
+          logon_type: checkLogonType(logon_event.LogonType),
+          sid: logon_event.TargetUserSid,
+          account_name: logon_event.TargetUserName,
+          account_domain: logon_event.TargetDomainName,
+          logon_id: logon_event.TargetLogonId,
+          logon_process: logon_event.LogonProcessName,
+          authentication_package: logon_event.AuthenticationPackageName,
+          source_ip: logon_event.IpAddress,
+          source_workstation: logon_event.WorkstationName,
+          logon_time: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
           logoff_time: "",
           duration: 0,
+          message: `Logon by ${logon_event.TargetUserName} from ${logon_event.IpAddress}`,
+          datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+          timestamp_desc: "Account Logon",
+          artifact: "Logon EventLog",
+          data_type: "windows:eventlogs:logons:entry"
         };
         logon_entries.push(entry);
       } else if (
@@ -68,7 +73,7 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
 
   // Try to correlate logon/logoff events
   for (let i = 0; i < logon_entries.length; i++) {
-    const entry = logon_entries[ i ];
+    const entry = logon_entries[i];
     if (entry === undefined) {
       continue;
     }
@@ -77,12 +82,15 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
       if (
         entry.logon_id === logoff.data.Event.EventData.TargetLogonId
       ) {
-        entry.logoff_time = logoff.timestamp;
-        const duration = new Date(entry.logoff_time).getTime() -
-          new Date(entry.logon_time).getTime();
-        entry.duration = Number(duration);
-        if (entry.duration === null) {
-          entry.duration = 0;
+        entry.logoff_time = logoff.data.Event.System.TimeCreated["#attributes"].SystemTime;
+        // Nanosecond precision is not supported for Date extraction
+        // Quick convert to second precision
+        const end = new Date(`${entry.logoff_time.split(".").at(0) ?? ""}Z`).getTime();
+        const start = new Date(`${entry.logon_time.split(".").at(0) ?? ""}Z`).getTime();
+        const duration = end - start;
+        const seconds = 1000;
+        if (!isNaN(duration)) {
+          entry.duration = Number(duration / seconds);
         }
       }
     }
@@ -174,15 +182,15 @@ export function testLogonsWindows(): void {
   if (results.length !== 198) {
     throw `Got ${results.length} logon events, expected 198.......logonsWindows ❌`;
   }
-  if (results[ 1 ] === undefined) {
+  if (results[1] === undefined) {
     throw `Got undefined logon event.......logonsWindows ❌`;
   }
 
-  if (results[ 1 ].logon_time != "2022-10-31T03:30:46.218854000Z") {
-    throw `Got ${results[ 1 ].logon_time} for logon time, expected 2022-10-31T03:30:46.218854000Z.......logonsWindows ❌`;
+  if (results[1].logon_time != "2022-10-31T03:30:46.218854Z") {
+    throw `Got ${results[1].logon_time} for logon time, expected "2022-10-31T03:30:46.218854Z".......logonsWindows ❌`;
   }
 
-  const logon_types = [ 2, 3, 4, 5, 7, 8, 9, 10, 11 ];
+  const logon_types = [2, 3, 4, 5, 7, 8, 9, 10, 11];
   for (const entry of logon_types) {
     const type_result = checkLogonType(entry);
     if (type_result === LogonType.Unknown) {

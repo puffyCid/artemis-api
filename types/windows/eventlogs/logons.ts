@@ -11,6 +11,11 @@ export interface LogonsWindows {
   logon_time: string;
   logoff_time: string;
   duration: number;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Account Logon"
+  artifact: "Logon EventLog";
+  data_type: "windows:eventlogs:logons:entry";
 }
 
 export interface Raw4624Logons {
