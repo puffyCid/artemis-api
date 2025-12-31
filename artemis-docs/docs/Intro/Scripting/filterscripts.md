@@ -12,16 +12,16 @@ the sole execption is the `filelisting` and `rawfilelisting` artifacts or if you
 encounter large log files (ex: Linux Journal files).
 
 When pulling a filelisting artemis will recursively walk the filesystem, but in
-order to keep memory usage low, every 100,000 files artemis will output the
+order to keep memory usage low, every 1,000 to 10,000 files (depending on options) artemis will output the
 results. While this will keep memory usage low, it makes it difficult to use via
-scripting. If we return 100,000 entries to our script, we cannot continue our
+scripting. If we return 1,000 entries to our script, we cannot continue our
 recursive filelisting because we have lost track where we are in the filesystem.
 
 This where filter scripts can help.
 
 Instead of calling an artemis function like `getRegistry` we instead tell
 artemis to pass the artifact data as an argument to our script. So, instead of
-returning 100,000 files, we pass that data as an argument to our script before
+returning 1,000 files, we pass that data as an argument to our script before
 outputting the results.
 
 A normal artemis TOML script would look like something below:
@@ -198,5 +198,5 @@ return filter_files;
 ```
 
 So our initial data provided to our filter script gets filtered and returned. In
-this example, our 100,000 file listing entry gets filtered to only return
+this example, our 1,000 file listing entry gets filtered to only return
 entries with the filename Info.plist.
