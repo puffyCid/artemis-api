@@ -24,7 +24,7 @@ export function rdpLogons(alt_file?: string): RdpActivity[] | WindowsError {
         return new WindowsError(`RDPLOGONS`, `failed to parse RDP eventlogs: ${logs}`);
     }
 
-    return createSessions(logs);
+    return extractRdp(logs);
 }
 
 interface RdpEvents {
@@ -64,7 +64,7 @@ function rdpLogs(path: string): RdpEvents | WindowsError {
         // `getEventlogs` returns a tuple. The second value contains our raw eventlog data
         // First value is empty because we did not enable provider strings
         const records = events[1];
-        if (records.length === 0 || records.length < limit) {
+        if (records.length === 0) {
             break;
         }
 
@@ -169,180 +169,91 @@ function isLogoff(record: Raw23Logoff): record is Raw23Logoff {
 }
 
 /**
- * Function to attempt to correlate RDP activity
- * @param events `RdpEvents` object containing our RDP event records
+ * Extract RDP events into Timesketch compatible format
+ * @param events Object of `RdpEvents`
  * @returns Array of `RdpActivity`
  */
-function createSessions(events: RdpEvents): RdpActivity[] {
-    let values: RdpActivity[] = [];
-
-    // Check for successful logons first
-    for (const logon of events.logons) {
-        const logon_event = logon.data.Event.UserData.EventXML;
-        // RDP sessions *should* have same EventLog correlation activity ID. However upon reconnection the activity ID changes
-        // So it cannot be used to track reconnected sessions
-        const event: RdpActivity = {
-            session_id: logon_event.SessionID,
-            user: logon_event.User,
-            domain: logon_event.User.split("\\").at(0) ?? "Unknown",
-            account: logon_event.User.split("\\").at(1) ?? "Unknown",
-            source_ip: logon_event.Address,
-            logon_time: logon.data.Event.System.TimeCreated["#attributes"].SystemTime,
-            logoff_time: "",
-            hostname: logon.data.Event.System.Computer,
-            duration: 0,
-            message: `RDP Logon by ${logon_event.User} from ${logon_event.Address}`,
-            datetime: logon.timestamp,
+function extractRdp(events: RdpEvents): RdpActivity[] {
+    const values: RdpActivity[] = [];
+    for (const entry of events.logons) {
+        const data = entry.data.Event.UserData.EventXML;
+        const value: RdpActivity = {
+            session_id: data.SessionID,
+            user: data.User,
+            domain: data.User.split("\\").at(0) ?? "Unknown",
+            account: data.User.split("\\").at(1) ?? "Unknown",
+            source_ip: data.Address,
+            hostname: entry.data.Event.System.Computer,
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            message: `RDP Logon by ${data.User} from ${data.Address}`,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Logon",
             artifact: "RDP EventLog",
-            reconnections: 0,
-            disconnections: 0,
-            session_arbitration_started: "",
-            session_arbitration_ended: "",
             data_type: "windows:eventlogs:rdp:entry"
         };
+        values.push(value);
+    }
 
-        // RDP logons start with a session start event
-        for (const session of events.session_start) {
-            const session_event = session.data.Event.UserData.EventXML.SessionID;
-            if (session_event !== logon_event.SessionID) {
-                continue;
-            }
+    for (const entry of events.logoffs) {
+        const data = entry.data.Event.UserData.EventXML;
+        const value: RdpActivity = {
+            session_id: data.SessionID,
+            user: data.User,
+            domain: data.User.split("\\").at(0) ?? "Unknown",
+            account: data.User.split("\\").at(1) ?? "Unknown",
+            source_ip: "None",
+            hostname: entry.data.Event.System.Computer,
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            message: `RDP Logoff by ${data.User}`,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            timestamp_desc: "RDP Logoff",
+            artifact: "RDP EventLog",
+            data_type: "windows:eventlogs:rdp:entry"
+        };
+        values.push(value);
+    }
 
-            /**
-             * The Session starts before the logon event.
-             * If the session event record ID is larger than the logon event record ID
-             * We are dealing with a new session that is reusing the session ID
-             * Happens when systems reboot
-             */
-            if (session.event_record_id > logon.event_record_id) {
-                break;
-            }
-            event.session_arbitration_started = session.data.Event.System.TimeCreated["#attributes"].SystemTime;
-            break;
-        }
+    for (const entry of events.disconnect) {
+        const data = entry.data.Event.UserData.EventXML;
+        const value: RdpActivity = {
+            session_id: data.SessionID,
+            user: data.User,
+            domain: data.User.split("\\").at(0) ?? "Unknown",
+            account: data.User.split("\\").at(1) ?? "Unknown",
+            source_ip: data.Address,
+            hostname: entry.data.Event.System.Computer,
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            message: `RDP Disconnect by ${data.User} from ${data.Address}`,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            timestamp_desc: "RDP Disconnect",
+            artifact: "RDP EventLog",
+            data_type: "windows:eventlogs:rdp:entry"
+        };
+        values.push(value);
+    }
 
-        // Find RDP session ending 
-        for (const session of events.session_end) {
-            const session_event = session.data.Event.UserData.EventXML.SessionID;
-            if (session_event !== logon_event.SessionID) {
-                continue;
-            }
-
-            /**
-             * The Logon starts before the session end event.
-             * If the Logon event record ID is larger than the session end event record ID
-             * We are dealing with a new logon that is reusing the session ID
-             * Happens when systems reboot
-             */
-            if (session.event_record_id > logon.event_record_id) {
-                break;
-            }
-            event.session_arbitration_ended = session.data.Event.System.TimeCreated["#attributes"].SystemTime;
-            break;
-        }
-
-        // Now find logoff event
-        for (const logoff of events.logoffs) {
-            const logoff_event = logoff.data.Event.UserData.EventXML;
-
-            if (logoff_event.SessionID !== logon_event.SessionID) {
-                continue;
-            }
-
-            /**
-             * The logon starts before the logoff event.
-             * If the logon event record ID is larger than the logoff event record ID
-             * We are dealing with a new logon that is reusing the session ID
-             * Happens when systems reboot
-             */
-            if (logon.event_record_id > logoff.event_record_id) {
-                break;
-            }
-
-            event.logoff_time = logoff.data.Event.System.TimeCreated["#attributes"].SystemTime;
-            break;
-        }
-
-        // Nanosecond precision is not supported for Date extraction
-        // Quick convert to second precision
-        const end = new Date(`${event.logoff_time.split(".").at(0) ?? ""}Z`).getTime();
-        const start = new Date(`${event.logon_time.split(".").at(0) ?? ""}Z`).getTime();
-        const duration = end - start;
-        const seconds = 1000;
-        if (!isNaN(duration)) {
-            event.duration = Number(duration / seconds);
-        }
-
-        // Now find disconnect events
-        for (const disconnect of events.disconnect) {
-            const disconnect_event = disconnect.data.Event.UserData.EventXML;
-            if (disconnect_event.SessionID !== logon_event.SessionID) {
-                continue;
-            }
-
-            /**
-             * The logon starts before the disconnect event.
-             * If the logon event record ID is larger than the disconnect event record ID
-             * We are dealing with a new logon that is reusing the session ID
-             * Happens when systems reboot
-             */
-            if (logon.event_record_id > disconnect.event_record_id) {
-                break;
-            }
-
-            event.disconnections += 1;
-        }
-
-        const reconnects: RdpActivity[] = [];
-        /**
-         * Now find reconnect events
-         * Reconnections may come from a different IP so we treat them as a separate entry
-         */
-        for (const reconnect of events.reconnects) {
-            const reconnect_event = reconnect.data.Event.UserData.EventXML;
-            if (reconnect_event.SessionID !== logon_event.SessionID) {
-                continue;
-            }
-
-            /**
-             * The logon starts before the reconnect event.
-             * If the logon event record ID is larger than the reconnect event record ID
-             * We are dealing with a new logon that is reusing the session ID
-             * Happens when systems reboot
-             */
-            if (logon.event_record_id > reconnect.event_record_id) {
-                break;
-            }
-
-            const reconnect_value = Object.assign({}, event);
-            reconnect_value.datetime = reconnect.data.Event.System.TimeCreated["#attributes"].SystemTime;
-            reconnect_value.source_ip = reconnect_event.Address;
-            reconnect_value.timestamp_desc = "RDP Reconnect";
-            reconnect_value.message = `RDP Reconnect by ${reconnect_value.user} from ${reconnect_value.source_ip}`;
-            reconnects.push(reconnect_value);
-
-            event.reconnections += 1;
-        }
-
-        // Now ensure our reconnects have same reconnections count
-        for (let i = 0; i < reconnects.length; i++) {
-            const count = reconnects[i];
-            if (count === undefined) {
-                continue;
-            }
-            count.reconnections = event.reconnections;
-        }
-
-        // Add the logon event
-        values.push(event);
-        // Concat all reconnect events
-        values = values.concat(reconnects);
-
+    for (const entry of events.reconnects) {
+        const data = entry.data.Event.UserData.EventXML;
+        const value: RdpActivity = {
+            session_id: data.SessionID,
+            user: data.User,
+            domain: data.User.split("\\").at(0) ?? "Unknown",
+            account: data.User.split("\\").at(1) ?? "Unknown",
+            source_ip: data.Address,
+            hostname: entry.data.Event.System.Computer,
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            message: `RDP Reconnect by ${data.User} from ${data.Address}`,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            timestamp_desc: "RDP Reconnect",
+            artifact: "RDP EventLog",
+            data_type: "windows:eventlogs:rdp:entry"
+        };
+        values.push(value);
     }
 
     return values;
 }
+
 
 /**
  * Function to test Windows RDP Logons parsing  
@@ -350,5 +261,109 @@ function createSessions(events: RdpEvents): RdpActivity[] {
  * Or want to validate the Windows RDP Logons parsing
  */
 export function testRdpLogons(): void {
+    const test = "../../tests/test_data/windows/eventlogs/Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx";
+    const results = rdpLogons(test);
+    if (results instanceof WindowsError) {
+        throw results;
+    }
 
+    if (results.length != 59) {
+        throw `Got ${results.length} RDP events, expected 59.......rdpLogons ❌`;
+    }
+    if (results[1] === undefined) {
+        throw `Got undefined RDP event.......rdpLogons ❌`;
+    }
+
+    if (results[1].datetime != "2025-07-10T00:36:56.762711Z") {
+        throw `Got ${results[1].datetime} for logon time, expected "2025-07-10T00:36:56.762711Z".......rdpLogons ❌`;
+    }
+
+    console.info(`  Function rdpLogons ✅`);
+
+    const logoff = `{"event_record_id":84336,"timestamp":"2025-08-31T03:07:39.322481000Z","data":{"Event":{"#attributes":{"xmlns":"http://schemas.microsoft.com/win/2004/08/events/event"},"System":{"Provider":{"#attributes":{"Name":"Microsoft-Windows-Security-Auditing","Guid":"54849625-5478-4994-A5BA-3E3B0328C30D"}},"EventID":4634,"Version":0,"Level":0,"Task":12545,"Opcode":0,"Keywords":"0x8020000000000000","TimeCreated":{"#attributes":{"SystemTime":"2025-08-31T03:07:39.322481Z"}},"EventRecordID":84336,"Correlation":null,"Execution":{"#attributes":{"ProcessID":876,"ThreadID":2132}},"Channel":"Security","Computer":"win","Security":null},"EventData":{"TargetUserSid":"S-1-5-96-0-1","TargetUserName":"UMFD-1","TargetDomainName":"Font Driver Host","TargetLogonId":"0x1381d","LogonType":2}}}}`;
+    if (isLogoff(JSON.parse(logoff))) {
+        throw `Got good logoff event with bad data.......isLogoff ❌`;
+    }
+
+    console.info(`  Function isLogoff ✅`);
+
+
+    if (isLogon(JSON.parse(logoff))) {
+        throw `Got good logon event with bad data.......isLogon ❌`;
+    }
+
+    console.info(`  Function isLogon ✅`);
+
+
+    if (isDisconnect(JSON.parse(logoff))) {
+        throw `Got good disconnect event with bad data.......isDisconnect ❌`;
+    }
+
+    console.info(`  Function isDisconnect ✅`);
+
+
+    if (isReconnect(JSON.parse(logoff))) {
+        throw `Got good reconnect event with bad data.......isReconnect ❌`;
+    }
+
+    console.info(`  Function isReconnect ✅`);
+
+    const mock = extractRdp({
+        logons: [{
+            event_record_id: 0,
+            timestamp: "",
+            data: {
+                Event: {
+                    "#attributes": {
+                        xmlns: ""
+                    },
+                    System: {
+                        Provider: {
+                            "#attributes": {
+                                Name: "",
+                                Guid: ""
+                            }
+                        },
+                        EventID: 21,
+                        Version: 0,
+                        Level: 0,
+                        Task: 0,
+                        Opcode: 0,
+                        Keywords: "",
+                        TimeCreated: {
+                            "#attributes": {
+                                SystemTime: ""
+                            }
+                        },
+                        EventRecordID: 0,
+                        Correlation: null,
+                        Channel: "",
+                        Computer: "",
+                        Security: undefined
+                    },
+                    UserData: {
+                        EventXML: {
+                            User: "",
+                            SessionID: 0,
+                            Address: "",
+                            "#attributes": {
+                                xmlns: ""
+                            }
+                        }
+                    }
+                }
+            }
+        }],
+        reconnects: [],
+        disconnect: [],
+        logoffs: [],
+        session_start: [],
+        session_end: []
+    });
+
+    if (mock.length !== 1) {
+        throw `Got ${results.length} RDP events, expected 1.......extractRdp ❌`;
+    }
+
+    console.info(`  Function extractRdp ✅`);
 }

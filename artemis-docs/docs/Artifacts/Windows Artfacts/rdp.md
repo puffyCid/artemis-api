@@ -33,26 +33,27 @@ main();
 An array of `RdpActivity`
 
 ```typescript
+/**
+ * Parsed RDP events
+ */
 export interface RdpActivity {
+    /**Session ID associated with RDP */
     session_id: number;
+    /**User associated RDP logon */
     user: string;
+    /**Domain associated with the user */
     domain: string;
+    /**Account associated with the RDP logon */
     account: string;
     source_ip: string;
-    logon_time: string;
-    logoff_time: string;
+    /**Hostname associated with evtx file */
     hostname: string;
+    /**Activity ID associated with EventLog entry */
     activity_id: string;
-    /** RDP Session duration in seconds */
-    duration: number;
     message: string;
     datetime: string;
-    timestamp_desc: "RDP Logon" | "RDP Reconnect";
-    artifact: "RDP EventLogs";
-    reconnections: number;
-    disconnections: number;
-    session_arbitration_started: string;
-    session_arbitration_ended: string;
+    timestamp_desc: "RDP Logon" | "RDP Reconnect" | "RDP Logoff" | "RDP Disconnect";
+    artifact: "RDP EventLog";
     data_type: "windows:eventlogs:rdp:entry";
 }
 ```

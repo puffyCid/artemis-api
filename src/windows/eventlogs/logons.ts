@@ -190,6 +190,9 @@ export function testLogonsWindows(): void {
     throw `Got ${results[1].logon_time} for logon time, expected "2022-10-31T03:30:46.218854Z".......logonsWindows ❌`;
   }
 
+  console.info(`  Function logonsWindows ✅`);
+
+
   const logon_types = [2, 3, 4, 5, 7, 8, 9, 10, 11];
   for (const entry of logon_types) {
     const type_result = checkLogonType(entry);
