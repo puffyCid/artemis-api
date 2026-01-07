@@ -33,7 +33,7 @@ Parse Amcache Registry file on the systemdrive.  You may provide an optional alt
 | ----- | ------- | ------------------------------------- |
 | path  | string  | Optional path to an Amcache file      |
 
-### getBits(carve, path) -> Bits | WindowsError
+### getBits(carve, path) -> BitsInfo[] | WindowsError
 
 Parse Windows [BITS](../../Artifacts/Windows%20Artfacts/bits.md) data. Supports
 carving deleted entries.  You may also provide an optional alternative path to the BITS database file.
