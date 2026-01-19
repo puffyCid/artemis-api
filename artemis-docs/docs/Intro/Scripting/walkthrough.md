@@ -166,13 +166,11 @@ The directory `./tmp/custom_proc_list` should contain three files:
 3d6573f5-9eda-4945-b324-06dd5a8fba1b.json	b76ed71a-9333-49b9-be2d-b3c77a4d1497.log	status.log
 ```
 
-- status.log maps script name to our json file
-  `proc_memory_usage_list:3d6573f5-9eda-4945-b324-06dd5a8fba1b.json`. **NOTE**
-  we can also find the same info in `3d6573f5-9eda-4945-b324-06dd5a8fba1b.json`
+- The status log lists files associted with our parsed data
 - `b76ed71a-9333-49b9-be2d-b3c77a4d1497.log` contains any errors or warnings.
   Since we did **not** run with elevated privileges, artemis will not be able to
   get information for all processes.
-- `3d6573f5-9eda-4945-b324-06dd5a8fba1b.json` should contain all processes using
+- `proc_memory_usage_list_3d6573f5-9eda-4945-b324-06dd5a8fba1b.json` should contain all processes using
   more the 200MB of memory!
 
 Snippet below:

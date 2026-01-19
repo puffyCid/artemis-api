@@ -124,7 +124,7 @@ Uploads are multipart uploads and will have a random UUID assigned as the filena
 
 When the collection is completed, artemis will send two final requests to signify the end of the collection:
 - Artemis will upload a `<uuid>.log` file that contains artemis logging information related to the collection.
-- Artemis will upload a `status.log` file that contains an artifact mapping to the UUID filenames that were uploaded. The artifact name can also be found in the uploaded JSONL data
+- Artemis will upload a `status_<hostname>.log` file that contains an artifact mapping to the UUID filenames that were uploaded. The artifact name can also be found in the uploaded JSONL data
 
 The final request will have the header:
 - x-artemis-collection-complete: Boolean value indicating the collection is done and no more uploads associated with the collection ID will happen.
