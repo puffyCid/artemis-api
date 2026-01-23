@@ -247,13 +247,13 @@ Parse notification info from Windows
 | ----- | ------ | ------------------------- |
 | path  | string | Path to Windows SRUM file |
 
-### getTasks(path) -> TaskData | WindowsError
+### getTasks(path) -> TaskXml | WindowsError
 
 Parse Windows Schedule Tasks at default systemdrive. You may also provide an optional path to a Schedule Task file.
 
 | Param | Type   | Description                                                           |
 | ----- | ------ | --------------------------------------------------------------------- |
-| path  | string | Optional path to Windows Schedule Task file. Can be either XML or Job |
+| path  | string | Path to Windows Schedule Task XML file                                |
 
 ### getUserassist(resolve, path) -> UserAssist[] | WindowsError
 

@@ -57,27 +57,9 @@ artifact_name = "tasks"
 
 ## Output Structure
 
-Collection of `TaskData`
+Array of `TaskXml` or `TaskJob`
 
 ```typescript
-export interface TaskData {
-  /**Array of `TaskXml` parsed XML files */
-  tasks: TaskXml[];
-  /**Array of `TaskJob` parsed Job files */
-  jobs: TaskJob[];
-}
-
-/**
- * JSON representation of the Task XML schema.
- * Most of the schema is Optional. Only `Actions` is required
- */
-export interface TaskData {
-  /**Array of `TaskXml` parsed XML files */
-  tasks: TaskXml[];
-  /**Array of `TaskJob` parsed Job files */
-  jobs: TaskJob[];
-}
-
 /**
  * JSON representation of the Task XML schema.
  * Most of the schema is Optional. Only `Actions` is required
