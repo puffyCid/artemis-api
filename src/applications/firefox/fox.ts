@@ -214,14 +214,15 @@ export class FireFox {
                 break;
             }
             case PlatformType.Linux: {
-                const linux_paths = glob(`/home/*/.mozilla/firefox/*/`);
-                if (linux_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "FIREFOX",
-                        `failed to glob linux paths: ${linux_paths}`,
-                    );
+                // FireFox can now exist in two possible locations. Newer versions are under .config
+                const config_paths = [`/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/`];
+                for (const entry of config_paths) {
+                    const linux_paths = glob(entry);
+                    if (linux_paths instanceof FileError) {
+                        continue;
+                    }
+                    paths = paths.concat(linux_paths);
                 }
-                paths = linux_paths;
                 break;
             }
             default: {
