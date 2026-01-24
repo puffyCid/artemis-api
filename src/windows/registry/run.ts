@@ -75,7 +75,12 @@ function parseKeys(value: Registry): RegistryRunKey[] {
             value: entry.data,
             name: entry.value,
             sha1: "",
-            sha256: ""
+            sha256: "",
+            message: `Run key: ${value.name}`,
+            datetime: value.last_modified,
+            timestamp_desc: "Registry Last Modified",
+            artifact: "Windows Registry Run Key",
+            data_type: "windows:registry:run:entry"
         };
 
         // Try to get some metadata about the Run key values

@@ -39,10 +39,10 @@ export function listKnownHosts(alt_glob?: string): KnownHosts[] | UnixError {
                 algorithm: value.at(1) ?? "",
                 data: value.at(2) ?? "",
                 source: entry.full_path,
-                created: "1970-01-01T00:00:00Z",
-                modified: "1970-01-01T00:00:00Z",
-                accessed: "1970-01-01T00:00:00Z",
-                changed: "1970-01-01T00:00:00Z",
+                created: "1970-01-01T00:00:00.000Z",
+                modified: "1970-01-01T00:00:00.000Z",
+                accessed: "1970-01-01T00:00:00.000Z",
+                changed: "1970-01-01T00:00:00.000Z",
             };
 
             const meta = stat(entry.full_path);

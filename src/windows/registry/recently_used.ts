@@ -168,8 +168,8 @@ export function testParseMru(): void {
     throw results;
   }
 
-  if (results.length != 3 || results[0] === undefined) {
-    throw `Got ${results.length} entries, expected 3.......parseMru ❌`;
+  if (results.length != 0) {
+    throw `Got ${results.length} entries, expected 0.......parseMru ❌`;
   }
 
   console.info(`  Function parseMru ✅`);

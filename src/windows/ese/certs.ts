@@ -130,8 +130,8 @@ export class ADCertificates extends EseDatabase {
                 requester_name: "",
                 caller_name: "",
                 request_attributes: "",
-                submitted: "1970-01-01T00:00:00Z",
-                resolved: "1970-01-01T00:00:00Z",
+                submitted: "1970-01-01T00:00:00.000Z",
+                resolved: "1970-01-01T00:00:00.000Z",
             };
             for (const column of row) {
                 switch (column.column_name) {

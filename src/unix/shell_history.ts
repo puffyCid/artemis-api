@@ -107,7 +107,7 @@ function parseBash(text: string, path: string): BashHistory[] {
     }
     const history: BashHistory = {
       history: "",
-      timestamp: "1970-01-01T00:00:00Z",
+      timestamp: "1970-01-01T00:00:00.000Z",
       line: 0,
       path,
     };
@@ -139,7 +139,7 @@ function parseZsh(text: string, path: string): ZshHistory[] {
     }
     const history: ZshHistory = {
       history: "",
-      timestamp: "1970-01-01T00:00:00Z",
+      timestamp: "1970-01-01T00:00:00.000Z",
       line: 0,
       path,
     };

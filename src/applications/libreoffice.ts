@@ -120,7 +120,7 @@ export function recentFiles(
         timestamp_desc: "N/A",
         artifact: "LibreOffice Recent Files",
         data_type: "application:libreoffice:recentfiles:entry",
-        datetime: "1970-01-01T00:00:00Z"
+        datetime: "1970-01-01T00:00:00.000Z"
       };
 
       // Finally at section containing data of interest

@@ -12,4 +12,9 @@ export interface RegistryRunKey {
     sha256: string;
     value: string;
     name: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Registry Last Modified";
+    artifact: "Windows Registry Run Key";
+    data_type: "windows:registry:run:entry";
 }
