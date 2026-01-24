@@ -3,6 +3,11 @@ import { getEnvValue } from "../../environment/mod";
 import { WindowsError } from "../errors";
 import { getEventlogs } from "../eventlogs";
 
+/**
+ * Function to assemble PowerShell scriptblocks
+ * @param path Optional path to PowerShell Operational evtx file
+ * @returns Array of `Scriptblock` or `WindowsError`
+ */
 export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsError {
     let log_path = path;
     if (log_path === undefined) {
@@ -48,7 +53,7 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
                     message: entry.data.Event.EventData.ScriptBlockText,
                     datetime: entry.timestamp,
                     timestamp_desc: "EventLog Entry Created",
-                    data_type: "windows:eventlog:scriptblock",
+                    data_type: "windows:eventlogs:powershell:scriptblock:entry",
                     id: entry.data.Event.EventData.ScriptBlockId,
                     source_file: log_path,
                     path: entry.data.Event.EventData.Path,
@@ -93,6 +98,9 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
     const results: Scriptblock[] = [];
 
     for (const entry in data) {
+        if(data[entry] === undefined) {
+            continue;
+        }
         // Sort our blocks by block number. We do this to make sure we reassemble in correct order
         data[ entry ].sort((x, y) => x.data.Event.EventData.MessageNumber - y.data.Event.EventData.MessageNumber);
         const value: Scriptblock = {
@@ -100,7 +108,6 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
             message: "",
             datetime: "",
             timestamp_desc: "EventLog Entry Created",
-            data_type: "windows:eventlog:scriptblock",
             id: "",
             source_file,
             path: "",
@@ -117,6 +124,7 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
             system_time: "",
             created_time: "",
             artifact: "Windows PowerShell Scriptblock",
+            data_type: "windows:eventlogs:powershell:scriptblock:entry"
         };
         let message = "";
         for (const script of data[ entry ]) {

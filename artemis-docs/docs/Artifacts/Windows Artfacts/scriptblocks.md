@@ -42,9 +42,9 @@ export interface Scriptblock {
     total_parts: number;
     message: string;
     datetime: string;
-    timestamp_desc: string;
-    data_type: string;
-    artifact: string;
+    timestamp_desc: "EventLog Entry Created";
+    data_type: "windows:eventlogs:powershell:scriptblock:entry";
+    artifact: "Windows PowerShell Scriptblock";
     id: string;
     source_file: string;
     path: string;
