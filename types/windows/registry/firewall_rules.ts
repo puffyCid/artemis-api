@@ -9,7 +9,7 @@ export interface FirewallRules {
     protocol: Protocol;
     protocol_number: number;
     local_port: number;
-    remote_port:number;
+    remote_port: number;
     name: string;
     registry_key_name: string;
     description: string;
@@ -22,7 +22,12 @@ export interface FirewallRules {
     service: string;
     remote_address: string[];
     local_address: string[];
-    [ key: string ]: unknown;
+    [key: string]: unknown;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Registry Last Modified";
+    artifact: "Windows Firewall Rule";
+    data_type: "windows:registry:firewallrule:entry";
 }
 
 export enum Direction {

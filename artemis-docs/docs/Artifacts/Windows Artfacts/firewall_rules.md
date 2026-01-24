@@ -52,6 +52,11 @@ export interface FirewallRules {
     remote_address: string[];
     local_address: string[];
     [ key: string ]: unknown;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Registry Last Modified";
+    artifact: "Windows Firewall Rule";
+    data_type: "windows:registry:firewallrule:entry";
 }
 
 export enum Direction {

@@ -33,13 +33,13 @@ export function processTreeEventLogs(path?: string): EventLogProcessTree[] | Win
         }
 
         // If empty we are done. No more entries are in the log
-        if (logs[ 1 ].length === 0) {
+        if (logs[1].length === 0) {
             break;
         }
 
         // Increase to next chunk of entries
         offset += limit;
-        const data = logs[ 1 ] as RawProcess[];
+        const data = logs[1] as RawProcess[];
         for (const entry of data) {
             // Skip non process 4688 events
             if (entry.data.Event.System.EventID !== eid) {
@@ -59,18 +59,18 @@ export function processTreeEventLogs(path?: string): EventLogProcessTree[] | Win
                 record: entry.event_record_id,
             };
             // Track new process
-            if (procs_map[ `${logon_id}_${pid}` ] !== undefined) {
-                const old = procs_map[ `${logon_id}_${pid}` ] as ProcTracker | ProcTracker[];
+            if (procs_map[`${logon_id}_${pid}`] !== undefined) {
+                const old = procs_map[`${logon_id}_${pid}`] as ProcTracker | ProcTracker[];
 
                 if (Array.isArray(old)) {
                     old.push(track);
-                    procs_map[ `${logon_id}_${pid}` ] = old;
+                    procs_map[`${logon_id}_${pid}`] = old;
                     continue;
                 }
-                procs_map[ `${logon_id}_${pid}` ] = [ old, track ];
+                procs_map[`${logon_id}_${pid}`] = [old, track];
                 continue;
             }
-            procs_map[ `${logon_id}_${pid}` ] = track;
+            procs_map[`${logon_id}_${pid}`] = track;
             raw_procs.push(entry);
         }
     }
@@ -111,7 +111,7 @@ function createProcessTree(data: RawProcess[], proc_maps: Record<string, ProcTra
             timestamp_desc: "EventLog Generated",
             artifact: "EventLogs Process Tree",
             evtx_path,
-            data_type: "windows:eventlog:proctree",
+            data_type: "windows:eventlogs:proctree:entry",
             record: value.event_record_id,
             logon_id,
         };
@@ -141,7 +141,7 @@ function getParent(logon_id: number, parent: number, data: Record<string, ProcTr
         return message;
     }
     tracker.push(key);
-    let value = data[ key ];
+    let value = data[key];
     if (value === undefined) {
         return message;
     }
@@ -181,16 +181,17 @@ function duplicateIds(values: ProcTracker[], record: number): ProcTracker | unde
         }
         filter.push(value);
     }
-    if (filter.length === 0) {
+    if (filter.length === 0 || filter[0] === undefined) {
         return undefined;
     }
     if (filter.length === 1) {
-        return filter[ 0 ];
+        return filter[0];
     }
+
 
     // The parent record number closest to us we treat as our parent
     // Get the largest record in our filtered list
-    let key = filter[ 0 ].record;
+    let key = filter[0].record;
     for (const entry of filter) {
         if (entry.record > key) {
             key = entry.record;

@@ -17,12 +17,9 @@ import { assembleMru } from "../recently_used";
  */
 export function recentDocs(reg_data: Registry[]): MruValues[] | WindowsError {
   const mru_entries: Registry[] = [];
+  const key = "\\software\\microsoft\\windows\\currentversion\\explorer\\recentdocs";
   for (const entry of reg_data) {
-    if (
-      !entry.path.includes(
-        "\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs",
-      )
-    ) {
+    if (!entry.path.includes(key)) {
       continue;
     }
 
@@ -43,7 +40,7 @@ export function recentDocs(reg_data: Registry[]): MruValues[] | WindowsError {
         continue;
       }
       // Nom until end of string character for UTF16
-      const remaining = takeUntil(data, new Uint8Array([ 0, 0, 0 ]));
+      const remaining = takeUntil(data, new Uint8Array([0, 0, 0]));
       if (remaining instanceof NomError) {
         console.error(`could not nom UTF16 filename: ${remaining}`);
         continue;

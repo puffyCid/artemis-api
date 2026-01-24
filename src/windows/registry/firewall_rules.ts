@@ -52,6 +52,11 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                 remote_address: [],
                 registry_key_name: value.value,
                 local_address: [],
+                message: "",
+                datetime: entry.last_modified,
+                timestamp_desc: "Registry Last Modified",
+                artifact: "Windows Firewall Rule",
+                data_type: "windows:registry:firewallrule:entry"
             };
 
             for (const rule_values of entries) {
@@ -97,6 +102,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                         break;
                     case "Name":
                         rule.name = key_value.at(1) ?? "";
+                        rule.message = `Firewall Rule: ${rule.name}`;
                         break;
                     case "Desc":
                         rule.description = key_value.at(1) ?? "";

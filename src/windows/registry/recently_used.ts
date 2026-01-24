@@ -34,45 +34,78 @@ export function parseMru(ntuser_path: string): Mru[] | WindowsError {
 
   const mrus: Mru[] = [];
 
-  const open_save_mru: Mru = {
-    ntuser_path,
-    kind: MruType.OPENSAVE,
-    mru: common,
-  };
-
-  mrus.push(open_save_mru);
+  for (const entry of common) {
+    const open_save_mru: Mru = {
+      ntuser_path,
+      kind: MruType.OPENSAVE,
+      filename: entry.filename,
+      path: entry.path,
+      created: entry.created,
+      modified: entry.modified,
+      accessed: entry.accessed,
+      items: entry.items,
+      message: `MRU value: ${entry.path}`,
+      datetime: entry.created,
+      timestamp_desc: "MRU Entry Created",
+      artifact: "MRU Open Save",
+      data_type: "windows:registry:mru:entry"
+    };
+    mrus.push(open_save_mru);
+  }
 
   const last_visit = lastVisitMru(reg_data);
   if (last_visit instanceof WindowsError) {
     return new WindowsError(
       "MRU",
-      `Could not get LastVisited MRU entries: ${common}`,
+      `Could not get LastVisited MRU entries: ${last_visit}`,
     );
   }
 
-  const last_visit_mru: Mru = {
-    ntuser_path,
-    kind: MruType.LASTVISITED,
-    mru: last_visit,
-  };
-
-  mrus.push(last_visit_mru);
+  for (const entry of last_visit) {
+    const last_visit_mru: Mru = {
+      ntuser_path,
+      kind: MruType.OPENSAVE,
+      filename: entry.filename,
+      path: entry.path,
+      created: entry.created,
+      modified: entry.modified,
+      accessed: entry.accessed,
+      items: entry.items,
+      message: `MRU value: ${entry.path}`,
+      datetime: entry.created,
+      timestamp_desc: "MRU Entry Created",
+      artifact: "MRU Last Visit",
+      data_type: "windows:registry:mru:entry"
+    };
+    mrus.push(last_visit_mru);
+  }
 
   const recent_docs = recentDocs(reg_data);
   if (recent_docs instanceof WindowsError) {
     return new WindowsError(
       "MRU",
-      `Could not get RecentDocs MRU entries: ${common}`,
+      `Could not get RecentDocs MRU entries: ${recent_docs}`,
     );
   }
 
-  const recent_docs_mru: Mru = {
-    ntuser_path,
-    kind: MruType.RECENTDOCS,
-    mru: recent_docs,
-  };
-
-  mrus.push(recent_docs_mru);
+  for (const entry of recent_docs) {
+    const recent_docs_mru: Mru = {
+      ntuser_path,
+      kind: MruType.OPENSAVE,
+      filename: entry.filename,
+      path: entry.path,
+      created: entry.created,
+      modified: entry.modified,
+      accessed: entry.accessed,
+      items: entry.items,
+      message: `MRU value: ${entry.path}`,
+      datetime: entry.created,
+      timestamp_desc: "MRU Entry Created",
+      artifact: "MRU Recent Docs",
+      data_type: "windows:registry:mru:entry"
+    };
+    mrus.push(recent_docs_mru);
+  }
 
   return mrus;
 }
@@ -139,9 +172,6 @@ export function testParseMru(): void {
     throw `Got ${results.length} entries, expected 3.......parseMru ❌`;
   }
 
-  if (results[0].mru.length != 0) {
-    throw `Got ${results[0].mru.length} entries, expected 0.......parseMru ❌`;
-  }
   console.info(`  Function parseMru ✅`);
 
   const open_save: Registry[] = [{ "path": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU", "key": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32", "name": "OpenSavePidlMRU", "values": [], "last_modified": "2025-08-30T22:59:19.000Z", "depth": 7, "security_offset": 69216, "registry_path": "C:\\Users\\azur3\\NTUSER.dat", "registry_file": "NTUSER.dat" }, { "path": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU\\*", "key": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU", "name": "*", "values": [{ "value": "0", "data": "OgAfSUcaA1lyP6dEicVVlf5rMO4mAAEAJgDvvhAAAACoIgXqOfHbAVOF/R9I8dsBIGUiJEjx2wEUAIYAdAAeAENGU0YYADEAAAAAAOpaGhIQAFByb2plY3RzAAAAAHQaWV6W39NIjWcXM7zuKLrFzfrfn2dWQYlHxcdrwLZ/QgAJAAQA777qWhQS6lrFGC4AAADivwAAAAADAAAAAAAAAAAAAAAAAAAA8aNxAFAAcgBvAGoAZQBjAHQAcwAAAEQAVgAxAAAAAADqWvMUMABhcnRlbWlzAEAACQAEAO++6loaEupaxRguAAAA478AAAAAAwAAAAAAuAAAAAAAAAAAAILw7ABhAHIAdABlAG0AaQBzAAAAFgAAAA==", "data_type": "REG_BINARY" }, { "value": "MRUListEx", "data": "CQAAAAQAAAAOAAAADQAAAAwAAAALAAAACgAAAAAAAAAIAAAABwAAAAYAAAAFAAAAAwAAAAIAAAABAAAA/////w==", "data_type": "REG_BINARY" }, { "value": "1", "data": "OgAfSDrMv7Qs20xCsCl/6ZqHxkEmAAEAJgDvvhEAAADMXgjqOfHbAeFhw+xO8dsBWw5x8k7x2wEUAGAAMgAAMFwY6lpwHCAAV2luZG93cy5kYgAARgAJAAQA777qWlUf6lpWHy4AAAAUBgcAAAAVAAAAAAAAAAAAAAAAAAAA9oCZAFcAaQBuAGQAbwB3AHMALgBkAGIAAAAaAAAA", "data_type": "REG_BINARY" }, { "value": "2", "data": "OgAfSUcaA1lyP6dEicVVlf5rMO4mAAEAJgDvvhAAAACoIgXqOfHbAVOF/R9I8dsBIGUiJEjx2wEUAIYAdAAeAENGU0YYADEAAAAAAOxaFKwQAFByb2plY3RzAAAAAHQaWV6W39NIjWcXM7zuKLrFzfrfn2dWQYlHxcdrwLZ/QgAJAAQA777qWhQS7FoUrC4AAADivwAAAAADAAAAAAAAAAAAAAAAAAAAErkXAVAAcgBvAGoAZQBjAHQAcwAAAEQAbAAxAAAAAADsWhSsEABNQUNPUy1+MQAAVAAJAAQA777sWhSs7FoUrC4AAADVlwAAAAAGAAAAAAAAAAAAAAAAAAAASeiLAG0AYQBjAG8AcwAtAHUAbgBpAGYAaQBlAGQAbABvAGcAcwAAABgAAAA=", "data_type": "REG_BINARY" }], "last_modified": "2025-07-15T03:39:32.000Z", "depth": 8, "security_offset": 69216, "registry_path": "C:\\Users\\azur3\\NTUSER.dat", "registry_file": "NTUSER.dat" }, { "path": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU\\ts", "key": "ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU", "name": "ts", "values": [{ "value": "0", "data": "OgAfAAU5jggjAwJLmCZdmUKOEV8mAAEAJgDvvjEAAADTNgjqOfHbAY1eTb0OCNwBH5rlEP0Z3AEUAFYAMgAAAAAAAAAAAIAAbWFpbi50cwBAAAkABADvvgAAAAAAAAAALgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbQBhAGkAbgAuAHQAcwAAABYAAAA=", "data_type": "REG_BINARY" }, { "value": "MRUListEx", "data": "AAAAAP////8=", "data_type": "REG_BINARY" }], "last_modified": "2025-08-30T22:59:19.000Z", "depth": 8, "security_offset": 69216, "registry_path": "C:\\Users\\azur3\\NTUSER.dat", "registry_file": "NTUSER.dat" }];
