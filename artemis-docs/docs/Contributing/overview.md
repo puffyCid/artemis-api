@@ -35,7 +35,7 @@ From the `forensics/src/` directory
 | core.rs    | Contains the entry point to the `core` library.                                                                                                                                                                        |
 
 
-# Adding New Artifacts
+## Adding New Artifacts
 
 To keep the codebase organized the follow should be followed when adding a new
 artifact.
@@ -45,7 +45,7 @@ artifact.
   - parser.rs - Contains `pub(crate)` accessible functions for the artifact
   - error.rs - Artifact specific errors
 
-# Timestamps
+## Timestamps
 
 All timestamps artemis outputs are in ISO RFC 3339 format
 (YYYY-MM-DDTHH:mm:ss.SSSZ). The timestamp from should be from UNIXEPOCH time.
@@ -64,7 +64,7 @@ Use the time functions under **utils** to help with timestamp conversions!
 
 :::
 
-# Artifact Scope
+## Artifact Scope
 
 Currently all artifacts that artemis parses are statically coded in the binary
 (they are written in Rust). While this ok, it prevents us from dynamically
@@ -84,7 +84,7 @@ worth including as a Rust coded parser.
 
 When in doubt or unsure open an issue!
 
-# Suggestions
+## Suggestions
 
 If you want add a new artifact but want to see how other artifacts are
 implemented, some suggested ones to review are:
