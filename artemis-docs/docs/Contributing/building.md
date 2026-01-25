@@ -76,7 +76,7 @@ cd artemis
 just cli
 
 # Build just the library
-just core
+just forensics
 ```
 
 Full list of just commands (via `just --list`)
