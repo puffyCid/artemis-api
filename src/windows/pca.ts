@@ -135,6 +135,11 @@ function parseGeneral(path: string): ProgramCompatabilityAssist[] | WindowsError
     return values;
 }
 
+/**
+ * Function to test Windows PCA parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Windows PCA parsing
+ */
 export function testParsePca(): void {
     const test = "../../tests/test_data/windows/pca/*";
     const results = parsePca(test);
