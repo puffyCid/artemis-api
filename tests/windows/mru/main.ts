@@ -1,7 +1,8 @@
 import { FileError } from "../../../src/filesystem/errors";
 import { glob } from "../../../src/filesystem/files";
 import { WindowsError } from "../../../src/windows/errors";
-import { parseMru, testParseMru } from "../../../src/windows/registry/recently_used";
+import { parseMru } from "../../../src/windows/registry/recently_used";
+import { testParseMru } from "../../test";
 
 function main() {
   console.log('Running Windows MRU tests....');

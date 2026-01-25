@@ -36,6 +36,7 @@ export { testWindowsWifiNetworks } from "../src/windows/registry/wifi";
 export { testGetRunKeys } from "../src/windows/registry/run";
 export { testServiceInstalls } from "../src/windows/eventlogs/services";
 export { testRdpLogons } from "../src/windows/eventlogs/rdp";
+export { testParsePca } from "../src/windows/pca";
 
 /**
  * macOS exported test functions

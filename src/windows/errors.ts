@@ -41,6 +41,7 @@ export type ErrorName =
   | "EVENTLOG_PROCESSTREE"
   | "WIFI"
   | "ADCERTIFICATES"
-  | "RDPLOGONS";
+  | "RDPLOGONS"
+  | "PCA";
 
 export class WindowsError extends ErrorBase<ErrorName> {}

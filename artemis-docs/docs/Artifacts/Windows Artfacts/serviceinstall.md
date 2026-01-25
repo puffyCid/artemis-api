@@ -12,8 +12,7 @@ System.evtx file.
 
 ## Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to collect
-Service Install entries.
+You have to use the artemis [api](../../API/overview.md) in order to collect Service Install entries.
 
 ## Sample API Script
 

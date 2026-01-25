@@ -684,3 +684,11 @@ Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-Te
 | Param   | Type    | Description                                                                                    |
 | ------- | ------- | ---------------------------------------------------------------------------------------------- |
 | path    | string  | Optional path to Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file |
+
+### parsePca(alt_dir) -> ProgramCompatabilityAssist[] | WindowsError
+
+Parse Windows Program Compatability Assistant (PCA) files. You may provide an optional alternative glob to a folder that contains the PCA files
+
+| Param      | Type    | Description                                  |
+| ---------- | ------- | -------------------------------------------- |
+| alt_dir    | string  | Optional glob to folder containing PCA files |
