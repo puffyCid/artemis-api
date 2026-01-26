@@ -25,6 +25,12 @@ def pushd(new_dir: Path):
         os.chdir(prev_dir)
 
 def run_tests():
+    target = ""
+    # By default all tests are run
+    # Can provide optional arg to run single test
+    if len(sys.argv) == 2:
+        target = sys.argv[1]
+
     base_dir = Path.cwd()
     total_start = time.perf_counter()
 
@@ -34,6 +40,9 @@ def run_tests():
 
     for entry in base_dir.iterdir():
         if not entry.is_dir():
+            continue
+
+        if target != "" and target != entry.name:
             continue
 
         total_tests += 1
