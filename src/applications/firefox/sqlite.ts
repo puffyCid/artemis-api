@@ -1,4 +1,4 @@
-import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxHistory, FirefoxProfiles, FirefoxStorage, Respository } from "../../../types/applications/firefox";
+import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxStorage, Respository } from "../../../types/applications/firefox";
 import { PlatformType } from "../../system/systeminfo";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
@@ -52,7 +52,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
 
         const results = querySqlite(full_path, query);
         if (results instanceof ApplicationError) {
-            console.warn(`Failed to query full_path: ${results}`);
+            console.warn(`Failed to query ${full_path}: ${results}`);
             continue;
         }
 
@@ -85,7 +85,8 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                 ),
                 timestamp_desc: "URL Visited",
                 artifact: "URL History",
-                data_type: "application:firefox:history:entry"
+                data_type: "application:firefox:history:entry",
+                version: path.version,
             };
 
             if (unfold && typeof client !== 'undefined') {
@@ -192,6 +193,7 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
                 url_hash: entry["url_hash"] as number ?? 0,
                 description: entry["description"] as string ?? "",
                 preview_image_url: entry["preview_image_url"] as string ?? "",
+                version: path.version,
             };
             download_row.message = `File download from: ${download_row.url} | File: ${download_row.name}`
 
@@ -235,8 +237,8 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType,
                 same_site: !!(entry["sameSite"] as number),
                 scheme_map: entry["schemeMap"] as number,
                 name: entry["name"] as string ?? "",
-                value: entry["value"] as string  ?? "",
-                path: entry["path"] as string  ?? "",
+                value: entry["value"] as string ?? "",
+                path: entry["path"] as string ?? "",
                 expiry: unixEpochToISO(
                     (entry["expiry"] as bigint ?? 0)
                 ),
@@ -256,7 +258,8 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType,
                 ),
                 creation_time: unixEpochToISO(
                     (entry["creationTime"] as bigint ?? 0)
-                )
+                ),
+                version: path.version,
             };
 
             cookie_entry.message = `Cookie from ${cookie_entry.host} | Value: ${cookie_entry.value}`
@@ -302,7 +305,8 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
                 timestamp_desc: "Favicon Expires",
                 artifact: "URL Favicon",
                 data_type: "application:firefox:favicons:entry",
-                message: `Favicon: ${entry["icon_url"]}`
+                message: `Favicon: ${entry["icon_url"]}`,
+                version: path.version,
             };
 
             favicons.push(fav_entry);
@@ -352,7 +356,8 @@ export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType,
                 timestamp_desc: "Website Storage Last Accessed",
                 artifact: "Website Storage",
                 data_type: "application:firefox:storage:entry",
-                message: `Storage for ${entry["origin"]}`
+                message: `Storage for ${entry["origin"]}`,
+                version: path.version,
             };
 
             storage.push(fav_entry);
@@ -360,6 +365,66 @@ export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType,
 
     }
     return storage;
+}
+
+/**
+ * Get FireFox form history info
+ * @param paths Array of `FirefoxProfiles`
+ * @param platform OS `PlatformType`
+ * @param offset Starting DB offset
+ * @param limit Number of records to return
+ * @returns Array of `FirefoxFormHistory` or `ApplicationError`
+ */
+export function firefoxFormhistory(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxFormHistory[] {
+    const query = `SELECT 
+                    fieldname, 
+                    value, 
+                    timesUsed, 
+                    firstUsed, 
+                    lastUsed, 
+                    guid, 
+                    source 
+                    FROM 
+                    moz_formhistory 
+                    LEFT JOIN moz_history_to_sources ON moz_history_to_sources.history_id = moz_formhistory.id 
+                    LEFT JOIN moz_sources ON moz_history_to_sources.source_id = moz_sources.id
+                    LIMIT ${limit} OFFSET ${offset}`;
+
+    const values: FirefoxFormHistory[] = [];
+    for (const path of paths) {
+        let full_path = `${path.full_path}/formhistory.sqlite`;
+
+        if (platform === PlatformType.Windows) {
+            full_path = `${path.full_path}\\formhistory.sqlite`;
+        }
+        const results = querySqlite(full_path, query);
+        if (results instanceof ApplicationError) {
+            console.warn(`Failed to query ${full_path}: ${results}`);
+            continue;
+        }
+        for(const entry of results) {
+            const form: FirefoxFormHistory = {
+                timestamp_desc: "Last Searched",
+                artifact: "Form History",
+                data_type: "application:firefox:formhistory:entry",
+                datetime: unixEpochToISO(entry["lastUsed"] as bigint ?? 0),
+                message: `Form search for '${entry["value"] ?? ""}'`,
+                version: path.version,
+                path: path.full_path,
+                db_path: full_path,
+                search_term: entry["value"] as string ?? "",
+                last_used: unixEpochToISO(entry["lastUsed"] as bigint ?? 0),
+                first_used: unixEpochToISO(entry["firstUsed"] as bigint ?? 0),
+                fieldname: entry["fieldname"] as string ?? "",
+                guid: entry["guid"] as string ?? "",
+                times_used: entry["timesUsed"] as number ?? "",
+                source: entry["source"] as string ?? ""
+            };
+            values.push(form);
+        }
+    }
+
+    return values;
 }
 
 function getRepo(id: number): Respository {
