@@ -8,4 +8,9 @@ export interface RecentFiles {
   accessed: string;
   /**Path to `gedit-metdata.xml` */
   gedit_source: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Last Accessed";
+  artifact: "Gedit";
+  data_type: "linux:gedit:entry",
 }
