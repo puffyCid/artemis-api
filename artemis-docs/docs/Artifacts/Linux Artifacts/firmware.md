@@ -53,5 +53,10 @@ export interface FirmwareHistory {
     version_format: number;
     install_duration: number;
     [ key: string ]: unknown;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Firmware Device Created";
+    artifact: "Firmware Updates";
+    data_type: "linux:firmware:entry";
 }
 ```

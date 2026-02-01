@@ -45,6 +45,11 @@ export function firmwareHistory(alt_path?: string): FirmwareHistory[] | LinuxErr
             appstream_id: entry[ "appstream_id" ] as string,
             version_format: entry[ "version_format" ] as number,
             install_duration: entry[ "install_duration" ] as number,
+            message: `Firmware update for '${entry[ "display_name" ] as string}'`,
+            datetime: unixEpochToISO(entry[ "device_created" ] as number),
+            timestamp_desc: "Firmware Device Created",
+            artifact: "Firmware Updates",
+            data_type: "linux:firmware:entry"
         };
         const meta = firm.metadata.split(";");
         for (const value of meta) {
