@@ -32,7 +32,7 @@ From the `forensics/src/` directory
 | runtime    | Contains code related to the embedded JS runtime                                                                                                                                                                     |
 | structs    | Contains code related to how TOML collection files are parsed. It <br/> tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
-| core.rs    | Contains the entry point to the `core` library.                                                                                                                                                                        |
+| core.rs    | Contains the entry point to the `forensis` workspace.                                                                                                                                                                        |
 
 
 ## Adding New Artifacts

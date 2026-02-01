@@ -5,7 +5,7 @@ sidebar_position: 3
 # CLI Options
 
 artemis is designed to have a very simple CLI menu. All of the complex data
-parsing is handle in the `core` library.
+parsing is handle in the `forensis` workspace.
 
 # Running Artemis
 
