@@ -15,12 +15,12 @@ Grab the latest **stable** release
 
 :::info
 
-### Which version should I choose: Nightly or Stable?
+### Which version: Nightly or Stable?
 
 Nightly versions of artemis are built every day using GitHub Actions.
 Nightly versions are actually stable enough for daily usage.
 
-Stable releases are typically released every 2-3 months.
+Stable releases are typically released every 2-3 months.  
 Nightly and Stable versions go through the same tests and release process.
 
 :::
@@ -52,8 +52,7 @@ Artemis also supports the following platforms:
 - FreeBSD
 - NetBSD
 - Android
-- Linux (RISC-V, musl)
-- Windows ARM
+- Linux (RISC-V, musl, PowerPC, SPARC)
 - [illumos](https://en.wikipedia.org/wiki/Illumos)
 
 ## GitHub Releases
