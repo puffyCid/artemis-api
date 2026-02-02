@@ -7,7 +7,7 @@ keywords:
 
 # Shimcache
 
-Windows `Shimcache` (also called: AppCompatCache, Application Compatability
+Windows Shimcache (also called: AppCompatCache, Application Compatability
 Cache, or AppCompat) are Registry entries that may<sup>*</sup> indicate
 application execution. These entries are only written when the system is
 shutdown or restarted.

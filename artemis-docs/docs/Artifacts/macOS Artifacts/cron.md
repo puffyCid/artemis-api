@@ -16,7 +16,7 @@ Other parsers:
 
 - Any program that read a text file
 
-Refernces:
+References:
 
 - [Cron](https://en.wikipedia.org/wiki/Cron)
 

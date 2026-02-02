@@ -1,4 +1,4 @@
-import { PcaType, ProgramCompatabilityAssist } from "../../types/windows/pca";
+import { PcaType, ProgramCompatibilityAssist } from "../../types/windows/pca";
 import { extractUtf16String } from "../encoding/strings";
 import { getEnvValue } from "../environment/mod";
 import { FileError } from "../filesystem/errors";
@@ -6,11 +6,11 @@ import { glob, readFile, readLines } from "../filesystem/files";
 import { WindowsError } from "./errors";
 
 /**
- * Extract ProgramCompatabilityAssist entries
+ * Extract Program Compatibility Assist entries
  * @param alt_dir Optional alternative glob to folder that contains PCA files
- * @returns Array of `ProgramCompatabilityAssist` or `WindowsError`
+ * @returns Array of `ProgramCompatibilityAssist` or `WindowsError`
  */
-export function parsePca(alt_dir?: string): ProgramCompatabilityAssist[] | WindowsError {
+export function parsePca(alt_dir?: string): ProgramCompatibilityAssist[] | WindowsError {
     let path = alt_dir;
     if (path === undefined) {
         const volume = getEnvValue("SystemDrive");
@@ -26,7 +26,7 @@ export function parsePca(alt_dir?: string): ProgramCompatabilityAssist[] | Windo
         return new WindowsError(`PCA`, `failed to glob ${path}: ${globs}`);
     }
 
-    let values: ProgramCompatabilityAssist[] = [];
+    let values: ProgramCompatibilityAssist[] = [];
     for (const entry of globs) {
         if (entry.filename === "PcaAppLaunchDic.txt") {
             const value = parseDict(entry.full_path);
@@ -50,13 +50,13 @@ export function parsePca(alt_dir?: string): ProgramCompatabilityAssist[] | Windo
 /**
  * Parse Application Launch PCA file
  * @param path Path to PcaAppLaunchDic.txt
- * @returns Array of `ProgramCompatabilityAssist` or `WindowsError`
+ * @returns Array of `ProgramCompatibilityAssist` or `WindowsError`
  */
-function parseDict(path: string): ProgramCompatabilityAssist[] | WindowsError {
+function parseDict(path: string): ProgramCompatibilityAssist[] | WindowsError {
     const limit = 1000;
     let offset = 0;
 
-    const values: ProgramCompatabilityAssist[] = [];
+    const values: ProgramCompatibilityAssist[] = [];
     while (true) {
         const lines = readLines(path, offset, limit);
         if (lines instanceof FileError) {
@@ -66,9 +66,9 @@ function parseDict(path: string): ProgramCompatabilityAssist[] | WindowsError {
         offset += limit;
         for (const line of lines) {
             const entries = line.split("|");
-            const timestamp = `${entries.at(1)?.replace(" ", "T") ?? "1970-01-01T00:00:00.000"}Z`
+            const timestamp = `${entries.at(1)?.replace(" ", "T") ?? "1970-01-01T00:00:00.000"}Z`;
 
-            const value: ProgramCompatabilityAssist = {
+            const value: ProgramCompatibilityAssist = {
                 last_run: timestamp,
                 path: entries.at(0) ?? "Unknown path",
                 run_status: 0,
@@ -82,7 +82,7 @@ function parseDict(path: string): ProgramCompatabilityAssist[] | WindowsError {
                 datetime: timestamp,
                 source: path,
                 timestamp_desc: "Last Run",
-                artifact: "Windows Program Compatability Assist",
+                artifact: "Windows Program Compatibility Assist",
                 data_type: "windows:pca:entry"
             };
             values.push(value);
@@ -98,21 +98,21 @@ function parseDict(path: string): ProgramCompatabilityAssist[] | WindowsError {
 /**
  * Parse Application Launch PCA file
  * @param path Path to PcaGeneralDb0.txt or PcaGeneralDb1.txt
- * @returns Array of `ProgramCompatabilityAssist` or `WindowsError`
+ * @returns Array of `ProgramCompatibilityAssist` or `WindowsError`
  */
-function parseGeneral(path: string): ProgramCompatabilityAssist[] | WindowsError {
+function parseGeneral(path: string): ProgramCompatibilityAssist[] | WindowsError {
     const bytes = readFile(path);
     if (bytes instanceof FileError) {
         return new WindowsError(`PCA`, `failed to read file ${path}: ${bytes}`);
     }
     const lines = extractUtf16String(bytes).split("\n");
 
-    const values: ProgramCompatabilityAssist[] = [];
+    const values: ProgramCompatibilityAssist[] = [];
     for (const line of lines) {
         const entries = line.split("|");
-        const timestamp = `${entries.at(0)?.replace(" ", "T") ?? "1970-01-01T00:00:00.000"}Z`
+        const timestamp = `${entries.at(0)?.replace(" ", "T") ?? "1970-01-01T00:00:00.000"}Z`;
 
-        const value: ProgramCompatabilityAssist = {
+        const value: ProgramCompatibilityAssist = {
             last_run: timestamp,
             path: entries.at(2) ?? "Unknown path",
             run_status: Number(entries.at(1) ?? 0),
@@ -126,7 +126,7 @@ function parseGeneral(path: string): ProgramCompatabilityAssist[] | WindowsError
             datetime: timestamp,
             source: path,
             timestamp_desc: "Last Run",
-            artifact: "Windows Program Compatability Assist",
+            artifact: "Windows Program Compatibility Assist",
             data_type: "windows:pca:entry"
         };
         values.push(value);
@@ -148,11 +148,11 @@ export function testParsePca(): void {
     }
 
     if (results.length !== 567) {
-        throw `Got ${results.length} expected 567.......parsePca ❌`
+        throw `Got ${results.length} expected 567.......parsePca ❌`;
     }
 
-    if (results[4]?.message !== "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe") {
-        throw `Got ${results[4]?.message} expected "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe".......parsePca ❌`
+    if (results[ 4 ]?.message !== "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe") {
+        throw `Got ${results[ 4 ]?.message} expected "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe".......parsePca ❌`;
     }
     console.info(`  Function parsePca ✅`);
 
@@ -162,11 +162,11 @@ export function testParsePca(): void {
     }
 
     if (apps.length !== 192) {
-        throw `Got ${apps.length} expected 192.......parseDict ❌`
+        throw `Got ${apps.length} expected 192.......parseDict ❌`;
     }
 
-    if (apps[8]?.message !== "PCA app launch: C:\\Windows\\System32\\msiexec.exe") {
-        throw `Got ${apps[8]?.message} expected "PCA app launch: C:\\Windows\\System32\\msiexec.exe".......parseDict ❌`
+    if (apps[ 8 ]?.message !== "PCA app launch: C:\\Windows\\System32\\msiexec.exe") {
+        throw `Got ${apps[ 8 ]?.message} expected "PCA app launch: C:\\Windows\\System32\\msiexec.exe".......parseDict ❌`;
     }
     console.info(`  Function parseDict ✅`);
 
@@ -177,11 +177,11 @@ export function testParsePca(): void {
     }
 
     if (general.length !== 375) {
-        throw `Got ${general.length} expected 375.......parseGeneral ❌`
+        throw `Got ${general.length} expected 375.......parseGeneral ❌`;
     }
 
-    if (general[8]?.message !== "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe") {
-        throw `Got ${general[8]?.message} expected "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe".......parseGeneral ❌`
+    if (general[ 8 ]?.message !== "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe") {
+        throw `Got ${general[ 8 ]?.message} expected "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe".......parseGeneral ❌`;
     }
 
     console.info(`  Function parseGeneral ✅`);

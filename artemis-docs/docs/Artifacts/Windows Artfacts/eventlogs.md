@@ -8,7 +8,7 @@ keywords:
 
 # Event Logs
 
-Windows `EventLogs` are the primary files associated with logging system
+Windows EventLogs are the primary files associated with logging system
 activity. They are stored in a binary format, typically at
 C:\Windows\System32\winevt\Logs
 
@@ -64,7 +64,7 @@ only_templates = false # Works only on Windows
 - `only_templates` Whether artemis should only output the parsed EventLog
   template files and skip evtx files. This configuration is **required**.
 
-# EventLog Providers ands Template Parsing
+## EventLog Providers ands Template Parsing
 
 Artemis uses the popular [evtx](https://github.com/omerbenamram/evtx) crate to
 parse EventLog files. However, this library does not completely return the log
@@ -132,7 +132,7 @@ Subject:
 This event occurs when a user performs a read operation on stored credentials in Credential Manager.
 ```
 
-## Template Parsing Caveats
+### Template Parsing Caveats
 
 Trying to include template strings in the EventLog messages is very complex.
 There are a number of caveats and limitations you should be aware of. More can
@@ -159,7 +159,7 @@ also be found in several
    macOS. If you want to include template strings on Linux or macOS you must
    also provide a template file
 
-## Template Files (aka EventLog Provider strings)
+### Template Files (aka EventLog Provider strings)
 
 The `dump_templates` option will make artemis dump the parsed template strings from EventLog Providers on a Windows system
 to a JSON file. This option also requires `include_templates`. You must be on a
@@ -183,7 +183,7 @@ to parse evtx files on different platforms. An example scenario where this could
    `artemis.exe acquire eventlogs --include-templates --dump-templates --only-templates`.
    The JSON file size will vary but ~90MB seems typical
 2. You acquire the template JSON file and move it to your Linux workstation
-3. You acquire a 2GB `Application.evtx` file from the **same** Windows server
+3. You acquire a 2GB Application.evtx file from the **same** Windows server
    and copy it to your Linux workstation
 4. Run
    `artemis acquire eventlogs --include-templates --alt-template-file <PATH to TEMPLATE JSON FILE> --alt-file <PATH to Application.evtx>`

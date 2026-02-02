@@ -6,7 +6,7 @@ keywords:
 
 # PCA
 
-Windows Program Compatability Assistant (PCA) tracks recent applications that are executed.
+Windows Program Compatibility Assistant (PCA) tracks recent applications that are executed.
 
 References:
 - [DFIR blog](https://aboutdfir.com/new-windows-11-pro-22h2-evidence-of-execution-artifact/)
@@ -29,10 +29,10 @@ main();
 
 ## Output Structure
 
-An array of `ProgramCompatabilityAssist`
+An array of `ProgramCompatibilityAssist`
 
 ```typescript
-export interface ProgramCompatabilityAssist {
+export interface ProgramCompatibilityAssist {
     last_run: string;
     path: string;
     run_status: number;
@@ -46,7 +46,7 @@ export interface ProgramCompatabilityAssist {
     datetime: string;
     source: string;
     timestamp_desc: "Last Run";
-    artifact: "Windows Program Compatability Assist";
+    artifact: "Windows Program Compatibility Assist";
     data_type: "windows:pca:entry";
 }
 

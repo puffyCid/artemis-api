@@ -8,13 +8,15 @@ keywords:
 
 # BITS
 
-Windows Background Intelligent Transfer Service (`BITS`) is a service that
+Windows Background Intelligent Transfer Service (BITS) is a service that
 allows applications and users to register jobs to upload/download file(s).
 
 It is commonly used by applications to download updates. Starting on Windows 10
 BITS data is stored in an ESE database. Pre-Windows 10 it is stored in a
-proprietary binary format<br /> `BITS` data is stored at
-`C:\ProgramData\Microsoft\Network\Downloader\qmgr.db`
+proprietary binary format
+
+BITS data is stored at
+- C:\ProgramData\Microsoft\Network\Downloader\qmgr.db
 
 Other Parsers:
 
@@ -51,10 +53,10 @@ carve = true
 
 ## Collection Options
 
-- `carve` Boolean value to carve deleted `BITS` jobs and files from `qmgr.db`
-- `alt_path` Use an alternative path to the `qmgr.db` file. This configuration
+- `carve` Boolean value to carve deleted BITS jobs and files from qmgr.db
+- `alt_path` Use an alternative path to the qmgr.db file. This configuration
   is **optional**. By default artemis will use
-  `%systemdrive%\ProgramData\Microsoft\Network\Downloader\qmgr.db`
+  **%systemdrive%\ProgramData\Microsoft\Network\Downloader\qmgr.db**
 
 ## Output Structure
 

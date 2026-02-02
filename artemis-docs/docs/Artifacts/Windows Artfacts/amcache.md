@@ -7,7 +7,7 @@ keywords:
 
 # Amcache
 
-Windows `Amcache` stores metadata related to execution of Windows applications.
+Windows Amcache stores metadata related to execution of Windows applications.
 Data is stored in the `C:\Windows\appcompat\Programs\Amcache.hve` Registry file.
 This Registry file also contains other metadata such as OS, hardware, and
 application info. However, the Amcache artifact will only collect data related

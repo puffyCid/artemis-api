@@ -145,4 +145,4 @@ Some other examples listed below:
 - `/src/artifacts/os/macos/plist/property_list.rs` contains code help parse
   plist files.
   - `pub(crate) fn parse_plist_file(path: &str)` will parse a plist file and
-    return it as a Serde Value
+    return it as a serde Value

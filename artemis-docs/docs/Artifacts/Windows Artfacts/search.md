@@ -8,23 +8,24 @@ keywords:
 
 # Search
 
-Windows `Search` is an indexing service for tracking files and content on
+Windows Search is an indexing service for tracking files and content on
 Windows.
 
-`Search` can parse a large amount of metadata (properties) for each entry it
+Windows Search can parse a large amount of metadata (properties) for each entry it
 indexes. It has almost 600 different types of properties it can parse. It can
 even index part of the contents of a file.
 
-`Search` can index large parts of the file system, so parsing the `Search`
-database can provide a partial file listing of the system. `Search` is disabled
-on Windows Servers and starting on newer versions of Windows 11 it can be stored
-in three (3) SQLITE databases (previously was a single ESE database).
+The Windows Search database can index large parts of the file system, so parsing the
+database can provide a partial file listing of the system. Windows Search is disabled
+on Windows Servers. On newer versions of Windows 11 it can be stored
+in three (3) SQLITE databases, in addition the database may be encrypted.
 
-The `Search` database can get extremely large (4GB+ sizes have been seen). The
-larger the ESE database the more resources artemis needs to parse the data.
+
+The Windows Search database can get extremely large (4GB+ sizes have been seen). 
 
 Similar to the filelisting artifact, every 100k entries artemis will output the
 data and then continue.
+
 
 Other parsers:
 
@@ -59,9 +60,9 @@ artifact_name = "search"
 
 ## Collection Options
 
-- `alt_path` An alternative path to the `Search` ESE or SQLITE database. This
+- `alt_path` An alternative path to the Search ESE or SQLITE database. This
   configuration is **optional**. By default artemis will use
-  `%systemdrive%\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb`
+  **%systemdrive%\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb**
 
 ## Output Structure
 

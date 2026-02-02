@@ -1,4 +1,4 @@
-export interface ProgramCompatabilityAssist {
+export interface ProgramCompatibilityAssist {
     last_run: string;
     path: string;
     run_status: number;
@@ -12,7 +12,7 @@ export interface ProgramCompatabilityAssist {
     datetime: string;
     source: string;
     timestamp_desc: "Last Run";
-    artifact: "Windows Program Compatability Assist";
+    artifact: "Windows Program Compatibility Assist";
     data_type: "windows:pca:entry";
 }
 

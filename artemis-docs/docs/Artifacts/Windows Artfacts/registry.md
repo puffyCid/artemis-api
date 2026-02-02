@@ -7,8 +7,8 @@ keywords:
 
 # Registry
 
-Windows `Registry` is a collection of binary files that store Windows
-configuration settings and OS information. There are multiple `Registry` files
+Windows Registry is a collection of binary files that store Windows
+configuration settings and OS information. There are multiple Registry files
 on a system such as:
 
 - `C:\Windows\System32\config\SYSTEM`
@@ -53,9 +53,9 @@ system_hives = true # SYSTEM, SOFTWARE, SAM, SECURITY
 
 ## Collection Options
 
-- `user_hives` Parse all user Registry files `NTUSER.DAT` and `UsrClass.dat`.
+- `user_hives` Parse all user Registry files NTUSER.DAT and UsrClass.dat.
   This configuration is **required**
-- `system_hives` Parse all system Registry files `SYSTEM`, `SAM`, `SOFTWARE`,
+- `system_hives` Parse all system Registry files SYSTEM, SAM, SOFTWARE,
   `SECURITY`. This configuration is **required**
 - `alt_file` Full path to alternative Registry file. This configuration is
   **optional**.

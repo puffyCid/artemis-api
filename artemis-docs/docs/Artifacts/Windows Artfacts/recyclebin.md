@@ -7,18 +7,18 @@ keywords:
 
 # RecycleBin
 
-Windows `RecycleBin` is a special folder on Windows that stores files deleted
+Windows RecycleBin is a special folder on Windows that stores files deleted
 using the Explorer GUI. When a file is deleted (via Explorer) two types files
-are generated in the `RecycleBin`:
+are generated in the RecycleBin:
 
 - Files that begin with `$I<number>.<original extension>`. Contains metadata
   about deleted file
 - Files that begin with `$R<number>.<original extension>`. Contents of deleted
   file
 
-Currently artemis supports parsing the `$I` based files using the standard
+Currently artemis supports parsing the $I based files using the standard
 Windows APIs to read the file for parsing. It does not try to recover files that
-have been deleted/emptied from the `RecycleBin`
+have been deleted/emptied from the RecycleBin
 
 Other parsers:
 

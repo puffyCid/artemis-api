@@ -12,7 +12,7 @@ Other Parsers:
 
 - Any tool that calls the macOS API or queries system information
 
-Refernces:
+References:
 
 - N/A
 

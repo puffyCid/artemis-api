@@ -7,11 +7,11 @@ keywords:
 
 # Shortcuts
 
-Windows `Shotcut` files (.lnk extension) are files that point to another file. They
+Windows Shotcut files (.lnk files) are files that point to another file. They
 often contain a large amount of metadata related to the target file. Shortcut
 files can be used to distribute malware and can also provide evidence of file
 interaction. The directory at
-`C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent` contains multiple
+**C:\Users\\*\AppData\Roaming\Microsoft\Windows\Recent** contains multiple
 Shortcuts that point to files recently opened by the user.
 
 Other Parsers:
@@ -43,7 +43,7 @@ path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 
 ## Collection Options
 
-- `path` Target path where artemis should parse `Shortcut` files. This
+- `path` Target path where artemis should parse Shortcut files. This
   configuration is **required**
 
 ## Output Structure

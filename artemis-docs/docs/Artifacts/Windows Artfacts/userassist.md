@@ -7,7 +7,7 @@ keywords:
 
 # UserAssist
 
-Windows `UserAssist` is a Registry artifact that records applications executed
+Windows UserAssist is a Registry artifact that records applications executed
 via Windows Explorer. These entries are typically ROT13 encoded (though this can
 be disabled).
 

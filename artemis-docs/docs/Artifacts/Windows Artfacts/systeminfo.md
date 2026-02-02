@@ -12,7 +12,7 @@ Other Parsers:
 
 - Any tool that calls the Windows API or queries system information
 
-Refernces:
+References:
 
 - N/A
 

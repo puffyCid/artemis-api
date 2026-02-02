@@ -41,7 +41,7 @@ filter = false
     **zip** compression.
   - `timeline` Whether to timeline the parsed data. This forces the output format to JSONL and is compatible with [Timesketch](https://timesketch.org/)
   - `endpoint_id` An ID assigned to the endpoint. This can be any string value
-  - `collection_id` A number assigned to the collection. This can be any postive number
+  - `collection_id` A number assigned to the collection. This can be any positive number
   - `output` The output type. Values can be: **local**, **aws**, **gcp**, or
     **azure**
   - `url` The URL associated with either aws, gcp, or azure. This is required
@@ -95,7 +95,7 @@ artifact_name = "shortcuts"
 path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 ```
 
-The TOML collection above collects both `amcache` and `shortcuts` data on a
+The TOML collection above collects both **amcache** and **shortcuts** data on a
 Windows system and outputs the results to the local system at the path
 ./tmp/execution_collection.
 

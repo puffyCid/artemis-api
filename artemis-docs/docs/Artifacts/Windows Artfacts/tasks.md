@@ -9,20 +9,19 @@ keywords:
 
 # Scheduled Tasks
 
-Windows `Scheduled Tasks` are a common form of persistence on Windows systems.
-There are two (2) types of `Scheduled Task` files:
+Windows Scheduled Tasks are a common form of persistence on Windows systems.
+There are two (2) types of Scheduled Task files:
 
 - XML based files
 - Job based files
 
 artemis supports both formats. Starting on Windows Vista and higher XML files
-are used for `Scheduled Tasks`.
+are used for Scheduled Tasks.
 
 Other Parsers:
 
 - Any XML reader
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.system.taskscheduler/)
-  (Only supports XML `Scheduled Tasks`)
 
 References:
 
@@ -57,7 +56,7 @@ artifact_name = "tasks"
 
 ## Output Structure
 
-Array of `TaskXml` or `TaskJob`
+Array of `TaskXml` and `TaskJob`
 
 ```typescript
 /**

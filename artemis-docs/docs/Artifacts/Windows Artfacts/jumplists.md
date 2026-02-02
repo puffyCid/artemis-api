@@ -7,7 +7,7 @@ keywords:
 
 # Jumplists
 
-Windows `Jumplists` files track opened files via applications in the Taskbar or
+Windows Jumplists files track opened files via applications in the Taskbar or
 Start Menu. Jumplists are actually a collection of embedded
 [Shortcut](./shortcuts.md) files and therefore can show evidence of file
 interaction.

@@ -7,11 +7,12 @@ keywords:
 
 # SRUM
 
-Windows System Resource Utilization Monitor (`SRUM`) is a service that tracks
+Windows System Resource Utilization Monitor (SRUM) is a service that tracks
 application resource usage. The service tracks application data such as time
-running, bytes sent, bytes received, energy usage, and lots more.<br /> This
+running, bytes sent, bytes received, energy usage, and lots more.  
+This
 service was introduced in Windows 8 and is stored in an ESE database at
-`C:\Windows\System32\sru\SRUDB.dat`. On Windows 8 some of the data can be found
+**C:\Windows\System32\sru\SRUDB.dat**. On Windows 8 some of the data can be found
 in the Registry too (temporary storage before writing to SRUDB.dat), but in
 later versions of Windows the data is no longer in the Registry.
 
@@ -46,13 +47,13 @@ artifact_name = "srum"
 
 ## Collection Options
 
-- `alt_path` An alternative path to the `SRUM` ESE database. This configuration
+- `alt_path` An alternative path to the SRUM ESE database. This configuration
   is **optional**. By default artemis will use
-  `%systemdrive%\Windows\System32\srum\SRUDB.dat`
+  **%systemdrive%\Windows\System32\srum\SRUDB.dat**
 
 ## Output Structure
 
-An array of entries based on each `SRUM` table
+An array of entries based on each SRUM table
 
 ```typescript
 /**
