@@ -4,7 +4,7 @@ description: How to extract data from browsers
 
 # Browser Artifacts
 
-Artemis supports extracting forensic artifacts for a lot of different browser applications:
+Artemis supports extracting forensic artifacts for a lot of different browser applications. Some notable browsers include:
 
 - Chrome
 - Edge
@@ -12,6 +12,7 @@ Artemis supports extracting forensic artifacts for a lot of different browser ap
 - FireFox
 - Epiphany
 - Falkon
+- Safari
 
 Example artifacts artemis supports include: URL history, cookies, bookmarks, preferences, and a lot more
 
