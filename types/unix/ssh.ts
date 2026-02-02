@@ -7,4 +7,9 @@ export interface KnownHosts {
     modified: string;
     accessed: string;
     changed: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "SSH Config Modified";
+    artifact: "SSH Config";
+    data_type: "unix:ssh:config:entry";
 }

@@ -1,0 +1,60 @@
+[start] 2023/09/07 20:27:07 INFO: syncthing v1.23.7 "Fermium Flea" (go1.20.7 darwin-arm64) builder@github.syncthing.net 2023-07-31 03:45:37 UTC [stnoupgrade]
+[start] 2023/09/07 20:27:07 INFO: Generating ECDSA key and certificate for syncthing...
+[start] 2023/09/07 20:27:07 INFO: Default folder created and/or linked to new config
+[start] 2023/09/07 20:27:07 INFO: Default config saved. Edit /Users/android/Library/Application Support/Syncthing/config.xml to taste (with Syncthing stopped) or use the GUI
+[start] 2023/09/07 20:27:07 INFO: Archiving a copy of old config file format at: /Users/android/Library/Application Support/Syncthing/config.xml.v0
+[start] 2023/09/07 20:27:07 INFO: No automatic upgrades; STNOUPGRADE environment variable defined.
+[3QP4N] 2023/09/07 20:27:07 INFO: My ID: bbbbbbb
+[3QP4N] 2023/09/07 20:27:08 INFO: Single thread SHA256 performance is 1021 MB/s using crypto/sha256 (784 MB/s using minio/sha256-simd).
+[3QP4N] 2023/09/07 20:27:08 INFO: Hashing performance is 409.48 MB/s
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 1...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 2...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 3...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 5...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 6...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 7...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 9...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 10...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 11...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 13...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 14...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 16...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 17...
+[3QP4N] 2023/09/07 20:27:08 INFO: Running database migration 19...
+[3QP4N] 2023/09/07 20:27:08 INFO: Compacting database after migration...
+[3QP4N] 2023/09/07 20:27:08 INFO: Overall send rate is unlimited, receive rate is unlimited
+[3QP4N] 2023/09/07 20:27:08 INFO: No stored folder metadata for "default"; recalculating
+[3QP4N] 2023/09/07 20:27:09 INFO: Using discovery mechanism: global discovery server https://discovery.syncthing.net/v2/?noannounce&id=cccccccc
+[3QP4N] 2023/09/07 20:27:09 INFO: Using discovery mechanism: global discovery server https://discovery-v4.syncthing.net/v2/?nolookup&id=cccccccc
+[3QP4N] 2023/09/07 20:27:09 INFO: Using discovery mechanism: global discovery server https://discovery-v6.syncthing.net/v2/?nolookup&id=cccccccc
+[3QP4N] 2023/09/07 20:27:09 INFO: Using discovery mechanism: IPv4 local broadcast discovery on port 21027
+[3QP4N] 2023/09/07 20:27:09 INFO: Using discovery mechanism: IPv6 local multicast discovery on address [ff12::8384]:21027
+[3QP4N] 2023/09/07 20:27:09 INFO: Relay listener (dynamic+https://relays.syncthing.net/endpoint) starting
+[3QP4N] 2023/09/07 20:27:09 INFO: Loading HTTPS certificate: open /Users/android/Library/Application Support/Syncthing/https-cert.pem: no such file or directory
+[3QP4N] 2023/09/07 20:27:09 INFO: Creating new HTTPS certificate
+[3QP4N] 2023/09/07 20:27:09 INFO: QUIC listener ([::]:22000) starting
+[3QP4N] 2023/09/07 20:27:09 INFO: TCP listener ([::]:22000) starting
+[3QP4N] 2023/09/07 20:27:09 INFO: Ready to synchronize "Default Folder" (default) (sendreceive)
+[3QP4N] 2023/09/07 20:27:09 INFO: GUI and API listening on 127.0.0.1:8384
+[3QP4N] 2023/09/07 20:27:09 INFO: Access the GUI via the following URL: http://127.0.0.1:8384/
+[3QP4N] 2023/09/07 20:27:09 INFO: My name is "androidacStudio.lan"
+[3QP4N] 2023/09/07 20:27:09 INFO: Completed initial scan of sendreceive folder "Default Folder" (default)
+[3QP4N] 2023/09/07 20:27:24 INFO: Detected 1 NAT service
+[3QP4N] 2023/09/07 20:27:34 INFO: quic://0.0.0.0:22000 detected NAT type: Symmetric NAT
+[3QP4N] 2023/09/07 20:28:17 INFO: Joined relay relay://104.153.30.233:22067
+[3QP4N] 2023/09/07 20:28:26 INFO: Ready to synchronize "Default Folder" (default) (sendreceive)
+[3QP4N] 2023/09/07 20:28:26 INFO: Restarted folder "Default Folder" (default) (sendreceive)
+[3QP4N] 2023/09/07 20:28:26 INFO: Completed initial scan of sendreceive folder "Default Folder" (default)
+[3QP4N] 2023/09/07 20:28:26 INFO: Established secure connection to aaaaaa at 192.168.1.208:55976-198.98.62.174:22067/relay-client/TLS1.3-TLS_AES_128_GCM_SHA256/WAN-P50
+[3QP4N] 2023/09/07 20:28:26 INFO: Device aaaaaa client is "syncthing v1.23.6" named "" at 192.168.1.208:55976-198.98.62.174:22067/relay-client/TLS1.3-TLS_AES_128_GCM_SHA256/WAN-P50
+[3QP4N] 2023/09/07 20:28:26 INFO: Connection to aaaaaa at 192.168.1.208:55976-198.98.62.174:22067/relay-client/TLS1.3-TLS_AES_128_GCM_SHA256/WAN-P50 closed: reading length: EOF
+[3QP4N] 2023/09/07 20:28:37 INFO: Established secure connection to aaaaaa at 192.168.1.208:22000-192.168.1.232:22000/tcp-server/TLS1.3-TLS_AES_128_GCM_SHA256/LAN-P10
+[3QP4N] 2023/09/07 20:28:37 INFO: Device aaaaaa client is "syncthing v1.23.6" named "dev-MacBook-Pro.local" at 192.168.1.208:22000-192.168.1.232:22000/tcp-server/TLS1.3-TLS_AES_128_GCM_SHA256/LAN-P10
+[3QP4N] 2023/09/07 20:28:41 INFO: Device CSX6GI3 folder "Default Folder" (default) has a new index ID (0xD8914721C98D7C78)
+[3QP4N] 2023/09/07 20:29:20 INFO: Connection to aaaaaa at 192.168.1.208:22000-192.168.1.232:22000/tcp-server/TLS1.3-TLS_AES_128_GCM_SHA256/LAN-P10 closed: reading length: read tcp 192.168.1.208:22000->192.168.1.232:22000: read: connection reset by peer
+[3QP4N] 2023/09/07 20:29:28 INFO: Ready to synchronize "Default Folder" (default) (sendreceive)
+[3QP4N] 2023/09/07 20:29:28 INFO: Restarted folder "Default Folder" (default) (sendreceive)
+[3QP4N] 2023/09/07 20:29:28 INFO: Completed initial scan of sendreceive folder "Default Folder" (default)
+[3QP4N] 2023/09/07 20:29:48 WARNING: Error on folder "Default Folder" (default): folder path missing
+[3QP4N] 2023/09/07 20:32:54 INFO: quic://0.0.0.0:22000 detected NAT type: Port restricted NAT
+[3QP4N] 2023/09/07 20:32:54 INFO: quic://0.0.0.0:22000 resolved external address quic://73.87.111.216:22000 (via stun.syncthing.net:3478)

@@ -8,7 +8,7 @@ keywords:
 
 Syncthing is a popular open source peer to peer file synchronization application. It can be used to save and share files to a remote devices.
 
-Artemis supports parsing Syncthing logs on Linux platforms.
+Artemis supports parsing Syncthing logs on Linux and macOS platforms.
 
 ## Collection
 

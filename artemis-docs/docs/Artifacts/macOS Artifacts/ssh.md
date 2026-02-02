@@ -16,14 +16,15 @@ SSH data.
 ## Sample API Script
 
 ```typescript
-import { listKnownHosts } from "./artemis-api/mod";
+import { listKnownHosts, PlatformType } from "./artemis-api/mod";
 
 function main() {
-    const data = listKnownHosts();
-    console.log(JSON.stringify(data));
+    const values = listKnownHosts(PlatformType.Darwin);
+    console.log(JSON.stringify(values));
 }
 
 main();
+
 ```
 
 ## Output Structure
@@ -40,5 +41,10 @@ export interface KnownHosts {
     modified: string;
     accessed: string;
     changed: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "SSH Config Modified";
+    artifact: "SSH Config";
+    data_type: "unix:ssh:config:entry";
 }
 ```

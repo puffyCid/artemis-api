@@ -1,5 +1,5 @@
 import { getPlist, PlatformType, stat, Unfold } from "../../../mod";
-import { SafariBookmark, SafariDownloads, SafariExtensions, SafariProfile } from "../../../types/macos/safari";
+import { SafariBookmark, SafariDownloads, SafariExtensions, SafariPlistBookmark, SafariProfile } from "../../../types/macos/safari";
 import { FileError } from "../../filesystem/errors";
 import { UnfoldError } from "../../unfold/error";
 import { parseBookmark } from "../bookmark";
@@ -80,9 +80,9 @@ export function safariDownloads(paths: SafariProfile[], platform: PlatformType, 
                 version: path.version,
                 message: entry["DownloadEntryURL"] as string,
                 datetime: bookmark.created,
-                timestamp_desc: "Safari Download Created",
-                artifact: "Safari Downloads",
-                data_type: "macos:browser:downloads:entry"
+                timestamp_desc: "File Download Start",
+                artifact: "File Download",
+                data_type: "macos:safari:downloads:entry"
             };
             if (unfold && typeof client !== 'undefined') {
                 const result = client.parseUrl(download.source_url);
@@ -121,21 +121,22 @@ export function safariBookmarks(paths: SafariProfile[], platform: PlatformType):
             console.warn(`Failed to parse plist full_path: ${results}`);
             continue;
         }
-        const book_children = results["Children"] as Record<string, string | Record<string, unknown>[] | undefined>[];
-        for (const entry of book_children) {
-            if (entry["Title"] === "BookmarksBar" && Array.isArray(entry["Children"])) {
-                for (const bar_child of entry["Children"] as Record<string, string | Record<string, string> | undefined>[]) {
+        const bookmark_child = results as unknown as SafariPlistBookmark;
+        //const book_children = results["Children"] as Record<string, string | Record<string, unknown>[] | undefined>[];
+        for (const entry of bookmark_child.Children) {
+            if (entry.Title === "BookmarksBar" && Array.isArray(entry.Children)) {
+                for (const bar_child of entry.Children) {
                     const book: SafariBookmark = {
-                        title: bar_child["URIDictionary"] ? bar_child["URIDictionary"]["title"] : "",
-                        url: bar_child["URLString"] as string,
+                        title: bar_child.URIDictionary?.title ?? "",
+                        url: bar_child.URLString ?? "",
                         description: "",
                         path: full_path,
                         version: path.version,
-                        message: bar_child["URLString"] as string,
+                        message: `Bookmark URL: '${bar_child.URLString ?? ""}'`,
                         datetime: meta.created,
-                        timestamp_desc: "Safari Bookmark File Created",
-                        artifact: "Safari Bookmark",
-                        data_type: "macos:browser:bookmark:entry"
+                        timestamp_desc: "Bookmark Created",
+                        artifact: "Website Bookmark",
+                        data_type: "macos:safari:bookmark:entry"
                     };
                     hits.push(book);
                 }
@@ -145,20 +146,21 @@ export function safariBookmarks(paths: SafariProfile[], platform: PlatformType):
                 continue;
             }
             const book: SafariBookmark = {
-                title: entry["URIDictionary"] ? entry["URIDictionary"]["title"] : "",
-                url: entry["URLString"] as string,
-                description: entry["previewText"] as string ?? "",
+                title: entry.URIDictionary?.title ?? "",
+                url: entry.URLString ?? "",
+                description: entry.previewText ?? "",
                 path: full_path,
                 version: path.version,
-                message: entry["URLString"] as string,
+                message: `Bookmark URL: '${entry.URLString ?? ""}'`,
                 datetime: meta.created,
-                timestamp_desc: "Safari Bookmark File Created",
-                artifact: "Safari Bookmark",
-                data_type: "macos:browser:bookmark:entry"
+                timestamp_desc: "Bookmark Created",
+                artifact: "Website Bookmark",
+                data_type: "macos:safari:bookmark:entry"
             };
             hits.push(book);
         }
     }
+    console.log(JSON.stringify(hits));
 
     return hits;
 }
@@ -185,7 +187,7 @@ export function safariExtensions(paths: SafariProfile[], platform: PlatformType)
         }
 
         const exts = results as Record<string, string | boolean | string[]>;
-        for(const key in exts) {
+        for (const key in exts) {
             const value: SafariExtensions = {
                 name: key.split(" ").at(0) ?? "",
                 key,
@@ -198,9 +200,9 @@ export function safariExtensions(paths: SafariProfile[], platform: PlatformType)
                 version: path.version,
                 message: key.split(" ").at(0) ?? "",
                 datetime: exts[key]["AddedDate"].replace("Z", ".000Z"),
-                timestamp_desc: "Safari Extension Added",
-                artifact: "Safari Extension",
-                data_type: "macos:browser:extensions:entry"
+                timestamp_desc: "Extension Installed",
+                artifact: "Browser Extension",
+                data_type: "macos:safari:extension:entry"
             };
             hits.push(value);
         }

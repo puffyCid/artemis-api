@@ -300,10 +300,10 @@ function parseRecord(data: Uint8Array): Cookie | NomError {
     expiration,
     created,
     message: domain,
-    datetime: created,
-    timestamp_desc: "Safari Cookie Created",
-    artifact: "Safari Cookie",
-    data_type: "macos:browser:cookie:entry"
+    datetime: expiration,
+    timestamp_desc: "Cookie Expires",
+    artifact: "Website Cookie",
+    data_type: "macos:safari:cookies:entry"
   };
 
   return record;

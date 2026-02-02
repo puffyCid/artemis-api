@@ -2,20 +2,20 @@ import { PlatformType } from "../../mod";
 import { History } from "../../types/windows/powershell";
 import { getEnvValue } from "../environment/env";
 import { FileError } from "../filesystem/errors";
-import { readTextFile } from "../filesystem/files";
+import { readTextFile, stat } from "../filesystem/files";
 import { glob } from "../filesystem/files";
 import { WindowsError } from "./errors";
 
 /**
  * Attempts to parse PowerShell history for all users using the default system drive
- * @param [platform=PlatformType.Windows] PlatformType to parse. Windows is the default
+ * @param [platform=PlatformType.Windows] `PlatformType` to parse. Windows is the default
  * @param alt_path Alternative  Path to PowerShell history file
  * @returns Array of PowerShell `History` entries or single `History` or `WindowsError`
  */
 export function powershellHistory(
   platform = PlatformType.Windows,
   alt_path?: string,
-): History[] | History | WindowsError {
+): History[] | WindowsError {
   if (alt_path !== undefined) {
     return parsePowershellHistory(alt_path, platform);
   }
@@ -40,14 +40,14 @@ export function powershellHistory(
     return new WindowsError("POWERSHELL", `failed glob paths`);
   }
 
-  const history: History[] = [];
+  let history: History[] = [];
   for (const path of paths) {
     const entries = parsePowershellHistory(path.full_path, platform);
     if (entries instanceof WindowsError) {
       continue;
     }
 
-    history.push(entries);
+   history = history.concat(entries);
   }
 
   return history;
@@ -58,7 +58,7 @@ export function powershellHistory(
  * @param path Path to PowerShell history file
  * @returns PowerShell `History` data or `WindowsError`
  */
-function parsePowershellHistory(path: string, platform: PlatformType): History | WindowsError {
+function parsePowershellHistory(path: string, platform: PlatformType): History[] | WindowsError {
   const data = readTextFile(path);
   if (data instanceof FileError) {
     console.warn(`could not read file ${path}: ${data}`);
@@ -75,12 +75,36 @@ function parsePowershellHistory(path: string, platform: PlatformType): History |
   } else {
     entries = data.split("\n");
   }
-  const ps_history: History = {
-    entries,
-    path,
-  };
+  const meta = stat(path);
+  const values: History[] = [];
+  for (const line of entries) {
+    const ps_history: History = {
+      line,
+      path,
+      created: "1970-01-01T00:00:00.000Z",
+      modified: "1970-01-01T00:00:00.000Z",
+      accessed: "1970-01-01T00:00:00.000Z",
+      changed: "1970-01-01T00:00:00.000Z",
+      message: `PowerShell console command '${line}'`,
+      datetime: "1970-01-01T00:00:00.000Z",
+      timestamp_desc: "PowerShell History Modified",
+      artifact: "PowerShell History",
+      data_type: "application:powershell:entry"
+    };
 
-  return ps_history;
+    if (!(meta instanceof FileError)) {
+      ps_history.changed = meta.changed;
+      ps_history.modified = meta.modified;
+      ps_history.created = meta.created;
+      ps_history.accessed = meta.accessed;
+      ps_history.datetime = meta.modified;
+    }
+
+    values.push(ps_history);
+  }
+
+
+  return values;
 }
 
 /**
@@ -95,12 +119,12 @@ export function testPowerShellHistory(): void {
     throw hits;
   }
 
-  if (hits.entries === undefined || !Array.isArray(hits.entries)) {
+  if (hits[0] === undefined || !Array.isArray(hits.entries)) {
     throw `Got undefined expected an array.......powershellHistory ❌`;
   }
 
-  if (hits.entries[ 0 ] !== 'whoami') {
-    throw `Got ${hits.entries[ 0 ]} expected 'whoami'.......powershellHistory ❌`;
+  if (hits[0].line !== 'whoami') {
+    throw `Got ${hits[0].line} expected 'whoami'.......powershellHistory ❌`;
   }
 
   console.info(`  Function powershellHistory ✅`);
@@ -110,8 +134,8 @@ export function testPowerShellHistory(): void {
   if (values instanceof WindowsError) {
     throw values;
   }
-  if (values.entries[ 0 ] !== 'whoami') {
-    throw `Got ${values.entries[ 0 ]} expected 'whoami'.......parsePowershellHistory ❌`;
+  if (values[0]?.line !== 'whoami') {
+    throw `Got ${values[0]?.line} expected 'whoami'.......parsePowershellHistory ❌`;
   }
 
   console.info(`  Function parsePowershellHistory ✅`);

@@ -84,9 +84,9 @@ export interface SafariHistory {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "URL Visited";
+  artifact: "URL History";
+  data_type: "macos:safari:history:entry";
 }
 
 export interface SafariDownloads {
@@ -152,9 +152,9 @@ export interface SafariDownloads {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "File Download Start";
+  artifact: "File Download";
+  data_type: "macos:safari:downloads:entry";
 }
 
 export interface Cookie {
@@ -167,9 +167,9 @@ export interface Cookie {
   created: string;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "Cookie Expires";
+  artifact: "Website Cookie";
+  data_type: "macos:safari:cookies:entry";
   [key: string]: any;
 }
 
@@ -190,9 +190,9 @@ export interface SafariBookmark {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "Bookmark Created";
+  artifact: "Website Bookmark";
+  data_type: "macos:safari:bookmark:entry";
 }
 
 export interface SafariFavicon {
@@ -206,9 +206,9 @@ export interface SafariFavicon {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "Favicon Created";
+  artifact: "URL Favicon";
+  data_type: "macos:safari:favicons:entry";
 }
 
 export interface SafariExtensions {
@@ -225,8 +225,8 @@ export interface SafariExtensions {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "Extension Installed";
+  artifact: "Browser Extension";
+  data_type: "macos:safari:extension:entry";
 }
 ```
