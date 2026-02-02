@@ -8,8 +8,8 @@ keywords:
 
 # UnifiedLogs
 
-macOS `unifiedlogs` are the primary files associated with logging system
-activity. They are stored in a binary format at `/var/db/diagnostics/`.
+macOS Unified Logs are the primary files associated with logging system
+activity. They are stored in a binary format at **/var/db/diagnostics/**.
 
 Other Parsers:
 
@@ -46,7 +46,7 @@ sources = ["Special"]
 ## Collection Options
 
 - `sources` List of directories that should be included when parsing the
-  `unifiedlogs` These directories are found at `/var/db/diagnostics/`. Only the
+  `unifiedlogs` These directories are found at **/var/db/diagnostics/**. Only the
   following directories contain logs:
   - Persist
   - Special

@@ -8,10 +8,10 @@ keywords:
 
 # ELF
 
-The Executable Linkable Format (`ELF`) is the executable format for
+The Executable Linkable Format (ELF) is the executable format for
 applications on FreeBSD systems.
 
-Artemis is able to parse basic metadata from `ELF` files.
+Artemis is able to parse basic metadata from ELF files.
 
 Other Parsers:
 

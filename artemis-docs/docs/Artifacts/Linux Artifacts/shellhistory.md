@@ -18,8 +18,7 @@ the command was executed. Popular shells include:
 - sh
 - PowerShell
 
-artemis supports parsing `zsh` and `bash` shell history. In addition, it
-supports parsing `Python` history (despite not being a shell).
+Artemis supports parsing zsh and bash shell history. 
 
 Other parsers:
 

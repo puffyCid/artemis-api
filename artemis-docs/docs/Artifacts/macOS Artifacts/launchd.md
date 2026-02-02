@@ -8,21 +8,21 @@ keywords:
 
 # Launchd
 
-macOS launch daemons (`launchd`) are the most common way to register
-applications for persistence on macOS. `launchd` can be registered for a single
-user or system wide. artemis will try to parse all known`launchd` locations by
+macOS launch daemons (launchd) are the most common way to register
+applications for persistence on macOS. launchd can be registered for a single
+user or system wide. artemis will try to parse all known launchd locations by
 default.
 
-- `/Users/%/Library/LaunchDaemons/`
-- `/Users/%/Library/LaunchAgents/`
-- `/System/Library/LaunchDaemons/`
-- `/Library/Apple/System/Library/LaunchDaemons/`
-- `/System/Library/LaunchAgents/`
-- `/Library/Apple/System/Library/LaunchAgents/`
+- **/Users/*/Library/LaunchDaemons/**
+- **/Users/*/Library/LaunchAgents/**
+- **/System/Library/LaunchDaemons/**
+- **/Library/Apple/System/Library/LaunchDaemons/**
+- **/System/Library/LaunchAgents/**
+- **/Library/Apple/System/Library/LaunchAgents/**
 
 Other Parsers:
 
-- Any tool that can parse a `plist` file
+- Any tool that can parse a plist file
 
 References:
 

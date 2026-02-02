@@ -8,10 +8,10 @@ keywords:
 
 # Emond
 
-macOS Event Monitor Daemon (`Emond`) is a service that allows users to register
+macOS Event Monitor Daemon (Emond) is a service that allows users to register
 rules to perform actions when specific events are triggered, for example "system
-startup". `Emond` can be leveraged to achieve persistence on macOS. Starting on
-macOS Ventura (13) `emond` has been removed.
+startup". Emond can be leveraged to achieve persistence on macOS. Starting on
+macOS Ventura (13) emond has been removed.
 
 Other Parsers:
 

@@ -7,7 +7,7 @@ keywords:
 
 # ExecPolicy
 
-macOS Execution Policy (`ExecPolicy`) tracks application execution on a system.
+macOS Execution Policy (ExecPolicy) tracks application execution on a system.
 It only tracks execution of applications that tracked by GateKeeper
 
 Other Parsers:
@@ -43,7 +43,7 @@ artifact_name = "execpolicy"
 
 - `alt_file` Use an alternative file to the ExecPolicy database. This
   configuration is **optional**. By default artemis will read the default
-  ExecPolicy database at `/var/db/SystemPolicyConfiguration/ExecPolicy`
+  ExecPolicy database at **/var/db/SystemPolicyConfiguration/ExecPolicy**
 
 ## Output Structure
 

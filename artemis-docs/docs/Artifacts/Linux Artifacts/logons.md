@@ -8,7 +8,7 @@ keywords:
 
 # Logons
 
-Linux stores `Logon` information in several different files depending on the
+Linux stores Logon information in several different files depending on the
 distro and software installed. Typically the following files contain logon
 information on Linux:
 

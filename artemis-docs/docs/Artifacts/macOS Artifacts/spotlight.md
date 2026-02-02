@@ -8,8 +8,8 @@ keywords:
 
 # Spotlight
 
-macOS `Spotlight` is an indexing service for tracking files and content. The
-`Spotlight` database can contain a huge amount of metadata associated with the
+macOS Spotlight is an indexing service for tracking files and content. The
+Spotlight database can contain a huge amount of metadata associated with the
 indexed content such as:
 
 - Timestamps
@@ -25,11 +25,11 @@ the Data volume
 However, additional databases can also be found on the macOS system. Known
 additional locations are:
 
-- /Users/\*/Library/Caches/com.apple.helpd/index.spotlightV\*/*
-- /Users/\*/Library/Metadata/CoreSpotlight/index.spotlightV\*/*
-- /Users/\*/Library/Developer/Xcode/DocumentationCache/\*/\*/DeveloperDocumentation.index/*
-- /Users/\*/Library/Metadata/CoreSpotlight/\*/index.spotlightV\*/*
-- /Users/\*/Library/Caches/com.apple.helpd/\*/index.spotlightV\*/*
+- **/Users/\*/Library/Caches/com.apple.helpd/index.spotlightV\***
+- **/Users/\*/Library/Metadata/CoreSpotlight/index.spotlightV\***
+- **/Users/\*/Library/Developer/Xcode/DocumentationCache/\*/\*DeveloperDocumentation.index/**
+- **/Users/\*/Library/Metadata/CoreSpotlight/\*/index.spotlightV\***
+- **/Users/\*/Library/Caches/com.apple.helpd/\*/index.spotlightV\***
 
 Similar to the filelisting artifact, every 10k entries artemis will output the
 data and continue.

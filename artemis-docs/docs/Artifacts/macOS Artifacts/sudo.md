@@ -8,10 +8,10 @@ keywords:
 
 # Sudo Logs
 
-Unix `SudoLogs` are the log files associated with sudo execution. Sudo ("super
+macOS sudo  are the log files associated with sudo execution. Sudo ("super
 user do" or "substitute user") is used to run programs with elevated privileges.
 
-macOS `SudoLogs` are stored in the Unified Log files. The log entries show
+macOS sudo logs are stored in the Unified Log files. The log entries show
 evidence of commands executed with elevated privileges
 
 Other Parsers:

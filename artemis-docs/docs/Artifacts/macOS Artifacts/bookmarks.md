@@ -7,7 +7,7 @@ keywords:
 
 # Bookmarks
 
-macOS `Bookmark` data is similar to Windows `Shortcut` artifacts. It points to
+macOS Bookmark data is similar to Windows Shortcut artifacts. It points to
 another file on the system. Bookmark data is sometimes found in plist files.
 Example artifacts include:
 
@@ -17,7 +17,7 @@ Example artifacts include:
 ## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
-`Bookmark` data.
+Bookmark data.
 
 ## Sample API Script
 

@@ -8,12 +8,12 @@ keywords:
 
 # Groups
 
-Gets group info parsing the `plist` files at
-`/var/db/dslocal/nodes/Default/groups`.
+Gets group info parsing the plist files at
+**/var/db/dslocal/nodes/Default/groups**.
 
 Other Parsers:
 
-- Any tool that can parse a `plist` file
+- Any tool that can parse a plist file
 
 References:
 
@@ -43,7 +43,7 @@ artifact_name = "groups-macos"
 
 - `alt_path` Use an alternative Groups path. This configuration is **optional**.
   By default artemis will read all Groups at
-  `/var/db/dslocal/nodes/Default/groups`
+  **/var/db/dslocal/nodes/Default/groups**
 
 ## Output Structure
 

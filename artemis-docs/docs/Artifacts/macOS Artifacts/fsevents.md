@@ -8,10 +8,11 @@ keywords:
 
 # Fsevents
 
-macOS Filesystem Events (`FsEvents`) track changes to files on a macOS system
-(similar to `UsnJrnl` on Windows). Parsing this data can sometimes show files
-that have been deleted. Resides at `/System/Volumes/Data/.fseventsd/` or
-`/.fseventsd` on older systems. artemis will try to parse both locations by
+macOS Filesystem Events (FsEvents) track changes to files on a macOS system
+(similar to UsnJrnl on Windows). Parsing this data can sometimes show files
+that have been deleted.  
+Resides at /**System/Volumes/Data/.fseventsd/** or
+**/.fseventsd** on older systems. Artemis will try to parse both locations by
 default.
 
 Other Parsers:
