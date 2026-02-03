@@ -38,7 +38,7 @@ export interface MruValues {
 }
 
 export enum MruType {
-  LASTVISITED = "LastVisisted",
+  LASTVISITED = "LastVisited",
   OPENSAVE = "OpenSave",
   RECENTDOCS = "RecentDocs",
 }

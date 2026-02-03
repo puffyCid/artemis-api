@@ -14,7 +14,7 @@ export interface Firewall {
   version: string;
   applications: FirewallApplication[];
   exceptions: FirewallExceptions[];
-  explict_auths: string[];
+  explicit_auths: string[];
   services: Services[];
 }
 

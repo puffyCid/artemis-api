@@ -8,7 +8,7 @@ description: Filtering scripts
 In addition to creating scripts that call artemis functions. Artemis has the
 ability to pass the artifact data as an argument to a script! For most scenarios
 calling the artemis function is the recommended practice for scripting. However,
-the sole execption is the `filelisting` and `rawfilelisting` artifacts or if you
+the sole exception is the `filelisting` and `rawfilelisting` artifacts or if you
 encounter large log files (ex: Linux Journal files).
 
 When pulling a filelisting artemis will recursively walk the filesystem, but in
@@ -123,13 +123,13 @@ import { MacosFileInfo } from "./artemis-api/src/macos/files";
  * @returns Array of files only containing Info.plist
  */
 function main() {
-  // Since this is a filter script our data will be passed as a Serde Value that is a string
+  // Since this is a filter script our data will be passed as a serde Value that is a string
   const args: string[] = STATIC_ARGS;
   if (args.length < 2) {
     return [];
   }
 
-  // Parse the provide Serde Value (JSON string) as a MacosFileInfo[]
+  // Parse the provide serde Value (JSON string) as a MacosFileInfo[]
   const data: MacosFileInfo[] = JSON.parse(args[0]);
   const artifact_name = args[1]; // Contains "files" string (aka the artifact name)
   const filter_files: MacosFileInfo[] = [];
@@ -153,7 +153,7 @@ if (args.length < 2) {
   return [];
 }
 
-// Parse the provide Serde Value (JSON string) as a MacosFileInfo[]
+// Parse the provide serde Value (JSON string) as a MacosFileInfo[]
 const data: MacosFileInfo[] = JSON.parse(args[0]);
 const artifact_name = args[1]; // Contains "files" string (aka the artifact name)
 ```
@@ -173,14 +173,14 @@ collection TOML.
 Here we are taking the first argument provided to our script and parsing it as a
 JSON `MacosFileInfo` object array. As stated above, artemis will pass the
 results of each `[[artifacts]]` entry to our script using serde to serialize the
-data as a JSON formattted string.\
+data as a JSON formatted string.\
 According to the macOS [files](../../Artifacts/macOS%20Artifacts/files.md)
 artifact this data is an array of `MacosFileInfo`.
 
 We then parse and filter the data based on our script
 
 ```typescript
-// Parse the provide Serde Value (JSON string) as a MacosFileInfo[]
+// Parse the provide serde Value (JSON string) as a MacosFileInfo[]
 const data: MacosFileInfo[] = JSON.parse(args[0]);
 const filter_files: MacosFileInfo[] = [];
 

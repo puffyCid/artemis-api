@@ -43,11 +43,11 @@ export interface Segment64 {
   file_offset: number;
   /**Size of segment */
   file_size: number;
-  /**Maxmimum permitted memory protection */
+  /**Maximum permitted memory protection */
   max_prot: number;
   /**Initial memory protection */
   init_prot: number;
-  /**Number of sections in the semgent */
+  /**Number of sections in the segment */
   nsects: number;
   /**Segment flags */
   flags: number;
@@ -95,6 +95,6 @@ export interface DylibCommand {
   timestamp: number;
   /**Version of dynamic library */
   current_version: number;
-  /**Compatiblity version of dynamic library */
+  /**Compatibility version of dynamic library */
   compatibility_version: string;
 }

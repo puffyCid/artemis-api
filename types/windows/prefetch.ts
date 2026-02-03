@@ -2,7 +2,7 @@
  * Windows `Prefetch` data tracks execution of applications on Windows Workstations.
  * `Prefetch` is disabled on Windows Servers and may be disabled on systems with SSDs.
  *
- * Referencs:
+ * References:
  *  - https://github.com/libyal/libscca/blob/main/documentation/Windows%20Prefetch%20File%20(PF)%20format.asciidoc
  */
 export interface Prefetch {

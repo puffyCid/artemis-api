@@ -9,7 +9,7 @@ keywords:
 
 RPM packages are the default package format for installing software on Fedora
 and OpenSUSE and Fedora derived systems (ex: CentOS, RedHat). Artemis supports
-querying the /var/lib/rpm/rpmdb.sqlite database to get installed RPM packages.
+querying the **/var/lib/rpm/rpmdb.sqlite** database to get installed RPM packages.
 
 :::note
 

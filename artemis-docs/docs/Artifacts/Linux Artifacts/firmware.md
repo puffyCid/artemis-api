@@ -11,7 +11,7 @@ Artemis supports querying the [fwupd](https://fwupd.org/) pending.db files for i
 
 ## Collection
 
-You have to use the artemis [api](../../API/overview.md) in order to collect abrt crashes.
+You have to use the artemis [api](../../API/overview.md) in order to collect firmware info.
 
 ## Sample API Script
 

@@ -166,7 +166,7 @@ The directory `./tmp/custom_proc_list` should contain three files:
 proc_memory_usage_list_3d6573f5-9eda-4945-b324-06dd5a8fba1b.json	b76ed71a-9333-49b9-be2d-b3c77a4d1497.log	status.log
 ```
 
-- The status log lists files associted with our parsed data
+- The status log lists files associated with our parsed data
 - `b76ed71a-9333-49b9-be2d-b3c77a4d1497.log` contains any errors or warnings.
   Since we did **not** run with elevated privileges, artemis will not be able to
   get information for all processes.
