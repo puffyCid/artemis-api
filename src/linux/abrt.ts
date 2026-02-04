@@ -6,7 +6,7 @@ import { FileError } from "../filesystem/errors";
 import { unixEpochToISO } from "../time/conversion";
 
 /**
- * Extract crash informatin from abrt directory. Typically at `/var/spool/abrt`. Root is required
+ * Extract crash information from abrt directory. Typically at `/var/spool/abrt`. Root is required
  * @param alt_dir Optional path to directory contain abrt information
  * @returns Array of `Abrt` or `LinuxError`
  */

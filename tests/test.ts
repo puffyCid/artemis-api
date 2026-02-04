@@ -25,6 +25,7 @@ export { testFirmwareHistory } from "../src/linux/firmware";
 export { testGnomeAppUsage } from "../src/linux/gnome/usage";
 export { testParseGvfs } from "../src/linux/gnome/gvfs";
 export { testQueryLogons } from "../src/linux/sqlite/wtmpdb";
+export { testEpiphany } from "../src/linux/gnome/epiphany";
 
 /**
  * Windows exported test functions

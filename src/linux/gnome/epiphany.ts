@@ -24,7 +24,7 @@ export class Epiphany {
      * @param unfold Enable `Unfold` parsing. Default is false
      * @param alt_glob Provide an optional glob to an alternative Epiphany directory
      */
-    constructor (unfold = false, alt_glob?: string) {
+    constructor(unfold = false, alt_glob?: string) {
         this.unfold = unfold;
         const values = this.profiles(alt_glob);
         if (values instanceof LinuxError) {
@@ -71,21 +71,21 @@ export class Epiphany {
 
             for (const entry of data) {
                 const value: EpiphanyHistory = {
-                    url_id: entry[ "url_id" ] as number,
-                    host_id: entry[ "host" ] as number,
-                    visit_count: entry[ "visit_count" ] as number,
-                    typed_count: entry[ "typed_count" ] as number,
-                    last_visit_time: unixEpochToISO(entry[ "last_visit_time" ] as bigint),
-                    thumbnail_update_time: unixEpochToISO(entry[ "thumbnail_update_time" ] as bigint),
-                    hidden_from_overview: Boolean(entry[ "hidden_from_overview" ] as number),
-                    visit_type: this.visitType(entry[ "visit_type" ] as number),
+                    url_id: entry["url_id"] as number,
+                    host_id: entry["host"] as number,
+                    visit_count: entry["visit_count"] as number,
+                    typed_count: entry["typed_count"] as number,
+                    last_visit_time: unixEpochToISO(entry["last_visit_time"] as bigint),
+                    thumbnail_update_time: unixEpochToISO(entry["thumbnail_update_time"] as bigint),
+                    hidden_from_overview: Boolean(entry["hidden_from_overview"] as number),
+                    visit_type: this.visitType(entry["visit_type"] as number),
                     db_path: db,
-                    target_url: entry[ "url" ] as string | null ?? "",
-                    title: entry[ "title" ] as string | null ?? "",
-                    referring_visit: entry[ "referring_visit" ] as string | null,
-                    sync_id: entry[ "sync_id" ] as string | null,
-                    message: entry[ "url" ] as string | null ?? "",
-                    datetime: unixEpochToISO(entry[ "last_visit_time" ] as bigint),
+                    target_url: entry["url"] as string | null ?? "",
+                    title: entry["title"] as string | null ?? "",
+                    referring_visit: entry["referring_visit"] as string | null,
+                    sync_id: entry["sync_id"] as string | null,
+                    message: entry["url"] as string | null ?? "",
+                    datetime: unixEpochToISO(entry["last_visit_time"] as bigint),
                     timestamp_desc: "URL Visited",
                     artifact: "URL History",
                     data_type: "linux:gnome:epiphany:history:entry"
@@ -123,38 +123,38 @@ export class Epiphany {
 
             for (const entry of data) {
                 const value: EpiphanyCookies = {
-                    id: entry[ "id" ] as number,
-                    name: entry[ "name" ] as string | null,
-                    value: entry[ "value" ] as string | null,
-                    host: entry[ "host" ] as string | null,
-                    path: entry[ "path" ] as string | null,
+                    id: entry["id"] as number,
+                    name: entry["name"] as string | null,
+                    value: entry["value"] as string | null,
+                    host: entry["host"] as string | null,
+                    path: entry["path"] as string | null,
                     expiry: "",
                     last_accessed: "",
                     is_secure: false,
                     is_http_only: false,
                     same_site: false,
                     db_path: db,
-                    message: `Cookie for ${entry[ "host" ] as string | null} | ${entry[ "name" ] as string | null ?? ""}`,
+                    message: `Cookie for ${entry["host"] as string | null} | ${entry["name"] as string | null ?? ""}`,
                     datetime: "",
                     timestamp_desc: "Cookie Expires",
                     artifact: "Website Cookie",
                     data_type: "linux:browser:epiphany:cookie:entry"
                 };
 
-                if (entry[ "lastAccessed" ] !== null) {
-                    value.last_accessed = unixEpochToISO(entry[ "last_access" ] as number);
+                if (entry["lastAccessed"] !== null) {
+                    value.last_accessed = unixEpochToISO(entry["last_access"] as number);
                 }
-                if (entry[ "isSecure" ] !== null) {
-                    value.is_secure = Boolean(entry[ "is_secure" ] as number);
+                if (entry["isSecure"] !== null) {
+                    value.is_secure = Boolean(entry["is_secure"] as number);
                 }
-                if (entry[ "isHttpOnly" ] !== null) {
-                    value.is_http_only = Boolean(entry[ "is_http_only" ] as number);
+                if (entry["isHttpOnly"] !== null) {
+                    value.is_http_only = Boolean(entry["is_http_only"] as number);
                 }
-                if (entry[ "sameSite" ] !== null) {
-                    value.same_site = Boolean(entry[ "same_site" ] as number);
+                if (entry["sameSite"] !== null) {
+                    value.same_site = Boolean(entry["same_site"] as number);
                 }
-                if (entry[ "expiry" ] !== null) {
-                    value.expiry = unixEpochToISO(entry[ "expiry" ] as number);
+                if (entry["expiry"] !== null) {
+                    value.expiry = unixEpochToISO(entry["expiry"] as number);
                     value.datetime = value.expiry;
                 }
                 results.push(value);
@@ -177,22 +177,22 @@ export class Epiphany {
                 continue;
             }
 
-            const entries = xml_data[ "session" ] as Record<string, Record<string, unknown>[]>;
-            if (entries[ "window" ] === undefined) {
+            const entries = xml_data["session"] as Record<string, Record<string, unknown>[]>;
+            if (entries["window"] === undefined) {
                 continue;
             }
-            for (const values of entries[ "window" ]) {
-                const embed = values[ "embed" ] as Record<string, Record<string, string>>[];
+            for (const values of entries["window"]) {
+                const embed = values["embed"] as Record<string, Record<string, string>>[];
                 for (const value of embed) {
-                    if (value[ "$" ] === undefined) {
+                    if (value["$"] === undefined) {
                         continue;
                     }
                     const session: EpiphanySessions = {
-                        url: value[ "$" ][ "url" ] ?? "",
-                        title: value[ "$" ][ "title" ] ?? "",
-                        history: value[ "$" ][ "history" ] ?? "",
+                        url: value["$"]["url"] ?? "",
+                        title: value["$"]["title"] ?? "",
+                        history: value["$"]["history"] ?? "",
                         session_path: xml_file,
-                        message: `Session for ${value[ "$" ][ "url" ] ?? ""}`,
+                        message: `Session for ${value["$"]["url"] ?? ""}`,
                         datetime: "1970-01-01T00:00:00.000Z",
                         timestamp_desc: "N/A",
                         artifact: "GNOME Epiphany Session",
@@ -247,8 +247,8 @@ export class Epiphany {
                     } else if (line.includes("=")) {
                         const perm_line = line.replace("'", "");
                         const perm_types = perm_line.split("=");
-                        if (perm_types.length > 1 && perm_types[ 0 ] !== undefined) {
-                            perms.permissions[ perm_types[ 0 ] ] = perm_types.at(1) ?? "";
+                        if (perm_types.length > 1 && perm_types[0] !== undefined) {
+                            perms.permissions[perm_types[0]] = perm_types.at(1) ?? "";
                         }
                     }
                 }
@@ -426,4 +426,42 @@ export class Epiphany {
 
         return profiles;
     }
+}
+
+/**
+ * Function to test GNOME Epiphany parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the GNOME Epiphany parsing
+ */
+export function testEpiphany(): void {
+    const test = "../../test_data/linux/epiphany";
+    const client = new Epiphany(false, test);
+
+    const history = client.history(0, 100);
+    if (history.length !== 15) {
+        throw `Got ${history.length} expected 15.......history ❌`;
+    }
+
+    console.info(`  Function history ✅`);
+
+    const cookies = client.cookies(0, 100);
+    if (cookies.length !== 0) {
+        throw `Got ${cookies.length} expected 0.......cookies ❌`;
+    }
+
+    console.info(`  Function cookies ✅`);
+
+    const print = client.lastPrint();
+    if (print.length !== 1) {
+        throw `Got ${print.length} expected 1.......lastPrint ❌`;
+    }
+
+    console.info(`  Function lastPrint ✅`);
+
+    const sessions = client.sessions();
+    if (sessions.length !== 2) {
+        throw `Got ${sessions.length} expected 2.......sessions ❌`;
+    }
+
+    console.info(`  Function sessions ✅`);
 }
