@@ -10,13 +10,12 @@ import { getEventlogs } from "../eventlogs";
 /**
  * Function to parse Logon and Logoff events from Security.evtx file
  * @param path Path to Security.evtx file
- * @returns Array of `Logon` entries
+ * @returns Array of `LogonsWindows` entries
  */
 export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
   let offset = 0;
   const limit = 10000;
   const logon_entries: LogonsWindows[] = [];
-  const logoff_entries: Raw4634Logoffs[] = [];
 
   const logon_eid = 4624;
   const logoff_eid = 4634;
@@ -26,11 +25,11 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
     const logs = getEventlogs(path, offset, limit);
     if (logs instanceof WindowsError) {
       return new WindowsError(
-        "LOGONCORRELATION",
+        "LOGONS",
         `failed to parse eventlog ${path}: ${logs}`,
       );
     }
-    const recordsData = logs[1];
+    const recordsData = logs[ 1 ];
     if (recordsData.length === 0) {
       break;
     }
@@ -53,45 +52,36 @@ export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
           authentication_package: logon_event.AuthenticationPackageName,
           source_ip: logon_event.IpAddress,
           source_workstation: logon_event.WorkstationName,
-          logon_time: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
-          logoff_time: "",
-          duration: 0,
+          eventlog_generated: record.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
           message: `Logon by ${logon_event.TargetUserName} from ${logon_event.IpAddress}`,
-          datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+          datetime: record.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
           timestamp_desc: "Account Logon",
           artifact: "Logon EventLog",
-          data_type: "windows:eventlogs:logons:entry"
+          data_type: "windows:eventlogs:logon:entry"
         };
         logon_entries.push(entry);
       } else if (
         record.data.Event.System.EventID === logoff_eid && isLogoff(record)
       ) {
-        logoff_entries.push(record);
-      }
-    }
-  }
-
-  // Try to correlate logon/logoff events
-  for (let i = 0; i < logon_entries.length; i++) {
-    const entry = logon_entries[i];
-    if (entry === undefined) {
-      continue;
-    }
-
-    for (const logoff of logoff_entries) {
-      if (
-        entry.logon_id === logoff.data.Event.EventData.TargetLogonId
-      ) {
-        entry.logoff_time = logoff.data.Event.System.TimeCreated["#attributes"].SystemTime;
-        // Nanosecond precision is not supported for Date extraction
-        // Quick convert to second precision
-        const end = new Date(`${entry.logoff_time.split(".").at(0) ?? ""}Z`).getTime();
-        const start = new Date(`${entry.logon_time.split(".").at(0) ?? ""}Z`).getTime();
-        const duration = end - start;
-        const seconds = 1000;
-        if (!isNaN(duration)) {
-          entry.duration = Number(duration / seconds);
-        }
+        const logon_event = record.data.Event.EventData;
+        const entry: LogonsWindows = {
+          logon_type: checkLogonType(logon_event.LogonType),
+          sid: logon_event.TargetUserSid,
+          account_name: logon_event.TargetUserName,
+          account_domain: logon_event.TargetDomainName,
+          logon_id: logon_event.TargetLogonId,
+          logon_process: "",
+          authentication_package: "",
+          source_ip: "",
+          source_workstation: "",
+          eventlog_generated: record.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
+          message: `Logoff by ${logon_event.TargetUserName}`,
+          datetime: record.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
+          timestamp_desc: "Account Logoff",
+          artifact: "Logoff EventLog",
+          data_type: "windows:eventlogs:logoff:entry"
+        };
+        logon_entries.push(entry);
       }
     }
   }
@@ -182,18 +172,18 @@ export function testLogonsWindows(): void {
   if (results.length !== 198) {
     throw `Got ${results.length} logon events, expected 198.......logonsWindows ❌`;
   }
-  if (results[1] === undefined) {
+  if (results[ 1 ] === undefined) {
     throw `Got undefined logon event.......logonsWindows ❌`;
   }
 
-  if (results[1].logon_time != "2022-10-31T03:30:46.218854Z") {
-    throw `Got ${results[1].logon_time} for logon time, expected "2022-10-31T03:30:46.218854Z".......logonsWindows ❌`;
+  if (results[ 1 ].eventlog_generated != "2022-10-31T03:30:46.218854Z") {
+    throw `Got ${results[ 1 ].eventlog_generated} for logon time, expected "2022-10-31T03:30:46.218854Z".......logonsWindows ❌`;
   }
 
   console.info(`  Function logonsWindows ✅`);
 
 
-  const logon_types = [2, 3, 4, 5, 7, 8, 9, 10, 11];
+  const logon_types = [ 2, 3, 4, 5, 7, 8, 9, 10, 11 ];
   for (const entry of logon_types) {
     const type_result = checkLogonType(entry);
     if (type_result === LogonType.Unknown) {

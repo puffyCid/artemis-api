@@ -23,7 +23,7 @@ export type ErrorName =
   | "USERASSIST"
   | "USERS"
   | "USNJRNL"
-  | "LOGONCORRELATION"
+  | "LOGONS"
   | "CHOCOLATEYINFO"
   | "UPDATESHISTORY"
   | "POWERSHELL"
@@ -44,4 +44,4 @@ export type ErrorName =
   | "RDPLOGONS"
   | "PCA";
 
-export class WindowsError extends ErrorBase<ErrorName> {}
+export class WindowsError extends ErrorBase<ErrorName> { }

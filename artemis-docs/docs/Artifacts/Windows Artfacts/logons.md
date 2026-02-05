@@ -37,7 +37,7 @@ main();
 An array of `Logons`
 
 ```typescript
-export interface Logons {
+export interface LogonsWindows {
   logon_type: LogonType;
   sid: string;
   account_name: string;
@@ -47,9 +47,12 @@ export interface Logons {
   authentication_package: string;
   source_ip: string;
   source_workstation: string;
-  logon_time: string;
-  logoff_time: string;
-  duration: number;
+  eventlog_generated: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Account Logon" | "Account Logoff";
+  artifact: "Logon EventLog" | "Logoff EventLog";
+  data_type: "windows:eventlogs:logon:entry" | "windows:eventlogs:logoff:entry";
 }
 
 export enum LogonType {

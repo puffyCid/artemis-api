@@ -8,14 +8,12 @@ export interface LogonsWindows {
   authentication_package: string;
   source_ip: string;
   source_workstation: string;
-  logon_time: string;
-  logoff_time: string;
-  duration: number;
+  eventlog_generated: string;
   message: string;
   datetime: string;
-  timestamp_desc: "Account Logon"
-  artifact: "Logon EventLog";
-  data_type: "windows:eventlogs:logons:entry";
+  timestamp_desc: "Account Logon" | "Account Logoff";
+  artifact: "Logon EventLog" | "Logoff EventLog";
+  data_type: "windows:eventlogs:logon:entry" | "windows:eventlogs:logoff:entry";
 }
 
 export interface Raw4624Logons {
