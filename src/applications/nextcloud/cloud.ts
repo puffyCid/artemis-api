@@ -151,7 +151,11 @@ export class NextcloudClient {
             };
             const regex_strings: RegExp[] = [ /localPath=.*/, /webflow_user=.*/, /url=.*/, /displayName=.*/ ];
             for (let i = 0; i < regex_strings.length; i++) {
-                const match = text_data.match(regex_strings[ i ]);
+                const regex_value = regex_strings[ i ];
+                if (regex_value === undefined) {
+                    continue;
+                }
+                const match = text_data.match(regex_value);
                 if (match === null) {
                     continue;
                 }
