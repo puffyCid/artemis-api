@@ -27,7 +27,7 @@ main();
 
 ### getAmcache(path) -> Amcache[] | WindowsError
 
-Parse Amcache Registry file on the systemdrive.  You may provide an optional alternative path to the Amcache.hve file
+Parse Amcache Registry file on the system drive.  You may provide an optional alternative path to the Amcache.hve file
 
 | Param | Type    | Description                           |
 | ----- | ------- | ------------------------------------- |
@@ -61,7 +61,7 @@ required.
 ### getJumplists(path) -> Jumplists[] | WindowsError
 
 Get all [JumpLists](../../Artifacts/Windows%20Artfacts/jumplists.md) for all
-users at default systemdrive.  You may also provide an optional alternative path to a Jumplist file.
+users at default system drive.  You may also provide an optional alternative path to a Jumplist file.
 
 | Param | Type   | Description                    |
 | ----- | ------ | ------------------------------ |
@@ -95,7 +95,7 @@ Parse PE file at provided path.
 
 ### getPrefetch() -> Prefetch[] | WindowsError
 
-Parse all Prefetch files at default systemdrive.  You may also provide an optional alternative path to a directory containing Prefetch files.
+Parse all Prefetch files at default system drive.  You may also provide an optional alternative path to a directory containing Prefetch files.
 
 | Param | Type   | Description.                        |
 | ----- | ------ | ----------------------------------- |
@@ -103,7 +103,7 @@ Parse all Prefetch files at default systemdrive.  You may also provide an option
 
 ### getRecycleBin() -> RecycleBin[] | WindowsError
 
-Parse all RecycleBin files default systemdrive.
+Parse all RecycleBin files default system drive.
 
 | Param | Type   | Description                      |
 | ----- | ------ | -------------------------------- |
@@ -132,7 +132,7 @@ usage, a higher number means higher memory usage but faster parsing.
 
 ### getServices() -> Services[] | WindowsError
 
-Parse Windows Services at default systemdrive.  You may also provide an optional alternative path to the SYSTEM Registry file.  
+Parse Windows Services at default system drive.  You may also provide an optional alternative path to the SYSTEM Registry file.  
 
 | Param | Type   | Description                                   |
 | ----- | ------ | --------------------------------------------- |
@@ -141,7 +141,7 @@ Parse Windows Services at default systemdrive.  You may also provide an optional
 
 ### getShellbags(resolve_guids, path) -> Shellbags[] | WindowsError
 
-Parse Windows Shellbags at default systemdrive. You may enable GUID resolution (this feature only works on Windows). You may also provide an optional alternative path to the Shellbags Registry file.  
+Parse Windows Shellbags at default system drive. You may enable GUID resolution (this feature only works on Windows). You may also provide an optional alternative path to the Shellbags Registry file.  
 
 | Param         | Type   | Description                                             |
 | ------------- | ------ | ------------------------------------------------------- |
@@ -150,7 +150,7 @@ Parse Windows Shellbags at default systemdrive. You may enable GUID resolution (
 
 ### getShimcache(path) -> Shimcache[] | WindowsError
 
-Parse Windows Shimcache at default systemdrive. You may also provide an optional alternative path to the SYSTEM Registry file.
+Parse Windows Shimcache at default system drive. You may also provide an optional alternative path to the SYSTEM Registry file.
 
 
 | Param | Type   | Description                               |
@@ -160,7 +160,7 @@ Parse Windows Shimcache at default systemdrive. You may also provide an optional
 
 ### getShimdb(path) -> Shimdb[] | WindowsError
 
-Parse Windows ShimDB files at default systemdrive. You may also provide an optional path to a ShimDB file.
+Parse Windows ShimDB files at default system drive. You may also provide an optional path to a ShimDB file.
 
 | Param | Type   | Description                            |
 | ----- | ------ | -------------------------------------- |
@@ -249,7 +249,7 @@ Parse notification info from Windows
 
 ### getTasks(path) -> TaskXml | WindowsError
 
-Parse Windows Schedule Tasks at default systemdrive. You may also provide an optional path to a Schedule Task file.
+Parse Windows Schedule Tasks at default system drive. You may also provide an optional path to a Schedule Task file.
 
 | Param | Type   | Description                                                           |
 | ----- | ------ | --------------------------------------------------------------------- |
@@ -257,7 +257,7 @@ Parse Windows Schedule Tasks at default systemdrive. You may also provide an opt
 
 ### getUserassist(resolve, path) -> UserAssist[] | WindowsError
 
-Parse Windows Userassist entries at default systemdrive for all users. You may enable GUID resolution lookups. You may also provide an optional path to the NTUSER.dat file.
+Parse Windows Userassist entries at default system drive for all users. You may enable GUID resolution lookups. You may also provide an optional path to the NTUSER.dat file.
 
 | Param   | Type    | Description                                       |
 | ------- | ------- | ------------------------------------------------- |
@@ -266,7 +266,7 @@ Parse Windows Userassist entries at default systemdrive for all users. You may e
 
 ### getUsersWin(path) -> UserInfo[] | WindowsError
 
-Get local Windows User accounts from SAM Registry file. Uses default systemdrive
+Get local Windows User accounts from SAM Registry file. Uses default system drive
 letter. You may also provide an optional path to the SAM Registry file.
 
 | Param | Type   | Description                        |
@@ -275,7 +275,7 @@ letter. You may also provide an optional path to the SAM Registry file.
 
 ### getUsnjrnl(path, drive, mft) -> UsnJrnl[] | WindowsError
 
-Parses Windows UsnJrnl data. Uses default systemdrive letter. You may also provide optional alternative paths for:
+Parses Windows UsnJrnl data. Uses default system drive letter. You may also provide optional alternative paths for:
 - UsnJrnl file
 - Drive letter
 - MFT for path resolutions
@@ -286,13 +286,14 @@ Parses Windows UsnJrnl data. Uses default systemdrive letter. You may also provi
 | path  | string | Optional path to UsnJrnl file                  |
 | mft   | string | Optional path to MFT file for path resolutions |
 
-### logons(path) -> Logons[] | WindowsError
+### logonsWindows(path, limit) -> Logons[] | WindowsError
 
-Parse the Windows Security.evtx and try to correlate Logon and Logoff events.
+Parse the Windows Security.evtx and extract Logon and Logoff events.
 
-| Param | Type   | Description                        |
-| ----- | ------ | ---------------------------------- |
-| path  | string | Path to Windows Security.evtx file |
+| Param | Type   | Description                                                                       |
+| ----- | ------ | --------------------------------------------------------------------------------- |
+| path  | string | Path to Windows Security.evtx file                                                |
+| limit | number | How may EventLog entries to parse when streaming the evtx file. Default is 10,000 |
 
 ### lookupSecurityKey(path, offset) -> SecurityKey | WindowsError
 
@@ -406,7 +407,7 @@ Return a list of Windows Updates by parsing the Windows DataStore.edb database.
 
 ### powershellHistory(platform, alt_path) -> History[] | History | WindowsError
 
-Return PowerShell history entries for all users. Uses the systemdrive by
+Return PowerShell history entries for all users. Uses the system drive by
 default.
 
 This artifact also supports PowerShell history on macOS or Linux
@@ -581,7 +582,7 @@ You may provided an optional alternative path to Microsoft-Windows-PowerShell%4O
 
 #### firwallRules(path) -> FirewallRules[] | WindowsError
 
-Extract Windows Firewall rules from the SYSTEM Registry file. By default artemis will use the SYSTEM Registry on the SystemDrive.
+Extract Windows Firewall rules from the SYSTEM Registry file. By default artemis will use the SYSTEM Registry on the system drive.
 You may provide an optional alternative SYSTEM file.
 
 | Param | Type   | Description                                       |
@@ -677,7 +678,7 @@ Parse Windows Registry files and extract Run key entries. You may provide an opt
 
 ### rdpLogons(path) -> RegistryRunKey[]
 
-Parse Windows RDP logons. You may provide an optional path to a Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file. By default artemis will check the SystemDrive volume for the Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx.
+Parse Windows RDP logons. You may provide an optional path to a Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file. By default artemis will check the system drive volume for the Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx.
 
 Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx
 
@@ -685,9 +686,9 @@ Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-Te
 | ------- | ------- | ---------------------------------------------------------------------------------------------- |
 | path    | string  | Optional path to Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file |
 
-### parsePca(alt_dir) -> ProgramCompatabilityAssist[] | WindowsError
+### parsePca(alt_dir) -> ProgramCompatibilityAssist[] | WindowsError
 
-Parse Windows Program Compatability Assistant (PCA) files. You may provide an optional alternative glob to a folder that contains the PCA files
+Parse Windows Program Compatibility Assistant (PCA) files. You may provide an optional alternative glob to a folder that contains the PCA files
 
 | Param      | Type    | Description                                  |
 | ---------- | ------- | -------------------------------------------- |

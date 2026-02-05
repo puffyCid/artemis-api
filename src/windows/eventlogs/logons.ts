@@ -10,11 +10,11 @@ import { getEventlogs } from "../eventlogs";
 /**
  * Function to parse Logon and Logoff events from Security.evtx file
  * @param path Path to Security.evtx file
+ * @param [limit=10000] How many EventLog entries to query at a time. Default is 10,000
  * @returns Array of `LogonsWindows` entries
  */
-export function logonsWindows(path: string): LogonsWindows[] | WindowsError {
+export function logonsWindows(path: string, limit = 10000): LogonsWindows[] | WindowsError {
   let offset = 0;
-  const limit = 10000;
   const logon_entries: LogonsWindows[] = [];
 
   const logon_eid = 4624;
