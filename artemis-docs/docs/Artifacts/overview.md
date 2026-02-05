@@ -8,10 +8,7 @@ Artemis supports over 100 different types of artifacts! All of these artifacts
 can be collected from a TOML collection or from simple TypeScript code.
 
 In addition, custom artifacts can be created using TypeScript by using the
-Artemis API. An example, of this is the macOS
-[Firewall](https://github.com/puffyCid/artemis-api/blob/main/src/macos/plist/firewall.ts)
-API.
-
+Artemis API.  
 See [API Overview](../API/overview.md) for more details.
 
 A breakdown of artifacts by OS is below.

@@ -97,7 +97,7 @@ The compiled binary will be located at:
 :::info
 
 Alternatively, you may also install the command runner
-[Just](https://github.com/casey/just) and run:
+[Just](https://github.com/casey/just) and compile artemis:
 
 ```
 just cli
@@ -105,7 +105,6 @@ or for Windows
 just --shell pwsh.exe --shell-arg -c cli
 ```
 
-to compile artemis
 
 Please see the [Contributing](../Contributing/building.md) documentation if you
 would like to compile the entire project including optional experimental

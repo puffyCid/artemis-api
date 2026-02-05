@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Create scripts with TypeScript that
-        leverages Rust.
+        leverage Rust.
       </>
 
     ),
