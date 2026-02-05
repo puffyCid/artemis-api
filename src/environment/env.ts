@@ -12,7 +12,7 @@ export function listEnv(): Record<string, string> {
 
 /**
  * Get a single Environment variable value. Returns empty string if variable does not exist
- * @param key Environnment variable name
+ * @param key Environment variable name
  * @returns Value of the provided Environment variable name
  */
 export function getEnvValue(key: string): string {

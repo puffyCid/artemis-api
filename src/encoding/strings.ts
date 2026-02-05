@@ -10,7 +10,7 @@ export function extractUtf8String(data: Uint8Array): string {
 }
 
 /**
- * Extract a UTF8 string from provided bytes. Thins function will replace non-valid UTF8 with [Mojibake](https://en.wikipedia.org/wiki/Mojibake)  
+ * Extract a UTF8 string from provided bytes. This function will replace non-valid UTF8 with [Mojibake](https://en.wikipedia.org/wiki/Mojibake)  
  * Use `extractUtf8String` if you want to preserve any invalid UTF8
  * @param data Raw bytes to extract UTF8 string from
  * @returns An UTF8 string. Will return base64 encoded string if extraction fails
