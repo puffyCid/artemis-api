@@ -9,7 +9,7 @@ const darkTheme = themes.dracula;
 const config = {
   title: "Artemis",
   tagline: "A cross platform digital forensic parser!",
-  favicon: "img/favicon.ico",
+  favicon: "img/cat_pose.ico",
 
   markdown: {
     mermaid: true,
@@ -71,7 +71,7 @@ const config = {
         title: "Artemis",
         logo: {
           alt: "My Site Logo",
-          src: "img/logo.svg",
+          src: "img/cat_investigator.png",
         },
         items: [
           {
