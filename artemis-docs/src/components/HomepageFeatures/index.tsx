@@ -6,6 +6,7 @@ type FeatureItem = {
   title: string;
   Svg: React.ComponentType<React.ComponentProps<"svg">>;
   description: JSX.Element;
+  image: string;
 };
 
 const FeatureList: FeatureItem[] = [
@@ -18,6 +19,7 @@ const FeatureList: FeatureItem[] = [
         minimal system impact. Collecting data is as easy as: <b>artemis acquire prefetch</b>
       </>
     ),
+    image: "",
   },
   {
     title: "Collect large number of artifacts ",
@@ -29,6 +31,7 @@ const FeatureList: FeatureItem[] = [
         Azure, or GCP.
       </>
     ),
+    image: "",
   },
   {
     title: "Rust with a TypeScript API",
@@ -40,14 +43,15 @@ const FeatureList: FeatureItem[] = [
       </>
 
     ),
+    image: require("@site/static/img/cat_coder.jpg").default,
   },
 ];
 
-function Feature({ title, Svg, description }: FeatureItem) {
+function Feature({ title, Svg, description, image }: FeatureItem) {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        <img src={image} className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
