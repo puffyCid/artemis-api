@@ -30,9 +30,9 @@ From the `forensics/src/` directory
 | filesystem | Contains code to help interact with the filesystem. It contains helper functions that can be used when adding new artifacts/features. <br/>Ex: reading/hashing files, getting file timestamps, listing files, etc      |
 | output     | Contains code related to outputting parsed data                                                                                                                                                                        |
 | runtime    | Contains code related to the embedded JS runtime                                                                                                                                                                     |
-| structs    | Contains code related to how TOML collection files are parsed. It <br/> tells artemis how to interpret TOML collections.                                                                                               |
+| structs    | Contains code related to how TOML collection files are parsed. It tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
-| core.rs    | Contains the entry point to the `forensis` workspace.                                                                                                                                                                        |
+| core.rs    | Contains the entry point to the **forensis** workspace.                                                                                                                                                                        |
 
 
 ## Adding New Artifacts
