@@ -150,7 +150,7 @@ export function testDefenderQuarantineEventLog(): void {
         throw `Got '${results[4]?.category_name}' expected "Trojan".......defenderQuarantineEventLog ❌`;
     }
 
-    if (results[22]?.message !== "Defender Quarantined 'pid:1364:237165111778183; process:_pid:1364,ProcessStart:132914198084076670'") {
+    if (results[22]?.message !== "Defender Remediated 'pid:1364:237165111778183; process:_pid:1364,ProcessStart:132914198084076670'") {
         throw `Got '${results[22]?.message}' expected "Defender Quarantined 'pid:1364:237165111778183; process:_pid:1364,ProcessStart:132914198084076670'".......defenderQuarantineEventLog ❌`;
     }
 
