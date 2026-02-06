@@ -8,7 +8,7 @@ keywords:
 # Logons
 
 Artemis supports extracting Logon entries from the Windows EventLog
-Security.evtx file. Artemis will try to correlate logon and logoff entries.
+Security.evtx file.
 
 ## Collection
 

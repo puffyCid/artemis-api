@@ -169,8 +169,8 @@ export function testLogonsWindows(): void {
     throw results;
   }
 
-  if (results.length !== 198) {
-    throw `Got ${results.length} logon events, expected 198.......logonsWindows ❌`;
+  if (results.length !== 200) {
+    throw `Got ${results.length} logon events, expected 200.......logonsWindows ❌`;
   }
   if (results[ 1 ] === undefined) {
     throw `Got undefined logon event.......logonsWindows ❌`;

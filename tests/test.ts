@@ -38,6 +38,7 @@ export { testGetRunKeys } from "../src/windows/registry/run";
 export { testServiceInstalls } from "../src/windows/eventlogs/services";
 export { testRdpLogons } from "../src/windows/eventlogs/rdp";
 export { testParsePca } from "../src/windows/pca";
+export { testDefenderQuarantineEventLog } from "../src/windows/eventlogs/defender";
 
 /**
  * macOS exported test functions
