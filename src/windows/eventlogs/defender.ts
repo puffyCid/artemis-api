@@ -151,7 +151,7 @@ export function testDefenderQuarantineEventLog(): void {
     }
 
     if (results[22]?.message !== "Defender Remediated 'pid:1364:237165111778183; process:_pid:1364,ProcessStart:132914198084076670'") {
-        throw `Got '${results[22]?.message}' expected "Defender Quarantined 'pid:1364:237165111778183; process:_pid:1364,ProcessStart:132914198084076670'".......defenderQuarantineEventLog ❌`;
+        throw `Got '${results[22]?.message}' expected "Defender Remediated 'pid:1364:237165111778183; process:_pid:1364,ProcessStart:132914198084076670'".......defenderQuarantineEventLog ❌`;
     }
 
     if (results[15]?.anti_malware_version !== "1.1.18900.3") {
