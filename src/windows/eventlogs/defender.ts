@@ -45,7 +45,7 @@ export function defenderQuarantineEventLog(alt_path?: string, limit = 10000): Ev
                 continue;
             }
             const event_data = record.data.Event.EventData;
-
+            const action = record.data.Event.System.EventID === 1116 ? "Quarantined" : "Remediated"
             const value: EventLogDefenderQuarantine = {
                 threat_name: event_data["Threat Name"],
                 threat_id: Number(event_data["Threat ID"]),
@@ -83,7 +83,7 @@ export function defenderQuarantineEventLog(alt_path?: string, limit = 10000): Ev
                 additional_actions_id: Number(event_data["Additional Actions ID"]),
                 additional_actions_string: event_data["Additional Actions String"],
                 remediation_user: event_data["Remediation User"],
-                message: `Defender Quarantined '${event_data.Path.split("_").slice(1).join("_")}'`,
+                message: `Defender ${action} '${event_data.Path.split("_").slice(1).join("_")}'`,
                 datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
                 security_intelligence_version: event_data["Security intelligence Version"],
                 av_version: "",
