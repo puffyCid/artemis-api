@@ -449,7 +449,7 @@ function main() {
     output: OutputType.LOCAL
   };
   
-  results.oneDriveRetrospect(output);
+  results.retrospect(output);
 }
 
 main();
