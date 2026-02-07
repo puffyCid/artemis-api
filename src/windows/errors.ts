@@ -42,6 +42,7 @@ export type ErrorName =
   | "WIFI"
   | "ADCERTIFICATES"
   | "RDPLOGONS"
-  | "PCA";
+  | "PCA"
+  | "EVENTLOG_DEFENDER_QUARANTINE";
 
 export class WindowsError extends ErrorBase<ErrorName> { }

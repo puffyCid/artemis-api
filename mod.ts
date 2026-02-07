@@ -156,6 +156,7 @@ export { getEventlogProviders } from "./src/windows/registry/eventlog_providers"
 export { rdpLogons } from "./src/windows/eventlogs/rdp";
 export { backgroundActivitiesManager } from "./src/windows/registry/bam";
 export { parsePca } from "./src/windows/pca";
+export { defenderQuarantineEventLog } from "./src/windows/eventlogs/defender";
 
 /**
  * FreeBSD

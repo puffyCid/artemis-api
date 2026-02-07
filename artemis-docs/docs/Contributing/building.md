@@ -19,12 +19,12 @@ required applications:
 
 Windows users will need to install
 [Chocolatey](https://community.chocolatey.org/). In addition, you will need to
-install the MSVC version of [Rust](https://www.rust-lang.org/) macOS users will
-need to install [Homebrew](https://brew.sh/)
+install the MSVC version of [Rust](https://www.rust-lang.org/).  
+macOS users will need to install [Homebrew](https://brew.sh/)
 
 You can use Just to automate most of the setup process.
 
-:::info
+:::note
 
 Ubuntu users can run: **just setup-ubuntu**\
 Fedora users can run **just setup-fedora**\
@@ -65,7 +65,7 @@ Once you have the prerequisites installed you can build artemis.
 1. Clone artemis repo at
    [https://github.com/puffycid/artemis](https://github.com/puffycid/artemis)
 2. Navigate to the repo
-3. Run `just cli` or `just --shell pwsh.exe  --shell-arg -c cli` for Windows
+3. Run **just cli** or **just --shell pwsh.exe  --shell-arg -c cli** for Windows
 
 ```sh
 # Download artemis source code
@@ -141,7 +141,7 @@ Artemis can be compiled for a variety of platforms using [cross](https://github.
 - Linux (RISC-V, musl, PowerPC, SPARC)
 - [illumos](https://en.wikipedia.org/wiki/Illumos)
 
-If you want to build for Android or NetBSD you have to disable the yara-x dependency
+If you want to build for Android or NetBSD you have to disable the yara-x dependency:
  - cross build --release --no-default-features
 
 If you want to build for Windows ARM. You will need a Windows ARM VM or device and will need to install [LLVM](https://learn.arm.com/install-guides/llvm-woa/) and cmake.

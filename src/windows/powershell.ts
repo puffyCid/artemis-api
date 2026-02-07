@@ -47,7 +47,7 @@ export function powershellHistory(
       continue;
     }
 
-   history = history.concat(entries);
+    history = history.concat(entries);
   }
 
   return history;
@@ -72,6 +72,9 @@ function parsePowershellHistory(path: string, platform: PlatformType): History[]
 
   if (platform === PlatformType.Windows) {
     entries = data.split("\r\n");
+    if (entries.length === 0) {
+      entries = data.split("\n");
+    }
   } else {
     entries = data.split("\n");
   }
@@ -103,7 +106,6 @@ function parsePowershellHistory(path: string, platform: PlatformType): History[]
     values.push(ps_history);
   }
 
-
   return values;
 }
 
@@ -119,8 +121,8 @@ export function testPowerShellHistory(): void {
     throw hits;
   }
 
-  if (hits[0] === undefined || !Array.isArray(hits.entries)) {
-    throw `Got undefined expected an array.......powershellHistory ❌`;
+  if (hits[0] === undefined || !Array.isArray(hits)) {
+    throw `Got ${hits[0]} expected an array.......powershellHistory ❌`;
   }
 
   if (hits[0].line !== 'whoami') {
