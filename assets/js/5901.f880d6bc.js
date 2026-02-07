@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkartemis_docs=globalThis.webpackChunkartemis_docs||[]).push([[5901],{75901:(e,s,a)=>{a.d(s,{createTreemapServices:()=>c.d});var c=a(51633);a(87960)}}]);
