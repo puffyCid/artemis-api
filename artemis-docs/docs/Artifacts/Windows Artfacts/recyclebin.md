@@ -7,18 +7,18 @@ keywords:
 
 # RecycleBin
 
-Windows `RecycleBin` is a special folder on Windows that stores files deleted
+Windows RecycleBin is a special folder on Windows that stores files deleted
 using the Explorer GUI. When a file is deleted (via Explorer) two types files
-are generated in the `RecycleBin`:
+are generated in the RecycleBin:
 
 - Files that begin with `$I<number>.<original extension>`. Contains metadata
   about deleted file
 - Files that begin with `$R<number>.<original extension>`. Contents of deleted
   file
 
-Currently artemis supports parsing the `$I` based files using the standard
+Currently artemis supports parsing the $I based files using the standard
 Windows APIs to read the file for parsing. It does not try to recover files that
-have been deleted/emptied from the `RecycleBin`
+have been deleted/emptied from the RecycleBin
 
 Other parsers:
 
@@ -29,7 +29,7 @@ References:
 - [libyal](https://github.com/libyal/dtformats/blob/main/documentation/Windows%20Recycle.Bin%20file%20formats.asciidoc)
 - [RecycleBin](https://cybersecurity.att.com/blogs/security-essentials/digital-dumpster-diving-exploring-the-intricacies-of-recycle-bin-forensics)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -48,12 +48,12 @@ artifact_name = "recyclebin"
 # alt_file = "C:\\Artifacts\\$IAC12F"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative RecycleBin file. This configuration is
   **optional**. By default artemis will parse all RecycleBin files on the system
 
-# Output Structure
+## Output Structure
 
 An array of `RecycleBin` entries
 

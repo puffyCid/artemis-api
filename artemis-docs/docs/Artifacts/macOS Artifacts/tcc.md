@@ -19,12 +19,12 @@ files at the following locations:
 
 You may also provide an optional alternative path to the TCC.db fille.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect TCC
 data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -38,7 +38,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `TccValues` entries.
 

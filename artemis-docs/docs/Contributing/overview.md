@@ -30,12 +30,12 @@ From the `forensics/src/` directory
 | filesystem | Contains code to help interact with the filesystem. It contains helper functions that can be used when adding new artifacts/features. <br/>Ex: reading/hashing files, getting file timestamps, listing files, etc      |
 | output     | Contains code related to outputting parsed data                                                                                                                                                                        |
 | runtime    | Contains code related to the embedded JS runtime                                                                                                                                                                     |
-| structs    | Contains code related to how TOML collection files are parsed. It <br/> tells artemis how to interpret TOML collections.                                                                                               |
+| structs    | Contains code related to how TOML collection files are parsed. It tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
-| core.rs    | Contains the entry point to the `core` library.                                                                                                                                                                        |
+| core.rs    | Contains the entry point to the **forensis** workspace.                                                                                                                                                                        |
 
 
-# Adding New Artifacts
+## Adding New Artifacts
 
 To keep the codebase organized the follow should be followed when adding a new
 artifact.
@@ -45,7 +45,7 @@ artifact.
   - parser.rs - Contains `pub(crate)` accessible functions for the artifact
   - error.rs - Artifact specific errors
 
-# Timestamps
+## Timestamps
 
 All timestamps artemis outputs are in ISO RFC 3339 format
 (YYYY-MM-DDTHH:mm:ss.SSSZ). The timestamp from should be from UNIXEPOCH time.
@@ -64,7 +64,7 @@ Use the time functions under **utils** to help with timestamp conversions!
 
 :::
 
-# Artifact Scope
+## Artifact Scope
 
 Currently all artifacts that artemis parses are statically coded in the binary
 (they are written in Rust). While this ok, it prevents us from dynamically
@@ -84,7 +84,7 @@ worth including as a Rust coded parser.
 
 When in doubt or unsure open an issue!
 
-# Suggestions
+## Suggestions
 
 If you want add a new artifact but want to see how other artifacts are
 implemented, some suggested ones to review are:
@@ -145,4 +145,4 @@ Some other examples listed below:
 - `/src/artifacts/os/macos/plist/property_list.rs` contains code help parse
   plist files.
   - `pub(crate) fn parse_plist_file(path: &str)` will parse a plist file and
-    return it as a Serde Value
+    return it as a serde Value

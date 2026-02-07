@@ -9,12 +9,12 @@ keywords:
 
 Artemis supports extracting Background Activities Manager (BAM) entries from the Windows Registry. BAM entries can record evidence of program execution.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 BAM entries.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { backgroundActivitiesManager } from "../artemis-api/src/windows/registry/bam";
@@ -27,7 +27,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Bam`
 
@@ -38,5 +38,10 @@ export interface Bam{
     sid: string;
     path: string;
     last_execution: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Last Execution";
+    artifact: "Windows Background Activity Monitor";
+    data_type: "windows:registry:bam:entry";
 }
 ```

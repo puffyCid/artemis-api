@@ -16,11 +16,11 @@ Other parsers:
 
 - Any program that read a text file
 
-Refernces:
+References:
 
 - [Cron](https://en.wikipedia.org/wiki/Cron)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse Cron files.
 
@@ -35,7 +35,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Cron` entries.
 

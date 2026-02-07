@@ -4,50 +4,47 @@ import styles from "./styles.module.css";
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<"svg">>;
   description: JSX.Element;
+  image: string;
 };
 
 const FeatureList: FeatureItem[] = [
   {
     title: "Easy to Use",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
     description: (
       <>
-        Artemis is designed is to be easy to use and collect data with
-        minimal system impact. Collecting data is as easy as: <b>artemis acquire prefetch</b>
+        Data collection is as easy as: <br></br> <b>artemis acquire processes</b>
       </>
     ),
+    image: require("@site/static/img/cat_chill.png").default,
   },
   {
-    title: "Collect large number of artifacts ",
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    title: "Collect a large number of artifacts ",
     description: (
       <>
-        Artemis supports 100+ artifacts across Linux, macOS, Windows, and FreeBSD. You
-        can collect this data locally or upload to cloud services such as AWS,
-        Azure, or GCP.
+        Support for over 100 artifacts across Linux, macOS, Windows, and FreeBSD. 
       </>
     ),
+    image: require("@site/static/img/cat_scientist.png").default,
   },
   {
     title: "Rust with a TypeScript API",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
     description: (
       <>
-        Artemis is written in Rust. However, it has TypeScript API that
-        can be used to script and filter collections.
+        Create scripts with TypeScript that
+        leverage Rust.
       </>
 
     ),
+    image: require("@site/static/img/cat_coder.png").default,
   },
 ];
 
-function Feature({ title, Svg, description }: FeatureItem) {
+function Feature({ title, description, image }: FeatureItem) {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        <img src={image} className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>

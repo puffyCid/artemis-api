@@ -8,8 +8,8 @@ keywords:
 
 # UnifiedLogs
 
-macOS `unifiedlogs` are the primary files associated with logging system
-activity. They are stored in a binary format at `/var/db/diagnostics/`.
+macOS Unified Logs are the primary files associated with logging system
+activity. They are stored in a binary format at **/var/db/diagnostics/**.
 
 Other Parsers:
 
@@ -22,7 +22,7 @@ References:
 - [Reviewing logs](https://www.mandiant.com/resources/blog/reviewing-macos-unified-logs)
 - [Reviewing more logs](https://www.crowdstrike.com/blog/how-to-leverage-apple-unified-log-for-incident-response/)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -43,10 +43,10 @@ sources = ["Special"]
 # logarchive_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `sources` List of directories that should be included when parsing the
-  `unifiedlogs` These directories are found at `/var/db/diagnostics/`. Only the
+  `unifiedlogs` These directories are found at **/var/db/diagnostics/**. Only the
   following directories contain logs:
   - Persist
   - Special
@@ -58,7 +58,7 @@ sources = ["Special"]
 To parse all logs you would use
 `sources = ["Special", "Persist", "Signpost", "HighVolume"]`
 
-# Output Structure
+## Output Structure
 
 An array of `UnifiedLog` entries
 

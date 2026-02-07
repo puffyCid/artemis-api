@@ -17,7 +17,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -43,14 +43,14 @@ sha1 = false
 sha256 = false
 ```
 
-# Collection Options
+## Collection Options
 
 - `metadata` Get [Macho](macho.md) data from process binary.
 - `md5` Boolean value to MD5 hash process binary
 - `sha1` Boolean value to SHA1 hash process binary
 - `sha256` Boolean value to SHA256 hash process binary
 
-# Output Structure
+## Output Structure
 
 An array of `MacosProcessInfo` entries
 

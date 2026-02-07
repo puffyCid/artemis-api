@@ -15,12 +15,12 @@ supports parsing several components from VSCode:
 
 Artemis also supports parsing the [VSCodium](https://vscodium.com/) application.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 VSCode information.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -37,7 +37,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `FileHistory` for file history, `Extensions` for installed
 extensions, `RecentFiles` for recent files and folders

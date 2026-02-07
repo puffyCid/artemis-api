@@ -1,15 +1,20 @@
 import { KnownHosts } from "../../types/unix/ssh";
 import { FileError } from "../filesystem/errors";
 import { glob, readTextFile, stat } from "../filesystem/files";
+import { PlatformType } from "../system/systeminfo";
 import { UnixError } from "./errors";
 
 /**
  * Function to get known hosts entries for SSH
+ * @param platform `PlatformType` to parse SSH config
  * @param alt_glob Optional alternative glob to `known_hosts` files
  * @returns Array of `KnownHosts` or `UnixError`
  */
-export function listKnownHosts(alt_glob?: string): KnownHosts[] | UnixError {
-    let glob_path = "/home/*/.ssh/known_hosts";
+export function listKnownHosts(platform: PlatformType, alt_glob?: string): KnownHosts[] | UnixError {
+    let glob_path = "/home/*/.ssh/known_hosts*";
+    if (platform === PlatformType.Darwin) {
+        glob_path = "/Users/*/.ssh/known_hosts*";
+    }
     if (alt_glob !== undefined) {
         glob_path = alt_glob;
     }
@@ -39,10 +44,15 @@ export function listKnownHosts(alt_glob?: string): KnownHosts[] | UnixError {
                 algorithm: value.at(1) ?? "",
                 data: value.at(2) ?? "",
                 source: entry.full_path,
-                created: "1970-01-01T00:00:00Z",
-                modified: "1970-01-01T00:00:00Z",
-                accessed: "1970-01-01T00:00:00Z",
-                changed: "1970-01-01T00:00:00Z",
+                created: "1970-01-01T00:00:00.000Z",
+                modified: "1970-01-01T00:00:00.000Z",
+                accessed: "1970-01-01T00:00:00.000Z",
+                changed: "1970-01-01T00:00:00.000Z",
+                message: `SSH config target '${value.at(0) ?? ""}`,
+                datetime: "1970-01-01T00:00:00.000Z",
+                timestamp_desc: "SSH Config Modified",
+                artifact: "SSH Config",
+                data_type: "unix:ssh:config:entry"
             };
 
             const meta = stat(entry.full_path);
@@ -56,6 +66,7 @@ export function listKnownHosts(alt_glob?: string): KnownHosts[] | UnixError {
             host.modified = meta.modified;
             host.accessed = meta.accessed;
             host.changed = meta.changed;
+            host.datetime = meta.modified;
 
             values.push(host);
         }

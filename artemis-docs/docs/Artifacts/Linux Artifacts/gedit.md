@@ -10,7 +10,7 @@ keywords:
 Gedit is a popular text editor for the GNOME Desktop environment. Artemis
 supports parsing recently opened files by gedit.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 recent opened files by gedit.
@@ -26,7 +26,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `RecentFiles` entries.
 
@@ -41,5 +41,11 @@ export interface RecentFiles {
   accessed: string;
   /**Path to `gedit-metdata.xml` */
   gedit_source: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Last Accessed";
+  artifact: "Gedit";
+  data_type: "linux:gedit:entry",
 }
+
 ```

@@ -11,7 +11,7 @@ import { unixEpochToISO } from "../../../time/conversion";
 export function nextcloudSyncLogs(text: string, version: string, sync_log_path: string): NextcloudClientSyncLog[] {
     const lines = text.split("\n");
     const logs: NextcloudClientSyncLog[] = [];
-    let start_time = "1970-01-01T00:00:00Z";
+    let start_time = "1970-01-01T00:00:00.000Z";
     for (const entry of lines) {
         if (!entry.startsWith("#=#=#=#=# Propagation starts") && !entry.includes("|") || entry.startsWith("# timestamp")) {
             continue;
@@ -19,7 +19,7 @@ export function nextcloudSyncLogs(text: string, version: string, sync_log_path: 
 
         if (entry.startsWith("#=#=#=#=# Propagation starts")) {
             const sync_start = entry.replace("#=#=#=#=# Propagation starts ", "");
-            start_time = sync_start.split(" ").at(0) ?? "1970-01-01T00:00:00Z";
+            start_time = sync_start.split(" ").at(0) ?? "1970-01-01T00:00:00.000Z";
             continue;
         }
 

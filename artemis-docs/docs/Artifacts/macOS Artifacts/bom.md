@@ -12,12 +12,12 @@ macOS Bill of Materials (`BOM`) files are created when a user installs an
 application using the builtin package installer on macOS. BOM files contain
 metadata associated with the install application.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse `BOM`
 data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { parseBom } from "./artemis-api/mod";
@@ -29,7 +29,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `BOM` object structure
 

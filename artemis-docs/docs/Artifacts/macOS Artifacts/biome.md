@@ -24,12 +24,12 @@ However, you may enable parsing of all Biome files.
 As mentioned in the output structure below, currently artemis does not do any
 post-processing of the data.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 `BIOME` data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { parseBiome } from "./artemis-api/mod";
@@ -40,7 +40,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `Biome` object structure
 

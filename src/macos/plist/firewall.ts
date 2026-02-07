@@ -48,7 +48,7 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
       version: results[ "version" ] ?? "",
       applications: [],
       exceptions: [],
-      explict_auths: [],
+      explicit_auths: [],
       services: [],
     };
 
@@ -78,7 +78,7 @@ export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
         string,
         string
       >[];
-    firewall.explict_auths = getAuths(auths);
+    firewall.explicit_auths = getAuths(auths);
 
     firewalls.push(firewall);
   }

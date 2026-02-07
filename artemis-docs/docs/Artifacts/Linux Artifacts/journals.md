@@ -8,7 +8,7 @@ keywords:
 
 # Journals
 
-Linux `Journals` are the log files associated with the systemd service. Systemd
+Linux Journals are the log files associated with the systemd service. Systemd
 is a popular system service that is common on most Linux distros. The logs can
 contain data related to application activity, sudo commands, and much more.
 
@@ -24,7 +24,7 @@ References:
 - [Journal format](https://systemd.io/JOURNAL_FILE_FORMAT/)
 - [Arch Wiki](https://wiki.archlinux.org/title/Systemd/Journal)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -44,12 +44,12 @@ artifact_name = "journals"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Path to a directory containing Journal files. This configuration is
   **optional**
 
-# Output Structure
+## Output Structure
 
 An array of `Journal` entries
 

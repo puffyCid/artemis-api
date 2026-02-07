@@ -28,7 +28,7 @@ References:
 - [velociraptor blog](https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing)
 - [WMI hunting blog](https://redcanary.com/threat-detection-report/techniques/windows-management-instrumentation)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -48,12 +48,12 @@ artifact_name = "wmipersist"
 # alt_dir = "D:\\Evidence\\WMI"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_dir` An alternative directory to use containing the WMI Repository. This
   directory needs to contain MAPPING\*.MAP, OBJECTS.DATA, INDEX.BTR files
 
-# Output Structure
+## Output Structure
 
 An array of `WmiPersist` entries
 

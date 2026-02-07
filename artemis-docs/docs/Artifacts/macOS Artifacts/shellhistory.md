@@ -29,7 +29,7 @@ References:
 - [Bash](https://linuxhint.com/bash_command_history_usage/)
 - [Zsh](https://www.soberkoder.com/better-zsh-history/)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse Shell History files.
 
@@ -44,7 +44,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `BashHistory` for bash data, `ZshHistory` for zsh data
 

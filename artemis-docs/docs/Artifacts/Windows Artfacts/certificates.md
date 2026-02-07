@@ -12,11 +12,11 @@ Artemis supports parsing AD certificates from ESE databases on Windows servers. 
 ## References
 - [CrowdStrike White Paper](https://www.crowdstrike.com/wp-content/uploads/2023/12/investigating-active-directory-certificate-abuse.pdf)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect parse AD certificates.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { ADCertificates } from "./artemis-api/mod";
@@ -43,7 +43,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Depends on functions called from the ADCertificates class. 
 

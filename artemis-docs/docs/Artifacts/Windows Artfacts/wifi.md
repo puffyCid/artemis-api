@@ -10,12 +10,12 @@ keywords:
 Artemis supports extracting WiFi access points that the Windows system has connected
 to. By default it will try to parse WiFi networks at SOFTWARE Registry file.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get WiFi
 network.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { wifiNetworksWindows } from "./artemis-api/mod";
@@ -28,7 +28,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Wifi`
 

@@ -15,12 +15,12 @@ References:
 
 - [Truth about USBs](https://www.sans.org/blog/the-truth-about-usb-device-serial-numbers/)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 USBs keys.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { listUsbDevices } from "./artemis-api/src/windows/registry/usb";
@@ -31,7 +31,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `UsbDevices`
 
@@ -52,5 +52,10 @@ export interface UsbDevices {
   revision: string;
   tracking_id: string;
   disk_id: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "USB Last Connected";
+  artifact: "Windows USB Device";
+  data_type: "windows:registry:usb:entry";
 }
 ```

@@ -51,7 +51,7 @@ Writing tests for the TypeScript API is a bit more involved than writing tests f
 1. Export a test function
 2. Register the test function in test.ts under tests/test.ts
 3. Write your test and place it under the test/ folder
-4. Run tests with compile_tests.sh or compile_tests.bat
+4. Run tests with compile_tests.ps1 or compile_tests.py
 
 You may place test data under test/test_data.
 

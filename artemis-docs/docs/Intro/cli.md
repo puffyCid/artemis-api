@@ -4,10 +4,9 @@ sidebar_position: 3
 
 # CLI Options
 
-artemis is designed to have a very simple CLI menu. All of the complex data
-parsing is handle in the `core` library.
+Artemis is designed to have a very simple CLI menu. The CLI allows you to quickly get started with parsing forensic data.
 
-# Running Artemis
+## Running Artemis
 
 Once you have [installed](./installation.md) artemis you can access its help
 menu with the command below:
@@ -44,46 +43,47 @@ Acquire forensic artifacts
 Usage: artemis acquire [OPTIONS] [COMMAND]
 
 Commands:
-  processes          Collect processes
-  connections        Collect network connections
-  filelisting        Pull filelisting
-  systeminfo         Get systeminfo
-  prefetch           windows: Parse Prefetch
-  eventlogs          windows: Parse EventLogs
-  rawfilelisting     windows: Parse NTFS to get filelisting
-  shimdb             windows: Parse ShimDatabase
-  registry           windows: Parse Registry
-  userassist         windows: Parse Userassist
-  shimcache          windows: Parse Shimcache
-  shellbags          windows: Parse Shellbags
-  amcache            windows: Parse Amcache
-  shortcuts          windows: Parse Shortcuts
-  usnjrnl            windows: Parse UsnJrnl
-  bits               windows: Parse BITS
-  srum               windows: Parse SRUM
-  users-windows      windows: Parse Users
-  search             windows: Parse Windows Search
-  tasks              windows: Parse Windows Tasks
-  services           windows: Parse Windows Services
-  jumplists          windows: Parse Jumplists
-  recyclebin         windows: Parse RecycleBin
-  wmipersist         windows: Parse WMI Repository
-  outlook            windows: Parse Outlook messages
-  mft                windows: Parse MFT file
-  execpolicy         macos: Parse ExecPolicy
-  users-macos        macos: Collect local users
-  fsevents           macos: Parse FsEvents entries
-  emond              macos: Parse Emond persistence. Removed in Ventura
-  loginitems         macos: Parse LoginItems
-  launchd            macos: Parse Launch Daemons and Agents
-  groups-macos       macos: Collect local groups
-  unifiedlogs        macos: Parse the Unified Logs
-  sudologs-macos     macos: Parse Sudo log entries from Unified Logs
-  spotlight          macos: Parse the Spotlight database
-  sudologs-linux     linux: Grab Sudo logs
-  journals           linux: Parse systemd Journal files
-  logons             linux: Parse Logon files
-  help               Print this message or the help of the given subcommand(s)
+  processes            Collect processes
+  connections          Collect network connections
+  filelisting          Pull filelisting
+  systeminfo           Get systeminfo
+  prefetch             windows: Parse Prefetch
+  eventlogs            windows: Parse EventLogs
+  rawfilelisting       windows: Parse NTFS to get filelisting
+  shimdb               windows: Parse ShimDatabase
+  registry             windows: Parse Registry
+  userassist           windows: Parse Userassist
+  shimcache            windows: Parse Shimcache
+  shellbags            windows: Parse Shellbags
+  amcache              windows: Parse Amcache
+  shortcuts            windows: Parse Shortcuts
+  usnjrnl              windows: Parse UsnJrnl
+  bits                 windows: Parse BITS
+  srum                 windows: Parse SRUM
+  users-windows        windows: Parse Users
+  search               windows: Parse Windows Search
+  tasks                windows: Parse Windows Tasks
+  services             windows: Parse Windows Services
+  jumplists            windows: Parse Jumplists
+  recyclebin           windows: Parse RecycleBin
+  wmipersist           windows: Parse WMI Repository
+  outlook              windows: Parse Outlook messages
+  mft                  windows: Parse MFT file
+  execpolicy           macos: Parse ExecPolicy
+  users-macos          macos: Collect local users
+  fsevents             macos: Parse FsEvents entries
+  emond                macos: Parse Emond persistence. Removed in Ventura
+  loginitems           macos: Parse LoginItems
+  launchd              macos: Parse Launch Daemons and Agents
+  groups-macos         macos: Collect local groups
+  unifiedlogs          macos: Parse the Unified Logs
+  sudologs-macos       macos: Parse Sudo log entries from Unified Logs
+  spotlight            macos: Parse the Spotlight database
+  sudologs-linux       linux: Grab Sudo logs
+  journals             linux: Parse systemd Journal files
+  logons               linux: Parse Logon files
+  rawfilelisting-ext4  linux: Parse the raw ext4 filesystem
+  help                 Print this message or the help of the given subcommand(s)
 
 Options:
       --format <FORMAT>          Output format. JSON or JSONL or CSV [default: JSON]
@@ -91,6 +91,7 @@ Options:
       --compress                 GZIP Compress results
       --timeline                 Timeline parsed data. Output is always JSONL
   -h, --help                     Print help
+
 ```
 
 To collect a process listing you would type:

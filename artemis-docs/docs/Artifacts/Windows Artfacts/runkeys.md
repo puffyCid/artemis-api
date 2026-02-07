@@ -10,11 +10,11 @@ Artemis supports extracting the Windows Registry Run key information from severa
 - NTUSER.DAT
 - SOFTWARE
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Windows Run Keys.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { getRunKeys } from "./artemis-api/mod";
@@ -27,7 +27,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `RegistryRunKey`
 
@@ -46,5 +46,10 @@ export interface RegistryRunKey {
     sha256: string;
     value: string;
     name: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Registry Last Modified";
+    artifact: "Windows Registry Run Key";
+    data_type: "windows:registry:run:entry";
 }
 ```

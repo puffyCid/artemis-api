@@ -13,11 +13,11 @@ parsing both unlocked and locked UAL databases.
 
 This database is **not** related to to the M365 UAL (Unified Audit Logging).
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect UAL keys.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { FileError } from "./artemis-api/src/filesystem/errors";
@@ -68,7 +68,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `UserAccessLog`
 

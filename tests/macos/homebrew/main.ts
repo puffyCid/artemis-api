@@ -3,8 +3,6 @@ import { MacosError } from "../../../src/macos/errors";
 import { testHomebrew } from "../../test";
 
 function main() {
-
-
   console.log('Running Homebrew tests....');
   console.log(' Starting live test....');
   const data = getHomebrewInfo();

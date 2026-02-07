@@ -9,12 +9,12 @@ keywords:
 LibreOffice is a popular open source office software. Artemis supports parsing
 recently opened files by the LibreOffice applications.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 LibreOffice information.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -29,7 +29,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `RecentFilesLibreOffice` entries.
 
@@ -55,7 +55,7 @@ export interface RecentFilesLibreOffice {
   /**Path to registrymodifications.xcu */
   source: string;
   message: string;
-  datetime: "1970-01-01T00:00:00Z";
+  datetime: "1970-01-01T00:00:00.000Z";
   timestamp_desc: "N/A";
   artifact: "LibreOffice Recent Files",
   data_type: "application:libreoffice:recentfiles:entry",

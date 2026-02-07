@@ -9,11 +9,11 @@ keywords:
 
 Artemis supports extracting the Windows Firewall rules from the Windows SYSTEM Registry files.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Firewall rules.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { firewallRules } from "./artemis-api/mod";
@@ -26,7 +26,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `FirewallRules`
 
@@ -52,6 +52,11 @@ export interface FirewallRules {
     remote_address: string[];
     local_address: string[];
     [ key: string ]: unknown;
+    message: string;
+    datetime: string;
+    timestamp_desc: "Registry Last Modified";
+    artifact: "Windows Firewall Rule";
+    data_type: "windows:registry:firewallrule:entry";
 }
 
 export enum Direction {

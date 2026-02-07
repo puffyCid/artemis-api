@@ -10,11 +10,11 @@ keywords:
 Artemis supports creating a process tree from the Windows Security.evtx EventLog. Specifically from the 4688 entries.
 Artemis can read each of these log entries and attempt to create a process tree from the data
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to reconstruct process trees.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { processTreeEventLogs } from "./artemis-api/mod";
@@ -27,7 +27,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `EventLogProcessTree`
 
@@ -50,10 +50,10 @@ export interface EventLogProcessTree {
     /**Complete process tree for a process */
     message: string;
     datetime: string;
-    timestamp_desc: string;
-    artifact: string;
+    timestamp_desc: "EventLog Generated";
+    artifact: "EventLogs Process Tree";
     evtx_path: string;
-    data_type: string;
+    data_type: "windows:eventlogs:proctree:entry";
     record: number;
     logon_id: number;
 }

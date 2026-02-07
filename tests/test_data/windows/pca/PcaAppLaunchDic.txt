@@ -1,0 +1,192 @@
+C:\Program Files\Microsoft Office\root\Integration\Integrator.exe|2026-01-24 22:19:33.412
+C:\Program Files\Microsoft Office\root\Integration\Addons\VCRedist.exe|2024-10-31 05:33:24.373
+C:\Program Files\WindowsApps\MSTeams_25153.1010.3727.5483_arm64__8wekyb3d8bbwe\ms-teams.exe|2025-07-10 01:34:29.086
+C:\Users\dev\AppData\Local\Microsoft\OneDrive\Update\OneDriveSetup.exe|2025-10-09 00:02:35.364
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\olk.exe|2025-07-10 01:35:09.704
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2025.617.100_arm64__8wekyb3d8bbwe\olk.exe|2025-07-10 23:59:20.407
+C:\Users\dev\AppData\Local\Microsoft\OneDrive\OneDrive.exe|2025-10-13 23:47:02.421
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.18.10301.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2025-07-10 04:05:11.777
+C:\Windows\System32\msiexec.exe|2026-01-16 00:54:29.955
+C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2504.62.0_arm64__8wekyb3d8bbwe\Notepad\Notepad.exe|2025-08-30 22:34:42.753
+C:\Users\dev\AppData\Local\Temp\WinGet\Git.Git.2.50.1\Git-2.50.1-arm64.exe|2025-07-10 01:57:07.922
+C:\Users\dev\Downloads\rustup-init.exe|2025-07-10 02:12:21.395
+C:\Users\dev\Downloads\VisualStudioSetup.exe|2025-07-10 02:04:27.275
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.101.24242\VSCodiumUserSetup-arm64-1.101.24242.exe|2025-07-10 02:06:09.047
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.140.0.4\Firefox%20Setup%20140.0.4.exe|2025-07-10 02:16:21.872
+C:\Users\dev\Downloads\LLVM-18.1.8-woa64.exe|2025-07-10 02:27:33.120
+C:\Users\dev\Downloads\LLVM-20.1.6-woa64.exe|2025-07-10 02:28:10.243
+C:\Users\dev\AppData\Local\Programs\VSCodium\VSCodium.exe|2026-01-23 01:08:22.338
+C:\Users\dev\Downloads\podman-desktop-1.19.2-setup.exe|2025-07-10 03:21:44.362
+C:\Users\dev\AppData\Local\Programs\podman-desktop\Podman Desktop.exe|2025-08-08 01:28:00.611
+C:\Program Files\ImHex\imhex-gui.exe|2026-01-16 04:48:34.530
+C:\Program Files\WSL\wsl.exe|2025-07-10 04:47:00.565
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.22.11141.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2025-07-19 21:49:59.687
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.22.11141.0_arm64__8wekyb3d8bbwe\wt.exe|2025-07-19 21:50:50.752
+C:\Program Files\WSL\wslsettings\wslsettings.exe|2025-07-16 06:48:50.138
+C:\Program Files\Mozilla Firefox\firefox.exe|2026-01-24 23:27:25.868
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25063.108.0_arm64__8wekyb3d8bbwe\Copilot.exe|2025-07-15 06:07:49.442
+C:\Users\dev\Downloads\RegistryExplorer\RegistryExplorer\RegistryExplorer.exe|2025-07-13 01:31:38.391
+C:\Users\dev\Downloads\windowsdesktop-runtime-9.0.7-win-x64.exe|2025-07-13 01:31:09.834
+C:\Users\dev\Documents\RegistryExplorer\RegistryExplorer.exe|2025-08-30 22:33:18.894
+C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE|2026-01-19 21:28:26.858
+C:\Users\dev\Downloads\ShellBagsExplorer\ShellBagsExplorer\ShellBagsExplorer.exe|2025-07-16 03:01:24.830
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman.5.5.2\podman-5.5.2-setup.exe|2025-07-19 21:52:48.946
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.20.1.8\LLVM-20.1.8-woa64.exe|2025-07-19 21:54:57.936
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.9\vs_Community.exe|2025-07-19 21:56:08.651
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VCRedist.2015+.arm64.14.44.35211.0\VC_redist.arm64.exe|2025-07-19 21:59:46.083
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.OneDrive.25.122.0624.0004\OneDriveSetup.exe|2025-07-19 21:59:54.440
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman-Desktop.1.20.2\podman-desktop-1.20.2-setup-arm64.exe|2025-07-19 22:00:54.574
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.102.14746\VSCodiumUserSetup-arm64-1.102.14746.exe|2025-07-19 22:01:22.043
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.22.11751.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2025-08-08 01:10:23.974
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\setup.exe|2025-07-19 22:52:15.124
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.22.11751.0_arm64__8wekyb3d8bbwe\wt.exe|2025-07-19 22:23:38.223
+C:\Users\dev\Downloads\dotnetfx35setup.exe|2025-07-19 23:31:58.358
+C:\Program Files\WindowsApps\Microsoft.MSIXPackagingTool_1.2024.405.0_x64__8wekyb3d8bbwe\MsixPackageTool.exe|2025-07-19 23:52:43.010
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25064.139.0_arm64__8wekyb3d8bbwe\Copilot.exe|2025-08-08 01:20:58.085
+C:\Users\dev\AppData\Local\Microsoft\WinGet\Packages\activescott.lessmsi_Microsoft.Winget.Source_8wekyb3d8bbwe\AddWindowsExplorerShortcut.exe|2025-07-20 00:24:28.951
+C:\Users\dev\AppData\Local\Microsoft\WinGet\Packages\activescott.lessmsi_Microsoft.Winget.Source_8wekyb3d8bbwe\lessmsi.exe|2025-10-14 04:19:59.285
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.141.0.3\Firefox%20Setup%20141.0.3.exe|2025-08-08 01:10:41.470
+C:\Program Files\WindowsApps\MicrosoftWindows.CrossDevice_1.25071.33.0_arm64__cw5n1h2txyewy\CrossDeviceService.exe|2025-08-08 01:11:56.695
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.11\vs_Community.exe|2025-08-08 01:12:48.560
+C:\Users\dev\AppData\Local\Microsoft\OneDrive\25.130.0706.0004\FileSyncConfig.exe|2025-08-08 01:21:45.918
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.DotNet.DesktopRuntime.9.9.0.8\windowsdesktop-runtime-9.0.8-win-arm64.exe|2025-08-08 01:21:52.212
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.OneDrive.25.127.0701.0006\OneDriveSetup.exe|2025-08-08 01:22:07.339
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.102.35058\VSCodiumUserSetup-arm64-1.102.35058.exe|2025-08-08 01:22:32.952
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.22.12111.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2025-08-30 22:42:54.814
+C:\Users\dev\AppData\Local\Temp\WinGet\7zip.7zip.25.01\7z2501-arm64.exe|2025-08-30 22:27:35.472
+C:\Users\dev\AppData\Local\Temp\WinGet\Git.Git.2.51.0\Git-2.51.0-arm64.exe|2025-08-30 22:28:00.107
+C:\Program Files\7-Zip\7zFM.exe|2025-08-30 22:28:01.367
+C:\Program Files\WindowsApps\MicrosoftWindows.CrossDevice_1.25072.52.0_arm64__cw5n1h2txyewy\CrossDeviceService.exe|2025-08-30 22:28:21.237
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.142.0.1\Firefox%20Setup%20142.0.1.exe|2025-08-30 22:29:06.296
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman.5.6.0\podman-5.6.0-setup.exe|2025-08-30 22:31:02.285
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.0\LLVM-21.1.0-win64.exe|2025-08-30 22:43:10.239
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.13\vs_Community.exe|2025-08-30 22:32:14.814
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman-Desktop.1.21.0\podman-desktop-1.21.0-setup-arm64.exe|2025-08-30 22:43:30.679
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.103.25610\VSCodiumUserSetup-arm64-1.103.25610.exe|2025-08-30 22:44:03.601
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.23.12371.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2025-09-30 00:53:42.793
+C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2507.26.0_arm64__8wekyb3d8bbwe\Notepad\Notepad.exe|2025-11-04 04:32:05.224
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.143.0.1\Firefox%20Setup%20143.0.1.exe|2025-09-20 15:06:48.186
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman.5.6.1\podman-5.6.1-setup.exe|2025-09-20 15:07:06.332
+C:\Program Files\WindowsApps\MicrosoftWindows.CrossDevice_1.25082.70.0_arm64__cw5n1h2txyewy\CrossDeviceService.exe|2025-09-20 15:09:52.599
+C:\Users\dev\AppData\Local\Microsoft\OneDrive\25.164.0824.0003\FileSyncConfig.exe|2025-09-20 15:12:17.755
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.1\LLVM-21.1.1-woa64.exe|2025-09-20 15:27:52.382
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.DotNet.DesktopRuntime.9.9.0.9\windowsdesktop-runtime-9.0.9-win-arm64.exe|2025-09-20 15:29:56.688
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.104.16282\VSCodiumUserSetup-arm64-1.104.16282.exe|2025-09-20 16:41:11.218
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25082.139.0_arm64__8wekyb3d8bbwe\Copilot.exe|2025-09-20 16:05:34.738
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2508.51171.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-09-20 16:40:46.339
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2509.46141.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-09-20 17:00:40.399
+C:\Users\dev\Documents\Tools\RegistryExplorer\RegistryExplorer.exe|2026-01-24 22:56:14.559
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2509.52051.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-09-24 23:41:20.831
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2509.54051.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-09-26 23:07:04.336
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.2\LLVM-21.1.2-win64.exe|2025-10-05 16:13:17.210
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.16\vs_Community.exe|2025-09-26 23:17:18.653
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.104.26450\VSCodiumUserSetup-arm64-1.104.26450.exe|2025-09-30 00:54:33.914
+C:\Program Files\WindowsApps\MicrosoftWindows.CrossDevice_1.25082.81.0_arm64__cw5n1h2txyewy\CrossDeviceService.exe|2025-09-27 03:54:59.327
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.23.12681.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2025-10-26 15:10:01.758
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.143.0.4\Firefox%20Setup%20143.0.4.exe|2025-10-05 16:11:20.338
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman.5.6.2\podman-5.6.2-setup.exe|2025-10-05 16:12:58.514
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman-Desktop.1.22.0\podman-desktop-1.22.0-setup-arm64.exe|2025-10-05 16:14:00.643
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.104.36664\VSCodiumUserSetup-arm64-1.104.36664.exe|2025-10-05 16:14:38.614
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2509.59141.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-10-07 05:52:59.535
+C:\Users\dev\AppData\Local\Microsoft\OneDrive\25.174.0907.0003\FileSyncConfig.exe|2025-10-07 04:06:07.693
+C:\Users\dev\Documents\Tools\EXE64.exe|2025-10-26 17:45:34.864
+C:\Users\dev\AppData\Local\Microsoft\WinGet\Packages\Microsoft.Sysinternals.ProcessMonitor_Microsoft.Winget.Source_8wekyb3d8bbwe\Procmon64a.exe|2025-10-07 06:12:13.915
+C:\Users\dev\Downloads\WEPExplore_v1.2\Explorer.exe|2025-10-08 00:59:49.017
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25094.120.0_arm64__8wekyb3d8bbwe\Copilot.exe|2025-10-28 01:11:19.936
+C:\Users\dev\AppData\Local\Temp\WinGet\MHNexus.HxD.2.5\extracted\HxDSetup.exe|2025-10-08 01:30:37.966
+C:\Program Files\HxD\HxD.exe|2026-01-25 00:25:32.877
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe|2025-10-08 22:48:47.443
+C:\Users\dev\Downloads\ESEDatabaseView.exe|2025-10-11 23:53:50.187
+C:\Users\dev\AppData\Local\Temp\WinGet\Python.Python.3.14.3.14.0\python-3.14.0-arm64.exe|2025-10-10 23:28:37.530
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2510.38151.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-10-10 23:47:28.862
+C:\Users\dev\AppData\Local\Temp\WinGet\Git.Git.2.51.0.2\Git-2.51.0.2-arm64.exe|2025-10-13 18:11:17.583
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.3\LLVM-21.1.3-win64.exe|2025-10-13 18:18:07.532
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.105.06808\VSCodiumUserSetup-arm64-1.105.06808.exe|2025-10-13 18:59:58.978
+C:\Program Files\Microsoft OneDrive\OneDrive.exe|2025-12-30 17:00:19.955
+C:\Users\dev\Downloads\ODE\OneDriveExplorer_GUI.exe|2025-10-14 00:54:07.457
+C:\Users\dev\AppData\Local\Temp\WinGet\Git.Git.2.51.1\Git-2.51.1-arm64.exe|2025-10-26 15:10:41.164
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.144.0\Firefox%20Setup%20144.0.exe|2025-10-26 15:12:00.217
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.OneDrive.25.189.0928.0002\OneDriveSetup.exe|2025-10-26 15:12:22.014
+C:\Program Files\WindowsApps\MicrosoftWindows.CrossDevice_1.25092.33.0_arm64__cw5n1h2txyewy\CrossDeviceService.exe|2025-10-26 15:12:25.649
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2510.51091.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-10-26 15:12:49.677
+C:\Users\dev\AppData\Local\Microsoft\WinGet\Packages\Microsoft.Sysinternals.Autoruns_Microsoft.Winget.Source_8wekyb3d8bbwe\Autoruns64a.exe|2025-10-26 15:21:18.534
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.4\LLVM-21.1.4-win64.exe|2025-10-26 18:07:15.038
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.18\vs_Community.exe|2025-10-28 00:57:55.196
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.DotNet.DesktopRuntime.9.9.0.10\windowsdesktop-runtime-9.0.10-win-arm64.exe|2025-10-28 01:10:47.897
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman-Desktop.1.22.1\podman-desktop-1.22.1-setup-arm64.exe|2025-10-28 01:12:17.591
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.105.17075\VSCodiumUserSetup-arm64-1.105.17075.exe|2025-10-28 01:13:55.458
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.23.12811.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2025-12-29 16:45:54.891
+C:\Program Files\Microsoft OneDrive\25.194.1005.0003\FileSyncConfig.exe|2025-11-03 23:42:19.526
+C:\Users\dev\AppData\Local\Temp\WinGet\Git.Git.2.51.2\Git-2.51.2-arm64.exe|2025-11-03 23:43:22.990
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.144.0.2\Firefox%20Setup%20144.0.2.exe|2025-11-03 23:44:27.681
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.4\LLVM-21.1.4-woa64.exe|2025-11-03 23:55:43.477
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.19\vs_Community.exe|2025-11-03 23:57:02.749
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25103.108.0_arm64__8wekyb3d8bbwe\Copilot.exe|2025-11-04 03:50:08.179
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2511.33071.0_arm64__8wekyb3d8bbwe\WebViewHost.exe|2025-11-04 02:38:39.385
+C:\Users\dev\Downloads\kdeconnect-kde-release_25.04-5109-windows-cl-msvc2022-x86_64.exe|2025-11-05 02:53:03.399
+C:\Users\dev\AppData\Local\Programs\KDE Connect\bin\kdeconnect-app.exe|2025-11-05 02:55:57.737
+C:\Users\dev\AppData\Local\Programs\KDE Connect\uninstall.exe|2025-11-05 02:58:54.540
+C:\Users\dev\Documents\Tools\ShellBagsExplorer\ShellBagsExplorer.exe|2025-11-05 03:29:13.042
+C:\Users\dev\AppData\Local\Temp\WinGet\Git.Git.2.52.0\Git-2.52.0-arm64.exe|2025-11-22 23:46:14.338
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.145.0.1\Firefox%20Setup%20145.0.1.exe|2025-11-22 23:48:27.713
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.OneDrive.25.206.1021.0003\OneDriveSetup.exe|2025-11-22 23:48:52.335
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman.5.7.0\podman-5.7.0-setup.exe|2025-11-22 23:58:12.656
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.6\LLVM-21.1.6-win64.exe|2025-11-23 01:43:10.068
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.21\vs_Community.exe|2025-11-22 23:59:39.377
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.DotNet.DesktopRuntime.9.9.0.11\windowsdesktop-runtime-9.0.11-win-arm64.exe|2025-11-23 00:16:31.561
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman-Desktop.1.23.1\podman-desktop-1.23.1-setup-arm64.exe|2025-11-23 00:18:13.472
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2511.33071.0_arm64__8wekyb3d8bbwe\M365Copilot.exe|2025-11-23 00:33:21.108
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2511.50071.0_arm64__8wekyb3d8bbwe\M365Copilot.exe|2025-11-23 01:18:29.169
+C:\Users\dev\Downloads\LLVM-21.1.5-woa64.exe|2025-11-23 01:58:23.708
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25111.85.0_arm64__8wekyb3d8bbwe\Copilot.exe|2025-11-23 02:32:04.681
+C:\Users\dev\Documents\Tools\ESEDatabaseView.exe|2026-01-05 20:34:18.882
+C:\Program Files\Microsoft OneDrive\25.222.1112.0002\FileSyncConfig.exe|2025-12-16 16:53:26.276
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.146.0\Firefox%20Setup%20146.0.exe|2025-12-16 16:55:45.678
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2512.41101.0_arm64__8wekyb3d8bbwe\M365Copilot.exe|2025-12-16 16:56:10.213
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman.5.7.1\podman-5.7.1-setup.exe|2025-12-16 17:01:06.502
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.7\LLVM-21.1.7-woa64.exe|2025-12-16 17:07:22.505
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VCRedist.2015+.x86.14.50.35719.0\VC_redist.x86.exe|2025-12-16 17:08:52.252
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VCRedist.2015+.arm64.14.50.35719.0\VC_redist.arm64.exe|2025-12-16 17:09:06.506
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VCRedist.2015+.x64.14.50.35719.0\VC_redist.x64.exe|2025-12-16 17:09:26.653
+C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2508.38.0_arm64__8wekyb3d8bbwe\Notepad\Notepad.exe|2026-01-14 04:35:21.333
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.106.37943\VSCodiumUserSetup-arm64-1.106.37943.exe|2025-12-16 17:11:11.236
+C:\Users\dev\AppData\Local\Temp\WinGet\Python.Python.3.14.3.14.2\python-3.14.2-arm64.exe|2025-12-16 17:12:49.151
+C:\Users\dev\AppData\Local\Temp\WinGet\Perplexity.Comet.143.0.7499.33692\download.exe|2025-12-16 17:31:20.450
+C:\Users\dev\AppData\Local\Perplexity\Comet\Application\comet.exe|2026-01-13 02:58:59.679
+C:\Users\dev\AppData\Local\Temp\WinGet\Brave.Brave.143.1.85.111\BraveBrowserStandaloneSilentSetupArm64.exe|2025-12-16 22:16:17.792
+C:\Users\dev\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe|2025-12-16 22:18:08.608
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2512.53121.0_arm64__8wekyb3d8bbwe\M365Copilot.exe|2026-01-04 23:55:17.002
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.146.0.1\Firefox%20Setup%20146.0.1.exe|2025-12-29 16:48:28.702
+C:\Users\dev\AppData\Local\Temp\WinGet\LLVM.LLVM.21.1.8\LLVM-21.1.8-woa64.exe|2025-12-30 17:05:12.991
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.23\vs_Community.exe|2025-12-30 17:06:26.271
+C:\Users\dev\AppData\Local\Temp\WinGet\RedHat.Podman-Desktop.1.24.2\podman-desktop-1.24.2-setup-arm64.exe|2025-12-30 17:26:43.692
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.107.18627\VSCodiumUserSetup-arm64-1.107.18627.exe|2025-12-30 17:27:13.017
+C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.23.13503.0_arm64__8wekyb3d8bbwe\WindowsTerminal.exe|2026-01-15 02:56:15.378
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25121.60.0_arm64__8wekyb3d8bbwe\Copilot.exe|2026-01-10 00:59:44.406
+C:\Program Files (x86)\BITS Manager\BitsManager.exe|2026-01-07 05:35:56.341
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2601.34031.0_arm64__8wekyb3d8bbwe\M365Copilot.exe|2026-01-07 23:56:27.368
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.WindowsADK.10.1.28000.1\adksetup.exe|2026-01-13 03:58:35.595
+C:\ProgramData\Package Cache\{d702f722-3d72-487e-9d7b-a2be862530f6}\adksetup.exe|2026-01-08 02:07:04.661
+C:\Users\dev\Downloads\adksetup.exe|2026-01-08 02:11:12.716
+C:\Users\dev\Downloads\adksetup (1).exe|2026-01-08 02:12:12.499
+C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Application Compatibility Toolkit\Compatibility Administrator (64-bit)\Compatadmin.exe|2026-01-08 02:13:14.452
+C:\Program Files\Microsoft OneDrive\25.224.1116.0003\FileSyncConfig.exe|2026-01-08 03:41:30.326
+C:\Users\dev\Documents\Tools\SDBExplorer\SDBExplorer.exe|2026-01-09 22:28:47.176
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2601.39061.0_arm64__8wekyb3d8bbwe\M365Copilot.exe|2026-01-13 02:39:44.726
+C:\ProgramData\Package Cache\{34efb572-e77e-41c2-b149-d319917efc09}\adksetup.exe|2026-01-13 03:58:30.609
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.WindowsAppRuntime.1.8.1.8.3\windowsappruntimeinstall-arm64.exe|2026-01-13 04:02:36.443
+C:\Program Files\WindowsApps\Microsoft.Copilot_1.25121.69.0_arm64__8wekyb3d8bbwe\Copilot.exe|2026-01-16 04:53:52.811
+C:\Users\dev\Downloads\ImagerPro_8.2.0.26\x64\Exterro_FTK_Imager_(x64).exe|2026-01-14 04:38:31.718
+C:\Windows\Installer\MSIB1C4.tmp|2026-01-14 04:42:05.229
+C:\Program Files\WindowsApps\Microsoft.Paint_11.2511.291.0_arm64__8wekyb3d8bbwe\PaintApp\mspaint.exe|2026-01-14 05:27:10.109
+C:\Windows\Temp\{7C6F2DD0-3D09-49BD-A178-A0539B547DF4}\.be\windowsdesktop-runtime-9.0.12-win-arm64.exe|2026-01-14 08:05:02.168
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2601.41041.0_arm64__8wekyb3d8bbwe\M365Copilot.exe|2026-01-15 03:01:27.168
+C:\Users\dev\Documents\Tools\MFTExplorer\MFTExplorer.exe|2026-01-15 03:09:28.532
+C:\Program Files\Microsoft OneDrive\25.238.1204.0001\FileSyncConfig.exe|2026-01-15 04:24:50.253
+C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2510.14.0_arm64__8wekyb3d8bbwe\Notepad\Notepad.exe|2026-01-25 00:54:36.095
+C:\Users\dev\AppData\Local\Temp\WinGet\Mozilla.Firefox.147.0\Firefox%20Setup%20147.0.exe|2026-01-16 00:49:27.036
+C:\Users\dev\AppData\Local\Temp\WinGet\Wibu-Systems.CodeMeterRuntimeKit.8.40\15826.exe|2026-01-16 00:50:00.920
+C:\Users\dev\AppData\Local\Temp\WinGet\Microsoft.VisualStudio.2022.Community.17.14.24\vs_Community.exe|2026-01-16 00:55:02.522
+C:\Users\dev\AppData\Local\Temp\WinGet\VSCodium.VSCodium.1.108.10359\VSCodiumUserSetup-arm64-1.108.10359.exe|2026-01-16 01:03:24.436
+C:\Program Files\AccessData\FTK Imager\FTK Imager.exe|2026-01-16 04:48:14.614
+C:\Program Files\Microsoft OneDrive\25.243.1211.0001\FileSyncConfig.exe|2026-01-23 01:08:04.320

@@ -23,7 +23,7 @@ References:
 - [LIEF](https://lief-project.github.io/)
 - [libyal](https://github.com/libyal/libexe/blob/main/documentation/Executable%20(EXE)%20file%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 There is no way to collect just PE data with artemis instead it is an optional
 feature for the Windows filelisting, rawfilelisting, and processes
@@ -32,11 +32,11 @@ artifacts.
 However, it is possible to directly parse PE files by using TypeScript. See the
 [API](../../API/overview.md) documentation for details.
 
-# Collection Options
+## Collection Options
 
 N/A
 
-# Output Structure
+## Output Structure
 
 An object containing PE info
 

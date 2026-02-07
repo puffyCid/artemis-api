@@ -60,13 +60,13 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
 
   for (let i = 0; i < usbs.length; i++) {
     const usb_info = usbs[i];
-    if(usb_info === undefined) {
+    if (usb_info === undefined) {
       continue;
     }
     for (const reg of reg_data) {
       if (reg.path.includes(usb_info.tracking_id) && "Partmg") {
         for (const value of reg.values) {
-          if (value.value !== "DiskId" ||usb_info.disk_id !== "") {
+          if (value.value !== "DiskId" || usb_info.disk_id !== "") {
             continue;
           }
           usb_info.disk_id = value.data.replace("{", "").replace("}", "");
@@ -115,6 +115,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
           usb_info.last_connected = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
+          usb_info.datetime = usb_info.last_connected;
         }
       } else if (
         reg.path.includes(usb_info.tracking_id) &&
@@ -154,12 +155,17 @@ function usbStor(data: Registry): UsbDevices {
     last_insertion: "",
     install: "",
     first_install: "",
+    message: "",
+    datetime: "1970-01-01T00:00:00.000Z",
+    timestamp_desc: "USB Last Connected",
+    artifact: "Windows USB Device",
+    data_type: "windows:registry:usb:entry"
   };
 
   const info = (data.key.split("\\").pop() as string).split("&");
   for (let i = 0; i < info.length; i++) {
     const value = info[i];
-    if(value === undefined) {
+    if (value === undefined) {
       continue;
     }
     if (i === 0) {
@@ -180,12 +186,13 @@ function usbStor(data: Registry): UsbDevices {
   }
 
   if (data.name.at(1) !== undefined && data.name.at(1) !== "&") {
-    entry.tracking_id = data.name.split("&")[ 0 ] ?? "";
+    entry.tracking_id = data.name.split("&")[0] ?? "";
   }
 
   for (const value of data.values) {
     if (value.value === "BusDeviceDesc") {
       entry.friendly_name = value.data;
+      entry.message = `USB value ${entry.friendly_name}`;
     } else if (value.value === "LastPresentDate") {
       const time_bytes = decode(value.data);
       if (time_bytes instanceof EncodingError) {

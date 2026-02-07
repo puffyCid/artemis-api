@@ -73,7 +73,7 @@ If you try to run the above above code with artemis you will get a similar error
 
 Artemis cannot resolve imports! We need to bundle this script and compile to JavaScript.
 
-Using esbuild try the following commands: `esbuild --bundle --minify --outfile=out.js main.ts`
+Using esbuild try the following commands: `esbuild --bundle --outfile=out.js main.ts`
 
 You should now have a main.js file in your directory. If you open it in a text editor you should see something similar to below:
 

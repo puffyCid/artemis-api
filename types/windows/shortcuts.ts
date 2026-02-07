@@ -96,7 +96,7 @@ export interface Shortcut {
 }
 
 /**
- * Console metadata embeded in Shortcut file
+ * Console metadata embedded in Shortcut file
  */
 interface Console {
   /**Colors for Console */
@@ -119,7 +119,7 @@ interface Console {
   font_size: number;
   /**Console font family */
   font_family: string;
-  /**Conesole font weight */
+  /**Console font weight */
   font_weight: string;
   /**Console font name */
   face_name: string;
@@ -133,7 +133,7 @@ interface Console {
   automatic_position: number;
   /**Console history buffer size */
   history_buffer_size: number;
-  /**Console number of bufffers */
+  /**Console number of buffers */
   number_history_buffers: number;
   /**Duplicates allowed in history */
   duplicates_allowed_history: number;

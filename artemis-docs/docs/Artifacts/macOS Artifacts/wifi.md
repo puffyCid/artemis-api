@@ -14,12 +14,12 @@ to. By default it will try to parse WiFi networks at
 You may also provide an optional alnternative path to
 com.apple.wifi.known-networks.plist.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get WiFi
 network.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -33,7 +33,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Wifi`
 

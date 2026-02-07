@@ -1,4 +1,4 @@
-import { FirefoxAddons, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
+import { FirefoxAddons, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
@@ -8,7 +8,7 @@ import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { firefoxAddons } from "./addons";
-import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxHistory, firefoxStorage } from "./sqlite";
+import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxStorage } from "./sqlite";
 
 /**
  * Class to extract Firefox information
@@ -106,6 +106,16 @@ export class FireFox {
     }
 
     /**
+     * Function to extract form history entries
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `FirefoxFormHistory`
+     */
+    public formHistory(offset = 0, limit = 100): FirefoxFormHistory[] {
+        return firefoxFormhistory(this.paths, this.platform, offset, limit);
+    }
+
+    /**
     * Function to timeline all Firefox artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
     * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
     */
@@ -168,6 +178,19 @@ export class FireFox {
             offset += limit;
         }
 
+        offset = 0;
+        while (true) {
+            const entries = this.formHistory(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = dumpData(entries, `retrospect_firefox_formhistory`, output);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline firefox form history: ${status}`);
+            }
+            offset += limit;
+        }
+
         const ext = this.addons();
         const status = dumpData(ext, `retrospect_firefox_extensions`, output);
         if (status instanceof SystemError) {
@@ -214,14 +237,15 @@ export class FireFox {
                 break;
             }
             case PlatformType.Linux: {
-                const linux_paths = glob(`/home/*/.mozilla/firefox/*/`);
-                if (linux_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "FIREFOX",
-                        `failed to glob linux paths: ${linux_paths}`,
-                    );
+                // FireFox can now exist in two possible locations. Newer versions are under .config
+                const config_paths = [`/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/`];
+                for (const entry of config_paths) {
+                    const linux_paths = glob(entry);
+                    if (linux_paths instanceof FileError) {
+                        continue;
+                    }
+                    paths = paths.concat(linux_paths);
                 }
-                paths = linux_paths;
                 break;
             }
             default: {
@@ -255,7 +279,7 @@ export class FireFox {
      * @param path Path to base FireFox user profile
      * @returns Version number or `ApplicationError`
      */
-    private version(platform: PlatformType, path: string): number | ApplicationError {
+    private version(platform: PlatformType, path: string): string | ApplicationError {
         let version_path = `${path}/prefs.js`;
         if (platform === PlatformType.Windows) {
             version_path = `${path}\\prefs.js`;
@@ -280,7 +304,7 @@ export class FireFox {
             return new ApplicationError(`FIREFOX`, `could not find version got undefined`);
         }
 
-        const version_value = version_string.replace(" ", "").replace('"', "").replace(")", "").replace(";", "");
-        return Number(version_value);
+        const version_value = version_string.replace(" ", "").replaceAll('"', "").replace(")", "").replace(";", "");
+        return version_value;
     }
 }

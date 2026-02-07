@@ -19,18 +19,18 @@ required applications:
 
 Windows users will need to install
 [Chocolatey](https://community.chocolatey.org/). In addition, you will need to
-install the MSVC version of [Rust](https://www.rust-lang.org/) macOS users will
-need to install [Homebrew](https://brew.sh/)
+install the MSVC version of [Rust](https://www.rust-lang.org/).  
+macOS users will need to install [Homebrew](https://brew.sh/)
 
 You can use Just to automate most of the setup process.
 
-:::info
+:::note
 
-Ubuntu users can run: `just setup-ubuntu`\
-Fedora users can run `just setup-fedora`\
-Windows users can run `just setup-windows` (after you have installed Chocolatey
+Ubuntu users can run: **just setup-ubuntu**\
+Fedora users can run **just setup-fedora**\
+Windows users can run **just setup-windows** (after you have installed Chocolatey
 and Rust)\
-macOS users can run `just setup-macos` (after you have installed Homebrew)
+macOS users can run **just setup-macos** (after you have installed Homebrew)
 
 Windows users will need to add extra arguments to the just command:\
 `just --shell pwsh.exe --shell-arg -c`
@@ -45,7 +45,7 @@ it means you forgot provide: `just --shell pwsh.exe  --shell-arg -c`
 
 :::info
 
-If you are using a Windows ARM device. Winget is suggested instead of Chocolatey
+If you are using a Windows ARM device. Winget is recommended instead of Chocolatey
 
 :::
 
@@ -65,7 +65,7 @@ Once you have the prerequisites installed you can build artemis.
 1. Clone artemis repo at
    [https://github.com/puffycid/artemis](https://github.com/puffycid/artemis)
 2. Navigate to the repo
-3. Run `just cli` or `just --shell pwsh.exe  --shell-arg -c cli` for Windows
+3. Run **just cli** or **just --shell pwsh.exe  --shell-arg -c cli** for Windows
 
 ```sh
 # Download artemis source code
@@ -76,7 +76,7 @@ cd artemis
 just cli
 
 # Build just the library
-just core
+just forensics
 ```
 
 Full list of just commands (via `just --list`)
@@ -102,10 +102,15 @@ Available recipes:
     spotlight                   # Test only the Spotlight parsing functions
     wmi                         # Test only the WMI parsing functions
 
+    [daemon]
+    cleanup-podman              # Stop ALL Podman containers and remove and prune ALL container data
+    daemon-podman               # Start the example artemis daemon in a Podman container and connect to server Podman container
+    daemon-preview              # Spawn three daemon containers to connect to server.
+    server-podman               # Start the example daemon server in a Podman container
+
     [os]
     linux                       # Test all the Linux artifacts
     macos                       # Test all the macOS artifacts
-    unix                        # Test all the Unix artifacts
     windows                     # Test all the Windows artifacts
 
     [package]
@@ -122,19 +127,21 @@ Available recipes:
 
     [workspace]
     cli                         # Just build the artemis binary
-    forensics                   # Just build core library
+    forensics                   # Just build the forensics library
     slim                        # Just build the artemis binary. But do not enable Yara-X
 
 ```
 
-## Building for estoric platforms
+### Building for esoteric platforms
 
 Artemis can be compiled for a variety of platforms using [cross](https://github.com/cross-rs/cross). Once you have cross setup you can build artemis for:
 - FreeBSD
-- Linux MUSL
-- Linux RISC-V
+- NetBSD
+- Android
+- Linux (RISC-V, musl, PowerPC, SPARC)
+- [illumos](https://en.wikipedia.org/wiki/Illumos)
 
-If you want to build for Android or NetBSD you have to disable the yara-x dependency
+If you want to build for Android or NetBSD you have to disable the yara-x dependency:
  - cross build --release --no-default-features
 
-If you want to build for Windows ARM. You will need a Windows ARM VM or device and will need to install [LLVM](https://learn.arm.com/install-guides/llvm-woa/).
+If you want to build for Windows ARM. You will need a Windows ARM VM or device and will need to install [LLVM](https://learn.arm.com/install-guides/llvm-woa/) and cmake.

@@ -23,12 +23,12 @@ References:
 
 - [Application Usage Munki](https://t-lark.github.io/posts/app-usage-data-munki-fleet-snowflake/)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 `Munki` data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { munkiApplicationUsage } from "./artemis-api/mod";
@@ -39,7 +39,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `MunkiApplicationUsage` object structure
 

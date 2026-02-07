@@ -47,9 +47,9 @@ export interface SafariHistory {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "URL Visited";
+  artifact: "URL History";
+  data_type: "macos:safari:history:entry";
 }
 
 /**
@@ -123,9 +123,9 @@ export interface SafariDownloads {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "File Download Start";
+  artifact: "File Download";
+  data_type: "macos:safari:downloads:entry";
 }
 
 export interface SafariProfile {
@@ -144,10 +144,10 @@ export interface Cookie {
   created: string;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
-  [ key: string ]: unknown;
+  timestamp_desc: "Cookie Expires";
+  artifact: "Website Cookie";
+  data_type: "macos:safari:cookies:entry";
+  [key: string]: unknown;
 }
 
 export enum CookieFlag {
@@ -167,9 +167,9 @@ export interface SafariBookmark {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "Bookmark Created";
+  artifact: "Website Bookmark";
+  data_type: "macos:safari:bookmark:entry";
 }
 
 export interface SafariFavicon {
@@ -183,9 +183,9 @@ export interface SafariFavicon {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "Favicon Created";
+  artifact: "URL Favicon";
+  data_type: "macos:safari:favicons:entry";
 }
 
 export interface SafariExtensions {
@@ -202,7 +202,40 @@ export interface SafariExtensions {
   version: number;
   message: string;
   datetime: string;
-  timestamp_desc: string;
-  artifact: string;
-  data_type: string;
+  timestamp_desc: "Extension Installed";
+  artifact: "Browser Extension";
+  data_type: "macos:safari:extension:entry";
+}
+
+export interface SafariPlistBookmark {
+  WebBookmarkUUID: string;
+  Sync: {
+    CloudKitDeviceIdentifier: string;
+    CloudKitMigrationState: number;
+  }
+  Children: BookmarkChildren[]
+  Title: string;
+  WebBookmarkType: string;
+  WebBookmarkFileVersion: number;
+}
+
+interface BookmarkChildren {
+  WebBookmarkUUID: string;
+  WebBookmarkType: string;
+  Title: string;
+  WebBookmarkIdentifier: string;
+  Children?: BookmarkChildren[];
+  Sync?: {
+    ServerID: string;
+  }
+  previewText?: string
+  ReadingListNonSync?: {
+    neverFetchMetadata: boolean;
+  }
+  URLString?: string;
+  imageURL?: string;
+  previewTextIsUserDefined?: boolean;
+  URIDictionary?: {
+    title: string;
+  }
 }

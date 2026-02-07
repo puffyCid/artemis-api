@@ -18,7 +18,7 @@ export interface Emond {
   start_time: string;
   /**If partial criteria match should trigger the rule */
   allow_partial_criterion_match: boolean;
-  /**Array of commad actions if rule is triggered */
+  /**Array of command actions if rule is triggered */
   command_actions: Command[];
   /**Array of log actions if rule is triggered  */
   log_actions: Log[];
@@ -86,6 +86,6 @@ interface SendEmailSms {
   relay_host: string;
   /**Email associated with email/sms action */
   admin_email: string;
-  /**Targerts to receive email/sms */
+  /**Targets to receive email/sms */
   recipient_addresses: string[];
 }

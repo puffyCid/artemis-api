@@ -236,7 +236,7 @@ By default artemis will get the first 100 entries for all users.
 | offset  | number | Starting offset when querying the sqlite database |
 | limit   | number | Max number of rows to return per user             |
 
-#### storage(offset, limit) -> FirefoxDownloads[] | ApplicationError
+#### storage(offset, limit) -> FirefoxStorage[] | ApplicationError
 
 Return FireFox storage entries for all users. FireFox storage entries exists in a sqlite database.  
 Artemis will bypass locked sqlite databases when querying storage entries.  
@@ -248,11 +248,23 @@ By default artemis will get the first 100 entries for all users.
 | offset  | number | Starting offset when querying the sqlite database |
 | limit   | number | Max number of rows to return per user             |
 
-#### favicons(offset, limit) -> FirefoxDownloads[] | ApplicationError
+#### favicons(offset, limit) -> FirefoxFavicons[] | ApplicationError
 
 Return FireFox favicons for all users. FireFox favicons exists in a sqlite database.  
 Artemis will bypass locked sqlite databases when querying favicons.  
 You may provide a starting offset and limit when querying favicons.  
+By default artemis will get the first 100 entries for all users.
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------------------- |
+| offset  | number | Starting offset when querying the sqlite database |
+| limit   | number | Max number of rows to return per user             |
+
+#### formhistory(offset, limit) -> FirefoxFormhistory[] | ApplicationError
+
+Return FireFox form history for all users. FireFox form history exists in a sqlite database.  
+Artemis will bypass locked sqlite databases when querying form history.  
+You may provide a starting offset and limit when querying form history.  
 By default artemis will get the first 100 entries for all users.
 
 | Param   | Type   | Description                                       |
@@ -437,7 +449,7 @@ function main() {
     output: OutputType.LOCAL
   };
   
-  results.oneDriveRetrospect(output);
+  results.retrospect(output);
 }
 
 main();

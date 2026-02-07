@@ -18,8 +18,7 @@ the command was executed. Popular shells include:
 - sh
 - PowerShell
 
-artemis supports parsing `zsh` and `bash` shell history. In addition, it
-supports parsing `Python` history (despite not being a shell).
+Artemis supports parsing zsh and bash shell history. 
 
 Other parsers:
 
@@ -30,7 +29,7 @@ References:
 - [Bash](https://linuxhint.com/bash_command_history_usage/)
 - [Zsh](https://www.soberkoder.com/better-zsh-history/)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse Shell History files.
 
@@ -45,7 +44,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `BashHistory` for bash data, `ZshHistory` for zsh data
 

@@ -23,7 +23,7 @@ export type ErrorName =
   | "USERASSIST"
   | "USERS"
   | "USNJRNL"
-  | "LOGONCORRELATION"
+  | "LOGONS"
   | "CHOCOLATEYINFO"
   | "UPDATESHISTORY"
   | "POWERSHELL"
@@ -40,6 +40,9 @@ export type ErrorName =
   | "FIREWALL_RULES"
   | "EVENTLOG_PROCESSTREE"
   | "WIFI"
-  | "ADCERTIFICATES";
+  | "ADCERTIFICATES"
+  | "RDPLOGONS"
+  | "PCA"
+  | "EVENTLOG_DEFENDER_QUARANTINE";
 
-export class WindowsError extends ErrorBase<ErrorName> {}
+export class WindowsError extends ErrorBase<ErrorName> { }

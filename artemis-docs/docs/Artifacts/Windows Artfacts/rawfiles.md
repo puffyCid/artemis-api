@@ -7,11 +7,11 @@ keywords:
 
 # Raw Files
 
-A raw Windows filelisting by parsing the `NTFS` file system using the
+A raw Windows filelisting by parsing the NTFS file system using the
 [ntfs](https://github.com/ColinFinck/ntfs) crate to recursively walk the files
-and directories on the system. If hashing or `PE` parsing is enabled this will
-also read the file contents. `Raw Files` also supports decompressing compressed
-files with the `WofCompression` alternative data stream (ADS) attribute.
+and directories on the system. If hashing or PE parsing is enabled this will
+also read the file contents. Raw Files also supports decompressing compressed
+files with the **WofCompression** alternative data stream (ADS) attribute.
 
 Since a filelisting can be extremely large, every 100k entries artemis will
 output the data and then continue.
@@ -24,7 +24,7 @@ References:
 
 - [Libyal](https://github.com/libyal/libfsntfs/blob/main/documentation/New%20Technologies%20File%20System%20(NTFS).asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -60,17 +60,17 @@ path_regex = ""
 filename_regex = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `drive_letter` Drive letter to use to parse the NTFS file system. This
   configuration is **required**
 - `start_path` Directory to start walking the filesystem. This configuration is
   **required**
 - `depth` How many directories to descend from the `start_path`. Must be a
-  postive number. Max value is 255. This configuration is **required**
-- `recover_indx` Boolean value to carve deleted entries from the `$INDX`
+  positive number. Max value is 255. This configuration is **required**
+- `recover_indx` Boolean value to carve deleted entries from the $INDX
   attribute. Can show evidence of deleted files
-- `metadata` Get [PE](pe.md) data from `PE` files. This configuration is
+- `metadata` Get [PE](pe.md) data from PE files. This configuration is
   **optional**. Default is **false**
 - `md5` Boolean value to enable MD5 hashing on all files. This configuration is
   **optional**. Default is **false**
@@ -83,7 +83,7 @@ filename_regex = ""
 - `file_regex` Only return entres that match the provided regex. This
   configuration is **optional**. Default is no Regex
 
-# Output Structure
+## Output Structure
 
 An array of `WindowsRawFileInfo` entries
 

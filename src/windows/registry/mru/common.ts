@@ -22,12 +22,9 @@ import { assembleMru } from "../recently_used";
  */
 export function openSaveMru(reg_data: Registry[]): MruValues[] | WindowsError {
   const mru_entries = [];
+  const key = "\\software\\microsoft\\windows\\currentversion\\explorer\\comdlg32\\opensavepidlmru";
   for (const entry of reg_data) {
-    if (
-      !entry.path.includes(
-        "\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU",
-      )
-    ) {
+    if (!entry.path.toLowerCase().includes(key)) {
       continue;
     }
 
@@ -74,12 +71,9 @@ export function openSaveMru(reg_data: Registry[]): MruValues[] | WindowsError {
  */
 export function lastVisitMru(reg_data: Registry[]): MruValues[] | WindowsError {
   const mru_entries = [];
+  const key = "\\software\\microsoft\\windows\\currentversion\\explorer\\comdlg32\\lastvisitedpidlmru";
   for (const entry of reg_data) {
-    if (
-      !entry.path.includes(
-        "\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedPidlMRU",
-      )
-    ) {
+    if (!entry.path.toLowerCase().includes(key)) {
       continue;
     }
 
@@ -101,7 +95,7 @@ export function lastVisitMru(reg_data: Registry[]): MruValues[] | WindowsError {
       }
 
       // Nom until end of string character for UTF16
-      const remaining = takeUntil(data, new Uint8Array([ 0, 0, 0 ]));
+      const remaining = takeUntil(data, new Uint8Array([0, 0, 0]));
       if (remaining instanceof NomError) {
         console.error(`could not nom UTF16 filename: ${remaining}`);
         continue;

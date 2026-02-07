@@ -7,11 +7,11 @@ keywords:
 
 # Shortcuts
 
-Windows `Shotcut` files (.lnk extension) are files that point to another file. They
+Windows Shortcut files (.lnk files) are files that point to another file. They
 often contain a large amount of metadata related to the target file. Shortcut
 files can be used to distribute malware and can also provide evidence of file
 interaction. The directory at
-`C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent` contains multiple
+**C:\Users\\*\AppData\Roaming\Microsoft\Windows\Recent** contains multiple
 Shortcuts that point to files recently opened by the user.
 
 Other Parsers:
@@ -22,7 +22,7 @@ References:
 
 - [Libyal](https://github.com/libyal/liblnk/blob/main/documentation/Windows%20Shortcut%20File%20(LNK)%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -41,12 +41,12 @@ artifact_name = "shortcuts"
 path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 ```
 
-# Collection Options
+## Collection Options
 
-- `path` Target path where artemis should parse `Shortcut` files. This
+- `path` Target path where artemis should parse Shortcut files. This
   configuration is **required**
 
-# Output Structure
+## Output Structure
 
 A `Shortcut` object structure
 
@@ -139,7 +139,7 @@ export interface Shortcut {
 }
 
 /**
- * Console metadata embeded in Shortcut file
+ * Console metadata embedded in Shortcut file
  */
 interface Console {
   /**Colors for Console */
@@ -162,7 +162,7 @@ interface Console {
   font_size: number;
   /**Console font family */
   font_family: string;
-  /**Conesole font weight */
+  /**Console font weight */
   font_weight: string;
   /**Console font name */
   face_name: string;
@@ -176,7 +176,7 @@ interface Console {
   automatic_position: number;
   /**Console history buffer size */
   history_buffer_size: number;
-  /**Console number of bufffers */
+  /**Console number of buffers */
   number_history_buffers: number;
   /**Duplicates allowed in history */
   duplicates_allowed_history: number;

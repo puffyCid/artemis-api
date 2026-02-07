@@ -14,7 +14,7 @@ Epiphany is the default web browser for the GNOME desktop. Artemis supports extr
 - Website permissions
 - Last session info
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect Epiphany artifacts.
 
@@ -32,7 +32,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Depending on the the functions used will return the objects below:
 

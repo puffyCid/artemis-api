@@ -11,12 +11,12 @@ Pkg are the default package format for installing software on FreeBSD systems. A
 querying the /var/db/pkg/local.sqlite database to get installed packages.
 
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 installed packages.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { getPkgs } from "./artemis-api/mod";
@@ -33,7 +33,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Pkg` entries.
 

@@ -9,11 +9,11 @@ keywords:
 
 [Abrt](https://abrt.readthedocs.io/en/latest/index.html) is a popular crash detector on Linux systems. Sometimes when an application crashes it may generate an abrt data dump containing metadata about the crashed process
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect abrt crashes.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { extractAbrt } from "./artemis-api/mod";
@@ -28,7 +28,7 @@ async function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Abrt` entries.
 

@@ -8,10 +8,10 @@ keywords:
 
 # Emond
 
-macOS Event Monitor Daemon (`Emond`) is a service that allows users to register
+macOS Event Monitor Daemon (Emond) is a service that allows users to register
 rules to perform actions when specific events are triggered, for example "system
-startup". `Emond` can be leveraged to achieve persistence on macOS. Starting on
-macOS Ventura (13) `emond` has been removed.
+startup". Emond can be leveraged to achieve persistence on macOS. Starting on
+macOS Ventura (13) emond has been removed.
 
 Other Parsers:
 
@@ -22,7 +22,7 @@ References:
 - [What is emond](https://magnusviri.com/what-is-emond.html)
 - [Emond for Persistence](https://www.xorrior.com/emond-persistence/)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -42,13 +42,13 @@ artifact_name = "emond"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path`Use an alternative path to the Emond files. This configuration is
   **optional**. By default artemis will read the Emond config file to determine
   file paths
 
-# Output Structure
+## Output Structure
 
 An array of `Emond` entries
 

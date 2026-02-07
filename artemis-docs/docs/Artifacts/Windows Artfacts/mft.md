@@ -51,14 +51,14 @@ artifact_name = "mft"
 # alt_file = "/tmp/$MFT"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_drive` Alternative drive letter to use to parse the MFT. By default
   artemis will parse the SystemDrive. This configuration is **optional**
 - `alt_file` Alternative path to the MFT file. This configuration is
   **optional**
 
-# Output Structure
+## Output Structure
 
 An array of `MftEntry` entries
 

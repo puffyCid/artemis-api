@@ -20,4 +20,9 @@ export interface UsbDevices {
   revision: string;
   tracking_id: string;
   disk_id: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "USB Last Connected";
+  artifact: "Windows USB Device";
+  data_type: "windows:registry:usb:entry";
 }

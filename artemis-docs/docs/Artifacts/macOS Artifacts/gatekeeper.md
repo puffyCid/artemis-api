@@ -21,12 +21,12 @@ References:
 - [Gatekeeper info](https://nixhacker.com/security-protection-in-macos-1/)
 - [Gatekeeper](https://en.wikipedia.org/wiki/Gatekeeper_(macOS))
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 `Gatekeeper` data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { gatekeeperEntries } from "./artemis-api/mod";
@@ -39,7 +39,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Array of `GatekeeperEntries`
 
@@ -67,6 +67,12 @@ export interface GatekeeperEntries {
   object_path?: string;
   object_ctime?: string;
   object_mtime?: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Entry Created";
+  artifact: "Gatekeeper";
+  data_type: "macos:gatekeeper:entry";
+  source: string;
 }
 
 export enum GkType {

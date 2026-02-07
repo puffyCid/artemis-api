@@ -7,8 +7,8 @@ keywords:
 
 # Registry
 
-Windows `Registry` is a collection of binary files that store Windows
-configuration settings and OS information. There are multiple `Registry` files
+Windows Registry is a collection of binary files that store Windows
+configuration settings and OS information. There are multiple Registry files
 on a system such as:
 
 - `C:\Windows\System32\config\SYSTEM`
@@ -27,7 +27,7 @@ References:
 - [Libyal](https://github.com/libyal/libregf)
 - [Registry Format](https://github.com/msuhanov/regf/blob/master/Windows%20registry%20file%20format%20specification.md)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -51,11 +51,11 @@ system_hives = true # SYSTEM, SOFTWARE, SAM, SECURITY
 # path_regex = "" # Registry is converted to lowercase before all comparison operations. So any regex input will also be converted to lowercase
 ```
 
-# Collection Options
+## Collection Options
 
-- `user_hives` Parse all user Registry files `NTUSER.DAT` and `UsrClass.dat`.
+- `user_hives` Parse all user Registry files NTUSER.DAT and UsrClass.dat.
   This configuration is **required**
-- `system_hives` Parse all system Registry files `SYSTEM`, `SAM`, `SOFTWARE`,
+- `system_hives` Parse all system Registry files SYSTEM, SAM, SOFTWARE,
   `SECURITY`. This configuration is **required**
 - `alt_file` Full path to alternative Registry file. This configuration is
   **optional**.
@@ -63,7 +63,7 @@ system_hives = true # SYSTEM, SOFTWARE, SAM, SECURITY
   comparisons are first converted to lowercase. This configuration is
   **optional**. Default is no Regex
 
-# Output Structure
+## Output Structure
 
 An array of `Registry` entries for each parsed file
 

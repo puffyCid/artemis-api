@@ -42,6 +42,8 @@ export interface RawFileInfo {
   compression_type: string;
   /**Inode entry */
   inode: number;
+  /**NTFS Namespace for the file */
+  namespace: string;
   /**Sequence number for entry */
   sequence_number: number;
   /**Parent MFT reference for entry */

@@ -8,25 +8,26 @@ keywords:
 
 SSH is a popular tool to access remote systems. Artemis supports parsing the known_hosts SSH file which lists systems accessed via SSH.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 SSH data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
-import { listKnownHosts } from "./artemis-api/mod";
+import { listKnownHosts, PlatformType } from "./artemis-api/mod";
 
 function main() {
-    const data = listKnownHosts();
-    console.log(JSON.stringify(data));
+    const values = listKnownHosts(PlatformType.Darwin);
+    console.log(JSON.stringify(values));
 }
 
 main();
+
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `KnownHosts` objects
 
@@ -40,5 +41,10 @@ export interface KnownHosts {
     modified: string;
     accessed: string;
     changed: string;
+    message: string;
+    datetime: string;
+    timestamp_desc: "SSH Config Modified";
+    artifact: "SSH Config";
+    data_type: "unix:ssh:config:entry";
 }
 ```

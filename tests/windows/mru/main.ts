@@ -1,7 +1,8 @@
 import { FileError } from "../../../src/filesystem/errors";
 import { glob } from "../../../src/filesystem/files";
 import { WindowsError } from "../../../src/windows/errors";
-import { parseMru, testParseMru } from "../../../src/windows/registry/recently_used";
+import { parseMru } from "../../../src/windows/registry/recently_used";
+import { testParseMru } from "../../test";
 
 function main() {
   console.log('Running Windows MRU tests....');
@@ -12,9 +13,10 @@ function main() {
     throw paths;
   }
   for (const entry of paths) {
-    if (!entry.is_file || entry.full_path.includes("Default") || !entry.filename.toLocaleLowerCase().endsWith("dat")) {
+    if (!entry.is_file || entry.full_path.includes("Default") || !entry.filename.toLocaleLowerCase().endsWith("dat") || entry.full_path.includes("WsiAccount")) {
       continue;
     }
+    console.log(entry.full_path);
     const results = parseMru(entry.full_path);
     if (results instanceof WindowsError) {
       throw results;

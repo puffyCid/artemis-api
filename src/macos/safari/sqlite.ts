@@ -54,9 +54,9 @@ export function safariHistory(paths: SafariProfile[], query: string, platform: P
                 version: path.version,
                 message: entry["url"] as string,
                 datetime: unixEpochToISO(cocoatimeToUnixEpoch(entry["visit_time"] as number)),
-                timestamp_desc: "Safari Visit",
-                artifact: "Sarai URL History",
-                data_type: "macos:browser:history:entry"
+                timestamp_desc: "URL Visited",
+                artifact: "URL History",
+                data_type: "macos:safari:history:entry"
             };
             if (unfold && typeof client !== 'undefined') {
                 const result = client.parseUrl(history_row.url);
@@ -103,9 +103,9 @@ export function safariFavicons(paths: SafariProfile[], query: string, platform: 
                 version: path.version,
                 message: entry["favicon_url"] as string,
                 datetime: unixEpochToISO(cocoatimeToUnixEpoch(entry["timestamp"] as number)),
-                timestamp_desc: "Safari Favicon Created",
-                artifact: "Safari Favicon",
-                data_type: "macos:browser:favicons:entry"
+                timestamp_desc: "Favicon Created",
+                artifact: "URL Favicon",
+                data_type: "macos:safari:favicons:entry"
             };
             hits.push(row);
         }

@@ -11,18 +11,6 @@ import { AccessControl } from "./acls";
  *  - https://en.wikipedia.org/wiki/Background_Intelligent_Transfer_Service
  *  - https://www.mandiant.com/resources/blog/attacker-use-of-windows-background-intelligent-transfer-service
  */
-export interface Bits {
-  /**Array of data containing BITS info */
-  bits: BitsInfo[];
-  /**Array of carved jobs */
-  carved_jobs: Jobs[];
-  /**Array of carved files */
-  carved_files: Files[];
-}
-
-/**
- * Combination of parsed Jobs and File info from BITS
- */
 export interface BitsInfo {
   /**ID for the Job */
   job_id: string;
@@ -38,8 +26,6 @@ export interface BitsInfo {
   completed: string;
   /**Timestamp when the Job was expired */
   expiration: string;
-  /**Files associated with the JOb */
-  files_total: number;
   /**Number of bytes downloaded */
   bytes_downloaded: number | bigint | string;
   /**Number of bytes transferred */
@@ -70,8 +56,6 @@ export interface BitsInfo {
   filename: string;
   /**Target file path associated with Job */
   target_path: string;
-  /**TMP file path associated with the Job */
-  tmp_file: string;
   /**Volume path associated with the file */
   volume: string;
   /**URL associated with the Job */
@@ -88,78 +72,8 @@ export interface BitsInfo {
   retry_delay: number;
   /**Additional SIDs associated with Job */
   additional_sids: string[];
-}
-
-/**
- * Jobs from BITS
- */
-export interface Jobs {
-  /**ID for the Job */
-  job_id: string;
-  /**ID for the File */
-  file_id: string;
-  /**SID associated with the Job */
-  owner_sid: string;
-  /**Timestamp when the Job was created */
-  created: string;
-  /**Timestamp when the Job was modified */
-  modified: string;
-  /**Timestamp when the Job was completed */
-  completed: string;
-  /**Timestamp when the Job was expired */
-  expiration: string;
-  /**Name associated with Job */
-  job_name: string;
-  /**Description associated with Job */
-  job_description: string;
-  /**Commands associated with Job */
-  job_command: string;
-  /**Arguments associated with Job */
-  job_arguments: string;
-  /**Error count with the Job */
-  error_count: number;
-  /**BITS Job type */
-  job_type: string;
-  /**BITS Job state */
-  job_state: string;
-  /**Job priority */
-  priority: string;
-  /**BITS Job flags */
-  flags: string;
-  /**HTTP Method associated with Job */
-  http_method: string;
-  /**Transient error count with Job */
-  transient_error_count: number;
-  /**Permissions associated with the Job */
-  acls: AccessControl[];
-  /**Job timeout in seconds */
-  timeout: number;
-  /**Job retry delay in seconds */
-  retry_delay: number;
-  /**Target file path associated with Job */
-  target_path: string;
-}
-
-/**
- * File(s) associated with Jobs
- */
-export interface Files {
-  /**ID for the File */
-  file_id: string;
-  /**Files associated with the JOb */
-  files_transferred: number;
-  /**Number of bytes downloaded */
-  download_bytes_size: number | bigint | string;
-  /**Number of bytes transferred */
-  transfer_bytes_size: number | bigint | string;
-  /**Full file path associated with Job */
-  full_path: string;
-  /**Filename associated with Job */
-  filename: string;
-  /**TMP file path associated with the JOb */
-  tmp_file: string;
-  /**Volume path associated with the file */
-  volume: string;
-  /**URL associated with the Job */
-  url: string;
+  /**Drive associated with the BITS Job */
+  drive: string;
+  /**Temporary file path for the file download */
+  tmp_fullpath: string;
 }

@@ -19,9 +19,9 @@ export interface FalkonHistory {
     count: number;
     message: string;
     datetime: string;
-    timestamp_desc: string;
-    artifact: string;
-    data_type: string;
+    timestamp_desc: "Falkon URL Visited",
+    artifact: "KDE Falkon History",
+    data_type: "linux:browser:kde:history:entry";
 }
 
 export interface FalkonCookie {
@@ -51,9 +51,9 @@ export interface FalkonCookie {
     /**Browser version */
     version: string;
     datetime: string;
-    timestamp_desc: string;
-    artifact: string;
-    data_type: string;
+    timestamp_desc: "Falkon Cookie Created",
+    artifact: "KDE Falkon Cookie",
+    data_type: "linux:browser:kde:cookie:entry";
 }
 
 export interface FalkonBookmark {
@@ -69,9 +69,9 @@ export interface FalkonBookmark {
     version: string;
     message: string;
     datetime: string;
-    timestamp_desc: string;
-    artifact: string;
-    data_type: string;
+    timestamp_desc: "Falkon Bookmark File Created",
+    artifact: "KDE Falkon Bookmark",
+    data_type: "linux:browser:kde:bookmark:entry";
 }
 
 export enum BookmarkLocation {

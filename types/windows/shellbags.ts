@@ -2,7 +2,7 @@
  * Shellbags are composed of `Shellitems` however the main value of `Shellbags` is determining what directories were browsed by the user.
  * We use the `ShellItems` to reconstruct this information and return the `Shellbag`
  *
- * Refernces:
+ * References:
  *  - https://github.com/libyal/libfwsi/blob/main/documentation/Windows%20Shell%20Item%20format.asciidoc
  */
 export interface Shellbags {

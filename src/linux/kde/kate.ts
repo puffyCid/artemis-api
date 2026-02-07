@@ -29,7 +29,7 @@ export function kateRecentFiles(alt_path?: string): RecentFiles[] {
                 continue;
             }
 
-            let session_file_created = "1970-01-01T00:00:00Z";
+            let session_file_created = "1970-01-01T00:00:00.000Z";
             let session_file_modified = session_file_created;
             let session_file_accessed = session_file_created;
             let session_file_changed = session_file_created;

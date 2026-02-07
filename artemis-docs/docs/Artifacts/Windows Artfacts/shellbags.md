@@ -7,12 +7,12 @@ keywords:
 
 # Shellbags
 
-Windows `Shellbags` are `Registry` entries that track what directories a user
+Windows Shellbags are Registry entries that track what directories a user
 has browsed via Explorer GUI. These entries are stored in the undocumented
-`ShellItem` binary format.
+**ShellItem** binary format.
 
-Artemis supports parsing the most common types of `shellitems`, but if you
-encounter a `shellitem` entry that is not supported please open an issue!
+Artemis supports parsing the most common types of shellitems, but if you
+encounter a shellitem entry that is not supported please open an issue!
 
 Other parsers:
 
@@ -22,7 +22,7 @@ References:
 
 - [Libyal](https://github.com/libyal/libfwsi/blob/main/documentation/Windows%20Shell%20Item%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -43,19 +43,19 @@ resolve_guids = true
 # alt_file = "C:\\Artifacts\\UsrClass.dat"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative UsrClass.dat or NTUSER.DAT Registry file.
   This configuration is **optional**. By default artemis will parse Shellbags
   for all users.
-- `resolve_guids` Boolean value whether to try to resolve GUIDS found when
-  parsing `Shellbags`.
+- `resolve_guids` Boolean value whether to try to resolve GUIDs found when
+  parsing Shellbags.
   - If **false**:
     `"resolve_path": "20d04fe0-3aea-1069-a2d8-08002b30309d\C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current",`
   - If **true**:
     `"resolve_path": "This PC\C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current",`
 
-# Output Structure
+## Output Structure
 
 An array of `Shellbag` entries
 

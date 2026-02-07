@@ -17,12 +17,12 @@ to parse Protobuf data perfectly without the associated Proto file.
 
 Currently artemis does limited correlation after parsing protobuf data. 
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 `stats` data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { parseSystemStats } from "./artemis-api/mod";
@@ -35,7 +35,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 A `SystemStats` object structure.
 

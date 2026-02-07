@@ -61,7 +61,7 @@ References:
 - [GVFS](https://en.wikipedia.org/wiki/GVfs)
 - [Shellbags for Linux](https://www.sciencedirect.com/science/article/abs/pii/S1742287615001085)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse GVFS
 metadata files.
@@ -77,7 +77,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `GvfsEntry` entries.
 

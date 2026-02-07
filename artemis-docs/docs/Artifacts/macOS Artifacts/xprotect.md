@@ -14,12 +14,12 @@ Currently artemis will try to parse the Xprotect entries at:
 - /Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Resources/Xprotect.plist
 - /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Xprotect.plist
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 Xprotect data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -33,7 +33,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `XprotectEntries` entries.
 

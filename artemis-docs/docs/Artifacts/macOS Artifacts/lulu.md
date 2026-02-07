@@ -12,12 +12,12 @@ Objective-See. It allows users to block outbound connections from applications.
 Artemis supports extracting Lulu firewall rules from
 /Library/Objective-See/LuLu/rules.plist.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 `LuLu` data.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import { luluRules } from "./artemis-api/mod";
@@ -28,7 +28,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 A `LuluRules` object structure
 

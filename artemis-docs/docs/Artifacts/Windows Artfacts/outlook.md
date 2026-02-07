@@ -33,7 +33,7 @@ References:
 - [libyal](https://github.com/libyal/libpff/blob/main/documentation/Personal%20Folder%20File%20(PFF)%20format.asciidoc)
 - [Outlook Messages](https://www.forensafe.com/blogs/outlook.html)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -52,7 +52,7 @@ artifact_name = "outlook"
 include_attachments = true
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` An alternative path to the OST file. This configuration is
   **optional**. By default will parse all OST files under
@@ -70,7 +70,7 @@ include_attachments = true
   matches will be returned. This configuration is **optional**. By default
   artemis will not scan with Yara
 
-# Output Structure
+## Output Structure
 
 Array of `OutlookMessage`
 

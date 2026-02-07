@@ -16,7 +16,7 @@ References:
 
 - [TheEvilBit](https://theevilbit.github.io/beyond/beyond_0032/)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse Dock
 Tile data.
@@ -30,7 +30,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 Array of `Applications` with Dock Tile persistence
 

@@ -7,7 +7,7 @@ keywords:
 
 # Amcache
 
-Windows `Amcache` stores metadata related to execution of Windows applications.
+Windows Amcache stores metadata related to execution of Windows applications.
 Data is stored in the `C:\Windows\appcompat\Programs\Amcache.hve` Registry file.
 This Registry file also contains other metadata such as OS, hardware, and
 application info. However, the Amcache artifact will only collect data related
@@ -29,7 +29,7 @@ References:
 - [Libyal](https://github.com/libyal/dtformats/blob/main/documentation/AMCache%20file%20(AMCache.hve)%20format.asciidoc)
 - [ANSSI](https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -49,13 +49,13 @@ artifact_name = "amcache"
 # alt_file = 'D:\\data\\Amcache.hve'
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to an alternative Amcache.hve file. This configuration is
   **optional**. By default artemis will parse the default Amcache.hve on the
   system
 
-# Output Structure
+## Output Structure
 
 An array of `Amcache` entries
 
@@ -91,7 +91,7 @@ export interface Amcache {
   size: string;
   /**Application publisher from PE metadata */
   publisher: string;
-  /**Application Update Seqeuence Number (USN) */
+  /**Application Update Sequence Number (USN) */
   usn: string;
   /**SHA1 hash of the first ~31MBs of the application */
   sha1: string;

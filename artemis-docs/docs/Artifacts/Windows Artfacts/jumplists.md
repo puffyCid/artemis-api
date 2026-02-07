@@ -7,7 +7,7 @@ keywords:
 
 # Jumplists
 
-Windows `Jumplists` files track opened files via applications in the Taskbar or
+Windows Jumplists files track opened files via applications in the Taskbar or
 Start Menu. Jumplists are actually a collection of embedded
 [Shortcut](./shortcuts.md) files and therefore can show evidence of file
 interaction.
@@ -23,7 +23,7 @@ References:
 
 - [Libyal](https://github.com/libyal/dtformats/blob/main/documentation/Jump%20lists%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -43,20 +43,20 @@ artifact_name = "jumplists"
 # alt_file = "C:\\Artifacts\\CustomJumplist"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to an alternative Jumplist file. This configuration is
   **optional**. By default artemis will parse all user Jumplist files on the
   system.
 
-# Output Structure
+## Output Structure
 
 An array of `Jumplists` entries
 
 ```typescript
 export interface Jumplists {
   /**Path to Jumplist file */
-  path: string;
+  source: string;
   /**Jupmlist type. Custom or Automatic */
   jumplist_type: string;
   /**Application ID for Jumplist file */

@@ -18,7 +18,7 @@ export class Syncthing {
      * @param alt_path Optional alternative path to Syncthing directory
      * @returns `Syncthing` instance class
      */
-    constructor (platform: PlatformType.Linux, alt_path?: string) {
+    constructor(platform: PlatformType.Linux | PlatformType.Darwin, alt_path?: string) {
         this.platform = platform;
         if (alt_path === undefined) {
             const results = this.profiles();
@@ -29,7 +29,7 @@ export class Syncthing {
             this.paths = results;
             return;
         }
-        this.paths = [ { full_path: alt_path } ];
+        this.paths = [{ full_path: alt_path }];
 
     }
 
@@ -59,10 +59,10 @@ export class Syncthing {
                     const message = value.slice(4).join(" ");
                     const log: SyncthingLogs = {
                         full_path: entry.full_path,
-                        tag: (value[ 0 ] ?? "").replace("[", "").replace("]", ""),
-                        datetime: `${(value[ 1 ] ?? "1970-01-01").replaceAll("/", "-")}T${value[ 2 ] ?? "00:00:00"}.000Z`,
+                        tag: (value[0] ?? "").replace("[", "").replace("]", ""),
+                        datetime: `${(value[1] ?? "1970-01-01").replaceAll("/", "-")}T${value[2] ?? "00:00:00"}.000Z`,
                         timestamp_desc: "Syncthing Log Entry",
-                        level: value[ 3 ] ?? "UNKNOWN",
+                        level: value[3] ?? "UNKNOWN",
                         message,
                         artifact: "Syncthing Log",
                         data_type: "application:syncthing:log:entry"
@@ -90,6 +90,17 @@ export class Syncthing {
                     );
                 }
                 paths = linux_paths;
+                break;
+            }
+            case PlatformType.Darwin: {
+                const macos_paths = glob("/Users/*/Library/Application Support/Syncthing");
+                if (macos_paths instanceof FileError) {
+                    return new ApplicationError(
+                        "SYNCTHING",
+                        `failed to glob macos paths: ${macos_paths}`,
+                    );
+                }
+                paths = macos_paths;
                 break;
             }
             default: {

@@ -11,12 +11,12 @@ Deb packages are the default package format for installing software on Debian
 and Debian derived systems (ex: Ubuntu, Linux Mint, etc). Artemis supports
 parsing the /var/lib/dpkg/status file to get installed deb packages.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 installed deb packages.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -30,7 +30,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `DebPackages` entries.
 

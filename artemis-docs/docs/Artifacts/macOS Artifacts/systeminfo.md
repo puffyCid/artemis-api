@@ -12,11 +12,11 @@ Other Parsers:
 
 - Any tool that calls the macOS API or queries system information
 
-Refernces:
+References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -33,11 +33,11 @@ timeline = false
 artifact_name = "systeminfo"
 ```
 
-# Collection Options
+## Collection Options
 
 - N/A
 
-# Output Structure
+## Output Structure
 
 A `SystemInfo` object structure
 

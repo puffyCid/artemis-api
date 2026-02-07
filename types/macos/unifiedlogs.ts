@@ -43,7 +43,7 @@ export interface UnifiedLog {
   /**Timezone associated with log entry */
   timezone_name: string;
   /**Strings associated with the log entry */
-  mesage_entries: Record<string, string | number>;
+  message_entries: Record<string, string | number>;
   /**
    * Resolved message entry associated log entry.
    * Merge of `raw_message` and `message_entries`

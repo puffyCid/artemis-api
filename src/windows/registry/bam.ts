@@ -51,6 +51,11 @@ export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsE
                 sid: entry.name,
                 path: value.value,
                 last_execution,
+                message: `BAM: ${value.value}`,
+                datetime:last_execution,
+                timestamp_desc: "Last Execution",
+                artifact: "Windows Background Activity Monitor",
+                data_type: "windows:registry:bam:entry"
             };
 
             values.push(bam_entry);

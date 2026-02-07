@@ -8,7 +8,7 @@ keywords:
 
 # Logons
 
-Linux stores `Logon` information in several different files depending on the
+Linux stores Logon information in several different files depending on the
 distro and software installed. Typically the following files contain logon
 information on Linux:
 
@@ -26,7 +26,7 @@ References:
 - [libyal](https://github.com/libyal/dtformats/blob/main/documentation/Utmp%20login%20records%20format.asciidoc)
 - [utmp](https://man7.org/linux/man-pages/man5/utmp.5.html)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -46,12 +46,12 @@ artifact_name = "logons"
 # alt_file = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` An alternative path to a wtmp, utmp, or btmp file. This
   configuration is **optional**
 
-# Output Structure
+## Output Structure
 
 An array of `Logon` entries
 

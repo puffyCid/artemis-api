@@ -16,10 +16,10 @@ export interface EventLogProcessTree {
     /**Complete process tree for a process */
     message: string;
     datetime: string;
-    timestamp_desc: string;
-    artifact: string;
+    timestamp_desc: "EventLog Generated";
+    artifact: "EventLogs Process Tree";
     evtx_path: string;
-    data_type: string;
+    data_type: "windows:eventlogs:proctree:entry";
     record: number;
     logon_id: number;
 }

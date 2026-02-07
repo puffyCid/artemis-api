@@ -19,12 +19,12 @@ By default artemis will look for apps at:
 - /Applications
 - /System/Applications
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get
 installed applications.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -42,7 +42,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 Array of `Applications`
 

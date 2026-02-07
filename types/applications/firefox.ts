@@ -46,6 +46,7 @@ export interface FirefoxHistory {
   host: string;
   unfold: Url | undefined;
   db_path: string;
+  version: string;
   message: string;
   datetime: string;
   timestamp_desc: "URL Visited";
@@ -106,6 +107,7 @@ export interface FirefoxDownloads {
   /**Preview image URL value */
   preview_image_url: string;
   db_path: string;
+  version: string;
   message: string;
   datetime: string;
   timestamp_desc: "File Download Start";
@@ -129,6 +131,7 @@ export interface FirefoxCookies {
   same_site: boolean;
   scheme_map: number;
   db_path: string;
+  version: string;
   message: string;
   datetime: string;
   timestamp_desc: "Cookie Expires";
@@ -145,11 +148,12 @@ export interface FirefoxFavicons {
   timestamp_desc: "Favicon Expires";
   artifact: "URL Favicon";
   data_type: "application:firefox:favicons:entry";
+  version: string;
 }
 
 export interface FirefoxProfiles {
   full_path: string;
-  version: number;
+  version: string;
 }
 
 export interface FirefoxStorage {
@@ -164,6 +168,7 @@ export interface FirefoxStorage {
   db_path: string;
   message: string;
   datetime: string;
+  version: string;
   timestamp_desc: "Website Storage Last Accessed";
   artifact: "Website Storage";
   data_type: "application:firefox:storage:entry";
@@ -183,15 +188,34 @@ export interface FirefoxAddons {
   active: boolean;
   visible: boolean;
   author: string;
-  version: string;
+  addon_version: string;
   path: string;
   db_path: string;
   message: string;
   datetime: string;
   name: string;
   description: string;
+  version: string;
   creator: string;
   timestamp_desc: "Extension Installed";
   artifact: "Browser Extension";
   data_type: "application:firefox:extension:entry";
+}
+
+export interface FirefoxFormHistory {
+  timestamp_desc: "Last Searched";
+  artifact: "Form History";
+  data_type: "application:firefox:formhistory:entry";
+  datetime: string;
+  message: string;
+  version: string;
+  path: string;
+  db_path: string;
+  search_term: string;
+  last_used: string;
+  first_used: string;
+  fieldname: string;
+  guid: string;
+  times_used: number;
+  source: string;
 }

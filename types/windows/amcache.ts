@@ -37,7 +37,7 @@ export interface Amcache {
   size: string;
   /**Application publisher from PE metadata */
   publisher: string;
-  /**Application Update Seqeuence Number (USN) */
+  /**Application Update Sequence Number (USN) */
   usn: string;
   /**SHA1 hash of the first ~31MBs of the application */
   sha1: string;

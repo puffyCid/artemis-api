@@ -8,10 +8,11 @@ keywords:
 
 # Sudo Logs
 
-Unix `SudoLogs` are the log files associated with sudo execution. Sudo ("super
+Unix sudo logs are the log files associated with sudo execution. Sudo ("super
 user do" or "substitute user") is used to run programs with elevated privileges.
 
-Linux `SudoLogs` are stored in the Systemd Journal files.<br /> The log entries
+Linux sudo are stored in the Systemd Journal files.  
+The log entries
 show evidence of commands executed with elevated privileges
 
 Other Parsers:
@@ -22,7 +23,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -42,11 +43,11 @@ artifact_name = "sudologs-linux"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Path to a directory containing Journal files. This configuration is
   **optional**
 
-# Output Structure
+## Output Structure
 
 An array of [Journal](./journals.md) entries containing sudo activity

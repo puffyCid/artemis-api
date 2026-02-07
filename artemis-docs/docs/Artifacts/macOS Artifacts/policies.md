@@ -12,12 +12,12 @@ artemis supports parsing the following policies:
 
 - Password Policy
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to get macOS
 policies.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -31,7 +31,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `PasswordPolicy`
 

@@ -27,8 +27,7 @@ Let walkthrough a scenario where we can leverage the artemis API to extract data
 from the Windows
 [User Access Logging database](https://www.crowdstrike.com/blog/user-access-logging-ual-overview/)
 (UAL). The guide below assumes you have cloned the artemis API repository to
-your local system. However, you may also import the API remotely, you will just
-need to change the imports paths.
+your local system.
 
 The functions in this guide are documented
 [here](../Artifacts/windows.md#ese-database-class)

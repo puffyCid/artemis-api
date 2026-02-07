@@ -1,6 +1,6 @@
 /**
  * Function to return current time
- * @returns Current time in UnixEpoch seconds
+ * @returns Current time in UNIXEPOCH seconds
  */
 export function timeNow(): number {
   // @ts-expect-error: Custom Artemis function
@@ -9,9 +9,9 @@ export function timeNow(): number {
 }
 
 /**
- * Convert Windows FILETIME to UnixEpoch seconds
+ * Convert Windows FILETIME to UNIXEPOCH seconds
  * @param filetime FILETIME timestamp
- * @returns UnixEpoch seconds
+ * @returns UNIXEPOCH seconds
  */
 export function filetimeToUnixEpoch(filetime: bigint): number {
   // @ts-expect-error: Custom Artemis function
@@ -20,9 +20,9 @@ export function filetimeToUnixEpoch(filetime: bigint): number {
 }
 
 /**
- * Convert macOS Cocoa time to UnixEpoch seconds
+ * Convert macOS Cocoa time to UNIXEPOCH seconds
  * @param cocoatime Cocoa timestamp
- * @returns UnixEpoch seconds
+ * @returns UNIXEPOCH seconds
  */
 export function cocoatimeToUnixEpoch(cocoatime: number): number {
   // @ts-expect-error: Custom Artemis function
@@ -31,9 +31,9 @@ export function cocoatimeToUnixEpoch(cocoatime: number): number {
 }
 
 /**
- * Convert macOS HFS+ time to UnixEpoch seconds
+ * Convert macOS HFS+ time to UNIXEPOCH seconds
  * @param hfstime HFS+ timestamp
- * @returns UnixEpoch seconds
+ * @returns UNIXEPOCH seconds
  */
 export function hfsToUnixEpoch(hfstime: number): number {
   // @ts-expect-error: Custom Artemis function
@@ -42,9 +42,9 @@ export function hfsToUnixEpoch(hfstime: number): number {
 }
 
 /**
- * Convert Windows OLE time to UnixEpoch seconds
+ * Convert Windows OLE time to UNIXEPOCH seconds
  * @param oletime OLE timestamp
- * @returns UnixEpoch seconds
+ * @returns UNIXEPOCH seconds
  */
 export function oleToUnixEpoch(oletime: number): number {
   // @ts-expect-error: Custom Artemis function
@@ -53,9 +53,9 @@ export function oleToUnixEpoch(oletime: number): number {
 }
 
 /**
- * Convert browser WebKit time to UnixEpoch. You will want to ensure you webkittime is in seconds! (Divide by 1000000n)
+ * Convert browser WebKit time to UNIXEPOCH. You will want to ensure you webkittime is in seconds! (Divide by 1000000n)
  * @param webkittime WebKit timestamp in **seconds**
- * @returns UnixEpoch seconds
+ * @returns UNIXEPOCH seconds
  */
 export function webkitToUnixEpoch(webkittime: number): number {
   // @ts-expect-error: Custom Artemis function
@@ -64,9 +64,9 @@ export function webkitToUnixEpoch(webkittime: number): number {
 }
 
 /**
- * Convert Windows FAT time bytes to UnixEpoch
+ * Convert Windows FAT time bytes to UNIXEPOCH
  * @param fattime FAT timestamp bytes
- * @returns UnixEpoch seconds
+ * @returns UNIXEPOCH seconds
  */
 export function fatToUnixEpoch(fattime: Uint8Array): number {
   // @ts-expect-error: Custom Artemis function

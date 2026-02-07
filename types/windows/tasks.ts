@@ -9,12 +9,6 @@
  *  - https://github.com/libyal/dtformats/blob/main/documentation/Job%20file%20format.asciidoc
  *  - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-tsch/0d6383e4-de92-43e7-b0bb-a60cfa36379f
  */
-export interface TaskData {
-  /**Array of `TaskXml` parsed XML files */
-  tasks: TaskXml[];
-  /**Array of `TaskJob` parsed Job files */
-  jobs: TaskJob[];
-}
 
 /**
  * JSON representation of the Task XML schema.

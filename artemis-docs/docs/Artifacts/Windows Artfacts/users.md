@@ -18,7 +18,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -38,13 +38,13 @@ artifact_name = "users-windows"
 # alt_file = "C:\\Artifacts\\SAM"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative SAM Registry file. This configuration is
   **optional**. By default artemis will parse the SAM Registry file at its
   default location.
 
-# Output Structure
+## Output Structure
 
 An array of `UserInfo` entries
 

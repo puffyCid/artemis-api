@@ -9,15 +9,13 @@ keywords:
 
 # Loginitems
 
-macOS `LoginItems` are a form of persistence on macOS systems. They are
+macOS LoginItems are a form of persistence on macOS systems. They are
 triggered when a user logs on to the system. They are located at:
 
-- `/Users/%/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm`
+- **/Users/%/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm**
   (pre-Ventura)
-- `/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm` (Ventura+)
+- **/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v\*.btm** (Ventura+)
 
-  Both are `plist` files, however the actual `LoginItem` data is in an
-  additional binary format known as a `Bookmark` that needs to be parsed.
 
 Other Parsers:
 
@@ -28,7 +26,7 @@ References:
 - [macOS Persistence](https://www.sentinelone.com/blog/how-malware-persists-on-macos/)
 - [Bookmarks](https://michaellynn.github.io/2015/10/24/apples-bookmarkdata-exposed/)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -48,12 +46,12 @@ artifact_name = "loginitems"
 # alt_file = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Use an alternative LoginItem file. This configuration is
   **optional**. By default artemis will read default locations for LoginItems
 
-# Output Structure
+## Output Structure
 
 An array of `LoginItem` entries
 

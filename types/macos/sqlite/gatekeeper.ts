@@ -21,6 +21,12 @@ export interface GatekeeperEntries {
   object_path?: string;
   object_ctime?: string;
   object_mtime?: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Entry Created";
+  artifact: "Gatekeeper";
+  data_type: "macos:gatekeeper:entry";
+  source: string;
 }
 
 export enum GkType {

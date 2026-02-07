@@ -131,6 +131,26 @@ export class Google {
           }
           break;
         }
+        case "ie": {
+          this.url["input_encoding"] = param.at(1);;
+          break;
+        }
+        case "sourceid": {
+          this.url["search_source_id"] = param.at(1);;
+          break;
+        }
+        case "gs_lcrp": {
+          const bytes = decodeBase64Url(param.at(1) ?? "");
+          if (bytes instanceof EncodingError) {
+            break;
+          }
+          const proto_data = parseProtobuf(bytes);
+          if (proto_data instanceof EncodingError) {
+            break;
+          }
+          this.url["google_search_ logging_chrome_reporting_protocol"] = proto_data;
+          break;
+        }
         case undefined: {
           break;
         }

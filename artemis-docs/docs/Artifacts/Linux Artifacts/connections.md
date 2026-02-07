@@ -17,7 +17,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -34,11 +34,11 @@ timeline = false
 artifact_name = "connections"
 ```
 
-# Collection Options
+## Collection Options
 
 None
 
-# Output Structure
+## Output Structure
 
 An array of `Connection` entries
 

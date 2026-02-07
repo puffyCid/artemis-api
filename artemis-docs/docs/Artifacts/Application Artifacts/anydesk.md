@@ -23,7 +23,7 @@ Other parsers:
 - [RATs Review](https://www.synacktiv.com/publications/legitimate-rats-a-comprehensive-forensic-analysis-of-the-usual-suspects#anydesk)
 - [Suspicious AnyDesk Use](https://www.cybertriage.com/blog/dfir-next-steps-suspicious-anydesk-use/)
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect AnyDesk data
 
@@ -45,7 +45,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 Dependent on browser artifact user wants to parse.
 

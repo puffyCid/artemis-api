@@ -14,12 +14,12 @@ the Registry [MRU](./mru.md).
 Artemis supports parsing ShellItem bytes read from either the Registry or a
 file.
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to parse
 ShellItems.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -33,7 +33,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `JsShellItem`
 

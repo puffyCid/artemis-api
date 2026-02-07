@@ -16,12 +16,12 @@ MRU keys:
 - Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRU
 - Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect MRU
 keys.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -36,7 +36,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `Mru`
 
@@ -44,10 +44,6 @@ An array of `Mru`
 export interface Mru {
   ntuser_path: string;
   kind: MruType;
-  mru: MruValues[];
-}
-
-export interface MruValues {
   /**Filename of MRU entry*/
   filename: string;
   /**Path to MRU entry */
@@ -60,6 +56,11 @@ export interface MruValues {
   accessed: string;
   /**All ShellItems that make up the MRU entry */
   items: ShellItems[];
+  message: string;
+  datetime: string;
+  timestamp_desc: "MRU Entry Created";
+  artifact: "Windows Most Recently Used" | "MRU Open Save" | "MRU Last Visit" | "MRU Recent Docs";
+  data_type: "windows:registry:mru:entry";
 }
 
 export enum MruType {

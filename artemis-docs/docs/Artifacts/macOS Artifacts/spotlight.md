@@ -8,8 +8,8 @@ keywords:
 
 # Spotlight
 
-macOS `Spotlight` is an indexing service for tracking files and content. The
-`Spotlight` database can contain a huge amount of metadata associated with the
+macOS Spotlight is an indexing service for tracking files and content. The
+Spotlight database can contain a huge amount of metadata associated with the
 indexed content such as:
 
 - Timestamps
@@ -25,11 +25,11 @@ the Data volume
 However, additional databases can also be found on the macOS system. Known
 additional locations are:
 
-- /Users/\*/Library/Caches/com.apple.helpd/index.spotlightV\*/*
-- /Users/\*/Library/Metadata/CoreSpotlight/index.spotlightV\*/*
-- /Users/\*/Library/Developer/Xcode/DocumentationCache/\*/\*/DeveloperDocumentation.index/*
-- /Users/\*/Library/Metadata/CoreSpotlight/\*/index.spotlightV\*/*
-- /Users/\*/Library/Caches/com.apple.helpd/\*/index.spotlightV\*/*
+- **/Users/\*/Library/Caches/com.apple.helpd/index.spotlightV\***
+- **/Users/\*/Library/Metadata/CoreSpotlight/index.spotlightV\***
+- **/Users/\*/Library/Developer/Xcode/DocumentationCache/\*/\*DeveloperDocumentation.index/**
+- **/Users/\*/Library/Metadata/CoreSpotlight/\*/index.spotlightV\***
+- **/Users/\*/Library/Caches/com.apple.helpd/\*/index.spotlightV\***
 
 Similar to the filelisting artifact, every 10k entries artemis will output the
 data and continue.
@@ -45,7 +45,7 @@ References:
 - [Spotlight](https://en.wikipedia.org/wiki/Spotlight_(Apple))
 - [libyal](https://github.com/libyal/dtformats/blob/main/documentation/Apple%20Spotlight%20store%20database%20file%20format.asciidoc)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -74,14 +74,14 @@ artifact_name = "spotlight"
 include_additional = true
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Alternative path to a Spotlight database. This configuration is
   **optional**
 - `include_additional` Artemis will parse additional known Spotlight database
   locations. This configuration is **optional**
 
-# Output Structure
+## Output Structure
 
 An array of `Spotlight` entries
 

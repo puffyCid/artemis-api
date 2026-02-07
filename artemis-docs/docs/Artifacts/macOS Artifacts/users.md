@@ -8,18 +8,18 @@ keywords:
 
 # Users
 
-Gets user info parsing the `plist` files at
-`/var/db/dslocal/nodes/Default/users`.
+Gets user info parsing the plist files at
+**/var/db/dslocal/nodes/Default/users**.
 
 Other Parsers:
 
-- Any tool that can parse a `plist` file
+- Any tool that can parse a plist file
 
 References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -39,13 +39,13 @@ artifact_name = "user-macos"
 # alt_path = ""
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_path` Use an alternative Users path. This configuration is **optional**.
   By default artemis will read all Users at
   `/var/db/dslocal/nodes/Default/users`
 
-# Output Structure
+## Output Structure
 
 An array of `Users` entries
 

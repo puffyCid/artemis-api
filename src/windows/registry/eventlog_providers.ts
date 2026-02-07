@@ -107,6 +107,11 @@ export function getEventlogProviders(alt_path?: string): RegistryEventlogProvide
                 guid: value.guid,
                 enabled: value.enabled,
                 channel_types: value.channel_types,
+                message: `EventLog Provider: ${value.names.at(0) ?? "Unknown"}`,
+                datetime: value.last_modified,
+                timestamp_desc: "Registry Last Modified",
+                artifact: "Windows EventLog Provider",
+                data_type: "windows:registry:eventlogprovider:entry"
             };
             providers.push(prov_value);
         }
@@ -126,7 +131,12 @@ function extractProviderInfo(value: Registry): RegistryEventlogProviders {
         parameter_file: "",
         guid: "",
         enabled: false,
-        channel_types: []
+        channel_types: [],
+        message: "",
+        datetime: "",
+        timestamp_desc: "Registry Last Modified",
+        artifact: "Windows EventLog Provider",
+        data_type: "windows:registry:eventlogprovider:entry"
     };
     for (const entry of value.values) {
         if (entry.value.toLowerCase() === "providerguid") {

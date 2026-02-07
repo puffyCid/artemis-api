@@ -36,7 +36,7 @@ export enum RequestType {
 
 /**
  * Various status codes for certificate requests
- * There are [alot](https://github.com/fox-it/dissect.database/pull/7/files#diff-60ccdb935072fd3aa71d6810f7c3aa7ca8ef42aadc6ce9e39ed5f54c5cc36d31R28)
+ * There are [a lot](https://github.com/fox-it/dissect.database/pull/7/files#diff-60ccdb935072fd3aa71d6810f7c3aa7ca8ef42aadc6ce9e39ed5f54c5cc36d31R28)
  * Only some listed so far
  */
 export enum StatusCode {
@@ -44,7 +44,7 @@ export enum StatusCode {
     BadRequestSubject = "Bad Request Subject",
     NoRequest = "No Request",
     Empty = "Property Empty",
-    InvalidCA = "Invalid CA Certificte",
+    InvalidCA = "Invalid CA Certificate",
     Suspended = "Server Suspended",
     EncodingLength = "Encoding Length",
     Conflict = "Role Conflict",

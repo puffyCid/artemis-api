@@ -7,6 +7,8 @@ function main() {
     throw console.log(results);
   }
 
+  console.log(results[0]);
+
   if (results.length === 0) {
     throw "no entries?";
   }

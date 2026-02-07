@@ -13,12 +13,12 @@ saved to the Windows Registry.
 
 (However, starting with Windows 11 23H2 WordWheel has been removed).
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 WordWheel keys.
 
-# Sample API Script
+## Sample API Script
 
 ```typescript
 import {
@@ -33,7 +33,7 @@ async function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 An array of `WordWheelEntry`
 

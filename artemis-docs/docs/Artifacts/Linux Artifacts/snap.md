@@ -12,7 +12,7 @@ to distribute universal Linux packages that will run on a variety of Linux
 distributions. Snap is enabled by default on Ubuntu and can be installed on
 other Linux distributions. Artemis supports listing installed Snap packages
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 installed Snap packages.
@@ -28,7 +28,7 @@ function main() {
 main();
 ```
 
-# Output Structure
+## Output Structure
 
 An array of Object containing `SnapState` entries.
 

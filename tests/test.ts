@@ -25,6 +25,7 @@ export { testFirmwareHistory } from "../src/linux/firmware";
 export { testGnomeAppUsage } from "../src/linux/gnome/usage";
 export { testParseGvfs } from "../src/linux/gnome/gvfs";
 export { testQueryLogons } from "../src/linux/sqlite/wtmpdb";
+export { testEpiphany } from "../src/linux/gnome/epiphany";
 
 /**
  * Windows exported test functions
@@ -35,6 +36,9 @@ export { testParseMru } from "../src/windows/registry/recently_used";
 export { testWindowsWifiNetworks } from "../src/windows/registry/wifi";
 export { testGetRunKeys } from "../src/windows/registry/run";
 export { testServiceInstalls } from "../src/windows/eventlogs/services";
+export { testRdpLogons } from "../src/windows/eventlogs/rdp";
+export { testParsePca } from "../src/windows/pca";
+export { testDefenderQuarantineEventLog } from "../src/windows/eventlogs/defender";
 
 /**
  * macOS exported test functions

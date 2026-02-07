@@ -9,27 +9,26 @@ keywords:
 
 # Scheduled Tasks
 
-Windows `Scheduled Tasks` are a common form of persistence on Windows systems.
-There are two (2) types of `Scheduled Task` files:
+Windows Scheduled Tasks are a common form of persistence on Windows systems.
+There are two (2) types of Scheduled Task files:
 
 - XML based files
 - Job based files
 
 artemis supports both formats. Starting on Windows Vista and higher XML files
-are used for `Scheduled Tasks`.
+are used for Scheduled Tasks.
 
 Other Parsers:
 
 - Any XML reader
 - [Velociraptor](https://docs.velociraptor.app/artifact_references/pages/windows.system.taskscheduler/)
-  (Only supports XML `Scheduled Tasks`)
 
 References:
 
 - [Libyal](https://github.com/libyal/dtformats/blob/main/documentation/Job%20file%20format.asciidoc)
 - [Microsoft](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-tsch/0d6383e4-de92-43e7-b0bb-a60cfa36379f)
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -49,35 +48,17 @@ artifact_name = "tasks"
 # alt_file = "C:\\Artifacts\\At1.job"
 ```
 
-# Collection Options
+## Collection Options
 
 - `alt_file` Full path to alternative Schedule Task file. This configuration is
   **optional**. By default artemis will parse all Schedule Task files at their
   default location.
 
-# Output Structure
+## Output Structure
 
-Collection of `TaskData`
+Array of `TaskXml` and `TaskJob`
 
 ```typescript
-export interface TaskData {
-  /**Array of `TaskXml` parsed XML files */
-  tasks: TaskXml[];
-  /**Array of `TaskJob` parsed Job files */
-  jobs: TaskJob[];
-}
-
-/**
- * JSON representation of the Task XML schema.
- * Most of the schema is Optional. Only `Actions` is required
- */
-export interface TaskData {
-  /**Array of `TaskXml` parsed XML files */
-  tasks: TaskXml[];
-  /**Array of `TaskJob` parsed Job files */
-  jobs: TaskJob[];
-}
-
 /**
  * JSON representation of the Task XML schema.
  * Most of the schema is Optional. Only `Actions` is required

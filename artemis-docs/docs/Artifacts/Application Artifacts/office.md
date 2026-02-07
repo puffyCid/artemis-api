@@ -16,7 +16,7 @@ recently opened files.
   /Users/\*/Library/Containers/com.microsoft\*/Data/Library/Preferences/com.microsoft.\*.securebookmarks.plist
 - Windows: \\Users\\\*\\NTUSER.DAT
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
 Microsoft Office information.
@@ -31,7 +31,7 @@ function main() {
 }
 ```
 
-# Output Structure
+## Output Structure
 
 On macOS an array of `OfficeRecentFilesMacos` entries. See
 [bookmarks](../macOS%20Artifacts/bookmarks.md) for the format.

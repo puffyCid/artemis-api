@@ -16,14 +16,18 @@ Artemis supports parsing the following artifacts from Firefox.
 - Addons
 - Website storage
 - Favicons
+- Form history
 
 Other parsers:
 
 - Any program that read a SQLITE database
 
-# Collection
+## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect FireFox data
+
+
+## Sample API Script
 
 ```typescript
 import { FireFox, PlatformType } from "./artemis-api/mod";
@@ -41,10 +45,9 @@ function main() {
 }
 
 main();
-
 ```
 
-# Output Structure
+## Output Structure
 
 Dependent on browser artifact user wants to parse.
 

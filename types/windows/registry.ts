@@ -16,7 +16,7 @@ import { Descriptor } from "./acls";
  */
 
 /**
- * Inteface representing the parsed `Registry` structure
+ * Interface representing the parsed `Registry` structure
  */
 export interface Registry {
   /**

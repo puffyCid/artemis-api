@@ -15,18 +15,18 @@ Grab the latest **stable** release
 
 :::info
 
-### Which version should I choose: Nightly or Stable?
+### Which version: Nightly or Stable?
 
 Nightly versions of artemis are built every day using GitHub Actions.
 Nightly versions are actually stable enough for daily usage.
 
-Stable releases are typically released every 2-3 months.
+Stable releases are typically released every 2-3 months.  
 Nightly and Stable versions go through the same tests and release process.
 
 :::
 
 ## Packages
-As of version 0.14.0 you may also install **stable** release packages on your system.  
+You may also install **stable** release packages on your system.  
 Currently supported distribution packages are:
 - RPM and DEB for Linux distros
 - PKG for macOS
@@ -52,8 +52,8 @@ Artemis also supports the following platforms:
 - FreeBSD
 - NetBSD
 - Android
-- Linux RISC-V
-- Windows ARM
+- Linux (RISC-V, musl, PowerPC, SPARC)
+- [illumos](https://en.wikipedia.org/wiki/Illumos)
 
 ## GitHub Releases
 
@@ -97,7 +97,7 @@ The compiled binary will be located at:
 :::info
 
 Alternatively, you may also install the command runner
-[Just](https://github.com/casey/just) and run:
+[Just](https://github.com/casey/just) and compile artemis:
 
 ```
 just cli
@@ -105,7 +105,6 @@ or for Windows
 just --shell pwsh.exe --shell-arg -c cli
 ```
 
-to compile artemis
 
 Please see the [Contributing](../Contributing/building.md) documentation if you
 would like to compile the entire project including optional experimental

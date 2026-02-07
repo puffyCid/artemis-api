@@ -90,7 +90,7 @@ export function glob(pattern: string): GlobInfo[] | FileError {
 }
 
 /**
- * Read lines from a file
+ * Read lines from a file (UTF8 encoding)
  * @param path Path to text file to read
  * @param offset First line to start reading from. Default is 0. Cannot be less than 0.
  * @param limit Number of lines to read. Default is 100. Cannot be less than 0.

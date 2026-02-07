@@ -22,7 +22,7 @@ References:
 
 - N/A
 
-# TOML Collection
+## TOML Collection
 
 ```toml
 [output]
@@ -55,7 +55,7 @@ path_regex = "" # Regex for paths
 file_regex = "" # Regex for files
 ```
 
-# Collection Options
+## Collection Options
 
 - `start_path` Where to start the file listing. Must exist on the endpoint. To
   start at root use `/`. This configuration is **required**
@@ -75,7 +75,7 @@ file_regex = "" # Regex for files
 - `file_regex` Only return entries that match the provided regex. This
   configuration is **optional**. Default is no Regex
 
-# Output Structure
+## Output Structure
 
 An array of `LinuxFileInfo` entries
 
