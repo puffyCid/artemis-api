@@ -13,7 +13,7 @@ Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file. A
 ## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
-Logon entries.
+RDP entries.
 
 ## Sample API Script
 

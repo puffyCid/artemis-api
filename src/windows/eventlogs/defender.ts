@@ -4,7 +4,7 @@ import { getEnvValue } from "../../environment/mod";
 import { WindowsError } from "../errors";
 
 /**
- * 
+ * Function to extract Windows Defender quarantine events
  * @param alt_path Optional alternative path to `Microsoft-Windows-Windows Defender%4Operational.evtx`
  * @param [limit=10000] Set optional different limit for streaming events
  * @returns 
@@ -159,5 +159,4 @@ export function testDefenderQuarantineEventLog(): void {
     }
 
     console.info(`  Function defenderQuarantineEventLog ✅`);
-
 }

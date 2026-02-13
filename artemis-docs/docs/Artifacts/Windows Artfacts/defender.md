@@ -13,7 +13,7 @@ Microsoft-Windows-Windows Defender%4Operational.evtx file.
 ## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
-Logon entries.
+Defender Quarantine entries.
 
 ## Sample API Script
 

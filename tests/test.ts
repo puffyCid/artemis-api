@@ -39,6 +39,7 @@ export { testServiceInstalls } from "../src/windows/eventlogs/services";
 export { testRdpLogons } from "../src/windows/eventlogs/rdp";
 export { testParsePca } from "../src/windows/pca";
 export { testDefenderQuarantineEventLog } from "../src/windows/eventlogs/defender";
+export { testMsiInstalled } from "../src/windows/eventlogs/msi";
 
 /**
  * macOS exported test functions
