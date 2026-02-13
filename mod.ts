@@ -157,6 +157,7 @@ export { rdpLogons } from "./src/windows/eventlogs/rdp";
 export { backgroundActivitiesManager } from "./src/windows/registry/bam";
 export { parsePca } from "./src/windows/pca";
 export { defenderQuarantineEventLog } from "./src/windows/eventlogs/defender";
+export { msiInstalled } from "./src/windows/eventlogs/msi";
 
 /**
  * FreeBSD
