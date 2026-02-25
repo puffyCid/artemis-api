@@ -31,6 +31,8 @@ export interface WmiPersist {
   | LogFileConsumer
   | SmtpConsumer
   | Record<string, unknown>;
+  /**Path to the WMI Repository directory */
+  evidence: string;
 }
 
 /**

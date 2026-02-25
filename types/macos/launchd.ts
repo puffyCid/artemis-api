@@ -6,7 +6,7 @@ export interface Launchd {
   /**JSON representation of launchd plist contents */
   launchd_data: Record<string, unknown>;
   /**Full path of the plist file */
-  plist_path: string;
+  evidence: string;
   /**Created timestamp for plist file */
   created: string;
   /**Modified timestamp for plist file */

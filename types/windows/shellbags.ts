@@ -39,7 +39,7 @@ export interface Shellbags {
   /**Registry key path to `Shellbags` data */
   reg_path: string;
   /**Full file path to the User Registry file */
-  reg_file_path: string;
+  evidence: string;
   /**Array of Property Stores */
   stores: Record<string, string | number | boolean | null>[];
 }

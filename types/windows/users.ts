@@ -26,4 +26,6 @@ export interface UserInfo {
   username: string;
   /**SID for account */
   sid: string;
+  /**Path to the Registry file */
+  evidence: string;
 }

@@ -64,6 +64,8 @@ export interface EventLogRecord {
    * ```
    */
   data: Record<string, unknown>;
+  /**Path to the EventLog file */
+  evidence: string;
 }
 
 /**
@@ -115,7 +117,7 @@ export interface EventLogMessage {
   /**Hostname of system */
   computer: string;
   /**Full path the evtx file that was parsed */
-  source_file: string;
+  evidence: string;
   /**Full path to the PE file that was used to obtain the template string */
   message_file: string;
   /**Full path to the PE file containing parameters for the entry */

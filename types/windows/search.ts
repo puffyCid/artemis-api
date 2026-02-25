@@ -72,4 +72,6 @@ export interface SearchEntry {
        * ```
        */
   properties: Record<string, string>;
+  /**Path to the ESE database */
+  evidence: string;
 }

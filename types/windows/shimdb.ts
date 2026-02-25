@@ -13,7 +13,7 @@ export interface Shimdb {
   /**Data associated with the Shimdb */
   db_data: DatabaseData;
   /**Path to parsed sdb file */
-  sdb_path: string;
+  evidence: string;
 }
 
 /**

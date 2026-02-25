@@ -44,5 +44,5 @@ export interface Amcache {
   /**Path in the Amcache.hve file */
   reg_path: string;
   /**Path to the Amcache.hve file */
-  source_path: string;
+  evidence: string;
 }

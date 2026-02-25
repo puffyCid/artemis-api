@@ -35,4 +35,6 @@ export interface Logon {
   ip: string;
   /**Status of logon entry: `Success` or `Failed` */
   status: string;
+  /**Path to the logon file */
+  evidence: string;
 }
