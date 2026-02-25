@@ -86,6 +86,8 @@ export interface Emond {
   plist_changed: string;
   /**Emond plist accessed  */
   plist_accessed: string;
+  /**Path to the Emonod plist file */
+  evidence: string;
 }
 
 /**

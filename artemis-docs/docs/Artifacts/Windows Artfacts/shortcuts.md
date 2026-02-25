@@ -53,7 +53,7 @@ A `Shortcut` object structure
 ```typescript
 export interface Shortcut {
   /**Path to `shortcut (lnk)` file */
-  source_path: string;
+  evidence: string;
   /**Flags that specify what data structures are in the `lnk` file */
   data_flags: string[];
   /**File attributes of target file */

@@ -305,7 +305,7 @@ export interface Spotlight {
    */
   values: Record<string, SpotlightProperties>;
   /**Location of the Spotlight database that was parsed */
-  directory: string;
+  evidence: string;
 }
 
 /**

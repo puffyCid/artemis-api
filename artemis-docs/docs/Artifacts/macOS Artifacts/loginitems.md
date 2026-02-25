@@ -106,7 +106,7 @@ export interface LoginItems {
   /**Does target file have file reference flag */
   file_ref_flag: boolean;
   /**Path to `LoginItem` source */
-  source_path: string;
+  evidence: string;
 }
 
 export enum TargetFlags {

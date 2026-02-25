@@ -72,6 +72,6 @@ export interface RecycleBin {
   /**SID associated with the deleted file */
   sid: string;
   /**Path to the file in the Recycle Bin */
-  recycle_path: string;
+  evidence: string;
 }
 ```

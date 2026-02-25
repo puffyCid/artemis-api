@@ -93,7 +93,7 @@ export interface OutlookMessage {
   /**Full path to the folder containing the message */
   folder_path: string;
   /**Source path to the OST file */
-  source_file: string;
+  evidence: string;
   /**Yara rule that matched if Yara scanning was enabled */
   yara_hits: string[] | undefined;
 }

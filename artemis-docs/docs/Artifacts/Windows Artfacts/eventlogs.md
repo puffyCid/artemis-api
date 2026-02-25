@@ -264,6 +264,8 @@ export interface EventLogRecord {
    * ```
    */
   data: Record<string, unknown>;
+  /**Path to the EventLog file */
+  evidence: string;
 }
 ````
 
@@ -329,6 +331,8 @@ export interface EventLogMessage {
   registry_file: string;
   /**Registry key path to the provider info */
   registry_path: string;
+  /**Path to the EventLog file */
+  evidence: string;
 }
 ```
 

@@ -82,5 +82,7 @@ export interface UsnJrnl {
   extension: string;
   /**Full path for the UsnJrnl entry. Obtained by parsing `$MFT` and referencing the `parent_mft_entry` */
   full_path: string;
+  /**Path to the UsnJrnl file */
+  evidence: string;
 }
 ```

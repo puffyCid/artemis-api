@@ -66,6 +66,6 @@ export interface Shimcache {
   /**Full path to the Registry key */
   key_path: string;
   /**Path to the Registry file */
-  source_path: string;
+  evidence: string;
 }
 ```

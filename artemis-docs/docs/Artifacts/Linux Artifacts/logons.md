@@ -88,18 +88,20 @@ export interface Logon {
 An array of `LastLogons` entries when querying the wtmp.db file
 
 export interface LastLogons {
-    id: number;
-    type: number;
-    user: string;
-    login: string;
-    logout: string;
-    tty: string;
-    remote: string;
-    service: string;
-    message: string;
-    datetime: string;
-    timestamp_desc: "User Logon";
-    artifact: "wtmpdb Logons";
-    data_type: "linux:wtmpdb:entry";
+  id: number;
+  type: number;
+  user: string;
+  login: string;
+  logout: string;
+  tty: string;
+  remote: string;
+  service: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "User Logon";
+  artifact: "wtmpdb Logons";
+  data_type: "linux:wtmpdb:entry";
+  /**Path to the Logon file */
+  evidence: string;
 }
 ```

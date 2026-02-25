@@ -67,5 +67,7 @@ export interface UserAssist {
   rot_path: string;
   /**Path of executed application with folder description GUIDs resolved */
   folder_path: string;
+  /**Path to the Registry file */
+  evidence: string;
 }
 ```

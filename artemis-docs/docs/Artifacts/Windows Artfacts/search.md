@@ -131,5 +131,7 @@ export interface SearchEntry {
    * ```
    */
   properties: Record<string, string>;
+  /**Path to the Search database */
+  evidence: string;
 }
 ````

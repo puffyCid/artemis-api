@@ -98,6 +98,8 @@ export interface ApplicationInfo {
   background_num_write_operations: number;
   /**Count of background flushes */
   background_number_of_flushes: number;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```
 
@@ -194,6 +196,8 @@ export interface ApplicationTimeline {
   keyboard_input_s: number;
   /**Mouse input seconds count */
   mouse_input_s: number;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```
 
@@ -218,6 +222,8 @@ export interface AppVfu {
   end_time: string;
   /**Base64 encoded usage data associated with VFU entry */
   usage: string;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```
 
@@ -236,6 +242,8 @@ export interface EnergyInfo {
   user_id: string;
   /**Base64 encoded binary data associated with EnergyInfo entry */
   binary_data: string;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```
 
@@ -266,6 +274,8 @@ export interface EnergyUsage {
   cycle_count: number;
   /**Configuration hash associated with entry */
   configuration_hash: number;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```
 
@@ -292,6 +302,8 @@ export interface NetworkInfo {
   bytes_sent: number;
   /**Bytes received associated with entry */
   bytes_recvd: number;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```
 
@@ -318,6 +330,8 @@ export interface NetworkConnectivityInfo {
   connect_start_time: string;
   /**L2 profile flags associated with entry */
   l2_profile_flags: number;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```
 
@@ -340,5 +354,7 @@ export interface NotificationInfo {
   payload_size: number;
   /**Network type associated with entry */
   network_type: number;
+  /**Path to the SRUM file */
+  evidence: string;
 }
 ```

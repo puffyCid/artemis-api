@@ -56,7 +56,7 @@ An array of `Jumplists` entries
 ```typescript
 export interface Jumplists {
   /**Path to Jumplist file */
-  source: string;
+  evidence: string;
   /**Jupmlist type. Custom or Automatic */
   jumplist_type: string;
   /**Application ID for Jumplist file */

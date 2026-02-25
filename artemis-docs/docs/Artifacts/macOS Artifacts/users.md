@@ -73,4 +73,6 @@ export interface Users {
   home_path: string[];
   /**UUID associated with user */
   uuid: string[];
+  /**Path to the Users plist file */
+  evidence: string;
 ```

@@ -64,50 +64,52 @@ An array of `MftEntry` entries
 
 ```typescript
 export interface MftEntry {
-    /**Full path to file or directory */
-    full_path: string;
-    /**Directory path */
-    directory: string;
-    /**Filename */
-    filename: string;
-    /**Extension of file if any */
-    extension: string;
-    /**Created timestamp */
-    created: string;
-    /**Modified timestamp */
-    modified: string;
-    /**Changed timestamp */
-    changed: string;
-    /**Accessed timestamp */
-    accessed: string;
-    /**Filename created timestamp */
-    filename_created: string;
-    /**Filename modified timestamp */
-    filename_modified: string;
-    /**Filename accessed timestamp */
-    filename_accessed: string;
-    /**Filename changed timestamp */
-    filename_changed: string;
-    /**Size of file in bytes */
-    size: number;
-    /**Inode entry */
-    inode: number;
-    /**Parent Inode entry*/
-    parent_inode: number;
-    /**Sequence number for entry */
-    usn: number;
-    /**Is the entry a file */
-    is_file: boolean;
-    /**Is the entry a directory */
-    is_directory: boolean;
-    /**Is the entry deleted */
-    deleted: boolean;
-    /**Namespace for the entry */
-    namespace: Namespace;
-    /**Attributes for the entry */
-    attributes: AttributeFlags[];
-    /**Other attributes parsed for the entry */
-    attribute_list: Record<string, unknown>[];
+  /**Full path to file or directory */
+  full_path: string;
+  /**Directory path */
+  directory: string;
+  /**Filename */
+  filename: string;
+  /**Extension of file if any */
+  extension: string;
+  /**Created timestamp */
+  created: string;
+  /**Modified timestamp */
+  modified: string;
+  /**Changed timestamp */
+  changed: string;
+  /**Accessed timestamp */
+  accessed: string;
+  /**Filename created timestamp */
+  filename_created: string;
+  /**Filename modified timestamp */
+  filename_modified: string;
+  /**Filename accessed timestamp */
+  filename_accessed: string;
+  /**Filename changed timestamp */
+  filename_changed: string;
+  /**Size of file in bytes */
+  size: number;
+  /**Inode entry */
+  inode: number;
+  /**Parent Inode entry*/
+  parent_inode: number;
+  /**Sequence number for entry */
+  usn: number;
+  /**Is the entry a file */
+  is_file: boolean;
+  /**Is the entry a directory */
+  is_directory: boolean;
+  /**Is the entry deleted */
+  deleted: boolean;
+  /**Namespace for the entry */
+  namespace: Namespace;
+  /**Attributes for the entry */
+  attributes: AttributeFlags[];
+  /**Other attributes parsed for the entry */
+  attribute_list: Record<string, unknown>[];
+  /**Path to the MFT file */
+  evidence: string;
 }
 
 export enum Namespace {

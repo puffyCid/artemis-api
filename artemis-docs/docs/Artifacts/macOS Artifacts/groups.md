@@ -63,5 +63,7 @@ export interface Groups {
   groupmembers: string[];
   /**UUID associated with the group */
   uuid: string[];
+  /**Path to the Groups plist file */
+  evidence: string;
 }
 ```
