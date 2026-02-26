@@ -46,6 +46,7 @@ export { testMsiInstalled } from "../src/windows/eventlogs/msi";
  */
 export { testHomebrew } from "../src/macos/homebrew";
 export { testParseBom } from "../src/macos/bom";
+export { testLuluRules } from "../src/macos/plist/lulu";
 
 /**
  * HTTP exported test functions
