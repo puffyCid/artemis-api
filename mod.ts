@@ -59,6 +59,7 @@ export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
 export { authorizations } from "./src/macos/sqlite/authd";
 export { parseSystemStats } from "./src/macos/systemstats";
+export { sharedFilelist } from "./src/macos/plist/sharefilelist";
 
 /**
  * Unix exported functions

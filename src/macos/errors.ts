@@ -30,6 +30,7 @@ export type ErrorName =
   | "COOKIES"
   | "SYSTEMSTATS"
   | "AUTHORIZATIONS"
-  | "STATS";
+  | "STATS"
+  | "SHARED_FILELIST";
 
-export class MacosError extends ErrorBase<ErrorName> {}
+export class MacosError extends ErrorBase<ErrorName> { }
