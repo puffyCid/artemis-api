@@ -20,8 +20,10 @@ export enum SharedFileType {
     FinderFavorite = "Finder Favorite",
     VolumeFavorite = "Volume Favorite",
     UnknownFavorite = "Unkonwn Favorite",
+    ApplicationRecentFiles = "Application Recent File"
 }
 
 export enum PlistDataType {
-    Bookmark = "Bookmark"
+    Bookmark = "Bookmark",
+    CodeSign = "Code Signing"
 }
