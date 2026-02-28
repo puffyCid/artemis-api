@@ -13,7 +13,7 @@ Application.evtx file.
 ## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
-Logon entries.
+MSI installed entries.
 
 ## Sample API Script
 

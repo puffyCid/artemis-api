@@ -36,7 +36,7 @@ export function logonsWindows(path: string, limit = 10000): LogonsWindows[] | Wi
 
     offset += limit;
 
-    const records = recordsData as Raw4624Logons[] | Raw4634Logoffs[];
+    const records = recordsData as unknown as Raw4624Logons[] | Raw4634Logoffs[];
     // Loop through Event Log entries
     for (const record of records) {
       // Parse Logon entries

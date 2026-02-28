@@ -44,6 +44,7 @@ export type ErrorName =
   | "RDPLOGONS"
   | "PCA"
   | "EVENTLOG_DEFENDER_QUARANTINE"
-  | "EVENTLOG_MSI_INSTALLED";
+  | "EVENTLOG_MSI_INSTALLED"
+  | "EVENTLOG_BITS";
 
 export class WindowsError extends ErrorBase<ErrorName> { }

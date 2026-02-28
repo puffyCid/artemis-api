@@ -17,10 +17,10 @@ You have to use the artemis [api](../../API/overview.md) in order to parse
 ## Sample API Script
 
 ```typescript
-import { sharedFilelist } from "./artemis-api/mod";
+import { recentFilesMacos } from "./artemis-api/mod";
 
 function main() {
-    const results = sharedFilelist();
+    const results = recentFilesMacos();
     console.log(JSON.stringify(results));
 }
 

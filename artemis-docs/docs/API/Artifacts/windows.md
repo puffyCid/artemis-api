@@ -716,3 +716,12 @@ Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Application.evtx
 | ------- | ------- | -------------------------------------------------- |
 | path    | string  | Optional path to Application.evtx file             |
 | limit   | number  | Optional limit to set when streaming the EventLogs |
+
+### bitsEvents(alt_file, limit) -> BitsEvent[] | MacosError
+
+Parse a Windows BITS EventLog file and try to extract data. 
+
+| Param          | Type    | Description                                                        |
+| -------------- | ------- | ------------------------------------------------------------------ |
+| alt_file       | string  | Optional path to an Windows BITS EventLog file                     |
+| limit          | number  | Optional EventLog limit to use when iterating through the EventLog |

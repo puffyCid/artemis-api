@@ -59,7 +59,7 @@ export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
 export { authorizations } from "./src/macos/sqlite/authd";
 export { parseSystemStats } from "./src/macos/systemstats";
-export { sharedFilelist } from "./src/macos/plist/sharefilelist";
+export { recentFilesMacos } from "./src/macos/plist/sharefilelist";
 
 /**
  * Unix exported functions
@@ -159,6 +159,7 @@ export { backgroundActivitiesManager } from "./src/windows/registry/bam";
 export { parsePca } from "./src/windows/pca";
 export { defenderQuarantineEventLog } from "./src/windows/eventlogs/defender";
 export { msiInstalled } from "./src/windows/eventlogs/msi";
+export {bitsEvents} from "./src/windows/eventlogs/bits";
 
 /**
  * FreeBSD

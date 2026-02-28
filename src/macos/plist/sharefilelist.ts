@@ -15,7 +15,7 @@ import { getPlist } from "../plist";
  * @param alt_path Optional alternative path to SharedFilelist file (SFL)
  * @returns Array of `RecentFiles` or `MacosError`
  */
-export function recentFiles(alt_path?: string): RecentFiles[] | MacosError {
+export function recentFilesMacos(alt_path?: string): RecentFiles[] | MacosError {
     let paths = [ "/Users/*/Library/Application Support/com.apple.sharedfilelist/*.sfl*", "/Users/*/Library/Application Support/com.apple.sharedfilelist/*/*.sfl*", ];
     if (alt_path !== undefined) {
         paths = [ alt_path ];
