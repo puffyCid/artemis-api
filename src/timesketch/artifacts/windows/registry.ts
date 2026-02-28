@@ -17,7 +17,7 @@ export function timelineRegistry(data: Registry[]): TimesketchTimeline[] {
       artifact: "Registry",
       data_type: "windows:registry:key",
     };
-    entry["registry_path"] = item.registry_path;
+    entry["registry_path"] = item.evidence;
     entry["registry_file"] = item.registry_file;
     entry["depth"] = item.depth;
     entry["key"] = item.key;

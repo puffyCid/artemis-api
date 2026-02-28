@@ -159,7 +159,8 @@ export { backgroundActivitiesManager } from "./src/windows/registry/bam";
 export { parsePca } from "./src/windows/pca";
 export { defenderQuarantineEventLog } from "./src/windows/eventlogs/defender";
 export { msiInstalled } from "./src/windows/eventlogs/msi";
-export {bitsEvents} from "./src/windows/eventlogs/bits";
+export { bitsEvents } from "./src/windows/eventlogs/bits";
+export { veloCommands } from "./src/windows/eventlogs/velociraptor";
 
 /**
  * FreeBSD

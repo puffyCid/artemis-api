@@ -47,7 +47,7 @@ export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsE
             const last_execution = unixEpochToISO(filetimeToUnixEpoch(timestamp.value));
             const bam_entry: Bam = {
                 key_path: entry.path,
-                reg_path: entry.registry_path,
+                reg_path: entry.evidence,
                 sid: entry.name,
                 path: value.value,
                 last_execution,

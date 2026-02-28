@@ -122,7 +122,7 @@ export function getEventlogProviders(alt_path?: string): RegistryEventlogProvide
 
 function extractProviderInfo(value: Registry): RegistryEventlogProviders {
     const values: RegistryEventlogProviders = {
-        registry_file: value.registry_path,
+        registry_file: value.evidence,
         key_path: value.path,
         name: value.name,
         channel_names: [],
@@ -172,7 +172,7 @@ function extractPublisherInfo(values: Registry): Publisher {
         channel_types: [],
         message_file: "",
         parameter_file: "",
-        registry_file: values.registry_path,
+        registry_file: values.evidence,
         key_path: values.path,
         last_modified: values.last_modified,
     };

@@ -68,8 +68,7 @@ function parsePowershellHistory(path: string, platform: PlatformType): History[]
     );
   }
 
-  let entries: string[] = [];
-
+  let entries;
   if (platform === PlatformType.Windows) {
     entries = data.split("\r\n");
     if (entries.length === 0) {

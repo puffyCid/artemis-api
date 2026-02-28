@@ -1,5 +1,5 @@
 import { Direction, FirewallRules, Protocol } from "../../../types/windows/registry/firewall_rules";
-import { getEnvValue } from "../../environment/mod";
+import { getSystemDrive } from "../../environment/env";
 import { WindowsError } from "../errors";
 import { getRegistry } from "../registry";
 
@@ -9,11 +9,9 @@ import { getRegistry } from "../registry";
  * @returns Array of `FirewallRules` or `WindowsError`
  */
 export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError {
-    let path = "";
+    let path = `${getSystemDrive()}\\Windows\\System32\\config\\SYSTEM`;
     if (alt_file !== undefined) {
         path = alt_file;
-    } else {
-        path = `${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
     }
 
     const reg_data = getRegistry(path);
@@ -43,7 +41,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                 name: "",
                 description: "",
                 application: "",
-                registry_file: entry.registry_path,
+                registry_file: entry.evidence,
                 key_path: entry.path,
                 last_modified: entry.last_modified,
                 rule_version: "",
@@ -122,7 +120,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                     case undefined:
                         break;
                     default:
-                        rule[ key ] = key_value.at(1) ?? "";
+                        rule[key] = key_value.at(1) ?? "";
                         break;
                 }
             }

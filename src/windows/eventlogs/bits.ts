@@ -10,7 +10,7 @@ import { getEventlogs } from "../eventlogs";
  * @returns Array of `BitsEvent` or `WindowsError`
  */
 export function bitsEvents(alt_path?: string, limit = 10000): BitsEvent[] | WindowsError {
-    let drive = getSystemDrive();
+    const drive = getSystemDrive();
     let path = `${drive}\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-Bits-Client%4Operational.evtx`;
     if (alt_path !== undefined) {
         path = alt_path;
@@ -27,7 +27,6 @@ export function bitsEvents(alt_path?: string, limit = 10000): BitsEvent[] | Wind
                 `failed to parse eventlog ${path}: ${logs}`,
             );
         }
-
 
         const recordsData = logs[1];
         if (recordsData.length === 0) {
