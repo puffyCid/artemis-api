@@ -1,3 +1,37 @@
+---
+description: macOS Recent Files
+keywords:
+  - macos
+  - plist
+---
+
+# Recent Files
+
+Artemis supports parsing macOS recently open files (sfl files). These plist files contain files and directories recently opened by macOS applications
+
+## Collection
+
+You have to use the artemis [api](../../API/overview.md) in order to parse
+`Recent Files` data.
+
+## Sample API Script
+
+```typescript
+import { sharedFilelist } from "./artemis-api/mod";
+
+function main() {
+    const results = sharedFilelist();
+    console.log(JSON.stringify(results));
+}
+
+main();
+```
+
+## Output Structure
+
+An array of `RecentFiles` objects
+
+```typescript
 export interface RecentFiles {
     evidence: string;
     shared_file_type: SharedFileType;
@@ -8,12 +42,6 @@ export interface RecentFiles {
     data_type: "macos:plist:recentfile:entry";
     plist_data_type: PlistDataType;
     [ key: string ]: unknown;
-}
-
-export interface SharedFilelistRaw {
-    "$version": number;
-    "$archiver": string;
-    "$objects": (string | number | boolean | Record<string, unknown> | number[])[];
 }
 
 export enum SharedFileType {
@@ -30,3 +58,4 @@ export enum PlistDataType {
     Bookmark = "Bookmark",
     CodeSign = "Code Signing"
 }
+```

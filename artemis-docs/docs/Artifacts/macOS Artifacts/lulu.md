@@ -24,13 +24,15 @@ import { luluRules } from "./artemis-api/mod";
 
 function main() {
   const results = luluRules();
-  console.log(results);
+  console.log(JSON.stringify(results));
 }
+
+main();
 ```
 
 ## Output Structure
 
-A `Rule` object structure
+An array of `Rule` objects
 
 ```typescript
 export interface Rule {

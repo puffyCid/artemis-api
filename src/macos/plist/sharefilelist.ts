@@ -1,7 +1,7 @@
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { BookmarkData } from "../../../types/macos/bookmark";
 import { SingleRequirement } from "../../../types/macos/codesigning";
-import { PlistDataType, SharedFilelist, SharedFilelistRaw, SharedFileType } from "../../../types/macos/plist/sharefilelist";
+import { PlistDataType, RecentFiles, SharedFilelistRaw, SharedFileType } from "../../../types/macos/plist/sharefilelist";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
 import { parseBookmark } from "../bookmark";
@@ -10,13 +10,18 @@ import { SigningError } from "../codesigning/errors";
 import { MacosError } from "../errors";
 import { getPlist } from "../plist";
 
-export function sharedFilelist(alt_path?: string): SharedFilelist[] | MacosError {
+/**
+ * Function to parse recent files on macOS
+ * @param alt_path Optional alternative path to SharedFilelist file (SFL)
+ * @returns Array of `RecentFiles` or `MacosError`
+ */
+export function recentFiles(alt_path?: string): RecentFiles[] | MacosError {
     let paths = [ "/Users/*/Library/Application Support/com.apple.sharedfilelist/*.sfl*", "/Users/*/Library/Application Support/com.apple.sharedfilelist/*/*.sfl*", ];
     if (alt_path !== undefined) {
         paths = [ alt_path ];
     }
 
-    let values: SharedFilelist[] = [];
+    let values: RecentFiles[] = [];
     for (const entry of paths) {
         const glob_paths = glob(entry);
         if (glob_paths instanceof FileError) {
@@ -32,8 +37,13 @@ export function sharedFilelist(alt_path?: string): SharedFilelist[] | MacosError
     return values;
 }
 
-function parsePlistFiles(files: GlobInfo[]): SharedFilelist[] | MacosError {
-    const values: SharedFilelist[] = [];
+/**
+ * Function to read binary plist file (sfl file)
+ * @param files Array of `GlobInfo`
+ * @returns Array of `RecentFiles` or `MacosError`
+ */
+function parsePlistFiles(files: GlobInfo[]): RecentFiles[] | MacosError {
+    const values: RecentFiles[] = [];
     for (const entry of files) {
         if (!entry.is_file) {
             continue;
@@ -46,8 +56,6 @@ function parsePlistFiles(files: GlobInfo[]): SharedFilelist[] | MacosError {
 
         const raw_data = result as unknown as SharedFilelistRaw;
         if (raw_data.$objects.includes("Bookmark")) {
-            console.log(entry.full_path);
-
             const bookmark_result = parseBookmarkEntry(raw_data);
             if (bookmark_result instanceof MacosError) {
                 continue;
@@ -64,15 +72,22 @@ function parsePlistFiles(files: GlobInfo[]): SharedFilelist[] | MacosError {
             }
 
             for (const book_entry of bookmark_result) {
-                let value: SharedFilelist = {
+                let message = book_entry.path.length === 0 ? book_entry.url_string : book_entry.path;
+                if (message.length === 0 && book_entry.target_filename.length !== 0) {
+                    message = book_entry.target_filename;
+                } else if (message.length === 0) {
+                    message = "Unknown target";
+                }
+                let datetime = book_entry.created.length === 0 ? "1970-01-01T00:00:00Z" : book_entry.created;
+                let value: RecentFiles = {
                     evidence: entry.full_path,
                     shared_file_type,
-                    message: `Finder Favorite '${book_entry.path}'`,
-                    datetime: book_entry.created,
-                    timestamp_desc: "Favorite Created",
-                    artifact: "Shared File List",
-                    data_type: "macos:plist:sharedfilelist:entry",
-                    plist_data_type: PlistDataType.Bookmark
+                    message: `Recent File '${message}'`,
+                    datetime,
+                    timestamp_desc: "Target File Created",
+                    data_type: "macos:plist:recentfile:entry",
+                    plist_data_type: PlistDataType.Bookmark,
+                    artifact: "Recent Files"
                 };
                 value = { ...value, ...book_entry };
                 if (signing_info.length !== 0) {
@@ -91,15 +106,15 @@ function parsePlistFiles(files: GlobInfo[]): SharedFilelist[] | MacosError {
             const shared_file_type = favoriteType(entry.full_path);
 
             for (const sign of signing) {
-                let value: SharedFilelist = {
+                let value: RecentFiles = {
                     evidence: entry.full_path,
                     shared_file_type,
-                    message: `Finder SharedFile Application '${sign.identifier}'`,
+                    message: `Recent File Application '${sign.identifier}'`,
                     datetime: '1970-01-01T00:00:00Z',
                     timestamp_desc: "None",
-                    artifact: "Shared File List",
-                    data_type: "macos:plist:sharedfilelist:entry",
-                    plist_data_type: PlistDataType.CodeSign
+                    data_type: "macos:plist:recentfile:entry",
+                    plist_data_type: PlistDataType.CodeSign,
+                    artifact: "Recent Files"
                 };
                 value = { ...value, ...sign };
                 values.push(value);
@@ -109,6 +124,11 @@ function parsePlistFiles(files: GlobInfo[]): SharedFilelist[] | MacosError {
     return values;
 }
 
+/**
+ * Function to parse the bookmark data in the binary plist
+ * @param data `SharedFilelistRaw` object
+ * @returns Array of `BookmarkData` or `MacosError`
+ */
 function parseBookmarkEntry(data: SharedFilelistRaw): BookmarkData[] | MacosError {
     const values: BookmarkData[] = [];
     for (const entry of data.$objects) {
@@ -121,7 +141,6 @@ function parseBookmarkEntry(data: SharedFilelistRaw): BookmarkData[] | MacosErro
         }
         const result = parseBookmark(new Uint8Array(entry));
         if (result instanceof MacosError) {
-            console.log(entry);
             continue;
         }
         values.push(result);
@@ -130,6 +149,11 @@ function parseBookmarkEntry(data: SharedFilelistRaw): BookmarkData[] | MacosErro
     return values;
 }
 
+/**
+ * Function to parse application signing info related to recent files
+ * @param data `SharedFilelistRaw` object
+ * @returns Array of `SingleRequirement` or `MacosError`
+ */
 function parseCodesign(data: SharedFilelistRaw): SingleRequirement[] | MacosError {
     const values: SingleRequirement[] = [];
     for (const entry of data.$objects) {
@@ -150,6 +174,11 @@ function parseCodesign(data: SharedFilelistRaw): SingleRequirement[] | MacosErro
     return values;
 }
 
+/**
+ * Function to determine the recent file type
+ * @param path Path to sharedfilelist (SFL)
+ * @returns `SharedFileType` enum
+ */
 function favoriteType(path: string): SharedFileType {
     if (path.includes("FavoriteVolumes")) {
         return SharedFileType.VolumeFavorite;
@@ -157,6 +186,12 @@ function favoriteType(path: string): SharedFileType {
         return SharedFileType.FinderFavorite;
     } else if (path.includes("ApplicationRecentDocuments")) {
         return SharedFileType.ApplicationRecentFiles;
+    } else if (path.includes("ProjectsItems")) {
+        return SharedFileType.ProjectFavorite;
+    } else if (path.includes("RecentApplications")) {
+        return SharedFileType.RecentApplication;
+    } else if (path.includes("RecentDocuments")) {
+        return SharedFileType.RecentDocuments;
     } else {
         return SharedFileType.UnknownFavorite;
     }
