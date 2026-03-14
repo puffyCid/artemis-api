@@ -111,7 +111,7 @@ function parsePlist(path: string, skip_icon: boolean): Applications | MacosError
   }
   data = data as Record<string, string>;
 
-  let icon_file = "";
+  let icon_file;
   if (`${data[ "CFBundleIconFile" ]}`.includes("/")) {
     icon_file = `${data[ "CFBundleIconFile" ]}`;
   } else if (`${data[ "CFBundleIconFile" ]}`.includes("icns")) {

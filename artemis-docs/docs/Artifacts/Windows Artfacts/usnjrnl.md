@@ -9,7 +9,7 @@ keywords:
 
 Windows UsnJrnl is a sparse binary file that tracks changes to files and
 directories. Located at the alternative data stream (ADS)
-**C:\$Extend\$UsnJrnl:$J**. Parsing this data can sometimes show files that have
+**C:\\$Extend\\$UsnJrnl:$J**. Parsing this data can sometimes show files that have
 been deleted. However, depending on the file activity on the system entries in
 the UsnJrnl may get overwritten quickly.
 

@@ -153,7 +153,6 @@ export class Safari {
             }
             offset += limit;
         }
-        offset = 0;
 
         const cooks = this.cookies();
         let status = dumpData(cooks, "retrospect_safari_cookies", output);

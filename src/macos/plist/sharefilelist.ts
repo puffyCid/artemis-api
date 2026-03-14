@@ -78,7 +78,7 @@ function parsePlistFiles(files: GlobInfo[]): RecentFiles[] | MacosError {
                 } else if (message.length === 0) {
                     message = "Unknown target";
                 }
-                let datetime = book_entry.created.length === 0 ? "1970-01-01T00:00:00Z" : book_entry.created;
+                const datetime = book_entry.created.length === 0 ? "1970-01-01T00:00:00Z" : book_entry.created;
                 let value: RecentFiles = {
                     evidence: entry.full_path,
                     shared_file_type,

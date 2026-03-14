@@ -1,6 +1,5 @@
 import { glob, readLines } from "../../mod";
 import { SyncthingClient, SyncthingLogs } from "../../types/applications/syncthing";
-import { GlobInfo } from "../../types/filesystem/globs";
 import { FileError } from "../filesystem/errors";
 import { PlatformType } from "../system/systeminfo";
 import { ApplicationError } from "./errors";
@@ -79,7 +78,7 @@ export class Syncthing {
     * @returns Array of `SyncthingClient` or `ApplicationError`
     */
     private profiles(): SyncthingClient[] | ApplicationError {
-        let paths: GlobInfo[] = [];
+        let paths;
         switch (this.platform) {
             case PlatformType.Linux: {
                 const linux_paths = glob("/home/*/.local/state/syncthing");

@@ -321,8 +321,6 @@ export interface EventLogMessage {
   channel: string;
   /**Hostname of system */
   computer: string;
-  /**Full path the evtx file that was parsed */
-  source_file: string;
   /**Full path to the PE file that was used to obtain the template string */
   message_file: string;
   /**Full path to the PE file containing parameters for the entry */

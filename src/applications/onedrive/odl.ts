@@ -30,7 +30,7 @@ export function readOdlFiles(path: string): OneDriveLog[] | ApplicationError {
   if (data instanceof FileError) {
     return new ApplicationError(`ONEDRIVE`, `could not read log ${path}: ${data.message}`);
   }
-  let filename = "";
+  let filename;
   if (path.includes("\\")) {
     filename = path.split("\\").pop() ?? "";
   } else {
