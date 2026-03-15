@@ -52,7 +52,7 @@ export interface EventLogProcessTree {
     datetime: string;
     timestamp_desc: "EventLog Generated";
     artifact: "EventLogs Process Tree";
-    evtx_path: string;
+    evidence: string;
     data_type: "windows:eventlogs:proctree:entry";
     record: number;
     logon_id: number;

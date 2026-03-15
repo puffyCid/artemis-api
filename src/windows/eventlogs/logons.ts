@@ -57,7 +57,8 @@ export function logonsWindows(path: string, limit = 10000): LogonsWindows[] | Wi
           datetime: record.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
           timestamp_desc: "Account Logon",
           artifact: "Logon EventLog",
-          data_type: "windows:eventlogs:logon:entry"
+          data_type: "windows:eventlogs:logon:entry",
+          evidence: path,
         };
         logon_entries.push(entry);
       } else if (
@@ -79,7 +80,8 @@ export function logonsWindows(path: string, limit = 10000): LogonsWindows[] | Wi
           datetime: record.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
           timestamp_desc: "Account Logoff",
           artifact: "Logoff EventLog",
-          data_type: "windows:eventlogs:logoff:entry"
+          data_type: "windows:eventlogs:logoff:entry",
+          evidence: path,
         };
         logon_entries.push(entry);
       }

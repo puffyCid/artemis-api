@@ -31,7 +31,7 @@ export function msiInstalled(alt_path?: string, limit = 10000): MsiInstalled[] |
                 `failed to parse eventlog ${path}: ${logs}`,
             );
         }
-        const recordsData = logs[1] as RawMsiInstalled[];
+        const recordsData = logs[1] as unknown as RawMsiInstalled[];
 
         offset += limit
 

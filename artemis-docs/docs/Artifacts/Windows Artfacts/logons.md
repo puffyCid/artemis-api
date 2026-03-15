@@ -53,6 +53,7 @@ export interface LogonsWindows {
   timestamp_desc: "Account Logon" | "Account Logoff";
   artifact: "Logon EventLog" | "Logoff EventLog";
   data_type: "windows:eventlogs:logon:entry" | "windows:eventlogs:logoff:entry";
+  evidence: string;
 }
 
 export enum LogonType {

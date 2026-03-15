@@ -80,10 +80,10 @@ function parseDict(path: string): ProgramCompatibilityAssist[] | WindowsError {
                 pca_type: PcaType.AppLaunch,
                 message: `PCA app launch: ${entries.at(0) ?? "Unknown path"}`,
                 datetime: timestamp,
-                source: path,
                 timestamp_desc: "Last Run",
                 artifact: "Windows Program Compatibility Assist",
-                data_type: "windows:pca:entry"
+                data_type: "windows:pca:entry",
+                evidence: path,
             };
             values.push(value);
         }
@@ -124,7 +124,7 @@ function parseGeneral(path: string): ProgramCompatibilityAssist[] | WindowsError
             pca_type: PcaType.General,
             message: `PCA general launch: ${entries.at(2) ?? "Unknown path"}`,
             datetime: timestamp,
-            source: path,
+            evidence: path,
             timestamp_desc: "Last Run",
             artifact: "Windows Program Compatibility Assist",
             data_type: "windows:pca:entry"

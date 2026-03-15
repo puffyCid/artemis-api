@@ -60,5 +60,6 @@ export interface Scriptblock {
     threat_id: number;
     system_time: string;
     created_time: string;
+    evidence: string;
 }
 ```

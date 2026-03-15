@@ -37,7 +37,7 @@ export function defenderQuarantineEventLog(alt_path?: string, limit = 10000): Ev
         }
 
         offset += limit;
-        const records = recordsData as RawDefenderQuarantine[];
+        const records = recordsData as unknown as RawDefenderQuarantine[];
 
         // Loop through Event Log entries
         for (const record of records) {

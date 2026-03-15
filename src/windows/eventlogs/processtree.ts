@@ -39,7 +39,7 @@ export function processTreeEventLogs(path?: string): EventLogProcessTree[] | Win
 
         // Increase to next chunk of entries
         offset += limit;
-        const data = logs[1] as RawProcess[];
+        const data = logs[1] as unknown as RawProcess[];
         for (const entry of data) {
             // Skip non process 4688 events
             if (entry.data.Event.System.EventID !== eid) {
@@ -110,10 +110,10 @@ function createProcessTree(data: RawProcess[], proc_maps: Record<string, ProcTra
             datetime: value.timestamp,
             timestamp_desc: "EventLog Generated",
             artifact: "EventLogs Process Tree",
-            evtx_path,
             data_type: "windows:eventlogs:proctree:entry",
             record: value.event_record_id,
             logon_id,
+            evidence: evtx_path,
         };
         entries.push(entry);
     }

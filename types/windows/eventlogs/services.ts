@@ -14,6 +14,7 @@ export interface ServiceInstalls {
   timestamp_desc: "Windows Service Installed";
   artifact: "EventLog Service 7045";
   data_type: "windows:eventlog:system:service";
+  evidence: string;
 }
 
 export interface RawService7045 {

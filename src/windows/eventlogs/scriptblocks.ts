@@ -41,7 +41,7 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
 
         // Increase to next chunk of entries
         offset += limit;
-        const data = logs[ 1 ] as RawBlock[];
+        const data = logs[1] as unknown as RawBlock[];
         for (const entry of data) {
             if (entry.data.Event.System.EventID !== eid) {
                 continue;
@@ -55,7 +55,6 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
                     timestamp_desc: "EventLog Entry Created",
                     data_type: "windows:eventlogs:powershell:scriptblock:entry",
                     id: entry.data.Event.EventData.ScriptBlockId,
-                    source_file: log_path,
                     path: entry.data.Event.EventData.Path,
                     script_length: entry.data.Event.EventData.ScriptBlockText.length,
                     has_signature_block: entry.data.Event.EventData.ScriptBlockText.includes("# SIG # End signature block"),
@@ -69,7 +68,8 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
                     threat_id: entry.data.Event.System.Execution[ "#attributes" ].ThreadID,
                     system_time: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
                     created_time: entry.timestamp,
-                    artifact: "Windows PowerShell Scriptblock"
+                    artifact: "Windows PowerShell Scriptblock",
+                    evidence: log_path,
                 };
                 entries.push(record);
                 continue;

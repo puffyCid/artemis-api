@@ -24,7 +24,7 @@ export function rdpLogons(alt_file?: string): RdpActivity[] | WindowsError {
         return new WindowsError(`RDPLOGONS`, `failed to parse RDP eventlogs: ${logs}`);
     }
 
-    return extractRdp(logs);
+    return extractRdp(logs, path);
 }
 
 interface RdpEvents {
@@ -173,7 +173,7 @@ function isLogoff(record: Raw23Logoff): record is Raw23Logoff {
  * @param events Object of `RdpEvents`
  * @returns Array of `RdpActivity`
  */
-function extractRdp(events: RdpEvents): RdpActivity[] {
+function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
     const values: RdpActivity[] = [];
     for (const entry of events.logons) {
         const data = entry.data.Event.UserData.EventXML;
@@ -189,7 +189,8 @@ function extractRdp(events: RdpEvents): RdpActivity[] {
             datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Logon",
             artifact: "RDP EventLog",
-            data_type: "windows:eventlogs:rdp:entry"
+            data_type: "windows:eventlogs:rdp:entry",
+            evidence,
         };
         values.push(value);
     }
@@ -208,7 +209,8 @@ function extractRdp(events: RdpEvents): RdpActivity[] {
             datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Logoff",
             artifact: "RDP EventLog",
-            data_type: "windows:eventlogs:rdp:entry"
+            data_type: "windows:eventlogs:rdp:entry",
+            evidence,
         };
         values.push(value);
     }
@@ -227,7 +229,8 @@ function extractRdp(events: RdpEvents): RdpActivity[] {
             datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Disconnect",
             artifact: "RDP EventLog",
-            data_type: "windows:eventlogs:rdp:entry"
+            data_type: "windows:eventlogs:rdp:entry",
+            evidence,
         };
         values.push(value);
     }
@@ -246,7 +249,8 @@ function extractRdp(events: RdpEvents): RdpActivity[] {
             datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Reconnect",
             artifact: "RDP EventLog",
-            data_type: "windows:eventlogs:rdp:entry"
+            data_type: "windows:eventlogs:rdp:entry",
+            evidence,
         };
         values.push(value);
     }
@@ -359,7 +363,7 @@ export function testRdpLogons(): void {
         logoffs: [],
         session_start: [],
         session_end: []
-    });
+    }, "test");
 
     if (mock.length !== 1) {
         throw `Got ${results.length} RDP events, expected 1.......extractRdp ❌`;
