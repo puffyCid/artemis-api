@@ -62,7 +62,7 @@ async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
         hostname: "",
         last_occurrence: "",
         user: "",
-        data_directory: path,
+        evidence: path,
         backtrace: "",
         environment: "",
         home: "",

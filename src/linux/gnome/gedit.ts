@@ -56,7 +56,7 @@ export function geditRecentFiles(
       const recent: RecentFiles = {
         path: doc[ "$" ][ "uri" ] ?? "",
         accessed: unixEpochToISO(Number(doc[ "$" ][ "atime" ])),
-        gedit_source: entry.full_path,
+        evidence: entry.full_path,
         message: `Accessed: ${doc[ "$" ][ "uri" ] ?? ""}`,
         datetime: `${unixEpochToISO(Number(doc[ "$" ][ "atime" ])) ?? "1970-01-01T00:00:00.000Z"}`,
         timestamp_desc: "Last Accessed",

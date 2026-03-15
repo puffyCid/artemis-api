@@ -42,9 +42,9 @@ export function getGnomeExtensions(
       }
 
       const ext_data: Extension = JSON.parse(data);
-      ext_data.extension_path = extension.full_path;
+      ext_data.evidence = extension.full_path;
 
-      const meta = stat(ext_data.extension_path);
+      const meta = stat(ext_data.evidence);
       if (!(meta instanceof FileError)) {
         ext_data.created = meta.created;
         ext_data.accessed = meta.accessed;

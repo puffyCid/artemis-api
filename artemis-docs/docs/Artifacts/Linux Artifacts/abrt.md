@@ -41,7 +41,7 @@ export interface Abrt {
     hostname: string;
     last_occurrence: string;
     user: string;
-    data_directory: string;
+    evidence: string;
     backtrace: string | Record<string, unknown>;
     environment: string;
     home: string;

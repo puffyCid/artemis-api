@@ -9,7 +9,7 @@ export interface AppUsage {
   /**Application last seen timestamp */
   "last-seen": string;
   /**Path to the parsed application_state file */
-  source: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "Last Seen";

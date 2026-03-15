@@ -98,7 +98,7 @@ export interface GvfsEntry {
    /**Last change timestamp of the **metadata** */
    last_change: string;
    /**GFVS file source */
-   source: string;
+   evidence: string;
    message: string;
    datetime: string;
    timestamp_desc: "Last Changed";

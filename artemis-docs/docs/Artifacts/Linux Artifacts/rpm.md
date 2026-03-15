@@ -78,6 +78,7 @@ export interface RpmPackages {
   timestamp_desc: "RPM Package Installed";
   artifact: "RPM Package";
   data_type: "linux:rpm:entry";
+  evidence: string;
 }
 
 ```
