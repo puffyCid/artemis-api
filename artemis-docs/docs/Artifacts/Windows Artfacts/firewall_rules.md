@@ -43,7 +43,7 @@ export interface FirewallRules {
     registry_key_name: string;
     description: string;
     application: string;
-    registry_file: string;
+    evidence: string;
     key_path: string;
     last_modified: string;
     rule_version: string;

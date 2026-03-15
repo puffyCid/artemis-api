@@ -43,5 +43,6 @@ export interface Bam{
     timestamp_desc: "Last Execution";
     artifact: "Windows Background Activity Monitor";
     data_type: "windows:registry:bam:entry";
+    evidence: string;
 }
 ```

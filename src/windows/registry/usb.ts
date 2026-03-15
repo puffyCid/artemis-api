@@ -159,7 +159,8 @@ function usbStor(data: Registry): UsbDevices {
     datetime: "1970-01-01T00:00:00.000Z",
     timestamp_desc: "USB Last Connected",
     artifact: "Windows USB Device",
-    data_type: "windows:registry:usb:entry"
+    data_type: "windows:registry:usb:entry",
+    evidence: data.evidence,
   };
 
   const info = (data.key.split("\\").pop() as string).split("&");

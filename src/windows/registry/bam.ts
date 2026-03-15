@@ -55,7 +55,8 @@ export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsE
                 datetime:last_execution,
                 timestamp_desc: "Last Execution",
                 artifact: "Windows Background Activity Monitor",
-                data_type: "windows:registry:bam:entry"
+                data_type: "windows:registry:bam:entry",
+                evidence: path,
             };
 
             values.push(bam_entry);

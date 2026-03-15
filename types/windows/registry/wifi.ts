@@ -8,12 +8,12 @@ export interface Wifi {
     id: string;
     last_connected_local_time: string;
     registry_path: string;
-    registry_file: string;
     message: string;
     datetime: string;
     timestamp_desc: "Registry Key Modified";
     artifact: "WiFi Network";
     data_type: "windows:registry:wifi:entry";
+    evidence: string;
 }
 
 export enum WifiCategory {

@@ -32,7 +32,7 @@ An array of `RegistryEventlogProviders`
 
 ```typescript
 export interface RegistryEventlogProviders {
-    registry_file: string;
+    evidence: string;
     key_path: string;
     name: string;
     channel_names: string[];

@@ -97,7 +97,7 @@ export function getEventlogProviders(alt_path?: string): RegistryEventlogProvide
         const value = pub[key];
         if (value !== undefined && (value.message_file !== "" || value.parameter_file !== "")) {
             const prov_value: RegistryEventlogProviders = {
-                registry_file: value.registry_file,
+                evidence: value.evidence,
                 key_path: value.key_path.split("/").at(0) ?? "",
                 name: value.names.at(0) ?? "Unknown",
                 channel_names: value.names,
@@ -122,7 +122,7 @@ export function getEventlogProviders(alt_path?: string): RegistryEventlogProvide
 
 function extractProviderInfo(value: Registry): RegistryEventlogProviders {
     const values: RegistryEventlogProviders = {
-        registry_file: value.evidence,
+        evidence: value.evidence,
         key_path: value.path,
         name: value.name,
         channel_names: [],
@@ -158,7 +158,7 @@ interface Publisher {
     channel_types: ChannelType[];
     message_file: string;
     parameter_file: string;
-    registry_file: string;
+    evidence: string;
     key_path: string;
     last_modified: string;
 }
@@ -172,7 +172,7 @@ function extractPublisherInfo(values: Registry): Publisher {
         channel_types: [],
         message_file: "",
         parameter_file: "",
-        registry_file: values.evidence,
+        evidence: values.evidence,
         key_path: values.path,
         last_modified: values.last_modified,
     };

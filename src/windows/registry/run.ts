@@ -66,7 +66,7 @@ function parseKeys(value: Registry): RegistryRunKey[] {
         const run_value: RegistryRunKey = {
             key_modified: value.last_modified,
             key_path: value.path,
-            registry_path: value.evidence,
+            evidence: value.evidence,
             registry_file: value.registry_file,
             path: "",
             created: "",

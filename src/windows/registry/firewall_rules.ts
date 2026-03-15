@@ -41,7 +41,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                 name: "",
                 description: "",
                 application: "",
-                registry_file: entry.evidence,
+                evidence: entry.evidence,
                 key_path: entry.path,
                 last_modified: entry.last_modified,
                 rule_version: "",

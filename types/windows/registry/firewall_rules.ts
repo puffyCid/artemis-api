@@ -14,7 +14,6 @@ export interface FirewallRules {
     registry_key_name: string;
     description: string;
     application: string;
-    registry_file: string;
     key_path: string;
     last_modified: string;
     rule_version: string;
@@ -28,6 +27,7 @@ export interface FirewallRules {
     timestamp_desc: "Registry Last Modified";
     artifact: "Windows Firewall Rule";
     data_type: "windows:registry:firewallrule:entry";
+    evidence: string;
 }
 
 export enum Direction {

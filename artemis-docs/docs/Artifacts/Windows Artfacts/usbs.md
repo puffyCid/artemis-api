@@ -57,5 +57,6 @@ export interface UsbDevices {
   timestamp_desc: "USB Last Connected";
   artifact: "Windows USB Device";
   data_type: "windows:registry:usb:entry";
+  evidence: string;
 }
 ```

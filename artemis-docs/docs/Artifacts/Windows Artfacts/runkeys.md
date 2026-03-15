@@ -35,7 +35,7 @@ An array of `RegistryRunKey`
 export interface RegistryRunKey {
     key_modified: string;
     key_path: string;
-    registry_path: string;
+    evidence: string;
     registry_file: string;
     path: string;
     /**When file was created */

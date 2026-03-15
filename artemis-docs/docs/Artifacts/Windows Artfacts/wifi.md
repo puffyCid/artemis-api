@@ -49,6 +49,7 @@ export interface Wifi {
     timestamp_desc: "Registry Key Modified";
     artifact: "WiFi Network";
     data_type: "windows:registry:wifi:entry";
+    evidence: string;
 }
 
 export enum WifiCategory {

@@ -1,7 +1,6 @@
 import { ShellItems } from "../shellitems";
 
 export interface Mru {
-  ntuser_path: string;
   kind: MruType;
   /**Filename of MRU entry*/
   filename: string;
@@ -20,6 +19,7 @@ export interface Mru {
   timestamp_desc: "MRU Entry Created";
   artifact: "Windows Most Recently Used" | "MRU Open Save" | "MRU Last Visit" | "MRU Recent Docs";
   data_type: "windows:registry:mru:entry";
+  evidence: string;
 }
 
 export interface MruValues {
