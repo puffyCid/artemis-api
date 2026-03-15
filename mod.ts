@@ -161,6 +161,7 @@ export { defenderQuarantineEventLog } from "./src/windows/eventlogs/defender";
 export { msiInstalled } from "./src/windows/eventlogs/msi";
 export { bitsEvents } from "./src/windows/eventlogs/bits";
 export { veloCommands } from "./src/windows/eventlogs/velociraptor";
+export { crashEvents } from "./src/windows/eventlogs/crash";
 
 /**
  * FreeBSD

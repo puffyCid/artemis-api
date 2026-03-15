@@ -734,3 +734,12 @@ Extract Velociraptor commands from the Windows Application.evtx EventLog file.
 | -------------- | ------- | ------------------------------------------------------------------------------ |
 | alt_file       | string  | Optional path to an Windows Application.evtx EventLog file                     |
 | limit          | number  | Optional EventLog limit to use when iterating through the EventLog             |
+
+### crashEvents(alt_file, limit) -> CrashEvent[] | MacosError
+
+Parse a Windows Crash EventLog file and try to extract data. 
+
+| Param          | Type    | Description                                                        |
+| -------------- | ------- | ------------------------------------------------------------------ |
+| alt_file       | string  | Optional path to an Windows EventLog file                          |
+| limit          | number  | Optional EventLog limit to use when iterating through the EventLog |
