@@ -1,4 +1,4 @@
-import { FirefoxAddons, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
+import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
@@ -7,7 +7,7 @@ import { SystemError } from "../../system/error";
 import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
-import { firefoxAddons } from "./addons";
+import { firefoxAddons, firefoxBookmark } from "./json";
 import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxStorage } from "./sqlite";
 
 /**
@@ -93,6 +93,14 @@ export class FireFox {
      */
     public storage(offset = 0, limit = 100): FirefoxStorage[] {
         return firefoxStorage(this.paths, this.platform, offset, limit);
+    }
+
+    /**
+     * Function to extract entries from `storage.sqlite`
+     * @returns Array of `FirefoxBookmark` 
+     */
+    public bookmarks(): FirefoxBookmark[] {
+        return firefoxBookmark(this.paths, this.platform);
     }
 
     /**
@@ -192,9 +200,14 @@ export class FireFox {
         }
 
         const ext = this.addons();
-        const status = dumpData(ext, `retrospect_firefox_extensions`, output);
+        let status = dumpData(ext, `retrospect_firefox_extensions`, output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox extensions: ${status}`);
+        }
+        const books = this.bookmarks();
+        status = dumpData(books, `retrospect_firefox_bookmarks`, output)
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline firefox bookmarks: ${status}`);
         }
     }
 

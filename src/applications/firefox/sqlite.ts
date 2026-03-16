@@ -78,7 +78,7 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
                 prefix: entry["prefix"] as string ?? "",
                 host: entry["host"] as string ?? "",
                 unfold: undefined,
-                db_path: full_path,
+                evidence: full_path,
                 message: entry["url"] as string ?? "",
                 datetime: unixEpochToISO(
                     entry["last_visit_date"] as bigint ?? 0
@@ -169,7 +169,7 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
                     entry["last_modified"] as bigint ?? 0
                 ),
                 name: entry["name"] as string ?? "",
-                db_path: full_path,
+                evidence: full_path,
                 message: "",
                 datetime: unixEpochToISO(
                     entry["date_added"] as bigint ?? 0
@@ -245,7 +245,7 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType,
                 is_secure: !!(entry["isSecure"] as number ?? 0),
                 is_http_only: !!(entry["isHttpOnly"] as number ?? 0),
                 host: entry["host"] as string ?? "",
-                db_path: full_path,
+                evidence: full_path,
                 message: "",
                 datetime: unixEpochToISO(
                     entry["expiry"] as bigint ?? 0
@@ -300,7 +300,7 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
             const fav_entry: FirefoxFavicons = {
                 icon_url: entry["icon_url"] as string,
                 expires: unixEpochToISO(entry["expire_ms"] as number),
-                db_path: full_path,
+                evidence: full_path,
                 datetime: unixEpochToISO(entry["expire_ms"] as number),
                 timestamp_desc: "Favicon Expires",
                 artifact: "URL Favicon",
@@ -343,7 +343,7 @@ export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType,
 
         for (const entry of results) {
             const fav_entry: FirefoxStorage = {
-                db_path: full_path,
+                evidence: full_path,
                 repository: getRepo(entry["repository_id"] as number),
                 group: entry["group_"] as string,
                 origin: entry["origin"] as string,
@@ -411,7 +411,7 @@ export function firefoxFormhistory(paths: FirefoxProfiles[], platform: PlatformT
                 message: `Form search for '${entry["value"] ?? ""}'`,
                 version: path.version,
                 path: path.full_path,
-                db_path: full_path,
+                evidence: full_path,
                 search_term: entry["value"] as string ?? "",
                 last_used: unixEpochToISO(entry["lastUsed"] as bigint ?? 0),
                 first_used: unixEpochToISO(entry["firstUsed"] as bigint ?? 0),

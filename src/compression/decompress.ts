@@ -89,3 +89,18 @@ export function decompress_lzvn(data: Uint8Array): Uint8Array | CompressionError
     return new CompressionError(`LZVN`, `failed to decompress: ${err}`);
   }
 }
+
+/**
+ * Function to decompress lz4 compressed data. Only LZ4 decompressed using dictionary algorithm is supported
+ * @param data Raw bytes to decompress
+ * @returns Decompressed data or `CompressionError`
+ */
+export function decompress_lz4(data: Uint8Array, decom_size: number, initial_dict: Uint8Array): Uint8Array | CompressionError {
+  try {
+    // @ts-expect-error: Custom Artemis function
+    const bytes: Uint8Array = js_decompress_lz4(data, decom_size, initial_dict);
+    return bytes;
+  } catch (err) {
+    return new CompressionError(`LZVN`, `failed to decompress: ${err}`);
+  }
+}
