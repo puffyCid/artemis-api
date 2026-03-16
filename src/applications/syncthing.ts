@@ -57,14 +57,14 @@ export class Syncthing {
                     const value = line.split(" ");
                     const message = value.slice(4).join(" ");
                     const log: SyncthingLogs = {
-                        full_path: entry.full_path,
                         tag: (value[0] ?? "").replace("[", "").replace("]", ""),
                         datetime: `${(value[1] ?? "1970-01-01").replaceAll("/", "-")}T${value[2] ?? "00:00:00"}.000Z`,
                         timestamp_desc: "Syncthing Log Entry",
                         level: value[3] ?? "UNKNOWN",
                         message,
                         artifact: "Syncthing Log",
-                        data_type: "application:syncthing:log:entry"
+                        data_type: "application:syncthing:log:entry",
+                        evidence: path,
                     };
                     logs.push(log);
                 }

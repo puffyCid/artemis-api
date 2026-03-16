@@ -3,7 +3,6 @@ export interface SyncthingClient {
 }
 
 export interface SyncthingLogs {
-    full_path: string;
     tag: string;
     datetime: string;
     timestamp_desc: "Syncthing Log Entry";
@@ -11,4 +10,5 @@ export interface SyncthingLogs {
     message: string;
     artifact: "Syncthing Log";
     data_type: "application:syncthing:log:entry";
+    evidence: string;
 }

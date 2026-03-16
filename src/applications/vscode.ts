@@ -66,7 +66,7 @@ export function fileHistory(
 
     // Parse JSON file into the FileHistory format
     const json_data: FileHistory = JSON.parse(string_data);
-    json_data.history_path = path.full_path;
+    json_data.evidence = path.full_path;
     const file_entries = json_data[ "entries" ] as Entries[];
 
     // Loop through each history entry and read the contents
@@ -111,7 +111,7 @@ export function fileHistory(
       const flat_data: FileHistory = {
         version: json_data.version,
         resource: json_data.resource,
-        history_path: json_data.history_path,
+        evidence: json_data.evidence,
         message: `${json_data.resource} - History Entry: ${entry.id}`,
         datetime: entry.timestamp,
         timestamp_desc: "File Saved",
@@ -183,7 +183,7 @@ export function getExtensions(
       continue;
     }
     const ext: Extensions = {
-      path: entry,
+      evidence: entry,
       data: JSON.parse(extension_data),
     };
 
@@ -258,7 +258,7 @@ export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): Re
           enabled: entries.enabled ?? false,
           label: entries.label ?? "",
           external: entries.uri.external,
-          storage_path: entry,
+          evidence: entry,
         };
         recents.push(recent);
 

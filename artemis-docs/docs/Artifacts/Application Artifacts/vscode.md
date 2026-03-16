@@ -52,7 +52,7 @@ export interface FileHistory {
   /**Path to source file */
   resource: string;
   /**Path to history source */
-  history_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "File Saved";
@@ -81,7 +81,7 @@ interface Entries {
 }
 
 export interface Extensions {
-  path: string;
+  evidence: string;
   data: Record<string, unknown>[];
 }
 
@@ -91,7 +91,7 @@ export interface RecentFiles {
   enabled: boolean;
   label: string;
   external: string;
-  storage_path: string;
+  evidence: string;
 }
 
 export enum RecentType {
