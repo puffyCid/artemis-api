@@ -60,7 +60,7 @@ Depending on the functions called several objects can be returned
 
 ```typescript
 export interface OneDriveLog {
-  path: string;
+  evidence: string;
   filename: string;
   created: string;
   code_file: string;
@@ -101,7 +101,7 @@ export interface OneDriveSyncEngineRecord {
   created_by: string;
   modified_by: string;
   last_write_count: number;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "OneDrive Sync Last Change";
@@ -121,6 +121,7 @@ export interface OneDriveAccount {
   timestamp_desc: "OneDrive Last Signin";
   artifact: "OneDrive Account Info";
   data_type: "applications:onedrive:account:entry";
+  evidence: string;
 }
 
 export interface KeyInfo {
