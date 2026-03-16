@@ -252,3 +252,60 @@ export interface FirefoxBookmarkRaw {
   uri: string | undefined;
   children: FirefoxBookmarkRaw[] | undefined
 }
+
+export interface FirefoxSession {
+  timestamp_desc: "Session Started";
+  artifact: "Browser Session";
+  data_type: "application:firefox:session:entry";
+  datetime: string;
+  message: string;
+  version: string;
+  path: string;
+  evidence: string;
+  last_accessed: string;
+  url: string;
+  title: string;
+  id: number;
+  tab_closed: string;
+  window_closed: string;
+  session_start: string;
+}
+
+/**
+ * There is a **ton** of info in Firefox session JSON files
+ * Only getting a little bit right now.
+ * Other data:
+ *  - Referrer URL
+ *  - Image
+ *  - Lots of GUIDs
+ *  - Lots of base64 data
+ */
+export interface FirefoxSessionRaw {
+  version: (string | number)[];
+  windows: {
+    tabs: {
+      lastAccessed: bigint;
+      entries: {
+        url: string;
+        title: string;
+        ID: number;
+      }[]
+    }[],
+    _closedTabs: {
+      state: {
+        entries: {
+          url: string;
+          title: string;
+          ID: number;
+        }[],
+        lastAccessed: bigint;
+      },
+      closedAt: bigint;
+    }[],
+    closedAt: bigint | undefined;
+  }[],
+  session: {
+    lastUpdate: bigint;
+    startTime: bigint;
+  }
+}

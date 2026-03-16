@@ -1,4 +1,4 @@
-import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
+import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxSession, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
@@ -7,7 +7,7 @@ import { SystemError } from "../../system/error";
 import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
-import { firefoxAddons, firefoxBookmark } from "./json";
+import { firefoxAddons, firefoxBookmark, firefoxSessions } from "./json";
 import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxStorage } from "./sqlite";
 
 /**
@@ -96,11 +96,19 @@ export class FireFox {
     }
 
     /**
-     * Function to extract entries from `storage.sqlite`
+     * Function to extract bookmarks
      * @returns Array of `FirefoxBookmark` 
      */
     public bookmarks(): FirefoxBookmark[] {
         return firefoxBookmark(this.paths, this.platform);
+    }
+
+    /**
+     * Function to extract sessions
+     * @returns Array of `FirefoxBookmark` 
+     */
+    public sessions(): FirefoxSession[] {
+        return firefoxSessions(this.paths, this.platform);
     }
 
     /**
@@ -204,10 +212,17 @@ export class FireFox {
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox extensions: ${status}`);
         }
+
         const books = this.bookmarks();
         status = dumpData(books, `retrospect_firefox_bookmarks`, output)
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox bookmarks: ${status}`);
+        }
+
+        const sess = this.sessions();
+        status = dumpData(sess, `retrospect_firefox_sessions`, output)
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline firefox sessions: ${status}`);
         }
     }
 

@@ -536,7 +536,6 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
         return encode(data);
     }
     console.warn(`unknown value type: ${value_type}`);
-    //console.log(JSON.stringify(Array.from(data)));
     return "Unknown value";
 }
 

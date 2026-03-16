@@ -1,5 +1,5 @@
 import { PlatformType } from "../../system/systeminfo";
-import { FirefoxBookmark, FirefoxBookmarkRaw, FirefoxProfiles, FirefoxAddons } from "../../../types/applications/firefox";
+import { FirefoxBookmark, FirefoxBookmarkRaw, FirefoxProfiles, FirefoxAddons, FirefoxSession, FirefoxSessionRaw } from "../../../types/applications/firefox";
 import { glob, readFile, readTextFile } from "../../filesystem/files";
 import { FileError } from "../../filesystem/errors";
 import { Endian, nomUnsignedEightBytes, nomUnsignedFourBytes } from "../../nom/helpers";
@@ -10,9 +10,9 @@ import { extractUtf8String } from "../../encoding/strings";
 import { unixEpochToISO } from "../../time/conversion";
 
 /**
- * Get installed Firefox bookmarks
+ * Get Firefox bookmarks
  * @param paths Array of `FirefoxProfiles`
- * @param platform Platform to parse Firefox addons
+ * @param platform Platform to parse Firefox bookmarks
  * @returns Array of `FirefoxBookmark`
  */
 export function firefoxBookmark(paths: FirefoxProfiles[], platform: PlatformType): FirefoxBookmark[] {
@@ -36,7 +36,7 @@ export function firefoxBookmark(paths: FirefoxProfiles[], platform: PlatformType
             if (bytes instanceof FileError) {
                 continue;
             }
-            const decom_bytes = parseBookmark(bytes);
+            const decom_bytes = parseCompression(bytes);
             if (decom_bytes instanceof NomError || decom_bytes instanceof CompressionError) {
                 continue;
             }
@@ -48,7 +48,12 @@ export function firefoxBookmark(paths: FirefoxProfiles[], platform: PlatformType
     return bookmark;
 }
 
-function parseBookmark(bytes: Uint8Array): Uint8Array | NomError | CompressionError {
+/**
+ * Function to decompress lz4 compressed data
+ * @param bytes Bytes associated with compressed data
+ * @returns Decompressed bytes or `NomError` or `CompressionError`
+ */
+function parseCompression(bytes: Uint8Array): Uint8Array | NomError | CompressionError {
     const remaining = nomUnsignedEightBytes(bytes, Endian.Le);
     if (remaining instanceof NomError) {
         return remaining;
@@ -67,6 +72,14 @@ function parseBookmark(bytes: Uint8Array): Uint8Array | NomError | CompressionEr
     return decom_bytes;
 }
 
+/**
+ * Function to extract bookmark info
+ * @param data Bookmark JSON text
+ * @param version Firefox version
+ * @param path Path to Firefox profile
+ * @param evidence Path to bookmark file
+ * @returns Array of `FirefoxBookmark`
+ */
 function extractBookmark(data: string, version: string, path: string, evidence: string): FirefoxBookmark[] {
     const book = JSON.parse(data) as FirefoxBookmarkRaw;
     let values: FirefoxBookmark[] = [];
@@ -77,6 +90,14 @@ function extractBookmark(data: string, version: string, path: string, evidence: 
     return values;
 }
 
+/**
+ * Function to extract bookmark children info
+ * @param data Bookmark JSON text
+ * @param version Firefox version
+ * @param path Path to Firefox profile
+ * @param evidence Path to bookmark file
+ * @returns Array of `FirefoxBookmark`
+ */
 function extractChildren(data: FirefoxBookmarkRaw[], version: string, path: string, evidence: string): FirefoxBookmark[] {
     let values: FirefoxBookmark[] = [];
     for (const child of data) {
@@ -161,4 +182,109 @@ export function firefoxAddons(
     }
 
     return extensions;
+}
+
+/**
+ * Get Firefox sessions
+ * @param paths Array of `FirefoxProfiles`
+ * @param platform Platform to parse Firefox sessions
+ * @returns Array of `FirefoxSession`
+ */
+export function firefoxSessions(
+    paths: FirefoxProfiles[],
+    platform: PlatformType,
+): FirefoxSession[] {
+    let values: FirefoxSession[] = [];
+    for (const path of paths) {
+        let full_path = `${path.full_path}/sessionstore-backups/*`;
+        if (platform === PlatformType.Windows) {
+            full_path = `${path.full_path}\\sessionstore-backups\\*`;
+        }
+
+        const session_files = glob(full_path);
+        if (session_files instanceof FileError) {
+            continue;
+        }
+
+        for (const entry of session_files) {
+            if (!entry.is_file) {
+                continue;
+            }
+            const bytes = readFile(entry.full_path);
+            if (bytes instanceof FileError) {
+                continue;
+            }
+            const decom_bytes = parseCompression(bytes);
+            if (decom_bytes instanceof NomError || decom_bytes instanceof CompressionError) {
+                continue;
+            }
+            const text = extractUtf8String(decom_bytes);
+            const result = extractSession(text, path.version, path.full_path, entry.full_path);
+            values = values.concat(result);
+        }
+    }
+
+    return values;
+}
+
+/**
+ * Extract some of the data from the complex JSON object
+ * @param data Complex JSON string
+ * @param version Firefox version
+ * @param path Path to Firefox profile
+ * @param evidence Path to bookmark file
+ * @returns Array of `FirefoxSession`
+ */
+function extractSession(data: string, version: string, path: string, evidence: string): FirefoxSession[] {
+    const sess: FirefoxSessionRaw = JSON.parse(data);
+    const values: FirefoxSession[] = [];
+    const started = sess.session.startTime;
+    for (const win of sess.windows) {
+        for (const tab of win.tabs) {
+            for (const entry of tab.entries) {
+                const value: FirefoxSession = {
+                    timestamp_desc: "Session Started",
+                    artifact: "Browser Session",
+                    data_type: "application:firefox:session:entry",
+                    datetime: unixEpochToISO(started),
+                    message: `Session URL '${entry.url}'`,
+                    version,
+                    path,
+                    evidence,
+                    last_accessed: unixEpochToISO(tab.lastAccessed),
+                    url: entry.url,
+                    title: entry.title,
+                    id: entry.ID,
+                    tab_closed: "1970-01-01T00:00:00.000Z",
+                    window_closed: unixEpochToISO(win.closedAt ?? 0),
+                    session_start: unixEpochToISO(started)
+                };
+                values.push(value);
+            }
+        }
+        for (const tab of win._closedTabs) {
+            for (const entry of tab.state.entries) {
+                const value: FirefoxSession = {
+                    timestamp_desc: "Session Started",
+                    artifact: "Browser Session",
+                    data_type: "application:firefox:session:entry",
+                    datetime: unixEpochToISO(started),
+                    message: `Session URL '${entry.url}'`,
+                    version,
+                    path,
+                    evidence,
+                    last_accessed: unixEpochToISO(tab.state.lastAccessed),
+                    url: entry.url,
+                    title: entry.title,
+                    id: entry.ID,
+                    tab_closed: unixEpochToISO(tab.closedAt),
+                    window_closed: unixEpochToISO(win.closedAt ?? 0),
+                    session_start: unixEpochToISO(started)
+                };
+                values.push(value);
+            }
+        }
+    }
+
+    return values;
 }

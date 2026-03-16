@@ -101,6 +101,6 @@ export function decompress_lz4(data: Uint8Array, decom_size: number, initial_dic
     const bytes: Uint8Array = js_decompress_lz4(data, decom_size, initial_dict);
     return bytes;
   } catch (err) {
-    return new CompressionError(`LZVN`, `failed to decompress: ${err}`);
+    return new CompressionError(`LZ4`, `failed to decompress: ${err}`);
   }
 }
