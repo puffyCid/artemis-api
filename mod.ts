@@ -102,6 +102,7 @@ export { OneDrive } from "./src/applications/onedrive/onedrive";
 export { Comet } from "./src/applications/comet";
 export { Brave } from "./src/applications/brave";
 export { Syncthing } from "./src/applications/syncthing";
+export { officeMruFiles } from "./src/applications/office";
 
 /**
  * Windows exported functions

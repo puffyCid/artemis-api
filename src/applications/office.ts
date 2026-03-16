@@ -47,7 +47,8 @@ function officeMru(
     if (volume === "") {
       return new ApplicationError(`OFFICE`, `no SystemDrive found`);
     }
-    const glob_office = `${volume}\\Users\\*\\NTUSER.DAT`;
+
+    const glob_office = `${volume}\\Users\\*\\NTUSER.*`;
     const glob_paths = glob(glob_office);
     if (glob_paths instanceof FileError) {
       return new ApplicationError(
@@ -56,7 +57,7 @@ function officeMru(
       );
     }
     for (const entry of glob_paths) {
-      if (!entry.is_file || entry.full_path.includes("Default User")) {
+      if (!entry.is_file || entry.full_path.includes("Default User") || !entry.filename.toLowerCase().endsWith(".dat")) {
         continue;
       }
       paths.push(entry.full_path);
@@ -71,7 +72,7 @@ function officeMru(
       continue;
     }
 
-    const values = extractMruRegistry(reg_data, reg);
+    const values = extractMruRegistry(reg_data);
     all_values = all_values.concat(values);
   }
   return all_values;
@@ -80,15 +81,11 @@ function officeMru(
 /**
  * Extract MRU info
  * @param data Array of `Registry` entries
- * @param registry_file Path to the Registry file
  * @returns Array of `OfficeRecentFilesWindows`
  */
-function extractMruRegistry(
-  data: Registry[],
-  registry_file: string,
-): OfficeRecentFilesWindows[] {
+function extractMruRegistry(data: Registry[]): OfficeRecentFilesWindows[] {
   const mrus: Registry[] = [];
-  const filter = [ "\\Office\\", "\\File MRU" ];
+  const filter = ["\\Office\\", "\\File MRU"];
   for (const entries of data) {
     if (
       !filter.every((item) => entries.path.includes(item)) ||
@@ -116,7 +113,7 @@ function extractMruRegistry(
       }
 
       const match = /T0.*]\[/;
-      let time_data = timestamp.match(match)?.[ 0 ];
+      let time_data = timestamp.match(match)?.[0];
       if (time_data === undefined) {
         console.warn(`could not match MRU path properly: ${timestamp}`);
         continue;
@@ -130,8 +127,12 @@ function extractMruRegistry(
         path,
         last_opened,
         application: officeType(mru_path.path),
-        registry_file,
+        evidence: mru_path.evidence,
         key_path: mru_path.path,
+        timestamp_desc: "Last Opened",
+        artifact: "Office Recent File",
+        data_type: "application:office:recent:entry",
+        message: `Office Document Opened: "${path}"`
       };
 
       office_mru.push(mru_entry);
@@ -195,11 +196,11 @@ function officeBookmarks(
     }
 
     for (const value in plist_data) {
-      const bookmark_values = plist_data[ value ] as Record<
+      const bookmark_values = plist_data[value] as Record<
         string,
         number[] | string
       >;
-      const data = bookmark_values[ "kBookmarkDataKey" ];
+      const data = bookmark_values["kBookmarkDataKey"];
       if (typeof data === "string") {
         console.warn(`got string for kBookmarkDataKey? It should be bytes`);
         continue;

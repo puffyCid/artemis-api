@@ -37,7 +37,8 @@ export function accountWindows(path: string): OneDriveAccount[] | ApplicationErr
             datetime: "",
             timestamp_desc: "OneDrive Last Signin",
             artifact: "OneDrive Account Info",
-            data_type: "applications:onedrive:account:entry"
+            data_type: "applications:onedrive:account:entry",
+            evidence: path,
         };
         for (const value of reg.values) {
             switch (value.value) {
@@ -101,7 +102,8 @@ export function accountMacos(path: string): OneDriveAccount[] | ApplicationError
             datetime: "1970-01-01T00:00:00.000Z",
             timestamp_desc: "OneDrive Last Signin",
             artifact: "OneDrive Account Info",
-            data_type: "applications:onedrive:account:entry"
+            data_type: "applications:onedrive:account:entry",
+            evidence: path,
         };
         accounts.push(account);
     }

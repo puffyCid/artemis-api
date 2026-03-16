@@ -239,7 +239,7 @@ function odl_entry(
     entry.version = version;
     entry.os_version = os_version;
     entry.filename = filename;
-    entry.path = path;
+    entry.evidence = path;
     entries.push(entry);
   }
 
@@ -332,7 +332,6 @@ function parseData(
   );
 
   const entry: OneDriveLog = {
-    path: "",
     filename: "",
     created: "",
     code_file,
@@ -346,7 +345,8 @@ function parseData(
     datetime: "",
     timestamp_desc: "OneDrive Log Entry Created",
     artifact: "OneDrive Log",
-    data_type: "applications:onedrive:logs:entry"
+    data_type: "applications:onedrive:logs:entry",
+    evidence: "",
   };
 
   return entry;

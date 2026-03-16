@@ -394,6 +394,7 @@ export class OneDrive {
         }
 
         for (const entry of glob_files) {
+            // When globbing for user profile on Windows. Make sure to not get transaction files
             if (entry.filename.toLowerCase().includes("ntuser.dat") &&
                 !entry.filename.toLowerCase().endsWith("dat")) {
                 continue;
