@@ -25,7 +25,7 @@ export class FireFox {
      * @param alt_path Optional alternative path to directory contain FireFox data
      * @returns `FireFox` instance class
      */
-    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         if (alt_path === undefined) {
@@ -41,10 +41,10 @@ export class FireFox {
             return;
         }
 
-        this.paths = [{
+        this.paths = [ {
             full_path: alt_path,
             version: fox_version
-        }];
+        } ];
     }
 
     /**
@@ -145,7 +145,7 @@ export class FireFox {
                 break;
             }
             if (!this.unfold) {
-                entries.forEach(x => delete x["unfold"]);
+                entries.forEach(x => delete x[ "unfold" ]);
             }
             const status = dumpData(entries, `retrospect_firefox_history`, output);
             if (status instanceof SystemError) {
@@ -214,13 +214,13 @@ export class FireFox {
         }
 
         const books = this.bookmarks();
-        status = dumpData(books, `retrospect_firefox_bookmarks`, output)
+        status = dumpData(books, `retrospect_firefox_bookmarks`, output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox bookmarks: ${status}`);
         }
 
         const sess = this.sessions();
-        status = dumpData(sess, `retrospect_firefox_sessions`, output)
+        status = dumpData(sess, `retrospect_firefox_sessions`, output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox sessions: ${status}`);
         }
@@ -266,7 +266,7 @@ export class FireFox {
             }
             case PlatformType.Linux: {
                 // FireFox can now exist in two possible locations. Newer versions are under .config
-                const config_paths = [`/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/`];
+                const config_paths = [ `/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/` ];
                 for (const entry of config_paths) {
                     const linux_paths = glob(entry);
                     if (linux_paths instanceof FileError) {

@@ -66,7 +66,7 @@ function parseCompression(bytes: Uint8Array): Uint8Array | NomError | Compressio
 
     const decom_bytes = decompress_lz4(decom_size.remaining, decom_size.value, new Uint8Array());
     if (decom_bytes instanceof CompressionError) {
-        return decom_bytes
+        return decom_bytes;
     }
 
     return decom_bytes;
@@ -84,7 +84,7 @@ function extractBookmark(data: string, version: string, path: string, evidence: 
     const book = JSON.parse(data) as FirefoxBookmarkRaw;
     let values: FirefoxBookmark[] = [];
     if (Array.isArray(book.children)) {
-        values = extractChildren(book.children, version, path, evidence)
+        values = extractChildren(book.children, version, path, evidence);
     }
 
     return values;
@@ -156,22 +156,22 @@ export function firefoxAddons(
             continue;
         }
 
-        const data = JSON.parse(extension)["addons"];
+        const data = JSON.parse(extension)[ "addons" ];
         for (const entry of data) {
             const value: FirefoxAddons = {
-                installed: unixEpochToISO(entry["installDate"] ?? 0),
-                updated: unixEpochToISO(entry["updateDate"] ?? 0),
-                active: entry["active"] ?? false,
-                visible: entry["visible"] ?? false,
-                author: entry["id"] ?? "",
-                addon_version: entry["version"] ?? "",
-                path: entry["path"] ?? "",
+                installed: unixEpochToISO(entry[ "installDate" ] ?? 0),
+                updated: unixEpochToISO(entry[ "updateDate" ] ?? 0),
+                active: entry[ "active" ] ?? false,
+                visible: entry[ "visible" ] ?? false,
+                author: entry[ "id" ] ?? "",
+                addon_version: entry[ "version" ] ?? "",
+                path: entry[ "path" ] ?? "",
                 evidence: full_path,
-                message: `Addon ${entry["defaultLocale"]["name"] ?? ""} installed`,
-                datetime: unixEpochToISO(entry["installDate"] ?? 0),
-                name: entry["defaultLocale"]["name"] ?? "",
-                description: entry["defaultLocale"]["description"] ?? "",
-                creator: entry["defaultLocale"]["creator"] ?? "",
+                message: `Addon ${entry[ "defaultLocale" ][ "name" ] ?? ""} installed`,
+                datetime: unixEpochToISO(entry[ "installDate" ] ?? 0),
+                name: entry[ "defaultLocale" ][ "name" ] ?? "",
+                description: entry[ "defaultLocale" ][ "description" ] ?? "",
+                creator: entry[ "defaultLocale" ][ "creator" ] ?? "",
                 timestamp_desc: "Extension Installed",
                 artifact: "Browser Extension",
                 data_type: "application:firefox:extension:entry",
@@ -196,9 +196,9 @@ export function firefoxSessions(
 ): FirefoxSession[] {
     let values: FirefoxSession[] = [];
     for (const path of paths) {
-        let full_path = [`${path.full_path}/sessionstore-backups/*`, `${path.full_path}/sessionstore.jsonlz4`];
+        let full_path = [ `${path.full_path}/sessionstore-backups/*`, `${path.full_path}/sessionstore.jsonlz4` ];
         if (platform === PlatformType.Windows) {
-            full_path = [`${path.full_path}\\sessionstore-backups\\*`, `${path.full_path}\\sessionstore.jsonlz4`];
+            full_path = [ `${path.full_path}\\sessionstore-backups\\*`, `${path.full_path}\\sessionstore.jsonlz4` ];
         }
 
         for (const sess_path of full_path) {
@@ -302,33 +302,33 @@ export function testFirefoxJsonFiles(): void {
         version: "148.0.2",
     };
 
-    const ext = firefoxAddons([path], PlatformType.Darwin);
+    const ext = firefoxAddons([ path ], PlatformType.Darwin);
     if (ext.length !== 13) {
         throw `Got length ${ext.length} expected 13.......firefoxAddons ❌`;
     }
 
-    if (ext[0]?.name != "Data Leak Blocker") {
-        throw `Got name ${ext[0]?.name} expected "Data Leak Blocker".......firefoxAddons ❌`;
+    if (ext[ 0 ]?.name != "Data Leak Blocker") {
+        throw `Got name ${ext[ 0 ]?.name} expected "Data Leak Blocker".......firefoxAddons ❌`;
     }
     console.info(`  Function firefoxAddons ✅`);
 
-    const book = firefoxBookmark([path], PlatformType.Darwin);
+    const book = firefoxBookmark([ path ], PlatformType.Darwin);
     if (book.length !== 7) {
         throw `Got length ${book.length} expected 7.......firefoxBookmark ❌`;
     }
 
-    if (book[0]?.uri != "https://support.mozilla.org/products/firefox") {
-        throw `Got name ${book[0]?.uri} expected "https://support.mozilla.org/products/firefox".......firefoxBookmark ❌`;
+    if (book[ 0 ]?.uri != "https://support.mozilla.org/products/firefox") {
+        throw `Got name ${book[ 0 ]?.uri} expected "https://support.mozilla.org/products/firefox".......firefoxBookmark ❌`;
     }
     console.info(`  Function firefoxBookmark ✅`);
 
-    const sess = firefoxSessions([path], PlatformType.Darwin);
+    const sess = firefoxSessions([ path ], PlatformType.Darwin);
     if (sess.length !== 133) {
         throw `Got length ${sess.length} expected 133.......firefoxSessions ❌`;
     }
 
-    if (sess[0]?.url != "about:home") {
-        throw `Got name ${sess[0]?.url} expected "about:home".......firefoxSessions ❌`;
+    if (sess[ 0 ]?.url != "about:home") {
+        throw `Got name ${sess[ 0 ]?.url} expected "about:home".......firefoxSessions ❌`;
     }
     console.info(`  Function firefoxSessions ✅`);
 }
