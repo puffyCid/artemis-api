@@ -196,31 +196,33 @@ export function firefoxSessions(
 ): FirefoxSession[] {
     let values: FirefoxSession[] = [];
     for (const path of paths) {
-        let full_path = `${path.full_path}/sessionstore-backups/*`;
+        let full_path = [`${path.full_path}/sessionstore-backups/*`, `${path.full_path}/sessionstore.jsonlz4`];
         if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\sessionstore-backups\\*`;
+            full_path = [`${path.full_path}\\sessionstore-backups\\*`, `${path.full_path}\\sessionstore.jsonlz4`];
         }
 
-        const session_files = glob(full_path);
-        if (session_files instanceof FileError) {
-            continue;
-        }
+        for (const sess_path of full_path) {
+            const session_files = glob(sess_path);
+            if (session_files instanceof FileError) {
+                continue;
+            }
 
-        for (const entry of session_files) {
-            if (!entry.is_file) {
-                continue;
+            for (const entry of session_files) {
+                if (!entry.is_file) {
+                    continue;
+                }
+                const bytes = readFile(entry.full_path);
+                if (bytes instanceof FileError) {
+                    continue;
+                }
+                const decom_bytes = parseCompression(bytes);
+                if (decom_bytes instanceof NomError || decom_bytes instanceof CompressionError) {
+                    continue;
+                }
+                const text = extractUtf8String(decom_bytes);
+                const result = extractSession(text, path.version, path.full_path, entry.full_path);
+                values = values.concat(result);
             }
-            const bytes = readFile(entry.full_path);
-            if (bytes instanceof FileError) {
-                continue;
-            }
-            const decom_bytes = parseCompression(bytes);
-            if (decom_bytes instanceof NomError || decom_bytes instanceof CompressionError) {
-                continue;
-            }
-            const text = extractUtf8String(decom_bytes);
-            const result = extractSession(text, path.version, path.full_path, entry.full_path);
-            values = values.concat(result);
         }
     }
 
