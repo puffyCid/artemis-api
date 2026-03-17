@@ -290,3 +290,45 @@ function extractSession(data: string, version: string, path: string, evidence: s
 
     return values;
 }
+
+/**
+ * Function to test the Firefox JSON file parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Firefox JSON parsing
+ */
+export function testFirefoxJsonFiles(): void {
+    const path: FirefoxProfiles = {
+        full_path: "../../test_data/firefox/v148.0.2",
+        version: "148.0.2",
+    };
+
+    const ext = firefoxAddons([path], PlatformType.Darwin);
+    if (ext.length !== 13) {
+        throw `Got length ${ext.length} expected 13.......firefoxAddons ❌`;
+    }
+
+    if (ext[0]?.name != "Data Leak Blocker") {
+        throw `Got name ${ext[0]?.name} expected "Data Leak Blocker".......firefoxAddons ❌`;
+    }
+    console.info(`  Function firefoxAddons ✅`);
+
+    const book = firefoxBookmark([path], PlatformType.Darwin);
+    if (book.length !== 7) {
+        throw `Got length ${book.length} expected 7.......firefoxBookmark ❌`;
+    }
+
+    if (book[0]?.uri != "https://support.mozilla.org/products/firefox") {
+        throw `Got name ${book[0]?.uri} expected "https://support.mozilla.org/products/firefox".......firefoxBookmark ❌`;
+    }
+    console.info(`  Function firefoxBookmark ✅`);
+
+    const sess = firefoxSessions([path], PlatformType.Darwin);
+    if (sess.length !== 133) {
+        throw `Got length ${sess.length} expected 133.......firefoxSessions ❌`;
+    }
+
+    if (sess[0]?.url != "about:home") {
+        throw `Got name ${sess[0]?.url} expected "about:home".......firefoxSessions ❌`;
+    }
+    console.info(`  Function firefoxSessions ✅`);
+}
