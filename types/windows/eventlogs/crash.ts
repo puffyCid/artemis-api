@@ -11,6 +11,8 @@ export interface CrashEvent {
     channel: string;
     sid: string;
     trigger: string;
+    message: string;
+    datetime: string;
     timestamp_desc: "Application Crash";
     artifact: "Crash EventLog";
     data_type: "windows:eventlogs:crash:entry";

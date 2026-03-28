@@ -13,7 +13,7 @@ Microsoft-Windows-WER-Diag%4Operational.evtx file.
 ## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
-BITS Job EventLog entries.
+application crashes from EventLog.
 
 ## Sample API Script
 
@@ -46,6 +46,8 @@ export interface CrashEvent {
     channel: string;
     sid: string;
     trigger: string;
+    message: string;
+    datetime: string;
     timestamp_desc: "Application Crash";
     artifact: "Crash EventLog";
     data_type: "windows:eventlogs:crash:entry";

@@ -717,7 +717,7 @@ Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Application.evtx
 | path    | string  | Optional path to Application.evtx file             |
 | limit   | number  | Optional limit to set when streaming the EventLogs |
 
-### bitsEvents(alt_file, limit) -> BitsEvent[] | MacosError
+### bitsEvents(alt_file, limit) -> BitsEvent[] | WindowsError
 
 Parse a Windows BITS EventLog file and try to extract data. 
 
@@ -726,7 +726,7 @@ Parse a Windows BITS EventLog file and try to extract data.
 | alt_file       | string  | Optional path to an Windows BITS EventLog file                     |
 | limit          | number  | Optional EventLog limit to use when iterating through the EventLog |
 
-### veloCommands(alt_file, limit) -> BitsEvent[] | MacosError
+### veloCommands(alt_file, limit) -> BitsEvent[] | WindowsError
 
 Extract Velociraptor commands from the Windows Application.evtx EventLog file. 
 
@@ -735,7 +735,7 @@ Extract Velociraptor commands from the Windows Application.evtx EventLog file.
 | alt_file       | string  | Optional path to an Windows Application.evtx EventLog file                     |
 | limit          | number  | Optional EventLog limit to use when iterating through the EventLog             |
 
-### crashEvents(alt_file, limit) -> CrashEvent[] | MacosError
+### crashEvents(alt_file, limit) -> CrashEvent[] | WindowsError
 
 Parse a Windows Crash EventLog file and try to extract data. 
 
@@ -743,3 +743,11 @@ Parse a Windows Crash EventLog file and try to extract data.
 | -------------- | ------- | ------------------------------------------------------------------ |
 | alt_file       | string  | Optional path to an Windows EventLog file                          |
 | limit          | number  | Optional EventLog limit to use when iterating through the EventLog |
+
+### extractAppCrashes(alt_path) -> AppCrash[] | WindowsError
+
+Parse a Windows Application Crash Report.wer files and try to extract data. 
+
+| Param          | Type    | Description                                                                     |
+| -------------- | ------- | ------------------------------------------------------------------------------- |
+| alt_path       | string  | Optional glob to directory containing Report.wer files                          |

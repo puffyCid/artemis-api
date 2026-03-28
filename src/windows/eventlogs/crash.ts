@@ -34,8 +34,8 @@ export function crashEvents(alt_path?: string, limit = 1000): CrashEvent[] | Win
             break;
         }
         const records = recordsData as unknown as RawCrash[];
-        for(const entry of records) {
-            if(entry.data.Event.System.EventID !== 4) {
+        for (const entry of records) {
+            if (entry.data.Event.System.EventID !== 4) {
                 continue;
             }
             const data = entry.data.Event.EventData;
@@ -55,7 +55,9 @@ export function crashEvents(alt_path?: string, limit = 1000): CrashEvent[] | Win
                 trigger: data["#attributes"].Name,
                 timestamp_desc: "Application Crash",
                 artifact: "Crash EventLog",
-                data_type: "windows:eventlogs:crash:entry"
+                data_type: "windows:eventlogs:crash:entry",
+                message: `Application '${data.ModuleName}' crashed`,
+                datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime
             };
             values.push(crash);
         }

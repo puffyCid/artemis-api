@@ -47,6 +47,7 @@ export type ErrorName =
   | "EVENTLOG_MSI_INSTALLED"
   | "EVENTLOG_BITS"
   | "EVENTLOG_VELOCIRAPTOR"
-  | "EVENTLOG_CRASH";
+  | "EVENTLOG_CRASH"
+  | "APPCRASH";
 
 export class WindowsError extends ErrorBase<ErrorName> { }
