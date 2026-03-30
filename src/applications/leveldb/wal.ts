@@ -218,7 +218,7 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
                 shared_key: "",
                 origin: key_string.split(" ").at(0) ?? key_string,
                 key: key_string.split(" ").at(1) ?? key_string,
-                path,
+                evidence: path,
                 state: LogType.Deletion
             };
             values.push(entry);
@@ -240,7 +240,7 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
             shared_key: "",
             origin: key_string.split(" ").at(0) ?? key_string,
             key: key_string.split(" ").at(1) ?? key_string,
-            path,
+            evidence: path,
             state: LogType.Value
         };
 

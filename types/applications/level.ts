@@ -8,7 +8,7 @@ export interface LevelDbEntry {
     shared_key: string;
     origin: string;
     key: string;
-    path: string;
+    evidence: string;
     state: string;
 }
 

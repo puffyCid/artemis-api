@@ -386,7 +386,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
         shared_key: first_key_value.shared_key,
         origin: first_key_value.key,
         key: first_key_value.entry_key,
-        path,
+        evidence: path,
         state: first_key_value.value_type !== ValueType.Unknown ? LogType.Value : LogType.Deletion
     };
     values.push(entry);
@@ -411,7 +411,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
             shared_key: key_value.shared_key,
             origin: key_value.key.split(" ").at(0) ?? "",
             key: key_value.key.split(" ").at(2) ?? "",
-            path,
+            evidence: path,
             state: key_value.value_type !== ValueType.Unknown ? LogType.Value : LogType.Deletion
         };
 

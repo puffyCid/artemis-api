@@ -43,7 +43,7 @@ export function chromiumExtensions(paths: ChromiumProfiles[], platform: Platform
                 name: data["name"] ?? "",
                 author: "",
                 description: data["description"] ?? "",
-                manifest: ext_entry.full_path,
+                evidence: ext_entry.full_path,
                 extension_version: data["version"] ?? "",
             };
             const meta = stat(ext_entry.full_path);
@@ -148,7 +148,7 @@ function getBookmarkChildren(
                 type: entry["type"] as string,
                 url: entry["url"] as string,
                 bookmark_type,
-                path,
+                evidence: path,
                 version,
                 message: `Bookmark - ${entry["name"] as string}`,
                 datetime: unixEpochToISO(webkitToUnixEpoch(

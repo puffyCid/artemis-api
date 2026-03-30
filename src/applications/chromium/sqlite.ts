@@ -63,7 +63,7 @@ export function chromiumHistory(paths: ChromiumProfiles[], platform: PlatformTyp
                     visit_duration: entry["visit_duration"] as number ?? 0,
                     opener_visit: entry["opener_visit"] as number ?? 0,
                     unfold: undefined,
-                    db_path: entry_path.full_path,
+                    evidence: entry_path.full_path,
                     version: path.version,
                     message: entry["url"] as string ?? "",
                     datetime: unixEpochToISO(webkit),
@@ -160,7 +160,7 @@ export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformT
                     downloads_url_chain_id: entry["downloads_url_chain_id"] as number ?? 0,
                     chain_index: entry["chain_index"] as number ?? 0,
                     url: entry["url"] as string ?? "",
-                    db_path: entry_path.full_path,
+                    evidence: entry_path.full_path,
                     version: path.version,
                     message: `${entry["url"] as string ?? ""} | ${entry["target_path"] as string ?? ""}`,
                     datetime: unixEpochToISO(start),
@@ -237,7 +237,7 @@ export function chromiumCookies(paths: ChromiumProfiles[], platform: PlatformTyp
                         last_update: unixEpochToISO(webkitToUnixEpoch(
                             Number(BigInt(entry["last_update_utc"] as bigint) / adjust_time)
                         )),
-                        db_path: entry_path.full_path,
+                        evidence: entry_path.full_path,
                         version: path.version,
                         message: `Cookie name: ${entry["name"] as string} | value: ${entry["value"] as string | undefined ?? ""}`,
                         datetime: unixEpochToISO(webkitToUnixEpoch(
@@ -303,7 +303,7 @@ export function chromiumFavicons(paths: ChromiumProfiles[], platform: PlatformTy
                 }
 
                 const download_row: ChromiumFavicons = {
-                    db_path: entry_path.full_path,
+                    evidence: entry_path.full_path,
                     version: path.version,
                     page_url,
                     message: `Favicon for ${message}`,
@@ -365,7 +365,7 @@ export function chromiumShortcuts(paths: ChromiumProfiles[], platform: PlatformT
                     url = entry["url"];
                 }
                 const download_row: ChromiumShortcuts = {
-                    db_path: entry_path.full_path,
+                    evidence: entry_path.full_path,
                     version: path.version,
                     message: `Shortcut for ${url}`,
                     datetime: unixEpochToISO(last_update),
@@ -488,7 +488,7 @@ export function chromiumAutofill(paths: ChromiumProfiles[], platform: PlatformTy
 
             for (const entry of results) {
                 const fill_entry: ChromiumAutofill = {
-                    db_path: entry_path.full_path,
+                    evidence: entry_path.full_path,
                     date_created: unixEpochToISO(entry["date_created"] as number),
                     date_last_used: unixEpochToISO(entry["date_last_used"] as number),
                     count: entry["count"] as number,
@@ -557,7 +557,7 @@ export function chromiumLogins(paths: ChromiumProfiles[], platform: PlatformType
                         Number(BigInt(entry["date_password_modified"] as bigint) / adjust_time)
                     )),
                     sharing_notification_display: entry["sharing_notification_display"] as number,
-                    db_path: entry_path.full_path,
+                    evidence: entry_path.full_path,
                     action_url: entry["action_url"] as string | undefined,
                     username_element: entry["username_element"] as string | undefined,
                     username_value: entry["username_value"] as string | undefined,
@@ -637,7 +637,7 @@ export function chromiumDips(paths: ChromiumProfiles[], platform: PlatformType, 
             for (const entry of data) {
                 const dips_entry: ChromiumDips = {
                     site: entry["site"] as string,
-                    path: entry_path.full_path,
+                    evidence: entry_path.full_path,
                     first_bounce: unixEpochToISO(webkitToUnixEpoch(
                         typeof entry["first_bounce_time"] === "undefined" ||
                             entry["first_bounce_time"] === null

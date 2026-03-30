@@ -39,7 +39,7 @@ export function chromiumPreferences(paths: ChromiumProfiles[], platform: Platfor
                 timestamp_desc: "Last Modified",
                 artifact: "User Preferences",
                 data_type: `applications:${path.browser.toLowerCase()}:preferences:entry`,
-                path: entry.full_path,
+                evidence: entry.full_path,
                 exception_category: ExceptionCategory.Zoom,
                 created_version: "",
                 profile_id: "",
