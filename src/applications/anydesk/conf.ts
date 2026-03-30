@@ -30,7 +30,8 @@ export function readConfig(path: string, user: AnyDeskUsers): Config | Applicati
         data_type: "applications:anydesk:config:entry",
         account: user.account,
         version: user.version,
-        id: user.id
+        id: user.id,
+        evidence: path,
     };
     for (const entry of results) {
         const key_value = entry.split("=", 2);

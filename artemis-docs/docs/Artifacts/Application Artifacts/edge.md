@@ -84,7 +84,7 @@ export interface ChromiumHistory {
   opener_visit: number;
   unfold: Url | undefined;
   /**Path to the HISTORY sqlite file */
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -158,7 +158,7 @@ export interface ChromiumDownloads {
   /**URL for download */
   url: string;
   /**Path to the HISTORY sqlite file */
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -190,7 +190,7 @@ export interface ChromiumCookies {
   source_port: number;
   is_same_party: number;
   last_update: string;
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -209,7 +209,7 @@ export interface ChromiumAutofill {
   date_last_used: string;
   /**Default is 1 */
   count: number;
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -230,7 +230,7 @@ export interface ChromiumBookmarks {
   url: string;
   meta_info: Record<string, string>;
   bookmark_type: BookmarkType;
-  path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -279,7 +279,7 @@ export interface ChromiumLogins {
   sharing_notification_display: number;
   keychain_identifier?: string;
   sender_profile_image_url?: string;
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -306,7 +306,7 @@ export interface ChromiumDips {
   first_web_authn_assertion: string | null;
   last_web_authn_assertion: string | null;
   /**Path to DIPS database */
-  path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -357,7 +357,7 @@ export interface ChromiumSession {
   url: string;
   title: string;
   session_type: SessionType;
-  path: string;
+  evidence: string;
 }
 
 export enum SessionType {

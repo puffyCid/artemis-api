@@ -215,3 +215,49 @@ Now we can compile the code above to JavaScript using [esbuild](https://esbuild.
 - artemis -j main.js
 
 You should get output at `./tmp/chrome_info`.
+
+
+## Chromium Based Browsers
+
+Chromium is a very popular open source browser. Many browsers are based on the Chromium sorce code such as:
+- Chrome
+- Edge
+- Brave
+- Comet
+- Many more
+
+Luckily all of these Chromium based browsers have the same artifact and database formats. If you encounter a new Chromium based browser, it is really easy to parse the data with artemis!
+
+### Opera
+
+Modern versions of [Opera](https://en.wikipedia.org/wiki/Opera_(web_browser)) are based on Chromium.  As of 2026-03-29, the artemis API does not expose a Opera API class to extract data.
+
+However, we can still extract data by leveraging the Chromium API class since Opera is based on Chromium.
+
+The easiest way to parse Opera browser data is to initialize the Chromium API class by providing the path to the Opera profile.
+
+```typescript
+import { Chromium, extractAppCrash, Format, Output, OutputType, PlatformType } from "./artemis-api/mod";
+
+function main() {
+    const path = "C:\\Users\\user\\AppData\\Local\\Opera Path\\User Data"
+
+    // The `path` variable overrides the default Chromium path
+    const client = new Chromium(PlatformType.Windows, path);
+    const out:Output = {
+        name: "opera_script",
+        directory: "./tmp",
+        format: Format.JSONL,
+        compress: false,
+        timeline: false,
+        endpoint_id: "",
+        collection_id: 0,
+        output: OutputType.LOCAL
+    };
+
+    // Since Opera is based on Chromium. All Chromium artifacts should work!
+    client.retrospect(out);
+}
+
+main();
+```
