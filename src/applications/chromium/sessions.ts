@@ -69,7 +69,7 @@ function parseSession(path: string, session_type: SessionType, profile: Chromium
     } else {
         bytes = readFile(path);
         if (bytes instanceof FileError) {
-            return new ApplicationError(`CHROMIUM`, `Failed to read session file via raw disk ${path}: ${bytes}`);
+            return new ApplicationError(`CHROMIUM`, `Failed to read session file ${path}: ${bytes}`);
 
         }
     }

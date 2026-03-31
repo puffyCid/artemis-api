@@ -524,3 +524,38 @@ export interface Extension {
   extension_version: string;
   evidence: string;
 }
+
+export interface ChromiumCache {
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType;
+  timestamp_desc: "Browser Cache Created";
+  artifact: "Browser Cache";
+  data_type: string;
+  hash: number;
+  cache_state: CacheState;
+  created: string;
+  cache_flags: CacheFlag;
+  url: string;
+  request: string;
+  response: string;
+  response2: string;
+  response_headers: string[];
+  cache_key: string;
+  evidence: string;
+}
+
+export enum CacheState {
+  Normal = "Normal",
+  Evicted = "Evicted",
+  Doomed = "Doomed",
+  Unknown = "Unknown",
+}
+
+export enum CacheFlag {
+  Parent = "Parent",
+  Child = "Child",
+  Unknown = "Unknown",
+}

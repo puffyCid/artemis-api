@@ -1,4 +1,4 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCache, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumProfiles, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../../types/applications/chromium";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
@@ -6,6 +6,7 @@ import { SystemError } from "../../system/error";
 import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
+import { chromiumCache } from "./cache";
 import { chromiumBookmarks, chromiumExtensions } from "./json";
 import { chromiumLocalStorage } from "./level";
 import { chromiumPreferences } from "./preferences";
@@ -257,6 +258,10 @@ export class Chromium {
         return chromiumSessions(this.paths, this.platform);
     }
 
+    public cache(): ChromiumCache[] {
+        return chromiumCache(this.paths, this.platform);
+    }
+
     /**
      * Function to timeline all Chromium artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
      * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
@@ -398,6 +403,12 @@ export class Chromium {
         status = dumpData(sess, `retrospect_${this.browser}_sessions`, output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline ${this.browser} sessions: ${status}`);
+        }
+
+        const cache = this.cache();
+        status = dumpData(cache, `retrospect_${this.browser}_cache`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline ${this.browser} cache: ${status}`);
         }
     }
 
