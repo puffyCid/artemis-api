@@ -133,8 +133,8 @@ function parseIndex(path: string, platform: PlatformType): Index | ApplicationEr
     // On Windows if the browser is opened the cache files may be locked
     // We will use raw disk access to open them
     if (platform === PlatformType.Windows) {
-        bytes = readRawFile(path);
-        if (bytes instanceof WindowsError) {
+        bytes = readFile(path);
+        if (bytes instanceof FileError) {
             return new ApplicationError(`CHROMIUM`, `Failed to read cache index file via raw disk ${path}: ${bytes}`);
         }
     } else {
@@ -375,8 +375,8 @@ function parseData(path: string, platform: PlatformType): DataBlock | Applicatio
     // On Windows if the browser is opened the cache files may be locked
     // We will use raw disk access to open them
     if (platform === PlatformType.Windows) {
-        bytes = readRawFile(path);
-        if (bytes instanceof WindowsError) {
+        bytes = readFile(path);
+        if (bytes instanceof FileError) {
             return new ApplicationError(`CHROMIUM`, `Failed to read cache index file via raw disk ${path}: ${bytes}`);
         }
     } else {
