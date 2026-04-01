@@ -1247,7 +1247,6 @@ export function testChromiumSessions(): void {
         throw `Got message "${sess[12]?.message}" expected "Session: https://www.washingtonpost.com/politics/2025/11/02/nuclear-testing-trump-energy-secretary/ | Page Title: Trump energy secretary says no nuclear b".......chromiumSessions ❌`;
     }
 
-
     if (sess[0]?.message != "Session: edge://newtab/ | Page Title: New T") {
         throw `Got message ${sess[0]?.message} expected "Session: edge://newtab/ | Page Title: New T".......chromiumSessions ❌`;
     }

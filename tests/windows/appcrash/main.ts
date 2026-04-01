@@ -15,6 +15,7 @@ function main() {
 
     console.log(' Starting Windows AppCrash test....');
     testExtractAppCrash();
+    console.log(' Windows AppCrash test passed! 🥳');
 
     console.log('All Windows AppCrash tests passed! 🥳💃🕺');
 }

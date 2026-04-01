@@ -1,19 +1,17 @@
-import { glob, readFile, readRawFile } from "../../../mod";
-import { CacheFlag, CacheState, ChromiumCache, ChromiumProfiles } from "../../../types/applications/chromium";
+import { glob, readFile, readRawFile, PlatformType, } from "../../../mod";
+import { BrowserType, CacheFlag, CacheState, ChromiumCache, ChromiumProfiles } from "../../../types/applications/chromium";
 import { extractUtf8String } from "../../encoding/strings";
 import { FileError } from "../../filesystem/errors";
 import { NomError } from "../../nom/error";
 import { Endian, nomUnsignedEightBytes, nomUnsignedFourBytes, nomUnsignedOneBytes, nomUnsignedTwoBytes } from "../../nom/helpers";
 import { take, takeUntil } from "../../nom/parsers";
-import { PlatformType } from "../../system/systeminfo";
 import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
 import { WindowsError } from "../../windows/errors";
 import { ApplicationError } from "../errors";
 
 /**
  * TODO:
- * 1. Parse data_X values next! :)
- * 2. Ignore f_X values? Its gzip data. Maybe include them in final output like an evidence field?
+ * 3. Experiment with reader idea
  */
 
 /**
@@ -79,7 +77,6 @@ export function chromiumCache(paths: ChromiumProfiles[], platform: PlatformType)
         values = values.concat(cache);
     }
 
-    console.log(values.length);
     return values;
 }
 
@@ -305,6 +302,11 @@ function parseIndex(path: string, platform: PlatformType): Index | ApplicationEr
     return index;
 }
 
+/**
+ * Determine where the cache entry resides
+ * @param value File type number
+ * @returns `FileType` enum
+ */
 function getFileType(value: number): FileType {
     switch (value) {
         case 0: return FileType.External;
@@ -319,6 +321,11 @@ function getFileType(value: number): FileType {
     }
 }
 
+/**
+ * Determine the cache address. Requires multiple bitwise operations
+ * @param value Cache address number
+ * @returns `CacheAddress` object
+ */
 function getCacheAddress(value: number): CacheAddress {
     const initialized = Boolean(((value & 0x80000000) >>> 0) > 0);
     const file_type_number = (((value & 0x70000000) >>> 0) >> 28);
@@ -357,6 +364,12 @@ interface DataBlock {
     bytes: Uint8Array;
 }
 
+/**
+ * Function to parse datablock files
+ * @param path Path to data file
+ * @param platform `PlatformType`. On Windows these files may be locked
+ * @returns `DataBlock` object or `ApplicationError`
+ */
 function parseData(path: string, platform: PlatformType): DataBlock | ApplicationError {
     let bytes;
     // On Windows if the browser is opened the cache files may be locked
@@ -467,6 +480,14 @@ function parseData(path: string, platform: PlatformType): DataBlock | Applicatio
     return data;
 }
 
+/**
+ * Function to extract browser cache entries
+ * @param index Parsed `Index` object
+ * @param data Hashmap of parsed data files
+ * @param path Path to the browser profile
+ * @param evidence Evidence path to the index file
+ * @returns Array of `ChromiumCache` entries or `ApplicationError`
+ */
 function extractCache(index: Index, data: Record<FileType.Block256 | FileType.Block1k | FileType.Block4k | FileType.Ranking, DataBlock | undefined>, path: ChromiumProfiles, evidence: string): ChromiumCache[] | ApplicationError {
     const blocks = [FileType.Block256, FileType.Block1k, FileType.Block4k];
     const values: ChromiumCache[] = [];
@@ -549,6 +570,12 @@ interface CacheEntry {
     url: string;
 }
 
+/**
+ * Function to parse and extract the cached entry
+ * @param block_number Block number where the cache data is located
+ * @param data Data block file that contains the the cached entry
+ * @returns `CacheEntry` object or `ApplicationError`
+ */
 function getCacheEntry(block_number: number, data: DataBlock): CacheEntry | ApplicationError {
     const start = 8192;
     const entry_offset = (block_number * data.block_size) + start;
@@ -663,6 +690,11 @@ function getCacheEntry(block_number: number, data: DataBlock): CacheEntry | Appl
     return entry;
 }
 
+/**
+ * Determine the cache state value
+ * @param state Cache state number
+ * @returns `CacheState` enum
+ */
 function getState(state: number): CacheState {
     switch (state) {
         case 0: return CacheState.Normal;
@@ -672,6 +704,11 @@ function getState(state: number): CacheState {
     }
 }
 
+/**
+ * Determine the cache flag value
+ * @param flag Cache flag number
+ * @returns `CacheFlag` enum
+ */
 function getFlag(flag: number): CacheFlag {
     switch (flag) {
         case 1: return CacheFlag.Parent;
@@ -689,6 +726,12 @@ interface CacheResponse {
     headers: string[];
 }
 
+/**
+ * Function to extract cache URL response headers
+ * @param block_number Block number associated with the response headers
+ * @param data `DataBlock` containing the response headers
+ * @returns `CacheResponse` object or `ApplicationError`
+ */
 function getResponseCache(block_number: number, data: DataBlock): CacheResponse | ApplicationError {
     const start = 8192;
     const entry_offset = (block_number * data.block_size) + start;
@@ -775,4 +818,174 @@ function getResponseCache(block_number: number, data: DataBlock): CacheResponse 
     };
 
     return cache_response;
+}
+
+
+/**
+ * Function to test the Chromium Cache parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Chromium Cache parsing
+ */
+export function testChromiumCache(): void {
+    const path: ChromiumProfiles = {
+        full_path: "../../test_data/brave",
+        version: "143.1.85.11",
+        browser: BrowserType.BRAVE
+    };
+
+
+    const cache = chromiumCache([path], PlatformType.Darwin);
+    if (cache.length !== 334) {
+        throw `Got length ${cache.length} expected 334.......chromiumCache ❌`;
+    }
+
+    if (!cache[67]?.evidence.includes("index")) {
+        throw `Got evidence "${cache[67]?.evidence}" expected "index".......chromiumCache ❌`;
+    }
+
+    if (cache[0]?.message !== "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js'") {
+        throw `Got message "${cache[0]?.message}" expected "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js'".......chromiumSessions ❌`;
+    }
+
+    if (cache[12]?.message != "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/DsnmJJEf.js'") {
+        throw `Got message ${cache[12]?.message} expected "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/DsnmJJEf.js'".......chromiumCache ❌`;
+    }
+
+    if (cache[256]?.response_headers.length !== 24) {
+        throw `Got header count ${cache[256]?.response_headers.length} expected "24".......chromiumCache ❌`;
+    }
+
+    console.info(`  Function chromiumCache ✅`);
+
+    let data_path = "../../test_data/brave/v143.1.85.11/Cache/Cache_Data/data_3";
+    let data = parseData(data_path, PlatformType.Darwin);
+    if (data instanceof ApplicationError) {
+        throw data;
+    }
+    const response_block = 408;
+    const headers = getResponseCache(response_block, data);
+    if (headers instanceof ApplicationError) {
+        throw headers;
+    }
+
+    if (headers.hash !== 4536) {
+        throw `Got header hash ${headers.hash} expected "4536".......getResponseCache ❌`;
+    }
+
+    if (headers.request !== "2025-12-16T22:18:30.000Z") {
+        throw `Got header request ${headers.request} expected "2025-12-16T22:18:30.000Z".......getResponseCache ❌`;
+    }
+
+    if (headers.headers.length !== 24) {
+        throw `Got header length ${headers.request.length} expected "24".......getResponseCache ❌`;
+    }
+
+    console.info(`  Function getResponseCache ✅`);
+
+    if (getFlag(1) !== CacheFlag.Parent) {
+        throw `Got cache flag ${getFlag(1)} expected "Parent".......getFlag ❌`;
+    }
+
+    if (getFlag(2) !== CacheFlag.Child) {
+        throw `Got cache flag ${getFlag(2)} expected "Child".......getFlag ❌`;
+    }
+
+    console.info(`  Function getFlag ✅`);
+
+    if (getState(0) !== CacheState.Normal) {
+        throw `Got cache state ${getState(0)} expected "Normal".......getState ❌`;
+    }
+
+    if (getState(1) !== CacheState.Evicted) {
+        throw `Got cache state ${getState(1)} expected "Evicted".......getState ❌`;
+    }
+
+    if (getState(2) !== CacheState.Doomed) {
+        throw `Got cache state ${getState(2)} expected "Doomed".......getState ❌`;
+    }
+
+    console.info(`  Function getState ✅`);
+
+    data_path = "../../test_data/brave/v143.1.85.11/Cache/Cache_Data/data_1";
+    data = parseData(data_path, PlatformType.Darwin);
+    if (data instanceof ApplicationError) {
+        throw data;
+    }
+    const entry_block = 249;
+    const entry = getCacheEntry(entry_block, data);
+    if (entry instanceof ApplicationError) {
+        throw entry;
+    }
+
+    if (entry.hash !== 475660310) {
+        throw `Got entry hash ${entry.hash} expected "475660310".......getCacheEntry ❌`;
+    }
+
+    if (entry.created !== "2025-12-16T22:18:30.000Z") {
+        throw `Got entry created ${entry.created} expected "2025-12-16T22:18:30.000Z".......getCacheEntry ❌`;
+    }
+
+    if (entry.url !== "1/0/_dk_https://brave.com https://brave.com https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js") {
+        throw `Got entry url ${entry.url} expected "1/0/_dk_https://brave.com https://brave.com https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js".......getCacheEntry ❌`;
+    }
+
+    console.info(`  Function getCacheEntry ✅`);
+
+    const index_path = "../../test_data/brave/v143.1.85.11/Cache/Cache_Data/index";
+    const index = parseIndex(index_path, PlatformType.Darwin);
+    if (index instanceof ApplicationError) {
+        throw index;
+    }
+
+    const cache_data = extractCache(index, {
+        [FileType.Block256]: data,
+        [FileType.Ranking]: undefined,
+        [FileType.Block1k]: undefined,
+        [FileType.Block4k]: undefined
+    }, path, index_path);
+    if (cache_data instanceof ApplicationError) {
+        throw cache_data;
+    }
+
+    if (cache_data.length !== 334) {
+        throw `Got cache length ${cache_data.length} expected "334".......extractCache ❌`;
+    }
+
+    console.info(`  Function extractCache ✅`);
+
+    if (data.block_size !== 256) {
+        throw `Got data block size ${data.block_size} expected "256".......parseData ❌`;
+    }
+
+    console.info(`  Function parseData ✅`);
+
+    const addr = getCacheAddress(3238199704);
+    if (addr.block_number !== 408) {
+        throw `Got address block size ${addr.block_number} expected "408".......getCacheAddress ❌`;
+    }
+
+    if (addr.initialized !== true) {
+        throw `Got address initializede ${addr.initialized} expected "true".......getCacheAddress ❌`;
+    }
+
+    console.info(`  Function getCacheAddress ✅`);
+
+    const file_type = [0, 1, 2, 3, 4, 5, 6, 7];
+    for (const entry of file_type) {
+        if (getFileType(entry) === FileType.Unknown) {
+            throw entry;
+        }
+    }
+
+    console.info(`  Function getFileType ✅`);
+
+    if (index.created !== "2025-12-16T22:18:27.000Z") {
+        throw `Got index created ${index.created} expected "2025-12-16T22:18:27.000Z".......parseIndex ❌`;
+    }
+
+    if (index.entries !== 334) {
+        throw `Got index entries ${index.entries} expected "334".......parseIndex ❌`;
+    }
+
+    console.info(`  Function parseIndex ✅`);
 }

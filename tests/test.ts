@@ -15,6 +15,7 @@ export { testChromiumLocalStorage } from "../src/applications/chromium/level";
 export { testChromiumSessions } from "../src/applications/chromium/sessions";
 export { testChromiumSqlite } from "../src/applications/chromium/sqlite";
 export { testFirefoxJsonFiles } from "../src/applications/firefox/json";
+export { testChromiumCache } from "../src/applications/chromium/cache";
 
 /**
  * Linux exported test functions
