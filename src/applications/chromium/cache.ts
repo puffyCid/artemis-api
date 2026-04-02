@@ -49,7 +49,7 @@ export function chromiumCache(paths: ChromiumProfiles[], platform: PlatformType)
                 }
 
                 if (entry.filename === "index") {
-                    index = parseIndex(entry.full_path, platform);
+                    index = parseIndex(entry.full_path);
                     if (index instanceof ApplicationError) {
                         continue;
                     }
@@ -142,21 +142,11 @@ enum FileType {
  * @param platform `PlatformType`. On Windows these files may be locked
  * @returns 
  */
-function parseIndex(path: string, platform: PlatformType): Index | ApplicationError {
-    let bytes;
-    // On Windows if the browser is opened the cache files may be locked
-    // We will use raw disk access to open them
-    if (platform === PlatformType.Windows) {
-        bytes = readFile(path);
-        if (bytes instanceof FileError) {
-            return new ApplicationError(`CHROMIUM`, `Failed to read cache index file via raw disk ${path}: ${bytes}`);
-        }
-    } else {
-        bytes = readFile(path);
-        if (bytes instanceof FileError) {
-            return new ApplicationError(`CHROMIUM`, `Failed to read cache index file ${path}: ${bytes}`);
+function parseIndex(path: string): Index | ApplicationError {
+    const bytes = readFile(path);
+    if (bytes instanceof FileError) {
+        return new ApplicationError(`CHROMIUM`, `Failed to read cache index file ${path}: ${bytes}`);
 
-        }
     }
 
     const sig = nomUnsignedFourBytes(bytes, Endian.Le);
@@ -940,7 +930,7 @@ export function testChromiumCache(): void {
     console.info(`  Function getCacheEntry ✅`);
 
     const index_path = "../../test_data/brave/v143.1.85.11/Cache/Cache_Data/index";
-    const index = parseIndex(index_path, PlatformType.Darwin);
+    const index = parseIndex(index_path);
     if (index instanceof ApplicationError) {
         throw index;
     }
