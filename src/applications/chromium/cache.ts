@@ -10,11 +10,6 @@ import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
 import { ApplicationError } from "../errors";
 
 /**
- * TODO:
- * 3. Experiment with reader idea
- */
-
-/**
  * Extract Chromium cache data
  * @param paths Array of `ChromiumProfiles`
  * @param platform OS `PlatformType`
@@ -342,9 +337,6 @@ function getCacheAddress(value: number): CacheAddress {
         file_selector: getFileType(file_type_number) !== FileType.External ? (value & 0x00ff0000) >> 16 : 0,
         initialized
     };
-    if (cache.initialized) {
-        //console.log(JSON.stringify(cache));
-    }
     return cache;
 }
 
@@ -511,7 +503,6 @@ function extractCache(index: Index, data: Record<FileType.Block256 | FileType.Bl
             hash: cache_entries.hash,
             cache_state: cache_entries.state,
             created: cache_entries.created,
-            cache_flags: cache_entries.flag,
             url: clean_url,
             request: "1970-01-01T00:00:00Z",
             response: "1970-01-01T00:00:00Z",
@@ -539,7 +530,6 @@ function extractCache(index: Index, data: Record<FileType.Block256 | FileType.Bl
             }
         }
         values.push(cache);
-        //console.log(JSON.stringify(cache_entries));
     }
 
     return values;

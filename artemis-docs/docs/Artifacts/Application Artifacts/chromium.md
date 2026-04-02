@@ -30,7 +30,8 @@ Artemis supports parsing the list of artifacts below:
 - Browser sessions
 - Favicons
 - Shortcuts
-- Retrospect - A powerful capability that timelines all artifacts. It is based on [Hindsight](https://github.com/obsidianforensics/hindsight)
+- Cache
+- Retrospect - A powerful capability that timelines all browser artifacts. It is based on [Hindsight](https://github.com/obsidianforensics/hindsight)
 
 
 ## Collection

@@ -537,7 +537,6 @@ export interface ChromiumCache {
   hash: number;
   cache_state: CacheState;
   created: string;
-  cache_flags: CacheFlag;
   url: string;
   request: string;
   response: string;
