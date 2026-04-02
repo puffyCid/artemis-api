@@ -64,6 +64,12 @@ Use the time functions under **utils** to help with timestamp conversions!
 
 :::
 
+## Evidence Field
+
+All artifacts should include an evidence field that points to the full path of file or folder that is the source of the artifact.
+
+For example, the evidence field for the Amcache artifact would be the full path of the Amcache.hve file.
+
 ## Artifact Scope
 
 Currently all artifacts that artemis parses are statically coded in the binary
