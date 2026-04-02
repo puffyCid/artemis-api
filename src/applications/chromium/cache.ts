@@ -1,12 +1,12 @@
-import { glob, readFile, readRawFile, PlatformType, } from "../../../mod";
+import { glob, readFile, PlatformType, } from "../../../mod";
 import { BrowserType, CacheFlag, CacheState, ChromiumCache, ChromiumProfiles } from "../../../types/applications/chromium";
 import { extractUtf8String } from "../../encoding/strings";
 import { FileError } from "../../filesystem/errors";
+import { BufReader } from "../../filesystem/reader";
 import { NomError } from "../../nom/error";
 import { Endian, nomUnsignedEightBytes, nomUnsignedFourBytes, nomUnsignedOneBytes, nomUnsignedTwoBytes } from "../../nom/helpers";
 import { take, takeUntil } from "../../nom/parsers";
 import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
-import { WindowsError } from "../../windows/errors";
 import { ApplicationError } from "../errors";
 
 /**
@@ -25,56 +25,64 @@ export function chromiumCache(paths: ChromiumProfiles[], platform: PlatformType)
     let index: Index | undefined | ApplicationError = undefined;
     const data = {} as Record<FileType.Block256 | FileType.Block1k | FileType.Block4k | FileType.Ranking, DataBlock | undefined>;
 
+    let cache_paths = ["/*/GPUCache/*", "/*/Cache/Cache_Data/*"];
+    if (platform === PlatformType.Windows) {
+        cache_paths = ["\\*\\GPUCache\\*", "\\*\\Cache\\Cache_Data\\*"];
+    }
+
     for (const path of paths) {
-        let full_path = `${path.full_path}/*/Cache/Cache_Data/*`;
-        if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\*\\Cache\\Cache_Data\\*`;
-        }
+        for (const cache_path of cache_paths) {
+            let full_path = `${path.full_path}${cache_path}`;
+            if (platform === PlatformType.Windows) {
+                full_path = `${path.full_path}${cache_path}`;
+            }
 
-        const caches = glob(full_path);
-        if (caches instanceof FileError) {
-            continue;
-        }
-
-        let evidence = full_path;
-        for (const entry of caches) {
-            if (!entry.is_file) {
+            const caches = glob(full_path);
+            if (caches instanceof FileError) {
                 continue;
             }
 
-            if (entry.filename === "index") {
-                index = parseIndex(entry.full_path, platform);
-                if (index instanceof ApplicationError) {
+            let evidence = full_path;
+            for (const entry of caches) {
+                if (!entry.is_file) {
                     continue;
                 }
-                evidence = entry.full_path;
-            } else if (entry.filename.includes("data_")) {
-                const data_block = parseData(entry.full_path, platform);
-                if (data_block instanceof ApplicationError) {
-                    continue;
-                }
-                if (entry.filename === "data_0") {
-                    data[FileType.Ranking] = data_block;
-                } else if (entry.filename === "data_1") {
-                    data[FileType.Block256] = data_block;
-                } else if (entry.filename === "data_2") {
-                    data[FileType.Block1k] = data_block;
-                } else if (entry.filename === "data_3") {
-                    data[FileType.Block4k] = data_block;
+
+                if (entry.filename === "index") {
+                    index = parseIndex(entry.full_path, platform);
+                    if (index instanceof ApplicationError) {
+                        continue;
+                    }
+                    evidence = entry.full_path;
+                } else if (entry.filename.includes("data_")) {
+                    const data_block = parseData(entry.full_path);
+                    if (data_block instanceof ApplicationError) {
+                        continue;
+                    }
+                    if (entry.filename === "data_0") {
+                        data[FileType.Ranking] = data_block;
+                    } else if (entry.filename === "data_1") {
+                        data[FileType.Block256] = data_block;
+                    } else if (entry.filename === "data_2") {
+                        data[FileType.Block1k] = data_block;
+                    } else if (entry.filename === "data_3") {
+                        data[FileType.Block4k] = data_block;
+                    }
                 }
             }
+
+            if (index === undefined || index instanceof ApplicationError) {
+                continue;
+            }
+
+            // Now parse each cache entry
+            const cache = extractCache(index, data, path, evidence);
+            if (cache instanceof ApplicationError) {
+                continue;
+            }
+            values = values.concat(cache);
         }
 
-        if (index === undefined || index instanceof ApplicationError) {
-            return [];
-        }
-
-        // Now parse each cache entry
-        const cache = extractCache(index, data, path, evidence);
-        if (cache instanceof ApplicationError) {
-            continue;
-        }
-        values = values.concat(cache);
     }
 
     return values;
@@ -128,6 +136,12 @@ enum FileType {
     Unknown = "Unknown",
 }
 
+/**
+ * 
+ * @param path Path to the cache index file
+ * @param platform `PlatformType`. On Windows these files may be locked
+ * @returns 
+ */
 function parseIndex(path: string, platform: PlatformType): Index | ApplicationError {
     let bytes;
     // On Windows if the browser is opened the cache files may be locked
@@ -359,32 +373,22 @@ interface DataBlock {
     last_used: number[];
     updating: number;
     user: number[];
-    // bitmap: Uint8Array[];
     data_path: string;
-    bytes: Uint8Array;
+    reader: BufReader;
 }
 
 /**
  * Function to parse datablock files
  * @param path Path to data file
- * @param platform `PlatformType`. On Windows these files may be locked
  * @returns `DataBlock` object or `ApplicationError`
  */
-function parseData(path: string, platform: PlatformType): DataBlock | ApplicationError {
-    let bytes;
-    // On Windows if the browser is opened the cache files may be locked
-    // We will use raw disk access to open them
-    if (platform === PlatformType.Windows) {
-        bytes = readFile(path);
-        if (bytes instanceof FileError) {
-            return new ApplicationError(`CHROMIUM`, `Failed to read cache index file via raw disk ${path}: ${bytes}`);
-        }
-    } else {
-        bytes = readFile(path);
-        if (bytes instanceof FileError) {
-            return new ApplicationError(`CHROMIUM`, `Failed to read cache index file ${path}: ${bytes}`);
+function parseData(path: string): DataBlock | ApplicationError {
+    const reader = new BufReader(path);
+    const size = 80;
 
-        }
+    const bytes = reader.readBytes(0, size);
+    if (bytes instanceof FileError) {
+        return new ApplicationError(`CHROMIUM`, `Failed to read cache data bytes ${path}: ${bytes}`);
     }
 
     const sig = nomUnsignedFourBytes(bytes, Endian.Le);
@@ -474,7 +478,7 @@ function parseData(path: string, platform: PlatformType): DataBlock | Applicatio
         updating: updating.value,
         user,
         data_path: path,
-        bytes,
+        reader,
     };
 
     return data;
@@ -579,12 +583,14 @@ interface CacheEntry {
 function getCacheEntry(block_number: number, data: DataBlock): CacheEntry | ApplicationError {
     const start = 8192;
     const entry_offset = (block_number * data.block_size) + start;
-    const offset_start = take(data.bytes, entry_offset);
-    if (offset_start instanceof NomError) {
-        return new ApplicationError(`CHROMIUM`, `Failed to parse data cache ${data.data_path}: ${offset_start}`);
+    const size = 256;
+    const bytes = data.reader.readBytes(entry_offset, size);
+    if (bytes instanceof FileError) {
+        return new ApplicationError(`CHROMIUM`, `Failed to read cache entry ${data.data_path}: ${bytes}`);
+
     }
 
-    const hash = nomUnsignedFourBytes(offset_start.remaining as Uint8Array, Endian.Le);
+    const hash = nomUnsignedFourBytes(bytes, Endian.Le);
     if (hash instanceof NomError) {
         return new ApplicationError(`CHROMIUM`, `Failed to parse data cache file hash ${data.data_path}: ${hash}`);
     }
@@ -735,13 +741,14 @@ interface CacheResponse {
 function getResponseCache(block_number: number, data: DataBlock): CacheResponse | ApplicationError {
     const start = 8192;
     const entry_offset = (block_number * data.block_size) + start;
-    const offset_start = take(data.bytes, entry_offset);
+    const intial_size = 40;
+    const bytes = data.reader.readBytes(entry_offset, intial_size);
+    if (bytes instanceof FileError) {
+        return new ApplicationError(`CHROMIUM`, `Failed to read cache entry ${data.data_path}: ${bytes}`);
 
-    if (offset_start instanceof NomError) {
-        return new ApplicationError(`CHROMIUM`, `Failed to parse response data ${data.data_path}: ${offset_start}`);
     }
 
-    const hash = nomUnsignedFourBytes(offset_start.remaining as Uint8Array, Endian.Le);
+    const hash = nomUnsignedFourBytes(bytes, Endian.Le);
     if (hash instanceof NomError) {
         return new ApplicationError(`CHROMIUM`, `Failed to parse response data cache file hash ${data.data_path}: ${hash}`);
     }
@@ -778,15 +785,16 @@ function getResponseCache(block_number: number, data: DataBlock): CacheResponse 
         return new ApplicationError(`CHROMIUM`, `Failed to parse response data cache file size ${data.data_path}: ${size}`);
     }
 
-    const payload = take(size.remaining, size.value);
-    if (payload instanceof NomError) {
-        return new ApplicationError(`CHROMIUM`, `Failed to parse response data cache file payload ${data.data_path}: ${payload}`);
+    const header_offset = intial_size + entry_offset;
+    let header_bytes = data.reader.readBytes(header_offset, size.value);
+    if (header_bytes instanceof FileError) {
+        return new ApplicationError(`CHROMIUM`, `Failed to read header bytes data cache file size ${data.data_path}: ${header_bytes}`);
     }
 
     // Payload is multiple lines with end of string character
     const headers: string[] = [];
-    while (payload.remaining.length !== 0) {
-        const value = takeUntil(payload.nommed, new Uint8Array([0]));
+    while (header_bytes.length !== 0) {
+        const value = takeUntil(header_bytes, new Uint8Array([0]));
         if (value instanceof NomError) {
             break;
         }
@@ -800,7 +808,7 @@ function getResponseCache(block_number: number, data: DataBlock): CacheResponse 
         if (remaining instanceof NomError) {
             break;
         }
-        payload.nommed = remaining.remaining;
+        header_bytes = remaining.remaining;
     }
 
     // There might be even **more** info to parse
@@ -835,30 +843,30 @@ export function testChromiumCache(): void {
 
 
     const cache = chromiumCache([path], PlatformType.Darwin);
-    if (cache.length !== 334) {
-        throw `Got length ${cache.length} expected 334.......chromiumCache ❌`;
+    if (cache.length !== 335) {
+        throw `Got length ${cache.length} expected 335.......chromiumCache ❌`;
     }
 
     if (!cache[67]?.evidence.includes("index")) {
         throw `Got evidence "${cache[67]?.evidence}" expected "index".......chromiumCache ❌`;
     }
 
-    if (cache[0]?.message !== "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js'") {
-        throw `Got message "${cache[0]?.message}" expected "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js'".......chromiumSessions ❌`;
+    if (cache[1]?.message !== "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js'") {
+        throw `Got message "${cache[1]?.message}" expected "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js'".......chromiumCache ❌`;
     }
 
-    if (cache[12]?.message != "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/DsnmJJEf.js'") {
-        throw `Got message ${cache[12]?.message} expected "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/DsnmJJEf.js'".......chromiumCache ❌`;
+    if (cache[13]?.message != "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/DsnmJJEf.js'") {
+        throw `Got message ${cache[13]?.message} expected "URL cache 'https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/DsnmJJEf.js'".......chromiumCache ❌`;
     }
 
-    if (cache[256]?.response_headers.length !== 24) {
-        throw `Got header count ${cache[256]?.response_headers.length} expected "24".......chromiumCache ❌`;
+    if (cache[257]?.response_headers.length !== 24) {
+        throw `Got header count ${cache[257]?.response_headers.length} expected "24".......chromiumCache ❌`;
     }
 
     console.info(`  Function chromiumCache ✅`);
 
     let data_path = "../../test_data/brave/v143.1.85.11/Cache/Cache_Data/data_3";
-    let data = parseData(data_path, PlatformType.Darwin);
+    let data = parseData(data_path);
     if (data instanceof ApplicationError) {
         throw data;
     }
@@ -907,7 +915,7 @@ export function testChromiumCache(): void {
     console.info(`  Function getState ✅`);
 
     data_path = "../../test_data/brave/v143.1.85.11/Cache/Cache_Data/data_1";
-    data = parseData(data_path, PlatformType.Darwin);
+    data = parseData(data_path);
     if (data instanceof ApplicationError) {
         throw data;
     }
