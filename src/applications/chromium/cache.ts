@@ -146,7 +146,6 @@ function parseIndex(path: string): Index | ApplicationError {
     const bytes = readFile(path);
     if (bytes instanceof FileError) {
         return new ApplicationError(`CHROMIUM`, `Failed to read cache index file ${path}: ${bytes}`);
-
     }
 
     const sig = nomUnsignedFourBytes(bytes, Endian.Le);
