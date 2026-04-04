@@ -161,6 +161,14 @@ artemis.exe -d c3lzdGVtID0gIndpbmRvd3MiCgpbb3V0cHV0XQpuYW1lID0gInByb2Nlc3Nlc19jb
 [artemis] Finished artemis collection!
 ```
 
+## Remote TOML Collections
+
+You can also point artemis to a remote TOML file hosted on an external server. For example if you point artemis to the [URL](https://raw.githubusercontent.com/puffycid/artemis/refs/heads/main/forensics/tests/test_data/windows/processes.toml) it will collect a process listing.
+
+```
+artemis -t https://raw.githubusercontent.com/puffycid/artemis/refs/heads/main/forensics/tests/test_data/windows/processes.toml
+```
+
 ## JavaScript Collections
 
 You can also execute JavaScript code using artemis.
