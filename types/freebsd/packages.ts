@@ -28,4 +28,5 @@ export interface Pkg {
     timestamp_desc: "Package Installed";
     artifact: "FreeBSD PKG";
     data_type: "freebsd:pkg:entry";
+    evidence: string;
 }

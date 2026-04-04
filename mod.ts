@@ -171,6 +171,11 @@ export { extractAppCrash } from "./src/windows/appcrash";
 export { getPkgs } from "./src/freebsd/packages";
 
 /**
+ * ESXi
+ */
+export { shellLogHistory } from "./src/esxi/logs/shell";
+
+/**
  * Timelining
  */
 export { timelineArtifact } from "./src/timesketch/timeline";

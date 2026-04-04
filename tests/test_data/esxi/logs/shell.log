@@ -1,0 +1,164 @@
+2026-04-03T23:08:06.065Z No(13) ESXShell[132707]: ESXi Shell unavailable
+2026-04-03T23:13:31.786Z No(13) ESXShell[132622]: ESXi Shell unavailable
+2026-04-03T23:15:52.435Z No(13) SSH[132771]: SSH login enabled
+2026-04-03T23:15:52.508Z No(13) SSH[132775]: SSH sandbox is not enabled, SSH will run in superdom
+2026-04-03T23:16:32.866Z In(14) shell[132915]: Interactive shell session started
+2026-04-03T23:16:33.976Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:17:03.211Z In(14) shell[132915]: [root]: uname -r
+2026-04-03T23:17:05.310Z In(14) shell[132915]: [root]: uname
+2026-04-03T23:17:41.733Z In(14) shell[132915]: [root]: which ls
+2026-04-03T23:17:45.046Z In(14) shell[132915]: [root]: file /bin/ls
+2026-04-03T23:18:04.630Z In(14) shell[132915]: [root]: ps
+2026-04-03T23:19:45.875Z In(14) shell[132915]: [root]: pwd
+2026-04-03T23:20:10.164Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:20:13.351Z In(14) shell[132915]: [root]: touch test
+2026-04-03T23:20:14.537Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:20:17.736Z In(14) shell[132915]: [root]: rm test 
+2026-04-03T23:20:26.695Z In(14) shell[132915]: [root]: pwd
+2026-04-03T23:20:27.739Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:20:35.595Z In(14) shell[132915]: [root]: ls -lh
+2026-04-03T23:20:40.510Z In(14) shell[132915]: [root]: ./artemis -h
+2026-04-03T23:20:56.704Z In(14) shell[132915]: [root]: nano
+2026-04-03T23:21:02.975Z In(14) shell[132915]: [root]: touch test.sh
+2026-04-03T23:21:10.575Z In(14) shell[132915]: [root]: echo 'ls' > test.sh 
+2026-04-03T23:21:13.585Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:21:16.085Z In(14) shell[132915]: [root]: rm test.sh 
+2026-04-03T23:21:19.509Z In(14) shell[132915]: [root]: rm artemis 
+2026-04-03T23:22:02.205Z In(14) shell[132915]: [root]: ls vmfs/
+2026-04-03T23:22:04.390Z In(14) shell[132915]: [root]: ls vmfs/volumes/
+2026-04-03T23:22:09.290Z In(14) shell[132915]: [root]: du -h
+2026-04-03T23:22:11.954Z In(14) shell[132915]: [root]: df -h
+2026-04-03T23:22:35.624Z In(14) shell[132915]: [root]: cd /vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0
+2026-04-03T23:22:36.271Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:22:39.267Z In(14) shell[132915]: [root]: ./artemis -h
+2026-04-03T23:24:27.392Z In(14) shell[132915]: [root]: ldd artemis 
+2026-04-03T23:24:39.698Z In(14) shell[132915]: [root]: ls -lh
+2026-04-03T23:24:44.637Z In(14) shell[132915]: [root]: ./artemis 
+2026-04-03T23:24:50.923Z In(14) shell[132915]: [root]: sudo ./artemis 
+2026-04-03T23:25:26.559Z In(14) shell[132915]: [root]: vsish -e set /config/User/intOpts/UserProcEnable 1
+2026-04-03T23:25:30.036Z In(14) shell[132915]: [root]: ./artemis -h
+2026-04-03T23:27:31.220Z In(14) shell[132915]: [root]: supershell -c "./artemis -h"
+2026-04-03T23:27:41.734Z In(14) shell[132915]: [root]: esxcli system settings encryption set --require-exec-installed-only=FALSE
+2026-04-03T23:27:59.301Z In(14) shell[132915]: [root]: esxcli system settings encryption get
+2026-04-03T23:28:13.501Z In(14) shell[132915]: [root]: ./artemis -h
+2026-04-03T23:28:21.520Z In(14) shell[132915]: [root]: df -h
+2026-04-03T23:28:30.769Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:28:33.853Z In(14) shell[132915]: [root]: ls log/
+2026-04-03T23:28:41.381Z In(14) shell[132915]: [root]: touch test.sh
+2026-04-03T23:28:46.455Z In(14) shell[132915]: [root]: echo 'ls' > test.sh 
+2026-04-03T23:28:49.215Z In(14) shell[132915]: [root]: sh test.sh 
+2026-04-03T23:29:00.953Z In(14) shell[132915]: [root]: echo 'artemis -h' > test.sh 
+2026-04-03T23:29:02.826Z In(14) shell[132915]: [root]: sh test.sh 
+2026-04-03T23:29:09.943Z In(14) shell[132915]: [root]: echo './artemis -h' > test.sh 
+2026-04-03T23:29:11.491Z In(14) shell[132915]: [root]: sh test.sh 
+2026-04-03T23:29:44.109Z In(14) shell[132915]: [root]: mount
+2026-04-03T23:29:55.943Z In(14) shell[132915]: [root]: esxcli storage filesystem list
+2026-04-03T23:30:18.720Z In(14) shell[132915]: [root]: vdf -h
+2026-04-03T23:30:36.846Z In(14) shell[132915]: [root]: ls /tmp/
+2026-04-03T23:30:41.343Z In(14) shell[132915]: [root]: mv artemis /tmp
+2026-04-03T23:30:44.417Z In(14) shell[132915]: [root]: cd /tmp/
+2026-04-03T23:30:46.353Z In(14) shell[132915]: [root]: ./artemis -h
+2026-04-03T23:31:15.705Z In(14) shell[132915]: [root]: mv artemis /opt/
+2026-04-03T23:31:34.298Z In(14) shell[132915]: [root]: mv artemis /vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0
+2026-04-03T23:31:42.479Z In(14) shell[132915]: [root]: esxcli system settings encryption get
+2026-04-03T23:32:12.643Z In(14) shell[132915]: [root]: cat /proc/mounts
+2026-04-03T23:32:23.777Z In(14) shell[132915]: [root]: esxcli system settings advanced list -o /User/ExecInstalledOnly
+2026-04-03T23:32:48.191Z In(14) shell[132915]: [root]: esxcli system settings advanced set -o /User/ExecInstalledOnly -i 0
+2026-04-03T23:32:55.800Z In(14) shell[132915]: [root]: cd /vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0
+2026-04-03T23:32:56.914Z In(14) shell[132915]: [root]: esxcli system settings advanced set -o /User/ExecInstalledOnly -i 0
+2026-04-03T23:33:00.883Z In(14) shell[132915]: [root]: esxcli system settings advanced list -o /User/ExecInstalledOnly
+2026-04-03T23:33:06.647Z In(14) shell[132915]: [root]: ./artemis -h
+2026-04-03T23:33:16.890Z In(14) shell[132915]: [root]: ./artemis acquire sysinfo
+2026-04-03T23:33:22.971Z In(14) shell[132915]: [root]: ./artemis acquire systeminfo
+2026-04-03T23:33:24.846Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:33:26.934Z In(14) shell[132915]: [root]: cd tmp/local_collector/
+2026-04-03T23:33:27.447Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:33:29.354Z In(14) shell[132915]: [root]: ls -lh
+2026-04-03T23:33:32.036Z In(14) shell[132915]: [root]: cat systeminfo_c4cfe846-08c1-494f-b588-49971fc0fead.json 
+2026-04-03T23:33:50.427Z In(14) shell[132915]: [root]: cd ../..
+2026-04-03T23:33:52.155Z In(14) shell[132915]: [root]: rm -r tmp/
+2026-04-03T23:34:06.803Z In(14) shell[132915]: [root]: y
+2026-04-03T23:34:08.400Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:34:15.801Z In(14) shell[132915]: [root]: ./artemis acquire processes
+2026-04-03T23:34:45.205Z In(14) shell[132915]: [root]: ./artemis acquire filelisting -h
+2026-04-03T23:34:57.692Z In(14) shell[132915]: [root]: ./artemis acquire filelisting --start-path /vmfs --depth 99
+2026-04-03T23:35:00.589Z In(14) shell[132915]: [root]: ls tmp/local_collector/
+2026-04-03T23:35:04.079Z In(14) shell[132915]: [root]: ls -lh tmp/local_collector/
+2026-04-03T23:35:41.831Z In(14) shell[132915]: [root]: rm -h
+2026-04-03T23:35:46.392Z In(14) shell[132915]: [root]: rm -rf tmp/
+2026-04-03T23:35:53.359Z In(14) shell[132915]: [root]: ./artemis acquire filelisting --md5 --start-path /vmfs --depth 99
+2026-04-03T23:36:17.389Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:36:19.251Z In(14) shell[132915]: [root]: ls log/
+2026-04-03T23:36:20.292Z In(14) shell[132915]: [root]: pwd
+2026-04-03T23:36:25.960Z In(14) shell[132915]: [root]: ls -lh log/
+2026-04-03T23:37:58.768Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:38:02.031Z In(14) shell[132915]: [root]: ./artemis main.js 
+2026-04-03T23:38:06.272Z In(14) shell[132915]: [root]: ./artemis -j main.js 
+2026-04-03T23:38:52.589Z In(14) shell[132915]: [root]: ./artemis -j main.js 
+2026-04-03T23:39:02.598Z In(14) shell[132915]: [root]: less
+2026-04-03T23:39:05.013Z In(14) shell[132915]: [root]: less /vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmkernel.log
+2026-04-03T23:39:26.315Z In(14) shell[132915]: [root]: ./artemis -j main.js 
+2026-04-03T23:39:56.512Z In(14) shell[132915]: [root]: ./artemis acquire processes
+2026-04-03T23:55:20.388Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:55:25.094Z In(14) shell[132915]: [root]: ./artemis acquire connections
+2026-04-03T23:55:27.766Z In(14) shell[132915]: [root]: ls tmp/local_collector/
+2026-04-03T23:55:41.064Z In(14) shell[132915]: [root]: ./artemis -j main.js 
+2026-04-03T23:55:55.598Z In(14) shell[132915]: [root]: ls log
+2026-04-03T23:56:01.469Z In(14) shell[132915]: [root]: cat log/shell.log 
+2026-04-03T23:56:10.221Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:56:17.331Z In(14) shell[132915]: [root]: ls vmware/
+2026-04-03T23:56:18.643Z In(14) shell[132915]: [root]: ls vmware/lifecycle/
+2026-04-03T23:56:24.797Z In(14) shell[132915]: [root]: ls vmware/lifecycle/hostSeed/
+2026-04-03T23:56:26.577Z In(14) shell[132915]: [root]: ls vmware/lifecycle/hostSeed/esxioCachedVibs/
+2026-04-03T23:56:42.958Z In(14) shell[132915]: [root]: less tmp/local_collector/files_171ae265-1d77-4133-ae9b-3fab2c565f78.json 
+2026-04-03T23:57:38.088Z In(14) shell[132915]: [root]: less tmp/local_collector/files_171ae265-1d77-4133-ae9b-3fab2c565f78.json 
+2026-04-03T23:57:51.625Z In(14) shell[132915]: [root]: rm -rf tmp/
+2026-04-03T23:58:03.716Z In(14) shell[132915]: [root]: ./artemis -j main.js 
+2026-04-03T23:58:17.720Z In(14) shell[132915]: [root]: ps
+2026-04-03T23:58:19.948Z In(14) shell[132915]: [root]: ps -h
+2026-04-03T23:58:24.791Z In(14) shell[132915]: [root]: ps -i
+2026-04-03T23:58:27.413Z In(14) shell[132915]: [root]: ps -h
+2026-04-03T23:58:39.095Z In(14) shell[132915]: [root]: ps -T
+2026-04-03T23:58:41.733Z In(14) shell[132915]: [root]: ps
+2026-04-03T23:58:44.524Z In(14) shell[132915]: [root]: ps -h
+2026-04-03T23:58:45.917Z In(14) shell[132915]: [root]: netstat
+2026-04-03T23:58:48.454Z In(14) shell[132915]: [root]: ip addr
+2026-04-03T23:58:55.590Z In(14) shell[132915]: [root]: ps -i
+2026-04-03T23:58:58.530Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:59:02.106Z In(14) shell[132915]: [root]: ls var/
+2026-04-03T23:59:03.723Z In(14) shell[132915]: [root]: ls var/tmp/
+2026-04-03T23:59:06.638Z In(14) shell[132915]: [root]: ls core/
+2026-04-03T23:59:09.325Z In(14) shell[132915]: [root]: ls downloads/
+2026-04-03T23:59:11.518Z In(14) shell[132915]: [root]: ls healthd/
+2026-04-03T23:59:21.899Z In(14) shell[132915]: [root]: less healthd/hostd-health-0.json 
+2026-04-03T23:59:27.023Z In(14) shell[132915]: [root]: ls healthd/
+2026-04-03T23:59:29.401Z In(14) shell[132915]: [root]: ls -lh healthd/
+2026-04-03T23:59:35.489Z In(14) shell[132915]: [root]: ls
+2026-04-03T23:59:39.595Z In(14) shell[132915]: [root]: ls store/
+2026-04-03T23:59:47.118Z In(14) shell[132915]: [root]: ls vmkdump/
+2026-04-03T23:59:51.055Z In(14) shell[132915]: [root]: ls /
+2026-04-03T23:59:57.229Z In(14) shell[132915]: [root]: ls /var/lo
+2026-04-04T00:00:00.628Z In(14) shell[132915]: [root]: ls /var/db
+2026-04-04T00:00:03.473Z In(14) shell[132915]: [root]: ls /var/db/payloads/
+2026-04-04T00:00:12.258Z In(14) shell[132915]: [root]: ls /var/db/esximg/vibs/
+2026-04-04T00:00:23.226Z In(14) shell[132915]: [root]: less /var/db/esximg/vibs/lpfc-4107835131937698196.xml
+2026-04-04T00:00:47.093Z In(14) shell[132915]: [root]: ls
+2026-04-04T00:00:49.494Z In(14) shell[132915]: [root]: ls /
+2026-04-04T00:00:52.241Z In(14) shell[132915]: [root]: /pro
+2026-04-04T00:00:53.250Z In(14) shell[132915]: [root]: /proc/
+2026-04-04T00:00:59.192Z In(14) shell[132915]: [root]: ls /etc/
+2026-04-04T00:01:05.266Z In(14) shell[132915]: [root]: ls /usr/
+2026-04-04T00:01:09.232Z In(14) shell[132915]: [root]: ls -a
+2026-04-04T00:01:19.264Z In(14) shell[132915]: [root]: ls -h /
+2026-04-04T00:01:21.279Z In(14) shell[132915]: [root]: ls -ha /
+2026-04-04T00:01:25.390Z In(14) shell[132915]: [root]: ls -ha /.ssh/
+2026-04-04T00:01:29.699Z In(14) shell[132915]: [root]: ls -ha /.ssh/known_hosts 
+2026-04-04T00:01:33.867Z In(14) shell[132915]: [root]: less -ha /.ssh/known_hosts 
+2026-04-04T00:01:37.828Z In(14) shell[132915]: [root]: less /.ssh/known_hosts 
+2026-04-04T00:01:42.740Z In(14) shell[132915]: [root]: ls /opt/
+2026-04-04T00:01:47.986Z In(14) shell[132915]: [root]: rm /opt/artemis 
+2026-04-04T00:01:51.675Z In(14) shell[132915]: [root]: ls /opt/vmware/
+2026-04-04T00:01:54.954Z In(14) shell[132915]: [root]: ls /opt/vmware/vpxa/vpx/
+2026-04-04T00:02:03.371Z In(14) shell[132915]: [root]: ls /opt/vmware/nvme/esxcli-nvme-plugin 
+2026-04-04T00:02:07.285Z In(14) shell[132915]: [root]: ls
+2026-04-04T00:02:44.796Z In(14) shell[132915]: [root]: sudo dnf install sshfs

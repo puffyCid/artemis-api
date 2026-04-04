@@ -68,6 +68,6 @@ export interface ZshHistory {
   /**Line number */
   line: number;
   /**Path to `.zsh_history` file */
-  path: string;
+  evidence: string;
 }
 ```

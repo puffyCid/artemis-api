@@ -109,7 +109,7 @@ function parseBash(text: string, path: string): BashHistory[] {
       history: "",
       timestamp: "1970-01-01T00:00:00.000Z",
       line: 0,
-      path,
+      evidence: path,
     };
     const time_hit = timestamp_regex.exec(lines[ i ] ?? "");
     if (time_hit === null || time_hit.length === 0) {
@@ -141,7 +141,7 @@ function parseZsh(text: string, path: string): ZshHistory[] {
       history: "",
       timestamp: "1970-01-01T00:00:00.000Z",
       line: 0,
-      path,
+      evidence: path,
     };
     const time_hit = timestamp_regex.exec(lines[ i ] ?? "");
     if (time_hit === null || time_hit.length < 3) {

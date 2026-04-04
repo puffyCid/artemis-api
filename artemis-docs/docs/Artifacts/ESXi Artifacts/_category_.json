@@ -1,0 +1,8 @@
+{
+    "label": "ESXi Artifacts",
+    "position": 14,
+    "link": {
+        "type": "generated-index",
+        "description": "Forensic artifacts for ESXi systems"
+    }
+}
