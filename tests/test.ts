@@ -62,3 +62,5 @@ export { testCheckEolStatus } from "../src/http/eol";
  */
 export { testShellLogHistory } from "../src/esxi/logs/shell";
 export { testGetVibs } from "../src/esxi/vib";
+export { testSyslogEsxi } from "../src/esxi/logs/syslog";
+export { testEsxiAccounts } from "../src/esxi/accounts";

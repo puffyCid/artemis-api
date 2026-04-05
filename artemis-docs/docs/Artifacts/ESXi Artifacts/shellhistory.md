@@ -7,11 +7,12 @@ keywords:
 
 # Shell History
 
-ESXi systems track shell history when connected via SSH in the file `/.ash_history`. Artemis supports extracting entries from the `/.ash_history` file.
+ESXi systems track shell history when connected via SSH in the file `/.ash_history`. Artemis supports extracting entries from the .ash_history file.  
+The ash_history file is cleared on reboot.
 
 Other parsers:
 
-- Any program that read a text file
+- Any program that can read a text file
 
 ## Collection
 

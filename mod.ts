@@ -176,6 +176,8 @@ export { getPkgs } from "./src/freebsd/packages";
  */
 export { shellLogHistory } from "./src/esxi/logs/shell";
 export { getVibs } from "./src/esxi/vib";
+export { sysLogEsxi } from "./src/esxi/logs/syslog";
+export { esxiAccounts } from "./src/esxi/accounts";
 
 /**
  * Timelining

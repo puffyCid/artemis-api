@@ -11,7 +11,7 @@ ESXi vSphere Installation Bundles (VIB) are packages used to install application
 
 Other parsers:
 
-- Any program that read a text file
+- Any program that can read a text file
 
 References:
 

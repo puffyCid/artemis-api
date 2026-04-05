@@ -27,7 +27,6 @@ export function getVibs(alt_path?: string): VibInfo[] | EsxiError {
             continue;
         }
 
-        console.log(entry.full_path);
         const value = parseVib(entry.full_path);
         if (value instanceof EsxiError) {
             continue;
