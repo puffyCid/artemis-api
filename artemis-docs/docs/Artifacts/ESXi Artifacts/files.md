@@ -76,7 +76,7 @@ yara = "" # Base64 encoded Yara rule or a remote Yara rule
   regex. This configuration is **optional**. Default is no Regex
 - `file_regex` Only return entries that match the provided regex. This
   configuration is **optional**. Default is no Regex
-- `yara` Either a base64 encoded Yara rule or a Yara rule hosted on a remote server
+- `yara` A base64 encoded Yara rule
 
 ## Output Structure
 
