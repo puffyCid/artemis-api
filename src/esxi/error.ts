@@ -1,6 +1,7 @@
 import { ErrorBase } from "../utils/error";
 
 export type ErrorName =
-    | "SHELLHISTORY";
+    | "SHELLHISTORY"
+    | "VIBPACKAGE";
 
 export class EsxiError extends ErrorBase<ErrorName> { }

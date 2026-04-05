@@ -50,7 +50,7 @@ function readHistory(full_path: string): ShellHistory[] | EsxiError {
     while (true) {
         const lines = readLines(full_path, offset, limit);
         if (lines instanceof FileError) {
-            break;
+            return new EsxiError(`SHELLHISTORY`, `could not read file ${full_path}: ${lines}`);
         }
         offset += limit;
         for (const line of lines) {
@@ -111,4 +111,35 @@ function readHistory(full_path: string): ShellHistory[] | EsxiError {
     }
 
     return values;
+}
+
+/**
+ * Function to test ESXi shell log parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the ESXi shell log parsing
+ */
+export function testShellLogHistory(): void {
+    const test = "../../test_data/esxi/logs/shell.log";
+    const results = shellLogHistory(test);
+    if (results instanceof EsxiError) {
+        throw results;
+    }
+
+    if (results.length !== 164) {
+        throw `Got ${results.length} expected 164.......shellLogHistory ❌`;
+    }
+
+    if (results[ 12 ]?.message !== "ls") {
+        throw `Got ${results[ 12 ]?.message} expected "ls".......shellLogHistory ❌`;
+    }
+
+    console.info(`  Function shellLogHistory ✅`);
+
+
+    const bad_file = readHistory("fake path");
+    if (!(bad_file instanceof EsxiError)) {
+        throw bad_file;
+    }
+
+    console.info(`  Function readHistory ✅`);
 }

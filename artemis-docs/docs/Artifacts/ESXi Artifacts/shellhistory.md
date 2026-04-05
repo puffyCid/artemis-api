@@ -1,5 +1,5 @@
 ---
-description: Shell history log file
+description: Shell history
 keywords:
   - esxi
   - plaintext
@@ -7,7 +7,7 @@ keywords:
 
 # Shell History
 
-ESXi device track shell commands executed when connected via SSH in the file `shell.log`. Artemis supports extracting entries from the `shell.log` file.
+ESXi systems track shell history when connected via SSH in the file `/.ash_history`. Artemis supports extracting entries from the `/.ash_history` file.
 
 Other parsers:
 
@@ -18,10 +18,13 @@ Other parsers:
 You have to use the artemis [api](../../API/overview.md) in order to parse ESXi Shell History files.
 
 ```typescript
-import { shellLogHistory } from "./artemis-api/mod";
+import { getAshHistory, PlatformType } from "./artemis-api/mod";
 
 function main() {
-    const results = shellLogHistory();
+    let path = "/.ash_history";
+    // Override the default ash_history path normal linux systems.
+    // ESXi ash history is located at "/.ash_history"
+    const results = getAshHistory(PlatformType.Linux, path);
     console.log(JSON.stringify(results));
 }
 
@@ -30,19 +33,15 @@ main();
 
 ## Output Structure
 
-An array of `ShellHistory`.
+An array of `AshHistory`.
 
 ```typescript
-export interface ShellHistory {
-    message: string;
-    datetime: string;
-    timestamp_desc: "Shell Command Execution";
-    artifact: "ESXi Shell History";
-    data_type: "esxi:shell:entry";
-    pid: number;
-    account: string;
-    command: string;
-    evidence: string;
-    category: string;
+export interface AshHistory {
+  /**Line entry */
+  history: string;
+  /**Line number */
+  line: number;
+  /**Path to `.zsh_history` file */
+  evidence: string;
 }
 ```

@@ -68,6 +68,7 @@ export { getCron } from "./src/unix/cron";
 export {
   getBashHistory,
   getZshHistory,
+  getAshHistory,
 } from "./src/unix/shell_history";
 export { listKnownHosts } from "./src/unix/ssh";
 
@@ -174,6 +175,7 @@ export { getPkgs } from "./src/freebsd/packages";
  * ESXi
  */
 export { shellLogHistory } from "./src/esxi/logs/shell";
+export { getVibs } from "./src/esxi/vib";
 
 /**
  * Timelining

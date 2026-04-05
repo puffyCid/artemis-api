@@ -86,6 +86,7 @@ Available recipes:
     build                       # Build the entire artemis project.
     complex                     # Review complexity with scc
     default                     # Run cargo clippy on artemis project
+    end2end                     # Run End to End tests
     filesystem                  # Test only the FileSystem functions
     nextest                     # Test the entire artemis project using nextest
     runtime                     # Test only the JavaScript runtime
@@ -118,6 +119,7 @@ Available recipes:
     msi                         # Package Artemis into Windows MSI installer file
     pkg team_id version profile # Package Artemis into macOS PKG installer file
     rpm                         # Package Artemis into RPM file
+    vib                         # Package Artemis into ESXi VIB file
 
     [setup]
     setup-fedora                # Setup Artemis development environment for Fedora
@@ -128,8 +130,8 @@ Available recipes:
     [workspace]
     cli                         # Just build the artemis binary
     forensics                   # Just build the forensics library
+    profile                     # Just build the artemis binary and enable profiling
     slim                        # Just build the artemis binary. But do not enable Yara-X
-
 ```
 
 ### Building for esoteric platforms
@@ -145,3 +147,18 @@ If you want to build for Android or NetBSD you have to disable the yara-x depend
  - cross build --release --no-default-features
 
 If you want to build for Windows ARM. You will need a Windows ARM VM or device and will need to install [LLVM](https://learn.arm.com/install-guides/llvm-woa/) and cmake.
+
+
+### Building for ESXi
+
+If you want to compile artemis for ESXi you will need [cross](https://github.com/cross-rs/cross) and [just](https://github.com/casey/just).
+
+1. Run `just vib` and you will get a vSphere Installation Bundles (VIB) package
+
+:::warning
+
+Unsigned 3rd party binaries are not supported or recommended to be run on ESXi appliances.
+
+[UAC](https://github.com/tclahr/uac) is recommended if want to collect data without using a 3rd party binary
+
+:::

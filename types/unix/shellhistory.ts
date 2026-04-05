@@ -31,3 +31,12 @@ export interface ZshHistory {
   /**Path to `.zsh_history` file */
   evidence: string;
 }
+
+export interface AshHistory {
+  /**Line entry */
+  history: string;
+  /**Line number */
+  line: number;
+  /**Path to `.zsh_history` file */
+  evidence: string;
+}

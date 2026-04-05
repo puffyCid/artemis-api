@@ -56,3 +56,9 @@ export { testLuluRules } from "../src/macos/plist/lulu";
  */
 export { testCircluHashlookup } from "../src/http/circlu";
 export { testCheckEolStatus } from "../src/http/eol";
+
+/**
+ * ESXi exported test functions
+ */
+export { testShellLogHistory } from "../src/esxi/logs/shell";
+export { testGetVibs } from "../src/esxi/vib";
