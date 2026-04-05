@@ -7,7 +7,7 @@ keywords:
 
 # Syslog Log
 
-ESXi systems primarily log events to the file syslog.log. Artemis supports extracting entries from the syslog.log file.
+ESXi systems primarily log events to syslog files. Artemis supports extracting entries from syslog.log and gzip compressed syslogs files.
 
 Other parsers:
 
