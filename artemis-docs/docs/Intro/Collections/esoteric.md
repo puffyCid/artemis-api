@@ -5,7 +5,7 @@ description: Additional Platforms
 
 # Musl Support
 
-Artemis has support for the musl C standard library. This is useful if you want to run artemis on very niche Linux systems or systems that support ELF binaries. This allows us to avoid the target system C runtime and statically link msul instead.
+Artemis has support for compiling with the musl C standard library. This is useful if you want to run artemis on very niche Linux systems or systems that support ELF binaries. This allows us to avoid the target system C runtime and statically link msul instead.
 
 If you want to compile artemis with musl runtime you will need [cross](https://github.com/cross-rs/cross). Once cross is installed just run:
 
@@ -32,7 +32,7 @@ Feel free to open issue if errors are encountered.
 
 Unsigned 3rd party binaries are discouraged on ESXi appliances.
 
-[UAC](https://github.com/tclahr/uac) is recommended if want to collect data without using a 3rd party binary.
+[UAC](https://github.com/tclahr/uac) is recommended if you want to collect data without using a 3rd party binary.
 
 If you have never collected data from an ESXi system before. You should try [UAC](https://github.com/tclahr/uac).
 
@@ -48,7 +48,7 @@ Since the VIB package is not signed, you will need root permissions in order to 
 
 - `esxcli software vib install -f -v file:///vmfs/volumes/<id>/artemis.vib`
 
-Once artemis is installed you can start collecting supported [artifacts](../../Artifacts/esxi.md)
+Once artemis is installed you can start collecting supported [artifacts](../../Artifacts/esxi.md).
 
 ```
 esxcli software vib install -f -v file:///vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/artemis.vib
@@ -94,7 +94,7 @@ Remove artemis once you are done:
 Artemis has only been tested on development/test instances of ESXi devices.
 Unsigned 3rd party binaries are discouraged on ESXi appliances.
 
-Currently [UAC](https://github.com/tclahr/uac) is suggested if want to collect data
+Currently [UAC](https://github.com/tclahr/uac) is suggested if you want to collect data
 
 You should only consider using artemis if you want todo the following:
 

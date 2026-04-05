@@ -157,8 +157,8 @@ If you want to compile artemis for ESXi you will need [cross](https://github.com
 
 :::warning
 
-Unsigned 3rd party binaries are not supported or recommended to be run on ESXi appliances.
+Unsigned 3rd party binaries are discouraged on ESXi appliances.
 
-[UAC](https://github.com/tclahr/uac) is recommended if want to collect data without using a 3rd party binary
+[UAC](https://github.com/tclahr/uac) is recommended if you want to collect data without using a 3rd party binary.
 
 :::
