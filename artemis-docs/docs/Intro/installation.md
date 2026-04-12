@@ -54,6 +54,7 @@ Artemis also supports the following platforms:
 - Android
 - Linux (RISC-V, musl, PowerPC, SPARC)
 - [illumos](https://en.wikipedia.org/wiki/Illumos)
+- ESXi
 
 ## GitHub Releases
 

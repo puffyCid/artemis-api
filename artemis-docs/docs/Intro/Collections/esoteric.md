@@ -5,9 +5,9 @@ description: Additional Platforms
 
 # Musl Support
 
-Artemis has support for compiling with the musl C standard library. This is useful if you want to run artemis on very niche Linux systems or systems that support ELF binaries. This allows us to avoid the target system C runtime and statically link msul instead.
+Artemis has support for compiling with the musl C standard library. This is useful if you want to run artemis on very niche Linux systems or systems that support ELF binaries. This allows us to avoid the system C runtime and statically link msul instead.
 
-If you want to compile artemis with musl runtime you will need [cross](https://github.com/cross-rs/cross). Once cross is installed just run:
+If you want to compile artemis with the musl runtime you will need [cross](https://github.com/cross-rs/cross). Once cross is installed just run:
 
 - cross build --release --bin artemis --target x86_64-unknown-linux-musl
 

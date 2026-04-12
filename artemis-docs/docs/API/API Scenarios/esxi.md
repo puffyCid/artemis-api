@@ -206,7 +206,7 @@ Sample output for `accounts`
 
 ## Native Rust Artifacts
 
-Currently artemis can generate a filelisting and parse ELF binaries on an ESXi device. You do not need to leverage the artemis API for this artifact. Yara rules are also supported
+Currently artemis can generate a filelisting and parse ELF binaries on an ESXi device. You do not need to leverage the artemis API for this artifact. Yara rules are also supported.
 
 To timeline a filelisting run the command below:
 
