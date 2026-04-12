@@ -78,7 +78,7 @@ function parseStats(stats_file: GlobInfo): SystemStats[] | MacosError {
         return new MacosError(`STATS`, `failed to parse file ${path} unknown byte: ${unknown}`);
     }
 
-    // Size of next string value. Always 0xE. May be part of unkonwn byte above (0xAE). But not 100% sure
+    // Size of next string value. Always 0xE. May be part of Unknown byte above (0xAE). But not 100% sure
     const size = nomUnsignedOneBytes(unknown.remaining);
     if (size instanceof NomError) {
         return new MacosError(`STATS`, `failed to parse file ${path} size byte: ${size}`);
@@ -98,7 +98,7 @@ function parseStats(stats_file: GlobInfo): SystemStats[] | MacosError {
         return new MacosError(`STATS`, `failed to parse file ${path} protobuf byte: ${value}`);
     }
 
-    return extractInfo(value, stats_file, version)
+    return extractInfo(value, stats_file, version);
 }
 
 /// Try to extract Protobuf data into meaningful info
@@ -117,13 +117,13 @@ function extractInfo(proto_data: Record<string, ProtoTag>, stats_file: GlobInfo,
     };
     for (const entry in proto_data) {
         // Get initial base values
-        switch (proto_data[entry]?.tag.field) {
+        switch (proto_data[ entry ]?.tag.field) {
             case 6: {
-                stat.build_version = proto_data[entry].value as string;
+                stat.build_version = proto_data[ entry ].value as string;
                 break;
             }
             case 3: {
-                stat.datetime = unixEpochToISO(proto_data[entry].value as number) as string;
+                stat.datetime = unixEpochToISO(proto_data[ entry ].value as number) as string;
                 break;
             }
         }
@@ -131,8 +131,8 @@ function extractInfo(proto_data: Record<string, ProtoTag>, stats_file: GlobInfo,
         // Check for nested values
         // This should be the last value in the base data above
         // Tons of data here
-        if (Array.isArray(proto_data[entry]?.value)) {
-            for (const value of proto_data[entry].value as Record<string, ProtoTag>[]) {
+        if (Array.isArray(proto_data[ entry ]?.value)) {
+            for (const value of proto_data[ entry ].value as Record<string, ProtoTag>[]) {
                 stat.message = JSON.stringify(value);
                 values.push(Object.assign({}, stat));
             }

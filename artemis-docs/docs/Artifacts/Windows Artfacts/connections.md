@@ -59,7 +59,7 @@ export interface Connection {
     /**State of the process connection */
     state: NetworkState;
     /**Connection protocol */
-    protcol: Protocol;
+    protocol: Protocol;
 }
 
 export enum Protocol {
@@ -84,6 +84,5 @@ export enum NetworkState {
     DeleteTcb = "DeleteTcb",
     Unknown = "Unknown",
     None = "None",
-}
 }
 ```

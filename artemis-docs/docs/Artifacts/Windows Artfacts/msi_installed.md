@@ -38,7 +38,7 @@ export interface MsiInstalled {
     name: string;
     language: number;
     version: string;
-    mnufacturer: string;
+    manufacturer: string;
     installation_status: number;
     hostname: string;
     sid: string;

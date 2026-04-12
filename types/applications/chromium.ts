@@ -237,7 +237,7 @@ export enum ShortcutType {
   TabGroup = "Tab group",
   HistoryEmbedAnswers = "History embedded answers",
   SearchSuggestEntity = "Search suggestion for entity",
-  Unkonwn = "Unknown",
+  Unknown = "Unknown",
 }
 
 export interface ChromiumAutofill {

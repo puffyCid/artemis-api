@@ -57,7 +57,7 @@ Do not forget to transpile the script above to JavaScript as mentioned in
 [API](../../Intro/Scripting/bundling.md) section!
 
 **Strongly** suggest you `minify` the transpiled script.\
-It will make it alot smaller!
+It will make it a lot smaller!
 
 :::
 

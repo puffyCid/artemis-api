@@ -12,7 +12,7 @@ services:
 2. Microsoft Azure
 3. Amazon Web Services (AWS)
 
-Uploading collections to a remote serivce requires three (3) steps:
+Uploading collections to a remote service requires three (3) steps:
 
 1. Name of remote service. Valid options are: `"gcp", "azure", "aws"`
 2. URL to the remote service

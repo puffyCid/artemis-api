@@ -34,7 +34,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                 action: "",
                 active: false,
                 direction: Direction.Unknown,
-                protocol: Protocol.Unkonwn,
+                protocol: Protocol.Unknown,
                 protocol_number: 0,
                 local_port: 0,
                 remote_port: 0,
@@ -120,7 +120,7 @@ export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError
                     case undefined:
                         break;
                     default:
-                        rule[key] = key_value.at(1) ?? "";
+                        rule[ key ] = key_value.at(1) ?? "";
                         break;
                 }
             }
@@ -162,6 +162,6 @@ function getProtocol(proto: string): Protocol {
         case "41": return Protocol.IPV6;
         case "47": return Protocol.GRE;
         case "2": return Protocol.IGMP;
-        default: return Protocol.Unkonwn;
+        default: return Protocol.Unknown;
     }
 }

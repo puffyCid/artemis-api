@@ -70,7 +70,7 @@ export enum Protocol {
     UDP = "UDP",
     ICMP = "ICMP",
     ICMP_v6 = "ICMP_v6",
-    Unkonwn = "Unknown",
+    Unknown = "Unknown",
     IPV6 = "IPv6",
     GRE = "GRE",
     IGMP = "IGMP",

@@ -41,7 +41,7 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
 
         // Increase to next chunk of entries
         offset += limit;
-        const data = logs[1] as unknown as RawBlock[];
+        const data = logs[ 1 ] as unknown as RawBlock[];
         for (const entry of data) {
             if (entry.data.Event.System.EventID !== eid) {
                 continue;
@@ -91,14 +91,14 @@ export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsErro
 /**
  * Function to combine multiple Scriptblock entries
  * @param data Array of `Record<string, RawBlock[]>` that contains our blocks we want to reassemble
- * @param source_file Path the evtx file
+ * @param evidence Path the evtx file
  * @returns Array of `Scriptblock`
  */
-function constructBlocks(data: Record<string, RawBlock[]>, source_file: string): Scriptblock[] {
+function constructBlocks(data: Record<string, RawBlock[]>, evidence: string): Scriptblock[] {
     const results: Scriptblock[] = [];
 
     for (const entry in data) {
-        if(data[entry] === undefined) {
+        if (data[ entry ] === undefined) {
             continue;
         }
         // Sort our blocks by block number. We do this to make sure we reassemble in correct order
@@ -109,7 +109,7 @@ function constructBlocks(data: Record<string, RawBlock[]>, source_file: string):
             datetime: "",
             timestamp_desc: "EventLog Entry Created",
             id: "",
-            source_file,
+            evidence,
             path: "",
             script_length: 0,
             has_signature_block: false,

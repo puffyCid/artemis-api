@@ -437,7 +437,7 @@ All artifacts parsed by artemis will be formatted similar to the output above.
   - `complete_time` The time artemis completed parsing the data
   - `start_time` The time artemis started parsing the data
   - `hostname` The hostname of the endpoint
-  - `os_version` Thes OS version of the endpoint
+  - `os_version` The OS version of the endpoint
   - `platform` The platform of the endpoint. Ex: Windows or macOS
   - `kernel_version` The kernel version of the endpoint
   - `load_performance` The endpoint performance for one, five, and fifteen

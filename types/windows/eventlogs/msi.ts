@@ -2,7 +2,7 @@ export interface MsiInstalled {
     name: string;
     language: number;
     version: string;
-    mnufacturer: string;
+    manufacturer: string;
     installation_status: number;
     hostname: string;
     sid: string;
@@ -22,21 +22,21 @@ export interface RawMsiInstalled {
     data: {
         Event: {
             "#attributes": {
-                xmlns: string
-            }
+                xmlns: string;
+            };
 
             System: {
                 Provider: {
                     "#attributes": {
                         Name: string;
-                    }
-                } | string
+                    };
+                } | string;
                 EventID: {
                     "#attributes": {
                         Qualifiers: number;
-                    }
+                    };
                     "#text": number;
-                } | number
+                } | number;
                 Version: number;
                 Level: number;
                 Task: number;
@@ -51,8 +51,8 @@ export interface RawMsiInstalled {
                     "#attributes": {
                         ProcessID: number;
                         ThreadID: number;
-                    }
-                }
+                    };
+                };
                 EventRecordID: number;
                 Correlation: {
                     "#attributes": {
@@ -64,15 +64,15 @@ export interface RawMsiInstalled {
                 Security: {
                     "#attributes": {
                         "UserID": string;
-                    }
+                    };
                 };
-            }
+            };
             EventData: {
                 Data: {
                     "#text": string[];
-                }
+                };
                 Binary: string;
-            }
-        }
-    }
+            };
+        };
+    };
 }

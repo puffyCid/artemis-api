@@ -219,7 +219,7 @@ You should get output at `./tmp/chrome_info`.
 
 ## Chromium Based Browsers
 
-Chromium is a very popular open source browser. Many browsers are based on the Chromium sorce code such as:
+Chromium is a very popular open source browser. Many browsers are based on the Chromium source code such as:
 - Chrome
 - Edge
 - Brave

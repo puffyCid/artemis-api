@@ -1,10 +1,10 @@
-import { TableInfo } from "../../../types/windows/ese"
+import { TableInfo } from "../../../types/windows/ese";
 import { Certificates, RequestAttributes, Requests, RequestType, StatusCode } from "../../../types/windows/ese/certs";
 import { getEnvValue } from "../../environment/mod";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
 import { WindowsError } from "../errors";
-import { EseDatabase } from "../ese"
+import { EseDatabase } from "../ese";
 
 /**
  * Class to parse Windows AD Certificate Services
@@ -16,7 +16,7 @@ export class ADCertificates extends EseDatabase {
      * Construct a `ADCertificates` object. By default it will parse the EDB file on the SystemDrive.
      * @param alt_path Optional alternative path the CertLog EDB file
      */
-    constructor(alt_path?: string) {
+    constructor (alt_path?: string) {
         let path = "\\Windows\\System32\\CertLog\\*.edb";
         if (alt_path !== undefined) {
             path = alt_path;
@@ -31,11 +31,11 @@ export class ADCertificates extends EseDatabase {
                 console.error(`Could not glob for EDB at ${path}`);
                 return;
             }
-            if (paths.length < 1 || paths[0] === undefined) {
+            if (paths.length < 1 || paths[ 0 ] === undefined) {
                 console.error(`No EDB files found`);
                 return;
             }
-            path = paths[0].full_path;
+            path = paths[ 0 ].full_path;
         }
 
         super(path);
@@ -54,9 +54,9 @@ export class ADCertificates extends EseDatabase {
         }
 
         const certs: Certificates[] = [];
-        const cert_data = rows["Certificates"];
+        const cert_data = rows[ "Certificates" ];
         if (cert_data === undefined) {
-            return new WindowsError(`ADCERTIFICATES`, `Could not find "Certificates" table`)
+            return new WindowsError(`ADCERTIFICATES`, `Could not find "Certificates" table`);
         }
 
         for (const row of cert_data) {
@@ -115,9 +115,9 @@ export class ADCertificates extends EseDatabase {
         }
 
         const reqs: Requests[] = [];
-        const req_data = rows["Requests"];
+        const req_data = rows[ "Requests" ];
         if (req_data === undefined) {
-            return new WindowsError(`ADCERTIFICATES`, `Could not find "Requests" table`)
+            return new WindowsError(`ADCERTIFICATES`, `Could not find "Requests" table`);
         }
 
         for (const row of req_data) {
@@ -181,9 +181,9 @@ export class ADCertificates extends EseDatabase {
         }
 
         const reqs: RequestAttributes[] = [];
-        const req_data = rows["RequestAttributes"];
+        const req_data = rows[ "RequestAttributes" ];
         if (req_data === undefined) {
-            return new WindowsError(`ADCERTIFICATES`, `Could not find "RequestAttributes" table`)
+            return new WindowsError(`ADCERTIFICATES`, `Could not find "RequestAttributes" table`);
         }
 
         for (const row of req_data) {

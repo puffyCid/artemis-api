@@ -47,7 +47,7 @@ export interface RecentFiles {
 export enum SharedFileType {
     FinderFavorite = "Finder Favorite",
     VolumeFavorite = "Volume Favorite",
-    UnknownFavorite = "Unkonwn Favorite",
+    UnknownFavorite = "Unknown Favorite",
     ApplicationRecentFiles = "Application Recent File",
     ProjectFavorite = "Tag Favorite",
     RecentApplication = "Recent Application",

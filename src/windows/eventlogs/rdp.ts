@@ -63,7 +63,7 @@ function rdpLogs(path: string): RdpEvents | WindowsError {
 
         // `getEventlogs` returns a tuple. The second value contains our raw eventlog data
         // First value is empty because we did not enable provider strings
-        const records = events[1];
+        const records = events[ 1 ];
         if (records.length === 0) {
             break;
         }
@@ -71,18 +71,18 @@ function rdpLogs(path: string): RdpEvents | WindowsError {
         // Get the specific RDP event IDs we want
         for (const entry of records) {
             // Only keep RDP logs we can use to create sessions
-            if (isLogon(entry as Raw21Logons)) {
-                rdp_events.logons.push(entry as Raw21Logons);
-            } else if (isReconnect(entry as Raw25Reconnect)) {
-                rdp_events.reconnects.push(entry as Raw25Reconnect);
-            } else if (isLogoff(entry as Raw23Logoff)) {
-                rdp_events.logoffs.push(entry as Raw23Logoff);
-            } else if (isSessionStart(entry as Raw41SessionStart)) {
-                rdp_events.session_start.push(entry as Raw41SessionStart);
-            } else if (isSessionEnd(entry as Raw42SessionEnd)) {
-                rdp_events.session_end.push(entry as Raw42SessionEnd);
-            } else if (isDisconnect(entry as Raw24Disconnect)) {
-                rdp_events.disconnect.push(entry as Raw24Disconnect);
+            if (isLogon(entry as unknown as Raw21Logons)) {
+                rdp_events.logons.push(entry as unknown as Raw21Logons);
+            } else if (isReconnect(entry as unknown as Raw25Reconnect)) {
+                rdp_events.reconnects.push(entry as unknown as Raw25Reconnect);
+            } else if (isLogoff(entry as unknown as Raw23Logoff)) {
+                rdp_events.logoffs.push(entry as unknown as Raw23Logoff);
+            } else if (isSessionStart(entry as unknown as Raw41SessionStart)) {
+                rdp_events.session_start.push(entry as unknown as Raw41SessionStart);
+            } else if (isSessionEnd(entry as unknown as Raw42SessionEnd)) {
+                rdp_events.session_end.push(entry as unknown as Raw42SessionEnd);
+            } else if (isDisconnect(entry as unknown as Raw24Disconnect)) {
+                rdp_events.disconnect.push(entry as unknown as Raw24Disconnect);
             }
         }
     }
@@ -184,9 +184,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: data.Address,
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
             message: `RDP Logon by ${data.User} from ${data.Address}`,
-            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
             timestamp_desc: "RDP Logon",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -204,9 +204,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: "None",
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
             message: `RDP Logoff by ${data.User}`,
-            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
             timestamp_desc: "RDP Logoff",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -224,9 +224,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: data.Address,
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
             message: `RDP Disconnect by ${data.User} from ${data.Address}`,
-            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
             timestamp_desc: "RDP Disconnect",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -244,9 +244,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: data.Address,
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
             message: `RDP Reconnect by ${data.User} from ${data.Address}`,
-            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
             timestamp_desc: "RDP Reconnect",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -274,12 +274,12 @@ export function testRdpLogons(): void {
     if (results.length != 59) {
         throw `Got ${results.length} RDP events, expected 59.......rdpLogons ❌`;
     }
-    if (results[1] === undefined) {
+    if (results[ 1 ] === undefined) {
         throw `Got undefined RDP event.......rdpLogons ❌`;
     }
 
-    if (results[1].datetime != "2025-07-10T00:36:56.762711Z") {
-        throw `Got ${results[1].datetime} for logon time, expected "2025-07-10T00:36:56.762711Z".......rdpLogons ❌`;
+    if (results[ 1 ].datetime != "2025-07-10T00:36:56.762711Z") {
+        throw `Got ${results[ 1 ].datetime} for logon time, expected "2025-07-10T00:36:56.762711Z".......rdpLogons ❌`;
     }
 
     console.info(`  Function rdpLogons ✅`);
@@ -313,7 +313,7 @@ export function testRdpLogons(): void {
     console.info(`  Function isReconnect ✅`);
 
     const mock = extractRdp({
-        logons: [{
+        logons: [ {
             event_record_id: 0,
             timestamp: "",
             data: {
@@ -357,7 +357,7 @@ export function testRdpLogons(): void {
                     }
                 }
             }
-        }],
+        } ],
         reconnects: [],
         disconnect: [],
         logoffs: [],
