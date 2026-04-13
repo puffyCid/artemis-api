@@ -43,6 +43,7 @@ export { testParsePca } from "../src/windows/pca";
 export { testDefenderQuarantineEventLog } from "../src/windows/eventlogs/defender";
 export { testMsiInstalled } from "../src/windows/eventlogs/msi";
 export { testExtractAppCrash } from "../src/windows/appcrash";
+export { testUserAccessLogging } from "../src/windows/ese/ual";
 
 /**
  * macOS exported test functions

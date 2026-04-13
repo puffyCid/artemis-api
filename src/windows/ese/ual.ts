@@ -22,7 +22,7 @@ export class UserAccessLogging extends EseDatabase {
    * Construct a `UserAccessLogging` object based on the provided UAL file. Client.mdb and <GUID>.mdb files contain the logon information. SystemIdentity.mdb contains role information
    * @param path Path to UAL related file. Such as SystemIdentity.mdb or Current.mdb or <GUID>.mdb.
    */
-  constructor (path: string) {
+  constructor(path: string) {
     super(path);
     this.info = {
       obj_id_table: 0,
@@ -57,7 +57,7 @@ export class UserAccessLogging extends EseDatabase {
       return rows;
     }
 
-    const row_data = rows[ "ROLE_IDS" ];
+    const row_data = rows["ROLE_IDS"];
     if (row_data === undefined) {
       return new WindowsError(
         `UAL`,
@@ -90,7 +90,8 @@ export class UserAccessLogging extends EseDatabase {
     if (rows instanceof WindowsError) {
       return rows;
     }
-    const row_data = rows[ "CLIENTS" ];
+
+    const row_data = rows["CLIENTS"];
     if (row_data === undefined) {
       return new WindowsError(
         `UAL`,
@@ -285,4 +286,43 @@ export class UserAccessLogging extends EseDatabase {
 
     return raw_ip.join(".");
   }
+}
+
+/**
+ * Function to test Windows UAL parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Windows UAL parsing
+ */
+export function testUserAccessLogging(): void {
+  const id = "../../../tests/test_data/DFIRArtifactMuseum/ual/SystemIdentity.mdb";
+  const current = "../../../tests/test_data/DFIRArtifactMuseum/ual/Current.mdb";
+  const roles = new UserAccessLogging(id);
+
+  const clients = new UserAccessLogging(current);
+  const data = clients.getUserAccessLog(clients.pages, roles);
+  if (data instanceof WindowsError) {
+    throw data;
+  }
+
+  if (data.length !== 0) {
+    throw `Got '${data.length}' expected "0".......getUserAccessLog ❌`;
+  }
+
+  console.info(`  Function getUserAccessLog ✅`);
+
+  const info = roles.getRoleIds(roles.pages);
+  if (info instanceof WindowsError) {
+    throw info;
+  }
+
+  if (info.length !== 13) {
+    throw `Got '${info.length}' expected "13".......getRoleIds ❌`;
+  }
+
+  if (info[8]?.name !== "Windows Deployment Services") {
+    throw `Got '${info[8]?.name}' expected "Windows Deployment Services".......getRoleIds ❌`;
+  }
+
+  console.info(`  Function getRoleIds ✅`);
+
 }
