@@ -24,6 +24,9 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
+  "overrides": {
+    "webpackbar": "^7.0.0"
+},
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.10.0",
     "@tsconfig/docusaurus": "^2.0.7",
