@@ -44,7 +44,6 @@ export { testDefenderQuarantineEventLog } from "../src/windows/eventlogs/defende
 export { testMsiInstalled } from "../src/windows/eventlogs/msi";
 export { testExtractAppCrash } from "../src/windows/appcrash";
 export { testUserAccessLogging } from "../src/windows/ese/ual";
-
 /**
  * macOS exported test functions
  */

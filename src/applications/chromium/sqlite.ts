@@ -574,7 +574,7 @@ export function chromiumLogins(paths: ChromiumProfiles[], platform: PlatformType
                     password_type: entry[ "password_type" ] as number | undefined,
                     password_value: entry[ "password_value" ] as string | undefined,
                     date_received: unixEpochToISO(webkitToUnixEpoch(
-                        typeof entry[ "date_received" ] === "undefined"
+                        typeof entry[ "date_received" ] === "undefined" || entry[ "date_received" ] === null
                             ? 0
                             : Number(BigInt(entry[ "date_received" ] as bigint) / adjust_time)
                     )),
