@@ -62,7 +62,7 @@ timeline = false
 artifact_name = "spotlight"
 [artifacts.spotlight]
 # Optional
-# alt_path = ""
+# alt_dir = ""
 
 # Include additional known Spotlight paths such as
 #     /Users/*/Library/Caches/com.apple.helpd/index.spotlightV*/*
@@ -76,7 +76,7 @@ include_additional = true
 
 ## Collection Options
 
-- `alt_path` Alternative path to a Spotlight database. This configuration is
+- `alt_dir` Alternative path to a Spotlight database. This configuration is
   **optional**
 - `include_additional` Artemis will parse additional known Spotlight database
   locations. This configuration is **optional**

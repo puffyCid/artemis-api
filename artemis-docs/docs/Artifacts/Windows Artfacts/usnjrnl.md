@@ -40,7 +40,8 @@ artifact_name = "usnjrnl"
 [artifacts.usnjrnl]
 # Optional
 # alt_drive = 'D'
-# alt_path = ""
+# alt_file = ""
+# alt_mft = ""
 ```
 
 ## Collection Options
@@ -48,7 +49,9 @@ artifact_name = "usnjrnl"
 - `alt_drive` Expects a single character value. Will use an alternative drive
   letter when parsing UsnJrnl. This configuration is **optional**. By default
   artemis will use the **%systemdrive%** value (typically **C**)
-- `alt_path` Full path to $J file. This configuration is **optional**.
+- `alt_file` Full path to alternative $J file. This configuration is **optional**.
+- `alt_mft` Full path to alternative MFT file. This configuration is **optional**.
+
 
 ## Output Structure
 

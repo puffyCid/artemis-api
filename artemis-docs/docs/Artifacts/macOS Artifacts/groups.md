@@ -36,12 +36,12 @@ timeline = false
 artifact_name = "groups-macos"
 [artifacts.groups_macos]
 # Optional
-# alt_path = ""
+# alt_file = ""
 ```
 
 ## Collection Options
 
-- `alt_path` Use an alternative Groups path. This configuration is **optional**.
+- `alt_file` Use an alternative Groups path. This configuration is **optional**.
   By default artemis will read all Groups at
   **/var/db/dslocal/nodes/Default/groups**
 

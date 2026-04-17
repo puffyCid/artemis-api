@@ -54,7 +54,7 @@ include_attachments = true
 
 ## Collection Options
 
-- `alt_path` An alternative path to the OST file. This configuration is
+- `alt_file` An alternative path to the OST file. This configuration is
   **optional**. By default will parse all OST files under
   `%systemdrive%\Users\*\AppData\Local\Microsoft\Outlook\*.ost`
 - `include_attachments` - Boolean value whether to extract attachments in email

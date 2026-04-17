@@ -39,12 +39,12 @@ timeline = false
 artifact_name = "emond"
 [artifacts.emond]
 # Optional
-# alt_path = ""
+# alt_dir = ""
 ```
 
 ## Collection Options
 
-- `alt_path`Use an alternative path to the Emond files. This configuration is
+- `alt_dir`Use an alternative path to the Emond files. This configuration is
   **optional**. By default artemis will read the Emond config file to determine
   file paths
 

@@ -41,12 +41,12 @@ timeline = false
 artifact_name = "journals"
 [artifacts.journals]
 # Optional
-# alt_path = ""
+# alt_dir = ""
 ```
 
 ## Collection Options
 
-- `alt_path` Path to a directory containing Journal files. This configuration is
+- `alt_dir` Path to a directory containing Journal files. This configuration is
   **optional**
 
 ## Output Structure

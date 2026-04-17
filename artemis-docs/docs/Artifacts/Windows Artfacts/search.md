@@ -55,12 +55,12 @@ timeline = false
 artifact_name = "search"
 [artifacts.search]
 # Optional
-# alt_path = "C:\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb"
+# alt_file = "C:\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb"
 ```
 
 ## Collection Options
 
-- `alt_path` An alternative path to the Search ESE or SQLITE database. This
+- `alt_file` An alternative path to the Search ESE or SQLITE database. This
   configuration is **optional**. By default artemis will use
   **%systemdrive%\ProgramData\Microsoft\Search\Data\Applications\Windows\Windows.edb**
 

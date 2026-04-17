@@ -42,12 +42,12 @@ timeline = false
 artifact_name = "srum"
 [artifacts.srum]
 # Optional
-# alt_path = "C:\Windows\System32\srum\SRUDB.dat"
+# alt_file = "C:\Windows\System32\srum\SRUDB.dat"
 ```
 
 ## Collection Options
 
-- `alt_path` An alternative path to the SRUM ESE database. This configuration
+- `alt_file` An alternative path to the SRUM ESE database. This configuration
   is **optional**. By default artemis will use
   **%systemdrive%\Windows\System32\srum\SRUDB.dat**
 

@@ -40,12 +40,12 @@ timeline = false
 artifact_name = "sudologs-linux"
 [artifacts.sudologs_linux]
 # Optional
-# alt_path = ""
+# alt_dir = ""
 ```
 
 ## Collection Options
 
-- `alt_path` Path to a directory containing Journal files. This configuration is
+- `alt_dir` Path to a directory containing Journal files. This configuration is
   **optional**
 
 ## Output Structure
