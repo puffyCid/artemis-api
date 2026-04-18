@@ -36,12 +36,12 @@ timeline = false
 artifact_name = "user-macos"
 [artifacts.users]
 # Optional
-# alt_file = ""
+# alt_dir = ""
 ```
 
 ## Collection Options
 
-- `alt_file` Use an alternative Users path. This configuration is **optional**.
+- `alt_dir` Use an alternative Users path. This configuration is **optional**.
   By default artemis will read all Users at
   `/var/db/dslocal/nodes/Default/users`
 

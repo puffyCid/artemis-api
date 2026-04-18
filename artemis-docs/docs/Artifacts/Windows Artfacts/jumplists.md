@@ -40,12 +40,12 @@ timeline = false
 artifact_name = "jumplists"
 [artifacts.jumplists]
 # Optional
-# alt_file = "C:\\Artifacts\\CustomJumplist"
+# alt_dir = "C:\\Artifacts\\CustomJumplist\\*"
 ```
 
 ## Collection Options
 
-- `alt_file` Full path to an alternative Jumplist file. This configuration is
+- `alt_dir` Glob to an alternative Jumplist file(s). This configuration is
   **optional**. By default artemis will parse all user Jumplist files on the
   system.
 

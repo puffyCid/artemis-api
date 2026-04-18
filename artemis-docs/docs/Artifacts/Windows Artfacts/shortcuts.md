@@ -38,12 +38,12 @@ timeline = false
 [[artifacts]]
 artifact_name = "shortcuts"
 [artifacts.shortcuts]
-path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
+dir = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\*"
 ```
 
 ## Collection Options
 
-- `path` Target path where artemis should parse Shortcut files. This
+- `dir` Glob to Shortcut files. This
   configuration is **required**
 
 ## Output Structure
