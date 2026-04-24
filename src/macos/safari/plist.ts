@@ -82,7 +82,8 @@ export function safariDownloads(paths: SafariProfile[], platform: PlatformType, 
                 datetime: bookmark.created,
                 timestamp_desc: "File Download Start",
                 artifact: "File Download",
-                data_type: "macos:safari:downloads:entry"
+                data_type: "macos:safari:downloads:entry",
+                evidence: full_path,
             };
             if (unfold && typeof client !== 'undefined') {
                 const result = client.parseUrl(download.source_url);
@@ -136,7 +137,8 @@ export function safariBookmarks(paths: SafariProfile[], platform: PlatformType):
                         datetime: meta.created,
                         timestamp_desc: "Bookmark Created",
                         artifact: "Website Bookmark",
-                        data_type: "macos:safari:bookmark:entry"
+                        data_type: "macos:safari:bookmark:entry",
+                        evidence: full_path,
                     };
                     hits.push(book);
                 }
@@ -155,7 +157,8 @@ export function safariBookmarks(paths: SafariProfile[], platform: PlatformType):
                 datetime: meta.created,
                 timestamp_desc: "Bookmark Created",
                 artifact: "Website Bookmark",
-                data_type: "macos:safari:bookmark:entry"
+                data_type: "macos:safari:bookmark:entry",
+                evidence: full_path,
             };
             hits.push(book);
         }
@@ -202,7 +205,8 @@ export function safariExtensions(paths: SafariProfile[], platform: PlatformType)
                 datetime: exts[key]["AddedDate"].replace("Z", ".000Z"),
                 timestamp_desc: "Extension Installed",
                 artifact: "Browser Extension",
-                data_type: "macos:safari:extension:entry"
+                data_type: "macos:safari:extension:entry",
+                evidence: full_path,
             };
             hits.push(value);
         }

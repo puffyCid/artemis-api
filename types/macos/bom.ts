@@ -7,7 +7,7 @@ export interface Bom {
   install_prefix_path: string;
   path: string;
   /**Path to BOM file */
-  bom_path: string;
+  evidence: string;
   files: BomFiles[];
 }
 

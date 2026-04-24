@@ -4,7 +4,6 @@ import {
   ClientType,
   Reason,
   TccData,
-  TccValues,
 } from "../../../types/macos/sqlite/tcc";
 import { glob } from "../../filesystem/files";
 import { FileError } from "../../filesystem/errors";
@@ -22,9 +21,9 @@ import { unixEpochToISO } from "../../time/conversion";
  * An optional path to the `TCC.db` can be provided.
  * Otherwise will parse all user and System `TCC.db` files.
  * @param alt_db Optional alternative path to TCC.db files
- * @returns Array of `TccValues` or `MacosError`
+ * @returns Array of `TccData` or `MacosError`
  */
-export function queryTccDb(alt_db?: string): TccValues[] | MacosError {
+export function queryTccDb(alt_db?: string): TccData[] | MacosError {
   let dbs: string[] = [];
   if (alt_db !== undefined) {
     dbs = [ alt_db ];
@@ -47,14 +46,15 @@ export function queryTccDb(alt_db?: string): TccValues[] | MacosError {
   }
 
   const query = "select * from access";
-  const tcc_data: TccValues[] = [];
+  let tcc_data: TccData[] = [];
   for (const entry of dbs) {
     const results = querySqlite(entry, query);
     if (results instanceof ApplicationError) {
       return new MacosError("TCC", `failed to query ${entry}: ${results}`);
     }
 
-    tcc_data.push(getTccData(results, entry));
+    
+    tcc_data = tcc_data.concat(getTccData(results, entry));
   }
 
   return tcc_data;
@@ -66,28 +66,33 @@ export function queryTccDb(alt_db?: string): TccValues[] | MacosError {
  * @param path path to the `TCC.db` file
  * @returns `TccValues` data from `TCC.db` file
  */
-function getTccData(data: Record<string, unknown>[], path: string): TccValues {
+function getTccData(data: Record<string, unknown>[], path: string): TccData[] {
   const tcc_array: TccData[] = [];
   for (const entry of data) {
     const tcc_data: TccData = {
-      service: entry[ "service" ] as string,
-      client: entry[ "client" ] as string,
-      client_type: clientType(entry[ "client_type" ] as number),
-      auth_value: authValue(entry[ "auth_value" ] as number),
-      auth_reason: authReason(entry[ "auth_reason" ] as number),
-      auth_version: entry[ "auth_version" ] as number,
+      service: entry["service"] as string,
+      client: entry["client"] as string,
+      client_type: clientType(entry["client_type"] as number),
+      auth_value: authValue(entry["auth_value"] as number),
+      auth_reason: authReason(entry["auth_reason"] as number),
+      auth_version: entry["auth_version"] as number,
       cert: undefined,
-      policy_id: entry[ "policy_id" ] as number | undefined,
-      indirect_object_identifier_type:
-        entry[ "indirect_object_identifier_type" ] as number | undefined,
-      indirect_object_identifier: entry[ "indirect_object_identifier" ] as string,
+      policy_id: entry["policy_id"] as number | undefined,
+      indirect_object_identifier_type: entry["indirect_object_identifier_type"] as number | undefined,
+      indirect_object_identifier: entry["indirect_object_identifier"] as string,
       indirect_object_code_identity: undefined,
-      flags: entry[ "flags" ] as number | undefined,
-      last_modified: unixEpochToISO(entry[ "last_modified" ] as number),
-      pid: entry[ "pid" ] as number | null,
-      pid_version: entry[ "pid_version" ] as number | null,
-      boot_uuid: entry[ "boot_uuid" ] as string,
-      last_reminded: unixEpochToISO(entry[ "last_reminded" ] as number),
+      flags: entry["flags"] as number | undefined,
+      last_modified: unixEpochToISO(entry["last_modified"] as number),
+      pid: entry["pid"] as number | null,
+      pid_version: entry["pid_version"] as number | null,
+      boot_uuid: entry["boot_uuid"] as string,
+      last_reminded: unixEpochToISO(entry["last_reminded"] as number),
+      evidence: path,
+      message: `TCC client entry '${entry["client"] as string}'`,
+      datetime: unixEpochToISO(entry["last_modified"] as number),
+      timestamp_desc: "Last Modified",
+      artifact: "TCC Database",
+      data_type: "macos:sqlite:tcc:entry"
     };
 
     if (entry[ "csreq" ] !== undefined && entry[ "csreq" ] !== null) {
@@ -108,12 +113,7 @@ function getTccData(data: Record<string, unknown>[], path: string): TccValues {
     tcc_array.push(tcc_data);
   }
 
-  const tcc_value: TccValues = {
-    db_path: path,
-    data: tcc_array,
-  };
-
-  return tcc_value;
+  return tcc_array;
 }
 
 /**

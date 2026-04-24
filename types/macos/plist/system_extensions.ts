@@ -7,4 +7,5 @@ export interface SystemExtension {
   categories: string[];
   bundle_path: string;
   team: string;
+  evidence: string;
 }

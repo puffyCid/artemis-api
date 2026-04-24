@@ -137,7 +137,7 @@ function parsePlist(path: string, skip_icon: boolean): Applications | MacosError
     display_name: `${data[ "CFBundleExecutable" ]}`,
     copyright: `${data[ "NSHumanReadableCopyright" ]}`,
     icon: !skip_icon ? readIcon(icon_file) : "",
-    info: path,
+    evidence: path,
   };
 
   return app;

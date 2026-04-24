@@ -1,10 +1,5 @@
 import { SingleRequirement } from "../codesigning";
 
-export interface TccValues {
-  db_path: string;
-  data: TccData[];
-}
-
 export interface TccData {
   service: string;
   client: string;
@@ -23,6 +18,12 @@ export interface TccData {
   pid_version: number | null | undefined;
   boot_uuid: string;
   last_reminded: string;
+  evidence: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Last Modified";
+  artifact: "TCC Database";
+  data_type: "macos:sqlite:tcc:entry";
 }
 
 export enum Reason {

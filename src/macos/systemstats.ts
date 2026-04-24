@@ -105,7 +105,7 @@ function parseStats(stats_file: GlobInfo): SystemStats[] | MacosError {
 function extractInfo(proto_data: Record<string, ProtoTag>, stats_file: GlobInfo, version: string): SystemStats[] {
     const values: SystemStats[] = [];
     const stat: SystemStats = {
-        source_path: stats_file.full_path,
+        evidence: stats_file.full_path,
         source_file: stats_file.filename,
         version,
         message: "",

@@ -160,7 +160,7 @@ export function parseBom(path: string): Bom | MacosError {
   }
 
   bom.files = boms;
-  bom.bom_path = path;
+  bom.evidence = path;
 
   return bom;
 }
@@ -189,7 +189,7 @@ export function parseReceipt(path: string): Bom | MacosError {
     install_process_name: receipt["InstallProcessName"] ?? "",
     install_prefix_path: receipt["InstallPrefixPath"] ?? "",
     path,
-    bom_path: "",
+    evidence: "",
     files: [],
   };
   return bom;
