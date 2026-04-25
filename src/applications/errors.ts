@@ -17,6 +17,7 @@ export type ErrorName =
   | "ANYDESK"
   | "COMET"
   | "BRAVE"
-  | "SYNCTHING";
+  | "SYNCTHING"
+  | "RUSTDESK";
 
 export class ApplicationError extends ErrorBase<ErrorName> { }

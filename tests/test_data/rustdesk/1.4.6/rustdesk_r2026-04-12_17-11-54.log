@@ -1,0 +1,60 @@
+[2026-04-12 17:11:54.885411 -04:00] INFO [src/server.rs:582] DISPLAY=Ok(":0")
+[2026-04-12 17:11:54.886185 -04:00] INFO [src/server.rs:583] XAUTHORITY=Ok("/run/user/1000/.mutter-Xwaylandauth.WM38M3")
+[2026-04-12 17:11:55.889640 -04:00] INFO [libs/scrap/src/common/hwcodec.rs:523] set hwcodec config
+[2026-04-12 17:11:55.889748 -04:00] DEBUG [libs/scrap/src/common/hwcodec.rs:524] HwCodecConfig { signature: 0, ram_encode: [], ram_decode: [CodecInfo { name: "h264", mc_name: None, format: H264, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }, CodecInfo { name: "hevc", mc_name: None, format: H265, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }] }
+[2026-04-12 17:11:56.292792 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:768] connecting to 49.12.46.241:443
+[2026-04-12 17:11:56.442700 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:771] connected to 49.12.46.241:443
+[2026-04-12 17:11:56.914518 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/pool.rs:395] pooling idle connection for ("https", api.rustdesk.com)
+[2026-04-12 17:12:04.147039 -04:00] INFO [src/flutter.rs:1408] Session 16197628 start, use texture render: true
+[2026-04-12 17:12:04.563282 -04:00] DEBUG [src/client.rs:392] TCP connection establishment time used: 411.056234ms
+[2026-04-12 17:12:04.563419 -04:00] INFO [src/client.rs:407] rendezvous server: rs-ny.rustdesk.com:21116
+[2026-04-12 17:12:04.563743 -04:00] INFO [src/client.rs:470] #1 TCP punch attempt with 192.168.124.45:38937, id: 16197628
+[2026-04-12 17:12:04.967757 -04:00] INFO [src/client.rs:527] TCP Hole Punched 16197628 = 192.168.124.45:38665
+[2026-04-12 17:12:04.967866 -04:00] INFO [src/client.rs:592] 815 ms used to TCP punch hole, relay_server: ovh-east2.rustdesk.com, is_local: true
+[2026-04-12 17:12:04.967878 -04:00] INFO [src/client.rs:687] peer address: 192.168.124.45:38665, timeout: 1000
+[2026-04-12 17:12:04.968308 -04:00] INFO [src/client.rs:736] 421.158µs used to establish TCP connection with TCP punch
+[2026-04-12 17:12:04.970369 -04:00] DEBUG [src/client.rs:750] TCP punch secure_connection ok
+[2026-04-12 17:12:04.970512 -04:00] DEBUG [src/client/io_loop.rs:204] get cliprdr client for conn_id 1
+[2026-04-12 17:12:20.112745 -04:00] WARN [src/client/io_loop.rs:1966] Message box ignore link  for security
+[2026-04-12 17:12:23.463178 -04:00] DEBUG [src/ui_session_interface.rs:1775] handle_peer_info :PeerInfo { username: "centos", hostname: "localhost.localdomain", platform: "Linux", displays: [DisplayInfo { x: 0, y: 0, width: 3840, height: 2242, name: "", online: true, cursor_embedded: false, original_resolution: MessageField(Some(Resolution { width: 3840, height: 2242, special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } })), scale: 1.0, special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } }], current_display: 0, sas_enabled: false, version: "1.4.6", features: MessageField(Some(Features { privacy_mode: false, terminal: true, special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } })), encoding: MessageField(Some(SupportedEncoding { h264: false, h265: false, vp8: true, av1: true, i444: MessageField(Some(CodecAbility { vp8: false, vp9: true, av1: true, h264: false, h265: false, special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } })), special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } })), resolutions: MessageField(Some(SupportedResolutions { resolutions: [], special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } })), platform_additions: "{\"has_file_clipboard\":true,\"is_wayland\":true,\"support_view_camera\":true}", windows_sessions: MessageField(None), special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } }
+[2026-04-12 17:12:23.464859 -04:00] INFO [src/client.rs:2589] peer info supported_encoding:SupportedEncoding { h264: false, h265: false, vp8: true, av1: true, i444: MessageField(Some(CodecAbility { vp8: false, vp9: true, av1: true, h264: false, h265: false, special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } })), special_fields: SpecialFields { unknown_fields: UnknownFields { fields: None }, cached_size: CachedSize { size: 0 } } }
+[2026-04-12 17:12:23.465002 -04:00] INFO [src/clipboard.rs:803] Subscribe clipboard listener: client-clipboard
+[2026-04-12 17:12:23.465016 -04:00] INFO [src/clipboard.rs:812] Start clipboard listener thread
+[2026-04-12 17:12:23.465177 -04:00] INFO [src/clipboard.rs:829] Clipboard listener thread started
+[2026-04-12 17:12:23.465188 -04:00] INFO [src/clipboard.rs:832] Clipboard listener subscribed: client-clipboard
+[2026-04-12 17:12:23.465195 -04:00] INFO [src/client.rs:982] Start client clipboard loop
+[2026-04-12 17:12:23.465163 -04:00] DEBUG [src/clipboard.rs:867] Clipboard listener started
+[2026-04-12 17:12:23.595739 -04:00] DEBUG [src/client.rs:2961] recved audio format, sample rate=48000
+[2026-04-12 17:12:23.864858 -04:00] INFO [src/client.rs:3022] 51.845µs used to get hwcodec config
+[2026-04-12 17:12:23.864954 -04:00] INFO [src/client.rs:1562] new video handler for display #0, format: AV1, luid: None
+[2026-04-12 17:12:23.864960 -04:00] INFO [libs/scrap/src/common/codec.rs:502] try create new decoder, format: AV1, _luid: None
+[2026-04-12 17:12:23.865789 -04:00] INFO [libs/scrap/src/common/codec.rs:1027] cpu num: 22, cpu loadavg: 4.81, available memory: 9G, codec thread: 4
+[2026-04-12 17:12:23.865823 -04:00] INFO [libs/scrap/src/common/codec.rs:597] create AV1 decoder success
+[2026-04-12 17:12:26.971419 -04:00] INFO [src/client/io_loop.rs:1223] Set fps to 13
+[2026-04-12 17:12:29.975392 -04:00] INFO [src/client/io_loop.rs:1223] Set fps to 16
+[2026-04-12 17:12:31.976053 -04:00] INFO [src/client/io_loop.rs:1223] Set fps to 19
+[2026-04-12 17:12:36.971857 -04:00] INFO [src/client/io_loop.rs:1223] Set fps to 29
+[2026-04-12 17:12:42.922386 -04:00] DEBUG [src/client/io_loop.rs:321] Exit io_loop of id=16197628
+[2026-04-12 17:12:42.922487 -04:00] INFO [src/clipboard.rs:837] Unsubscribe clipboard listener: client-clipboard
+[2026-04-12 17:12:42.922503 -04:00] INFO [src/clipboard.rs:848] Stop clipboard listener thread
+[2026-04-12 17:12:42.922538 -04:00] DEBUG [src/client.rs:1000] Clipboard listener stopped
+[2026-04-12 17:12:42.922594 -04:00] INFO [src/client.rs:1014] Stop client clipboard loop
+[2026-04-12 17:12:42.923661 -04:00] DEBUG [src/clipboard.rs:871] Clipboard listener stopped
+[2026-04-12 17:12:42.923724 -04:00] INFO [src/clipboard.rs:851] Clipboard listener thread stopped
+[2026-04-12 17:12:42.923733 -04:00] INFO [src/clipboard.rs:854] Clipboard listener unsubscribed: client-clipboard
+[2026-04-12 17:12:42.924244 -04:00] INFO [src/client/io_loop.rs:1070] meta: TransferSerde { write_jobs: [], read_jobs: [] }
+[2026-04-12 17:12:42.924287 -04:00] INFO [src/client.rs:2970] Audio decoder loop exits
+[2026-04-12 17:12:42.925526 -04:00] WARN [/root/.cargo/git/checkouts/arboard-19a3844fd9940437/85be121/src/platform/linux/mod.rs:96] Tried to initialize the wayland data control protocol clipboard, but failed. Falling back to the X11 clipboard protocol. The error was: arboard: failed to check is_primary_selection_supported, A required Wayland protocol (zwlr_data_control_manager_v1 version 1) is not supported by the compositor
+[2026-04-12 17:12:42.938030 -04:00] INFO [src/client.rs:2944] Video decoder loop exits
+[2026-04-12 17:12:43.420984 -04:00] ERROR [src/ui_interface.rs:1198] ipc connection closed: reset by the peer
+[2026-04-12 17:12:45.583298 -04:00] ERROR [libs/hbb_common/src/platform/mod.rs:50] Got signal 11 and exit. stack:
+gtk_window_is_maximized
+_ZL40window_manager_plugin_handle_method_callP20_WindowManagerPluginP13_FlMethodCall
+g_main_context_iteration
+g_application_run
+main
+__libc_start_call_main
+__libc_start_main@@GLIBC_2.34
+_start
+[2026-04-12 17:12:45.605324 -04:00] INFO [libs/libxdo-sys-stub/src/lib.rs:114] libxdo-sys Loaded libxdo.so.3
+[2026-04-12 17:12:45.607313 -04:00] INFO [libs/enigo/src/linux/xdo.rs:54] xdo context created successfully

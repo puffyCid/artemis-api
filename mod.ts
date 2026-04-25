@@ -104,6 +104,8 @@ export { Comet } from "./src/applications/comet";
 export { Brave } from "./src/applications/brave";
 export { Syncthing } from "./src/applications/syncthing";
 export { officeMruFiles } from "./src/applications/office";
+export { RustDesk } from "./src/applications/rustdesk/rmm";
+
 
 /**
  * Windows exported functions

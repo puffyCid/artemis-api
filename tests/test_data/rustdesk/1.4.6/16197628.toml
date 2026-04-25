@@ -1,0 +1,62 @@
+password = []
+size = [
+    0,
+    0,
+    0,
+    0,
+]
+size_ft = [
+    0,
+    0,
+    0,
+    0,
+]
+size_pf = [
+    0,
+    0,
+    0,
+    0,
+]
+view_style = 'original'
+scroll_style = 'scrollauto'
+edge_scroll_edge_thickness = 100
+image_quality = 'balanced'
+custom_image_quality = [50]
+show_remote_cursor = false
+lock_after_session_end = false
+terminal-persistent = false
+privacy_mode = false
+allow_swap_key = false
+port_forwards = []
+direct_failures = 0
+disable_audio = false
+disable_clipboard = false
+enable-file-copy-paste = true
+show_quality_monitor = false
+follow_remote_cursor = false
+follow_remote_window = false
+keyboard_mode = 'map'
+view_only = false
+show_my_cursor = false
+sync-init-clipboard = false
+trackpad-speed = 100
+
+[options]
+codec-preference = 'auto'
+custom-fps = '30'
+zoom-cursor = ''
+swap-left-right-mouse = ''
+i444 = ''
+collapse_toolbar = ''
+
+[ui_flutter]
+wm_RemoteDesktop = '{"width":1300.0,"height":740.0,"offsetWidth":0.0,"offsetHeight":0.0,"isMaximized":false,"isFullscreen":false}'
+
+[info]
+username = 'centos'
+hostname = 'localhost.localdomain'
+platform = 'Linux'
+
+[transfer]
+write_jobs = []
+read_jobs = []

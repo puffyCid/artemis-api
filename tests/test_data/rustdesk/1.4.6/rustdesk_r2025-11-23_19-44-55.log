@@ -1,0 +1,8 @@
+[2025-11-23 19:44:55.545353 -05:00] INFO [src/server.rs:545] DISPLAY=Ok(":0")
+[2025-11-23 19:44:55.546613 -05:00] INFO [src/server.rs:546] XAUTHORITY=Ok("/run/user/1000/.mutter-Xwaylandauth.O4JRG3")
+[2025-11-23 19:44:55.548920 -05:00] INFO [src/server.rs:585] config synced
+[2025-11-23 19:44:56.549872 -05:00] INFO [libs/scrap/src/common/hwcodec.rs:523] set hwcodec config
+[2025-11-23 19:44:56.549953 -05:00] DEBUG [libs/scrap/src/common/hwcodec.rs:524] HwCodecConfig { signature: 0, ram_encode: [], ram_decode: [CodecInfo { name: "h264", mc_name: None, format: H264, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }, CodecInfo { name: "hevc", mc_name: None, format: H265, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }] }
+[2025-11-23 19:44:56.977749 -05:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:768] connecting to 49.12.46.241:443
+[2025-11-23 19:44:57.098781 -05:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:771] connected to 49.12.46.241:443
+[2025-11-23 19:44:57.346405 -05:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/pool.rs:395] pooling idle connection for ("https", api.rustdesk.com)

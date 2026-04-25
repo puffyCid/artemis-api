@@ -1,0 +1,20 @@
+remote_id = '34573289457389sf'
+kb_layout_type = ''
+size = [
+    0,
+    0,
+    0,
+    0,
+]
+fav = []
+
+[options]
+wayland-restore-token = '04381250-efab-4eee-a3f8-c77475480372'
+remote-menubar-drag-right = '1.0'
+remote-menubar-drag-left = '0.0'
+show-selinux-help-tip = 'N'
+
+[ui_flutter]
+wm_Main = '{"width":800.0,"height":600.0,"offsetWidth":0.0,"offsetHeight":0.0,"isMaximized":false,"isFullscreen":false}'
+peer-sorting = 'Remote ID'
+wm_RemoteDesktop = '{"width":1300.0,"height":740.0,"offsetWidth":0.0,"offsetHeight":0.0,"isMaximized":false,"isFullscreen":false}'

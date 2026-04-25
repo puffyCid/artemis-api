@@ -131,3 +131,23 @@ export function unixEpochToISO(timestamp: number | bigint): string {
   const milli_time = BigInt(timestamp) / BigInt(milliseconds);
   return new Date(Number(milli_time)).toISOString();
 }
+
+/**
+ * Function to try to convert timestamp string to UTC
+ * @param timestamp Modified ISO timestamp. Ex: `2026-04-25 11:36:36.250534 -04:00`
+ */
+export function convertModifiedIso(timestamp: string): string {
+  let normal = timestamp;
+
+  // `new Date` requires `T` between day and hour
+  if (!timestamp.includes("T")) {
+    normal = normal.replace(" ", "T");
+  }
+  // No spaces are allowed between timezone value and timestamp
+  normal = normal.replace(" ", "");
+  // Only millisecond precision is support for `new Date`
+  normal = normal.replace(/(\.\d{3})\d+/, '$1');
+
+  const utc_date = new Date(normal).toISOString();
+  return utc_date;
+}
