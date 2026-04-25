@@ -103,7 +103,7 @@ interface Index {
     transaction_cache: CacheAddress;
     operation: number;
     operation_list: number;
-    // Only contains initialized entries (CacheAddress.intiailized === true)
+    // Only contains initialized entries (CacheAddress.initialized === true)
     cache_entries: CacheAddress[];
     index_path: string;
 }
@@ -266,7 +266,7 @@ function parseIndex(path: string): Index | ApplicationError {
         }
         remaining.remaining = value.remaining;
         const cache = getCacheAddress(value.value);
-        // Not intialized
+        // Not initialized
         if (!cache.initialized) {
             continue;
         }
@@ -539,7 +539,7 @@ interface CacheEntry {
     hash: number;
     next_address: CacheAddress;
     ranking: CacheAddress;
-    resuse: number;
+    reuse: number;
     refetch: number;
     state: CacheState;
     created: string;
@@ -659,7 +659,7 @@ function getCacheEntry(block_number: number, data: DataBlock): CacheEntry | Appl
         hash: hash.value,
         next_address: getCacheAddress(next_address.value),
         ranking: getCacheAddress(ranking.value),
-        resuse: reuse.value,
+        reuse: reuse.value,
         refetch: refetch.value,
         state: getState(cache_state.value),
         created: unixEpochToISO(webkitToUnixEpoch(Number(created.value / adjust_time))),
@@ -720,8 +720,8 @@ interface CacheResponse {
 function getResponseCache(block_number: number, data: DataBlock): CacheResponse | ApplicationError {
     const start = 8192;
     const entry_offset = (block_number * data.block_size) + start;
-    const intial_size = 40;
-    const bytes = data.reader.readBytes(entry_offset, intial_size);
+    const initial_size = 40;
+    const bytes = data.reader.readBytes(entry_offset, initial_size);
     if (bytes instanceof FileError) {
         return new ApplicationError(`CHROMIUM`, `Failed to read cache entry ${data.data_path}: ${bytes}`);
 
@@ -738,7 +738,7 @@ function getResponseCache(block_number: number, data: DataBlock): CacheResponse 
         return new ApplicationError(`CHROMIUM`, `Failed to parse response data cache file unknowns ${data.data_path}: ${unknown}`);
     }
 
-    // Somekind of flag?
+    // Some kind of flag?
     const unknown2 = nomUnsignedFourBytes(unknown.remaining, Endian.Le);
     if (unknown2 instanceof NomError) {
         return new ApplicationError(`CHROMIUM`, `Failed to parse response data cache file unknown2 ${data.data_path}: ${unknown2}`);
@@ -764,7 +764,7 @@ function getResponseCache(block_number: number, data: DataBlock): CacheResponse 
         return new ApplicationError(`CHROMIUM`, `Failed to parse response data cache file size ${data.data_path}: ${size}`);
     }
 
-    const header_offset = intial_size + entry_offset;
+    const header_offset = initial_size + entry_offset;
     let header_bytes = data.reader.readBytes(header_offset, size.value);
     if (header_bytes instanceof FileError) {
         return new ApplicationError(`CHROMIUM`, `Failed to read header bytes data cache file size ${data.data_path}: ${header_bytes}`);
@@ -952,7 +952,7 @@ export function testChromiumCache(): void {
     }
 
     if (addr.initialized !== true) {
-        throw `Got address initializede ${addr.initialized} expected "true".......getCacheAddress ❌`;
+        throw `Got address initialized ${addr.initialized} expected "true".......getCacheAddress ❌`;
     }
 
     console.info(`  Function getCacheAddress ✅`);
