@@ -1,6 +1,6 @@
 export interface RecentFiles {
     /**Path Kate session file */
-    session_file: string;
+    evidence: string;
     /**Path to recent file */
     file: string;
     /**Session file created */

@@ -53,7 +53,7 @@ export interface RecentFilesLibreOffice {
   /**Base64 encoded thumbnail of file */
   thumbnail: string;
   /**Path to registrymodifications.xcu */
-  source: string;
+  evidence: string;
   message: string;
   datetime: "1970-01-01T00:00:00.000Z";
   timestamp_desc: "N/A";

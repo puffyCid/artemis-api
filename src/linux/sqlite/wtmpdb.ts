@@ -36,7 +36,8 @@ export function queryLogons(alt_path?: string): LastLogons[] | LinuxError {
             datetime: unixEpochToISO(entry[ "Login" ] as number ?? 0),
             timestamp_desc: "User Logon",
             artifact: "wtmpdb Logons",
-            data_type: "linux:wtmpdb:entry"
+            data_type: "linux:wtmpdb:entry",
+            evidence: path,
         };
         values.push(logon);
     }

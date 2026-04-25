@@ -25,4 +25,5 @@ export interface FirmwareHistory {
     timestamp_desc: "Firmware Device Created";
     artifact: "Firmware Updates";
     data_type: "linux:firmware:entry";
+    evidence: string;
 }

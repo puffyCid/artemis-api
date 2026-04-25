@@ -13,7 +13,7 @@ export interface EpiphanyHistory {
     hidden_from_overview: boolean;
     visit_type: VisitType;
     referring_visit: string | null;
-    db_path: string;
+    evidence: string;
     unfold?: Url;
     message: string;
     datetime: string;
@@ -36,7 +36,7 @@ export interface EpiphanyCookies {
     is_secure: boolean | null;
     is_http_only: boolean | null;
     same_site: boolean | null;
-    db_path: string;
+    evidence: string;
     message: string;
     datetime: string;
     timestamp_desc: "Cookie Expires";
@@ -47,7 +47,7 @@ export interface EpiphanyCookies {
 export interface EpiphanyPermissions {
     url: string;
     permissions: Record<string, string>;
-    file_path: string;
+    evidence: string;
     message: string;
     datetime: "1970-01-01T00:00:00.000Z",
     timestamp_desc: "N/A";
@@ -79,7 +79,7 @@ export interface EpiphanyPrint {
     printer: string;
     pages: string | number;
     collate: boolean;
-    file_path: string;
+    evidence: string;
     message: string;
     datetime: "1970-01-01T00:00:00.000Z",
     timestamp_desc: "N/A";
@@ -92,7 +92,7 @@ export interface EpiphanySessions {
     title: string;
     /**Base64 blob */
     history: string;
-    session_path: string;
+    evidence: string;
     message: string;
     datetime: "1970-01-01T00:00:00.000Z",
     timestamp_desc: "N/A";

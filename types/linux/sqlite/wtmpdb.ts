@@ -12,4 +12,5 @@ export interface LastLogons {
     timestamp_desc: "User Logon";
     artifact: "wtmpdb Logons";
     data_type: "linux:wtmpdb:entry";
+    evidence: string;
 }

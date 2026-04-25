@@ -47,7 +47,7 @@ export function kateRecentFiles(alt_path?: string): RecentFiles[] {
                 if (line.startsWith("File") && line.includes("=")) {
                     const file_value = line.split("=");
                     const file: RecentFiles = {
-                        session_file: value.full_path,
+                        evidence: value.full_path,
                         // Linux file names can contain '=' symbol
                         file: file_value.slice(1).join("="),
                         session_file_created,

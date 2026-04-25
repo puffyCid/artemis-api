@@ -195,7 +195,7 @@ export function getExtensions(
 
 /**
  * Function to extract recent files and folders opened by VSCode. Also supports VSCodium.
- * @param platform OS platorm to get recent files for
+ * @param platform OS platform to get recent files for
  * @param alt_path Optional alternative path to `storage.json`
  * @returns Array of `RecentFiles` or `ApplicationError`
  */
