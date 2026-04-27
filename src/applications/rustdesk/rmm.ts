@@ -4,10 +4,19 @@ import { FileError } from "../../filesystem/errors";
 import { ApplicationError } from "../errors";
 import { readLogs } from "./logs";
 
+/**
+ * Class to extract artifacts from RustDesk application
+ */
 export class RustDesk {
     private paths: RustDeskUsers[] = [];
     private platform: PlatformType;
 
+    /**
+     * 
+     * @param platform `PlatformType` enum value
+     * @param alt_path Optional alternative path to folder containing all RustDesk files. Overides `PlatformType`
+     * @returns `RustDesk` class instance
+     */
     constructor (platform: PlatformType, alt_path?: string) {
         this.platform = platform;
 
@@ -31,6 +40,11 @@ export class RustDesk {
 
     }
 
+    /**
+     * Function to parse all logs associated with RustDesk application
+     * @param is_alt If optional alternative path was provided
+     * @returns Array of `RustDeskLogs`
+     */
     public logs(is_alt = false): RustDeskLogs[] {
         let separator = "/";
         if (this.platform === PlatformType.Windows) {
@@ -82,6 +96,11 @@ export class RustDesk {
         return hits;
     }
 
+    /**
+     * Grab basic profile information for installed RustDesk application
+     * @param platform `PlatformType` enum value
+     * @returns Array of `RustDeskUsers` or `ApplicationError`
+     */
     private profiles(platform: PlatformType): RustDeskUsers[] | ApplicationError {
         let paths;
         switch (platform) {
@@ -128,6 +147,12 @@ export class RustDesk {
         return clients;
     }
 
+    /**
+     * Determine ID associated with RustDesk application
+     * @param platform `PlatformType` enum value
+     * @param path Base path to RustDesk application
+     * @returns 
+     */
     private id(platform: PlatformType, path: string): string | ApplicationError {
         let id_path = `${path}/RustDesk_local.toml`;
         if (platform === PlatformType.Windows) {

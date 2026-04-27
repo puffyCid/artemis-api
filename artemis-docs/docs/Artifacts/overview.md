@@ -20,7 +20,7 @@ A breakdown of artifacts by OS is below.
 | [Linux](./linux.md)               | 23                  |
 | [FreeBSD](./freebsd.md)           | 8                   |
 | [ESXi](./esxi.md)                 | 7                   |
-| [Applications](./applications.md) | 15                  |
+| [Applications](./applications.md) | 16                  |
 
 Artemis also supports parsing apps and artifacts from unencrypted iTunes backups
 
