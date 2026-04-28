@@ -2,7 +2,7 @@ import { Jumplists } from "../../types/windows/jumplists";
 import { WindowsError } from "./errors";
 
 /**
- * Function to parse all Jumplists for all users using the `Systemdrive` (typically C)
+ * Function to parse all Jumplists for all users using the system drive (typically C)
  * @param path Optional path to a Jumplist file
  * @returns Array of `Jumplists` or `WindowsError`
  */

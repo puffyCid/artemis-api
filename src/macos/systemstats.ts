@@ -15,7 +15,7 @@ import { MacosError } from "./errors";
 
 /**
  * TODO:
- * 1. Add wall time to the abosolute timestamp (field 10?)
+ * 1. Add wall time to the absolute timestamp (field 10?)
  * 2. Extract more protobuf fields
  * 3. Add uuid parsing
  * 4. Support decompressing gzip data

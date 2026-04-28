@@ -2,9 +2,9 @@ import { Shimdb } from "../../types/windows/shimdb";
 import { WindowsError } from "./errors";
 
 /**
- * Function to parse `ShimDB` entries on the systemdrive
+ * Function to parse `ShimDB` entries on the system drive
  * @param path Optional path to a `ShimDB` file
- * @returns Array of `ShimDB` entries parsed from the sysystemdrive letter or `WindowsError`
+ * @returns Array of `ShimDB` entries parsed from the system drive letter or `WindowsError`
  */
 export function getShimdb(path?: string): Shimdb[] | WindowsError {
   try {

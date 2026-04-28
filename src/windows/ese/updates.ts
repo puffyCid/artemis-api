@@ -23,7 +23,7 @@ export class Updates extends EseDatabase {
   private table = "tbHistory";
 
   /**
-   * Contruct `Updates` to parse Windows Updates history. By default will parse updates at `\Windows\SoftwareDistribution\DataStore\DataStore.edb`. Unless you specify alternative file.
+   * Construct `Updates` to parse Windows Updates history. By default will parse updates at `\Windows\SoftwareDistribution\DataStore\DataStore.edb`. Unless you specify alternative file.
    * @param alt_path Optional alternative path to `DataStore.edb`
    */
   constructor(alt_path?: string) {
@@ -95,7 +95,7 @@ export class Updates extends EseDatabase {
    * @returns Array of `UpdateHistory` entries
    */
   private parseHistory(rows: EseTable[][]): UpdateHistory[] {
-    const udpates: UpdateHistory[] = [];
+    const updates: UpdateHistory[] = [];
 
     for (const row of rows) {
       const update: UpdateHistory = {
@@ -157,9 +157,9 @@ export class Updates extends EseDatabase {
           update.server_selection = this.getServerSelection(column.column_data);
         }
       }
-      udpates.push(update);
+      updates.push(update);
     }
-    return udpates;
+    return updates;
   }
 
   /**

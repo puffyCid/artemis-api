@@ -5,7 +5,7 @@ import { WindowsError } from "./errors";
  * Function to parse `UserAssist` entries
  * @param resolve Enable folder description GUID lookups by parsing the SYSTEM Registry file before parsing UserAssist.
  * @param path Optinal path to an alternative Registry file
- * @returns Array of `UserAssist` entries parsed from the sysystemdrive letter or `WindowsError`
+ * @returns Array of `UserAssist` entries parsed from the system drive letter or `WindowsError`
  */
 export function getUserassist(
   resolve: boolean,

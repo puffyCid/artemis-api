@@ -6,7 +6,7 @@ import { WindowsError } from "./errors";
  * @param path Optional path to an alternative `UsnJrnl` file
  * @param drive Optional alternative drive letter
  * @param mft Optional path to an alternative MFT file
- * @returns Array of `UsnJrnl` entries from sysystemdrive letter or `WindowsError`
+ * @returns Array of `UsnJrnl` entries from system drive letter or `WindowsError`
  */
 export function getUsnjrnl(
   path?: string,

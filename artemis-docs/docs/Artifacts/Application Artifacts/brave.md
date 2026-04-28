@@ -129,7 +129,7 @@ export interface ChromiumDownloads {
   last_access_time: string;
   /**Transient value */
   transient: number;
-  /**Referer URL */
+  /**Referrer URL */
   referrer: string;
   /**Download source URL */
   site_url: string;

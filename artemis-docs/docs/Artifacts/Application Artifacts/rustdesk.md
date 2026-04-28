@@ -14,10 +14,6 @@ Other parsers:
 
 - Any program that can read a text file
 
-# References
-
-- [RATs Review](https://www.synacktiv.com/publications/legitimate-rats-a-comprehensive-forensic-analysis-of-the-usual-suspects#anydesk)
-
 ## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect AnyDesk data

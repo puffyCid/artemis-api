@@ -2,7 +2,7 @@ import { TaskXml } from "../../types/windows/tasks";
 import { WindowsError } from "./errors";
 
 /**
- * Parse the Schedule Task files using the default systemdrive (typically C).
+ * Parse the Schedule Task files using the default system drive (typically C).
  * Will parse both XML and Job Task files
  * @param path path to a Schedule Task file
  * @returns Parsed XML and/or Job Task file(s) or `WindowsError`

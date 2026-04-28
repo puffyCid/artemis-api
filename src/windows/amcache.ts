@@ -2,9 +2,9 @@ import { Amcache } from "../../types/windows/amcache";
 import { WindowsError } from "./errors";
 
 /**
- * Function to parse `Amcache` entries on the systemdrive
+ * Function to parse `Amcache` entries on the system drive
  * @param path Optional path to the Amcache file
- * @returns Array of `Amcache` entries parsed from the sysystemdrive letter or `WindowsError`
+ * @returns Array of `Amcache` entries parsed from the system drive letter or `WindowsError`
  */
 export function getAmcache(path?: string): Amcache[] | WindowsError {
   try {
