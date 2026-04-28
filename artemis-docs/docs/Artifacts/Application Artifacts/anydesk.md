@@ -47,7 +47,7 @@ main();
 
 ## Output Structure
 
-Dependent on browser artifact user wants to parse.
+Array of TraceEntry
 
 ```typescript
 /**

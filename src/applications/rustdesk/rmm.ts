@@ -17,12 +17,12 @@ export class RustDesk {
      * @param alt_path Optional alternative path to folder containing all RustDesk files. Overides `PlatformType`
      * @returns `RustDesk` class instance
      */
-    constructor (platform: PlatformType, alt_path?: string) {
+    constructor(platform: PlatformType, alt_path?: string) {
         this.platform = platform;
 
         // Get AnyDesk data based on PlatformType
         if (alt_path === undefined) {
-            const results = this.profiles(platform);
+            const results = this.profiles();
             if (results instanceof ApplicationError) {
                 return;
             }
@@ -36,7 +36,7 @@ export class RustDesk {
         if (remote_id instanceof ApplicationError) {
             return;
         }
-        this.paths = [ { config_path: alt_path, version: '', logs_path: alt_path, remote_id } ];
+        this.paths = [{ config_path: alt_path, version: '', logs_path: alt_path, remote_id }];
 
     }
 
@@ -52,8 +52,8 @@ export class RustDesk {
         }
         let hits: RustDeskLogs[] = [];
 
-        if (is_alt && this.paths[ 0 ] !== undefined) {
-            const entries = glob(`${this.paths[ 0 ].logs_path}${separator}*.log`);
+        if (is_alt && this.paths[0] !== undefined) {
+            const entries = glob(`${this.paths[0].logs_path}${separator}*.log`);
             if (entries instanceof FileError) {
                 console.error(entries);
                 return hits;
@@ -62,7 +62,7 @@ export class RustDesk {
                 if (!entry.is_file) {
                     continue;
                 }
-                const values = readLogs(entry.full_path, this.paths[ 0 ]);
+                const values = readLogs(entry.full_path, this.paths[0]);
                 if (values instanceof ApplicationError) {
                     console.error(values);
                     return hits;
@@ -98,27 +98,48 @@ export class RustDesk {
 
     /**
      * Grab basic profile information for installed RustDesk application
-     * @param platform `PlatformType` enum value
      * @returns Array of `RustDeskUsers` or `ApplicationError`
      */
-    private profiles(platform: PlatformType): RustDeskUsers[] | ApplicationError {
+    private profiles(): RustDeskUsers[] | ApplicationError {
         let paths;
-        switch (platform) {
+        switch (this.platform) {
             case PlatformType.Linux: {
-                const linux_paths = glob("/home/*/.config/rustdesk");
-                if (linux_paths instanceof FileError) {
+                const platform_paths = glob("/home/*/.config/rustdesk");
+                if (platform_paths instanceof FileError) {
                     return new ApplicationError(
                         "RUSTDESK",
-                        `failed to glob linux config paths: ${linux_paths}`,
+                        `failed to glob linux config paths: ${platform_paths}`,
                     );
                 }
-                paths = linux_paths;
+                paths = platform_paths;
+                break;
+            }
+            case PlatformType.Windows: {
+                const platform_paths = glob("C:\\Users\\*\\AppData\\Roaming\\RustDesk");
+                if (platform_paths instanceof FileError) {
+                    return new ApplicationError(
+                        "RUSTDESK",
+                        `failed to glob windows config paths: ${platform_paths}`,
+                    );
+                }
+                paths = platform_paths;
+                break;
+            }
+            case PlatformType.Darwin: {
+                const platform_paths = glob("/Users/*/Library/Preferences/RustDesk");
+                if (platform_paths instanceof FileError) {
+                    return new ApplicationError(
+                        "RUSTDESK",
+                        `failed to glob macOS config paths: ${platform_paths}`,
+                    );
+                }
+                paths = platform_paths;
                 break;
             }
             default: {
                 return new ApplicationError(
                     "RUSTDESK",
-                    `platform not supported: ${platform}`,
+                    `platform not supported: ${this.platform}`,
                 );
             }
         }
@@ -141,6 +162,12 @@ export class RustDesk {
                 version: '',
                 remote_id,
             };
+
+            if (this.platform === PlatformType.Windows) {
+                profile.logs_path = `${entry.full_path}\\log`
+            } else if (this.platform === PlatformType.Darwin) {
+                profile.logs_path = entry.full_path.replace("Library/Preferences/RustDesk", "Library/logs/RustDesk")
+            }
 
             clients.push(profile);
         }

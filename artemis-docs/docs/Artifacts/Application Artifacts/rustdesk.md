@@ -9,7 +9,6 @@ keywords:
 
 RustDesk is a popular remote access tool to connect to remote systems.
 Artemis supports parsing log files related to RustDesk.  
-Right now only Linux is supported, however you may provide an optional path to a folder that contains all RustDesk artifacts
 
 Other parsers:
 
@@ -38,7 +37,7 @@ main();
 
 ## Output Structure
 
-Dependent on browser artifact user wants to parse.
+Array of RustDeskLogs
 
 ```typescript
 export interface RustDeskLogs {
