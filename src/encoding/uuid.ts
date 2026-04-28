@@ -1,7 +1,7 @@
 import { Endian } from "../nom/helpers";
 
 /**
- * Format bytes to a GUID value. Must specify Endianess
+ * Format bytes to a GUID value. Must specify Endianness
  * @param format `Endian` format to use when converting to GUID. BE common on macOS. LE common on Windows
  * @param data Raw bytes to convert to GUID
  * @returns GUID string
