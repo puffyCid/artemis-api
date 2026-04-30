@@ -39,3 +39,16 @@ All three let you script forensic collections and parsing
 2. A TypeScript to JavaScript bundler
    - [esbuild](https://esbuild.github.io/). Is a a popular one and is extremely
      fast
+
+
+### Is any Sandboxing done for BoaJS?
+
+No.
+
+Currently there is no sandbox for the JavaScript runtime. Similar to the VQL language for Velociraptor. The JavaScript runtime allows you to:
+
+- Read Registry files
+- Read files on disk
+- Execute remote commands
+- Parse forensic artifacts
+- Make network requests
