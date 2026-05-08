@@ -43,12 +43,12 @@ export function wifiNetworksWindows(alt_path?: string): Wifi[] | WindowsError {
             id: entry.name.replace("{", "").replace("}", ""),
             last_connected_local_time: "",
             registry_path: entry.path,
-            registry_file: path,
             message: "",
             datetime: entry.last_modified,
             timestamp_desc: "Registry Key Modified",
             artifact: "WiFi Network",
-            data_type: "windows:registry:wifi:entry"
+            data_type: "windows:registry:wifi:entry",
+            evidence: path,
         };
 
         for (const value of entry.values) {

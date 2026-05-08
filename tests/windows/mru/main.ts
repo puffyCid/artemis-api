@@ -16,7 +16,6 @@ function main() {
     if (!entry.is_file || entry.full_path.includes("Default") || !entry.filename.toLocaleLowerCase().endsWith("dat") || entry.full_path.includes("WsiAccount")) {
       continue;
     }
-    console.log(entry.full_path);
     const results = parseMru(entry.full_path);
     if (results instanceof WindowsError) {
       throw results;

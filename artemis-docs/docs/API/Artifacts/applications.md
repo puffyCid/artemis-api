@@ -140,6 +140,10 @@ Return Chromium local storage data for all users.
 
 Return Chromium sessions for all users.
 
+#### cache() -> ChromiumCache[]
+
+Return Chromium cache for all users.
+
 #### retrospect(output)
 
 A powerful function that will timeline all supported Chromium artifacts

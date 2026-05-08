@@ -46,7 +46,7 @@ export interface Registry {
   /**Offset to the Security Key info for the key */
   security_offset: number;
   /**Path to Registry file */
-  registry_path: string;
+  evidence: string;
   /**Registry file name */
   registry_file: string;
 }

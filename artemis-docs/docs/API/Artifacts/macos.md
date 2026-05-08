@@ -912,3 +912,11 @@ Parse a stats files and try to extract data.
 | Param          | Type    | Description                                       |
 | -------------- | ------- | ------------------------------------------------- |
 | alt_file       | string  | Optional path to an alternative stats file        |
+
+### recentFilesMacos(alt_file) -> RecentFiles[] | MacosError
+
+Parse a sharedfilelist (SFL) file and try to extract data. 
+
+| Param          | Type    | Description                                       |
+| -------------- | ------- | ------------------------------------------------- |
+| alt_file       | string  | Optional path to an alternative SFL file        |

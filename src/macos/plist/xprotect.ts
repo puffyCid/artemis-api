@@ -13,7 +13,7 @@ import { getPlist } from "../plist";
 export function getXprotectDefinitions(
   alt_path?: string,
 ): XprotectEntries[] | MacosError {
-  let paths: string[] = [];
+  let paths;
   if (alt_path !== undefined) {
     paths = [ alt_path ];
   } else {

@@ -40,7 +40,7 @@ export interface RecentFiles {
   /**Last accessed */
   accessed: string;
   /**Path to `gedit-metdata.xml` */
-  gedit_source: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "Last Accessed";

@@ -7,6 +7,8 @@ import { Endian, nomUnsignedEightBytes, nomUnsignedFourBytes, nomUnsignedOneByte
 import { take } from "../../nom/parsers";
 import { PlatformType } from "../../system/systeminfo";
 import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
+import { WindowsError } from "../../windows/errors";
+import { readRawFile } from "../../windows/ntfs";
 import { ApplicationError } from "../errors";
 
 /**
@@ -36,7 +38,7 @@ export function chromiumSessions(paths: ChromiumProfiles[], platform: PlatformTy
             if (entry.full_path.includes("Tabs_")) {
                 session_type = SessionType.Tab;
             }
-            const status = parseSession(entry.full_path, session_type, path);
+            const status = parseSession(entry.full_path, session_type, path, platform);
             if (status instanceof ApplicationError) {
                 console.warn(`Failed to parse session for ${entry.full_path}: ${status}`);
                 continue;
@@ -54,10 +56,22 @@ export function chromiumSessions(paths: ChromiumProfiles[], platform: PlatformTy
  * @param profile `ChromiumProfiles` object
  * @returns Array of `ChromiumSession` or `ApplicationError`
  */
-function parseSession(path: string, session_type: SessionType, profile: ChromiumProfiles): ChromiumSession[] | ApplicationError {
-    const bytes = readFile(path);
-    if (bytes instanceof FileError) {
-        return new ApplicationError(`CHROMIUM`, `Failed to read session file ${path}: ${bytes}`);
+function parseSession(path: string, session_type: SessionType, profile: ChromiumProfiles, platform: PlatformType): ChromiumSession[] | ApplicationError {
+    let bytes;
+
+    // On Windows if the browser is opened the Session files may be locked
+    // We will use raw disk access to open them
+    if (platform === PlatformType.Windows) {
+        bytes = readRawFile(path);
+        if (bytes instanceof WindowsError) {
+            return new ApplicationError(`CHROMIUM`, `Failed to read session file via raw disk ${path}: ${bytes}`);
+        }
+    } else {
+        bytes = readFile(path);
+        if (bytes instanceof FileError) {
+            return new ApplicationError(`CHROMIUM`, `Failed to read session file ${path}: ${bytes}`);
+
+        }
     }
 
     const header = getHeader(bytes);
@@ -109,7 +123,7 @@ function parseSession(path: string, session_type: SessionType, profile: Chromium
             url: "",
             title: "",
             session_type: SessionType.Session,
-            path,
+            evidence: path,
         };
         for (const entry of session_command_values[session_id]?.commands ?? []) {
             if (entry[SessionCommand.UpdateTabNavigation] === undefined) {
@@ -136,7 +150,7 @@ function parseSession(path: string, session_type: SessionType, profile: Chromium
             url: "",
             title: "",
             session_type: SessionType.Tab,
-            path,
+            evidence: path,
         };
         for (const entry of tab_command_values[session_id]?.commands ?? []) {
             if (entry[SessionTabCommand.UpdateTabNavigation] === undefined) {
@@ -1225,10 +1239,13 @@ export function testChromiumSessions(): void {
         throw `Got length ${sess.length} expected 115.......chromiumSessions ❌`;
     }
 
+    if (!sess[67]?.evidence.includes("Session_13406596695873160")) {
+        throw `Got evidence "${sess[67]?.evidence}" expected "Session_13406596695873160".......chromiumSessions ❌`;
+    }
+
     if (sess[12]?.message !== "Session: https://www.washingtonpost.com/politics/2025/11/02/nuclear-testing-trump-energy-secretary/ | Page Title: Trump energy secretary says no nuclear b") {
         throw `Got message "${sess[12]?.message}" expected "Session: https://www.washingtonpost.com/politics/2025/11/02/nuclear-testing-trump-energy-secretary/ | Page Title: Trump energy secretary says no nuclear b".......chromiumSessions ❌`;
     }
-
 
     if (sess[0]?.message != "Session: edge://newtab/ | Page Title: New T") {
         throw `Got message ${sess[0]?.message} expected "Session: edge://newtab/ | Page Title: New T".......chromiumSessions ❌`;
@@ -1237,7 +1254,7 @@ export function testChromiumSessions(): void {
     console.info(`  Function chromiumSessions ✅`);
 
     const sess_file = "../../test_data/edge/v141/Sessions/Session_13406596486318013";
-    const results = parseSession(sess_file, SessionType.Session, path);
+    const results = parseSession(sess_file, SessionType.Session, path, PlatformType.Darwin);
     if (results instanceof ApplicationError) {
         throw results.message;
     }

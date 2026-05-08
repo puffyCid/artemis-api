@@ -50,7 +50,7 @@ export interface EpiphanyHistory {
     hidden_from_overview: boolean;
     visit_type: VisitType;
     referring_visit: string | null;
-    db_path: string;
+    evidence: string;
     unfold?: Url;
 }
 
@@ -68,13 +68,13 @@ export interface EpiphanyCookies {
     is_secure: boolean | null;
     is_http_only: boolean | null;
     same_site: boolean | null;
-    db_path: string;
+    evidence: string;
 }
 
 export interface EpiphanyPermissions {
     url: string;
     permissions: Record<string, string>;
-    file_path: string;
+    evidence: string;
 }
 
 export enum VisitType {
@@ -96,6 +96,6 @@ export interface EpiphanyPrint {
     printer: string;
     pages: string | number;
     collate: boolean;
-    file_path: string;
+    evidence: string;
 }
 ```

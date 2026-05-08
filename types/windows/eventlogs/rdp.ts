@@ -20,6 +20,7 @@ export interface RdpActivity {
     timestamp_desc: "RDP Logon" | "RDP Reconnect" | "RDP Logoff" | "RDP Disconnect";
     artifact: "RDP EventLog";
     data_type: "windows:eventlogs:rdp:entry";
+    evidence: string;
 }
 
 export interface Raw21Logons {

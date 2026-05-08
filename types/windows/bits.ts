@@ -76,4 +76,6 @@ export interface BitsInfo {
   drive: string;
   /**Temporary file path for the file download */
   tmp_fullpath: string;
+  /**Path to the BITS database */
+  evidence: string;
 }

@@ -15,7 +15,7 @@ export interface TraceEntry {
     timestamp_desc: "Trace Entry";
     artifact: "AnyDesk Trace Log";
     data_type: "applications:anydesk:trace:entry";
-    path: string;
+    evidence: string;
     level: string;
     entry_timestamp: string;
     component: string;
@@ -39,4 +39,5 @@ export interface Config {
     account: string;
     version: string;
     id: string;
+    evidence: string;
 }

@@ -1,6 +1,5 @@
 import { glob, readLines } from "../../mod";
 import { SyncthingClient, SyncthingLogs } from "../../types/applications/syncthing";
-import { GlobInfo } from "../../types/filesystem/globs";
 import { FileError } from "../filesystem/errors";
 import { PlatformType } from "../system/systeminfo";
 import { ApplicationError } from "./errors";
@@ -58,14 +57,14 @@ export class Syncthing {
                     const value = line.split(" ");
                     const message = value.slice(4).join(" ");
                     const log: SyncthingLogs = {
-                        full_path: entry.full_path,
                         tag: (value[0] ?? "").replace("[", "").replace("]", ""),
                         datetime: `${(value[1] ?? "1970-01-01").replaceAll("/", "-")}T${value[2] ?? "00:00:00"}.000Z`,
                         timestamp_desc: "Syncthing Log Entry",
                         level: value[3] ?? "UNKNOWN",
                         message,
                         artifact: "Syncthing Log",
-                        data_type: "application:syncthing:log:entry"
+                        data_type: "application:syncthing:log:entry",
+                        evidence: path,
                     };
                     logs.push(log);
                 }
@@ -79,7 +78,7 @@ export class Syncthing {
     * @returns Array of `SyncthingClient` or `ApplicationError`
     */
     private profiles(): SyncthingClient[] | ApplicationError {
-        let paths: GlobInfo[] = [];
+        let paths;
         switch (this.platform) {
             case PlatformType.Linux: {
                 const linux_paths = glob("/home/*/.local/state/syncthing");

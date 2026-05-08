@@ -19,7 +19,7 @@ export function safariCookies(paths: SafariProfile[], platform: PlatformType): C
   for (const path of paths) {
     let full_path = `${path.container_path}/Library/Cookies/Cookies.binarycookies`;
     if (platform === PlatformType.Windows) {
-      full_path = `${path.container_path}\\Library/Cookies\\Cookies.binarycookies`;
+      full_path = `${path.container_path}\\Library\\Cookies\\Cookies.binarycookies`;
     }
 
     const cookie = parseCookies(full_path);
@@ -78,7 +78,7 @@ export function parseCookies(path: string): Cookie[] | MacosError {
       continue;
     }
     remaining = page_bytes.remaining as Uint8Array;
-    const cookie = parsePage(page_bytes.nommed as Uint8Array, page_size);
+    const cookie = parsePage(page_bytes.nommed as Uint8Array, page_size, path);
     if (cookie instanceof NomError) {
       return new MacosError(
         `COOKIES`,
@@ -137,7 +137,7 @@ interface Page {
   remaining_bytes: Uint8Array;
 }
 
-function parsePage(data: Uint8Array, size: number): Cookie[] | NomError {
+function parsePage(data: Uint8Array, size: number, evidence: string): Cookie[] | NomError {
   const page_input = take(data, size);
   if (page_input instanceof NomError) {
     return page_input;
@@ -177,7 +177,7 @@ function parsePage(data: Uint8Array, size: number): Cookie[] | NomError {
       continue;
     }
 
-    const cookie = parseRecord(start.remaining as Uint8Array);
+    const cookie = parseRecord(start.remaining as Uint8Array, evidence);
     if (cookie instanceof NomError) {
       continue;
     }
@@ -187,7 +187,7 @@ function parsePage(data: Uint8Array, size: number): Cookie[] | NomError {
   return cookies;
 }
 
-function parseRecord(data: Uint8Array): Cookie | NomError {
+function parseRecord(data: Uint8Array, evidence: string): Cookie | NomError {
   let input = nomUnsignedFourBytes(data, Endian.Le);
   if (input instanceof NomError) {
     return input;
@@ -303,7 +303,8 @@ function parseRecord(data: Uint8Array): Cookie | NomError {
     datetime: expiration,
     timestamp_desc: "Cookie Expires",
     artifact: "Website Cookie",
-    data_type: "macos:safari:cookies:entry"
+    data_type: "macos:safari:cookies:entry",
+    evidence,
   };
 
   return record;

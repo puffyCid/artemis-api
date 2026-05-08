@@ -1,0 +1,20 @@
+[2025-11-23 19:44:48.453823 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/common.rs:118] Successfully set up parent death signal
+[2025-11-23 19:44:48.454650 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/encode.rs:193] GPU support detected - NV: false, AMF: false, Intel: false
+[2025-11-23 19:44:48.455401 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/encode.rs:310] Testing encoder: h264_vaapi
+[2025-11-23 19:44:48.457336 -05:00] ERROR [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg.rs:34] Failed to initialise VAAPI connection: -1 (unknown libva error).
+
+[2025-11-23 19:44:48.457607 -05:00] ERROR [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/lib.rs:17] [FFMPEG_RAM_ENC] av_hwdevice_ctx_create failed
+[2025-11-23 19:44:48.457633 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/encode.rs:386] Failed to create encoder h264_vaapi
+[2025-11-23 19:44:48.458332 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/decode.rs:169] Linux GPU support detected - NV: false
+[2025-11-23 19:44:48.458347 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/decode.rs:268] Testing decoder: h264 (hwdevice: AV_HWDEVICE_TYPE_VAAPI)
+[2025-11-23 19:44:48.459589 -05:00] ERROR [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg.rs:34] Failed to initialise VAAPI connection: -1 (unknown libva error).
+
+[2025-11-23 19:44:48.459784 -05:00] ERROR [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/lib.rs:17] [FFMPEG_RAM_DEC] av_hwdevice_ctx_create failed, ret = Input/output error
+[2025-11-23 19:44:48.459801 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/decode.rs:313] Failed to create decoder h264
+[2025-11-23 19:44:48.459807 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/decode.rs:268] Testing decoder: hevc (hwdevice: AV_HWDEVICE_TYPE_VAAPI)
+[2025-11-23 19:44:48.460862 -05:00] ERROR [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg.rs:34] Failed to initialise VAAPI connection: -1 (unknown libva error).
+
+[2025-11-23 19:44:48.461071 -05:00] ERROR [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/lib.rs:17] [FFMPEG_RAM_DEC] av_hwdevice_ctx_create failed, ret = Input/output error
+[2025-11-23 19:44:48.461090 -05:00] DEBUG [/root/.cargo/git/checkouts/hwcodec-74796a7f8f16bbb9/398e5a8/src/ffmpeg_ram/decode.rs:313] Failed to create decoder hevc
+[2025-11-23 19:44:48.461098 -05:00] DEBUG [libs/scrap/src/common/hwcodec.rs:713] HwCodecConfig { signature: 0, ram_encode: [], ram_decode: [CodecInfo { name: "h264", mc_name: None, format: H264, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }, CodecInfo { name: "hevc", mc_name: None, format: H265, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }] }
+[2025-11-23 19:44:48.461380 -05:00] INFO [src/ipc.rs:1377] send ok

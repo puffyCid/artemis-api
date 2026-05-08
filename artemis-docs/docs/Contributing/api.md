@@ -45,13 +45,14 @@ may include non-forensic related artifacts or features such as:
 
 ## Testing the API
 
-Writing tests for the TypeScript API is a bit more involved than writing tests for the Rust codebase. Creating tests for the API is a 5 step process:
+Writing tests for the TypeScript API is a bit more involved than writing tests for the Rust codebase. You will also need the [artemis](https://github.com/puffyCid/artemis) source code.  
 
-0. Compile the test runner binary `script_runner` via `cargo build --release --examples` and place under the corresponding test folder
-1. Export a test function
-2. Register the test function in test.ts under tests/test.ts
-3. Write your test and place it under the test/ folder
-4. Run tests with compile_tests.ps1 or compile_tests.py
+1. Clone the artemis repo
+2. Compile the API test runner binary `script_runner` via `cargo build --release --examples` and place `script_runner` under the corresponding API test folder
+3. Export a test function
+4. Register the test function in test.ts under tests/test.ts
+5. Write your test and place it under the test/ folder
+6. Run tests with compile_tests.ps1 or compile_tests.py
 
 You may place test data under test/test_data.
 
@@ -76,3 +77,6 @@ function main() {
 
 main();
 ```
+
+
+All PR's against the [artemis-api](https://github.com/puffyCid/artemis-api) repo run tests.

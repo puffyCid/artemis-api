@@ -10,7 +10,6 @@ export interface Scriptblock {
     data_type: "windows:eventlogs:powershell:scriptblock:entry";
     artifact: "Windows PowerShell Scriptblock";
     id: string;
-    source_file: string;
     path: string;
     script_length: number;
     has_signature_block: boolean;
@@ -24,6 +23,7 @@ export interface Scriptblock {
     threat_id: number;
     system_time: string;
     created_time: string;
+    evidence: string;
 }
 
 export interface RawBlock {

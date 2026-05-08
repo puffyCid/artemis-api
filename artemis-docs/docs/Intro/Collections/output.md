@@ -437,7 +437,7 @@ All artifacts parsed by artemis will be formatted similar to the output above.
   - `complete_time` The time artemis completed parsing the data
   - `start_time` The time artemis started parsing the data
   - `hostname` The hostname of the endpoint
-  - `os_version` Thes OS version of the endpoint
+  - `os_version` The OS version of the endpoint
   - `platform` The platform of the endpoint. Ex: Windows or macOS
   - `kernel_version` The kernel version of the endpoint
   - `load_performance` The endpoint performance for one, five, and fifteen
@@ -500,15 +500,15 @@ The summary report is always outputted in JSON
 An example is below:
 ```json
 {
-  "boot_time": "2026-01-14T11:15:58.000Z",
+  "boot_time": "2026-04-17T11:14:41.000Z",
   "hostname": "win",
   "os_version": "11 (26200)",
-  "uptime": 1496419,
+  "uptime": 923558,
   "kernel_version": "26200",
   "platform": "Windows",
   "cpu": [
     {
-      "frequency": 998,
+      "frequency": 806,
       "cpu_usage": 100.0,
       "name": "CPU 1",
       "vendor_id": "ARM x64",
@@ -522,24 +522,24 @@ An example is below:
       "file_system": "NTFS",
       "mount_point": "C:\\",
       "total_space": 1021771247616,
-      "available_space": 863308914688,
+      "available_space": 839567216640,
       "removable": false,
       "name": "Local Disk"
     }
   ],
   "memory": {
-    "available_memory": 5520465920,
-    "free_memory": 5520465920,
-    "free_swap": 12348030976,
+    "available_memory": 6326059008,
+    "free_memory": 6326059008,
+    "free_swap": 12884901888,
     "total_memory": 16761454592,
-    "total_swap": 12348030976,
-    "used_memory": 11240988672,
+    "total_swap": 12884901888,
+    "used_memory": 10435395584,
     "used_swap": 0
   },
   "interfaces": [
     {
-      "ip": "192.168.1.132",
-      "mac": "00:00:00:00",
+      "ip": "2600:4040:475f:db00:4de5:23d7:ec57:cbd6",
+      "mac": "11:a7:2f:22:ss:44",
       "name": "Wi-Fi"
     }
   ],
@@ -548,31 +548,41 @@ An example is below:
     "avg_five_min": 0.0,
     "avg_fifteen_min": 0.0
   },
-  "version": "0.18.0",
-  "rust_version": "1.91.1",
-  "build_date": "2026-01-26",
+  "artemis_version": "0.19.0",
+  "artemis_commit": "af6df149736e8e9430276a211192fca51ebb4b93",
+  "artemis_args": "C:\\Users\\dev\\Projects\\artemis\\target\\release\\artemis.exe acquire --timeline amcache",
+  "artemis_features": "yarax",
+  "artemis_target": "aarch64-pc-windows-msvc",
+  "artemis_profile": "release",
+  "rust_version": "1.95.0",
+  "build_date": "2026-04-27",
   "product_name": "Microsoft Surface Laptop, 7th Edition",
   "product_family": "Surface",
-  "product_serial": "ssssss",
-  "product_uuid": "aaaaaa-e32e-dedc-2061-aaaaa",
-  "product_version": "aaaaaaaa",
+  "product_serial": "1234567",
+  "product_uuid": "dddddddd-cccc-aaaa-1111-1111111111",
+  "product_version": "124I:00108T:000M:0000000F:0B:11C:12M:02D:14U:02T:2R:21S:1A:0",
   "vendor": "Microsoft Corporation",
-  "collection_id": 1,
-  "endpoint_id": "6c51b123-1522-4572-9f2a-0bd5abd81b82",
-  "start_time": "2026-01-31T18:56:15.000Z",
-  "end_time": "2026-01-31T18:56:18.000Z",
+  "collection_id": 0,
+  "endpoint_id": "local",
+  "start_time": "2026-04-28T03:47:17.000Z",
+  "end_time": "2026-04-28T03:47:19.000Z",
   "total_output_files": 1,
   "artifacts": [
     "amcache"
   ],
+  "log_file": "./tmp/local_collector/c1e179e9-f757-4c2d-bd9d-00138ff68e37.log",
+  "output_format": "jsonl",
+  "output": "local",
   "artifact_runs": [
     {
       "name": "amcache",
-      "hash": "0f6f77ca2ccdcf1643074d8c3b0e1f41",
-      "last_run": "2026-01-31T18:56:18.000Z",
-      "unixepoch": 1769885778,
+      "artifact_options_hash": "2f622787d4c93f377a9ada8ad3945471",
+      "last_run": "2026-04-28T03:47:19.000Z",
+      "unixepoch": 1777348039,
       "output_count": 1,
-      "log_file": "./tmp/amcache_collection/c8c8a9b6-8a1a-4fdf-bd64-ee8bafbec84a.log",
+      "output_files": [
+        "./tmp/local_collector/amcache_4b095246-ad69-48f8-a64e-93555dfb08de.jsonl"
+      ],
       "status": "completed"
     }
   ]

@@ -41,6 +41,7 @@ export function systemExtensions(
         categories: ext[ "categories" ] as string[],
         bundle_path: bundle[ "bundlePath" ] ?? "",
         team: ext[ "teamID" ] as string,
+        evidence: path,
       };
       exts.push(sys_ext);
     }

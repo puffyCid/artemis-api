@@ -15,7 +15,7 @@ export interface UpdateHistory {
 
 export interface UpdateHistoryV2 {
   provider_id: string;
-  update_id:string;
+  update_id: string;
   time: string | null;
   title: string | null;
   description: string | null;

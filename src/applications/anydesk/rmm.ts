@@ -1,6 +1,5 @@
 import { glob, PlatformType, readTextFile } from "../../../mod";
 import { AnyDeskUsers, Config, TraceEntry } from "../../../types/applications/anydesk";
-import { GlobInfo } from "../../../types/filesystem/globs";
 import { FileError } from "../../filesystem/errors";
 import { ApplicationError } from "../errors";
 import { readConfig } from "./conf";
@@ -200,7 +199,7 @@ export class AnyDesk {
     * @returns Array of `AnyDeskUsers` or `ApplicationError`
     */
     private profiles(platform: PlatformType): AnyDeskUsers[] | ApplicationError {
-        let paths: GlobInfo[] = [];
+        let paths;
         switch (platform) {
             case PlatformType.Linux: {
                 const linux_paths = glob("/home/*/.anydesk");

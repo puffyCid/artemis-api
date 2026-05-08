@@ -191,7 +191,7 @@ export function getCasks(glob_path?: string): HomebrewFormula[] {
 }
 
 /**
- * Function to parse the Ruby formula associated with Hoembrew package
+ * Function to parse the Ruby formula associated with Homebrew package
  * @param path Path to the Ruby file to parse
  * @returns `HomebrewFormula` or FileError
  */
@@ -202,12 +202,12 @@ function parseRuby(path: string): HomebrewFormula | FileError {
   const reg_url = /(?<=url ).*$/m;
   const reg_name = /(?<=name ).*$/m;
 
-  const versionvalue = path.split("/");
-  let version = "";
+  const version_value = path.split("/");
+  let version;
   if (path.includes("/Casks/")) {
-    version = versionvalue[ versionvalue.length - 4 ] ?? "";
+    version = version_value[ version_value.length - 4 ] ?? "";
   } else {
-    version = versionvalue[ versionvalue.length - 3 ] ?? "";
+    version = version_value[ version_value.length - 3 ] ?? "";
   }
 
   const rubyText = readTextFile(path);

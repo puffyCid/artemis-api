@@ -115,7 +115,7 @@ export function recentFiles(
         password: "",
         readonly: false,
         thumbnail: "",
-        source: path.full_path,
+        evidence: path.full_path,
         message: path_data[ "oor:name" ],
         timestamp_desc: "N/A",
         artifact: "LibreOffice Recent Files",

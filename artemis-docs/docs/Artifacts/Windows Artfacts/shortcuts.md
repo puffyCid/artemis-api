@@ -38,12 +38,12 @@ timeline = false
 [[artifacts]]
 artifact_name = "shortcuts"
 [artifacts.shortcuts]
-path = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
+dir = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\*"
 ```
 
 ## Collection Options
 
-- `path` Target path where artemis should parse Shortcut files. This
+- `dir` Glob to Shortcut files. This
   configuration is **required**
 
 ## Output Structure
@@ -53,7 +53,7 @@ A `Shortcut` object structure
 ```typescript
 export interface Shortcut {
   /**Path to `shortcut (lnk)` file */
-  source_path: string;
+  evidence: string;
   /**Flags that specify what data structures are in the `lnk` file */
   data_flags: string[];
   /**File attributes of target file */

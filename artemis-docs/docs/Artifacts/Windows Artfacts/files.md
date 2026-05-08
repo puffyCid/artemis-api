@@ -18,7 +18,7 @@ The standard Rust API does not support getting `Changed/Entry Modified`
 timestamp on Windows. Use [RawFiles](./rawfiles.md) to include the
 `Changed/Entry Modified` timestamp.
 
-Since a filelisting can be extremely large, every 100k entries artemis will
+Since a filelisting can be extremely large, every 10k entries artemis will
 output the data and then continue.
 
 Other Parsers:
@@ -60,6 +60,8 @@ sha256 = false # SHA256 all files
 path_regex = "" # Regex for paths
 # Optional
 file_regex = "" # Regex for files
+# Optional
+yara = "" # Base64 encoded Yara rule or a remote Yara rule
 ```
 
 ## Collection Options
@@ -81,6 +83,7 @@ file_regex = "" # Regex for files
   regex. This configuration is **optional**. Default is no Regex
 - `file_regex` Only return entres that match the provided regex. This
   configuration is **optional**. Default is no Regex
+- `yara` Either a base64 encoded Yara rule or a Yara rule hosted on a remote server
 
 ## Output Structure
 

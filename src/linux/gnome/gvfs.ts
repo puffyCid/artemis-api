@@ -426,7 +426,7 @@ function getChildren(
   parents: string[],
   base_time: number,
   keywords: string[],
-  source: string,
+  evidence: string,
 ): GvfsEntry[] | NomError {
   const child_data = take(data, offset);
   if (child_data instanceof NomError) {
@@ -511,7 +511,7 @@ function getChildren(
       metadata,
       last_change: unixEpochToISO(last_change.value + base_time),
       path: `${parents.join("/")}/${name}`.replace("//", "/"),
-      source,
+      evidence,
       message: `${parents.join("/")}/${name}`.replace("//", "/"),
       datetime: unixEpochToISO(last_change.value + base_time),
       timestamp_desc: "Last Changed",
@@ -527,7 +527,7 @@ function getChildren(
       parents,
       base_time,
       keywords,
-      source,
+      evidence,
     );
     if (nested_child instanceof NomError) {
       return children;

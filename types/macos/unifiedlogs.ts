@@ -49,4 +49,6 @@ export interface UnifiedLog {
    * Merge of `raw_message` and `message_entries`
    */
   message: string;
+  /**Path to the UnifiedLog file */
+  evidence: string;
 }

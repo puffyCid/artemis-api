@@ -10,5 +10,5 @@ export interface Applications {
   copyright: string;
   /**Base64 encoded PNG file */
   icon: string;
-  info: string;
+  evidence: string;
 }

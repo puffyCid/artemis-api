@@ -59,6 +59,7 @@ export { parseCookies } from "./src/macos/safari/cookies";
 export { Safari } from "./src/macos/safari/safari";
 export { authorizations } from "./src/macos/sqlite/authd";
 export { parseSystemStats } from "./src/macos/systemstats";
+export { recentFilesMacos } from "./src/macos/plist/sharefilelist";
 
 /**
  * Unix exported functions
@@ -67,6 +68,7 @@ export { getCron } from "./src/unix/cron";
 export {
   getBashHistory,
   getZshHistory,
+  getAshHistory,
 } from "./src/unix/shell_history";
 export { listKnownHosts } from "./src/unix/ssh";
 
@@ -101,6 +103,9 @@ export { OneDrive } from "./src/applications/onedrive/onedrive";
 export { Comet } from "./src/applications/comet";
 export { Brave } from "./src/applications/brave";
 export { Syncthing } from "./src/applications/syncthing";
+export { officeMruFiles } from "./src/applications/office";
+export { RustDesk } from "./src/applications/rustdesk/rmm";
+
 
 /**
  * Windows exported functions
@@ -157,11 +162,24 @@ export { rdpLogons } from "./src/windows/eventlogs/rdp";
 export { backgroundActivitiesManager } from "./src/windows/registry/bam";
 export { parsePca } from "./src/windows/pca";
 export { defenderQuarantineEventLog } from "./src/windows/eventlogs/defender";
+export { msiInstalled } from "./src/windows/eventlogs/msi";
+export { bitsEvents } from "./src/windows/eventlogs/bits";
+export { veloCommands } from "./src/windows/eventlogs/velociraptor";
+export { crashEvents } from "./src/windows/eventlogs/crash";
+export { extractAppCrash } from "./src/windows/appcrash";
 
 /**
  * FreeBSD
  */
 export { getPkgs } from "./src/freebsd/packages";
+
+/**
+ * ESXi
+ */
+export { shellLogHistory } from "./src/esxi/logs/shell";
+export { getVibs } from "./src/esxi/vib";
+export { sysLogEsxi } from "./src/esxi/logs/syslog";
+export { esxiAccounts } from "./src/esxi/accounts";
 
 /**
  * Timelining

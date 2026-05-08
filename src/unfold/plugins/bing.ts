@@ -157,7 +157,7 @@ export class Bing {
         }
         case "psq": {
           // Seems to contain a shorter search query term
-          // Compilot refers to this as a "compact query"
+          // Copilot refers to this as a "compact query"
           this.url['compact_search_query'] = value;
           break;
         }
@@ -179,8 +179,8 @@ export class Bing {
           break;
         }
         case "fclid": {
-          // Probably somekind of click identifier?
-          // gclid - Google Click idnetifier
+          // Probably some kind of click identifier?
+          // gclid - Google Click identifier
           // fbclid - Facebook Click identifier
           this.url[key] = value;
           break;

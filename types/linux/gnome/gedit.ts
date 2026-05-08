@@ -6,8 +6,8 @@ export interface RecentFiles {
   path: string;
   /**Last accessed */
   accessed: string;
-  /**Path to `gedit-metdata.xml` */
-  gedit_source: string;
+  /**Path to `gedit-metadata.xml` */
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "Last Accessed";

@@ -18,7 +18,7 @@ export function getRunKeys(alt_path?: string): RegistryRunKey[] {
     if (drive === "") {
         drive = "C:";
     }
-    let paths = [`${drive}\\Users\\*\\NTUSER.DAT`, `${drive}\\Users\\*\\NTUSER.dat`, `${drive}\\Users\\*\\ntuser.dat`, `${drive}\\Windows\\System32\\config\\SOFTWARE`];
+    let paths = [`${drive}\\Users\\*\\NTUSER.*`, `${drive}\\Windows\\System32\\config\\SOFTWARE`];
     if (alt_path !== undefined) {
         paths = [alt_path];
     }
@@ -41,6 +41,9 @@ export function getRunKeys(alt_path?: string): RegistryRunKey[] {
     let run_values: RegistryRunKey[] = [];
     // Now parse each Registry file
     for (const entry of glob_paths) {
+        if (entry.toLowerCase().includes("ntuser") && !entry.toLowerCase().endsWith(".dat")) {
+            continue;
+        }
         const results = getRegistry(entry, ".*CurrentVersion\\\\Run.*");
         if (results instanceof WindowsError) {
             continue;
@@ -66,7 +69,7 @@ function parseKeys(value: Registry): RegistryRunKey[] {
         const run_value: RegistryRunKey = {
             key_modified: value.last_modified,
             key_path: value.path,
-            registry_path: value.registry_path,
+            evidence: value.evidence,
             registry_file: value.registry_file,
             path: "",
             created: "",
@@ -76,7 +79,7 @@ function parseKeys(value: Registry): RegistryRunKey[] {
             name: entry.value,
             sha1: "",
             sha256: "",
-            message: `Run key: ${value.name}`,
+            message: `Run key: '${entry.value}'`,
             datetime: value.last_modified,
             timestamp_desc: "Registry Last Modified",
             artifact: "Windows Registry Run Key",
@@ -90,7 +93,7 @@ function parseKeys(value: Registry): RegistryRunKey[] {
             for (const entry_match of entry.data.match(env) ?? []) {
                 const real_value = getEnvValue(entry_match.replaceAll("%", ""));
                 let path = entry.data.replace(entry_match, real_value);
-                if(path.includes("/")) {
+                if (path.includes("/")) {
                     path = path.split("/").at(0)?.trimEnd() ?? path;
                 }
                 const created = getCreation(path);
@@ -127,7 +130,7 @@ function parseKeys(value: Registry): RegistryRunKey[] {
                 break;
             }
         } else if (entry.data.includes("/")) {
-            // Files with clie args with forward slashes
+            // Files with cli args with forward slashes
             const file = entry.data.split("/").at(0);
             if (file === undefined) {
                 values.push(run_value);
@@ -214,6 +217,10 @@ export function testGetRunKeys(): void {
 
     if (results[1]?.value !== "%ProgramFiles%\\Windows Mail\\wab.exe /Upgrade") {
         throw `Got ${results[1]?.value} expected "%ProgramFiles%\\\\Windows Mail\\\\wab.exe /Upgrade".......getRunKeys ❌`
+    }
+
+    if (results[1]?.message !== "Run key: 'WAB Migrate'") {
+        throw `Got ${results[1]?.message} expected "Run key: 'WAB Migrate'".......getRunKeys ❌`
     }
 
     console.info(`  Function getRunKeys ✅`);

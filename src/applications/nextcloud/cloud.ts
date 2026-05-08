@@ -1,5 +1,4 @@
 import { NextcloudClientActivityLog, NextcloudClientConfig, NextcloudClientSyncLog, NextcloudClientUsers } from "../../../types/applications/nextcloud";
-import { GlobInfo } from "../../../types/filesystem/globs";
 import { decompress_gzip } from "../../compression/decompress";
 import { CompressionError } from "../../compression/errors";
 import { extractUtf8String } from "../../encoding/strings";
@@ -49,7 +48,7 @@ export class NextcloudClient {
     * @returns Array of `NextcloudClientUsers` or `ApplicationError`
     */
     private profiles(): NextcloudClientUsers[] | ApplicationError {
-        let paths: GlobInfo[] = [];
+        let paths;
         switch (this.platform) {
             case PlatformType.Linux: {
                 const linux_paths = glob("/home/*/.config/Nextcloud");

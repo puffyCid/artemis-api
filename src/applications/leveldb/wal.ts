@@ -172,7 +172,6 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
         }
 
         let log_type = LogType.Unknown;
-        let key = new Uint8Array([]);
         let value: null | Uint8Array = null;
 
         // Key size is varint value
@@ -185,7 +184,7 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
         if (key_data instanceof NomError) {
             return new ApplicationError(`LEVELDB`, `could not get wal key data: ${key_data}`);
         }
-        key = key_data.nommed as Uint8Array<ArrayBuffer>;
+        const key = key_data.nommed as Uint8Array<ArrayBuffer>;
         remaining = key_data.remaining as Uint8Array;
 
         if (value_type.value === 1) {
@@ -209,7 +208,6 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
             remaining = value_data.remaining as Uint8Array;
         } else if (value_type.value === 0) {
             // It seems only keys can be recovered from deleted entries
-            log_type = LogType.Deletion;
             const key_string = parseKey(key);
 
             const entry: LevelDbEntry = {
@@ -220,7 +218,7 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
                 shared_key: "",
                 origin: key_string.split(" ").at(0) ?? key_string,
                 key: key_string.split(" ").at(1) ?? key_string,
-                path,
+                evidence: path,
                 state: LogType.Deletion
             };
             values.push(entry);
@@ -242,7 +240,7 @@ function parseWalValues(data: Uint8Array, path: string): LevelDbEntry[] | Applic
             shared_key: "",
             origin: key_string.split(" ").at(0) ?? key_string,
             key: key_string.split(" ").at(1) ?? key_string,
-            path,
+            evidence: path,
             state: LogType.Value
         };
 
@@ -538,7 +536,6 @@ export function parseValue(data: Uint8Array, value_type: ValueType): string | nu
         return encode(data);
     }
     console.warn(`unknown value type: ${value_type}`);
-    //console.log(JSON.stringify(Array.from(data)));
     return "Unknown value";
 }
 

@@ -43,6 +43,11 @@ export type ErrorName =
   | "ADCERTIFICATES"
   | "RDPLOGONS"
   | "PCA"
-  | "EVENTLOG_DEFENDER_QUARANTINE";
+  | "EVENTLOG_DEFENDER_QUARANTINE"
+  | "EVENTLOG_MSI_INSTALLED"
+  | "EVENTLOG_BITS"
+  | "EVENTLOG_VELOCIRAPTOR"
+  | "EVENTLOG_CRASH"
+  | "APPCRASH";
 
 export class WindowsError extends ErrorBase<ErrorName> { }

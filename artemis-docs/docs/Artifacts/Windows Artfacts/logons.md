@@ -46,13 +46,19 @@ export interface LogonsWindows {
   logon_process: string;
   authentication_package: string;
   source_ip: string;
+  activity_id: string;
+  computer: string;
+  channel: string;
+  provider: string;
+  provider_guid: string;
   source_workstation: string;
   eventlog_generated: string;
   message: string;
   datetime: string;
-  timestamp_desc: "Account Logon" | "Account Logoff";
-  artifact: "Logon EventLog" | "Logoff EventLog";
-  data_type: "windows:eventlogs:logon:entry" | "windows:eventlogs:logoff:entry";
+  timestamp_desc: "Account Logon" | "Account Logoff" | "Account Failed Logon";
+  artifact: "Logon EventLog" | "Logoff EventLog" | "Failed Logon EventLog";
+  data_type: "windows:eventlogs:logon:entry" | "windows:eventlogs:logoff:entry" | "windows:eventlogs:logon:failed:entry";
+  evidence: string;
 }
 
 export enum LogonType {

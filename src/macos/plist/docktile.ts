@@ -24,13 +24,13 @@ function checkDockPersistence(apps: Applications[]): Applications[] {
   const dockTileApps: Applications[] = [];
   for (const app of apps) {
     // Only want to check Info.plist in PlugIns path
-    if (!app.info.toLowerCase().includes("plugins")) {
+    if (!app.evidence.toLowerCase().includes("plugins")) {
       continue;
     }
 
-    const data = getPlist(app.info);
+    const data = getPlist(app.evidence);
     if (data instanceof MacosError || data instanceof Uint8Array) {
-      console.error(`Failed to parse plist ${app.info}: ${data}`);
+      console.error(`Failed to parse plist ${app.evidence}: ${data}`);
       continue;
     }
 

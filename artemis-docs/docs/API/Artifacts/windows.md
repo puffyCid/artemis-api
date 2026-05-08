@@ -695,7 +695,7 @@ Parse Windows Program Compatibility Assistant (PCA) files. You may provide an op
 | alt_dir    | string  | Optional glob to folder containing PCA files |
 
 
-### defenderQuarantineEventLog(path, limit) -> EventLogDefenderQuarantine[]
+### defenderQuarantineEventLog(path, limit) -> EventLogDefenderQuarantine[] | WindowsError
 
 Parse Windows Defender Quarantine events. You may provide an optional path to a Microsoft-Windows-Windows Defender%4Operational.evtx file. By default artemis will check the system drive volume for the Microsoft-Windows-Windows Defender%4Operational.evtx.
 
@@ -705,3 +705,49 @@ Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-Wi
 | ------- | ------- | -------------------------------------------------------------------------- |
 | path    | string  | Optional path to Microsoft-Windows-Windows Defender%4Operational.evtx file |
 | limit   | number  | Optional limit to set when streaming the EventLogs                         |
+
+### msiInstalled(path, limit) -> MsiInstalled[]
+
+Parse Windows MSI Installer events. You may provide an optional path to a Application.evtx file. By default artemis will check the system drive volume for the Application.evtx.
+
+Typically this will be C:\\Windows\\System32\\winevt\\Logs\\Application.evtx
+
+| Param   | Type    | Description                                        |
+| ------- | ------- | -------------------------------------------------- |
+| path    | string  | Optional path to Application.evtx file             |
+| limit   | number  | Optional limit to set when streaming the EventLogs |
+
+### bitsEvents(alt_file, limit) -> BitsEvent[] | WindowsError
+
+Parse a Windows BITS EventLog file and try to extract data. 
+
+| Param          | Type    | Description                                                        |
+| -------------- | ------- | ------------------------------------------------------------------ |
+| alt_file       | string  | Optional path to an Windows BITS EventLog file                     |
+| limit          | number  | Optional EventLog limit to use when iterating through the EventLog |
+
+### veloCommands(alt_file, limit) -> BitsEvent[] | WindowsError
+
+Extract Velociraptor commands from the Windows Application.evtx EventLog file. 
+
+| Param          | Type    | Description                                                                    |
+| -------------- | ------- | ------------------------------------------------------------------------------ |
+| alt_file       | string  | Optional path to an Windows Application.evtx EventLog file                     |
+| limit          | number  | Optional EventLog limit to use when iterating through the EventLog             |
+
+### crashEvents(alt_file, limit) -> CrashEvent[] | WindowsError
+
+Parse a Windows Crash EventLog file and try to extract data. 
+
+| Param          | Type    | Description                                                        |
+| -------------- | ------- | ------------------------------------------------------------------ |
+| alt_file       | string  | Optional path to an Windows EventLog file                          |
+| limit          | number  | Optional EventLog limit to use when iterating through the EventLog |
+
+### extractAppCrashes(alt_path) -> AppCrash[] | WindowsError
+
+Parse a Windows Application Crash Report.wer files and try to extract data. 
+
+| Param          | Type    | Description                                                                     |
+| -------------- | ------- | ------------------------------------------------------------------------------- |
+| alt_path       | string  | Optional glob to directory containing Report.wer files                          |

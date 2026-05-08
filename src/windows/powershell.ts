@@ -68,8 +68,7 @@ function parsePowershellHistory(path: string, platform: PlatformType): History[]
     );
   }
 
-  let entries: string[] = [];
-
+  let entries;
   if (platform === PlatformType.Windows) {
     entries = data.split("\r\n");
     if (entries.length === 0) {
@@ -83,7 +82,6 @@ function parsePowershellHistory(path: string, platform: PlatformType): History[]
   for (const line of entries) {
     const ps_history: History = {
       line,
-      path,
       created: "1970-01-01T00:00:00.000Z",
       modified: "1970-01-01T00:00:00.000Z",
       accessed: "1970-01-01T00:00:00.000Z",
@@ -92,7 +90,8 @@ function parsePowershellHistory(path: string, platform: PlatformType): History[]
       datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "PowerShell History Modified",
       artifact: "PowerShell History",
-      data_type: "application:powershell:entry"
+      data_type: "application:powershell:entry",
+      evidence: path,
     };
 
     if (!(meta instanceof FileError)) {

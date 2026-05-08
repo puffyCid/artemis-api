@@ -41,7 +41,7 @@ An array of `Extension` entries.
  */
 export interface Extension {
   /**Path to extension metadata.json file */
-  extension_path: string;
+  evidence: string;
   /**Name of the extension */
   name: string;
   /**Extension description */

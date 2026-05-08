@@ -43,7 +43,11 @@ export interface OfficeRecentFilesWindows {
   path: string;
   last_opened: string;
   application: string;
-  registry_file: string;
   key_path: string;
+  timestamp_desc: "Last Opened";
+  artifact: "Office Recent File";
+  data_type: "application:office:recent:entry";
+  message: string;
+  evidence: string;
 }
 ```

@@ -10,10 +10,10 @@ export interface ProgramCompatibilityAssist {
     pca_type: PcaType;
     message: string;
     datetime: string;
-    source: string;
     timestamp_desc: "Last Run";
     artifact: "Windows Program Compatibility Assist";
     data_type: "windows:pca:entry";
+    evidence: string;
 }
 
 export enum PcaType {

@@ -48,13 +48,13 @@ artifact_name = "bits"
 [artifacts.bits]
 carve = true
 # Optional
-# alt_path = "D:\\ProgramData\\Microsoft\\Network\\Downloader\\qmgr.db"
+# alt_file = "D:\\ProgramData\\Microsoft\\Network\\Downloader\\qmgr.db"
 ```
 
 ## Collection Options
 
 - `carve` Boolean value to carve deleted BITS jobs and files from qmgr.db
-- `alt_path` Use an alternative path to the qmgr.db file. This configuration
+- `alt_file` Use an alternative path to the qmgr.db file. This configuration
   is **optional**. By default artemis will use
   **%systemdrive%\ProgramData\Microsoft\Network\Downloader\qmgr.db**
 
@@ -128,5 +128,7 @@ export interface BitsInfo {
   drive: string;
   /**Temporary file path for the file download */
   tmp_fullpath: string;
+  /**Path to the BITS database */
+  evidence: string;
 }
 ```

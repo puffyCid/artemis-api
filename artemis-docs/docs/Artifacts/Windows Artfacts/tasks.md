@@ -77,7 +77,7 @@ export interface TaskXml {
   /**Actions executed by the Task */
   actions: Actions;
   /**Path to the XML file */
-  path: string;
+  evidence: string;
 }
 
 /**
@@ -125,7 +125,7 @@ export interface TaskJob {
   /**Triggers that start the Task */
   triggers: JobTriggers[];
   /**Path to Job file */
-  path: string;
+  evidence: string;
 }
 
 /**

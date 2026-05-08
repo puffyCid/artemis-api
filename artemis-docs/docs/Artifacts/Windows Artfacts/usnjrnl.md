@@ -9,7 +9,7 @@ keywords:
 
 Windows UsnJrnl is a sparse binary file that tracks changes to files and
 directories. Located at the alternative data stream (ADS)
-**C:\$Extend\$UsnJrnl:$J**. Parsing this data can sometimes show files that have
+**C:\\$Extend\\$UsnJrnl:$J**. Parsing this data can sometimes show files that have
 been deleted. However, depending on the file activity on the system entries in
 the UsnJrnl may get overwritten quickly.
 
@@ -40,7 +40,8 @@ artifact_name = "usnjrnl"
 [artifacts.usnjrnl]
 # Optional
 # alt_drive = 'D'
-# alt_path = ""
+# alt_file = ""
+# alt_mft = ""
 ```
 
 ## Collection Options
@@ -48,7 +49,9 @@ artifact_name = "usnjrnl"
 - `alt_drive` Expects a single character value. Will use an alternative drive
   letter when parsing UsnJrnl. This configuration is **optional**. By default
   artemis will use the **%systemdrive%** value (typically **C**)
-- `alt_path` Full path to $J file. This configuration is **optional**.
+- `alt_file` Full path to alternative $J file. This configuration is **optional**.
+- `alt_mft` Full path to alternative MFT file. This configuration is **optional**.
+
 
 ## Output Structure
 
@@ -82,5 +85,7 @@ export interface UsnJrnl {
   extension: string;
   /**Full path for the UsnJrnl entry. Obtained by parsing `$MFT` and referencing the `parent_mft_entry` */
   full_path: string;
+  /**Path to the UsnJrnl file */
+  evidence: string;
 }
 ```

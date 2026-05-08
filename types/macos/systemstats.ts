@@ -1,6 +1,6 @@
 export interface SystemStats {
       /**Path stats file */
-      source_path: string;
+      evidence: string;
       /**Stats Filename */
       source_file: string
       /**Stats version */

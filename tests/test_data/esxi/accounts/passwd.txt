@@ -1,0 +1,4 @@
+root:x:0:0:Administrator:/:/bin/sh
+dcui:x:100:100:DCUI User:/:/bin/sh
+vpxuser:x:500:100:VMware VirtualCenter administration account:/:/bin/sh
+testUser:x:1000:1000:ESXi User:/:/bin/sh

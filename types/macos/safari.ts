@@ -50,6 +50,7 @@ export interface SafariHistory {
   timestamp_desc: "URL Visited";
   artifact: "URL History";
   data_type: "macos:safari:history:entry";
+  evidence: string;
 }
 
 /**
@@ -126,6 +127,7 @@ export interface SafariDownloads {
   timestamp_desc: "File Download Start";
   artifact: "File Download";
   data_type: "macos:safari:downloads:entry";
+  evidence: string;
 }
 
 export interface SafariProfile {
@@ -148,6 +150,7 @@ export interface Cookie {
   artifact: "Website Cookie";
   data_type: "macos:safari:cookies:entry";
   [key: string]: unknown;
+  evidence: string;
 }
 
 export enum CookieFlag {
@@ -170,6 +173,7 @@ export interface SafariBookmark {
   timestamp_desc: "Bookmark Created";
   artifact: "Website Bookmark";
   data_type: "macos:safari:bookmark:entry";
+  evidence: string;
 }
 
 export interface SafariFavicon {
@@ -186,6 +190,7 @@ export interface SafariFavicon {
   timestamp_desc: "Favicon Created";
   artifact: "URL Favicon";
   data_type: "macos:safari:favicons:entry";
+  evidence: string;
 }
 
 export interface SafariExtensions {
@@ -205,6 +210,7 @@ export interface SafariExtensions {
   timestamp_desc: "Extension Installed";
   artifact: "Browser Extension";
   data_type: "macos:safari:extension:entry";
+  evidence: string;
 }
 
 export interface SafariPlistBookmark {

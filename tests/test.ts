@@ -14,6 +14,9 @@ export { testChromiumPreferences } from "../src/applications/chromium/preference
 export { testChromiumLocalStorage } from "../src/applications/chromium/level";
 export { testChromiumSessions } from "../src/applications/chromium/sessions";
 export { testChromiumSqlite } from "../src/applications/chromium/sqlite";
+export { testFirefoxJsonFiles } from "../src/applications/firefox/json";
+export { testChromiumCache } from "../src/applications/chromium/cache";
+export { testRustDeskLogs } from "../src/applications/rustdesk/logs";
 
 /**
  * Linux exported test functions
@@ -39,15 +42,26 @@ export { testServiceInstalls } from "../src/windows/eventlogs/services";
 export { testRdpLogons } from "../src/windows/eventlogs/rdp";
 export { testParsePca } from "../src/windows/pca";
 export { testDefenderQuarantineEventLog } from "../src/windows/eventlogs/defender";
-
+export { testMsiInstalled } from "../src/windows/eventlogs/msi";
+export { testExtractAppCrash } from "../src/windows/appcrash";
+export { testUserAccessLogging } from "../src/windows/ese/ual";
 /**
  * macOS exported test functions
  */
 export { testHomebrew } from "../src/macos/homebrew";
 export { testParseBom } from "../src/macos/bom";
+export { testLuluRules } from "../src/macos/plist/lulu";
 
 /**
  * HTTP exported test functions
  */
 export { testCircluHashlookup } from "../src/http/circlu";
 export { testCheckEolStatus } from "../src/http/eol";
+
+/**
+ * ESXi exported test functions
+ */
+export { testShellLogHistory } from "../src/esxi/logs/shell";
+export { testGetVibs } from "../src/esxi/vib";
+export { testSyslogEsxi } from "../src/esxi/logs/syslog";
+export { testEsxiAccounts } from "../src/esxi/accounts";

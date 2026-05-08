@@ -4,7 +4,7 @@ import { WindowsError } from "./errors";
 /**
  * Function to parse `Shimcache` entries on the systemdrive
  * @param path Optional path t Registry file
- * @returns Array of `Shimcache` entries parsed from the sysystemdrive letter or `WindowsError`
+ * @returns Array of `Shimcache` entries parsed from the system drive letter or `WindowsError`
  */
 export function getShimcache(path?: string): Shimcache[] | WindowsError {
   try {

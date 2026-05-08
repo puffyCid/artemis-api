@@ -66,7 +66,7 @@ export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
           id: app[ "$" ][ "id" ] ?? "",
           score: Number(app[ "$" ][ "score" ]),
           "last-seen": unixEpochToISO(Number(app[ "$" ][ "last-seen" ])),
-          source: entry.full_path,
+          evidence: entry.full_path,
           message: app[ "$" ][ "id" ] ?? "",
           datetime: unixEpochToISO(Number(app[ "$" ][ "last-seen" ])),
           timestamp_desc: "Last Seen",

@@ -79,3 +79,47 @@ Read lines from a text file. You may provide an offset to specific line and limi
 | path   | string  | Text file to read                                                     |
 | offset | number  | Line to start reading file at. Must be positive number. Default is 0. |
 | limit  | number  | How many lines to read. Must be positive number. Default is 100.      | 
+
+
+### BufReader class
+
+A basic TypeScript class that lets you open and and read parts of a file.
+
+Sample TypeScript code:
+```typescript
+import { FileError } from "./artemis-api/src/filesystem/errors";
+import { BufReader } from "./artemis-api/src/filesystem/reader";
+
+function main() {
+    const reader = new BufReader("C:\\Windows\\explorer.exe");
+    const bytes = reader.readBytes(0, 25);
+    if(bytes instanceof FileError) {
+        return;
+    }
+    const array = Array.from(bytes);
+    if(array.length !== 25) {
+        throw "bad length";
+    }
+
+    console.log(`I used the Rust BufReader to read the first 25 bytes of explorer.exe! ${array}`);
+    const middle = reader.readBytes(1000, 50);
+    if(middle instanceof FileError) {
+        return;
+    }
+
+    console.log(`I used the Rust BufReader to read 50 bytes of explorer.exe at offset 1000! I did not read the entire file into memory! ${array}`);
+
+    return Array.from(bytes);
+}
+
+main();
+```
+
+#### readBytes(offset, bytes) -> Uint8Array | FileError
+
+Read bytes from a file at provided offset
+
+| Param   | Type   | Description                                       |
+| ------- | ------ | ------------------------------------- |
+| offset  | number | Starting offset when reading the file |
+| bytes   | number | How many bytes to read                |

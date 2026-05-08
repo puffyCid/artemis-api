@@ -45,7 +45,7 @@ An array of `History`
 ```typescript
 export interface History {
   line: string;
-  path: string;
+  evidence: string;
   created: string;
   modified: string;
   accessed: string;

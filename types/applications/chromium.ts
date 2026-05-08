@@ -42,7 +42,7 @@ export interface ChromiumHistory {
   opener_visit: number;
   unfold: Url | undefined;
   /**Path to the HISTORY sqlite file */
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -87,7 +87,7 @@ export interface ChromiumDownloads {
   last_access_time: string;
   /**Transient value */
   transient: number;
-  /**Referer URL */
+  /**Referrer URL */
   referrer: string;
   /**Download source URL */
   site_url: string;
@@ -116,7 +116,7 @@ export interface ChromiumDownloads {
   /**URL for download */
   url: string;
   /**Path to the HISTORY sqlite file */
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -148,7 +148,7 @@ export interface ChromiumCookies {
   source_port: number;
   is_same_party: number;
   last_update: string;
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -163,7 +163,7 @@ export interface ChromiumFavicons {
   last_update: string;
   url: string;
   page_url: string;
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -183,7 +183,7 @@ export interface ChromiumShortcuts {
   shortcut_id: string;
   keyword: string;
   shortcut_type: ShortcutType;
-  db_path: string;
+  evidence: string;
   description: string;
   /**Browser version */
   version: string;
@@ -237,7 +237,7 @@ export enum ShortcutType {
   TabGroup = "Tab group",
   HistoryEmbedAnswers = "History embedded answers",
   SearchSuggestEntity = "Search suggestion for entity",
-  Unkonwn = "Unknown",
+  Unknown = "Unknown",
 }
 
 export interface ChromiumAutofill {
@@ -248,7 +248,7 @@ export interface ChromiumAutofill {
   date_last_used: string;
   /**Default is 1 */
   count: number;
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -268,7 +268,7 @@ export interface ChromiumBookmarks {
   type: string;
   url: string;
   bookmark_type: BookmarkType;
-  path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -317,7 +317,7 @@ export interface ChromiumLogins {
   sharing_notification_display: number;
   keychain_identifier?: string;
   sender_profile_image_url?: string;
-  db_path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -344,7 +344,7 @@ export interface ChromiumDips {
   first_web_authn_assertion: string | null;
   last_web_authn_assertion: string | null;
   /**Path to DIPS database */
-  path: string;
+  evidence: string;
   /**Browser version */
   version: string;
   message: string;
@@ -403,7 +403,7 @@ export interface ChromiumSession {
   url: string;
   title: string;
   session_type: SessionType;
-  path: string;
+  evidence: string;
 }
 
 export enum SessionType {
@@ -488,7 +488,7 @@ export interface Preferences {
   timestamp_desc: "Last Modified";
   artifact: "User Preferences";
   data_type: string;
-  path: string;
+  evidence: string;
   exception_category: ExceptionCategory;
   created_version: string;
   profile_id: string;
@@ -521,6 +521,40 @@ export interface Extension {
   name: string;
   author: string;
   description: string;
-  manifest: string;
   extension_version: string;
+  evidence: string;
+}
+
+export interface ChromiumCache {
+  /**Browser version */
+  version: string;
+  message: string;
+  datetime: string;
+  browser: BrowserType;
+  timestamp_desc: "Browser Cache Created";
+  artifact: "Browser Cache";
+  data_type: string;
+  hash: number;
+  cache_state: CacheState;
+  created: string;
+  url: string;
+  request: string;
+  response: string;
+  response2: string;
+  response_headers: string[];
+  cache_key: string;
+  evidence: string;
+}
+
+export enum CacheState {
+  Normal = "Normal",
+  Evicted = "Evicted",
+  Doomed = "Doomed",
+  Unknown = "Unknown",
+}
+
+export enum CacheFlag {
+  Parent = "Parent",
+  Child = "Child",
+  Unknown = "Unknown",
 }

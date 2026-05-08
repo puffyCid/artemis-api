@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Adding a Feature
+# New Features
 
 Before working on a new feature for artemis please make sure you have read the
 [Contributing](https://github.com/puffycid/artemis/blob/main/CONTRIBUTING.md)

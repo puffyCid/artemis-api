@@ -18,10 +18,10 @@ export interface EventLogProcessTree {
     datetime: string;
     timestamp_desc: "EventLog Generated";
     artifact: "EventLogs Process Tree";
-    evtx_path: string;
     data_type: "windows:eventlogs:proctree:entry";
     record: number;
     logon_id: number;
+    evidence: string;
 }
 
 export interface RawProcess {

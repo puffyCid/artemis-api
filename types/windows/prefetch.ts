@@ -7,7 +7,7 @@
  */
 export interface Prefetch {
   /**Path to prefetch file */
-  path: string;
+  evidence: string;
   /**Name of executed file */
   filename: string;
   /**Prefetch hash */

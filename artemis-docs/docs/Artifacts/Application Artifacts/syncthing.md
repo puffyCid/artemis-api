@@ -34,7 +34,7 @@ Dependent on artifacts the user wants to parse.
 
 ```typescript
 export interface SyncthingLogs {
-    full_path: string;
+    evidence: string;
     tag: string;
     datetime: string;
     timestamp_desc: "Syncthing Log Entry";

@@ -107,7 +107,7 @@ export function readTrace(path: string, user: AnyDeskUsers): TraceEntry[] {
                 timestamp_desc: "Trace Entry",
                 artifact: "AnyDesk Trace Log",
                 data_type: "applications:anydesk:trace:entry",
-                path,
+                evidence: path,
                 level,
                 entry_timestamp: timestamp,
                 component,

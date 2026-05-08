@@ -1,5 +1,4 @@
 export interface RegistryEventlogProviders {
-    registry_file: string;
     key_path: string;
     name: string;
     channel_names: string[];
@@ -14,6 +13,7 @@ export interface RegistryEventlogProviders {
     timestamp_desc: "Registry Last Modified";
     artifact: "Windows EventLog Provider";
     data_type: "windows:registry:eventlogprovider:entry";
+    evidence: string;
 }
 
 export enum ChannelType {

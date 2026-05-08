@@ -43,7 +43,7 @@ export interface FirewallRules {
     registry_key_name: string;
     description: string;
     application: string;
-    registry_file: string;
+    evidence: string;
     key_path: string;
     last_modified: string;
     rule_version: string;
@@ -70,7 +70,7 @@ export enum Protocol {
     UDP = "UDP",
     ICMP = "ICMP",
     ICMP_v6 = "ICMP_v6",
-    Unkonwn = "Unknown",
+    Unknown = "Unknown",
     IPV6 = "IPv6",
     GRE = "GRE",
     IGMP = "IGMP",

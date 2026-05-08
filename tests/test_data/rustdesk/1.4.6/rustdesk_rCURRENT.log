@@ -1,0 +1,24 @@
+[2026-04-25 12:19:19.390687 -04:00] INFO [src/server.rs:582] DISPLAY=Ok(":0")
+[2026-04-25 12:19:19.391295 -04:00] INFO [src/server.rs:583] XAUTHORITY=Ok("/run/user/1000/.mutter-Xwaylandauth.L5PBO3")
+[2026-04-25 12:19:20.393224 -04:00] INFO [libs/scrap/src/common/hwcodec.rs:523] set hwcodec config
+[2026-04-25 12:19:20.393328 -04:00] DEBUG [libs/scrap/src/common/hwcodec.rs:524] HwCodecConfig { signature: 0, ram_encode: [], ram_decode: [CodecInfo { name: "h264", mc_name: None, format: H264, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }, CodecInfo { name: "hevc", mc_name: None, format: H265, priority: 3, hwdevice: AV_HWDEVICE_TYPE_NONE }] }
+[2026-04-25 12:19:20.879101 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:768] connecting to 49.12.46.241:443
+[2026-04-25 12:19:21.148718 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:771] connected to 49.12.46.241:443
+[2026-04-25 12:19:21.763834 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/pool.rs:395] pooling idle connection for ("https", api.rustdesk.com)
+[2026-04-25 12:19:33.767976 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:768] connecting to 104.20.19.94:443
+[2026-04-25 12:19:33.833518 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:771] connected to 104.20.19.94:443
+[2026-04-25 12:19:40.566305 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:768] connecting to 104.20.19.94:443
+[2026-04-25 12:19:40.626372 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:771] connected to 104.20.19.94:443
+[2026-04-25 12:19:47.672763 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:768] connecting to 172.66.167.80:443
+[2026-04-25 12:19:47.821856 -04:00] DEBUG [/root/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-util-0.1.17/src/client/legacy/connect/http.rs:771] connected to 172.66.167.80:443
+[2026-04-25 12:19:56.526538 -04:00] ERROR [libs/hbb_common/src/platform/mod.rs:50] Got signal 11 and exit. stack:
+gtk_window_is_maximized
+_ZL40window_manager_plugin_handle_method_callP20_WindowManagerPluginP13_FlMethodCall
+g_main_context_iteration
+g_application_run
+main
+__libc_start_call_main
+__libc_start_main_alias_1
+_start
+[2026-04-25 12:19:56.549685 -04:00] INFO [libs/libxdo-sys-stub/src/lib.rs:114] libxdo-sys Loaded libxdo.so.3
+[2026-04-25 12:19:56.552500 -04:00] INFO [libs/enigo/src/linux/xdo.rs:54] xdo context created successfully

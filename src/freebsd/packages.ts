@@ -54,7 +54,8 @@ export function getPkgs(offset: number, limit: number, alt_path?: string): Pkg[]
             datetime: unixEpochToISO(entry[ "time" ] as number ?? 0),
             timestamp_desc: "Package Installed",
             artifact: "FreeBSD PKG",
-            data_type: "freebsd:pkg:entry"
+            data_type: "freebsd:pkg:entry",
+            evidence: path,
         };
         pkg_entries.push(pkg_entry);
     }

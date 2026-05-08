@@ -24,6 +24,8 @@ export interface Users {
   home_path: string[];
   /**UUID associated with user */
   uuid: string[];
+  /**Path to the users plist file */
+  evidence: string;
 }
 
 /**
@@ -42,4 +44,6 @@ export interface Groups {
   groupmembers: string[];
   /**UUID associated with the group */
   uuid: string[];
+  /**Path to the groups plist file */
+  evidence: string;
 }

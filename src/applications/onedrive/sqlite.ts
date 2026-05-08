@@ -104,7 +104,7 @@ function getRecords(
       created_by: "",
       modified_by: "",
       last_write_count: 0,
-      db_path: path,
+      evidence: path,
       message: value["fileName"] as string,
       datetime: "1970-01-01T00:00:00.000Z",
       timestamp_desc: "OneDrive Sync Last Change",

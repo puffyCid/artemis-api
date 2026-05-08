@@ -97,7 +97,7 @@ export interface Registry {
   /**Depth of key name */
   depth: number;
   /**Path to Registry file */
-  registry_path: string;
+  evidence: string;
   /**Registry file name */
   registry_file: string;
 }

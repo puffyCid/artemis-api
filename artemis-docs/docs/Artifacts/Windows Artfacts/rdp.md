@@ -13,7 +13,7 @@ Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx file. A
 ## Collection
 
 You have to use the artemis [api](../../API/overview.md) in order to collect
-Logon entries.
+RDP entries.
 
 ## Sample API Script
 
@@ -55,5 +55,6 @@ export interface RdpActivity {
     timestamp_desc: "RDP Logon" | "RDP Reconnect" | "RDP Logoff" | "RDP Disconnect";
     artifact: "RDP EventLog";
     data_type: "windows:eventlogs:rdp:entry";
+    evidence: string;
 }
 ```

@@ -164,3 +164,19 @@ The API documentation can also be viewed at:
 
 All artifact properties can be viewed at:
 - [Artifacts](../../Artifacts/overview.md)
+
+
+### API Releases and Nightly Branch
+
+There are currently two versions of the artemis API:
+
+- Main branch
+- Nightly branch
+
+The main branch of the API will always support the latest artemis [version](https://github.com/puffyCid/artemis/releases).  
+The nightly branch of the API will always support the [nightly version](https://github.com/puffyCid/artemis/releases/tag/nightly) of artemis.
+
+
+*Most* of public artemis API is stable and will not heavily change between releases. Typically you can use latest released version of artemis against the nightly API branch.
+
+When a new version of artemis is released the nightly API branch gets merged into the main API branch and a new nightly API branch is created.

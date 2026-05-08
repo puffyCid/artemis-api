@@ -49,7 +49,8 @@ export function firmwareHistory(alt_path?: string): FirmwareHistory[] | LinuxErr
             datetime: unixEpochToISO(entry[ "device_created" ] as number),
             timestamp_desc: "Firmware Device Created",
             artifact: "Firmware Updates",
-            data_type: "linux:firmware:entry"
+            data_type: "linux:firmware:entry",
+            evidence: path,
         };
         const meta = firm.metadata.split(";");
         for (const value of meta) {

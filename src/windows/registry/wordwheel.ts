@@ -34,7 +34,7 @@ export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
       continue;
     }
 
-    wheels = wheels.concat(extractWheel(reg_data, glob_path.full_path));
+    wheels = wheels.concat(extractWheel(reg_data));
   }
   return wheels;
 }
@@ -42,10 +42,9 @@ export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
 /**
  * Extract WordWheel entries from Regstry. It is just a string value
  * @param reg Array of `Registry` entries
- * @param source_path Source path to the NTUSER.dat file
  * @returns Array of `WordWheelEntry` entries
  */
-function extractWheel(reg: Registry[], source_path: string): WordWheelEntry[] {
+function extractWheel(reg: Registry[]): WordWheelEntry[] {
   const wheels: WordWheelEntry[] = [];
   for (const entry of reg) {
     if (!entry.path.includes("WordWheel")) {
@@ -67,7 +66,7 @@ function extractWheel(reg: Registry[], source_path: string): WordWheelEntry[] {
       const search: WordWheelEntry = {
         search_term,
         last_modified: entry.last_modified,
-        source_path,
+        evidence: entry.evidence,
         reg_path: entry.path,
       };
       wheels.push(search);

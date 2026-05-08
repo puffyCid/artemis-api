@@ -1,0 +1,973 @@
+2026-04-03T23:05:57.058Z In(14) Jumper2[131343]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:05:57.058Z In(14) Jumper2[131343]: 131343:VVOLLIB : VVolLib_SetLogLevel:1351: Log level for vvolLib set to 10
+2026-04-03T23:05:57.058Z In(14) Jumper2[131343]: 131343:VVOLLIB : VVolLib_IpcInit:206: IPC timeouts set to: connect = 30 sec, send = 30 sec, receive = 200 sec
+2026-04-03T23:05:57.058Z In(14) Jumper2[131343]: Using VMware ESXi syslog APIs
+2026-04-03T23:05:57.063Z Er(11) Jumper2[131350]: error [ConfigStore:3ccddcf240] [2000] Failed to connect to database
+2026-04-03T23:05:57.065Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] ConfigStoreException: [context]zKq7AVICAgAAAPeNeAEPY29uZmlnc3RvcmUAAFJ7AWxpYmNvbmZpZ3N0b3JlY29tbW9uLnNvAAEE6wJsaWJjb25maWdzdG9yZS5zbwABnXYDAkW2cmxpYnZta2N0bC5zbwADbN0NbGlic3lzdGVtLnNvAATb7AVsaWJjcHB0b29scy5zbwAEdx0GBR42AWp1bXBlcjIABRFHAQUKyQEFJl0CBU9fAgUIYwIFVYkBBaGYAQ==[/context]
+2026-04-03T23:05:57.065Z Er(11) Jumper2[131350]: error [ConfigStore:3ccddcf240] [2000] Failed to connect to database
+2026-04-03T23:05:57.066Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] ConfigStoreException: [context]zKq7AVICAgAAAPeNeAEPY29uZmlnc3RvcmUAAFJ7AWxpYmNvbmZpZ3N0b3JlY29tbW9uLnNvAAEE6wJsaWJjb25maWdzdG9yZS5zbwABnXYDAqOncmxpYnZta2N0bC5zbwAC3bJyA43dDWxpYnN5c3RlbS5zbwAE2+wFbGliY3BwdG9vbHMuc28ABHcdBgUeNgFqdW1wZXIyAAURRwEFCskBBSZdAgVPXwIFCGMCBVWJAQ==[/context]
+2026-04-03T23:05:57.066Z In(14) Jumper2[131351]: Invoking method start on plugin check-required-memory
+2026-04-03T23:05:57.066Z In(14) Jumper2[131351]: Skipping check required memory.
+2026-04-03T23:05:57.066Z In(14) Jumper2[131351]: Method start executed successfully for plugin check-required-memory
+2026-04-03T23:05:57.070Z In(14) Jumper2[131352]: Invoking method start on plugin dma-engine
+2026-04-03T23:05:57.070Z In(14) Jumper2[131352]: Method start executed successfully for plugin dma-engine
+2026-04-03T23:05:57.073Z In(14) Jumper2[131353]: Invoking method start on plugin fips-configuration-fallback
+2026-04-03T23:05:57.073Z In(14) Jumper2[131353]: FIPS configuration was already handled in inittab
+2026-04-03T23:05:57.073Z In(14) Jumper2[131353]: Method start executed successfully for plugin fips-configuration-fallback
+2026-04-03T23:05:57.077Z In(14) Jumper2[131354]: Invoking method start on plugin mount-filesystems
+2026-04-03T23:05:57.077Z In(14) Jumper2[131354]: Method start executed successfully for plugin mount-filesystems
+2026-04-03T23:05:57.084Z In(14) Jumper2[131356]: Invoking method start on plugin vmkcrypto
+2026-04-03T23:05:57.084Z In(14) Jumper2[131356]: Method start executed successfully for plugin vmkcrypto
+2026-04-03T23:05:57.084Z In(14) Jumper2[131355]: Invoking method start on plugin storage-psa-init
+2026-04-03T23:05:57.084Z In(14) Jumper2[131355]: Method start executed successfully for plugin storage-psa-init
+2026-04-03T23:05:57.084Z Er(11) Jumper2[131350]: error [ConfigStore:3ccddcf240] [2000] Failed to connect to database
+2026-04-03T23:05:57.085Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] ConfigStoreException: [context]zKq7AVICAgAAAPeNeAEPY29uZmlnc3RvcmUAAFJ7AWxpYmNvbmZpZ3N0b3JlY29tbW9uLnNvAAEE6wJsaWJjb25maWdzdG9yZS5zbwABnXYDAo5NA2xpYnZta21vZC5zbwACs4sBAjeQAQMRs3JsaWJ2bWtjdGwuc28ABI3dDWxpYnN5c3RlbS5zbwAF2+wFbGliY3BwdG9vbHMuc28ABXcdBgYeNgFqdW1wZXIyAAYRRwEGCskBBiZdAgZPXwI=[/context]
+2026-04-03T23:05:57.086Z Er(11) Jumper2[131350]: error [ConfigStore:3ccddcf240] [2000] Failed to connect to database
+2026-04-03T23:05:57.086Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] ConfigStoreException: [context]zKq7AVICAgAAAPeNeAEPY29uZmlnc3RvcmUAAFJ7AWxpYmNvbmZpZ3N0b3JlY29tbW9uLnNvAAEE6wJsaWJjb25maWdzdG9yZS5zbwABnXYDAhFTA2xpYnZta21vZC5zbwACz40BAjeQAQMRs3JsaWJ2bWtjdGwuc28ABI3dDWxpYnN5c3RlbS5zbwAF2+wFbGliY3BwdG9vbHMuc28ABXcdBgYeNgFqdW1wZXIyAAYRRwEGCskBBiZdAgZPXwI=[/context]
+2026-04-03T23:05:57.087Z In(14) Jumper2[131357]: Invoking method start on plugin vmkeventd
+2026-04-03T23:05:57.090Z No(13) Jumper2[131350]: Module 'hyperclock' load by uid=0 who=? successful
+2026-04-03T23:05:57.090Z In(14) Jumper2[131358]: Invoking method start on plugin vobd
+2026-04-03T23:05:57.091Z In(14) Jumper2[131351]: Invoking method start on plugin entropy-daemon
+2026-04-03T23:05:57.092Z In(14) Jumper2[131352]: Invoking method start on plugin tpm
+2026-04-03T23:05:57.092Z In(14) Jumper2[131352]: Method start executed successfully for plugin tpm
+2026-04-03T23:05:57.094Z In(14) Jumper2[131352]: Invoking method start on plugin config-encryption-early
+2026-04-03T23:05:57.097Z In(14) Jumper2[131358]: Method start executed successfully for plugin vobd
+2026-04-03T23:05:57.099Z In(14) Jumper2[131350]: lib/ssl: OpenSSL using FIPS provider
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: Client usage
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.101Z In(14) Jumper2[131354]: lib/ssl: OpenSSL using FIPS provider
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: Server usage
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.101Z In(14) Jumper2[131350]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: Client usage
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: Server usage
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.103Z In(14) Jumper2[131354]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.105Z In(14) Jumper2[131353]: lib/ssl: OpenSSL using FIPS provider
+2026-04-03T23:05:57.107Z In(14) Jumper2[131355]: lib/ssl: OpenSSL using FIPS provider
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: Client usage
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: Server usage
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.109Z In(14) Jumper2[131355]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.109Z In(14) Jumper2[131353]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: Client usage
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: Successfully read tls config dictionary file.
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: Server usage
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: protocol list tls1.2,tls1.3
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: protocol min 0x303 max 0x304
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: protocol list tls1.2,tls1.3 (openssl flags 0x16000000)
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: cipher list ECDHE+AESGCM:ECDHE+AES
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: cipher suites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384
+2026-04-03T23:05:57.110Z In(14) Jumper2[131353]: lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2026-04-03T23:05:57.135Z In(14) Jumper2[131357]: Method start executed successfully for plugin vmkeventd
+2026-04-03T23:05:57.186Z In(14) Jumper2[131352]: Method start executed successfully for plugin config-encryption-early
+2026-04-03T23:05:57.187Z In(14) Jumper2[131350]: Invoking method start on plugin restore-configuration
+2026-04-03T23:05:57.187Z In(14) Jumper2[131350]: restoring configuration
+2026-04-03T23:05:57.188Z Wa(12) Jumper2[131350]: FileGetUserName: Unable to retrieve the user name associated with UID 0.
+2026-04-03T23:05:57.188Z Wa(12) Jumper2[131350]: FileGetUserIdentifier: Failed to get user name, using UID.
+2026-04-03T23:05:57.188Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] LoadStore Start.
+2026-04-03T23:05:57.188Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Restore ConfigStore from /var/lib/vmware/configstore/firstbootBackup/current-store-1
+2026-04-03T23:05:57.195Z In(30) init-entropyd[131397]: Entropy source from USERSPACE_DAEMON is not enabled
+2026-04-03T23:05:57.200Z In(14) Jumper2[131351]: Method start executed successfully for plugin entropy-daemon
+2026-04-03T23:05:57.206Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] ConfigStore restored successfully from backup
+2026-04-03T23:05:57.206Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] DataFileStore backup not found /var/lib/vmware/configstore/backup/datafile-store
+2026-04-03T23:05:57.207Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Database Upgrade invoked for /etc/vmware/schemastore/schema-store-1
+2026-04-03T23:05:57.207Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Upgrading DB from version 0 to 7
+2026-04-03T23:05:57.207Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:846930886]BeginTransaction invoked.
+2026-04-03T23:05:57.207Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:846930886]Transaction started, level = 1
+2026-04-03T23:05:57.208Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:846930886]CommitTransaction invoked.
+2026-04-03T23:05:57.208Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:846930886]Transaction committed,level = 1
+2026-04-03T23:05:57.208Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Database Upgrade done
+2026-04-03T23:05:57.208Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Database Upgrade invoked for /etc/vmware/configstore/datafile-store
+2026-04-03T23:05:57.208Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Upgrading DB from version 0 to 1
+2026-04-03T23:05:57.208Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1681692777]BeginTransaction invoked.
+2026-04-03T23:05:57.208Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1681692777]Transaction started, level = 1
+2026-04-03T23:05:57.209Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1681692777]CommitTransaction invoked.
+2026-04-03T23:05:57.209Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1681692777]Transaction committed,level = 1
+2026-04-03T23:05:57.209Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Database Upgrade done
+2026-04-03T23:05:57.209Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Database Upgrade invoked for /etc/vmware/configstore/current-store-1
+2026-04-03T23:05:57.210Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Bootbank changed 70a749fa74a0482abf9d47e478068aac!=
+2026-04-03T23:05:57.210Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Processing schemas..
+2026-04-03T23:05:57.210Z In(14) Jumper2[131350]: Esx imagedb locked.
+2026-04-03T23:05:57.210Z In(14) Jumper2[131350]: Found 123 vibs in image profile.
+2026-04-03T23:05:57.211Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/clusterstore--1214674521922854400.xml' schemaId='clusterstore-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.211Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/loadesx--4406820425343553021.xml'
+2026-04-03T23:05:57.211Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmkusb-esxio-8068825622063450629.xml'
+2026-04-03T23:05:57.211Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esx-dvfilter-generic-fastpath--2796132382397695479.xml'
+2026-04-03T23:05:57.211Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nhpsa--9042448519025678324.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-esxio--7257226554711861746.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ntg3-1612139405784773647.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/spidev-esxio-2757219259853774351.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bfedac-esxio--5908840446760875505.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rdmahl--6417830317847683054.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlxbf-gige-esxio--2182571780174278633.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmkusb--6652899420347977701.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pvscsi--2839273288992145377.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-intelv2-nvme-vmd-plugin-5227254194474269731.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/penspi-esxio-3766505619419817000.xml'
+2026-04-03T23:05:57.212Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bmcal-esxio-2172309767494890025.xml'
+2026-04-03T23:05:57.213Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-oem-dell-plugin--7142196400986022358.xml'
+2026-04-03T23:05:57.213Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-oem-lenovo-plugin--3705752284914773972.xml'
+2026-04-03T23:05:57.213Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/vsanhealth--7252272331400887238.xml' schemaId='vsanhealth-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.213Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmware-esx-esxcli-nvme-plugin-5001823443837432381.xml'
+2026-04-03T23:05:57.213Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmerdma--5738423847728050625.xml'
+2026-04-03T23:05:57.213Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/native-misc-drivers--7773646079442447807.xml'
+2026-04-03T23:05:57.213Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nipmi-6591894657689168451.xml'
+2026-04-03T23:05:57.216Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/esx-base-750844975848581188.xml' schemaId='esx-base-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.217Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-msgpt35-4090110432831115856.xml'
+2026-04-03T23:05:57.217Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmetcp--7818873969079180207.xml'
+2026-04-03T23:05:57.217Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/iavmd--6422297680685323694.xml'
+2026-04-03T23:05:57.217Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/atlantic-3137850086131581025.xml'
+2026-04-03T23:05:57.217Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-mr3-4132488351422931049.xml'
+2026-04-03T23:05:57.219Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/esxio-base-8762523016439111276.xml' schemaId='esxio-base-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.220Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-msgpt2--5970613167340249490.xml'
+2026-04-03T23:05:57.220Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qfle3--2517390882679429516.xml'
+2026-04-03T23:05:57.220Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-msgpt3--2868007923650569099.xml'
+2026-04-03T23:05:57.220Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-core--2290432825855889281.xml'
+2026-04-03T23:05:57.220Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-rdma--5837419105191776129.xml'
+2026-04-03T23:05:57.220Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/dwi2c-esxio-2830377460432849029.xml'
+2026-04-03T23:05:57.221Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/esxio-update-7124153484416468614.xml' schemaId='esxio-update-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.221Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pvscsi-esxio--8387789160151327080.xml'
+2026-04-03T23:05:57.221Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-ens-474301829729690777.xml'
+2026-04-03T23:05:57.221Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmksdhci-9008127084135543966.xml'
+2026-04-03T23:05:57.221Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmetcp-esxio--4604779040360807264.xml'
+2026-04-03T23:05:57.221Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/elxnet-1946758428691706529.xml'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esx-ui-8293235535419959971.xml'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/infravisor-8997907133149463716.xml'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/iser--4693103531430742363.xml'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qcnic--5907714000110839638.xml'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-ens-esxio-5003902926672119979.xml'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esxio-dvfilter-generic-fastpath-5845242820056691884.xml'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvme-pcie--6244974539466769749.xml'
+2026-04-03T23:05:57.222Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/vmware-hbrsrv--7613977505523482961.xml' schemaId='vmware-hbrsrv-8.0.3_0.0.24022510'
+2026-04-03T23:05:57.222Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvme-pcie-esxio-5776915539691625648.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-5682775502847760051.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pensandoatlas-6637280343931241140.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/cndi-igc-7179879369177023159.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rshim-net-155130162716811960.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmware-esx-esxcli-nvme-plugin-esxio--1931829931018724169.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esx-xserver-4002444622698975418.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nenic-3487522764178328255.xml'
+2026-04-03T23:05:57.223Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/penedac-esxio-6835941441514987712.xml'
+2026-04-03T23:05:57.224Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/vcls-pod-crx--1512940133824995130.xml' schemaId='vcls-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.224Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-nvme-pcie-plugin-4945301170736811730.xml'
+2026-04-03T23:05:57.224Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/igbn--8746341788573877036.xml'
+2026-04-03T23:05:57.224Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/icen-8916530193377992404.xml'
+2026-04-03T23:05:57.224Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bnxtnet--2632387123670074668.xml'
+2026-04-03T23:05:57.224Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-core-esxio--7700149672255215910.xml'
+2026-04-03T23:05:57.224Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-rdma-esxio-388014082325948122.xml'
+2026-04-03T23:05:57.225Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/gc-6553940035640415455.xml'
+2026-04-03T23:05:57.225Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/intelgpio-4683471463143431907.xml'
+2026-04-03T23:05:57.225Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/mnet-esxio-2664124115780522213.xml'
+2026-04-03T23:05:57.225Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmw-ahci--2863041570900223257.xml'
+2026-04-03T23:05:57.225Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ionic-cloud-8808722694233827047.xml'
+2026-04-03T23:05:57.225Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ne1000-7553652028367298799.xml'
+2026-04-03T23:05:57.225Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/loadesxio--159341403978589451.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vdfs--5534425978642025221.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esxio-combiner-esxio--7415527965380486402.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-cc-7221626889777496831.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rste-3332480026299810559.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/mlnx-bfbootctl-esxio--6355423439093048575.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ionic-en-esxio--137840806006651640.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rd1173-esxio-6065201338491481866.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/crx-2409901468917765906.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/trx--7871915387220191467.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esxio-combiner--4257326179364409573.xml'
+2026-04-03T23:05:57.226Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-lsiv2-drivers-plugin-3707373368893515038.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/elxiscsi-7779274521910363945.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bmcal-407707237903790385.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/cpu-microcode-3874795112238877499.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-smartpqiv2-plugin--1654087741036243136.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/i40en--7005967177474860220.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/native-misc-drivers-esxio-6542998665911438665.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ionic-en--3426907647270974127.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qfle3f-2961494683449831764.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qedentv-7929314746453517149.xml'
+2026-04-03T23:05:57.227Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/mtip32xx-native-781255057096333158.xml'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qfle3i--5072165982467884688.xml'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-cc-esxio--2924112524489379977.xml'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/irdman--5252481207035399808.xml'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/dwi2c-3155320132838243204.xml'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/elx-esx-libelxima.so-4614560044973845893.xml'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qedrntv--2050234672095986300.xml'
+2026-04-03T23:05:57.228Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/esx-update--596325549009631859.xml' schemaId='esx-update-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmkata-689454865869777299.xml'
+2026-04-03T23:05:57.228Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lpfc-4107835131937698196.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-hpv2-hpsa-plugin-1891047060682121621.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qflge-8159324616431210900.xml'
+2026-04-03T23:05:57.229Z In(14) Jumper2[131350]: xmlfile='/var/db/esximg/vibs/esxio--7380652109566714472.xml' schemaId='esxio-8.0.3_0.70.24677879'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qlnativefc-5721695675842464164.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmksdhci-esxio-7183246134909510565.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/brcmfcoe--7077156919334518355.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/drivervm-gpu-base-7060616953794939310.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nfnic--5839761048527452742.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pengpio-esxio-3957121686344348094.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/sfvmk--7386550714053122617.xml'
+2026-04-03T23:05:57.229Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ixgben-7203919405131732427.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlxbf-pmc-esxio-1867198322714335691.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lpnic--6166021181119968307.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vds-vsip--1884423871890520101.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bcm-mpi3--8667463485179117088.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bnxtroce--4646501423496497182.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/smartpqi--7747802190966660115.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/gc-esxio-732539502187435506.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vsan-7350783098597441531.xml'
+2026-04-03T23:05:57.230Z Db(15) Jumper2[131350]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rshim-6097877412238171135.xml'
+2026-04-03T23:05:57.231Z In(14) Jumper2[131350]: Esx imagedb unlocked.
+2026-04-03T23:05:57.231Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] VIB IDs from store: 
+2026-04-03T23:05:57.231Z Er(11) Jumper2[131350]: error [ConfigStore:3ccddcf240] [SchemaProcessor] Skip processing .
+2026-04-03T23:05:57.231Z Er(11) Jumper2[131350]: error [ConfigStore:3ccddcf240] [SchemaProcessor] Skip processing ..
+2026-04-03T23:05:57.231Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] IDs from dir: esx-base-8.0.3_0.70.24677879-schema esx-update-8.0.3_0.70.24677879-schema clusterstore-8.0.3_0.70.24677879-schema vcls-8.0.3_0.70.24677879-schema vmware-hbrsrv-8.0.3_0.0.24022510-schema vsanhealth-8.0.3_0.70.24677879-schema 
+2026-04-03T23:05:57.231Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing schema from 'esx-base-8.0.3_0.70.24677879-schema.json' to SchemaStore
+2026-04-03T23:05:57.244Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]BeginTransaction invoked.
+2026-04-03T23:05:57.244Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction started, level = 1
+2026-04-03T23:05:57.257Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]CommitTransaction invoked.
+2026-04-03T23:05:57.258Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction committed,level = 1
+2026-04-03T23:05:57.258Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Schema 'esx-base-8.0.3_0.70.24677879-schema.json' processed successfully
+2026-04-03T23:05:57.258Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing schema from 'esx-update-8.0.3_0.70.24677879-schema.json' to SchemaStore
+2026-04-03T23:05:57.258Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]BeginTransaction invoked.
+2026-04-03T23:05:57.258Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction started, level = 1
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]CommitTransaction invoked.
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction committed,level = 1
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Schema 'esx-update-8.0.3_0.70.24677879-schema.json' processed successfully
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing schema from 'clusterstore-8.0.3_0.70.24677879-schema.json' to SchemaStore
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]BeginTransaction invoked.
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction started, level = 1
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]CommitTransaction invoked.
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction committed,level = 1
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Schema 'clusterstore-8.0.3_0.70.24677879-schema.json' processed successfully
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing schema from 'vcls-8.0.3_0.70.24677879-schema.json' to SchemaStore
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]BeginTransaction invoked.
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction started, level = 1
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]CommitTransaction invoked.
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction committed,level = 1
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Schema 'vcls-8.0.3_0.70.24677879-schema.json' processed successfully
+2026-04-03T23:05:57.259Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing schema from 'vmware-hbrsrv-8.0.3_0.0.24022510-schema.json' to SchemaStore
+2026-04-03T23:05:57.260Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]BeginTransaction invoked.
+2026-04-03T23:05:57.260Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction started, level = 1
+2026-04-03T23:05:57.260Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]CommitTransaction invoked.
+2026-04-03T23:05:57.260Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction committed,level = 1
+2026-04-03T23:05:57.260Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Schema 'vmware-hbrsrv-8.0.3_0.0.24022510-schema.json' processed successfully
+2026-04-03T23:05:57.260Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing schema from 'vsanhealth-8.0.3_0.70.24677879-schema.json' to SchemaStore
+2026-04-03T23:05:57.264Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]BeginTransaction invoked.
+2026-04-03T23:05:57.264Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction started, level = 1
+2026-04-03T23:05:57.267Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]CommitTransaction invoked.
+2026-04-03T23:05:57.267Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [ss:1:424238335]Transaction committed,level = 1
+2026-04-03T23:05:57.267Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Schema 'vsanhealth-8.0.3_0.70.24677879-schema.json' processed successfully
+2026-04-03T23:05:57.267Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [SchemaProcessor] Schema processing completed: success
+2026-04-03T23:05:57.267Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing default configuration.
+2026-04-03T23:05:57.268Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:719885386]BeginTransaction invoked.
+2026-04-03T23:05:57.268Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:719885386]Transaction started, level = 1
+2026-04-03T23:05:57.268Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing default config from '/etc/vmware/default-config//esx-base-8.0.3_0.70.24677879-default.json'
+2026-04-03T23:05:57.273Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Copying defaultConfig to Config for schema= {esx/services/hostd}.
+2026-04-03T23:05:57.276Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing default config from '/etc/vmware/default-config//clusterstore-8.0.3_0.70.24677879-default.json'
+2026-04-03T23:05:57.276Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing default config from '/etc/vmware/default-config//vcls-8.0.3_0.70.24677879-default.json'
+2026-04-03T23:05:57.276Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Processing default config from '/etc/vmware/default-config//vmware-hbrsrv-8.0.3_0.0.24022510-default.json'
+2026-04-03T23:05:57.277Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:719885386]CommitTransaction invoked.
+2026-04-03T23:05:57.277Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:719885386]Transaction committed,level = 1
+2026-04-03T23:05:57.277Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Completed processing default configuration: success.
+2026-04-03T23:05:57.277Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Cleanup auto configurations
+2026-04-03T23:05:57.279Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] First boot, not considerd upgrade.
+2026-04-03T23:05:57.280Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Generating desired user config: BootMode = 0
+2026-04-03T23:05:57.280Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1025202362]BeginTransaction invoked.
+2026-04-03T23:05:57.280Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1025202362]Transaction started, level = 1
+2026-04-03T23:05:57.282Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1025202362]CommitTransaction invoked.
+2026-04-03T23:05:57.282Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:1025202362]Transaction committed,level = 1
+2026-04-03T23:05:57.282Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Desired user config generated successfully.
+2026-04-03T23:05:57.282Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] ConfigStore autoconf start
+2026-04-03T23:05:57.283Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Next boot mode set to 0
+2026-04-03T23:05:57.283Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Upgrade delete file not found.
+2026-04-03T23:05:57.283Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] LoadStore End.
+2026-04-03T23:05:57.286Z In(14) Jumper2[131350]: ConfigCheck: converting module lines
+2026-04-03T23:05:57.286Z In(14) Jumper2[131350]: ConfigCheck: enabling TSO on all NIC policies
+2026-04-03T23:05:57.286Z In(14) Jumper2[131350]: ConfigCheck: removing .o from module lines
+2026-04-03T23:05:57.286Z In(14) Jumper2[131350]: ConfigCheck: Running ipv6 option upgrade, redundantly
+2026-04-03T23:05:57.287Z In(14) Jumper2[131350]: Util: tcpip4 IPv6 enabled
+2026-04-03T23:05:57.288Z In(14) Jumper2[131350]: Done restoring user accounts
+2026-04-03T23:05:57.288Z In(14) Jumper2[131350]: Restore lockdown settings.
+2026-04-03T23:05:57.288Z In(14) Jumper2[131350]: Lockdown settings haven't changed, nothing to restore.
+2026-04-03T23:05:57.288Z In(14) Jumper2[131350]: Method start executed successfully for plugin restore-configuration
+2026-04-03T23:05:57.289Z In(14) Jumper2[131350]: KeyPersist: : Cannot connect to the keypersistence daemon: No such file or directory
+2026-04-03T23:05:57.289Z In(14) Jumper2[131351]: Invoking method start on plugin advanced-user-configuration-options
+2026-04-03T23:05:57.289Z In(14) Jumper2[131352]: Invoking method start on plugin autodeploy-enabled
+2026-04-03T23:05:57.289Z In(14) Jumper2[131352]: Method start executed successfully for plugin autodeploy-enabled
+2026-04-03T23:05:57.289Z In(14) Jumper2[131353]: Invoking method start on plugin cleanup-files
+2026-04-03T23:05:57.290Z In(14) Jumper2[131354]: Invoking method start on plugin tls
+2026-04-03T23:05:57.292Z In(14) Jumper2[131354]: TlsConfigImpl Client: GetProfile CS values: desired configuration found!
+2026-04-03T23:05:57.292Z In(14) Jumper2[131354]: TlsConfigImpl Client: GetProfile: CS values profile = COMPATIBLE (default), cipher list = ECDHE+AESGCM:ECDHE+AES, cipher suites = TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384, groups = prime256v1:secp384r1:secp521r1, protocols = tls1.2,tls1.3
+2026-04-03T23:05:57.292Z In(14) Jumper2[131354]: TlsConfigImpl Client: GetProfile: profile value COMPATIBLE
+2026-04-03T23:05:57.293Z In(14) Jumper2[131358]: Invoking method start on plugin restore-system-uuid
+2026-04-03T23:05:57.293Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ActiveDirectoryPreferredDomainControllers' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.294Z In(14) Jumper2[131358]: Method start executed successfully for plugin restore-system-uuid
+2026-04-03T23:05:57.295Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ActiveDirectoryVerifyCAMCertificate' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.296Z No(13) Jumper2[131356]: Module 'vfat' load by uid=0 who=root successful
+2026-04-03T23:05:57.301Z In(14) Jumper2[131354]: TlsConfigImpl Client: RestoreProfile: CS values profile = COMPATIBLE (default), cipher list = ECDHE+AESGCM:ECDHE+AES, cipher suites = TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384, groups = prime256v1:secp384r1:secp521r1, protocols = tls1.2,tls1.3
+2026-04-03T23:05:57.302Z In(14) Jumper2[131354]: TlsConfigImpl Client: GetProfile CS values: current configuration found!
+2026-04-03T23:05:57.302Z In(14) Jumper2[131354]: TlsConfigImpl Client: GetProfile: CS values profile = COMPATIBLE (default), cipher list = ECDHE+AESGCM:ECDHE+AES, cipher suites = TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384, groups = prime256v1:secp384r1:secp521r1, protocols = tls1.2,tls1.3
+2026-04-03T23:05:57.302Z In(14) Jumper2[131354]: TlsConfigImpl Client: GetProfile: profile value COMPATIBLE
+2026-04-03T23:05:57.302Z In(14) Jumper2[131354]: TlsConfigImpl Client: Installed new config file successfully
+2026-04-03T23:05:57.302Z In(14) Jumper2[131354]: Restored TLS client configuration from configstore.
+2026-04-03T23:05:57.303Z No(13) Jumper2[131357]: Module 'lfHelper' load by uid=0 who=root successful
+2026-04-03T23:05:57.303Z In(14) Jumper2[131354]: TlsConfigImpl Server: GetProfile CS values: desired configuration found!
+2026-04-03T23:05:57.303Z In(14) Jumper2[131354]: TlsConfigImpl Server: GetProfile: CS values profile = COMPATIBLE (default), cipher list = ECDHE+AESGCM:ECDHE+AES, cipher suites = TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384, groups = prime256v1:secp384r1:secp521r1, protocols = tls1.2,tls1.3
+2026-04-03T23:05:57.303Z In(14) Jumper2[131354]: TlsConfigImpl Server: GetProfile: profile value COMPATIBLE
+2026-04-03T23:05:57.304Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ESXiShellTimeOut' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.305Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id DcuiTimeOut' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.306Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ESXiShellInteractiveTimeOut' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.307Z No(13) Jumper2[131357]: Module 'vmklink_mpi' load by uid=0 who=root successful
+2026-04-03T23:05:57.307Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id SuppressShellWarning' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.309Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id SuppressHyperthreadWarning' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.310Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id SuppressSgxDisabledWarning' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.311Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id SuppressSgxAddPackageWarning' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.312Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id EsximageNetTimeout' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.313Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id EsximageNetRetries' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.313Z No(13) Jumper2[131357]: Module 'vsanapi' load by uid=0 who=root successful
+2026-04-03T23:05:57.314Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id EsximageNetRateLimit' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.315Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id SuppressCoredumpWarning' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.316Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ReservedUsbDevice' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.317Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id HostdStatsstoreRamdiskSize' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.318Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ESXiVPsDisabledProtocols' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.321Z In(14) Jumper2[131354]: TlsConfigImpl Server: RestoreProfile: CS values profile = COMPATIBLE (default), cipher list = ECDHE+AESGCM:ECDHE+AES, cipher suites = TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384, groups = prime256v1:secp384r1:secp521r1, protocols = tls1.2,tls1.3
+2026-04-03T23:05:57.321Z In(14) Jumper2[131354]: TlsConfigImpl Server: GetProfile CS values: current configuration found!
+2026-04-03T23:05:57.321Z In(14) Jumper2[131354]: TlsConfigImpl Server: GetProfile: CS values profile = COMPATIBLE (default), cipher list = ECDHE+AESGCM:ECDHE+AES, cipher suites = TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384, groups = prime256v1:secp384r1:secp521r1, protocols = tls1.2,tls1.3
+2026-04-03T23:05:57.321Z In(14) Jumper2[131354]: TlsConfigImpl Server: GetProfile: profile value COMPATIBLE
+2026-04-03T23:05:57.321Z In(14) Jumper2[131354]: TlsConfigImpl Server: Installed new config file successfully
+2026-04-03T23:05:57.321Z In(14) Jumper2[131354]: Restored TLS server configuration from configstore.
+2026-04-03T23:05:57.321Z In(14) Jumper2[131354]: Method start executed successfully for plugin tls
+2026-04-03T23:05:57.323Z No(13) Jumper2[131357]: Module 'vsanbase' load by uid=0 who=root successful
+2026-04-03T23:05:57.327Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ESXiVPsAllowedCiphers' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.328Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id HardwareHealthSyncTime' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.329Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id HardwareHealthIgnoredSensors' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.330Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id StatefulInstallScheduled' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.332Z In(14) Jumper2[131353]: Removing /etc/vmware/dpd.conf
+2026-04-03T23:05:57.332Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id CheckAccessTemplateEnabled' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.333Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id ShellSandboxEnabled' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.334Z In(14) Jumper2[131351]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key user_var_definitions id AuditApiCallEnabled' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.335Z In(14) Jumper2[131351]: Method start executed successfully for plugin advanced-user-configuration-options
+2026-04-03T23:05:57.373Z In(14) Jumper2[131350]: Invoking method start on plugin cbrc
+2026-04-03T23:05:57.374Z In(14) Jumper2[131350]: Method start executed successfully for plugin cbrc
+2026-04-03T23:05:57.390Z No(13) Jumper2[131351]: Module 'vprobe' load by uid=0 who=root successful
+2026-04-03T23:05:57.390Z In(14) Jumper2[131353]: Method start executed successfully for plugin cleanup-files
+2026-04-03T23:05:57.390Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:338888228]BeginTransaction invoked.
+2026-04-03T23:05:57.391Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:338888228]Transaction started, level = 1
+2026-04-03T23:05:57.392Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Checking for empty objects and arrays in comp esx grp advanced_options key userMem object
+2026-04-03T23:05:57.393Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] Error while sending notification for config object 'comp esx grp advanced_options key userMem' to HostD: Failed to connect socket: No such file or directory
+2026-04-03T23:05:57.393Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:338888228]CommitTransaction invoked.
+2026-04-03T23:05:57.394Z In(14) Jumper2[131404]: Invoking method start on plugin apei
+2026-04-03T23:05:57.395Z In(14) Jumper2[131404]: Method start executed successfully for plugin apei
+2026-04-03T23:05:57.397Z In(14) Jumper2[131405]: Invoking method start on plugin dvx
+2026-04-03T23:05:57.399Z In(14) Jumper2[131406]: Invoking method start on plugin hardware-config
+2026-04-03T23:05:57.399Z Er(11) Jumper2[131406]: Failed to symlink /etc/vmware/pci.ids: No such file or directory
+2026-04-03T23:05:57.400Z In(14) Jumper2[131350]: info [ConfigStore:3ccddcf240] [cs:1:338888228]Transaction committed,level = 1
+2026-04-03T23:05:57.404Z In(14) Jumper2[131408]: Invoking method start on plugin lineage-tags
+2026-04-03T23:05:57.409Z In(14) Jumper2[131407]: Invoking method start on plugin krb5
+2026-04-03T23:05:57.410Z In(14) Jumper2[131410]: Invoking method start on plugin oem-modules
+2026-04-03T23:05:57.410Z No(13) Jumper2[131351]: Module 'deltadisk' load by uid=0 who=root successful
+2026-04-03T23:05:57.410Z In(14) Jumper2[131410]: Method start executed successfully for plugin oem-modules
+2026-04-03T23:05:57.412Z In(14) Jumper2[131407]: Method start executed successfully for plugin krb5
+2026-04-03T23:16:10.555Z No(13) usbarbitrator[132898]: Exiting USB storage detach monitor
+2026-04-03T23:16:27.906Z In(38) sshd-session[132909]: Connection from 192.168.124.1 port 32980
+2026-04-03T23:16:32.824Z In(38) sshd-session[132909]: Accepted keyboard-interactive/pam for root from 192.168.124.1 port 32980 ssh2
+2026-04-03T23:16:32.840Z In(14) addvob[132913]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:16:32.840Z In(14) addvob[132913]: Could not expand environment variable HOME.
+2026-04-03T23:16:32.840Z In(14) addvob[132913]: Could not expand environment variable HOME.
+2026-04-03T23:16:32.840Z In(14) addvob[132913]: Using VMware ESXi syslog APIs
+2026-04-03T23:16:32.846Z In(86) sshd-session[132909]: pam_unix(sshd:session): session opened for user root by (uid=0)
+2026-04-03T23:16:32.861Z In(38) sshd-session[132909]: Session opened for 'root' on /dev/char/pty/t0
+2026-04-03T23:19:55.823Z In(38) sshd-session[132984]: Connection from 192.168.124.1 port 60854
+2026-04-03T23:20:00.266Z In(78) crond[131666]: USER root pid 132987 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:20:00.266Z In(78) crond[131666]: USER root pid 132988 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:20:00.267Z In(78) crond[131666]: USER root pid 132989 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-03T23:20:00.267Z In(78) crond[131666]: USER root pid 132990 cmd /bin/crx-cli ++securitydom=crxCliGcDom gc
+2026-04-03T23:20:02.214Z In(38) sshd-session[132984]: Accepted keyboard-interactive/pam for root from 192.168.124.1 port 60854 ssh2
+2026-04-03T23:20:02.229Z In(14) addvob[133009]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:20:02.229Z In(14) addvob[133009]: Could not expand environment variable HOME.
+2026-04-03T23:20:02.229Z In(14) addvob[133009]: Could not expand environment variable HOME.
+2026-04-03T23:20:02.229Z In(14) addvob[133009]: Using VMware ESXi syslog APIs
+2026-04-03T23:20:02.236Z In(86) sshd-session[132984]: pam_unix(sshd:session): session opened for user root by (uid=0)
+2026-04-03T23:20:02.286Z In(38) sshd-session[132984]: User 'root' running command '/usr/lib/vmware/openssh/bin/sftp-server -f LOCAL5 -l INFO'
+2026-04-03T23:20:02.294Z In(174) sftp-server[133012]: session opened for local user root from [192.168.124.1]
+2026-04-03T23:20:02.297Z In(174) sftp-server[133012]: open "/artemis" flags WRITE,CREATE mode 0755
+2026-04-03T23:20:02.526Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.526Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.527Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.527Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.528Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.528Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.529Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.529Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.530Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.530Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.531Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.531Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.532Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.532Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.533Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.533Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.534Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.534Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.535Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.535Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.535Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.536Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.536Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.536Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.537Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.537Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.538Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.538Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.539Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.539Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.539Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.539Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.540Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.540Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.541Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.541Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.542Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.542Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.543Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.543Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.543Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.543Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.545Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.545Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.545Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.545Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.546Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.546Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.547Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.547Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.548Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.548Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.549Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": No space left on device
+2026-04-03T23:20:02.549Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.549Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.549Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.551Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.551Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.552Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.552Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.553Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.553Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.554Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.554Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.555Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.555Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.556Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.556Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.557Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.557Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.557Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.557Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.558Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.558Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.559Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.559Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.560Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.560Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.561Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.561Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.562Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.562Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.562Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.562Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.563Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.563Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.564Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.564Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.564Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.564Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.565Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.565Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.565Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.565Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.566Z Er(171) sftp-server[133012]: error: process_write: write "/artemis": File too large
+2026-04-03T23:20:02.566Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.566Z In(174) sftp-server[133012]: set "/artemis" size 39120576
+2026-04-03T23:20:02.566Z In(174) sftp-server[133012]: sent status Failure
+2026-04-03T23:20:02.567Z In(174) sftp-server[133012]: close "/artemis" bytes read 0 written 26634240
+2026-04-03T23:20:02.568Z In(174) sftp-server[133012]: session closed for local user root from [192.168.124.1]
+2026-04-03T23:20:02.570Z In(38) sshd-session[133010]: Received disconnect from 192.168.124.1 port 60854:11: disconnected by user
+2026-04-03T23:20:02.570Z In(38) sshd-session[133010]: Disconnected from user root 192.168.124.1 port 60854
+2026-04-03T23:20:02.584Z In(14) addvob[133014]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:20:02.584Z In(14) addvob[133014]: Could not expand environment variable HOME.
+2026-04-03T23:20:02.584Z In(14) addvob[133014]: Could not expand environment variable HOME.
+2026-04-03T23:20:02.584Z In(14) addvob[133014]: Using VMware ESXi syslog APIs
+2026-04-03T23:20:02.592Z In(86) sshd-session[132984]: pam_unix(sshd:session): session closed for user root
+2026-04-03T23:22:27.941Z In(38) sshd-session[133064]: Connection from 192.168.124.1 port 43742
+2026-04-03T23:22:31.639Z In(38) sshd-session[133064]: Accepted keyboard-interactive/pam for root from 192.168.124.1 port 43742 ssh2
+2026-04-03T23:22:31.656Z In(14) addvob[133068]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:22:31.656Z In(14) addvob[133068]: Could not expand environment variable HOME.
+2026-04-03T23:22:31.656Z In(14) addvob[133068]: Could not expand environment variable HOME.
+2026-04-03T23:22:31.656Z In(14) addvob[133068]: Using VMware ESXi syslog APIs
+2026-04-03T23:22:31.663Z In(86) sshd-session[133064]: pam_unix(sshd:session): session opened for user root by (uid=0)
+2026-04-03T23:22:31.712Z In(38) sshd-session[133064]: User 'root' running command '/usr/lib/vmware/openssh/bin/sftp-server -f LOCAL5 -l INFO'
+2026-04-03T23:22:31.719Z In(174) sftp-server[133071]: session opened for local user root from [192.168.124.1]
+2026-04-03T23:22:31.722Z In(174) sftp-server[133071]: open "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/artemis" flags WRITE,CREATE mode 0755
+2026-04-03T23:22:32.160Z In(174) sftp-server[133071]: set "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/artemis" size 39120576
+2026-04-03T23:22:32.161Z In(174) sftp-server[133071]: close "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/artemis" bytes read 0 written 39120576
+2026-04-03T23:22:32.166Z In(174) sftp-server[133071]: session closed for local user root from [192.168.124.1]
+2026-04-03T23:22:32.174Z In(38) sshd-session[133069]: Received disconnect from 192.168.124.1 port 43742:11: disconnected by user
+2026-04-03T23:22:32.174Z In(38) sshd-session[133069]: Disconnected from user root 192.168.124.1 port 43742
+2026-04-03T23:22:32.193Z In(14) addvob[133073]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:22:32.193Z In(14) addvob[133073]: Could not expand environment variable HOME.
+2026-04-03T23:22:32.193Z In(14) addvob[133073]: Could not expand environment variable HOME.
+2026-04-03T23:22:32.193Z In(14) addvob[133073]: Using VMware ESXi syslog APIs
+2026-04-03T23:22:32.198Z In(86) sshd-session[133064]: pam_unix(sshd:session): session closed for user root
+2026-04-03T23:25:00.282Z In(78) crond[131666]: USER root pid 133112 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:25:00.282Z In(78) crond[131666]: USER root pid 133113 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:25:00.282Z In(78) crond[131666]: USER root pid 133114 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-03T23:27:31.231Z In(14) supershell[133167]: Starting supershell execution
+2026-04-03T23:30:00.295Z In(78) crond[131666]: USER root pid 133215 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:30:00.296Z In(78) crond[131666]: USER root pid 133216 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:30:00.296Z In(78) crond[131666]: USER root pid 133217 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-03T23:30:00.296Z In(78) crond[131666]: USER root pid 133218 cmd /bin/crx-cli ++securitydom=crxCliGcDom gc
+2026-04-03T23:35:00.311Z In(78) crond[131666]: USER root pid 133328 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:35:00.311Z In(78) crond[131666]: USER root pid 133329 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:35:00.311Z In(78) crond[131666]: USER root pid 133330 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-03T23:37:52.707Z In(38) sshd-session[133389]: Connection from 192.168.124.1 port 47206
+2026-04-03T23:37:56.285Z In(38) sshd-session[133389]: Accepted keyboard-interactive/pam for root from 192.168.124.1 port 47206 ssh2
+2026-04-03T23:37:56.302Z In(14) addvob[133393]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:37:56.302Z In(14) addvob[133393]: Could not expand environment variable HOME.
+2026-04-03T23:37:56.302Z In(14) addvob[133393]: Could not expand environment variable HOME.
+2026-04-03T23:37:56.302Z In(14) addvob[133393]: Using VMware ESXi syslog APIs
+2026-04-03T23:37:56.309Z In(86) sshd-session[133389]: pam_unix(sshd:session): session opened for user root by (uid=0)
+2026-04-03T23:37:56.358Z In(38) sshd-session[133389]: User 'root' running command '/usr/lib/vmware/openssh/bin/sftp-server -f LOCAL5 -l INFO'
+2026-04-03T23:37:56.366Z In(174) sftp-server[133396]: session opened for local user root from [192.168.124.1]
+2026-04-03T23:37:56.369Z In(174) sftp-server[133396]: open "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" flags WRITE,CREATE mode 0644
+2026-04-03T23:37:56.374Z In(174) sftp-server[133396]: set "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" size 1119
+2026-04-03T23:37:56.376Z In(174) sftp-server[133396]: close "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" bytes read 0 written 1119
+2026-04-03T23:37:56.377Z In(174) sftp-server[133396]: session closed for local user root from [192.168.124.1]
+2026-04-03T23:37:56.385Z In(38) sshd-session[133394]: Received disconnect from 192.168.124.1 port 47206:11: disconnected by user
+2026-04-03T23:37:56.385Z In(38) sshd-session[133394]: Disconnected from user root 192.168.124.1 port 47206
+2026-04-03T23:37:56.396Z In(14) addvob[133398]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:37:56.396Z In(14) addvob[133398]: Could not expand environment variable HOME.
+2026-04-03T23:37:56.396Z In(14) addvob[133398]: Could not expand environment variable HOME.
+2026-04-03T23:37:56.396Z In(14) addvob[133398]: Using VMware ESXi syslog APIs
+2026-04-03T23:37:56.404Z In(86) sshd-session[133389]: pam_unix(sshd:session): session closed for user root
+2026-04-03T23:38:37.510Z In(38) sshd-session[133403]: Connection from 192.168.124.1 port 44570
+2026-04-03T23:38:40.922Z No(85) sshd-session[133405]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.124.1  user=root
+2026-04-03T23:38:40.923Z Er(11) sshd-session[133405]: [module:pam_lsass]pam_do_authenticate: error [login:root][error code:2]
+2026-04-03T23:38:40.923Z Er(11) sshd-session[133405]: [module:pam_lsass]pam_sm_authenticate: failed [error code:2]
+2026-04-03T23:38:40.934Z In(14) addvob[133407]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:38:40.934Z In(14) addvob[133407]: Could not expand environment variable HOME.
+2026-04-03T23:38:40.934Z In(14) addvob[133407]: Could not expand environment variable HOME.
+2026-04-03T23:38:40.934Z In(14) addvob[133407]: Using VMware ESXi syslog APIs
+2026-04-03T23:38:45.004Z In(38) sshd-session[133408]: Connection from 192.168.124.1 port 52580
+2026-04-03T23:38:45.699Z Er(35) sshd-session[133403]: error: PAM: Authentication failure for root from 192.168.124.1
+2026-04-03T23:38:45.703Z In(38) sshd-session[133403]: Connection closed by authenticating user root 192.168.124.1 port 44570 [preauth]
+2026-04-03T23:38:48.453Z In(38) sshd-session[133408]: Accepted keyboard-interactive/pam for root from 192.168.124.1 port 52580 ssh2
+2026-04-03T23:38:48.472Z In(14) addvob[133412]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:38:48.472Z In(14) addvob[133412]: Could not expand environment variable HOME.
+2026-04-03T23:38:48.472Z In(14) addvob[133412]: Could not expand environment variable HOME.
+2026-04-03T23:38:48.472Z In(14) addvob[133412]: Using VMware ESXi syslog APIs
+2026-04-03T23:38:48.479Z In(86) sshd-session[133408]: pam_unix(sshd:session): session opened for user root by (uid=0)
+2026-04-03T23:38:48.529Z In(38) sshd-session[133408]: User 'root' running command '/usr/lib/vmware/openssh/bin/sftp-server -f LOCAL5 -l INFO'
+2026-04-03T23:38:48.537Z In(174) sftp-server[133415]: session opened for local user root from [192.168.124.1]
+2026-04-03T23:38:48.539Z In(174) sftp-server[133415]: open "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" flags WRITE,CREATE mode 0644
+2026-04-03T23:38:48.542Z In(174) sftp-server[133415]: set "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" size 1161
+2026-04-03T23:38:48.543Z In(174) sftp-server[133415]: close "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" bytes read 0 written 1161
+2026-04-03T23:38:48.546Z In(174) sftp-server[133415]: session closed for local user root from [192.168.124.1]
+2026-04-03T23:38:48.553Z In(38) sshd-session[133413]: Received disconnect from 192.168.124.1 port 52580:11: disconnected by user
+2026-04-03T23:38:48.553Z In(38) sshd-session[133413]: Disconnected from user root 192.168.124.1 port 52580
+2026-04-03T23:38:48.569Z In(14) addvob[133417]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:38:48.569Z In(14) addvob[133417]: Could not expand environment variable HOME.
+2026-04-03T23:38:48.569Z In(14) addvob[133417]: Could not expand environment variable HOME.
+2026-04-03T23:38:48.569Z In(14) addvob[133417]: Using VMware ESXi syslog APIs
+2026-04-03T23:38:48.574Z In(86) sshd-session[133408]: pam_unix(sshd:session): session closed for user root
+2026-04-03T23:39:19.765Z In(38) sshd-session[133434]: Connection from 192.168.124.1 port 45878
+2026-04-03T23:39:23.182Z In(38) sshd-session[133434]: Accepted keyboard-interactive/pam for root from 192.168.124.1 port 45878 ssh2
+2026-04-03T23:39:23.195Z In(14) addvob[133447]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:39:23.195Z In(14) addvob[133447]: Could not expand environment variable HOME.
+2026-04-03T23:39:23.195Z In(14) addvob[133447]: Could not expand environment variable HOME.
+2026-04-03T23:39:23.195Z In(14) addvob[133447]: Using VMware ESXi syslog APIs
+2026-04-03T23:39:23.203Z In(86) sshd-session[133434]: pam_unix(sshd:session): session opened for user root by (uid=0)
+2026-04-03T23:39:23.252Z In(38) sshd-session[133434]: User 'root' running command '/usr/lib/vmware/openssh/bin/sftp-server -f LOCAL5 -l INFO'
+2026-04-03T23:39:23.259Z In(174) sftp-server[133450]: session opened for local user root from [192.168.124.1]
+2026-04-03T23:39:23.263Z In(174) sftp-server[133450]: open "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" flags WRITE,CREATE mode 0644
+2026-04-03T23:39:23.266Z In(174) sftp-server[133450]: set "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" size 1165
+2026-04-03T23:39:23.267Z In(174) sftp-server[133450]: close "/vmfs/volumes/OSDATA-69d0473d-ded27d57-be04-52540075d1a0/main.js" bytes read 0 written 1165
+2026-04-03T23:39:23.269Z In(174) sftp-server[133450]: session closed for local user root from [192.168.124.1]
+2026-04-03T23:39:23.270Z In(38) sshd-session[133448]: Received disconnect from 192.168.124.1 port 45878:11: disconnected by user
+2026-04-03T23:39:23.271Z In(38) sshd-session[133448]: Disconnected from user root 192.168.124.1 port 45878
+2026-04-03T23:39:23.284Z In(14) addvob[133452]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-03T23:39:23.284Z In(14) addvob[133452]: Could not expand environment variable HOME.
+2026-04-03T23:39:23.284Z In(14) addvob[133452]: Could not expand environment variable HOME.
+2026-04-03T23:39:23.284Z In(14) addvob[133452]: Using VMware ESXi syslog APIs
+2026-04-03T23:39:23.290Z In(86) sshd-session[133434]: pam_unix(sshd:session): session closed for user root
+2026-04-03T23:40:00.326Z In(78) crond[131666]: USER root pid 133465 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:40:00.326Z In(78) crond[131666]: USER root pid 133466 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:40:00.326Z In(78) crond[131666]: USER root pid 133467 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-03T23:40:00.327Z In(78) crond[131666]: USER root pid 133468 cmd /bin/crx-cli ++securitydom=crxCliGcDom gc
+2026-04-03T23:45:00.339Z In(78) crond[131666]: USER root pid 133554 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:45:00.340Z In(78) crond[131666]: USER root pid 133555 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:45:00.340Z In(78) crond[131666]: USER root pid 133556 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-03T23:50:00.354Z In(78) crond[131666]: USER root pid 133640 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:50:00.354Z In(78) crond[131666]: USER root pid 133641 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:50:00.355Z In(78) crond[131666]: USER root pid 133642 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-03T23:50:00.355Z In(78) crond[131666]: USER root pid 133643 cmd /bin/crx-cli ++securitydom=crxCliGcDom gc
+2026-04-03T23:55:00.369Z In(78) crond[131666]: USER root pid 133728 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-03T23:55:00.370Z In(78) crond[131666]: USER root pid 133729 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-03T23:55:00.370Z In(78) crond[131666]: USER root pid 133730 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-04T00:00:00.383Z In(78) crond[131666]: USER root pid 133851 cmd python ++group=host/vim/vmvisor/systemStorage,securitydom=systemStorageMonitorDom /sbin/systemStorageMonitor.pyc
+2026-04-04T00:00:00.383Z In(78) crond[131666]: USER root pid 133852 cmd /usr/lib/vmware/vmksummary/log-heartbeat.py
+2026-04-04T00:00:00.384Z In(78) crond[131666]: USER root pid 133853 cmd /bin/hostd-probe.sh ++group=host/vim/vmvisor/hostd-probe/stats/sh,securitydom=hostdProbeDom
+2026-04-04T00:00:00.384Z In(78) crond[131666]: USER root pid 133854 cmd /usr/lib/vmware/misc/bin/vmkmemstats.sh ++group=host/vim/vmvisor/vmkmemstats.sh,mem=groupMax
+2026-04-04T00:00:00.384Z In(78) crond[131666]: USER root pid 133855 cmd /bin/pam_tally2 --reset
+2026-04-04T00:00:00.385Z In(78) crond[131666]: USER root pid 133856 cmd /bin/crx-cli ++securitydom=crxCliGcDom gc
+2026-04-04T00:01:00.390Z In(78) crond[131666]: USER root pid 133911 cmd /sbin/auto-backup.sh ++group=host/vim/vmvisor/auto-backup.sh
+2026-04-04T00:01:00.521Z In(14) auto-backup.sh[133912]: ConfigStore has been modified since the last backup
+2026-04-04T00:01:00.604Z In(14) backup.sh[133926]: Bootbank lock is /var/lock/bootbank/fa49a770-2a48a074-9dbf-47e478068aac
+2026-04-04T00:01:00.681Z In(14) backup.sh[133926]: Saving current state in /bootbank
+2026-04-04T00:01:00.738Z In(14) backup-ssh[133943]: SSH auth keys configuration synced to config store successfully.
+2026-04-04T00:01:00.740Z In(14) backup-ssh[133943]: SSH client configuration synced to config store successfully.
+2026-04-04T00:01:00.742Z In(14) backup-ssh[133943]: SSH server configuration synced to config store successfully
+2026-04-04T00:01:00.751Z In(14) backup.sh[133926]: Ssh configuration synced to configstore
+2026-04-04T00:01:00.757Z In(14) backup.sh[133926]: Creating ConfigStore Backup
+2026-04-04T00:01:00.763Z Er(11) configStoreBackup[133946]: Stat backup /var/lib/vmware/configstore/backup/current-store-1: rc = 0, errno = 0
+2026-04-04T00:01:00.766Z In(14) configStoreBackup[133946]: ConfigStore backup into /var/lib/vmware/configstore/backup/current-store-1 completed successfully
+2026-04-04T00:01:00.766Z In(14) configStoreBackup[133946]: ConfigStore backup into /var/lib/vmware/configstore/backup/current-store-1 completed with rc = 0
+2026-04-04T00:01:00.766Z Er(11) configStoreBackup[133946]: Stat backup /var/lib/vmware/configstore/backup/datafile-store: rc = 0, errno = 2
+2026-04-04T00:01:00.767Z In(14) configStoreBackup[133946]: ConfigStore backup into /var/lib/vmware/configstore/backup/datafile-store completed successfully
+2026-04-04T00:01:00.767Z In(14) configStoreBackup[133946]: ConfigStore backup into /var/lib/vmware/configstore/backup/datafile-store completed with rc = 0
+2026-04-04T00:01:00.793Z In(14) backup-check[133948]: Esx imagedb locked.
+2026-04-04T00:01:00.794Z In(14) backup-check[133948]: Found 123 vibs in image profile.
+2026-04-04T00:01:00.795Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/clusterstore--1214674521922854400.xml' schemaId='clusterstore-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.795Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/loadesx--4406820425343553021.xml'
+2026-04-04T00:01:00.795Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmkusb-esxio-8068825622063450629.xml'
+2026-04-04T00:01:00.796Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esx-dvfilter-generic-fastpath--2796132382397695479.xml'
+2026-04-04T00:01:00.796Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nhpsa--9042448519025678324.xml'
+2026-04-04T00:01:00.796Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-esxio--7257226554711861746.xml'
+2026-04-04T00:01:00.796Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ntg3-1612139405784773647.xml'
+2026-04-04T00:01:00.796Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/spidev-esxio-2757219259853774351.xml'
+2026-04-04T00:01:00.797Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bfedac-esxio--5908840446760875505.xml'
+2026-04-04T00:01:00.797Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rdmahl--6417830317847683054.xml'
+2026-04-04T00:01:00.797Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlxbf-gige-esxio--2182571780174278633.xml'
+2026-04-04T00:01:00.797Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmkusb--6652899420347977701.xml'
+2026-04-04T00:01:00.797Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pvscsi--2839273288992145377.xml'
+2026-04-04T00:01:00.797Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-intelv2-nvme-vmd-plugin-5227254194474269731.xml'
+2026-04-04T00:01:00.798Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/penspi-esxio-3766505619419817000.xml'
+2026-04-04T00:01:00.798Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bmcal-esxio-2172309767494890025.xml'
+2026-04-04T00:01:00.798Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-oem-dell-plugin--7142196400986022358.xml'
+2026-04-04T00:01:00.798Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-oem-lenovo-plugin--3705752284914773972.xml'
+2026-04-04T00:01:00.798Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/vsanhealth--7252272331400887238.xml' schemaId='vsanhealth-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.799Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmware-esx-esxcli-nvme-plugin-5001823443837432381.xml'
+2026-04-04T00:01:00.799Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmerdma--5738423847728050625.xml'
+2026-04-04T00:01:00.799Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/native-misc-drivers--7773646079442447807.xml'
+2026-04-04T00:01:00.799Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nipmi-6591894657689168451.xml'
+2026-04-04T00:01:00.804Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/esx-base-750844975848581188.xml' schemaId='esx-base-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.804Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-msgpt35-4090110432831115856.xml'
+2026-04-04T00:01:00.805Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmetcp--7818873969079180207.xml'
+2026-04-04T00:01:00.805Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/iavmd--6422297680685323694.xml'
+2026-04-04T00:01:00.805Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/atlantic-3137850086131581025.xml'
+2026-04-04T00:01:00.805Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-mr3-4132488351422931049.xml'
+2026-04-04T00:01:00.808Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/esxio-base-8762523016439111276.xml' schemaId='esxio-base-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.808Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-msgpt2--5970613167340249490.xml'
+2026-04-04T00:01:00.809Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qfle3--2517390882679429516.xml'
+2026-04-04T00:01:00.809Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsi-msgpt3--2868007923650569099.xml'
+2026-04-04T00:01:00.809Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-core--2290432825855889281.xml'
+2026-04-04T00:01:00.809Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-rdma--5837419105191776129.xml'
+2026-04-04T00:01:00.810Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/dwi2c-esxio-2830377460432849029.xml'
+2026-04-04T00:01:00.810Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/esxio-update-7124153484416468614.xml' schemaId='esxio-update-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.810Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pvscsi-esxio--8387789160151327080.xml'
+2026-04-04T00:01:00.810Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-ens-474301829729690777.xml'
+2026-04-04T00:01:00.810Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmksdhci-9008127084135543966.xml'
+2026-04-04T00:01:00.810Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmetcp-esxio--4604779040360807264.xml'
+2026-04-04T00:01:00.811Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/elxnet-1946758428691706529.xml'
+2026-04-04T00:01:00.811Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esx-ui-8293235535419959971.xml'
+2026-04-04T00:01:00.811Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/infravisor-8997907133149463716.xml'
+2026-04-04T00:01:00.811Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/iser--4693103531430742363.xml'
+2026-04-04T00:01:00.812Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qcnic--5907714000110839638.xml'
+2026-04-04T00:01:00.812Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-ens-esxio-5003902926672119979.xml'
+2026-04-04T00:01:00.812Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esxio-dvfilter-generic-fastpath-5845242820056691884.xml'
+2026-04-04T00:01:00.812Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvme-pcie--6244974539466769749.xml'
+2026-04-04T00:01:00.812Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/vmware-hbrsrv--7613977505523482961.xml' schemaId='vmware-hbrsrv-8.0.3_0.0.24022510'
+2026-04-04T00:01:00.812Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvme-pcie-esxio-5776915539691625648.xml'
+2026-04-04T00:01:00.813Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nvmxnet3-5682775502847760051.xml'
+2026-04-04T00:01:00.813Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pensandoatlas-6637280343931241140.xml'
+2026-04-04T00:01:00.813Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/cndi-igc-7179879369177023159.xml'
+2026-04-04T00:01:00.813Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rshim-net-155130162716811960.xml'
+2026-04-04T00:01:00.814Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmware-esx-esxcli-nvme-plugin-esxio--1931829931018724169.xml'
+2026-04-04T00:01:00.814Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esx-xserver-4002444622698975418.xml'
+2026-04-04T00:01:00.814Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nenic-3487522764178328255.xml'
+2026-04-04T00:01:00.814Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/penedac-esxio-6835941441514987712.xml'
+2026-04-04T00:01:00.814Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/vcls-pod-crx--1512940133824995130.xml' schemaId='vcls-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.814Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-nvme-pcie-plugin-4945301170736811730.xml'
+2026-04-04T00:01:00.814Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/igbn--8746341788573877036.xml'
+2026-04-04T00:01:00.815Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/icen-8916530193377992404.xml'
+2026-04-04T00:01:00.815Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bnxtnet--2632387123670074668.xml'
+2026-04-04T00:01:00.815Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-core-esxio--7700149672255215910.xml'
+2026-04-04T00:01:00.816Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-rdma-esxio-388014082325948122.xml'
+2026-04-04T00:01:00.816Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/gc-6553940035640415455.xml'
+2026-04-04T00:01:00.816Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/intelgpio-4683471463143431907.xml'
+2026-04-04T00:01:00.816Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/mnet-esxio-2664124115780522213.xml'
+2026-04-04T00:01:00.816Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmw-ahci--2863041570900223257.xml'
+2026-04-04T00:01:00.817Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ionic-cloud-8808722694233827047.xml'
+2026-04-04T00:01:00.817Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ne1000-7553652028367298799.xml'
+2026-04-04T00:01:00.817Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/loadesxio--159341403978589451.xml'
+2026-04-04T00:01:00.817Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vdfs--5534425978642025221.xml'
+2026-04-04T00:01:00.817Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esxio-combiner-esxio--7415527965380486402.xml'
+2026-04-04T00:01:00.818Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-cc-7221626889777496831.xml'
+2026-04-04T00:01:00.818Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rste-3332480026299810559.xml'
+2026-04-04T00:01:00.818Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/mlnx-bfbootctl-esxio--6355423439093048575.xml'
+2026-04-04T00:01:00.818Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ionic-en-esxio--137840806006651640.xml'
+2026-04-04T00:01:00.818Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rd1173-esxio-6065201338491481866.xml'
+2026-04-04T00:01:00.818Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/crx-2409901468917765906.xml'
+2026-04-04T00:01:00.818Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/trx--7871915387220191467.xml'
+2026-04-04T00:01:00.819Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/esxio-combiner--4257326179364409573.xml'
+2026-04-04T00:01:00.819Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-lsiv2-drivers-plugin-3707373368893515038.xml'
+2026-04-04T00:01:00.819Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/elxiscsi-7779274521910363945.xml'
+2026-04-04T00:01:00.819Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bmcal-407707237903790385.xml'
+2026-04-04T00:01:00.819Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/cpu-microcode-3874795112238877499.xml'
+2026-04-04T00:01:00.819Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-smartpqiv2-plugin--1654087741036243136.xml'
+2026-04-04T00:01:00.819Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/i40en--7005967177474860220.xml'
+2026-04-04T00:01:00.820Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/native-misc-drivers-esxio-6542998665911438665.xml'
+2026-04-04T00:01:00.820Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ionic-en--3426907647270974127.xml'
+2026-04-04T00:01:00.820Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qfle3f-2961494683449831764.xml'
+2026-04-04T00:01:00.820Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qedentv-7929314746453517149.xml'
+2026-04-04T00:01:00.820Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/mtip32xx-native-781255057096333158.xml'
+2026-04-04T00:01:00.821Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qfle3i--5072165982467884688.xml'
+2026-04-04T00:01:00.821Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlx5-cc-esxio--2924112524489379977.xml'
+2026-04-04T00:01:00.821Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/irdman--5252481207035399808.xml'
+2026-04-04T00:01:00.821Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/dwi2c-3155320132838243204.xml'
+2026-04-04T00:01:00.821Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/elx-esx-libelxima.so-4614560044973845893.xml'
+2026-04-04T00:01:00.821Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qedrntv--2050234672095986300.xml'
+2026-04-04T00:01:00.822Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/esx-update--596325549009631859.xml' schemaId='esx-update-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.822Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmkata-689454865869777299.xml'
+2026-04-04T00:01:00.822Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lpfc-4107835131937698196.xml'
+2026-04-04T00:01:00.822Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lsuv2-hpv2-hpsa-plugin-1891047060682121621.xml'
+2026-04-04T00:01:00.822Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qflge-8159324616431210900.xml'
+2026-04-04T00:01:00.822Z In(14) backup-check[133948]: xmlfile='/var/db/esximg/vibs/esxio--7380652109566714472.xml' schemaId='esxio-8.0.3_0.70.24677879'
+2026-04-04T00:01:00.823Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qlnativefc-5721695675842464164.xml'
+2026-04-04T00:01:00.823Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vmksdhci-esxio-7183246134909510565.xml'
+2026-04-04T00:01:00.823Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/brcmfcoe--7077156919334518355.xml'
+2026-04-04T00:01:00.823Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/drivervm-gpu-base-7060616953794939310.xml'
+2026-04-04T00:01:00.823Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nfnic--5839761048527452742.xml'
+2026-04-04T00:01:00.823Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/pengpio-esxio-3957121686344348094.xml'
+2026-04-04T00:01:00.823Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/sfvmk--7386550714053122617.xml'
+2026-04-04T00:01:00.824Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/ixgben-7203919405131732427.xml'
+2026-04-04T00:01:00.824Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/nmlxbf-pmc-esxio-1867198322714335691.xml'
+2026-04-04T00:01:00.824Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/lpnic--6166021181119968307.xml'
+2026-04-04T00:01:00.824Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vds-vsip--1884423871890520101.xml'
+2026-04-04T00:01:00.824Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bcm-mpi3--8667463485179117088.xml'
+2026-04-04T00:01:00.824Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/bnxtroce--4646501423496497182.xml'
+2026-04-04T00:01:00.825Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/smartpqi--7747802190966660115.xml'
+2026-04-04T00:01:00.825Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/gc-esxio-732539502187435506.xml'
+2026-04-04T00:01:00.825Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/vsan-7350783098597441531.xml'
+2026-04-04T00:01:00.825Z Db(15) backup-check[133948]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/rshim-6097877412238171135.xml'
+2026-04-04T00:01:00.825Z In(14) backup-check[133948]: Esx imagedb unlocked.
+2026-04-04T00:01:00.866Z In(14) backup.sh[133926]: Locking esx.conf
+2026-04-04T00:01:00.919Z In(14) backup.sh[133926]: Creating archive
+2026-04-04T00:01:01.061Z In(14) backup.sh[133926]: Unlocked esx.conf
+2026-04-04T00:01:01.089Z In(14) backup.sh[133926]: Using key ID 83820410-63af-4466-9270-279814d9120e to encrypt
+2026-04-04T00:03:39.922Z In(38) sshd-session[134023]: Connection from 192.168.124.1 port 36422
+2026-04-04T00:03:43.846Z In(38) sshd-session[134023]: Accepted keyboard-interactive/pam for root from 192.168.124.1 port 36422 ssh2
+2026-04-04T00:03:43.862Z In(14) addvob[134027]: Log for VMware ESXi version=8.0.3 build=build-24677879 option=Release
+2026-04-04T00:03:43.862Z In(14) addvob[134027]: Could not expand environment variable HOME.
+2026-04-04T00:03:43.862Z In(14) addvob[134027]: Could not expand environment variable HOME.
+2026-04-04T00:03:43.862Z In(14) addvob[134027]: Using VMware ESXi syslog APIs
+2026-04-04T00:03:43.871Z In(86) sshd-session[134023]: pam_unix(sshd:session): session opened for user root by (uid=0)
+2026-04-04T00:03:43.922Z In(38) sshd-session[134023]: User 'root' running command '/usr/lib/vmware/openssh/bin/sftp-server -f LOCAL5 -l INFO'
+2026-04-04T00:03:43.930Z In(174) sftp-server[134030]: session opened for local user root from [192.168.124.1]
+2026-04-04T00:03:43.934Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:43.935Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:43.936Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:43.936Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:43.937Z In(174) sftp-server[134030]: opendir "/"
+2026-04-04T00:03:43.939Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:43.943Z In(174) sftp-server[134030]: closedir "/"
+2026-04-04T00:03:43.951Z In(174) sftp-server[134030]: opendir "/var"
+2026-04-04T00:03:43.952Z In(174) sftp-server[134030]: opendir "/var/lib"
+2026-04-04T00:03:43.953Z In(174) sftp-server[134030]: closedir "/var/lib"
+2026-04-04T00:03:43.955Z In(174) sftp-server[134030]: closedir "/var"
+2026-04-04T00:03:43.960Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:43.970Z In(174) sftp-server[134030]: statvfs "/"
+2026-04-04T00:03:43.971Z In(174) sftp-server[134030]: statvfs "/"
+2026-04-04T00:03:47.286Z In(174) sftp-server[134030]: statvfs "/"
+2026-04-04T00:03:47.293Z In(174) sftp-server[134030]: statvfs "/"
+2026-04-04T00:03:47.294Z In(174) sftp-server[134030]: statvfs "/"
+2026-04-04T00:03:47.295Z In(174) sftp-server[134030]: statvfs "/"
+2026-04-04T00:03:47.296Z In(174) sftp-server[134030]: statvfs "/"
+2026-04-04T00:03:47.302Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:47.302Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:47.303Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:47.305Z In(174) sftp-server[134030]: open "/.mtoolsrc" flags READ mode 00
+2026-04-04T00:03:47.306Z In(174) sftp-server[134030]: close "/.mtoolsrc" bytes read 20 written 0
+2026-04-04T00:03:47.307Z In(174) sftp-server[134030]: open "/local.tgz.ve" flags READ mode 00
+2026-04-04T00:03:47.309Z In(174) sftp-server[134030]: close "/local.tgz.ve" bytes read 32768 written 0
+2026-04-04T00:03:47.309Z In(174) sftp-server[134030]: open "/.#encryption.info" flags READ mode 00
+2026-04-04T00:03:47.310Z In(174) sftp-server[134030]: close "/.#encryption.info" bytes read 193 written 0
+2026-04-04T00:03:47.310Z In(174) sftp-server[134030]: open "/.runonce" flags READ mode 00
+2026-04-04T00:03:47.311Z In(174) sftp-server[134030]: close "/.runonce" bytes read 107 written 0
+2026-04-04T00:03:47.312Z In(174) sftp-server[134030]: open "/.ash_history" flags READ mode 00
+2026-04-04T00:03:47.313Z In(174) sftp-server[134030]: close "/.ash_history" bytes read 2813 written 0
+2026-04-04T00:03:47.355Z In(174) sftp-server[134030]: statvfs "/sbin"
+2026-04-04T00:03:47.356Z In(174) sftp-server[134030]: statvfs "/sbin"
+2026-04-04T00:03:55.224Z In(174) sftp-server[134030]: statvfs "/vmfs"
+2026-04-04T00:03:55.230Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:55.231Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:55.232Z In(174) sftp-server[134030]: opendir "/vmfs"
+2026-04-04T00:03:55.235Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:55.241Z In(174) sftp-server[134030]: closedir "/vmfs"
+2026-04-04T00:03:55.241Z In(174) sftp-server[134030]: statvfs "/vmfs/devices"
+2026-04-04T00:03:55.242Z In(174) sftp-server[134030]: statvfs "/vmfs/devices"
+2026-04-04T00:03:55.250Z In(174) sftp-server[134030]: opendir "/vmfs/volumes"
+2026-04-04T00:03:55.256Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:55.258Z In(174) sftp-server[134030]: closedir "/vmfs/volumes"
+2026-04-04T00:03:56.674Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:56.675Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:56.680Z In(174) sftp-server[134030]: open "/.mtoolsrc" flags READ mode 00
+2026-04-04T00:03:56.682Z In(174) sftp-server[134030]: close "/.mtoolsrc" bytes read 20 written 0
+2026-04-04T00:03:56.682Z In(174) sftp-server[134030]: open "/local.tgz.ve" flags READ mode 00
+2026-04-04T00:03:56.684Z In(174) sftp-server[134030]: close "/local.tgz.ve" bytes read 32768 written 0
+2026-04-04T00:03:56.685Z In(174) sftp-server[134030]: open "/.#encryption.info" flags READ mode 00
+2026-04-04T00:03:56.686Z In(174) sftp-server[134030]: close "/.#encryption.info" bytes read 193 written 0
+2026-04-04T00:03:56.686Z In(174) sftp-server[134030]: open "/.runonce" flags READ mode 00
+2026-04-04T00:03:56.687Z In(174) sftp-server[134030]: close "/.runonce" bytes read 107 written 0
+2026-04-04T00:03:56.688Z In(174) sftp-server[134030]: open "/.ash_history" flags READ mode 00
+2026-04-04T00:03:56.689Z In(174) sftp-server[134030]: close "/.ash_history" bytes read 2813 written 0
+2026-04-04T00:03:56.741Z In(174) sftp-server[134030]: statvfs "/sbin"
+2026-04-04T00:03:56.742Z In(174) sftp-server[134030]: statvfs "/sbin"
+2026-04-04T00:03:58.693Z In(174) sftp-server[134030]: statvfs "/vmfs"
+2026-04-04T00:03:58.801Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/fa49a770-2a48a074-9dbf-47e478068aac"
+2026-04-04T00:03:58.825Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.829Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/fa49a770-2a48a074-9dbf-47e478068aac"
+2026-04-04T00:03:58.829Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/3e9b04b6-4a441fdf-8a9d-dbcc6051d4b6"
+2026-04-04T00:03:58.832Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.832Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/3e9b04b6-4a441fdf-8a9d-dbcc6051d4b6"
+2026-04-04T00:03:58.832Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0"
+2026-04-04T00:03:58.842Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.843Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0"
+2026-04-04T00:03:58.843Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/.sdd.sf"
+2026-04-04T00:03:58.846Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/.sdd.sf"
+2026-04-04T00:03:58.846Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker"
+2026-04-04T00:03:58.858Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.858Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker"
+2026-04-04T00:03:58.859Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages"
+2026-04-04T00:03:58.863Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.863Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages"
+2026-04-04T00:03:58.863Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var"
+2026-04-04T00:03:58.867Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.867Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var"
+2026-04-04T00:03:58.868Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db"
+2026-04-04T00:03:58.871Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.872Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db"
+2026-04-04T00:03:58.872Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker"
+2026-04-04T00:03:58.877Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.878Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker"
+2026-04-04T00:03:58.878Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/vibs"
+2026-04-04T00:03:58.883Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.884Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/vibs"
+2026-04-04T00:03:58.884Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/bulletins"
+2026-04-04T00:03:58.888Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.889Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/bulletins"
+2026-04-04T00:03:58.889Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/profiles"
+2026-04-04T00:03:58.892Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/profiles"
+2026-04-04T00:03:58.892Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/baseimages"
+2026-04-04T00:03:58.894Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/baseimages"
+2026-04-04T00:03:58.894Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/addons"
+2026-04-04T00:03:58.897Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/addons"
+2026-04-04T00:03:58.897Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/solutions"
+2026-04-04T00:03:58.899Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/solutions"
+2026-04-04T00:03:58.899Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/manifests"
+2026-04-04T00:03:58.901Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/manifests"
+2026-04-04T00:03:58.901Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/reservedComponents"
+2026-04-04T00:03:58.903Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/reservedComponents"
+2026-04-04T00:03:58.903Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/reservedVibs"
+2026-04-04T00:03:58.905Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/var/db/locker/reservedVibs"
+2026-04-04T00:03:58.905Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/vmtoolsRepo"
+2026-04-04T00:03:58.909Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.909Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/vmtoolsRepo"
+2026-04-04T00:03:58.909Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/vmtoolsRepo/floppies"
+2026-04-04T00:03:58.914Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.914Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/vmtoolsRepo/floppies"
+2026-04-04T00:03:58.915Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/vmtoolsRepo/vmtools"
+2026-04-04T00:03:58.921Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.922Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/locker/packages/vmtoolsRepo/vmtools"
+2026-04-04T00:03:58.922Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware"
+2026-04-04T00:03:58.926Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.926Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware"
+2026-04-04T00:03:58.927Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware/lifecycle"
+2026-04-04T00:03:58.931Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.931Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware/lifecycle"
+2026-04-04T00:03:58.931Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware/lifecycle/hostSeed"
+2026-04-04T00:03:58.936Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.936Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware/lifecycle/hostSeed"
+2026-04-04T00:03:58.936Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware/lifecycle/hostSeed/esxioCachedVibs"
+2026-04-04T00:03:58.946Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.948Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmware/lifecycle/hostSeed/esxioCachedVibs"
+2026-04-04T00:03:58.948Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/cache"
+2026-04-04T00:03:58.951Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.952Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/cache"
+2026-04-04T00:03:58.952Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/cache/loadESX"
+2026-04-04T00:03:58.956Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.957Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/cache/loadESX"
+2026-04-04T00:03:58.957Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/core"
+2026-04-04T00:03:58.960Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/core"
+2026-04-04T00:03:58.960Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmkdump"
+2026-04-04T00:03:58.964Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.965Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vmkdump"
+2026-04-04T00:03:58.965Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/var"
+2026-04-04T00:03:58.968Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.968Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/var"
+2026-04-04T00:03:58.969Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/var/tmp"
+2026-04-04T00:03:58.971Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/var/tmp"
+2026-04-04T00:03:58.971Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/downloads"
+2026-04-04T00:03:58.981Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/downloads"
+2026-04-04T00:03:58.981Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/log"
+2026-04-04T00:03:58.989Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:58.992Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/log"
+2026-04-04T00:03:58.992Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/store"
+2026-04-04T00:03:58.995Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/store"
+2026-04-04T00:03:58.995Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vdtc"
+2026-04-04T00:03:58.998Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:59.001Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/vdtc"
+2026-04-04T00:03:59.001Z In(174) sftp-server[134030]: opendir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/healthd"
+2026-04-04T00:03:59.008Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:03:59.014Z In(174) sftp-server[134030]: closedir "/vmfs/volumes/69d0473d-ded27d57-be04-52540075d1a0/healthd"
+2026-04-04T00:04:03.206Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:04:03.208Z In(174) sftp-server[134030]: sent status No such file
+2026-04-04T00:04:03.217Z In(174) sftp-server[134030]: statvfs "/vmfs/devices"
+2026-04-04T00:04:03.218Z In(174) sftp-server[134030]: statvfs "/vmfs/devices"

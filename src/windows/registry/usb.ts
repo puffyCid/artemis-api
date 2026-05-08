@@ -86,12 +86,17 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
           }
         }
       }
+
       if (
         reg.path.includes(usb_info.tracking_id) &&
         reg.path.includes("\\USBSTOR\\") &&
         reg.name === "0064"
       ) {
         for (const value of reg.values) {
+          if (typeof value.data === 'string') {
+            usb_info.first_install = value.data;
+            break;
+          }
           usb_info.first_install = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
@@ -102,6 +107,10 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
         reg.name === "0065"
       ) {
         for (const value of reg.values) {
+          if (typeof value.data === 'string') {
+            usb_info.install = value.data;
+            break;
+          }
           usb_info.install = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
@@ -112,6 +121,11 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
         reg.name === "0066"
       ) {
         for (const value of reg.values) {
+          if (typeof value.data === 'string') {
+            usb_info.last_connected = value.data;
+            usb_info.datetime = usb_info.last_connected;
+            break;
+          }
           usb_info.last_connected = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
@@ -123,6 +137,10 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
         reg.name === "0067"
       ) {
         for (const value of reg.values) {
+          if (typeof value.data === 'string') {
+            usb_info.last_removal = value.data;
+            break;
+          }
           usb_info.last_removal = unixEpochToISO(
             filetimeToUnixEpoch(BigInt(value.data)),
           );
@@ -155,11 +173,12 @@ function usbStor(data: Registry): UsbDevices {
     last_insertion: "",
     install: "",
     first_install: "",
-    message: "",
+    message: "USB no friendly name",
     datetime: "1970-01-01T00:00:00.000Z",
     timestamp_desc: "USB Last Connected",
     artifact: "Windows USB Device",
-    data_type: "windows:registry:usb:entry"
+    data_type: "windows:registry:usb:entry",
+    evidence: data.evidence,
   };
 
   const info = (data.key.split("\\").pop() as string).split("&");
@@ -186,7 +205,7 @@ function usbStor(data: Registry): UsbDevices {
   }
 
   if (data.name.at(1) !== undefined && data.name.at(1) !== "&") {
-    entry.tracking_id = data.name.split("&")[0] ?? "";
+    entry.tracking_id = data.name.split("&").at(0) ?? "";
   }
 
   for (const value of data.values) {

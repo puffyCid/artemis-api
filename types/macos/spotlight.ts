@@ -24,7 +24,7 @@ export interface Spotlight {
   /**Array of properties associated with the entry */
   values: Record<string, SpotlightProperties>;
   /**Location of the Spotlight database that was parsed */
-  directory: string;
+  evidence: string;
 }
 
 /**

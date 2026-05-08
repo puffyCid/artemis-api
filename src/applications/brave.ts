@@ -1,5 +1,6 @@
-import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../types/applications/chromium";
+import { BrowserType, ChromiumAutofill, ChromiumBookmarks, ChromiumCache, ChromiumCookies, ChromiumDips, ChromiumDownloads, ChromiumFavicons, ChromiumHistory, ChromiumLocalStorage, ChromiumLogins, ChromiumSession, ChromiumShortcuts, Extension, Preferences } from "../../types/applications/chromium";
 import { PlatformType } from "../system/systeminfo";
+import { chromiumCache } from "./chromium/cache";
 import { Chromium } from "./chromium/cr";
 import { chromiumBookmarks, chromiumExtensions } from "./chromium/json";
 import { chromiumLocalStorage } from "./chromium/level";
@@ -18,6 +19,7 @@ type BraveLocalStorage = ChromiumLocalStorage;
 type BraveSession = ChromiumSession;
 type BraveFavicons = ChromiumFavicons;
 type BraveShortcuts = ChromiumShortcuts;
+type BraveCache = ChromiumCache;
 
 /**
  * Class to extract Brave browser information. Since Brave is based on Chromium we can leverage the existing Chromium artifacts to parse Brave info
@@ -209,5 +211,9 @@ export class Brave extends Chromium {
   public override dips(offset = 0, limit = 100): BraveDips[] {
     const query = `SELECT * from bounces LIMIT ${limit} OFFSET ${offset}`;
     return chromiumDips(this.paths, this.platform, query);
+  }
+
+  public override cache(): BraveCache[] {
+    return chromiumCache(this.paths, this.platform);
   }
 }

@@ -24,7 +24,7 @@ function main() {
 main();
 ```
 
-### getPkgs(offset, limit, path) -> Pkg[] | LinuxError
+### getPkgs(offset, limit, path) -> Pkg[] | FreebsdError
 
 Get list of installed pkgs on the system. You may provide an optional alternative
 full path to the local.sqlite file.

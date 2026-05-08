@@ -65,6 +65,7 @@ export function getRpmInfo(
     }
 
     const rpm: RpmPackages = {
+      evidence: path,
       name: "",
       version: "",
       release: "",

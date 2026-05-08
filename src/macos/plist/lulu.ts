@@ -1,6 +1,5 @@
 import {
   LuluAction,
-  LuluRules,
   Rule,
 } from "../../../types/macos/plist/lulu";
 import { MacosError } from "../errors";
@@ -11,7 +10,7 @@ import { getPlist } from "../plist";
  * @param alt_file Optional path to Lulu `rules.plist` file
  * @returns `LuluRules` object or `MacosError`
  */
-export function luluRules(alt_file?: string): LuluRules | MacosError {
+export function luluRules(alt_file?: string): Rule[] | MacosError {
   let file = "/Library/Objective-See/LuLu/rules.plist";
   if (alt_file !== undefined) {
     file = alt_file;
@@ -27,15 +26,12 @@ export function luluRules(alt_file?: string): LuluRules | MacosError {
 
   // Rules format at: https://github.com/objective-see/LuLu/blob/master/LuLu/Extension/Rules.m#L33
   const objects = plist_data as Record<string, unknown[]>;
-  const rules: LuluRules = {
-    path: file,
-    rules: [],
-  };
 
   const object_data = objects[ "$objects" ];
   if (object_data === undefined) {
     return new MacosError(`LULU`, `Got undefined for LuLu FW objects`);
   }
+  const rules: Rule[] = [];
   for (const entry of object_data) {
     if (typeof entry !== "object") {
       continue;
@@ -66,9 +62,10 @@ export function luluRules(alt_file?: string): LuluRules | MacosError {
       pid: object_data[ rule_value[ "pid" ] as number ] as number,
       endpoint_port:
         object_data[ rule_value[ "endpointPort" ] as number ] as number,
+      evidence: file,
     };
 
-    rules.rules.push(rule);
+    rules.push(rule);
   }
 
   return rules;
@@ -90,7 +87,7 @@ function getAction(data: number): LuluAction {
 interface LuluSigning {
   "NS.keys": number[];
   "NS.objects": number[];
-  "$class": string;
+  "$class": string | number;
 }
 
 /**
@@ -124,7 +121,11 @@ function getCodeSigning(
     const value = objects.at(value_key as number) as
       | string
       | Record<string, number[]>
-      | number;
+      | number
+      | undefined;
+    if (value === undefined) {
+      continue;
+    }
     if (typeof value === "string" || typeof value === "number") {
       if (key === "signatureSigner") {
         cs_info[ key ] = getSignStatus(Number(value));
@@ -178,4 +179,54 @@ function getSignStatus(status: number): Signer {
     default:
       return Signer.UNKNOWN;
   }
+}
+
+
+export function testLuluRules(): void {
+  const lulu_test = "../../test_data/macos/lulu/rules.plist";
+  const results = luluRules(lulu_test);
+  if (results instanceof MacosError) {
+    throw console.log(results);
+  }
+
+
+  if (results.length !== 253) {
+    throw `Got ${results.length} wanted "253".......luluRules ❌`;
+  }
+
+  if (results[ 3 ]?.file !== "storekitagent") {
+    throw `Got ${results[ 3 ]?.file} wanted "storekitagent".......luluRules ❌`;
+  }
+
+  if (results[ 123 ]?.file !== "Precize") {
+    throw `Got ${results[ 123 ]?.file} wanted "Precize".......luluRules ❌`;
+  }
+
+  console.info(`  Function luluRules ✅`);
+
+  if (getAction(1) !== LuluAction.ALLOW) {
+    throw `Got ${LuluAction.BLOCK} wanted "${LuluAction.ALLOW}".......getAction ❌`;
+  }
+
+  if (getAction(0) !== LuluAction.BLOCK) {
+    throw `Got ${LuluAction.ALLOW} wanted "${LuluAction.BLOCK}".......getAction ❌`;
+  }
+
+  console.info(`  Function getAction ✅`);
+
+  const test_data: LuluSigning = { "NS.keys": [ 542, 543, 544, 545 ], "NS.objects": [ 22, 272, 273, 546 ], "$class": 279 };
+  const results_code = getCodeSigning(test_data, []);
+  if (Object.keys(results_code).length !== 0) {
+    throw `Got ${Object.keys(results_code).length} wanted "0".......getCodeSigning ❌`;
+  }
+
+  console.info(`  Function getCodeSigning ✅`);
+
+  const test_status = [ 1, 2, 3, 4 ];
+  for (const entry of test_status) {
+    if (getSignStatus(entry) === Signer.UNKNOWN) {
+      throw `Got ${getSignStatus(entry)} wanted "${Signer.UNKNOWN}".......getSignStatus ❌`;
+    }
+  }
+  console.info(`  Function getSignStatus ✅`);
 }

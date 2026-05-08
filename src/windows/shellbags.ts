@@ -2,10 +2,10 @@ import { Shellbags } from "../../types/windows/shellbags";
 import { WindowsError } from "./errors";
 
 /**
- * Function to parse and reconstruct `Shellbags` on the systemdrive
+ * Function to parse and reconstruct `Shellbags` on the system drive
  * @param resolve_guids Whether to lookup GUID values. Ex: Convert `20d04fe0-3aea-1069-a2d8-08002b30309d` to `This PC`
  * @param path Optional path to Registry file containing `Shellbags`. If not provided, will parse `Shellbags` for all users
- * @returns Array of `Shellbag` entries from from systemdrive or `WindowsError`
+ * @returns Array of `Shellbag` entries from from system drive or `WindowsError`
  */
 export function getShellbags(
   resolve_guids: boolean,

@@ -61,6 +61,7 @@ export interface Mru {
   timestamp_desc: "MRU Entry Created";
   artifact: "Windows Most Recently Used" | "MRU Open Save" | "MRU Last Visit" | "MRU Recent Docs";
   data_type: "windows:registry:mru:entry";
+  evidence: string;
 }
 
 export enum MruType {

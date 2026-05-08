@@ -37,7 +37,7 @@ export function serviceInstalls(
 
     offset += limit;
 
-    const records = recordsData as RawService7045[];
+    const records = recordsData as unknown as RawService7045[];
     for (const entry of records) {
       if (!isInstall(entry)) {
         continue;
@@ -58,7 +58,8 @@ export function serviceInstalls(
         datetime: entry.timestamp,
         timestamp_desc: "Windows Service Installed",
         artifact: "EventLog Service 7045",
-        data_type: "windows:eventlog:system:service"
+        data_type: "windows:eventlog:system:service",
+        evidence: path,
       };
       events.push(service);
     }

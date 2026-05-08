@@ -5,6 +5,7 @@ export type ErrorName =
   | "GZIP"
   | "SNAPPY"
   | "ZSTD"
-  | "LZVN";
+  | "LZVN"
+  | "LZ4";
 
 export class CompressionError extends ErrorBase<ErrorName> { }

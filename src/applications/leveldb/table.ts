@@ -254,7 +254,7 @@ function parseKey(shared_key: string, data: Uint8Array): KeyValueData | Applicat
         return new ApplicationError(`LEVELDB`, `could not get key state data: ${key_state}`);
     }
 
-    let key_string = "";
+    let key_string;
     // Sometimes key is composed of 2 strings
     const prefix = 95;
     // If key starts has prefix '_' then it has two parts
@@ -333,7 +333,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
         return new ApplicationError(`LEVELDB`, `could not determine compression type: ${is_compressed}`);
     }
 
-    let compression = CompressionType.None;
+    let compression;
     switch (is_compressed.value) {
         case 0: {
             compression = CompressionType.None;
@@ -386,7 +386,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
         shared_key: first_key_value.shared_key,
         origin: first_key_value.key,
         key: first_key_value.entry_key,
-        path,
+        evidence: path,
         state: first_key_value.value_type !== ValueType.Unknown ? LogType.Value : LogType.Deletion
     };
     values.push(entry);
@@ -411,7 +411,7 @@ function parseBlock(data: Uint8Array, offset: number, size: number, path: string
             shared_key: key_value.shared_key,
             origin: key_value.key.split(" ").at(0) ?? "",
             key: key_value.key.split(" ").at(2) ?? "",
-            path,
+            evidence: path,
             state: key_value.value_type !== ValueType.Unknown ? LogType.Value : LogType.Deletion
         };
 
@@ -495,7 +495,7 @@ function parseBlockData(shared_key: string, data: Uint8Array): BlockValue | Appl
     if (non_shared_key.value as number >= key_metadata_min_size) {
         const non_shared_key = (non_shared_data.nommed as Uint8Array);
         const key_data = new Uint8Array(non_shared_key.buffer.slice(0, non_shared_key.buffer.byteLength - key_metadata_min_size));
-        let key_string = "";
+        let key_string;
         let entry_key = "";
         // First key string has end of string character?
         const first_part = takeUntil(key_data, new Uint8Array([ 0 ]));

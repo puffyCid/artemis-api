@@ -93,4 +93,6 @@ export interface Journal {
   custom: Record<string, string>;
   /**Sequence Number associated with entry */
   seqnum: number;
+  /**Path to the Journal file */
+  evidence: string;
 }

@@ -310,7 +310,7 @@ export class Timesketch {
     };
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
-      referer: this.timesketch_auth.url,
+      referrer: this.timesketch_auth.url,
       Cookie: this.cookie,
     };
     const form_string = JSON.stringify(form);

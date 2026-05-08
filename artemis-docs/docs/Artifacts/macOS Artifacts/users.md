@@ -36,12 +36,12 @@ timeline = false
 artifact_name = "user-macos"
 [artifacts.users]
 # Optional
-# alt_path = ""
+# alt_dir = ""
 ```
 
 ## Collection Options
 
-- `alt_path` Use an alternative Users path. This configuration is **optional**.
+- `alt_dir` Use an alternative Users path. This configuration is **optional**.
   By default artemis will read all Users at
   `/var/db/dslocal/nodes/Default/users`
 
@@ -73,4 +73,6 @@ export interface Users {
   home_path: string[];
   /**UUID associated with user */
   uuid: string[];
+  /**Path to the Users plist file */
+  evidence: string;
 ```

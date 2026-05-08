@@ -78,6 +78,12 @@ export interface BookmarkData {
   is_executable: boolean;
   /**Does target file have file reference flag */
   file_ref_flag: boolean;
+  /**URL string to target */
+  url_string: string;
+  /**Target filename */
+  target_filename: string;
+  /**Volume depth associated with target */
+  volume_depth: number;
 }
 
 export enum TargetFlags {

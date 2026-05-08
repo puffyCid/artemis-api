@@ -32,7 +32,7 @@ From the `forensics/src/` directory
 | runtime    | Contains code related to the embedded JS runtime                                                                                                                                                                     |
 | structs    | Contains code related to how TOML collection files are parsed. It tells artemis how to interpret TOML collections.                                                                                               |
 | utils      | Contains code related to help parse artifacts and provide other features to artemis. <br/> Ex: Decompress/compress data, get environment variables,create a Regex expression, extract strings, convert timestamps, etc |
-| core.rs    | Contains the entry point to the **forensis** workspace.                                                                                                                                                                        |
+| core.rs    | Contains the entry point to the **forensics** workspace.                                                                                                                                                                        |
 
 
 ## Adding New Artifacts
@@ -63,6 +63,12 @@ allowed.
 Use the time functions under **utils** to help with timestamp conversions!
 
 :::
+
+## Evidence Field
+
+All artifacts should include an evidence field that points to the full path of file or folder that is the source of the artifact.
+
+For example, the evidence field for the Amcache artifact would be the full path of the Amcache.hve file.
 
 ## Artifact Scope
 

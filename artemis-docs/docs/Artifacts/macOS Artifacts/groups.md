@@ -36,12 +36,12 @@ timeline = false
 artifact_name = "groups-macos"
 [artifacts.groups_macos]
 # Optional
-# alt_path = ""
+# alt_dir = ""
 ```
 
 ## Collection Options
 
-- `alt_path` Use an alternative Groups path. This configuration is **optional**.
+- `alt_dir` Use an alternative Groups path. This configuration is **optional**.
   By default artemis will read all Groups at
   **/var/db/dslocal/nodes/Default/groups**
 
@@ -63,5 +63,7 @@ export interface Groups {
   groupmembers: string[];
   /**UUID associated with the group */
   uuid: string[];
+  /**Path to the Groups plist file */
+  evidence: string;
 }
 ```

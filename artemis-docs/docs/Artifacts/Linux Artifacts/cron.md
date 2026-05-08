@@ -14,7 +14,7 @@ supported systems.
 
 Other parsers:
 
-- Any program that read a text file
+- Any program that can read a text file
 
 References:
 

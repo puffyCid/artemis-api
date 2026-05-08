@@ -1,4 +1,4 @@
-import { FirefoxAddons, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxStorage } from "../../../types/applications/firefox";
+import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxSession, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
@@ -7,7 +7,7 @@ import { SystemError } from "../../system/error";
 import { dumpData, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
-import { firefoxAddons } from "./addons";
+import { firefoxAddons, firefoxBookmark, firefoxSessions } from "./json";
 import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxStorage } from "./sqlite";
 
 /**
@@ -25,7 +25,7 @@ export class FireFox {
      * @param alt_path Optional alternative path to directory contain FireFox data
      * @returns `FireFox` instance class
      */
-    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         if (alt_path === undefined) {
@@ -41,10 +41,10 @@ export class FireFox {
             return;
         }
 
-        this.paths = [{
+        this.paths = [ {
             full_path: alt_path,
             version: fox_version
-        }];
+        } ];
     }
 
     /**
@@ -96,6 +96,22 @@ export class FireFox {
     }
 
     /**
+     * Function to extract bookmarks
+     * @returns Array of `FirefoxBookmark` 
+     */
+    public bookmarks(): FirefoxBookmark[] {
+        return firefoxBookmark(this.paths, this.platform);
+    }
+
+    /**
+     * Function to extract sessions
+     * @returns Array of `FirefoxBookmark` 
+     */
+    public sessions(): FirefoxSession[] {
+        return firefoxSessions(this.paths, this.platform);
+    }
+
+    /**
      * Function to extract favicon entries
      * @param [offset=0] Starting db offset. Default is zero
      * @param [limit=100] How many records to return. Default is 100
@@ -129,7 +145,7 @@ export class FireFox {
                 break;
             }
             if (!this.unfold) {
-                entries.forEach(x => delete x["unfold"]);
+                entries.forEach(x => delete x[ "unfold" ]);
             }
             const status = dumpData(entries, `retrospect_firefox_history`, output);
             if (status instanceof SystemError) {
@@ -192,9 +208,21 @@ export class FireFox {
         }
 
         const ext = this.addons();
-        const status = dumpData(ext, `retrospect_firefox_extensions`, output);
+        let status = dumpData(ext, `retrospect_firefox_extensions`, output);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox extensions: ${status}`);
+        }
+
+        const books = this.bookmarks();
+        status = dumpData(books, `retrospect_firefox_bookmarks`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline firefox bookmarks: ${status}`);
+        }
+
+        const sess = this.sessions();
+        status = dumpData(sess, `retrospect_firefox_sessions`, output);
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline firefox sessions: ${status}`);
         }
     }
 
@@ -238,7 +266,7 @@ export class FireFox {
             }
             case PlatformType.Linux: {
                 // FireFox can now exist in two possible locations. Newer versions are under .config
-                const config_paths = [`/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/`];
+                const config_paths = [ `/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/` ];
                 for (const entry of config_paths) {
                     const linux_paths = glob(entry);
                     if (linux_paths instanceof FileError) {

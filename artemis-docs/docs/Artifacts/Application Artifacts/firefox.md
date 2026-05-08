@@ -99,7 +99,7 @@ export interface FirefoxHistory {
   /** Host value */
   host: string;
   unfold: Url | undefined;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "URL Visited";
@@ -159,7 +159,7 @@ export interface FirefoxDownloads {
   description: string;
   /**Preview image URL value */
   preview_image_url: string;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "File Download Start";
@@ -182,7 +182,7 @@ export interface FirefoxCookies {
   in_browser_element: boolean;
   same_site: boolean;
   scheme_map: number;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "Cookie Expires";
@@ -193,7 +193,7 @@ export interface FirefoxCookies {
 export interface FirefoxFavicons {
   icon_url: string;
   expires: string;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "Favicon Expires";
@@ -215,7 +215,7 @@ export interface FirefoxStorage {
   last_access: string;
   accessed: number;
   persisted: number;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "Website Storage Last Accessed";
@@ -239,7 +239,7 @@ export interface FirefoxAddons {
   author: string;
   version: string;
   path: string;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   name: string;

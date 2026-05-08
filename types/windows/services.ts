@@ -40,6 +40,8 @@ export interface Services {
   error_control: string;
   /**Registry path associated with Service */
   reg_path: string;
+  /**Path to the Registry file */
+  evidence: string;
 }
 
 /**

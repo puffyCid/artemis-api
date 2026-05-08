@@ -7,7 +7,7 @@ export interface WordWheelEntry {
     /**Last modified timestamp for Registry key */
     last_modified: string;
     /**Registry file path */
-    source_path: string;
+    evidence: string;
     /**Registry key path */
     reg_path: string;
 }

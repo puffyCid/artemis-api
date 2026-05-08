@@ -26,7 +26,7 @@ export function getEnvValue(key: string): string {
  * @returns The SystemDrive letter for Windows or empty string if called on non-Windows platforms
  */
 export function getSystemDrive(): string {
-  if (platform().toLowerCase().includes("windows")) {
+  if (!platform().toLowerCase().includes("windows")) {
     return "";
   }
   let drive = getEnvValue("SystemDrive");

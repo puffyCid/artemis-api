@@ -45,7 +45,7 @@ export interface FirefoxHistory {
   /** Host value */
   host: string;
   unfold: Url | undefined;
-  db_path: string;
+  evidence: string;
   version: string;
   message: string;
   datetime: string;
@@ -106,7 +106,7 @@ export interface FirefoxDownloads {
   description: string;
   /**Preview image URL value */
   preview_image_url: string;
-  db_path: string;
+  evidence: string;
   version: string;
   message: string;
   datetime: string;
@@ -130,7 +130,7 @@ export interface FirefoxCookies {
   in_browser_element: boolean;
   same_site: boolean;
   scheme_map: number;
-  db_path: string;
+  evidence: string;
   version: string;
   message: string;
   datetime: string;
@@ -142,7 +142,7 @@ export interface FirefoxCookies {
 export interface FirefoxFavicons {
   icon_url: string;
   expires: string;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   timestamp_desc: "Favicon Expires";
@@ -165,7 +165,7 @@ export interface FirefoxStorage {
   last_access: string;
   accessed: number;
   persisted: number;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   version: string;
@@ -190,7 +190,7 @@ export interface FirefoxAddons {
   author: string;
   addon_version: string;
   path: string;
-  db_path: string;
+  evidence: string;
   message: string;
   datetime: string;
   name: string;
@@ -210,7 +210,7 @@ export interface FirefoxFormHistory {
   message: string;
   version: string;
   path: string;
-  db_path: string;
+  evidence: string;
   search_term: string;
   last_used: string;
   first_used: string;
@@ -218,4 +218,94 @@ export interface FirefoxFormHistory {
   guid: string;
   times_used: number;
   source: string;
+}
+
+export interface FirefoxBookmark {
+  timestamp_desc: "Bookmark Created";
+  artifact: "Browser Bookmark";
+  data_type: "application:firefox:bookmark:entry";
+  datetime: string;
+  message: string;
+  version: string;
+  path: string;
+  evidence: string;
+  added: string;
+  last_modified: string;
+  title: string;
+  id: number;
+  guid: string;
+  icon: string;
+  uri: string;
+}
+
+export interface FirefoxBookmarkRaw {
+  guid: string;
+  title: string;
+  index: number;
+  dateAdded: bigint;
+  lastModified: bigint;
+  id: number;
+  typeCode: number;
+  type: string;
+  root: string;
+  iconUri: string | undefined;
+  uri: string | undefined;
+  children: FirefoxBookmarkRaw[] | undefined
+}
+
+export interface FirefoxSession {
+  timestamp_desc: "Session Started";
+  artifact: "Browser Session";
+  data_type: "application:firefox:session:entry";
+  datetime: string;
+  message: string;
+  version: string;
+  path: string;
+  evidence: string;
+  last_accessed: string;
+  url: string;
+  title: string;
+  id: number;
+  tab_closed: string;
+  window_closed: string;
+  session_start: string;
+}
+
+/**
+ * There is a **ton** of info in Firefox session JSON files
+ * Only getting a little bit right now.
+ * Other data:
+ *  - Referrer URL
+ *  - Image
+ *  - Lots of GUIDs
+ *  - Lots of base64 data
+ */
+export interface FirefoxSessionRaw {
+  version: (string | number)[];
+  windows: {
+    tabs: {
+      lastAccessed: bigint;
+      entries: {
+        url: string;
+        title: string;
+        ID: number;
+      }[]
+    }[],
+    _closedTabs: {
+      state: {
+        entries: {
+          url: string;
+          title: string;
+          ID: number;
+        }[],
+        lastAccessed: bigint;
+      },
+      closedAt: bigint;
+    }[],
+    closedAt: bigint | undefined;
+  }[],
+  session: {
+    lastUpdate: bigint;
+    startTime: bigint;
+  }
 }

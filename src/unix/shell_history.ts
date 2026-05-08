@@ -1,13 +1,20 @@
 import { GlobInfo } from "../../types/filesystem/globs";
 import {
+  AshHistory,
   BashHistory,
   ZshHistory,
 } from "../../types/unix/shellhistory";
 import { FileError } from "../filesystem/errors";
-import { glob, readTextFile } from "../filesystem/files";
+import { glob, readLines, readTextFile } from "../filesystem/files";
 import { PlatformType } from "../system/systeminfo";
 import { unixEpochToISO } from "../time/conversion";
 
+/**
+ * Get bash history for users
+ * @param platform `PlatformType` to extract bash history from
+ * @param alt_file Optional alternative history files
+ * @returns Array of `BashHistory`
+ */
 export function getBashHistory(platform: PlatformType.Linux | PlatformType.Darwin, alt_file?: string): BashHistory[] {
   let paths: string[] = [ "/home/*/.bash_history" ];
   if (platform === PlatformType.Darwin) {
@@ -53,6 +60,12 @@ export function getBashHistory(platform: PlatformType.Linux | PlatformType.Darwi
   return history;
 }
 
+/**
+ * Get zsh history for users
+ * @param platform `PlatformType` to extract zsh history from
+ * @param alt_file Optional alternative history files
+ * @returns Array of `ZshHistory`
+ */
 export function getZshHistory(platform: PlatformType.Linux | PlatformType.Darwin, alt_file?: string): ZshHistory[] {
   let paths: string[] = [ "/home/*/.zsh_history" ];
   if (platform === PlatformType.Darwin) {
@@ -97,6 +110,72 @@ export function getZshHistory(platform: PlatformType.Linux | PlatformType.Darwin
   return history;
 }
 
+/**
+ * Get ash history for users
+ * @param platform `PlatformType` to extract ash history from
+ * @param alt_file Optional alternative history files
+ * @returns Array of `AshHistory`
+ */
+export function getAshHistory(platform: PlatformType.Linux | PlatformType.Darwin, alt_file?: string): AshHistory[] {
+  let paths: string[] = [ "/home/*/.ash_history" ];
+  if (platform === PlatformType.Darwin) {
+    paths.push("/home/*/.ash_sessions/*");
+    paths.push("/var/root/.ash_history");
+    paths.push("/var/root/.ash_sessions/*.history");
+  }
+
+  if (alt_file !== undefined) {
+    paths = [ alt_file ];
+  }
+
+  const history: AshHistory[] = [];
+  let glob_paths: GlobInfo[] = [];
+  for (const path of paths) {
+    const info = glob(path);
+    if (info instanceof FileError) {
+      continue;
+    }
+
+    glob_paths = glob_paths.concat(info);
+  }
+
+  for (const path of glob_paths) {
+    if (!path.is_file) {
+      continue;
+    }
+    if (path.full_path.includes("zsh_sessions") && !path.full_path.endsWith(".history")) {
+      continue;
+    }
+
+    let offset = 0;
+    const limit = 200;
+    while (true) {
+      const data = readLines(path.full_path, offset, limit);
+      if (data instanceof FileError) {
+        console.warn(`Could not read ${path.full_path}: ${data}`);
+        break;
+      }
+      offset += limit;
+
+      for (let i = 0; i < data.length; i++) {
+        const value: AshHistory = {
+          history: data[ i ] ?? "",
+          line: i,
+          evidence: path.full_path
+        };
+
+        history.push(value);
+
+      }
+      if (data.length < limit) {
+        break;
+      }
+    }
+  }
+
+  return history;
+}
+
 function parseBash(text: string, path: string): BashHistory[] {
   const lines = text.split("\n");
   const timestamp_regex = /^#([0-9]+)$/;
@@ -109,7 +188,7 @@ function parseBash(text: string, path: string): BashHistory[] {
       history: "",
       timestamp: "1970-01-01T00:00:00.000Z",
       line: 0,
-      path,
+      evidence: path,
     };
     const time_hit = timestamp_regex.exec(lines[ i ] ?? "");
     if (time_hit === null || time_hit.length === 0) {
@@ -141,7 +220,7 @@ function parseZsh(text: string, path: string): ZshHistory[] {
       history: "",
       timestamp: "1970-01-01T00:00:00.000Z",
       line: 0,
-      path,
+      evidence: path,
     };
     const time_hit = timestamp_regex.exec(lines[ i ] ?? "");
     if (time_hit === null || time_hit.length < 3) {

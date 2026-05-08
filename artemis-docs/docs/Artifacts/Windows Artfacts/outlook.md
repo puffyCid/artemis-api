@@ -54,7 +54,7 @@ include_attachments = true
 
 ## Collection Options
 
-- `alt_path` An alternative path to the OST file. This configuration is
+- `alt_file` An alternative path to the OST file. This configuration is
   **optional**. By default will parse all OST files under
   `%systemdrive%\Users\*\AppData\Local\Microsoft\Outlook\*.ost`
 - `include_attachments` - Boolean value whether to extract attachments in email
@@ -93,7 +93,7 @@ export interface OutlookMessage {
   /**Full path to the folder containing the message */
   folder_path: string;
   /**Source path to the OST file */
-  source_file: string;
+  evidence: string;
   /**Yara rule that matched if Yara scanning was enabled */
   yara_hits: string[] | undefined;
 }

@@ -7,7 +7,7 @@ export type ErrorName =
   | "READ_TEXT_FILE"
   | "READ_FILE"
   | "GLOB"
-  | "ACQUIRE"
-  | "READ_LINES";
+  | "READ_LINES"
+  | "READER";
 
 export class FileError extends ErrorBase<ErrorName> { }

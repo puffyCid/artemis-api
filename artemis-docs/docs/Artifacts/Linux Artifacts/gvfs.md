@@ -7,7 +7,7 @@ keywords:
 
 # GVFS
 
-GNOME Virtual FileSystem (GVFS) is a userspace filesystem that GNOME
+GNOME Virtual FileSystem (GVFS) is a user space filesystem that GNOME
 applications may use. The metadata for the GVFS is typically stored at:
 `/home/%/.local/share/gvfs-metadata/%`, they are in a binary format and must be
 parsed.
@@ -98,7 +98,7 @@ export interface GvfsEntry {
    /**Last change timestamp of the **metadata** */
    last_change: string;
    /**GFVS file source */
-   source: string;
+   evidence: string;
    message: string;
    datetime: string;
    timestamp_desc: "Last Changed";

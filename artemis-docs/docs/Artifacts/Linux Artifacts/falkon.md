@@ -42,7 +42,7 @@ export interface FalkonHistory {
     url: string;
     unfold: Url | undefined;
     /**Path to the browsedata.db sqlite file */
-    db_path: string;
+    evidence: string;
     /**Browser version */
     version: string;
     title: string | null;
@@ -78,7 +78,7 @@ export interface FalkonCookie {
     has_cross_site_ancestor: boolean;
     message: string;
     /**Path to the Cookies sqlite file */
-    db_path: string;
+    evidence: string;
     /**Browser version */
     version: string;
     datetime: string;
@@ -95,7 +95,7 @@ export interface FalkonBookmark {
     url: string;
     visit_count: number;
     /**Path to the bookmarks.json file */
-    path: string;
+    evidence: string;
     /**Browser version */
     version: string;
     message: string;

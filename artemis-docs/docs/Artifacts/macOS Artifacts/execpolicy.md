@@ -111,5 +111,7 @@ export interface ExecPolicy {
   scan_version: number;
   /**Top policy match for entry */
   top_policy_match: number;
+  /**Path to the ExecPolicy database */
+  evidence: string;
 }
 ```
