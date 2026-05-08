@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkartemis_docs=globalThis.webpackChunkartemis_docs||[]).push([[1021],{57262(a){a.exports=JSON.parse('{"metadata":{"permalink":"/artemis-api/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":0,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);

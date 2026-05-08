@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkartemis_docs=globalThis.webpackChunkartemis_docs||[]).push([[7613],{37613(e,s,a){a.d(s,{createPieServices:()=>c.f});var c=a(29515);a(72519)}}]);
