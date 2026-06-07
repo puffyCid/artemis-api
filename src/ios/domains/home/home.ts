@@ -4,7 +4,7 @@ import {
   ManifestApp,
 } from "../../../../types/ios/itunes/manifest";
 import { MacosError } from "../../../macos/errors";
-import { Output, outputResults } from "../../../system/output";
+import { Output, output } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
 import { extractAppState } from "./appstate";
@@ -13,12 +13,12 @@ import { extractAppState } from "./appstate";
  * Function to extract HomeDomain info
  * @param app_paths Array of `ManifestApp`
  * @param db_path iTunes backup directory
- * @param output `Output` configuration object
+ * @param format `Output` configuration object
  */
 export function extractHomeDomain(
   app_paths: ManifestApp[],
   db_path: string,
-  output: Output,
+  format: Output,
 ) {
   for (const path of app_paths) {
     if (path.file_type !== FileType.IsFile) {
@@ -33,10 +33,10 @@ export function extractHomeDomain(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("/TCC.db")) {
       const result = queryTccDb(target);
-      outputResults(
+      output(
         JSON.stringify(result),
         "homedomain_tcc",
-        output,
+        format,
       );
       continue;
     } else if (info.path.includes("springboard.plist")) {
@@ -60,10 +60,10 @@ export function extractHomeDomain(
         }
       }
 
-      outputResults(
+      output(
         plist_data,
         "homedomain_springboard_preferences",
-        output,
+        format,
       );
       continue;
     } else if (info.path === "Library/Preferences/com.apple.Preferences.plist") {
@@ -71,10 +71,10 @@ export function extractHomeDomain(
       if (plist_data instanceof MacosError) {
         continue;
       }
-      outputResults(
+      output(
         plist_data,
         "homedomain_apple_preferences",
-        output,
+        format,
       );
       continue;
     } else if (info.path.endsWith("com.apple.accountsd.binarycookies")) {
@@ -83,10 +83,10 @@ export function extractHomeDomain(
         continue;
       }
 
-      outputResults(
+      output(
         data,
         "homedomain_accountsd_cookie",
-        output,
+        format,
       );
       continue;
     } else if (info.path.endsWith("com.apple.Preferences.binarycookies")) {
@@ -95,10 +95,10 @@ export function extractHomeDomain(
         continue;
       }
 
-      outputResults(
+      output(
         data,
         "homedomain_preferences_cookie",
-        output,
+        format,
       );
       continue;
     } else if (info.path === "Library/FrontBoard/applicationState.db") {
@@ -106,10 +106,10 @@ export function extractHomeDomain(
       if (data instanceof IosError) {
         continue;
       }
-      outputResults(
+      output(
         data,
         "homedomain_application_state",
-        output,
+        format,
       );
       continue;
     }

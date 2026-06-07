@@ -1,7 +1,7 @@
 import { getEventlogs } from "../../../mod";
 import { CrashEvent, RawCrash } from "../../../types/windows/eventlogs/crash";
 import { getSystemDrive } from "../../environment/env";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { filetimeToIso } from "../../time/conversion";
 import { WindowsError } from "../errors";
 
 /**
@@ -39,12 +39,12 @@ export function crashEvents(alt_path?: string, limit = 1000): CrashEvent[] | Win
                 continue;
             }
             const data = entry.data.Event.EventData;
-            const timestamp = filetimeToUnixEpoch(data.StartTime);
+            const timestamp = filetimeToIso(data.StartTime);
             const crash: CrashEvent = {
                 evidence: entry.evidence,
                 pid: Number(data.ProcessId),
                 path: data.ModuleName,
-                application_start: unixEpochToISO(timestamp),
+                application_start: timestamp,
                 crash_time: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
                 crash_time_from_start: Number(data.CrashTimeFromStart),
                 hostname: entry.data.Event.System.Computer,

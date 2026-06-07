@@ -4,7 +4,7 @@ import { ApplicationError } from "../../applications/errors";
 import { querySqlite } from "../../applications/sqlite";
 import { decode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
-import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { cocoatimeToIso } from "../../time/conversion";
 import { parseRequirementBlob } from "../codesigning/blob";
 import { SigningError } from "../codesigning/errors";
 import { MacosError } from "../errors";
@@ -51,15 +51,15 @@ export function authorizations(offset = 0, limit = 100, alt_path?: string): Auth
             timeout: entry["timeout"] as number ?? 0,
             flags: entry["flags"] as number ?? 0,
             tries: entry["tries"] as number ?? 0,
-            created: unixEpochToISO(cocoatimeToUnixEpoch(entry["created"] as number)),
-            modified: unixEpochToISO(cocoatimeToUnixEpoch(entry["modified"] as number)),
+            created: cocoatimeToIso(entry["created"] as number),
+            modified: cocoatimeToIso(entry["modified"] as number),
             version: entry["version"] as number,
             hash: entry["hash"] as string ?? "",
             identifier: entry["identifier"] as string ?? "",
             requirement,
             comment: entry["comment"] as string ?? "",
             message: entry["name"] as string,
-            datetime: unixEpochToISO(cocoatimeToUnixEpoch(entry["created"] as number)),
+            datetime: cocoatimeToIso(entry["created"] as number),
             timestamp_desc: "Authorization Entry Created",
             artifact: "macOS Authorization Database",
             data_type: "macos:sqlite:authorization:entry"

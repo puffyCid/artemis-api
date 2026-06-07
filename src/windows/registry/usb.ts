@@ -8,7 +8,7 @@ import { getEnvValue } from "../../environment/mod";
 import { NomError } from "../../nom/error";
 import { Endian } from "../../nom/helpers";
 import { nomUnsignedEightBytes } from "../../nom/mod";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { filetimeToIso } from "../../time/conversion";
 import { WindowsError } from "../errors";
 
 /**
@@ -97,9 +97,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
             usb_info.first_install = value.data;
             break;
           }
-          usb_info.first_install = unixEpochToISO(
-            filetimeToUnixEpoch(BigInt(value.data)),
-          );
+          usb_info.first_install = filetimeToIso(BigInt(value.data));
         }
       } else if (
         reg.path.includes(usb_info.tracking_id) &&
@@ -111,9 +109,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
             usb_info.install = value.data;
             break;
           }
-          usb_info.install = unixEpochToISO(
-            filetimeToUnixEpoch(BigInt(value.data)),
-          );
+          usb_info.install = filetimeToIso(BigInt(value.data));
         }
       } else if (
         reg.path.includes(usb_info.tracking_id) &&
@@ -126,9 +122,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
             usb_info.datetime = usb_info.last_connected;
             break;
           }
-          usb_info.last_connected = unixEpochToISO(
-            filetimeToUnixEpoch(BigInt(value.data)),
-          );
+          usb_info.last_connected = filetimeToIso(BigInt(value.data));
           usb_info.datetime = usb_info.last_connected;
         }
       } else if (
@@ -141,9 +135,7 @@ function usbSystem(path: string): UsbDevices[] | WindowsError {
             usb_info.last_removal = value.data;
             break;
           }
-          usb_info.last_removal = unixEpochToISO(
-            filetimeToUnixEpoch(BigInt(value.data)),
-          );
+          usb_info.last_removal = filetimeToIso(BigInt(value.data));
         }
       }
     }
@@ -225,9 +217,7 @@ function usbStor(data: Registry): UsbDevices {
         break;
       }
 
-      const time_value = unixEpochToISO(
-        filetimeToUnixEpoch(BigInt(time_data.value)),
-      );
+      const time_value = filetimeToIso(BigInt(time_data.value));
       entry.last_insertion = time_value;
     } else if (value.value === "ClassGUID") {
       entry.device_class_id = value.data.replace("{", "").replace("}", "");

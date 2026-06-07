@@ -4,7 +4,7 @@ import {
     ManifestApp,
 } from "../../../../types/ios/itunes/manifest";
 import { MacosError } from "../../../macos/errors";
-import { Output, outputResults } from "../../../system/output";
+import { Output, output } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
 
@@ -12,12 +12,12 @@ import { parseManifestAppPlist } from "../../itunes/apps";
  * Function to extract NetworkDomain info
  * @param app_paths Array of `ManifestApp`
  * @param db_path iTunes backup directory
- * @param output `Output` configuration object
+ * @param format `Output` configuration object
  */
 export function extractNetworkDomain(
     app_paths: ManifestApp[],
     db_path: string,
-    output: Output,
+    format: Output,
 ) {
     for (const path of app_paths) {
         if (path.file_type !== FileType.IsFile) {
@@ -37,10 +37,10 @@ export function extractNetworkDomain(
                 continue;
             }
 
-            outputResults(
+            output(
                 plist_data,
                 "networkdomain_apple_symptomsd_preferences",
-                output,
+                format,
             );
             continue;
         }

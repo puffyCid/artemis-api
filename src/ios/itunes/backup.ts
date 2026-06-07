@@ -1,4 +1,4 @@
-import { getPlist, outputResults } from "../../../mod";
+import { getPlist, output } from "../../../mod";
 import { IosError } from "../error";
 import { MacosError } from "../../macos/errors";
 import { InfoPlist, StatusPlist } from "../../../types/ios/itunes/backup";
@@ -21,44 +21,44 @@ import { Output } from "../../system/output";
  */
 export function extractBackup(
   path: string,
-  output: Output,
+  format: Output,
 ): undefined | IosError {
   const info = getInfo(path);
   if (info instanceof IosError) {
     return info;
   }
 
-  outputResults(info, "itunes_info.plist", output);
+  output(info, "itunes_info.plist", format);
 
   const status = getStatus(path);
   if (status instanceof IosError) {
     return status;
   }
-  outputResults(status, "itunes_status.plist", output);
+  output(status, "itunes_status.plist", format);
 
   const manifest = getManifest(path);
   if (manifest instanceof IosError) {
     return manifest;
   }
 
-  outputResults(manifest, "itunes_manifest.plist", output);
+  output(manifest, "itunes_manifest.plist", format);
 
   const domains = queryDomains(path);
   if (domains instanceof IosError) {
     return domains;
   }
 
-  output.directory = `${output.directory}/apps`;
-  const output_name = output.name;
+  format.directory = `${format.directory}/apps`;
+  const output_name = format.name;
   for (const domain of domains) {
     const paths = getAppPaths(path, domain.namespace);
     if (paths instanceof IosError) {
       continue;
     }
 
-    output.name = `${output_name}_${domain.namespace}`;
-    outputResults(paths, domain.namespace, output);
-    extractAppInfo(paths, domain.namespace, path, output);
+    format.name = `${output_name}_${domain.namespace}`;
+    output(paths, domain.namespace, format);
+    extractAppInfo(paths, domain.namespace, path, format);
   }
 }
 

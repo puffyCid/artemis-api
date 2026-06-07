@@ -12,14 +12,12 @@ export interface Output {
   format: Format;
   /**Compress data with GZIP and all files with ZIP */
   compress: boolean;
-  /**Use `timelineArtifact()` or timeline the data yourself (using TS/JS). The Rust timeline feature cannot timeline artifacts from scripts*/
-  timeline: false;
   /**Endpoint ID */
   endpoint_id: string;
   /**ID for collection. Must be positive number */
   collection_id: number;
   /**Output type: local, azure, aws, or gcp */
-  output: OutputType;
+  destination: OutputType;
   /**URL associated with remote upload */
   url?: string;
   /**API key required for remote upload */
@@ -48,14 +46,14 @@ export enum OutputType {
  * @param output `Output` structure to pass to artemis
  * @returns True on success or `SystemError`
  */
-export function outputResults(
+export function output(
   data: unknown,
   data_name: string,
   output: Output,
 ): boolean | SystemError {
   try {
     // @ts-expect-error: Custom Artemis function
-    const status: boolean = js_output_results(
+    const status: boolean = js_output(
       data,
       data_name,
       output,
@@ -63,30 +61,5 @@ export function outputResults(
     return status;
   } catch (err) {
     return new SystemError(`OUTPUT`, `failed to output data: ${err}`);
-  }
-}
-
-/**
- * Function to pass data to `artemis` to save, skipping metadata
- * @param data Data you want to output
- * @param data_name Name of the type of data. Ex: `processes`
- * @param output Output structure to pass to `artemis`
- * @returns True on success or `SystemError`
- */
-export function dumpData(
-  data: unknown,
-  data_name: string,
-  output: Output,
-): boolean | SystemError {
-  try {
-    // @ts-expect-error: Custom Artemis function
-    const status: boolean = js_raw_dump(
-      data,
-      data_name,
-      output,
-    );
-    return status;
-  } catch (err) {
-    return new SystemError(`OUTPUT`, `failed to output raw data: ${err}`);
   }
 }

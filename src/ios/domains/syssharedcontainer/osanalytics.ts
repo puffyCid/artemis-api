@@ -6,7 +6,7 @@ import {
 import { FileError } from "../../../filesystem/errors";
 import { readTextFile } from "../../../filesystem/files";
 import { MacosError } from "../../../macos/errors";
-import { Output, outputResults } from "../../../system/output";
+import { Output, output } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
 
@@ -14,11 +14,11 @@ import { parseManifestAppPlist } from "../../itunes/apps";
  * Function to extract osanalytics info
  * @param app_paths Array of `ManifestApp`
  * @param db_path iTunes backup directory
- * @param output `Output` configuration object
+ * @param format `Output` configuration object
  */
 export function extractOsAnalytics(app_paths: ManifestApp[],
     db_path: string,
-    output: Output,
+    format: Output,
 ) {
     for (const path of app_paths) {
         if (path.file_type !== FileType.IsFile) {
@@ -44,10 +44,10 @@ export function extractOsAnalytics(app_paths: ManifestApp[],
             const first_json = text.trim().split("\n", 1).at(0) ?? "";
             const second_json = JSON.parse(text.replace(first_json, ""));
 
-            let status = outputResults(
+            let status = output(
                 [ JSON.parse(first_json), second_json ],
                 "syssharedcontainer_apple_osanalytics_diagnostic_reports",
-                output,
+                format,
             );
             continue;
         }

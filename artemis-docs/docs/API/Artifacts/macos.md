@@ -890,11 +890,9 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
-        timeline: false,
         endpoint_id: "abc",
         collection_id: 0,
-        output: OutputType.LOCAL,
+        destination: OutputType.LOCAL,
     }
 
     // No data is returned. Our results and errors will appear at `./tmp/safari_timeline`

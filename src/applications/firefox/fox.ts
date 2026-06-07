@@ -4,7 +4,7 @@ import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { SystemError } from "../../system/error";
-import { dumpData, Output } from "../../system/output";
+import { output, Output } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { firefoxAddons, firefoxBookmark, firefoxSessions } from "./json";
@@ -133,9 +133,9 @@ export class FireFox {
 
     /**
     * Function to timeline all Firefox artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
-    * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+    * @param format `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
     */
-    public retrospect(output: Output): void {
+    public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
 
@@ -147,7 +147,7 @@ export class FireFox {
             if (!this.unfold) {
                 entries.forEach(x => delete x[ "unfold" ]);
             }
-            const status = dumpData(entries, `retrospect_firefox_history`, output);
+            const status = output(entries, `retrospect_firefox_history`, format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox history: ${status}`);
             }
@@ -161,7 +161,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_cookies`, output);
+            const status = output(entries, `retrospect_firefox_cookies`, format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox cookies: ${status}`);
             }
@@ -174,7 +174,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_favicons`, output);
+            const status = output(entries, `retrospect_firefox_favicons`, format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox favicons: ${status}`);
             }
@@ -187,7 +187,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_storage`, output);
+            const status = output(entries, `retrospect_firefox_storage`, format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox storage: ${status}`);
             }
@@ -200,7 +200,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_formhistory`, output);
+            const status = output(entries, `retrospect_firefox_formhistory`, format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox form history: ${status}`);
             }
@@ -208,19 +208,19 @@ export class FireFox {
         }
 
         const ext = this.addons();
-        let status = dumpData(ext, `retrospect_firefox_extensions`, output);
+        let status = output(ext, `retrospect_firefox_extensions`, format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox extensions: ${status}`);
         }
 
         const books = this.bookmarks();
-        status = dumpData(books, `retrospect_firefox_bookmarks`, output);
+        status = output(books, `retrospect_firefox_bookmarks`, format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox bookmarks: ${status}`);
         }
 
         const sess = this.sessions();
-        status = dumpData(sess, `retrospect_firefox_sessions`, output);
+        status = output(sess, `retrospect_firefox_sessions`, format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox sessions: ${status}`);
         }

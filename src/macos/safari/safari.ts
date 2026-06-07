@@ -1,4 +1,4 @@
-import { dumpData, Output, PlatformType } from "../../../mod";
+import { output, Output, PlatformType } from "../../../mod";
 import { Cookie, SafariBookmark, SafariDownloads, SafariExtensions, SafariFavicon, SafariHistory, SafariProfile } from "../../../types/macos/safari";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
@@ -121,7 +121,7 @@ export class Safari {
      * Function to timeline all Safari artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
      * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
      */
-    public retrospect(output: Output): void {
+    public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
 
@@ -133,7 +133,7 @@ export class Safari {
             if (!this.unfold) {
                 entries.forEach(x => delete x[ "unfold" ]);
             }
-            const status = dumpData(entries, "retrospect_safari_history", output);
+            const status = output(entries, "retrospect_safari_history", format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Safari history: ${status}`);
             }
@@ -147,7 +147,7 @@ export class Safari {
                 break;
             }
 
-            const status = dumpData(entries, "retrospect_safari_favicons", output);
+            const status = output(entries, "retrospect_safari_favicons", format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Safari favicons: ${status}`);
             }
@@ -155,14 +155,14 @@ export class Safari {
         }
 
         const cooks = this.cookies();
-        let status = dumpData(cooks, "retrospect_safari_cookies", output);
+        let status = output(cooks, "retrospect_safari_cookies", format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari cookies: ${status}`);
         }
 
 
         const entries = this.bookmarks();
-        status = dumpData(entries, "retrospect_safari_bookmarks", output);
+        status = output(entries, "retrospect_safari_bookmarks", format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari bookmarks: ${status}`);
         }
@@ -171,13 +171,13 @@ export class Safari {
         if (!this.unfold) {
             downs.forEach(x => delete x[ "unfold" ]);
         }
-        status = dumpData(downs, "retrospect_safari_downloads", output);
+        status = output(downs, "retrospect_safari_downloads", format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari downloads: ${status}`);
         }
 
         const exts = this.extensions();
-        status = dumpData(exts, "retrospect_safari_extensions", output);
+        status = output(exts, "retrospect_safari_extensions", format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari extensions: ${status}`);
         }

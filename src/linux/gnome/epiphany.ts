@@ -6,7 +6,7 @@ import { readXml } from "../../encoding/xml";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { SystemError } from "../../system/error";
-import { dumpData, Output } from "../../system/output";
+import { output, Output } from "../../system/output";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
@@ -326,9 +326,9 @@ export class Epiphany {
 
     /**
      * Function to timeline all Epiphany artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
-     * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     * @param format `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
      */
-    public retrospect(output: Output): void {
+    public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
 
@@ -339,7 +339,7 @@ export class Epiphany {
                 break;
             }
 
-            const status = dumpData(entries, "retrospect_epiphany_history", output);
+            const status = output(entries, "retrospect_epiphany_history", format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Epiphany history: ${status}`);
             }
@@ -355,7 +355,7 @@ export class Epiphany {
                 break;
             }
 
-            const status = dumpData(entries, "retrospect_epiphany_cookies", output);
+            const status = output(entries, "retrospect_epiphany_cookies", format);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Epiphany cookies: ${status}`);
             }
@@ -363,19 +363,19 @@ export class Epiphany {
         }
 
         const sessions = this.sessions();
-        let status = dumpData(sessions, "retrospect_epiphany_sessions", output);
+        let status = output(sessions, "retrospect_epiphany_sessions", format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Epiphany sessions: ${status}`);
         }
 
         const permissions = this.permissions();
-        status = dumpData(permissions, "retrospect_epiphany_permissions", output);
+        status = output(permissions, "retrospect_epiphany_permissions", format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Epiphany permissions: ${status}`);
         }
 
         const print_page = this.lastPrint();
-        status = dumpData(print_page, "retrospect_epiphany_lastprint", output);
+        status = output(print_page, "retrospect_epiphany_lastprint", format);
         if (status instanceof SystemError) {
             console.error(`Failed timeline Epiphany last print: ${status}`);
         }

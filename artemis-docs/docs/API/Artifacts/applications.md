@@ -164,10 +164,9 @@ function main() {
     directory: "./tmp",
     format: Format.JSONL,
     compress: false,
-    timeline: false,
     endpoint_id: "",
     collection_id: 0,
-    output: OutputType.LOCAL
+    destination: OutputType.LOCAL
   };
 
   // All artifacts will be parsed and timelined to JSONL
@@ -447,10 +446,9 @@ function main() {
     directory: "tmp",
     format: Format.JSONL,
     compress: false,
-    timeline: false,
     endpoint_id: "",
     collection_id: 0,
-    output: OutputType.LOCAL
+    destination: OutputType.LOCAL
   };
   
   results.retrospect(output);

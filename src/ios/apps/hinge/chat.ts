@@ -6,10 +6,7 @@ import { EncodingError } from "../../../encoding/errors";
 import { extractUtf8String } from "../../../encoding/mod";
 import { FileError } from "../../../filesystem/errors";
 import { readTextFile } from "../../../filesystem/files";
-import {
-  cocoatimeToUnixEpoch,
-  unixEpochToISO,
-} from "../../../time/conversion";
+import { cocoatimeToIso } from "../../../time/conversion";
 import { IosError } from "../../error";
 
 /**
@@ -65,7 +62,7 @@ export function extractNotifications(path: string): Notification[] | IosError {
 
   const notifications: Notification[] = [];
   for (const entry of results as Record<string, string | number>[]) {
-    const timestamp = cocoatimeToUnixEpoch(entry[ "ZTIMESTAMP" ] as number);
+    const timestamp = cocoatimeToIso(entry[ "ZTIMESTAMP" ] as number);
     const payload = entry[ "ZDATA" ] as string;
     const bytes = decode(payload);
     if (bytes instanceof EncodingError) {
@@ -73,7 +70,7 @@ export function extractNotifications(path: string): Notification[] | IosError {
     }
     const json_data = extractUtf8String(bytes);
     const value: Notification = {
-      timestamp: unixEpochToISO(timestamp),
+      timestamp: timestamp,
       message_id: JSON.parse(json_data)[ "messageId" ],
       origin: JSON.parse(json_data)[ "origin" ],
       title: entry[ "ZTITLE" ] as string,

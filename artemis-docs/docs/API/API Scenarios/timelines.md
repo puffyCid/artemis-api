@@ -39,7 +39,7 @@ ensure the output follows **TimesketchTimeline** object above.
 A sample script below shows how to timeline launchdaemon data.
 
 ```typescript
-import { dumpData, getLaunchdDaemons } from ".././artemis-api/mod";
+import { output, getLaunchdDaemons } from ".././artemis-api/mod";
 import { MacosError } from ".././artemis-api/src/macos/errors";
 import {
   Format,
@@ -57,10 +57,9 @@ function main() {
     directory: "./tmp",
     format: Format.JSONL,
     compress: false,
-    timeline: false,
     endpoint_id: "abc",
     collection_id: 0,
-    output: OutputType.LOCAL,
+    destination: OutputType.LOCAL,
   };
 
   const daemons = getLaunchdDaemons();
@@ -72,7 +71,7 @@ function main() {
   if (status instanceof TimesketchError) {
     return;
   }
-  dumpData(results, "launchd", out);
+  output(results, "launchd", out);
 }
 
 main();
@@ -85,5 +84,5 @@ A quick walkthrough for this script:
 2. `getLaunchdDaemons()` parse macOS launchDaemons
 3. `timelineArtifact(daemons, TimesketchArtifact.LAUNCHD)` timeline our parsed
    launchDaemons
-4. `dumpData(JSON.stringify(results), "launchd", out)` Dump the raw JSONL data
+4. `output(JSON.stringify(results), "launchd", out)` Dump the raw JSONL data
    to a file. This will skip the metadata that artemis adds to artifact output
