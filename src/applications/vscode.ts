@@ -243,6 +243,9 @@ export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): Re
     }
 
     const storage_data = JSON.parse(storage) as VscodeStorage;
+    if (storage_data.lastKnownMenubarData === undefined) {
+      continue;
+    }
     for (const item of storage_data.lastKnownMenubarData.menus.File.items) {
       if (item.id !== "submenuitem.MenubarRecentMenu" || item.submenu === undefined) {
         continue;
@@ -263,6 +266,7 @@ export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): Re
         recents.push(recent);
 
       }
+      console.log(recents.length);
     }
   }
 

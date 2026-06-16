@@ -59,7 +59,7 @@ export enum RecentType {
 }
 
 export interface VscodeStorage {
-  lastKnownMenubarData: {
+  lastKnownMenubarData?: {
     menus: {
       File: {
         items: {

@@ -29,6 +29,7 @@ export enum Format {
   JSON = "json",
   JSONL = "jsonl",
   CSV = "csv",
+  PARQUET = "parquet",
 }
 
 /**Output type. Only local, azure, aws, and gcp supported */
