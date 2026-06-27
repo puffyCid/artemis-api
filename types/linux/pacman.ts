@@ -20,5 +20,4 @@ export interface PacmanPackages {
 export enum Reason {
     Dependency = "Dependency",
     Explict = "Explict",
-    Unknown = "Unknown",
 }

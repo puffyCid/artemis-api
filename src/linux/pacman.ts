@@ -95,7 +95,7 @@ function installReason(value: string): Reason {
     switch (value) {
         case "1": return Reason.Dependency;
         case "0": return Reason.Explict;
-        default: return Reason.Unknown;
+        default: return Reason.Explict;
     }
 }
 
@@ -145,10 +145,6 @@ export function testPacmanInfo(): void {
 
     if (installReason("0") !== Reason.Explict) {
         throw `Got wrong install reason for "0".......installReason ❌`
-    }
-
-    if (installReason("3") !== Reason.Unknown) {
-        throw `Got wrong install reason for 3".......installReason ❌`
     }
 
     console.info(`  Function installReason ✅`);
