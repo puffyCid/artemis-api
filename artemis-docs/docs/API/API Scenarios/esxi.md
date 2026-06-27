@@ -272,7 +272,6 @@ name = "acquire_syslogs"
 directory = "./tmp"
 format = "json"
 compress = true
-timeline = false
 endpoint_id = "13ba1e33-4899-4843-adf1-c7e6b20d759a"
 collection_id = 1
 output = "local"

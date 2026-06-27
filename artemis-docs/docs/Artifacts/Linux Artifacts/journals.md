@@ -35,7 +35,6 @@ compress = false
 endpoint_id = "abdc"
 collection_id = 1
 output = "local"
-timeline = false
 
 [[artifacts]]
 artifact_name = "journals"

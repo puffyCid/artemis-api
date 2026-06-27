@@ -13,7 +13,6 @@ name = "recent_files"
 directory = "./tmp"
 format = "jsonl"
 compress = false
-timeline = false
 endpoint_id = "abdc"
 collection_id = 1
 output = "local"
