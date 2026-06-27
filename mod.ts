@@ -19,6 +19,7 @@ export { kateRecentFiles } from "./src/linux/kde/kate";
 export { Falkon } from "./src/linux/kde/falkon/falkon";
 export { queryLogons } from "./src/linux/sqlite/wtmpdb";
 export { readRawFileExt4, readRawDirExt4, readRawInodeExt4 } from "./src/linux/ext4";
+export { getPacmanInfo } from "./src/linux/pacman";
 
 /**
  * macOS exported functions

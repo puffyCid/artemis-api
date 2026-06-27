@@ -383,3 +383,15 @@ You may provide a starting to begin the search. The path string may be any valid
 | path   | string | Path to file read       |
 | start  | string | Path to start searching |
 | device | string | Path to device file     |
+
+
+### getPacmanInfo(alt_glob) -> PacmanPackages[] | LinuxError
+
+Get list of installed dePacmanb packages on the system. Can provide an alternative
+glob to the Pacman desc file.
+
+Uses /var/lib/pacman/local/*/desc by default
+
+| Param    | Type   | Description           |
+| -------- | ------ | --------------------- |
+| alt_glob | string | Alt glob to desc file |

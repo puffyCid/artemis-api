@@ -29,6 +29,7 @@ export { testGnomeAppUsage } from "../src/linux/gnome/usage";
 export { testParseGvfs } from "../src/linux/gnome/gvfs";
 export { testQueryLogons } from "../src/linux/sqlite/wtmpdb";
 export { testEpiphany } from "../src/linux/gnome/epiphany";
+export { testPacmanInfo } from "../src/linux/pacman";
 
 /**
  * Windows exported test functions

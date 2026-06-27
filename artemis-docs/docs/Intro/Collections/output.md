@@ -16,7 +16,7 @@ All formats will output the results to filename based on the artifact parsed and
 An example is below:
 
 ```
-processes_68330d32-c35e-4d43-8655-1cb5e9d90b83.json
+amcache_68330d32-c35e-4d43-8655-1cb5e9d90b83.json
 ```
 
 :::info
