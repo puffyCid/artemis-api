@@ -25,7 +25,7 @@ export class FireFox {
      * @param alt_path Optional alternative path to directory contain FireFox data
      * @returns `FireFox` instance class
      */
-    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         if (alt_path === undefined) {
@@ -41,10 +41,10 @@ export class FireFox {
             return;
         }
 
-        this.paths = [ {
+        this.paths = [{
             full_path: alt_path,
             version: fox_version
-        } ];
+        }];
     }
 
     /**
@@ -145,7 +145,7 @@ export class FireFox {
                 break;
             }
             if (!this.unfold) {
-                entries.forEach(x => delete x[ "unfold" ]);
+                entries.forEach(x => delete x["unfold"]);
             }
             const status = output(entries, `retrospect_firefox_history`, format);
             if (status instanceof SystemError) {
@@ -265,8 +265,8 @@ export class FireFox {
                 break;
             }
             case PlatformType.Linux: {
-                // FireFox can now exist in two possible locations. Newer versions are under .config
-                const config_paths = [ `/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/` ];
+                // FireFox can now exist in two possible locations. Newer versions are under .config. Ubuntu by default uses Snap version of Firefox
+                const config_paths = [`/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/`, `/home/*/snap/firefox/common/.mozilla/firefox/*/`, `/home/*/snap/firefox/common/.config/mozilla/firefox/*/`];
                 for (const entry of config_paths) {
                     const linux_paths = glob(entry);
                     if (linux_paths instanceof FileError) {
