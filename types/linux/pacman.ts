@@ -14,7 +14,7 @@ export interface PacmanPackages {
     timestamp_desc: "Pacman Package Installed";
     artifact: "Pacman Package";
     data_type: "linux:pacman:entry";
-    evidence: string
+    evidence: string;
 }
 
 export enum Reason {
