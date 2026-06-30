@@ -2,7 +2,7 @@ import {
   FileType,
   ManifestApp,
 } from "../../../../types/ios/itunes/manifest";
-import { Output, output } from "../../../system/output";
+import { OutputManager } from "../../../system/output";
 import { parseHeartbeat } from "../../analytics/firebase/heartbeat";
 import { extractStatStorage } from "../../analytics/sendbird/sdk";
 import { IosError } from "../../error";
@@ -15,12 +15,12 @@ import { parsePreferences, parseSupportLog } from "./preferences";
  * Function to extract Hinge app information
  * @param app_paths Array of `ManifestApp` associated with Hinge app
  * @param db_path Path to the iTunes `Manifest.db`
- * @param format `Output` configuration object
+ * @param manager `OutputManager` configuration object
  */
 export function extractHingeInfo(
   app_paths: ManifestApp[],
   db_path: string,
-  format: Output,
+  manager: OutputManager,
 ) {
   for (const path of app_paths) {
     const info = parseManifestAppPlist(path.file);
@@ -34,41 +34,41 @@ export function extractHingeInfo(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("Preferences/co.hinge.mobile.ios.plist")) {
       const result = parsePreferences(target);
-      output(result, "hinge_preferences", format);
+      manager.write_artifact(result, "hinge_preferences")
       continue;
     } else if (
       info.path.includes("Application%20Support/co.hinge.mobile.ios")
     ) {
       const result = extractComment(target);
-      output(result, "hinge_support", format);
+      manager.write_artifact(result, "hinge_support")
       continue;
     } else if (
       info.path.includes("Application Support/HingeChat.sqlite")
     ) {
       const result = extractChat(target);
-      output(result, "hinge_chat", format);
+      manager.write_artifact(result, "hinge_chat")
       continue;
     } else if (info.path.includes("Library/Application Support/logs/")) {
       const result = parseSupportLog(target);
-      output(result, "hinge_logs", format);
+      manager.write_artifact(result, "hinge_logs")
       continue;
     } else if (
       info.path.includes("Application Support/MetricsDataModel.sqlite")
     ) {
       const result = parseMetrics(target);
-      output(result, "hinge_metrics", format);
+      manager.write_artifact(result, "hinge_metrics")
       continue;
     } else if (info.path.includes("HingeRecord.sqlite")) {
       const result = extractNotifications(target);
-      output(result, "hinge_record", format);
+      manager.write_artifact(result, "hinge_record")
       continue;
     } else if (info.path.includes("google-heartbeat-storage")) {
       const result = parseHeartbeat(target);
-      output(result, "hinge_firebase_heartbeat", format);
+      manager.write_artifact(result, "hinge_firebase_heartbeat")
       continue;
     } else if (info.path.includes("com.sendbird.sdk.stat.storage.plist")) {
       const result = extractStatStorage(target);
-      output(result, "hinge_sendbird", format);
+      manager.write_artifact(result, "hinge_sendbird")
       continue;
     }
 

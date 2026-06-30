@@ -2,7 +2,7 @@ import {
   FileType,
   ManifestApp,
 } from "../../../../types/ios/itunes/manifest";
-import { Output, output } from "../../../system/output";
+import { OutputManager } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
 import { parseClients } from "./locationd";
@@ -11,12 +11,12 @@ import { parseClients } from "./locationd";
  * Function to extract RootDomain info
  * @param app_paths Array of `ManifestApp`
  * @param db_path iTunes backup directory
- * @param format `Output` configuration object
+ * @param manager `OutputManager` configuration object
  */
 export function extractRootDomain(
   app_paths: ManifestApp[],
   db_path: string,
-  format: Output,
+  manager: OutputManager,
 ) {
   for (const path of app_paths) {
     if (path.file_type !== FileType.IsFile) {
@@ -30,7 +30,7 @@ export function extractRootDomain(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("locationd/clients.plist")) {
       const result = parseClients(target);
-      output(JSON.stringify(result), "rootdomain_locationd_clients", format);
+      manager.write_artifact(result, "rootdomain_locationd_clients")
       continue;
     }
     //console.log(info.path);

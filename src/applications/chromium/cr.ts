@@ -3,7 +3,7 @@ import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { SystemError } from "../../system/error";
-import { output, Output } from "../../system/output";
+import { Output, OutputManager } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError, ErrorName } from "../errors";
 import { chromiumCache } from "./cache";
@@ -269,6 +269,8 @@ export class Chromium {
     public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
+        const manager = new OutputManager(format);
+
         while (true) {
             const entries = this.history(offset, limit);
             if (entries.length === 0) {
@@ -277,7 +279,7 @@ export class Chromium {
             if (!this.unfold) {
                 entries.forEach(x => delete x["unfold"]);
             }
-            const status = output(entries, `retrospect_${this.browser}_history`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_history`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} history: ${status}`);
             }
@@ -290,7 +292,7 @@ export class Chromium {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_${this.browser}_cookies`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_cookies`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} cookies: ${status}`);
             }
@@ -303,7 +305,7 @@ export class Chromium {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_${this.browser}_downloads`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_downloads`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} downloads: ${status}`);
             }
@@ -316,7 +318,7 @@ export class Chromium {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_${this.browser}_autofill`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_autofill`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} autofill: ${status}`);
             }
@@ -329,7 +331,7 @@ export class Chromium {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_${this.browser}_logins`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_logins`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} logins: ${status}`);
             }
@@ -342,7 +344,7 @@ export class Chromium {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_${this.browser}_dips`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_dips`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} dips: ${status}`);
             }
@@ -355,7 +357,7 @@ export class Chromium {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_${this.browser}_favicons`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_favicons`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} favicons: ${status}`);
             }
@@ -368,7 +370,7 @@ export class Chromium {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_${this.browser}_shortcuts`, format);
+            const status = manager.write_artifact(entries, `retrospect_${this.browser}_shortcuts`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline ${this.browser} shortcuts: ${status}`);
             }
@@ -376,39 +378,44 @@ export class Chromium {
         }
 
         const ext = this.extensions();
-        let status = output(ext, `retrospect_${this.browser}_extensions`, format);
+        let status = manager.write_artifact(ext, `retrospect_${this.browser}_extensions`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline ${this.browser} extensions: ${status}`);
         }
 
         const prefs = this.preferences();
-        status = output(prefs, `retrospect_${this.browser}_preferences`, format);
+        status = manager.write_artifact(prefs, `retrospect_${this.browser}_preferences`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline ${this.browser} preferences: ${status}`);
         }
 
         const books = this.bookmarks();
-        status = output(books, `retrospect_${this.browser}_bookmarks`, format);
+        status = manager.write_artifact(books, `retrospect_${this.browser}_bookmarks`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline ${this.browser} bookmarks: ${status}`);
         }
 
         const level = this.localStorage();
-        status = output(level, `retrospect_${this.browser}_localstorage`, format);
+        status = manager.write_artifact(level, `retrospect_${this.browser}_localstorage`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline ${this.browser} localstorage: ${status}`);
         }
 
         const sess = this.sessions();
-        status = output(sess, `retrospect_${this.browser}_sessions`, format);
+        status = manager.write_artifact(sess, `retrospect_${this.browser}_sessions`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline ${this.browser} sessions: ${status}`);
         }
 
         const cache = this.cache();
-        status = output(cache, `retrospect_${this.browser}_cache`, format);
+        status = manager.write_artifact(cache, `retrospect_${this.browser}_cache`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline ${this.browser} cache: ${status}`);
+        }
+
+        status = manager.finalize();
+        if (status instanceof SystemError) {
+            console.error(`Failed to finalize output ${this.browser}: ${status}`);
         }
     }
 

@@ -1,4 +1,4 @@
-import { output, Output, PlatformType } from "../../../mod";
+import { OutputManager, Output, PlatformType } from "../../../mod";
 import { Cookie, SafariBookmark, SafariDownloads, SafariExtensions, SafariFavicon, SafariHistory, SafariProfile } from "../../../types/macos/safari";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
@@ -21,7 +21,7 @@ export class Safari {
      * @param alt_path Optional alternative path to directory containing Safari data
      * @returns `Safari` instance class
      */
-    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
         this.unfold = unfold;
         this.platform = platform;
         if (alt_path === undefined) {
@@ -33,11 +33,11 @@ export class Safari {
             return;
         }
 
-        this.paths = [ {
+        this.paths = [{
             full_path: alt_path,
             container_path: alt_path,
             version: 0
-        } ];
+        }];
 
     }
 
@@ -124,16 +124,16 @@ export class Safari {
     public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
-
+        const manager = new OutputManager(format);
         while (true) {
             const entries = this.history(offset, limit);
             if (entries.length === 0) {
                 break;
             }
             if (!this.unfold) {
-                entries.forEach(x => delete x[ "unfold" ]);
+                entries.forEach(x => delete x["unfold"]);
             }
-            const status = output(entries, "retrospect_safari_history", format);
+            const status = manager.write_artifact(entries, "retrospect_safari_history");
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Safari history: ${status}`);
             }
@@ -147,7 +147,7 @@ export class Safari {
                 break;
             }
 
-            const status = output(entries, "retrospect_safari_favicons", format);
+            const status = manager.write_artifact(entries, "retrospect_safari_favicons");
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Safari favicons: ${status}`);
             }
@@ -155,31 +155,35 @@ export class Safari {
         }
 
         const cooks = this.cookies();
-        let status = output(cooks, "retrospect_safari_cookies", format);
+        let status = manager.write_artifact(cooks, "retrospect_safari_cookies");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari cookies: ${status}`);
         }
 
 
         const entries = this.bookmarks();
-        status = output(entries, "retrospect_safari_bookmarks", format);
+        status = manager.write_artifact(entries, "retrospect_safari_bookmarks");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari bookmarks: ${status}`);
         }
 
         const downs = this.downloads();
         if (!this.unfold) {
-            downs.forEach(x => delete x[ "unfold" ]);
+            downs.forEach(x => delete x["unfold"]);
         }
-        status = output(downs, "retrospect_safari_downloads", format);
+        status = manager.write_artifact(downs, "retrospect_safari_downloads");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari downloads: ${status}`);
         }
 
         const exts = this.extensions();
-        status = output(exts, "retrospect_safari_extensions", format);
+        status = manager.write_artifact(exts, "retrospect_safari_extensions");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Safari extensions: ${status}`);
+        }
+        status = manager.finalize();
+        if (status instanceof SystemError) {
+            console.error(`Failed to finalize output for safari: ${status}`);
         }
     }
 
@@ -227,7 +231,7 @@ export class Safari {
             return new MacosError(`SAFARI`, `got array for Safari Info.plist`);
         }
 
-        const version = info[ "CFBundleShortVersionString" ] as string;
+        const version = info["CFBundleShortVersionString"] as string;
         return Number(version);
     }
 }

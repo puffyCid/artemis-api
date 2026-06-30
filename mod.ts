@@ -76,7 +76,7 @@ export { listKnownHosts } from "./src/unix/ssh";
 /**
  * Cross platform exported functions
  */
-export { output, Output, OutputType, Format } from "./src/system/output";
+export { OutputManager, Output, OutputType, Format } from "./src/system/output";
 export {
   getSysteminfo,
   hostname,

@@ -55,7 +55,7 @@ format = "jsonl"
 compress = false
 endpoint_id = "abdc"
 collection_id = 1
-output = "local"
+destination= "local"
 
 [[artifacts]]
 artifact_name = "spotlight"

@@ -16,7 +16,7 @@ format = "jsonl"
 compress = true
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
+destination= "local"
 
 [[artifacts]]
 artifact_name = "prefetch"
@@ -108,7 +108,7 @@ format = "jsonl"
 compress = true
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
+destination= "local"
 
 [[artifacts]]
 artifact_name = "processes"

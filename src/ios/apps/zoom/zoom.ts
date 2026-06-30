@@ -2,7 +2,7 @@ import {
   FileType,
   ManifestApp,
 } from "../../../../types/ios/itunes/manifest";
-import { Output, output } from "../../../system/output";
+import { OutputManager } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
 import { parseChat, parseMeetings } from "./preferences";
@@ -11,12 +11,12 @@ import { parseChat, parseMeetings } from "./preferences";
  * Function to parse Zoom info
  * @param app_paths Array of `ManifestApp` entries
  * @param db_path iTunes backup directory
- * @param format `Output` configuration object
+ * @param manager `OutputManager` configuration object
  */
 export function extractZoom(
   app_paths: ManifestApp[],
   db_path: string,
-  format: Output,
+  manager: OutputManager,
 ) {
   for (const path of app_paths) {
     const info = parseManifestAppPlist(path.file);
@@ -30,11 +30,11 @@ export function extractZoom(
 
     if (info.path.includes("us.zoom.videomeetings.plist")) {
       const result = parseMeetings(target);
-      output(result, "zoom_preferences_meetings", format);
+      manager.write_artifact(result, "zoom_preferences_meetings")
       continue;
     } else if (info.path.includes("ZoomChat.plist")) {
       const result = parseChat(target);
-      output(result, "zoom_preferences_chat", format);
+      manager.write_artifact(result, "zoom_preferences_chat")
       continue;
     }
 

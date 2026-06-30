@@ -11,8 +11,7 @@ import { readSystemState } from "../../../analytics/bugsnag/system";
 import { IosError } from "../../../error";
 import { parseManifestAppPlist } from "../../../itunes/apps";
 import { parsePreferences } from "./preferences";
-import { output } from "../../../../../mod";
-import { Output } from "../../../../system/output";
+import { OutputManager } from "../../../../system/output";
 import { readCapabilities } from "./preferences";
 
 /**
@@ -24,7 +23,7 @@ import { readCapabilities } from "./preferences";
 export function extractAmazonEcho(
   app_paths: ManifestApp[],
   db_path: string,
-  format: Output,
+  manager: OutputManager,
 ) {
   for (const path of app_paths) {
     const info = parseManifestAppPlist(path.file);
@@ -38,49 +37,49 @@ export function extractAmazonEcho(
     const target = `${db_path}/${path.directory}/${path.fileID}`;
     if (info.path.includes("Preferences/com.amazon.echo.plist")) {
       const result = parsePreferences(target);
-      output(JSON.stringify(result), "amazon_echo_preferences", format);
+      manager.write_artifact(result, "amazon_echo_preferences");
       continue;
     } else if (info.path.includes("breadcrumbs")) {
       const result = readBreadcrumbs(target);
-      output(result, "amazon_echo_bugsnag_breakcrumbs", format);
+      manager.write_artifact(result, "amazon_echo_bugsnag_breakcrumbs");
       continue;
     } else if (info.path.includes("run_context")) {
       const result = readRunContext(target);
-      output(result, "amazon_echo_bugsnag_runcontext", format);
+      manager.write_artifact(result, "amazon_echo_bugsnag_runcontext");
       continue;
     } else if (info.path.includes("system_state.json")) {
       const result = readSystemState(target);
-      output(result, "amazon_echo_bugsnag_systemstate", format);
+      manager.write_artifact(result, "amazon_echo_bugsnag_systemstate");
       continue;
     } else if (info.path.includes("metadata.json")) {
       const result = readSystemState(target);
-      output(result, "amazon_echo_bugsnag_metadata", format);
+      manager.write_artifact(result, "amazon_echo_bugsnag_metadata");
       continue;
     } else if (
       info.path.includes("state.json")
     ) {
       const result = readState(target);
-      output(result, "amazon_echo_bugsnag_state", format);
+      manager.write_artifact(result, "amazon_echo_bugsnag_state");
       continue;
     } else if (
       info.path.includes("config.json")
     ) {
       const result = readConfig(target);
-      output(result, "amazon_echo_bugsnag_config", format);
+      manager.write_artifact(result, "amazon_echo_bugsnag_config");
       continue;
     } else if (info.path.includes("KSCrashReports/Alexa-CrashState.json")) {
       const result = readRunContext(target);
-      output(result, "amazon_echo_crashstate", format);
+      manager.write_artifact(result, "amazon_echo_crashstate");
       continue;
     } else if (
       info.path.includes("Preferences/group.com.amazon.alexa.dev.plist")
     ) {
       const result = parsePreferences(target);
-      output(result, "amazon_echo_preferences_dev", format);
+      manager.write_artifact(result, "amazon_echo_preferences_dev");
       continue;
     } else if (info.path.includes("Preferences/group.com.amazon.echo.plist")) {
       const result = parsePreferences(target);
-      output(result, "amazon_echo_preferences_group", format);
+      manager.write_artifact(result, "amazon_echo_preferences_group");
       continue;
     } else if (
       info.path.includes(
@@ -88,15 +87,15 @@ export function extractAmazonEcho(
       )
     ) {
       const result = parsePreferences(target);
-      output(result, "amazon_echo_dynamicstorage", format);
+      manager.write_artifact(result, "amazon_echo_dynamicstorage");
       continue;
     } else if (info.path.includes("Preferences/AssetManagementStorage.plist")) {
       const result = parsePreferences(target);
-      output(result, "amazon_echo_assetmanagement", format);
+      manager.write_artifact(result, "amazon_echo_assetmanagement");
       continue;
     } else if (info.path.includes("Preferences/com.amazon.Uploader.plist")) {
       const result = parsePreferences(target);
-      output(result, "amazon_echo_uploader", format);
+      manager.write_artifact(result, "amazon_echo_uploader");
       continue;
     } else if (
       info.path.includes(
@@ -104,19 +103,19 @@ export function extractAmazonEcho(
       )
     ) {
       const result = parsePreferences(target);
-      output(result, "amazon_echo_userdefaults", format);
+      manager.write_artifact(result, "amazon_echo_userdefaults");
       continue;
     } else if (
       info.path.includes("Cookies.binarycookies")
     ) {
       const result = parseCookies(target);
-      output(result, "amazon_echo_cookies", format);
+      manager.write_artifact(result, "amazon_echo_cookies");
       continue;
     } else if (
       info.path.includes("com.amazon.alexa.Capabilities.data")
     ) {
       const result = readCapabilities(target);
-      output(result, "amazon_echo_capabilities", format);
+      manager.write_artifact(result, "amazon_echo_capabilities");
       continue;
     }
 
