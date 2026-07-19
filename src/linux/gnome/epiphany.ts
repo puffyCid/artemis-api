@@ -6,7 +6,7 @@ import { readXml } from "../../encoding/xml";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { SystemError } from "../../system/error";
-import { output, Output } from "../../system/output";
+import { Output, OutputManager } from "../../system/output";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
@@ -325,7 +325,7 @@ export class Epiphany {
     public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
-
+        const manager = new OutputManager(format);
         // Get all history info
         while (true) {
             const entries = this.history(offset, limit);
@@ -333,7 +333,7 @@ export class Epiphany {
                 break;
             }
 
-            const status = output(entries, "retrospect_epiphany_history", format);
+            const status = manager.write_artifact(entries, "retrospect_epiphany_history");
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Epiphany history: ${status}`);
             }
@@ -349,7 +349,7 @@ export class Epiphany {
                 break;
             }
 
-            const status = output(entries, "retrospect_epiphany_cookies", format);
+            const status = manager.write_artifact(entries, "retrospect_epiphany_cookies");
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Epiphany cookies: ${status}`);
             }
@@ -357,21 +357,26 @@ export class Epiphany {
         }
 
         const sessions = this.sessions();
-        let status = output(sessions, "retrospect_epiphany_sessions", format);
+        let status = manager.write_artifact(sessions, "retrospect_epiphany_sessions");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Epiphany sessions: ${status}`);
         }
 
         const permissions = this.permissions();
-        status = output(permissions, "retrospect_epiphany_permissions", format);
+        status = manager.write_artifact(permissions, "retrospect_epiphany_permissions");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Epiphany permissions: ${status}`);
         }
 
         const print_page = this.lastPrint();
-        status = output(print_page, "retrospect_epiphany_lastprint", format);
+        status = manager.write_artifact(print_page, "retrospect_epiphany_lastprint");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Epiphany last print: ${status}`);
+        }
+
+        status = manager.finalize();
+        if (status instanceof SystemError) {
+            console.error(`Failed to finalize output for epiphany: ${status}`);
         }
     }
 

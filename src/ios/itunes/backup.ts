@@ -1,4 +1,4 @@
-import { getPlist, output } from "../../../mod";
+import { getPlist, OutputManager } from "../../../mod";
 import { IosError } from "../error";
 import { MacosError } from "../../macos/errors";
 import { InfoPlist, StatusPlist } from "../../../types/ios/itunes/backup";
@@ -21,44 +21,42 @@ import { Output } from "../../system/output";
  */
 export function extractBackup(
   path: string,
-  format: Output,
+  manager: OutputManager,
 ): undefined | IosError {
   const info = getInfo(path);
   if (info instanceof IosError) {
     return info;
   }
 
-  output(info, "itunes_info.plist", format);
+  manager.write_artifact(info, "itunes_info.plist")
 
   const status = getStatus(path);
   if (status instanceof IosError) {
     return status;
   }
-  output(status, "itunes_status.plist", format);
+  manager.write_artifact(status, "itunes_status.plist")
 
   const manifest = getManifest(path);
   if (manifest instanceof IosError) {
     return manifest;
   }
 
-  output(manifest, "itunes_manifest.plist", format);
+  manager.write_artifact(status, "itunes_manifest.plist")
 
   const domains = queryDomains(path);
   if (domains instanceof IosError) {
     return domains;
   }
 
-  format.directory = `${format.directory}/apps`;
-  const output_name = format.name;
   for (const domain of domains) {
     const paths = getAppPaths(path, domain.namespace);
     if (paths instanceof IosError) {
       continue;
     }
 
-    format.name = `${output_name}_${domain.namespace}`;
-    output(paths, domain.namespace, format);
-    extractAppInfo(paths, domain.namespace, path, format);
+    manager.write_artifact(paths, domain.namespace)
+
+    extractAppInfo(paths, domain.namespace, path, manager);
   }
 }
 
@@ -78,16 +76,16 @@ function getInfo(path: string): InfoPlist | IosError {
 
   const info = result as unknown as InfoPlist;
   for (const key in info.Applications) {
-    if (info.Applications[ key ] === undefined) {
+    if (info.Applications[key] === undefined) {
       continue;
     }
 
-    const data = info.Applications[ key ].iTunesMetadata;
+    const data = info.Applications[key].iTunesMetadata;
     const result = parseAppItunesMetadata(Uint8Array.from(data as number[]));
     if (result instanceof IosError) {
       continue;
     }
-    info.Applications[ key ].iTunesMetadata = result;
+    info.Applications[key].iTunesMetadata = result;
   }
   return info;
 }

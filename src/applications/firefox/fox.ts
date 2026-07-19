@@ -4,7 +4,7 @@ import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { SystemError } from "../../system/error";
-import { output, Output } from "../../system/output";
+import { Output, OutputManager } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { firefoxAddons, firefoxBookmark, firefoxSessions } from "./json";
@@ -138,6 +138,7 @@ export class FireFox {
     public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
+        const manager = new OutputManager(format);
 
         while (true) {
             const entries = this.history(offset, limit);
@@ -147,7 +148,7 @@ export class FireFox {
             if (!this.unfold) {
                 entries.forEach(x => delete x["unfold"]);
             }
-            const status = output(entries, `retrospect_firefox_history`, format);
+            const status = manager.write_artifact(entries, `retrospect_firefox_history`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox history: ${status}`);
             }
@@ -161,7 +162,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_firefox_cookies`, format);
+            const status = manager.write_artifact(entries, `retrospect_firefox_cookies`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox cookies: ${status}`);
             }
@@ -174,7 +175,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_firefox_favicons`, format);
+            const status = manager.write_artifact(entries, `retrospect_firefox_favicons`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox favicons: ${status}`);
             }
@@ -187,7 +188,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_firefox_storage`, format);
+            const status = manager.write_artifact(entries, `retrospect_firefox_storage`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox storage: ${status}`);
             }
@@ -200,7 +201,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = output(entries, `retrospect_firefox_formhistory`, format);
+            const status = manager.write_artifact(entries, `retrospect_firefox_formhistory`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox form history: ${status}`);
             }
@@ -208,21 +209,27 @@ export class FireFox {
         }
 
         const ext = this.addons();
-        let status = output(ext, `retrospect_firefox_extensions`, format);
+        let status = manager.write_artifact(ext, `retrospect_firefox_extensions`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox extensions: ${status}`);
         }
 
         const books = this.bookmarks();
-        status = output(books, `retrospect_firefox_bookmarks`, format);
+        status = manager.write_artifact(books, `retrospect_firefox_bookmarks`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox bookmarks: ${status}`);
         }
 
         const sess = this.sessions();
-        status = output(sess, `retrospect_firefox_sessions`, format);
+        status = manager.write_artifact(sess, `retrospect_firefox_sessions`);
+
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox sessions: ${status}`);
+        }
+        
+        status = manager.finalize();
+        if (status instanceof SystemError) {
+            console.error(`Failed to finalize output for firefox: ${status}`);
         }
     }
 

@@ -34,7 +34,7 @@ format = "json"
 compress = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
+destination= "local"
 
 [[artifacts]]
 artifact_name = "script"
@@ -62,7 +62,7 @@ format = "json"
 compress = false
 endpoint_id = "abdc"
 collection_id = 1
-output = "local"
+destination= "local"
 filter_name = "apps_info_plists"
 # This script will take the files artifact below and filter it to only return Info.plist files
 # We could expand this even further by then using the plist parser on the Info.plist path and include that parsed data too

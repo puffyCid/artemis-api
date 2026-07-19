@@ -1,12 +1,10 @@
-import { getPlist, parseCookies, queryTccDb } from "../../../../mod";
 import {
     FileType,
     ManifestApp,
 } from "../../../../types/ios/itunes/manifest";
 import { FileError } from "../../../filesystem/errors";
 import { readTextFile } from "../../../filesystem/files";
-import { MacosError } from "../../../macos/errors";
-import { Output, output } from "../../../system/output";
+import { OutputManager } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
 
@@ -14,11 +12,11 @@ import { parseManifestAppPlist } from "../../itunes/apps";
  * Function to extract osanalytics info
  * @param app_paths Array of `ManifestApp`
  * @param db_path iTunes backup directory
- * @param format `Output` configuration object
+ * @param manager `OutputManager` configuration object
  */
 export function extractOsAnalytics(app_paths: ManifestApp[],
     db_path: string,
-    format: Output,
+    manager: OutputManager,
 ) {
     for (const path of app_paths) {
         if (path.file_type !== FileType.IsFile) {
@@ -38,17 +36,12 @@ export function extractOsAnalytics(app_paths: ManifestApp[],
                 continue;
             }
 
-            // IPS files seem to ndjson files but with the second JSON entry in "pretty format"
+            // IPS files seem to be ndjson files but with the second JSON entry in "pretty format"
             // First line is proper single line JSON object
             // Second object is pretty formatted
             const first_json = text.trim().split("\n", 1).at(0) ?? "";
             const second_json = JSON.parse(text.replace(first_json, ""));
-
-            let status = output(
-                [ JSON.parse(first_json), second_json ],
-                "syssharedcontainer_apple_osanalytics_diagnostic_reports",
-                format,
-            );
+            manager.write_artifact([JSON.parse(first_json), second_json], "syssharedcontainer_apple_osanalytics_diagnostic_reports")
             continue;
         }
     }

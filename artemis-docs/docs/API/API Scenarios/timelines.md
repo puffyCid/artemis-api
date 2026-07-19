@@ -71,7 +71,9 @@ function main() {
   if (status instanceof TimesketchError) {
     return;
   }
-  output(results, "launchd", out);
+  const manager = new OutputManager(out);
+  const status = manager.write_artifact(results, "launchd");
+  manager.finalize();
 }
 
 main();
@@ -84,5 +86,5 @@ A quick walkthrough for this script:
 2. `getLaunchdDaemons()` parse macOS launchDaemons
 3. `timelineArtifact(daemons, TimesketchArtifact.LAUNCHD)` timeline our parsed
    launchDaemons
-4. `output(JSON.stringify(results), "launchd", out)` Dump the raw JSONL data
-   to a file. This will skip the metadata that artemis adds to artifact output
+4. `manager.write_artifact(results, "launchd")` Dump the JSONL data
+   to a file.

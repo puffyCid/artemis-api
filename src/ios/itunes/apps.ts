@@ -8,7 +8,7 @@ import { ApplicationError } from "../../applications/errors";
 import { decode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
 import { MacosError } from "../../macos/errors";
-import { Output } from "../../system/output";
+import { OutputManager } from "../../system/output";
 import { unixEpochToISO } from "../../time/conversion";
 import { extractAmazonEcho } from "../apps/amazon/echo/echo";
 import { extractDuckDuckGo } from "../apps/duckduckgo/duck";
@@ -171,44 +171,44 @@ export function parseManifestAppPlist(
  * @param paths Array of `ManifestApp`
  * @param namespace App or domain name
  * @param db_path iTunes backup directory
- * @param output `Output` object
+ * @param manager `OutputManager` class
  */
 export function extractAppInfo(
   paths: ManifestApp[],
   namespace: string,
   db_path: string,
-  output: Output,
+  manager: OutputManager,
 ) {
   switch (namespace) {
     case "com.amazon.echo":
-      extractAmazonEcho(paths, db_path, output);
+      extractAmazonEcho(paths, db_path, manager);
       break;
     case "us.zoom.videomeetings":
-      extractZoom(paths, db_path, output);
+      extractZoom(paths, db_path, manager);
       break;
     case "com.duckduckgo.mobile.ios":
-      extractDuckDuckGo(paths, db_path, output);
+      extractDuckDuckGo(paths, db_path, manager);
       break;
     case "co.hinge.mobile.ios":
-      extractHingeInfo(paths, db_path, output);
+      extractHingeInfo(paths, db_path, manager);
       break;
     case "HomeDomain":
-      extractHomeDomain(paths, db_path, output);
+      extractHomeDomain(paths, db_path, manager);
       break;
     case "RootDomain":
-      extractRootDomain(paths, db_path, output);
+      extractRootDomain(paths, db_path, manager);
       break;
     case "SysContainerDomain-com.apple.linkd":
-      extractAppleLinkd(paths, db_path, output);
+      extractAppleLinkd(paths, db_path, manager);
       break;
     case "NetworkDomain":
-      extractNetworkDomain(paths, db_path, output);
+      extractNetworkDomain(paths, db_path, manager);
       break;
     case "SysSharedContainerDomain-systemgroup.com.apple.osanalytics":
-      extractOsAnalytics(paths, db_path, output);
+      extractOsAnalytics(paths, db_path, manager);
       break;
     case "WirelessDomain":
-      extractWireless(paths, db_path, output);
+      extractWireless(paths, db_path, manager);
       break;
   }
 }

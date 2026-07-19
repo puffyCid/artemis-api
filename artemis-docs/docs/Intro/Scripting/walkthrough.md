@@ -133,7 +133,7 @@ format = "json"
 compress = false
 endpoint_id = "this can be anything"
 collection_id = 1
-output = "local"
+destination= "local"
 
 [[artifacts]]
 artifact_name = "script"
