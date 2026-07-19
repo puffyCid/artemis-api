@@ -50,7 +50,6 @@ function parseVib(full_path: string): VibInfo | EsxiError {
     }
 
     const raw_vib = info as unknown as RawVibXml;
-
     let timestamp = raw_vib.vib.installdate;
     if (timestamp === undefined) {
         timestamp = "1970-01-01T00:00:00.000Z";
@@ -59,7 +58,9 @@ function parseVib(full_path: string): VibInfo | EsxiError {
 
     let datetime = "1970-01-01T00:00:00.000Z";
     let timezone = "+00:00";
-    if (timestamp.includes("+")) {
+    if (timestamp === "1970-01-01T00:00:00.000Z") {
+        timezone = "+00:00";
+    } else if (timestamp.includes("+")) {
         datetime = `${timestamp.split("+").at(0) ?? "1970-01-01T00:00:00.000"}Z`;
         timezone = `+${timestamp.split("+").at(1) ?? "00:00"}`;
     } else if (timestamp.includes("-")) {
@@ -101,23 +102,76 @@ function parseVib(full_path: string): VibInfo | EsxiError {
     if (!Array.isArray(payloads)) {
         payloads = [ payloads ];
     }
+    console.log(full_path);
     for (const value of payloads) {
+        if (Array.isArray(value.payload)) {
+            for (const payload_value of value.payload) {
+                console.log(JSON.stringify(payload_value));
+
+                const payload_info: VibPayload = {
+                    payload_type: payload_value[ "@type" ],
+                    uncompressed_size: Number(payload_value[ "@uncompressed-size" ]),
+                    size: Number(payload_value[ "@size" ]),
+                    sha1_compressed: "",
+                    sha256_compressed: "",
+                    sha256: ""
+                };
+                if (!Array.isArray(payload_value.checksum)) {
+                    if (payload_value.checksum[ "@verify-process" ] === "gunzip" && payload_value.checksum[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256_compressed = payload_value.checksum[ "#text" ];
+                    } else if (payload_value.checksum[ "@verify-process" ] === "gunzip" && payload_value.checksum[ "@checksum-type" ] === "sha-1") {
+                        payload_info.sha1_compressed = payload_value.checksum[ "#text" ];
+                    } else if (payload_value.checksum[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256 = payload_value.checksum[ "#text" ];
+                    }
+                    vib.payloads.push(payload_info);
+
+                    continue;
+                }
+                // Get hashes now
+                for (const hash of payload_value.checksum) {
+                    if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256_compressed = hash[ "#text" ];
+                    } else if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-1") {
+                        payload_info.sha1_compressed = hash[ "#text" ];
+                    } else if (hash[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256 = hash[ "#text" ];
+                    }
+                }
+                vib.payloads.push(payload_info);
+            }
+            continue;
+        }
         const payload_info: VibPayload = {
             payload_type: value.payload[ "@type" ],
-            uncompressed_size: Number(value.payload[ "@size" ]),
+            uncompressed_size: Number(value.payload[ "@uncompressed-size" ]),
             size: Number(value.payload[ "@size" ]),
             sha1_compressed: "",
             sha256_compressed: "",
             sha256: ""
         };
+
+        if (!Array.isArray(value.payload.checksum)) {
+            if (value.payload.checksum[ "@verify-process" ] === "gunzip" && value.payload.checksum[ "@checksum-type" ] === "sha-256") {
+                payload_info.sha256_compressed = value.payload.checksum[ "#text" ];
+            } else if (value.payload.checksum[ "@verify-process" ] === "gunzip" && value.payload.checksum[ "@checksum-type" ] === "sha-1") {
+                payload_info.sha1_compressed = value.payload.checksum[ "#text" ];
+            } else if (value.payload.checksum[ "@checksum-type" ] === "sha-256") {
+                payload_info.sha256 = value.payload.checksum[ "#text" ];
+            }
+            vib.payloads.push(payload_info);
+
+            continue;
+        }
+
         // Get hashes now
         for (const hash of value.payload.checksum) {
             if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-256") {
-                payload_info.sha256_compressed = hash.text;
+                payload_info.sha256_compressed = hash[ "#text" ];
             } else if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-1") {
-                payload_info.sha1_compressed = hash.text;
+                payload_info.sha1_compressed = hash[ "#text" ];
             } else if (hash[ "@checksum-type" ] === "sha-256") {
-                payload_info.sha256 = hash.text;
+                payload_info.sha256 = hash[ "#text" ];
             }
         }
         vib.payloads.push(payload_info);

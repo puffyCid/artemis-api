@@ -58,10 +58,29 @@ interface RawVibPayload {
         "@name": string;
         "@type": string;
         "@size": string;
+        "@uncompressed-size": string | undefined;
         "checksum": {
             "@checksum-type": string;
             "@verify-process": string | undefined;
-            text: string;
-        }[];
-    };
+            "#text": string;
+        }[] | {
+            "@checksum-type": string;
+            "@verify-process": string | undefined;
+            "#text": string;
+        };
+    } | {
+        "@name": string;
+        "@type": string;
+        "@size": string;
+        "@uncompressed-size": string | undefined;
+        "checksum": {
+            "@checksum-type": string;
+            "@verify-process": string | undefined;
+            "#text": string;
+        }[] | {
+            "@checksum-type": string;
+            "@verify-process": string | undefined;
+            "#text": string;
+        };
+    }[];
 }
