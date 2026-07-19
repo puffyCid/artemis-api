@@ -24,3 +24,22 @@ export interface RecentFilesLibreOffice {
   artifact: "LibreOffice Recent Files",
   data_type: "application:libreoffice:recentfiles:entry",
 }
+
+export interface RawLibreOfficeRecent {
+  "oor:items": {
+    item: RawLibreOfficeRecentItem | RawLibreOfficeRecentItem[];
+  };
+}
+
+interface RawLibreOfficeRecentItem {
+  "@oor:path": string;
+  node: {
+    "@oor:name": string | undefined;
+    prop: {
+      "@oor:name": string;
+      value: string | {
+        "@xsi.nil": string;
+      };
+    }[] | undefined;
+  } | undefined;
+}

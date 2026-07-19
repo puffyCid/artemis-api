@@ -29,7 +29,7 @@ export function crashEvents(alt_path?: string, limit = 1000): CrashEvent[] | Win
             );
         }
 
-        const recordsData = logs[1];
+        const recordsData = logs[ 1 ];
         if (recordsData.length === 0) {
             break;
         }
@@ -45,24 +45,23 @@ export function crashEvents(alt_path?: string, limit = 1000): CrashEvent[] | Win
                 pid: Number(data.ProcessId),
                 path: data.ModuleName,
                 application_start: timestamp,
-                crash_time: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
+                crash_time: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
                 crash_time_from_start: Number(data.CrashTimeFromStart),
                 hostname: entry.data.Event.System.Computer,
-                provider: entry.data.Event.System.Provider["#attributes"].Name,
-                guid: entry.data.Event.System.Provider["#attributes"].Guid,
+                provider: entry.data.Event.System.Provider[ "#attributes" ].Name,
+                guid: entry.data.Event.System.Provider[ "#attributes" ].Guid,
                 channel: entry.data.Event.System.Channel,
-                sid: entry.data.Event.System.Security["#attributes"].UserID,
-                trigger: data["#attributes"].Name,
+                sid: entry.data.Event.System.Security[ "#attributes" ].UserID,
+                trigger: data[ "#attributes" ].Name,
                 timestamp_desc: "Application Crash",
                 artifact: "Crash EventLog",
                 data_type: "windows:eventlogs:crash:entry",
                 message: `Application '${data.ModuleName}' crashed`,
-                datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime
+                datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime
             };
             values.push(crash);
         }
 
-        console.log(JSON.stringify(recordsData));
         offset += limit;
 
     }

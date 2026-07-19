@@ -1,4 +1,4 @@
-import type { RecentFiles } from "../../../types/linux/gnome/gedit";
+import type { RawGeditRecentFiles, RecentFiles } from "../../../types/linux/gnome/gedit";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/mod";
 import { FileError } from "../../filesystem/errors";
@@ -38,6 +38,24 @@ export function geditRecentFiles(
         `Could not read ${entry.full_path}: ${data}`,
       );
       continue;
+    }
+
+    const gedit_json = data as unknown as RawGeditRecentFiles;
+    if (!Array.isArray(gedit_json.metadata.document)) {
+      gedit_json.metadata.document = [ gedit_json.metadata.document ];
+    }
+    for (const value of gedit_json.metadata.document) {
+      const recent: RecentFiles = {
+        path: value[ "@uri" ],
+        accessed: unixEpochToISO(Number(value[ "@atime" ])),
+        evidence: entry.full_path,
+        message: `Accessed: ${value[ "@uri" ]}`,
+        datetime: unixEpochToISO(Number(value[ "@atime" ])),
+        timestamp_desc: "Last Accessed",
+        artifact: "Gedit",
+        data_type: "linux:gedit:entry"
+      };
+      files.push(recent);
     }
 
     const meta = data[ "metadata" ] as Record<

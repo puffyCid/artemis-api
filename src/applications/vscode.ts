@@ -266,7 +266,6 @@ export function vscodeRecentFiles(platform: PlatformType, alt_path?: string): Re
         recents.push(recent);
 
       }
-      console.log(recents.length);
     }
   }
 

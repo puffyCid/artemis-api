@@ -35,25 +35,25 @@ export function safariDownloads(paths: SafariProfile[], platform: PlatformType, 
             console.warn(`Got array plist full_path: ${results}`);
             continue;
         }
-        if (!Array.isArray(results["DownloadHistory"])) {
+        if (!Array.isArray(results[ "DownloadHistory" ])) {
             console.warn(`Did not get DownloadHistory array full_path: ${results}`);
             continue;
         }
 
-        for (const entry of results["DownloadHistory"] as Record<string, unknown>[]) {
-            const bookmark = parseBookmark(new Uint8Array(entry["DownloadEntryBookmarkBlob"] as number[]));
+        for (const entry of results[ "DownloadHistory" ] as Record<string, unknown>[]) {
+            const bookmark = parseBookmark(new Uint8Array(entry[ "DownloadEntryBookmarkBlob" ] as number[]));
             if (bookmark instanceof MacosError) {
                 console.warn(`Could not parse bookmark for full_path: ${results}`);
                 continue;
             }
             const download: SafariDownloads = {
-                source_url: entry["DownloadEntryURL"] as string,
-                download_path: entry["DownloadEntryPath"] as string,
-                sandbox_id: entry["DownloadEntrySandboxIdentifier"] as string,
-                download_bytes: entry["DownloadEntryProgressTotalToLoad"] as number,
-                download_id: entry["DownloadEntryIdentifier"] as string,
-                download_entry_date: entry["DownloadEntryDateAddedKey"] as string,
-                download_entry_finish: entry["DownloadEntryDateFinishedKey"] as string,
+                source_url: entry[ "DownloadEntryURL" ] as string,
+                download_path: entry[ "DownloadEntryPath" ] as string,
+                sandbox_id: entry[ "DownloadEntrySandboxIdentifier" ] as string,
+                download_bytes: entry[ "DownloadEntryProgressTotalToLoad" ] as number,
+                download_id: entry[ "DownloadEntryIdentifier" ] as string,
+                download_entry_date: entry[ "DownloadEntryDateAddedKey" ] as string,
+                download_entry_finish: entry[ "DownloadEntryDateFinishedKey" ] as string,
                 path: bookmark.path,
                 cnid_path: bookmark.cnid_path,
                 created: bookmark.created,
@@ -78,7 +78,7 @@ export function safariDownloads(paths: SafariProfile[], platform: PlatformType, 
                 plist_path: path.full_path,
                 unfold: undefined,
                 version: path.version,
-                message: entry["DownloadEntryURL"] as string,
+                message: entry[ "DownloadEntryURL" ] as string,
                 datetime: bookmark.created,
                 timestamp_desc: "File Download Start",
                 artifact: "File Download",
@@ -144,7 +144,7 @@ export function safariBookmarks(paths: SafariProfile[], platform: PlatformType):
                 }
                 continue;
             }
-            if (entry["URLString"] === undefined) {
+            if (entry[ "URLString" ] === undefined) {
                 continue;
             }
             const book: SafariBookmark = {
@@ -163,7 +163,6 @@ export function safariBookmarks(paths: SafariProfile[], platform: PlatformType):
             hits.push(book);
         }
     }
-    console.log(JSON.stringify(hits));
 
     return hits;
 }
@@ -195,14 +194,14 @@ export function safariExtensions(paths: SafariProfile[], platform: PlatformType)
                 name: key.split(" ").at(0) ?? "",
                 key,
                 team_id: (key.split(" ").at(1) ?? "").replace("(", "").replace(")", ""),
-                accessible_origins: exts[key]["AccessibleOrigins"] as string[],
-                added: exts[key]["AddedDate"].replace("Z", ".000Z"),
-                enabled: exts[key]["Enabled"],
-                permissions: exts[key]["Permissions"] as string[],
+                accessible_origins: exts[ key ][ "AccessibleOrigins" ] as string[],
+                added: exts[ key ][ "AddedDate" ].replace("Z", ".000Z"),
+                enabled: exts[ key ][ "Enabled" ],
+                permissions: exts[ key ][ "Permissions" ] as string[],
                 path: full_path,
                 version: path.version,
                 message: key.split(" ").at(0) ?? "",
-                datetime: exts[key]["AddedDate"].replace("Z", ".000Z"),
+                datetime: exts[ key ][ "AddedDate" ].replace("Z", ".000Z"),
                 timestamp_desc: "Extension Installed",
                 artifact: "Browser Extension",
                 data_type: "macos:safari:extension:entry",
