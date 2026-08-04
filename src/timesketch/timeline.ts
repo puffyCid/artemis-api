@@ -9,7 +9,7 @@ import { UnifiedLog } from "../../types/macos/unifiedlogs";
 import { HomebrewData } from "../../types/macos/homebrew";
 import { Fsevents } from "../../types/macos/fsevents";
 import { Groups, Users } from "../../types/macos/accounts";
-import { ExecPolicy } from "../../types/macos/execpolicy";
+import { ExecPolicy } from "../../types/macos/sqlite/execpolicy";
 import { MacosFileInfo } from "../../types/macos/files";
 import { WindowsFileInfo } from "../../types/windows/files";
 import { LinuxFileInfo } from "../../types/linux/files";

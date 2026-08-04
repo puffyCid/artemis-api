@@ -40,7 +40,7 @@ export interface ExecPolicy {
   /**Timestamp for executable measurements */
   executable_measurements_v2_timestamp: string;
   /**Reported timestamp */
-  reported_timstamp: string;
+  reported_timestamp: string;
   /**Primary key */
   pk: number;
   /**Volume UUID for entry */

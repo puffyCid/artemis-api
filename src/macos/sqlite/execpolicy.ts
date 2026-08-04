@@ -1,4 +1,4 @@
-import { ExecPolicy } from "../../../types/macos/execpolicy";
+import { ExecPolicy } from "../../../types/macos/sqlite/execpolicy";
 import { ApplicationError } from "../../applications/errors";
 import { querySqlite } from "../../applications/sqlite";
 import { unixEpochToISO } from "../../time/conversion";
@@ -76,7 +76,7 @@ export function execPolicy(alt_file?: string): ExecPolicy[] | MacosError {
             is_valid: entry["is_valid"] as number,
             is_quarantined: entry["is_quarantined"] as number,
             executable_measurements_v2_timestamp: unixEpochToISO(entry["executable_measurements_v2_timestamp"] as number),
-            reported_timstamp: unixEpochToISO(entry["reported_timstamp"] as number),
+            reported_timestamp: unixEpochToISO(entry["reported_timestamp"] as number),
             pk: entry["pk"] as number,
             volume_uuid: entry["volume_uuid"] as string,
             object_id: entry["object_id"] as number,
@@ -92,7 +92,7 @@ export function execPolicy(alt_file?: string): ExecPolicy[] | MacosError {
             top_policy_match: entry["top_policy_match"] as number,
             evidence: path,
             message: entry["file_identifier"] as string,
-            datetime: unixEpochToISO(entry["reported_timstamp"] as number),
+            datetime: unixEpochToISO(entry["reported_timestamp"] as number),
             timestamp_desc: "ExecPolicy Reported",
             artifact: "ExecPolicy",
             data_type: "macos:sqlite:execpolicy:entry"
