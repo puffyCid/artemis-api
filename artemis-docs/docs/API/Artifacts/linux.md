@@ -387,7 +387,7 @@ You may provide a starting to begin the search. The path string may be any valid
 
 ### getPacmanInfo(alt_glob) -> PacmanPackages[] | LinuxError
 
-Get list of installed dePacmanb packages on the system. Can provide an alternative
+Get list of installed Pacman packages on the system. Can provide an alternative
 glob to the Pacman desc file.
 
 Uses /var/lib/pacman/local/*/desc by default
