@@ -309,3 +309,39 @@ export interface FirefoxSessionRaw {
     startTime: bigint;
   }
 }
+
+export interface FirefoxPermissions {
+  timestamp_desc: "Modified";
+  artifact: "Browser Permission";
+  data_type: "application:firefox:permissions:entry";
+  datetime: string;
+  message: string;
+  version: string;
+  path: string;
+  evidence: string;
+  url: string;
+  type: string;
+  permission_type: PermissionType;
+  expire_type: PermissionExpire;
+  expire_time: string;
+  modified: string;
+  id: number;
+}
+
+export enum PermissionType {
+  Temporary = "Temporary",
+  Allowed = "Allowed",
+  Blocked = "Blocked",
+  Unknown = "Unknown",
+}
+
+/**
+ * Defined in source code
+ * https://bugzilla.mozilla.org/show_bug.cgi?id=519263
+ */
+export enum PermissionExpire {
+  Never = "Never",
+  Session = "Session",
+  Time = "Time",
+  Unknown = "Unknown",
+}

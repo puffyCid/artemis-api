@@ -1,4 +1,4 @@
-import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxSession, FirefoxStorage } from "../../../types/applications/firefox";
+import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxPermissions, FirefoxProfiles, FirefoxSession, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
@@ -8,7 +8,7 @@ import { Output, OutputManager } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { firefoxAddons, firefoxBookmark, firefoxSessions } from "./json";
-import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxStorage } from "./sqlite";
+import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxPermissions, firefoxStorage } from "./sqlite";
 
 /**
  * Class to extract Firefox information
@@ -132,6 +132,16 @@ export class FireFox {
     }
 
     /**
+     * Function to extract permissions entries
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `FirefoxPermissions`
+     */
+    public permissions(offset = 0, limit = 100): FirefoxPermissions[] {
+        return firefoxPermissions(this.paths, this.platform, offset, limit);
+    }
+
+    /**
     * Function to timeline all Firefox artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
     * @param format `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
     */
@@ -208,6 +218,19 @@ export class FireFox {
             offset += limit;
         }
 
+        offset = 0;
+        while (true) {
+            const entries = this.permissions(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = manager.write_artifact(entries, `retrospect_firefox_permissions`);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline firefox permissions: ${status}`);
+            }
+            offset += limit;
+        }
+
         const ext = this.addons();
         let status = manager.write_artifact(ext, `retrospect_firefox_extensions`);
         if (status instanceof SystemError) {
@@ -226,7 +249,7 @@ export class FireFox {
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox sessions: ${status}`);
         }
-        
+
         status = manager.finalize();
         if (status instanceof SystemError) {
             console.error(`Failed to finalize output for firefox: ${status}`);
