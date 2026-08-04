@@ -90,7 +90,12 @@ export function execPolicy(alt_file?: string): ExecPolicy[] | MacosError {
             revocation_check_time: unixEpochToISO(entry["revocation_check_time"] as number),
             scan_version: entry["scan_version"] as number,
             top_policy_match: entry["top_policy_match"] as number,
-            evidence: path
+            evidence: path,
+            message: entry["file_identifier"] as string,
+            datetime: unixEpochToISO(entry["reported_timstamp"] as number),
+            timestamp_desc: "ExecPolicy Reported",
+            artifact: "ExecPolicy",
+            data_type: "macos:sqlite:execpolicy:entry"
         };
 
         entries.push(row);

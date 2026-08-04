@@ -69,4 +69,9 @@ export interface ExecPolicy {
   top_policy_match: number;
   /**Path to ExecPolicy database */
   evidence: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "ExecPolicy Reported";
+  artifact: "ExecPolicy";
+  data_type: "macos:sqlite:execpolicy:entry";
 }
