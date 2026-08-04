@@ -30,7 +30,7 @@ export { getEmond } from "./src/macos/emond";
 export { getLoginitems } from "./src/macos/loginitems";
 export { getLaunchdAgents, getLaunchdDaemons } from "./src/macos/launchd";
 export { getGroups, getUsers } from "./src/macos/accounts";
-export { getExecpolicy } from "./src/macos/execpolicy";
+export { execPolicy } from "./src/macos/sqlite/execpolicy";
 export { getFsevents } from "./src/macos/fsevents";
 export {
   getCasks,
