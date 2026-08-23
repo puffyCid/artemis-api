@@ -44,7 +44,7 @@ export function chromiumHistory(paths: ChromiumProfiles[], platform: PlatformTyp
 
             // Loop through history rows
             for (const entry of results) {
-                const webkit = webkitToIso(BigInt(entry[ "last_visit_time" ] as number) ?? 0n);
+                const webkit = webkitToIso(BigInt(entry[ "last_visit_time" ] as number));
                 const history_row: ChromiumHistory = {
                     id: entry[ "id" ] as number ?? 0,
                     url: entry[ "url" ] as string ?? "",
@@ -117,9 +117,9 @@ export function chromiumDownloads(paths: ChromiumProfiles[], platform: PlatformT
             }
             // Loop through downloads rows
             for (const entry of results) {
-                const start = webkitToIso(BigInt(entry[ "start_time" ] as number) ?? 0n);
-                const end = webkitToIso(BigInt(entry[ "end_time" ] as number) ?? 0n);
-                const access = webkitToIso(BigInt(entry[ "last_access_time" ] as number) ?? 0n);
+                const start = webkitToIso(BigInt(entry[ "start_time" ] as number));
+                const end = webkitToIso(BigInt(entry[ "end_time" ] as number));
+                const access = webkitToIso(BigInt(entry[ "last_access_time" ] as number));
                 const download_row: ChromiumDownloads = {
                     id: entry[ "id" ] as number ?? 0,
                     guid: entry[ "guid" ] as string ?? "",
@@ -265,7 +265,7 @@ export function chromiumFavicons(paths: ChromiumProfiles[], platform: PlatformTy
             }
             // Loop through favicon rows
             for (const entry of results) {
-                const last_update = webkitToIso(BigInt(entry[ "last_updated" ] as number) ?? 0n);
+                const last_update = webkitToIso(BigInt(entry[ "last_updated" ] as number));
                 let url = "Favicon URL Null";
                 let page_url = "Favicon Page Null";
                 let message = url;
@@ -328,7 +328,7 @@ export function chromiumShortcuts(paths: ChromiumProfiles[], platform: PlatformT
             }
             // Loop through favicon rows
             for (const entry of results) {
-                const last_update = webkitToIso(BigInt(entry[ "last_access_time" ] as number) ?? 0n);
+                const last_update = webkitToIso(BigInt(entry[ "last_access_time" ] as number));
                 let short_type = -1;
                 if (typeof entry[ "type" ] === 'number') {
                     short_type = entry[ "type" ];
@@ -603,51 +603,51 @@ export function chromiumDips(paths: ChromiumProfiles[], platform: PlatformType, 
                     evidence: entry_path.full_path,
                     first_bounce: webkitToIso(
                         typeof entry[ "first_bounce_time" ] === "undefined" ||
-                        entry[ "first_bounce_time" ] === null
+                            entry[ "first_bounce_time" ] === null
                             ? 0n
                             : entry[ "first_bounce_time" ] as bigint
                     ),
                     last_bounce: webkitToIso(
                         typeof entry[ "last_bounce_time" ] === "undefined" ||
-                        entry[ "last_bounce_time" ] === null
+                            entry[ "last_bounce_time" ] === null
                             ? 0n
                             : entry[ "last_bounce_time" ] as bigint
                     ),
                     first_site_storage: webkitToIso(
                         typeof entry[ "first_site_storage_time" ] === "undefined" ||
-                        entry[ "first_site_storage_time" ] === null
+                            entry[ "first_site_storage_time" ] === null
                             ? 0n
                             : entry[ "first_site_storage_time" ] as bigint
-                            
+
                     ),
                     first_stateful_bounce: webkitToIso(
                         typeof entry[ "first_stateful_bounce_time" ] === "undefined" ||
-                        entry[ "first_stateful_bounce_time" ] === null
+                            entry[ "first_stateful_bounce_time" ] === null
                             ? 0n
-                            : entry[ "first_stateful_bounce_time" ] as bigint       
+                            : entry[ "first_stateful_bounce_time" ] as bigint
                     ),
                     first_user_interaction: webkitToIso(
                         typeof entry[ "first_user_interaction_time" ] === "undefined" ||
-                        entry[ "first_user_interaction_time" ] === null
+                            entry[ "first_user_interaction_time" ] === null
                             ? 0n
-                            : entry[ "first_user_interaction_time" ] as bigint       
+                            : entry[ "first_user_interaction_time" ] as bigint
                     ),
                     first_web_authn_assertion: webkitToIso(
                         entry[ "first_web_authn_assertion_time" ] === null ? 0n : entry[ "first_web_authn_assertion_time" ] as bigint),
                     last_site_storage: webkitToIso(
                         typeof entry[ "last_site_storage_time" ] === "undefined" ||
-                        entry[ "last_site_storage_time" ] === null
+                            entry[ "last_site_storage_time" ] === null
                             ? 0n
                             : entry[ "last_site_storage_time" ] as bigint
                     ),
                     last_stateful_bounce: webkitToIso(
                         typeof entry[ "last_stateful_bounce_time" ] === "undefined" ||
-                        entry[ "last_stateful_bounce_time" ] === null
+                            entry[ "last_stateful_bounce_time" ] === null
                             ? 0n
                             : entry[ "last_stateful_bounce_time" ] as bigint),
                     last_user_interaction: webkitToIso(
                         typeof entry[ "last_user_interaction_time" ] === "undefined" ||
-                        entry[ "last_user_interaction_time" ] === null
+                            entry[ "last_user_interaction_time" ] === null
                             ? 0n
                             : entry[ "last_user_interaction_time" ] as bigint),
                     last_web_authn_assertion: webkitToIso(
@@ -656,7 +656,7 @@ export function chromiumDips(paths: ChromiumProfiles[], platform: PlatformType, 
                     message: entry[ "site" ] as string,
                     datetime: webkitToIso(
                         typeof entry[ "first_site_storage_time" ] === "undefined" ||
-                        entry[ "first_site_storage_time" ] === null
+                            entry[ "first_site_storage_time" ] === null
                             ? 0n
                             : entry[ "first_site_storage_time" ] as bigint),
                     timestamp_desc: "First Interaction",

@@ -102,12 +102,9 @@ function parseVib(full_path: string): VibInfo | EsxiError {
     if (!Array.isArray(payloads)) {
         payloads = [ payloads ];
     }
-    console.log(full_path);
     for (const value of payloads) {
         if (Array.isArray(value.payload)) {
             for (const payload_value of value.payload) {
-                console.log(JSON.stringify(payload_value));
-
                 const payload_info: VibPayload = {
                     payload_type: payload_value[ "@type" ],
                     uncompressed_size: Number(payload_value[ "@uncompressed-size" ]),
