@@ -9,7 +9,7 @@ import { getRegistry } from "../registry";
  * @returns Array of `FirewallRules` or `WindowsError`
  */
 export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError {
-    let path = `${getSystemDrive()}\\Windows\\System32\\config\\SYSTEM`;
+    let path = `ntfs:${getSystemDrive()}\\Windows\\System32\\config\\SYSTEM`;
     if (alt_file !== undefined) {
         path = alt_file;
     }

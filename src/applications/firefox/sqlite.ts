@@ -1,4 +1,4 @@
-import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxStorage, Respository } from "../../../types/applications/firefox";
+import { FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxPermissions, FirefoxProfiles, FirefoxStorage, PermissionExpire, PermissionType, Respository } from "../../../types/applications/firefox";
 import { PlatformType } from "../../system/systeminfo";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
@@ -59,29 +59,29 @@ export function firefoxHistory(paths: FirefoxProfiles[], platform: PlatformType,
         // Loop through history rows
         for (const entry of results) {
             const history_row: FirefoxHistory = {
-                moz_places_id: entry[ "moz_places_id" ] as number ?? 0,
-                url: entry[ "url" ] as string ?? "",
-                title: entry[ "title" ] as string ?? "",
-                rev_host: entry[ "rev_host" ] as string ?? "",
-                visit_count: entry[ "visit_count" ] as number ?? 0,
-                hidden: entry[ "hidden" ] as number ?? 0,
-                typed: entry[ "typed" ] as number ?? 0,
-                frequency: entry[ "frequency" ] as number ?? 0,
+                moz_places_id: entry["moz_places_id"] as number ?? 0,
+                url: entry["url"] as string ?? "",
+                title: entry["title"] as string ?? "",
+                rev_host: entry["rev_host"] as string ?? "",
+                visit_count: entry["visit_count"] as number ?? 0,
+                hidden: entry["hidden"] as number ?? 0,
+                typed: entry["typed"] as number ?? 0,
+                frequency: entry["frequency"] as number ?? 0,
                 last_visit_date: unixEpochToISO(
-                    entry[ "last_visit_date" ] as bigint ?? 0
+                    entry["last_visit_date"] as bigint ?? 0
                 ),
-                guid: entry[ "guid" ] as string ?? "",
-                foreign_count: entry[ "foreign_count" ] as number ?? 0,
-                url_hash: entry[ "url_hash" ] as number ?? 0,
-                description: entry[ "description" ] as string ?? "",
-                preview_image_url: entry[ "preview_image_url" ] as string ?? "",
-                prefix: entry[ "prefix" ] as string ?? "",
-                host: entry[ "host" ] as string ?? "",
+                guid: entry["guid"] as string ?? "",
+                foreign_count: entry["foreign_count"] as number ?? 0,
+                url_hash: entry["url_hash"] as number ?? 0,
+                description: entry["description"] as string ?? "",
+                preview_image_url: entry["preview_image_url"] as string ?? "",
+                prefix: entry["prefix"] as string ?? "",
+                host: entry["host"] as string ?? "",
                 unfold: undefined,
                 evidence: full_path,
-                message: entry[ "url" ] as string ?? "",
+                message: entry["url"] as string ?? "",
                 datetime: unixEpochToISO(
-                    entry[ "last_visit_date" ] as bigint ?? 0
+                    entry["last_visit_date"] as bigint ?? 0
                 ),
                 timestamp_desc: "URL Visited",
                 artifact: "URL History",
@@ -155,44 +155,44 @@ export function firefoxDownloads(paths: FirefoxProfiles[], platform: PlatformTyp
         // Loop through downloads rows
         for (const entry of results) {
             const download_row: FirefoxDownloads = {
-                id: entry[ "id" ] as number ?? 0,
-                place_id: entry[ "place_id" ] as number ?? 0,
-                anno_attribute_id: entry[ "anno_attribute_id" ] as number ?? 0,
-                content: entry[ "content" ] as string ?? "",
-                flags: entry[ "flags" ] as number ?? 0,
-                expiration: entry[ "expiration" ] as number ?? 0,
-                download_type: entry[ "download_type" ] as number ?? 0,
+                id: entry["id"] as number ?? 0,
+                place_id: entry["place_id"] as number ?? 0,
+                anno_attribute_id: entry["anno_attribute_id"] as number ?? 0,
+                content: entry["content"] as string ?? "",
+                flags: entry["flags"] as number ?? 0,
+                expiration: entry["expiration"] as number ?? 0,
+                download_type: entry["download_type"] as number ?? 0,
                 date_added: unixEpochToISO(
-                    entry[ "date_added" ] as bigint ?? 0
+                    entry["date_added"] as bigint ?? 0
                 ),
                 last_modified: unixEpochToISO(
-                    entry[ "last_modified" ] as bigint ?? 0
+                    entry["last_modified"] as bigint ?? 0
                 ),
-                name: entry[ "name" ] as string ?? "",
+                name: entry["name"] as string ?? "",
                 evidence: full_path,
                 message: "",
                 datetime: unixEpochToISO(
-                    entry[ "date_added" ] as bigint ?? 0
+                    entry["date_added"] as bigint ?? 0
                 ),
                 timestamp_desc: "File Download Start",
                 artifact: "File Download",
                 data_type: "application:firefox:downloads:entry",
-                moz_places_id: entry[ "moz_places_id" ] as number ?? 0,
-                url: entry[ "url" ] as string ?? "",
-                title: entry[ "title" ] as string ?? "",
-                rev_host: entry[ "rev_host" ] as string ?? "",
-                visit_count: entry[ "visit_count" ] as number ?? 0,
-                hidden: entry[ "hidden" ] as number ?? 0,
-                typed: entry[ "typed" ] as number ?? 0,
-                frequency: entry[ "frequency" ] as number ?? 0,
+                moz_places_id: entry["moz_places_id"] as number ?? 0,
+                url: entry["url"] as string ?? "",
+                title: entry["title"] as string ?? "",
+                rev_host: entry["rev_host"] as string ?? "",
+                visit_count: entry["visit_count"] as number ?? 0,
+                hidden: entry["hidden"] as number ?? 0,
+                typed: entry["typed"] as number ?? 0,
+                frequency: entry["frequency"] as number ?? 0,
                 last_visit_date: unixEpochToISO(
-                    entry[ "last_visit_date" ] as bigint ?? 0
+                    entry["last_visit_date"] as bigint ?? 0
                 ),
-                guid: entry[ "guid" ] as string ?? "",
-                foreign_count: entry[ "foreign_count" ] as number ?? 0,
-                url_hash: entry[ "url_hash" ] as number ?? 0,
-                description: entry[ "description" ] as string ?? "",
-                preview_image_url: entry[ "preview_image_url" ] as string ?? "",
+                guid: entry["guid"] as string ?? "",
+                foreign_count: entry["foreign_count"] as number ?? 0,
+                url_hash: entry["url_hash"] as number ?? 0,
+                description: entry["description"] as string ?? "",
+                preview_image_url: entry["preview_image_url"] as string ?? "",
                 version: path.version,
             };
             download_row.message = `File download from: ${download_row.url} | File: ${download_row.name}`;
@@ -231,33 +231,33 @@ export function firefoxCookies(paths: FirefoxProfiles[], platform: PlatformType,
 
         for (const entry of results) {
             const cookie_entry: FirefoxCookies = {
-                id: entry[ "id" ] as number,
-                origin_attributes: entry[ "originAttributes" ] as string,
-                in_browser_element: !!(entry[ "inBrowserElement" ] as number),
-                same_site: !!(entry[ "sameSite" ] as number),
-                scheme_map: entry[ "schemeMap" ] as number,
-                name: entry[ "name" ] as string ?? "",
-                value: entry[ "value" ] as string ?? "",
-                path: entry[ "path" ] as string ?? "",
+                id: entry["id"] as number,
+                origin_attributes: entry["originAttributes"] as string,
+                in_browser_element: !!(entry["inBrowserElement"] as number),
+                same_site: !!(entry["sameSite"] as number),
+                scheme_map: entry["schemeMap"] as number,
+                name: entry["name"] as string ?? "",
+                value: entry["value"] as string ?? "",
+                path: entry["path"] as string ?? "",
                 expiry: unixEpochToISO(
-                    (entry[ "expiry" ] as bigint ?? 0)
+                    (entry["expiry"] as bigint ?? 0)
                 ),
-                is_secure: !!(entry[ "isSecure" ] as number ?? 0),
-                is_http_only: !!(entry[ "isHttpOnly" ] as number ?? 0),
-                host: entry[ "host" ] as string ?? "",
+                is_secure: !!(entry["isSecure"] as number ?? 0),
+                is_http_only: !!(entry["isHttpOnly"] as number ?? 0),
+                host: entry["host"] as string ?? "",
                 evidence: full_path,
                 message: "",
                 datetime: unixEpochToISO(
-                    entry[ "expiry" ] as bigint ?? 0
+                    entry["expiry"] as bigint ?? 0
                 ),
                 timestamp_desc: "Cookie Expires",
                 artifact: "Website Cookie",
                 data_type: "application:firefox:cookies:entry",
                 last_accessed: unixEpochToISO(
-                    (entry[ "lastAccessed" ] as bigint ?? 0)
+                    (entry["lastAccessed"] as bigint ?? 0)
                 ),
                 creation_time: unixEpochToISO(
-                    (entry[ "creationTime" ] as bigint ?? 0)
+                    (entry["creationTime"] as bigint ?? 0)
                 ),
                 version: path.version,
             };
@@ -298,14 +298,14 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
 
         for (const entry of results) {
             const fav_entry: FirefoxFavicons = {
-                icon_url: entry[ "icon_url" ] as string,
-                expires: unixEpochToISO(entry[ "expire_ms" ] as number),
+                icon_url: entry["icon_url"] as string,
+                expires: unixEpochToISO(entry["expire_ms"] as number),
                 evidence: full_path,
-                datetime: unixEpochToISO(entry[ "expire_ms" ] as number),
+                datetime: unixEpochToISO(entry["expire_ms"] as number),
                 timestamp_desc: "Favicon Expires",
                 artifact: "URL Favicon",
                 data_type: "application:firefox:favicons:entry",
-                message: `Favicon: ${entry[ "icon_url" ]}`,
+                message: `Favicon: ${entry["icon_url"]}`,
                 version: path.version,
             };
 
@@ -344,19 +344,19 @@ export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType,
         for (const entry of results) {
             const fav_entry: FirefoxStorage = {
                 evidence: full_path,
-                repository: getRepo(entry[ "repository_id" ] as number),
-                group: entry[ "group_" ] as string,
-                origin: entry[ "origin" ] as string,
-                client_usages: entry[ "client_usages" ] as string,
-                last_access: unixEpochToISO(entry[ "last_access_time" ] as number),
-                accessed: entry[ "accessed" ] as number,
-                persisted: entry[ "persisted" ] as number,
-                suffix: entry[ "suffix" ] as string ?? undefined,
-                datetime: unixEpochToISO(entry[ "last_access_time" ] as number),
+                repository: getRepo(entry["repository_id"] as number),
+                group: entry["group_"] as string,
+                origin: entry["origin"] as string,
+                client_usages: entry["client_usages"] as string,
+                last_access: unixEpochToISO(entry["last_access_time"] as number),
+                accessed: entry["accessed"] as number,
+                persisted: entry["persisted"] as number,
+                suffix: entry["suffix"] as string ?? undefined,
+                datetime: unixEpochToISO(entry["last_access_time"] as number),
                 timestamp_desc: "Website Storage Last Accessed",
                 artifact: "Website Storage",
                 data_type: "application:firefox:storage:entry",
-                message: `Storage for ${entry[ "origin" ]}`,
+                message: `Storage for ${entry["origin"]}`,
                 version: path.version,
             };
 
@@ -365,6 +365,21 @@ export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType,
 
     }
     return storage;
+}
+
+/**
+ * Determine the repository type
+ * @param id Repo ID
+ * @returns Return `Repository` value
+ */
+function getRepo(id: number): Respository {
+    switch (id) {
+        case 1: return Respository.Temporary;
+        case 0: return Respository.Persistent;
+        case 2: return Respository.Default;
+        case 3: return Respository.Private;
+        default: return Respository.Unknown;
+    }
 }
 
 /**
@@ -402,23 +417,24 @@ export function firefoxFormhistory(paths: FirefoxProfiles[], platform: PlatformT
             console.warn(`Failed to query ${full_path}: ${results}`);
             continue;
         }
+
         for (const entry of results) {
             const form: FirefoxFormHistory = {
                 timestamp_desc: "Last Searched",
                 artifact: "Form History",
                 data_type: "application:firefox:formhistory:entry",
-                datetime: unixEpochToISO(entry[ "lastUsed" ] as bigint ?? 0),
-                message: `Form search for '${entry[ "value" ] ?? ""}'`,
+                datetime: unixEpochToISO(entry["lastUsed"] as bigint ?? 0),
+                message: `Form search for '${entry["value"] ?? ""}'`,
                 version: path.version,
                 path: path.full_path,
                 evidence: full_path,
-                search_term: entry[ "value" ] as string ?? "",
-                last_used: unixEpochToISO(entry[ "lastUsed" ] as bigint ?? 0),
-                first_used: unixEpochToISO(entry[ "firstUsed" ] as bigint ?? 0),
-                fieldname: entry[ "fieldname" ] as string ?? "",
-                guid: entry[ "guid" ] as string ?? "",
-                times_used: entry[ "timesUsed" ] as number ?? "",
-                source: entry[ "source" ] as string ?? ""
+                search_term: entry["value"] as string ?? "",
+                last_used: unixEpochToISO(entry["lastUsed"] as bigint ?? 0),
+                first_used: unixEpochToISO(entry["firstUsed"] as bigint ?? 0),
+                fieldname: entry["fieldname"] as string ?? "",
+                guid: entry["guid"] as string ?? "",
+                times_used: entry["timesUsed"] as number ?? "",
+                source: entry["source"] as string ?? ""
             };
             values.push(form);
         }
@@ -427,12 +443,76 @@ export function firefoxFormhistory(paths: FirefoxProfiles[], platform: PlatformT
     return values;
 }
 
-function getRepo(id: number): Respository {
-    switch (id) {
-        case 1: return Respository.Temporary;
-        case 0: return Respository.Persistent;
-        case 2: return Respository.Default;
-        case 3: return Respository.Private;
-        default: return Respository.Unknown;
+/**
+ * Function to extract permissions entries
+ * @param [offset=0] Starting db offset. Default is zero
+ * @param [limit=100] How many records to return. Default is 100
+ * @returns Array of `FirefoxPermissions`
+ */
+export function firefoxPermissions(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxPermissions[] {
+    const query = `SELECT id, origin, type, permission, expireType, expireTime, modificationTime FROM moz_perms LIMIT ${limit} OFFSET ${offset}`;
+    const values: FirefoxPermissions[] = [];
+
+    for (const path of paths) {
+        let full_path = `${path.full_path}/permissions.sqlite`;
+
+        if (platform === PlatformType.Windows) {
+            full_path = `${path.full_path}\\permissions.sqlite`;
+        }
+        const results = querySqlite(full_path, query);
+        if (results instanceof ApplicationError) {
+            console.warn(`Failed to query ${full_path}: ${results}`);
+            continue;
+        }
+
+        for (const entry of results) {
+            const form: FirefoxPermissions = {
+                timestamp_desc: "Modified",
+                artifact: "Browser Permission",
+                data_type: "application:firefox:permissions:entry",
+                datetime: unixEpochToISO(entry["modificationTime"] as bigint ?? 0),
+                message: `Permission '${entry["type"] as string ?? ""}' granted to '${entry["origin"] as string ?? ""}'`,
+                version: path.version,
+                path: path.full_path,
+                evidence: full_path,
+                url: entry["origin"] as string ?? "",
+                type: entry["type"] as string ?? "",
+                permission_type: permissionType(entry["permission"] as number ?? 0),
+                expire_type: expireType(entry["expireType"] as number ?? 0),
+                expire_time: unixEpochToISO(entry["expireTime"] as bigint ?? 0),
+                modified: unixEpochToISO(entry["modificationTime"] as bigint ?? 0),
+                id: entry["id"] as number ?? 0,
+            };
+            values.push(form);
+        }
+    }
+    return values;
+}
+
+/**
+ * Determine permission type
+ * @param type Permission type value
+ * @returns `PermissionType`
+ */
+function permissionType(type: number): PermissionType {
+    switch (type) {
+        case 1: return PermissionType.Temporary;
+        case 2: return PermissionType.Allowed;
+        case 3: return PermissionType.Blocked;
+        default: return PermissionType.Unknown;
+    }
+}
+
+/**
+ * Determine expiration type
+ * @param type Expiration type
+ * @returns `PermissionExpire`
+ */
+function expireType(type: number): PermissionExpire {
+    switch (type) {
+        case 0: return PermissionExpire.Never;
+        case 1: return PermissionExpire.Session;
+        case 2: return PermissionExpire.Time;
+        default: return PermissionExpire.Unknown;
     }
 }

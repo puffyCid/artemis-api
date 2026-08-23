@@ -26,7 +26,7 @@ export function listUsbDevices(alt_file?: string): UsbDevices[] | WindowsError {
     return new WindowsError(`USB`, `no SystemDrive found`);
   }
 
-  const system = `${volume}\\Windows\\System32\\config\\SYSTEM`;
+  const system = `ntfs:${volume}\\Windows\\System32\\config\\SYSTEM`;
   return usbSystem(system);
 }
 

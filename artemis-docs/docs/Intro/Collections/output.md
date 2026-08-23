@@ -680,7 +680,6 @@ When you timeline an artifact using a TOML file or cli, you can only timeline th
   wmipersist           windows: Parse WMI Repository
   outlook              windows: Parse Outlook messages
   mft                  windows: Parse MFT file
-  execpolicy           macos: Parse ExecPolicy
   users-macos          macos: Collect local users
   fsevents             macos: Parse FsEvents entries
   emond                macos: Parse Emond persistence. Removed in Ventura

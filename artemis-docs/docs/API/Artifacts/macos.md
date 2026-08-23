@@ -62,7 +62,7 @@ try to find rules
 | ----- | ------ | ---------------------------------------- |
 | path  | String | Optional alternative path to emond rules |
 
-### getExecpolicy(path) -> ExecPolicy[] | MacosError
+### execPolicy(path) -> ExecPolicy[] | MacosError
 
 Parse the ExecPolicy sqlite database on macOS. Can provide an optional
 alternative path to ExecPolicy database. Otherwise will parse default database
@@ -89,13 +89,9 @@ Parse macOS FsEvents from provided file.
 | ----- | ------ | ------------------------------ |
 | path  | String | Full path to the FsEvents file |
 
-### getLaunchdDaemons() -> Launchd[] | MacosError
+### getLaunchd() -> Launchd[] | MacosError
 
-Return all Launch daemons on macOS
-
-### getLaunchdAgents() -> Launchd[] | MacosError
-
-Return all Launch agents on macOS
+Return all Launchd entries on macOS
 
 ### getLoginitems(path) -> LoginItems[] | MacosError
 

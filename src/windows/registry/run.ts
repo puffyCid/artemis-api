@@ -18,7 +18,7 @@ export function getRunKeys(alt_path?: string): RegistryRunKey[] {
     if (drive === "") {
         drive = "C:";
     }
-    let paths = [`${drive}\\Users\\*\\NTUSER.*`, `${drive}\\Windows\\System32\\config\\SOFTWARE`];
+    let paths = [`ntfs:${drive}\\Users\\*\\NTUSER.*`, `ntfs:${drive}\\Windows\\System32\\config\\SOFTWARE`];
     if (alt_path !== undefined) {
         paths = [alt_path];
     }

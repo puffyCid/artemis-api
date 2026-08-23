@@ -38,8 +38,9 @@ import { Outlook } from "./artemis-api/src/windows/outlook";
 
 function main() {
   const path = "<path to test.ost>";
-  // If we wanted to parse an OST file on Windows that was opened by Outlook
-  // We could also provide boolean arg to access the OST file using the NTFS parser
+  // If we wanted to parse an OST file on Windows that is opened by Outlook
+  // Just prefix the path with "ntfs":
+  // For example: "ntfs:C:\Users\dev\email.ost". Will leverage the NTFS reader
   // But for this example we do not need that
   const reader = new Outlook(path);
 }
