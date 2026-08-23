@@ -14,7 +14,7 @@ import { getRegistry } from "../registry";
  * @returns Array of `Bam` or `WindowsError`
  */
 export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsError {
-    let path = `${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
+    let path = `ntfs:${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
     if (alt_path !== undefined) {
         path = alt_path;
     }

@@ -9,7 +9,7 @@ import { getRegistry } from "../registry";
  * @returns Array of `RegistryEventlogProviders`
  */
 export function getEventlogProviders(alt_path?: string): RegistryEventlogProviders[] {
-    let default_paths = ["C:\\Windows\\System32\\config\\SYSTEM", "C:\\Windows\\System32\\config\\SOFTWARE"];
+    let default_paths = ["ntfs:C:\\Windows\\System32\\config\\SYSTEM", "ntfs:C:\\Windows\\System32\\config\\SOFTWARE"];
     if (alt_path !== undefined) {
         default_paths = [alt_path];
     }

@@ -40,7 +40,7 @@ export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
 }
 
 /**
- * Extract WordWheel entries from Regstry. It is just a string value
+ * Extract WordWheel entries from Registry. It is just a string value
  * @param reg Array of `Registry` entries
  * @returns Array of `WordWheelEntry` entries
  */
