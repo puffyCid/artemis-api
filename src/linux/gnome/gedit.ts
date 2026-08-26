@@ -57,32 +57,6 @@ export function geditRecentFiles(
       };
       files.push(recent);
     }
-
-    const meta = data[ "metadata" ] as Record<
-      string,
-      Record<string, Record<string, string>>[]
-    >;
-
-    const docs = meta[ "document" ];
-    if (docs === undefined) {
-      continue;
-    }
-    for (const doc of docs) {
-      if (doc[ "$" ] === undefined) {
-        continue;
-      }
-      const recent: RecentFiles = {
-        path: doc[ "$" ][ "uri" ] ?? "",
-        accessed: unixEpochToISO(Number(doc[ "$" ][ "atime" ])),
-        evidence: entry.full_path,
-        message: `Accessed: ${doc[ "$" ][ "uri" ] ?? ""}`,
-        datetime: `${unixEpochToISO(Number(doc[ "$" ][ "atime" ])) ?? "1970-01-01T00:00:00.000Z"}`,
-        timestamp_desc: "Last Accessed",
-        artifact: "Gedit",
-        data_type: "linux:gedit:entry"
-      };
-      files.push(recent);
-    }
   }
 
   return files;
