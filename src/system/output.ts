@@ -8,7 +8,7 @@ export interface Output {
   name: string;
   /**Target directory for output */
   directory: string;
-  /**Format of output: JSON or JSONL or CSV */
+  /**Format of output: JSON, JSONL, CSV, XML, Sqlite, or Parquet */
   format: Format;
   /**Compress data with GZIP and all files with ZIP */
   compress: boolean;
@@ -24,12 +24,14 @@ export interface Output {
   api_key?: string;
 }
 
-/** Output format types. Only JSON and JSONL supported */
+/** Output format types */
 export enum Format {
   JSON = "json",
   JSONL = "jsonl",
   CSV = "csv",
+  XML = "xml",
   PARQUET = "parquet",
+  SQLITE = "sqlite",
 }
 
 /**Output type. Only local, azure, aws, and gcp supported */
