@@ -325,7 +325,10 @@ export function firefoxFavicons(paths: FirefoxProfiles[], platform: PlatformType
  * @returns Array of `FirefoxFavicons` or `ApplicationError`
  */
 export function firefoxStorage(paths: FirefoxProfiles[], platform: PlatformType, offset: number, limit: number): FirefoxStorage[] {
-    const query = `SELECT repository_id, suffix, group_, origin, client_usages, usage, last_access_time, accessed, persisted FROM origin LIMIT ${limit} OFFSET ${offset}`;
+    // Starting in at least version '154.0.1' last_maintenance_date was added
+    // Ex: last_maintenance_date: 20539
+    // 'accessed' column was removed
+    const query = `SELECT repository_id, suffix, group_, origin, client_usages, usage, last_access_time, persisted FROM origin LIMIT ${limit} OFFSET ${offset}`;
 
     const storage: FirefoxStorage[] = [];
     for (const path of paths) {
