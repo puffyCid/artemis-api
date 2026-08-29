@@ -32,6 +32,7 @@ export enum Format {
   XML = "xml",
   PARQUET = "parquet",
   SQLITE = "sqlite",
+  DUCKDB = "duckdb",
 }
 
 /**Output type. Only local, azure, aws, and gcp supported */

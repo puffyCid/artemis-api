@@ -5,12 +5,14 @@ description: Supported output formats
 
 # Output Formats
 
-Artemis supports multiple formats:
+Artemis supports multiple output formats:
 - [jsonl](https://jsonlines.org/)
 - json
 - xml
 - timeline
 - [parquet](https://parquet.apache.org/)
+- sqlite
+- [duckdb](https://duckdb.org/) (Disabled by default)
 
 All formats will output the results to filename based on the artifact parsed and append a random uuid to the artifact name.  
 An example is below:
@@ -22,6 +24,12 @@ amcache_68330d32-c35e-4d43-8655-1cb5e9d90b83.json
 :::info
 
 Timeline format output is jsonl. But the format is compatible with [timesketch](https://timesketch.org)
+
+:::
+
+:::note
+
+The SQLite and DuckDB output filename will be based on the collection name
 
 :::
 
@@ -485,6 +493,35 @@ The jsonl output is identical to json with the following differences:
 - Our JSON array is split into individual lines
 
 This data would be saved in a `<artifact>_<uuid>.jsonl` file
+
+## Output Types
+
+For jsonl, json, csv, and xml output artemis will produce many files while streaming parsed data.  
+
+For parquet output artemis will produce **one** parquet **per** artifact. For example, when parsing the MFT and Registry, artemis will produce one parquet file for the entire MFT and another parquet file for the entire Registry
+
+For sqlite and duckdb output artemis will produce **one** file for the **entire** collection.  
+For example, when parsing the MFT and Registry, artemis will only output one sqlite or duckdb file. The MFT and Registry data is stored in two tables in the sqlite or duckdb file.
+
+## Which Output to Choose?
+
+Selecting the best output format depends on several factors.  
+
+- jsonl is the most flexible and quickest format. However, you might end up with hundreds of jsonl files.
+- sqlite offers the ability to store all artifact output into a single file. However, sqlite does not offer any compression. So the sqlite database might get extremely large.
+- parquet offers a balance of speed and compression. In addition, it only outputs one file per artifact. However, it requires 3rd party tools to review.
+- duckdb also offers the ability to store all artifact output into a single file. It also supports compression. However, it uses more memory and significantly increases the artemis binary size.
+
+:::info
+
+In addition, DuckDB is disabled by default. If you want to output results to DuckDB you have to compile artemis yourself
+
+:::
+
+### Recommended Output Formats
+
+jsonl or parquet are the easiest formats to start with.
+
 
 ## Other Files
 

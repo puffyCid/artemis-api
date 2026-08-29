@@ -38,6 +38,14 @@ artifact_name = "shimcache"
 [artifacts.shimcache]
 ```
 
+
+:::info
+
+Only jsonl, json, csv, or xml output types can be uploaded.  
+You cannot stream parquet or sqlite output for remote uploads
+
+:::
+
 :::warning
 
 Currently artemis does not securely protect the remote API key. Make sure the

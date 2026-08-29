@@ -17,8 +17,7 @@ required applications:
    [VSCodium](https://vscodium.com/) are great choices.
 5. The command runner [Just](https://github.com/casey/just).
 
-Windows users will need to install
-[Chocolatey](https://community.chocolatey.org/). In addition, you will need to
+Windows users will need winget. In addition, you will need to
 install the MSVC version of [Rust](https://www.rust-lang.org/).  
 macOS users will need to install [Homebrew](https://brew.sh/)
 
@@ -28,8 +27,7 @@ You can use Just to automate most of the setup process.
 
 Ubuntu users can run: **just setup-ubuntu**\
 Fedora users can run **just setup-fedora**\
-Windows users can run **just setup-windows** (after you have installed Chocolatey
-and Rust)\
+Windows users can run **just setup-windows** (after you have installed Rust)\
 macOS users can run **just setup-macos** (after you have installed Homebrew)
 
 Windows users will need to add extra arguments to the just command:\
@@ -42,12 +40,6 @@ it means you forgot provide: `just --shell pwsh.exe  --shell-arg -c`
 
 :::
 
-
-:::info
-
-If you are using a Windows ARM device. Winget is recommended instead of Chocolatey
-
-:::
 
 If you would like to install the build dependencies manually, review the Just
 files .setup folder in the artemis repo for your platform.
@@ -83,12 +75,14 @@ Full list of just commands (via `just --list`)
 
 ```just
 Available recipes:
+    accessor                    # Test only the Accessor workflow
     build                       # Build the entire artemis project.
     complex                     # Review complexity with scc
     default                     # Run cargo clippy on artemis project
     end2end                     # Run End to End tests
     filesystem                  # Test only the FileSystem functions
     nextest                     # Test the entire artemis project using nextest
+    output                      # Test only the Output workflow
     runtime                     # Test only the JavaScript runtime
     test                        # Test the entire artemis project
     timeline                    # Test only the timelining functions
@@ -109,6 +103,14 @@ Available recipes:
     daemon-preview              # Spawn three daemon containers to connect to server.
     server-podman               # Start the example daemon server in a Podman container
 
+    [features]
+    cli                         # Just build the artemis binary
+    duck                        # Build artemis binary with all features enabled
+    forensics                   # Just build the forensics library
+    profile                     # Just build the artemis binary and enable profiling
+    slim                        # Just build the artemis binary. But do not enable Yara-X or remote upload support
+    tiny                        # Build artemis binary with all features disabled
+
     [os]
     linux                       # Test all the Linux artifacts
     macos                       # Test all the macOS artifacts
@@ -117,6 +119,7 @@ Available recipes:
     [package]
     deb version                 # Package Artemis into DEB file
     msi                         # Package Artemis into Windows MSI installer file
+    pacman                      # Package Artemis into Pacman file
     pkg team_id version profile # Package Artemis into macOS PKG installer file
     rpm                         # Package Artemis into RPM file
     vib                         # Package Artemis into ESXi VIB file
@@ -126,13 +129,13 @@ Available recipes:
     setup-macos                 # Setup Artemis development environment for macOS
     setup-ubuntu                # Setup Artemis development environment for Ubuntu
     setup-windows               # Setup Artemis development environment for Windows
-
-    [workspace]
-    cli                         # Just build the artemis binary
-    forensics                   # Just build the forensics library
-    profile                     # Just build the artemis binary and enable profiling
-    slim                        # Just build the artemis binary. But do not enable Yara-X
 ```
+
+:::info
+
+Run `just duck` to compile artemis with DuckDB support
+
+:::
 
 ### Building for esoteric platforms
 
