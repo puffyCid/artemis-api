@@ -33,42 +33,54 @@ export interface VibPayload {
 
 export interface RawVibXml {
     vib: {
-        "$": {
-            version: string;
-        };
-        type: string[];
-        name: string[];
-        version: string[];
-        vendor: string[];
-        summary: string[];
-        installdate: string[] | undefined;
-        description: string[];
-        "release-date": string[];
+        "@version": string;
+        type: string;
+        name: string;
+        version: string;
+        vendor: string;
+        summary: string;
+        installdate: string | undefined;
+        description: string;
+        "release-date": string;
         urls: {
             url: {
-                "$": {
-                    key: string;
-                },
-                "_": string;
-            }[];
-        }[] | string[];
-        "acceptance-level": string[];
-        payloads: {
-            payload: {
-                "$": {
-                    name: string;
-                    size: string;
-                    type: string;
-                    "uncompressed-size": string;
-                },
-                checksum: {
-                    "$": {
-                        "checksum-type": string;
-                        "verify-process": string | undefined;
-                    },
-                    "_": string;
-                }[];
-            }[];
-        }[];
+                "@key": string;
+                text: string;
+            };
+        }[] | string;
+        "acceptance-level": string;
+        payloads: RawVibPayload | RawVibPayload[];
     };
+}
+
+interface RawVibPayload {
+    payload: {
+        "@name": string;
+        "@type": string;
+        "@size": string;
+        "@uncompressed-size": string | undefined;
+        "checksum": {
+            "@checksum-type": string;
+            "@verify-process": string | undefined;
+            "#text": string;
+        }[] | {
+            "@checksum-type": string;
+            "@verify-process": string | undefined;
+            "#text": string;
+        };
+    } | {
+        "@name": string;
+        "@type": string;
+        "@size": string;
+        "@uncompressed-size": string | undefined;
+        "checksum": {
+            "@checksum-type": string;
+            "@verify-process": string | undefined;
+            "#text": string;
+        }[] | {
+            "@checksum-type": string;
+            "@verify-process": string | undefined;
+            "#text": string;
+        };
+    }[];
 }

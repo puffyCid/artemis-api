@@ -7,7 +7,7 @@ import { querySqlite } from "../../applications/sqlite";
 import { decode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
 import { bytesToHexString } from "../../encoding/strings";
-import { julianToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { julianToIso } from "../../time/conversion";
 import { MacosError } from "../errors";
 
 /**
@@ -41,15 +41,10 @@ export function gatekeeperEntries(
         type: getGkType(value["type"] as number),
         allow: !!(value["allow"] as number),
         disabled: !!(value["disabled"] as number),
-        expires: unixEpochToISO(
-          julianToUnixEpoch(value["expires"] as number)
-        ),
-        entry_created: unixEpochToISO(
-          julianToUnixEpoch(value["ctime"] as number)
-        ),
-        entry_modified: unixEpochToISO(
-          julianToUnixEpoch(value["mtime"] as number)
-        ),
+        expires: julianToIso(value["expires"] as number)
+        ,
+        entry_created: julianToIso(value["ctime"] as number),
+        entry_modified: julianToIso(value["mtime"] as number),
         user: value["user"] as string,
         remarks: value["remakrs"] as string,
         requirement: value["requirement"] as string,
@@ -58,32 +53,22 @@ export function gatekeeperEntries(
         hash: extractHash(value["hash"] as string),
         path: value["path"] as string,
         object_ctime: value["object_ctime"]
-          ? unixEpochToISO(
-            julianToUnixEpoch(value["object_ctime"] as number)
-          )
+          ? julianToIso(value["object_ctime"] as number)
           : undefined,
         object_expires: value["object_expires"]
-          ? unixEpochToISO(
-            julianToUnixEpoch(value["object_expires"] as number)
-          )
+          ? julianToIso(value["object_expires"] as number)
           : undefined,
         object_mtime: value["object_mtime"]
-          ? unixEpochToISO(
-            julianToUnixEpoch(value["object_mtime"] as number)
-          )
+          ? julianToIso(value["object_mtime"] as number)
           : undefined,
         object_path: value["object_path"] as string,
         object_state_ctime: value["object_state_ctime"]
-          ? unixEpochToISO(
-            julianToUnixEpoch(value["object_state_ctime"] as number)
-          )
+          ? julianToIso(value["object_state_ctime"] as number)
           : undefined,
         object_state_label: value["object_state_label"] as string,
         expiration: value["expiration"] as string,
         message: `Gatekeeper entry type '${getGkType(value["type"] as number)}'`,
-        datetime: unixEpochToISO(
-          julianToUnixEpoch(value["ctime"] as number)
-        ),
+        datetime: julianToIso(value["ctime"] as number),
         timestamp_desc: "Entry Created",
         artifact: "Gatekeeper",
         data_type: "macos:gatekeeper:entry",

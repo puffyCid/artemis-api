@@ -4,7 +4,7 @@ import { EncodingError } from "../../encoding/errors";
 import { getEnvValue } from "../../environment/env";
 import { NomError } from "../../nom/error";
 import { Endian, nomUnsignedEightBytes } from "../../nom/helpers";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { filetimeToIso } from "../../time/conversion";
 import { WindowsError } from "../errors";
 import { getRegistry } from "../registry";
 
@@ -14,7 +14,7 @@ import { getRegistry } from "../registry";
  * @returns Array of `Bam` or `WindowsError`
  */
 export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsError {
-    let path = `${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
+    let path = `ntfs:${getEnvValue("SystemDrive")}\\Windows\\System32\\config\\SYSTEM`;
     if (alt_path !== undefined) {
         path = alt_path;
     }
@@ -44,7 +44,7 @@ export function backgroundActivitiesManager(alt_path?: string): Bam[] | WindowsE
                 continue;
             }
 
-            const last_execution = unixEpochToISO(filetimeToUnixEpoch(timestamp.value));
+            const last_execution = filetimeToIso(timestamp.value);
             const bam_entry: Bam = {
                 key_path: entry.path,
                 reg_path: entry.evidence,

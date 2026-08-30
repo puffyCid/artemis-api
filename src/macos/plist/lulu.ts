@@ -181,7 +181,11 @@ function getSignStatus(status: number): Signer {
   }
 }
 
-
+/**
+ * Function to test Lulu parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the Lulu parsing
+ */
 export function testLuluRules(): void {
   const lulu_test = "../../test_data/macos/lulu/rules.plist";
   const results = luluRules(lulu_test);

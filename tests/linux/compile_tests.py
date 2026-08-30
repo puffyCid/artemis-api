@@ -55,7 +55,7 @@ def run_tests():
             # Run esbuild
             try:
                 subprocess.run(
-                    ["esbuild", "--log-level=silent", "--bundle", "--outfile=main.js", "main.ts"],
+                    ["esbuild", "--log-level=silent", "--bundle", "--outfile=main.js", "--format=cjs", "main.ts"],
                     check=True
                 )
             except subprocess.CalledProcessError:

@@ -50,19 +50,17 @@ function parseVib(full_path: string): VibInfo | EsxiError {
     }
 
     const raw_vib = info as unknown as RawVibXml;
-
-    let timestamp;
-    let message;
-    if (Array.isArray(raw_vib.vib.installdate)) {
-        timestamp = raw_vib.vib.installdate.at(0) ?? "1970-01-01T00:00:00.000Z";
-        message = `VIB package '${raw_vib.vib.name.at(0) ?? "Unknown"}' installed`;
-    } else {
-        timestamp = raw_vib.vib[ "release-date" ].at(0) ?? "1970-01-01T00:00:00.000Z";
-        message = `VIB package '${raw_vib.vib.name.at(0) ?? "Unknown"}' released`;
+    let timestamp = raw_vib.vib.installdate;
+    if (timestamp === undefined) {
+        timestamp = "1970-01-01T00:00:00.000Z";
     }
+    const message = `VIB package '${raw_vib.vib.name}' installed`;
+
     let datetime = "1970-01-01T00:00:00.000Z";
     let timezone = "+00:00";
-    if (timestamp.includes("+")) {
+    if (timestamp === "1970-01-01T00:00:00.000Z") {
+        timezone = "+00:00";
+    } else if (timestamp.includes("+")) {
         datetime = `${timestamp.split("+").at(0) ?? "1970-01-01T00:00:00.000"}Z`;
         timezone = `+${timestamp.split("+").at(1) ?? "00:00"}`;
     } else if (timestamp.includes("-")) {
@@ -75,18 +73,18 @@ function parseVib(full_path: string): VibInfo | EsxiError {
         message,
         datetime,
         timestamp_desc: raw_vib.vib.installdate !== undefined ? "VIB Package Installed" : "VIB Package Released",
-        install_date: raw_vib.vib.installdate !== undefined ? raw_vib.vib.installdate.at(0) ?? "1970-01-01T00:00:00.000Z" : "1970-01-01T00:00:000Z",
+        install_date: raw_vib.vib.installdate !== undefined ? raw_vib.vib.installdate : "1970-01-01T00:00:000Z",
         artifact: "ESXi VIB Package",
         data_type: "esxi:vib:entry",
-        vib_version: Number(raw_vib.vib.$.version.at(0) ?? 0),
-        name: raw_vib.vib.name.at(0) ?? "Unknown",
-        version: raw_vib.vib.version.at(0) ?? "Unknown",
-        vendor: raw_vib.vib.vendor.at(0) ?? "Unknown",
-        summary: raw_vib.vib.summary.at(0) ?? "Unknown",
-        description: raw_vib.vib.description.at(0) ?? "Unknown",
-        release_date: raw_vib.vib[ "release-date" ].at(0) ?? "1970-01-01T00:00:00.000Z",
-        level: raw_vib.vib[ "acceptance-level" ].at(0) ?? "Unknown",
-        vib_type: raw_vib.vib.type.at(0) ?? "Unknown",
+        vib_version: Number(raw_vib.vib[ "@version" ]),
+        name: raw_vib.vib.name,
+        version: raw_vib.vib.version,
+        vendor: raw_vib.vib.vendor,
+        summary: raw_vib.vib.summary,
+        description: raw_vib.vib.description,
+        release_date: raw_vib.vib[ "release-date" ],
+        level: raw_vib.vib[ "acceptance-level" ],
+        vib_type: raw_vib.vib.type,
         payloads: [],
         urls: [],
         evidence: full_path,
@@ -94,38 +92,87 @@ function parseVib(full_path: string): VibInfo | EsxiError {
         installed: raw_vib.vib.installdate !== undefined ? true : false
     };
 
-    for (const url of raw_vib.vib.urls) {
-        if (typeof url === 'string') {
-            break;
-        }
-        for (const value of url.url) {
-            vib.urls.push(value._);
+    if (Array.isArray(raw_vib.vib.urls)) {
+        for (const url of raw_vib.vib.urls) {
+            vib.urls.push(url.url.text);
         }
     }
 
-    const payloads = raw_vib.vib.payloads;
-    for (const entry of payloads) {
-        for (const value of entry.payload) {
-            const payload_info: VibPayload = {
-                payload_type: value.$.type,
-                uncompressed_size: Number(value.$[ "uncompressed-size" ] ?? 0),
-                size: Number(value.$.size),
-                sha1_compressed: "",
-                sha256_compressed: "",
-                sha256: ""
-            };
-            // Get hashes now
-            for (const hash of value.checksum) {
-                if (hash.$[ "verify-process" ] === "gunzip" && hash.$[ "checksum-type" ] === "sha-256") {
-                    payload_info.sha256_compressed = hash._;
-                } else if (hash.$[ "verify-process" ] === "gunzip" && hash.$[ "checksum-type" ] === "sha-1") {
-                    payload_info.sha1_compressed = hash._;
-                } else if (hash.$[ "checksum-type" ] === "sha-256") {
-                    payload_info.sha256 = hash._;
+    let payloads = raw_vib.vib.payloads;
+    if (!Array.isArray(payloads)) {
+        payloads = [ payloads ];
+    }
+    for (const value of payloads) {
+        if (Array.isArray(value.payload)) {
+            for (const payload_value of value.payload) {
+                const payload_info: VibPayload = {
+                    payload_type: payload_value[ "@type" ],
+                    uncompressed_size: Number(payload_value[ "@uncompressed-size" ]),
+                    size: Number(payload_value[ "@size" ]),
+                    sha1_compressed: "",
+                    sha256_compressed: "",
+                    sha256: ""
+                };
+                if (!Array.isArray(payload_value.checksum)) {
+                    if (payload_value.checksum[ "@verify-process" ] === "gunzip" && payload_value.checksum[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256_compressed = payload_value.checksum[ "#text" ];
+                    } else if (payload_value.checksum[ "@verify-process" ] === "gunzip" && payload_value.checksum[ "@checksum-type" ] === "sha-1") {
+                        payload_info.sha1_compressed = payload_value.checksum[ "#text" ];
+                    } else if (payload_value.checksum[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256 = payload_value.checksum[ "#text" ];
+                    }
+                    vib.payloads.push(payload_info);
+
+                    continue;
                 }
+                // Get hashes now
+                for (const hash of payload_value.checksum) {
+                    if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256_compressed = hash[ "#text" ];
+                    } else if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-1") {
+                        payload_info.sha1_compressed = hash[ "#text" ];
+                    } else if (hash[ "@checksum-type" ] === "sha-256") {
+                        payload_info.sha256 = hash[ "#text" ];
+                    }
+                }
+                vib.payloads.push(payload_info);
+            }
+            continue;
+        }
+        const payload_info: VibPayload = {
+            payload_type: value.payload[ "@type" ],
+            uncompressed_size: Number(value.payload[ "@uncompressed-size" ]),
+            size: Number(value.payload[ "@size" ]),
+            sha1_compressed: "",
+            sha256_compressed: "",
+            sha256: ""
+        };
+
+        if (!Array.isArray(value.payload.checksum)) {
+            if (value.payload.checksum[ "@verify-process" ] === "gunzip" && value.payload.checksum[ "@checksum-type" ] === "sha-256") {
+                payload_info.sha256_compressed = value.payload.checksum[ "#text" ];
+            } else if (value.payload.checksum[ "@verify-process" ] === "gunzip" && value.payload.checksum[ "@checksum-type" ] === "sha-1") {
+                payload_info.sha1_compressed = value.payload.checksum[ "#text" ];
+            } else if (value.payload.checksum[ "@checksum-type" ] === "sha-256") {
+                payload_info.sha256 = value.payload.checksum[ "#text" ];
             }
             vib.payloads.push(payload_info);
+
+            continue;
         }
+
+        // Get hashes now
+        for (const hash of value.payload.checksum) {
+            if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-256") {
+                payload_info.sha256_compressed = hash[ "#text" ];
+            } else if (hash[ "@verify-process" ] === "gunzip" && hash[ "@checksum-type" ] === "sha-1") {
+                payload_info.sha1_compressed = hash[ "#text" ];
+            } else if (hash[ "@checksum-type" ] === "sha-256") {
+                payload_info.sha256 = hash[ "#text" ];
+            }
+        }
+        vib.payloads.push(payload_info);
+
     }
     return vib;
 };

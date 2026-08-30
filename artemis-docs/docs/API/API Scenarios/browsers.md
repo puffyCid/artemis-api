@@ -59,12 +59,10 @@ function main() {
         /** JSONL is the easiest format to upload to Timesketch */
         format: Format.JSONL,
         compress: false,
-        /** This can be set to false. The artemis API will automatically timeline for us */
-        timeline: false,
         endpoint_id: "",
         collection_id: 0,
         /** Artemis also supports uploading to GCP, AZURE, and AWS */
-        output: OutputType.LOCAL
+        destination: OutputType.LOCAL
     };
 
     // Now timeline all supported artifacts
@@ -127,12 +125,10 @@ function main() {
         /** JSONL is the easiest format to upload to Timesketch */
         format: Format.JSONL,
         compress: false,
-        /** This can be set to false. The artemis API will automatically timeline for us */
-        timeline: false,
         endpoint_id: "",
         collection_id: 0,
         /** Artemis also supports uploading to GCP, AZURE, and AWS */
-        output: OutputType.LOCAL
+        destination: OutputType.LOCAL
     };
 
     // Now timeline all supported artifacts for all browsers!
@@ -194,12 +190,10 @@ function main() {
         /** JSONL is the easiest format to upload to Timesketch */
         format: Format.JSONL,
         compress: false,
-        /** This can be set to false. The artemis API will automatically timeline for us */
-        timeline: false,
         endpoint_id: "",
         collection_id: 0,
         /** Artemis also supports uploading to GCP, AZURE, and AWS */
-        output: OutputType.LOCAL
+        destination: OutputType.LOCAL
     };
 
     // Now timeline all supported artifacts
@@ -249,10 +243,9 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        timeline: false,
         endpoint_id: "",
         collection_id: 0,
-        output: OutputType.LOCAL
+        destination: OutputType.LOCAL
     };
 
     // Since Opera is based on Chromium. All Chromium artifacts should work!

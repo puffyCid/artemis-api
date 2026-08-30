@@ -19,31 +19,23 @@ References:
 - [ExecPolicy Info](https://eclecticlight.co/2023/03/13/ventura-has-changed-app-quarantine-with-a-new-xattr/)
 - [Policy Internals](https://knight.sc/reverse%20engineering/2019/02/20/syspolicyd-internals.html)
 
-## TOML Collection
+## Collection
 
-```toml
-[output]
-name = "execpolicy_collection"
-directory = "./tmp"
-format = "json"
-compress = false
-endpoint_id = "abdc"
-collection_id = 1
-output = "local"
-timeline = false
+You have to use the artemis [api](../../API/overview.md) in order to collect ExecPolicy
+data.
 
-[[artifacts]]
-artifact_name = "execpolicy"
-[artifacts.execpolicy]
-# Optional
-# alt_file = ""
+## Sample API Script
+
+```typescript
+import { execPolicy } from "./artemis-api/mod";
+
+function main() {
+    const results = authorizations();
+    console.log(JSON.stringify(results));
+}
+
+main();
 ```
-
-## Collection Options
-
-- `alt_file` Use an alternative file to the ExecPolicy database. This
-  configuration is **optional**. By default artemis will read the default
-  ExecPolicy database at **/var/db/SystemPolicyConfiguration/ExecPolicy**
 
 ## Output Structure
 
@@ -53,21 +45,21 @@ An array of `ExecPolicy` entries
 export interface ExecPolicy {
   /**Is file signed */
   is_signed: number;
-  /**File ID name */
+  /**Name of executable */
   file_identifier: string;
-  /**App bundle ID */
+  /**App bundle ID for entry */
   bundle_identifier: string;
-  /**Bundle version */
+  /**Bundle version for entry */
   bundle_version: string;
-  /**Team ID */
+  /**Team ID for entry */
   team_identifier: string;
-  /**Signing ID */
+  /**Signing ID for entry */
   signing_identifier: string;
-  /**Code Directory hash*/
+  /**Code Directory hash if available otherwise SHA256 hash of executable*/
   cdhash: string;
-  /**SHA256 hash of application */
+  /**SHA256 hash of executable */
   main_executable_hash: string;
-  /**Executable timestamp */
+  /**Timestamp when the executable was inserted in ExecPolicy database */
   executable_timestamp: string;
   /**Size of file */
   file_size: number;
@@ -75,7 +67,7 @@ export interface ExecPolicy {
   is_library: number;
   /**Is file used */
   is_used: number;
-  /**File ID associated with entry */
+  /**Parent Application File ID associated with entry. This is often the Parent Process */
   responsible_file_identifier: string;
   /**Is valid entry */
   is_valid: number;
@@ -84,16 +76,16 @@ export interface ExecPolicy {
   /**Timestamp for executable measurements */
   executable_measurements_v2_timestamp: string;
   /**Reported timestamp */
-  reported_timstamp: string;
+  reported_timestamp: string;
   /**Primary key */
   pk: number;
   /**Volume UUID for entry */
   volume_uuid: string;
   /**Object ID for entry */
   object_id: number;
-  /**Filesystem type */
+  /**Filesystem type. Typically APFS */
   fs_type_name: string;
-  /**App Bundle ID */
+  /**App Bundle ID. Should be same as `bundle_identifier` */
   bundle_id: string;
   /**Policy match for entry */
   policy_match: number;
@@ -104,14 +96,20 @@ export interface ExecPolicy {
   /**Modified time */
   mod_time: string;
   /**Policy scan cache timestamp */
-  policy_scan_cache_timestamp: number;
+  policy_scan_cache_timestamp: string;
   /**Revocation check timestamp */
   revocation_check_time: string;
   /**Scan version for entry */
   scan_version: number;
   /**Top policy match for entry */
   top_policy_match: number;
-  /**Path to the ExecPolicy database */
+  /**Path to ExecPolicy database */
   evidence: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "ExecPolicy Reported";
+  artifact: "ExecPolicy";
+  data_type: "macos:sqlite:execpolicy:entry";
 }
+
 ```

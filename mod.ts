@@ -19,6 +19,7 @@ export { kateRecentFiles } from "./src/linux/kde/kate";
 export { Falkon } from "./src/linux/kde/falkon/falkon";
 export { queryLogons } from "./src/linux/sqlite/wtmpdb";
 export { readRawFileExt4, readRawDirExt4, readRawInodeExt4 } from "./src/linux/ext4";
+export { getPacmanInfo } from "./src/linux/pacman";
 
 /**
  * macOS exported functions
@@ -29,7 +30,7 @@ export { getEmond } from "./src/macos/emond";
 export { getLoginitems } from "./src/macos/loginitems";
 export { getLaunchdAgents, getLaunchdDaemons } from "./src/macos/launchd";
 export { getGroups, getUsers } from "./src/macos/accounts";
-export { getExecpolicy } from "./src/macos/execpolicy";
+export { execPolicy } from "./src/macos/sqlite/execpolicy";
 export { getFsevents } from "./src/macos/fsevents";
 export {
   getCasks,
@@ -75,7 +76,7 @@ export { listKnownHosts } from "./src/unix/ssh";
 /**
  * Cross platform exported functions
  */
-export { dumpData, outputResults, Output, OutputType, Format } from "./src/system/output";
+export { OutputManager, Output, OutputType, Format } from "./src/system/output";
 export {
   getSysteminfo,
   hostname,

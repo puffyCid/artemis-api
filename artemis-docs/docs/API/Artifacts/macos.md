@@ -51,18 +51,18 @@ the firewall plist file.
 | ----- | ---------- | --------------- |
 | data  | Uint8Array | Raw alias bytes |
 
-### getEmond(path) -> Emond[] | MacosError
+### emondRules(alt_glob) -> Emond[] | MacosError
 
 Get all [Emond](../../Artifacts/macOS%20Artifacts/emond.md) rules on macOS. FYI
 Emond was removed on Ventura. Can provide an optional alternative path to
 directory containing emond rules. Otherwise will parse emond config on system to
 try to find rules
 
-| Param | Type   | Description                              |
-| ----- | ------ | ---------------------------------------- |
-| path  | String | Optional alternative path to emond rules |
+| Param     | Type   | Description                              |
+| --------- | ------ | ---------------------------------------- |
+| alt_glob  | String | Optional alternative glob to emond rules |
 
-### getExecpolicy(path) -> ExecPolicy[] | MacosError
+### execPolicy(path) -> ExecPolicy[] | MacosError
 
 Parse the ExecPolicy sqlite database on macOS. Can provide an optional
 alternative path to ExecPolicy database. Otherwise will parse default database
@@ -89,13 +89,9 @@ Parse macOS FsEvents from provided file.
 | ----- | ------ | ------------------------------ |
 | path  | String | Full path to the FsEvents file |
 
-### getLaunchdDaemons() -> Launchd[] | MacosError
+### getLaunchd() -> Launchd[] | MacosError
 
-Return all Launch daemons on macOS
-
-### getLaunchdAgents() -> Launchd[] | MacosError
-
-Return all Launch agents on macOS
+Return all Launchd entries on macOS
 
 ### getLoginitems(path) -> LoginItems[] | MacosError
 
@@ -890,11 +886,9 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
-        timeline: false,
         endpoint_id: "abc",
         collection_id: 0,
-        output: OutputType.LOCAL,
+        destination: OutputType.LOCAL,
     }
 
     // No data is returned. Our results and errors will appear at `./tmp/safari_timeline`

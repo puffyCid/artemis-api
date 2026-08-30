@@ -29,6 +29,8 @@ export { testGnomeAppUsage } from "../src/linux/gnome/usage";
 export { testParseGvfs } from "../src/linux/gnome/gvfs";
 export { testQueryLogons } from "../src/linux/sqlite/wtmpdb";
 export { testEpiphany } from "../src/linux/gnome/epiphany";
+export { testPacmanInfo } from "../src/linux/pacman";
+export { testDebInfo } from "../src/linux/deb";
 
 /**
  * Windows exported test functions
@@ -51,6 +53,7 @@ export { testUserAccessLogging } from "../src/windows/ese/ual";
 export { testHomebrew } from "../src/macos/homebrew";
 export { testParseBom } from "../src/macos/bom";
 export { testLuluRules } from "../src/macos/plist/lulu";
+export { testEmondRules } from "../src/macos/plist/emond";
 
 /**
  * HTTP exported test functions

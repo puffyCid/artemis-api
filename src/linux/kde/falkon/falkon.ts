@@ -1,4 +1,4 @@
-import { dumpData, glob, Output, readTextFile, stat } from "../../../../mod";
+import { OutputManager, glob, Output, readTextFile, stat } from "../../../../mod";
 import { BookmarkLocation, FalkonBookmark, FalkonCookie, FalkonHistory, FalkonProfile } from "../../../../types/linux/kde/falkon";
 import { FileError } from "../../../filesystem/errors";
 import { SystemError } from "../../../system/error";
@@ -21,7 +21,7 @@ export class Falkon {
      * @param alt_path Optional alternative path to directory contain Falkon data
      * @returns `Falkon` instance class
      */
-    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
 
@@ -38,10 +38,10 @@ export class Falkon {
             return;
         }
 
-        this.paths = [ {
+        this.paths = [{
             full_path: alt_path,
             version: browser_version,
-        } ];
+        }];
     }
 
     /**
@@ -114,17 +114,17 @@ export class Falkon {
                 created = meta.created;
             }
             // Get bookmarks in bar
-            for (const entry of json_data[ "roots" ][ "bookmark_bar" ][ "children" ] as Record<string, string | number>[]) {
+            for (const entry of json_data["roots"]["bookmark_bar"]["children"] as Record<string, string | number>[]) {
                 const value: FalkonBookmark = {
-                    bookmark_type: entry[ "type" ] as string,
-                    description: entry[ "description" ] as string,
-                    name: entry[ "description" ] as string,
+                    bookmark_type: entry["type"] as string,
+                    description: entry["description"] as string,
+                    name: entry["description"] as string,
                     location: BookmarkLocation.Bar,
-                    url: entry[ "description" ] as string,
-                    visit_count: entry[ "visit_count" ] as number,
+                    url: entry["description"] as string,
+                    visit_count: entry["visit_count"] as number,
                     evidence: book_path,
                     version: path.version,
-                    message: entry[ "description" ] as string,
+                    message: entry["description"] as string,
                     datetime: created,
                     timestamp_desc: "Falkon Bookmark File Created",
                     artifact: "KDE Falkon Bookmark",
@@ -134,17 +134,17 @@ export class Falkon {
             }
 
             // Get bookmarks in menu folder
-            for (const entry of json_data[ "roots" ][ "bookmark_menu" ][ "children" ] as Record<string, string | number>[]) {
+            for (const entry of json_data["roots"]["bookmark_menu"]["children"] as Record<string, string | number>[]) {
                 const value: FalkonBookmark = {
-                    bookmark_type: entry[ "type" ] as string,
-                    description: entry[ "description" ] as string,
-                    name: entry[ "name" ] as string,
+                    bookmark_type: entry["type"] as string,
+                    description: entry["description"] as string,
+                    name: entry["name"] as string,
                     location: BookmarkLocation.Menu,
-                    url: entry[ "url" ] as string,
-                    visit_count: entry[ "visit_count" ] as number,
+                    url: entry["url"] as string,
+                    visit_count: entry["visit_count"] as number,
                     evidence: book_path,
                     version: path.version,
-                    message: entry[ "url" ] as string,
+                    message: entry["url"] as string,
                     datetime: created,
                     timestamp_desc: "Falkon Bookmark File Created",
                     artifact: "KDE Falkon Bookmark",
@@ -154,17 +154,17 @@ export class Falkon {
             }
 
             // Get bookmarks in other
-            for (const entry of json_data[ "roots" ][ "other" ][ "children" ] as Record<string, string | number>[]) {
+            for (const entry of json_data["roots"]["other"]["children"] as Record<string, string | number>[]) {
                 const value: FalkonBookmark = {
-                    bookmark_type: entry[ "type" ] as string,
-                    description: entry[ "description" ] as string,
-                    name: entry[ "description" ] as string,
+                    bookmark_type: entry["type"] as string,
+                    description: entry["description"] as string,
+                    name: entry["description"] as string,
                     location: BookmarkLocation.Other,
-                    url: entry[ "description" ] as string,
-                    visit_count: entry[ "visit_count" ] as number,
+                    url: entry["description"] as string,
+                    visit_count: entry["visit_count"] as number,
                     evidence: book_path,
                     version: path.version,
-                    message: entry[ "description" ] as string,
+                    message: entry["description"] as string,
                     datetime: created,
                     timestamp_desc: "Falkon Bookmark File Created",
                     artifact: "KDE Falkon Bookmark",
@@ -179,21 +179,21 @@ export class Falkon {
 
     /**
      * Function to timeline all Falkon artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
-     * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     * @param format `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
      */
-    public retrospect(output: Output): void {
+    public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
-
+        const manager = new OutputManager(format);
         while (true) {
             const entries = this.history(offset, limit);
             if (entries.length === 0) {
                 break;
             }
             if (!this.unfold) {
-                entries.forEach(x => delete x[ "unfold" ]);
+                entries.forEach(x => delete x["unfold"]);
             }
-            const status = dumpData(entries, "retrospect_falkon_history", output);
+            const status = manager.write_artifact(entries, "retrospect_falkon_history");
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Falkon history: ${status}`);
             }
@@ -206,7 +206,7 @@ export class Falkon {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, "retrospect_falkon_cookies", output);
+            const status = manager.write_artifact(entries, "retrospect_falkon_cookies");
             if (status instanceof SystemError) {
                 console.error(`Failed timeline Falkon cookies: ${status}`);
             }
@@ -214,9 +214,14 @@ export class Falkon {
         }
 
         const entries = this.bookmark();
-        const status = dumpData(entries, "retrospect_falkon_bookmarks", output);
+        let status = manager.write_artifact(entries, "retrospect_falkon_bookmarks");
         if (status instanceof SystemError) {
             console.error(`Failed timeline Falkon bookmarks: ${status}`);
+        }
+
+        status = manager.finalize();
+        if (status instanceof SystemError) {
+            console.error(`Failed to finalize output for falkon: ${status}`);
         }
 
     }

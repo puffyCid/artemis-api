@@ -2,7 +2,7 @@ import { SafariFavicon, SafariHistory, SafariProfile } from "../../../types/maco
 import { ApplicationError } from "../../applications/errors";
 import { querySqlite } from "../../applications/sqlite";
 import { PlatformType } from "../../system/systeminfo";
-import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { cocoatimeToIso } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
 
@@ -45,7 +45,7 @@ export function safariHistory(paths: SafariProfile[], query: string, platform: P
                 should_recompute_derived_visit_counts: entry["should_recompute_derived_visit_counts"] as number,
                 visit_count_score: entry["visit_count_score"] as number,
                 status_code: entry["status_code"] as number,
-                visit_time: unixEpochToISO(cocoatimeToUnixEpoch(entry["visit_time"] as number)),
+                visit_time: cocoatimeToIso(entry["visit_time"] as number),
                 load_successful: entry["load_successful"] as number,
                 title: entry["title"] as string | null,
                 attributes: entry["attributes"] as number,
@@ -53,7 +53,7 @@ export function safariHistory(paths: SafariProfile[], query: string, platform: P
                 unfold: undefined,
                 version: path.version,
                 message: entry["url"] as string,
-                datetime: unixEpochToISO(cocoatimeToUnixEpoch(entry["visit_time"] as number)),
+                datetime: cocoatimeToIso(entry["visit_time"] as number),
                 timestamp_desc: "URL Visited",
                 artifact: "URL History",
                 data_type: "macos:safari:history:entry",
@@ -99,11 +99,11 @@ export function safariFavicons(paths: SafariProfile[], query: string, platform: 
                 uuid: entry["uuid"] as string,
                 url: entry["url"] as string,
                 favicon_url: entry["favicon_url"] as string,
-                created: unixEpochToISO(cocoatimeToUnixEpoch(entry["timestamp"] as number)),
+                created: cocoatimeToIso(entry["timestamp"] as number),
                 path: full_path,
                 version: path.version,
                 message: entry["favicon_url"] as string,
-                datetime: unixEpochToISO(cocoatimeToUnixEpoch(entry["timestamp"] as number)),
+                datetime: cocoatimeToIso(entry["timestamp"] as number),
                 timestamp_desc: "Favicon Created",
                 artifact: "URL Favicon",
                 data_type: "macos:safari:favicons:entry",

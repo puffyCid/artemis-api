@@ -13,10 +13,9 @@ name = "amcache_collection"
 directory = "./tmp"
 format = "json"
 compress = false
-timeline = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
+destination= "local"
 url = ""
 api_key = ""
 filter_name = ""
@@ -35,11 +34,10 @@ filter = false
   - `name` The output name. This can be any string value
   - `directory` The directory where the output should be written. This example
     outputs to a directory called tmp in the current working directory
-  - `format` The output format can be either json or jsonl or csv
+  - `format` The output format can be either json, jsonl, csv, timeline (jsonl), xml, or parquet
   - `compress` Whether to compress the output with **gzip** compression. Once
     the collection is complete the output directory will be compressed with
     **zip** compression.
-  - `timeline` Whether to timeline the parsed data. This forces the output format to JSONL and is compatible with [Timesketch](https://timesketch.org/)
   - `endpoint_id` An ID assigned to the endpoint. This can be any string value
   - `collection_id` A number assigned to the collection. This can be any positive number
   - `output` The output type. Values can be: **local**, **aws**, **gcp**, or
@@ -79,11 +77,9 @@ name = "execution_collection"
 directory = "./tmp"
 format = "jsonl"
 compress = false
-timeline = true
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
-timeline = false
+destination= "local"
 
 [[artifacts]]
 artifact_name = "amcache"
@@ -167,10 +163,9 @@ name = "marker_collection"
 directory = "./tmp"
 format = "json"
 compress = false
-timeline = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
+destination= "local"
 url = ""
 api_key = ""
 filter_name = ""
@@ -196,10 +191,9 @@ name = "marker_collection"
 directory = "./tmp"
 format = "json"
 compress = false
-timeline = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
+destination= "local"
 url = ""
 api_key = ""
 filter_name = ""
@@ -236,10 +230,9 @@ name = "marker_collection"
 directory = "./tmp"
 format = "json"
 compress = false
-timeline = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
+destination= "local"
 url = ""
 api_key = ""
 filter_name = ""

@@ -69,10 +69,8 @@ Commands:
   wmipersist           windows: Parse WMI Repository
   outlook              windows: Parse Outlook messages
   mft                  windows: Parse MFT file
-  execpolicy           macos: Parse ExecPolicy
   users-macos          macos: Collect local users
   fsevents             macos: Parse FsEvents entries
-  emond                macos: Parse Emond persistence. Removed in Ventura
   loginitems           macos: Parse LoginItems
   launchd              macos: Parse Launch Daemons and Agents
   groups-macos         macos: Collect local groups

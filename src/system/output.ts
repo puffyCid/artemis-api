@@ -8,29 +8,31 @@ export interface Output {
   name: string;
   /**Target directory for output */
   directory: string;
-  /**Format of output: JSON or JSONL or CSV */
+  /**Format of output: JSON, JSONL, CSV, XML, Sqlite, or Parquet */
   format: Format;
   /**Compress data with GZIP and all files with ZIP */
   compress: boolean;
-  /**Use `timelineArtifact()` or timeline the data yourself (using TS/JS). The Rust timeline feature cannot timeline artifacts from scripts*/
-  timeline: false;
   /**Endpoint ID */
   endpoint_id: string;
   /**ID for collection. Must be positive number */
   collection_id: number;
   /**Output type: local, azure, aws, or gcp */
-  output: OutputType;
+  destination: OutputType;
   /**URL associated with remote upload */
   url?: string;
   /**API key required for remote upload */
   api_key?: string;
 }
 
-/** Output format types. Only JSON and JSONL supported */
+/** Output format types */
 export enum Format {
   JSON = "json",
   JSONL = "jsonl",
   CSV = "csv",
+  XML = "xml",
+  PARQUET = "parquet",
+  SQLITE = "sqlite",
+  DUCKDB = "duckdb",
 }
 
 /**Output type. Only local, azure, aws, and gcp supported */
@@ -42,51 +44,47 @@ export enum OutputType {
 }
 
 /**
- * Function to pass data to artemis to save
- * @param data Data you want to output
- * @param data_name Name of the type of data. Ex: `processes`
- * @param output `Output` structure to pass to artemis
- * @returns True on success or `SystemError`
+ * Class that exposes the Artemis output pipeline to JavaScript
  */
-export function outputResults(
-  data: unknown,
-  data_name: string,
-  output: Output,
-): boolean | SystemError {
-  try {
-    // @ts-expect-error: Custom Artemis function
-    const status: boolean = js_output_results(
-      data,
-      data_name,
-      output,
-    );
-    return status;
-  } catch (err) {
-    return new SystemError(`OUTPUT`, `failed to output data: ${err}`);
-  }
-}
+export class OutputManager {
+  private manager: unknown;
 
-/**
- * Function to pass data to `artemis` to save, skipping metadata
- * @param data Data you want to output
- * @param data_name Name of the type of data. Ex: `processes`
- * @param output Output structure to pass to `artemis`
- * @returns True on success or `SystemError`
- */
-export function dumpData(
-  data: unknown,
-  data_name: string,
-  output: Output,
-): boolean | SystemError {
-  try {
-    // @ts-expect-error: Custom Artemis function
-    const status: boolean = js_raw_dump(
-      data,
-      data_name,
-      output,
-    );
-    return status;
-  } catch (err) {
-    return new SystemError(`OUTPUT`, `failed to output raw data: ${err}`);
+  /**
+   * Construct the artemis `OutputManager`
+   * @param output `Output` object structure
+   */
+  constructor(output: Output) {
+    // @ts-expect-error: Custom Artemis class
+    this.manager = new JsOutputManager(output);
+  }
+
+  /**
+   * Function to write artifact data results
+   * @param data Artifact data to write
+   * @param artifact_name Name of artifact to write to
+   * @returns True on success or `SystemError`
+   */
+  public write_artifact(data: unknown, artifact_name: string): boolean | SystemError {
+    try {
+      // @ts-expect-error: Custom Artemis class function
+      const results = this.manager.js_write_artifact(data, artifact_name);
+      return results;
+    } catch (err) {
+      return new SystemError(`OUTPUT`, `failed to write artifact: ${err}`);
+    }
+  }
+
+  /**
+   * Function to finish writing artifact results. Once this function is called the `OutputManager` is destroyed and cannot be used again
+   * @returns True on success or `SystemError`
+   */
+  public finalize(): boolean | SystemError {
+    try {
+      // @ts-expect-error: Custom Artemis class function
+      const results = this.manager.js_finalize();
+      return results;
+    } catch (err) {
+      return new SystemError(`OUTPUT`, `failed to finalize output: ${err}`);
+    }
   }
 }

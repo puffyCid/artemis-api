@@ -40,7 +40,7 @@ export interface ExecPolicy {
   /**Timestamp for executable measurements */
   executable_measurements_v2_timestamp: string;
   /**Reported timestamp */
-  reported_timstamp: string;
+  reported_timestamp: string;
   /**Primary key */
   pk: number;
   /**Volume UUID for entry */
@@ -69,4 +69,9 @@ export interface ExecPolicy {
   top_policy_match: number;
   /**Path to ExecPolicy database */
   evidence: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "ExecPolicy Reported";
+  artifact: "ExecPolicy";
+  data_type: "macos:sqlite:execpolicy:entry";
 }

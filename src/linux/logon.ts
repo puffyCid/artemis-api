@@ -8,7 +8,7 @@ import { LinuxError } from "./errors";
  */
 export function getLogon(path: string): Logon[] | LinuxError {
   if (
-    !path.endsWith("btmp") && !path.endsWith("wtmp") && !path.endsWith("utmp")
+    !path.toLowerCase().endsWith("btmp") && !path.toLowerCase().endsWith("wtmp") && !path.toLowerCase().endsWith("utmp")
   ) {
     return new LinuxError("LOGON", `provided non-logon file ${path}`);
   }

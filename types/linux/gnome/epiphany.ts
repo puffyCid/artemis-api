@@ -99,3 +99,17 @@ export interface EpiphanySessions {
     artifact: "GNOME Epiphany Session";
     data_type: "linux:browser:epiphany:session:entry",
 }
+
+export interface RawEpiphanySessions {
+    session: {
+        window: {
+            embed: RawEpiphanySessionsEmbed | RawEpiphanySessionsEmbed[];
+        };
+    };
+}
+
+interface RawEpiphanySessionsEmbed {
+    "@url": string;
+    "@title": string;
+    "@history": string;
+}

@@ -6,7 +6,7 @@ import { NomError } from "../../nom/error";
 import { Endian, nomUnsignedEightBytes, nomUnsignedFourBytes, nomUnsignedOneBytes, nomUnsignedTwoBytes } from "../../nom/helpers";
 import { take } from "../../nom/parsers";
 import { PlatformType } from "../../system/systeminfo";
-import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
+import { webkitToIso } from "../../time/conversion";
 import { WindowsError } from "../../windows/errors";
 import { readRawFile } from "../../windows/ntfs";
 import { ApplicationError } from "../errors";
@@ -1003,7 +1003,7 @@ function parseLastActive(bytes: Uint8Array): LastActive | ApplicationError {
     const last: LastActive = {
         session_id: session.value,
         index: index.value,
-        last_active: unixEpochToISO(webkitToUnixEpoch(Number(timestamp.value / 1000000n))),
+        last_active: webkitToIso(timestamp.value),
     };
 
     return last;
@@ -1216,7 +1216,7 @@ function parseWindow(bytes: Uint8Array): Window | ApplicationError {
         session_id: session.value,
         index: index.value,
         unknown: unknown.value,
-        window_timestamp: unixEpochToISO(webkitToUnixEpoch(Number(timestamp.value / 1000000n))),
+        window_timestamp: webkitToIso(timestamp.value),
     };
 
     return win;
@@ -1363,8 +1363,8 @@ export function testChromiumSessions(): void {
         throw last_active.message;
     }
 
-    if (last_active.last_active !== "2025-11-02T22:38:12.000Z") {
-        throw `Got time ${last_active.last_active} expected "2025-11-02T22:38:12.000Z".......parseLastActive ❌`;
+    if (last_active.last_active !== "2025-11-02T22:38:12.179Z") {
+        throw `Got time ${last_active.last_active} expected "2025-11-02T22:38:12.179Z".......parseLastActive ❌`;
     }
     console.info(`  Function parseLastActive ✅`);
 

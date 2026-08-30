@@ -9,7 +9,7 @@ import { ApplicationError } from "./errors";
 import { getEnvValue } from "../environment/mod";
 import { WindowsError } from "../windows/errors";
 import { Registry } from "../../types/windows/registry";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../time/conversion";
+import { filetimeToIso, unixEpochToISO } from "../time/conversion";
 import { OfficeRecentFilesWindows } from "../../types/applications/office";
 import { OfficeApp } from "../../types/applications/office";
 
@@ -121,7 +121,7 @@ function extractMruRegistry(data: Registry[]): OfficeRecentFilesWindows[] {
 
       time_data = time_data.replace("T", "").replace("]", "").replace("[", "");
       const filetime = BigInt(`0x${time_data}`);
-      const last_opened = unixEpochToISO(filetimeToUnixEpoch(filetime));
+      const last_opened = unixEpochToISO(filetimeToIso(filetime));
 
       const mru_entry: OfficeRecentFilesWindows = {
         path,

@@ -1,7 +1,7 @@
 import { glob, PlatformType, readTextFile } from "../../../mod";
 import { BrowserType, ChromiumProfiles, ExceptionCategory, Preferences } from "../../../types/applications/chromium";
 import { FileError } from "../../filesystem/errors";
-import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
+import { webkitToIso } from "../../time/conversion";
 
 /**
  * Get Chromium Preferences
@@ -101,7 +101,7 @@ function zoomPrefs(data: Record<string, Record<string, Record<string, Record<str
         if (data === undefined) {
             continue;
         }
-        prefs.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(data["last_modified"] ?? 0n) / 1000000n)));
+        prefs.last_modified = webkitToIso(BigInt(data["last_modified"] ?? 0n));
         prefs.datetime = prefs.last_modified;
         prefs.message = key;
         values.push(Object.assign({}, prefs));
@@ -146,7 +146,7 @@ interface Profile {
 function profileInfo(data: Profile, pref: Preferences): Preferences[] {
     pref.created_version = data.created_by_version;
     pref.name = data.name;
-    pref.preferences_created = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(data.creation_time) / 1000000n)));
+    pref.preferences_created = webkitToIso(BigInt(data.creation_time));
     pref.profile_id = data.edge_profile_id ?? data.enterprise_profile_guid ?? "";
 
     const values: Preferences[] = [];
@@ -158,7 +158,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.AppBanner;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(banner[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = webkitToIso(BigInt(banner[key]?.last_modified ?? 0));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -168,7 +168,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.ClientHints;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(hints[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = webkitToIso(BigInt(hints[key]?.last_modified ?? 0));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -178,7 +178,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.CookieControls;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(cookie[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = webkitToIso(BigInt(cookie[key]?.last_modified ?? 0));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -188,7 +188,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.HttpsEnforced;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(https[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = webkitToIso(BigInt(https[key]?.last_modified ?? 0));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -198,7 +198,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.MediaEngagement;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(media[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = webkitToIso(BigInt(media[key]?.last_modified ?? 0));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -208,7 +208,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.SiteEngagement;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(site[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = webkitToIso(BigInt(site[key]?.last_modified ?? 0));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }
@@ -218,7 +218,7 @@ function profileInfo(data: Profile, pref: Preferences): Preferences[] {
         pref.url = key;
         pref.message = key;
         pref.exception_category = ExceptionCategory.SslCert;
-        pref.last_modified = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(ssl[key]?.last_modified ?? 0) / 1000000n)));
+        pref.last_modified = webkitToIso(BigInt(ssl[key]?.last_modified ?? 0));
         pref.datetime = pref.last_modified;
         values.push(Object.assign({}, pref));
     }

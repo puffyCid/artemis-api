@@ -1,4 +1,4 @@
-import { dumpData, glob, Output, outputResults, platform, PlatformType, readTextFile } from "../../../mod";
+import { OutputManager, glob, Output, platform, PlatformType, readTextFile } from "../../../mod";
 import { KeyInfo, OneDriveAccount, OneDriveLog, OnedriveProfile, OneDriveSyncEngineRecord } from "../../../types/applications/onedrive";
 import { getEnvValue } from "../../environment/mod";
 import { FileError } from "../../filesystem/errors";
@@ -21,7 +21,7 @@ export class OneDrive {
      * @param [user="*"] Optional specific user to parse OneDrive info. Default is all users
      * @param alt_path Optional directory that contains *all* OneDrive related artifact files
      */
-    constructor (platform: PlatformType.Darwin | PlatformType.Windows, user = "*", alt_path?: string) {
+    constructor(platform: PlatformType.Darwin | PlatformType.Windows, user = "*", alt_path?: string) {
         this.platform = platform;
         this.user = user;
 
@@ -58,12 +58,16 @@ export class OneDrive {
      * By default all key entries are returned. You may provide an optional `Output` object to instead output the results to a file  
      * If results are outputted to a file. An empty array is returned
      * @param files Optional array of specific keys files to parse
-     * @param output Optional `Output` object to output results instead of returning them to the caller
-     * @param [metadata_runtime=false] Append runtime metadata to the output. Default is false. Only applicable if the Output.Format is JSON or JSONL
+     * @param format Optional `Output` object to output results instead of returning them to the caller
      * @returns Array of `KeyInfo`
      */
-    public oneDriveKeys(files?: string[], output?: Output, metadata_runtime = false): KeyInfo[] {
+    public oneDriveKeys(files?: string[], format?: Output): KeyInfo[] {
         const keys: KeyInfo[] = [];
+        let manager: OutputManager | undefined = undefined;
+        if (format !== undefined) {
+            manager = new OutputManager(format);
+        }
+
         // If we only want to parse a subset of keys
         if (files !== undefined) {
             for (const entry of files) {
@@ -79,18 +83,17 @@ export class OneDrive {
 
                 const values = JSON.parse(data) as Record<string, string | number>[];
                 for (const value of values) {
-                    key.key = value[ "Key" ] as string;
+                    key.key = value["Key"] as string;
                     break;
                 }
                 keys.push(key);
             }
-            if (output !== undefined) {
-                if (metadata_runtime) {
-                    outputResults(keys, "onedrive_keys", output);
-                } else {
-                    dumpData(keys, "onedrive_keys", output);
-                }
+            if (format !== undefined && manager !== undefined) {
+                manager.write_artifact(keys, "onedrive_keys")
                 return [];
+            }
+            if (manager !== undefined) {
+                manager.finalize();
             }
             return keys;
         }
@@ -110,19 +113,19 @@ export class OneDrive {
 
                 const values = JSON.parse(data) as Record<string, string | number>[];
                 for (const value of values) {
-                    key.key = value[ "Key" ] as string;
+                    key.key = value["Key"] as string;
                     break;
                 }
                 keys.push(key);
             }
-            if (output !== undefined) {
-                if (metadata_runtime) {
-                    outputResults(keys, "onedrive_keys", output);
-                } else {
-                    dumpData(keys, "onedrive_keys", output);
-                }
+            if (format !== undefined && manager !== undefined) {
+                manager.write_artifact(keys, "onedrive_keys")
+
                 return [];
             }
+        }
+        if (manager !== undefined) {
+            manager.finalize();
         }
         return keys;
     }
@@ -132,12 +135,15 @@ export class OneDrive {
      * By default all log entries are returned. You may provide an optional `Output` object to instead output the results to a file  
      * If results are outputted to a file. An empty array is returned
      * @param files Optional array of specific ODL files to parse
-     * @param output Optional `Output` object to output results instead of returning them to the caller
-     * @param [metadata_runtime=false] Append runtime metadata to the output. Default is false. Only applicable if the Output.Format is JSON or JSONL
+     * @param format Optional `Output` object to output results instead of returning them to the caller
      * @returns Array of `OneDriveLog`
      */
-    public oneDriveLogs(files?: string[], output?: Output, metadata_runtime = false): OneDriveLog[] {
+    public oneDriveLogs(files?: string[], format?: Output): OneDriveLog[] {
         let logs: OneDriveLog[] = [];
+        let manager: OutputManager | undefined = undefined;
+        if (format !== undefined) {
+            manager = new OutputManager(format);
+        }
         // Check if we only want to parse a subset of logs
         if (files !== undefined) {
             for (const entry of files) {
@@ -146,15 +152,14 @@ export class OneDrive {
                     console.error(`${values}`);
                     continue;
                 }
-                if (output !== undefined) {
-                    if (metadata_runtime) {
-                        outputResults(values, "onedrive_odl_logs", output);
-                    } else {
-                        dumpData(values, "onedrive_odl_logs", output);
-                    }
+                if (format !== undefined && manager !== undefined) {
+                    manager.write_artifact(values, "onedrive_odl_logs")
                     continue;
                 }
                 logs = logs.concat(values);
+            }
+            if (manager !== undefined) {
+                manager.finalize();
             }
             return logs;
         }
@@ -167,16 +172,15 @@ export class OneDrive {
                     console.error(`${values}`);
                     continue;
                 }
-                if (output !== undefined) {
-                    if (metadata_runtime) {
-                        outputResults(values, "onedrive_odl_logs", output);
-                    } else {
-                        dumpData(values, "onedrive_odl_logs", output);
-                    }
+                if (format !== undefined && manager !== undefined) {
+                    manager.write_artifact(values, "onedrive_odl_logs")
                     continue;
                 }
                 logs = logs.concat(values);
             }
+        }
+        if (manager !== undefined) {
+            manager.finalize();
         }
         return logs;
     }
@@ -186,12 +190,15 @@ export class OneDrive {
      * By default all account entries are returned. You may provide an optional `Output` object to instead output the results to a file  
      * If results are outputted to a file. An empty array is returned
      * @param files Optional array of specific account configs files to parse. Windows will be NTUSER.DAT. macOS will be plist files
-     * @param output Optional `Output` object to output results instead of returning them to the caller
-     * @param [metadata_runtime=false] Append runtime metadata to the output. Default is false. Only applicable if the Output.Format is JSON or JSONL
+     * @param format Optional `Output` object to output results instead of returning them to the caller
      * @returns Array of `OneDriveAccount`
      */
-    public oneDriveAccounts(files?: string[], output?: Output, metadata_runtime = false): OneDriveAccount[] {
+    public oneDriveAccounts(files?: string[], format?: Output): OneDriveAccount[] {
         let configs: OneDriveAccount[] = [];
+        let manager: OutputManager | undefined = undefined;
+        if (format !== undefined) {
+            manager = new OutputManager(format);
+        }
         // Check if we only want to parse a subset of accounts
         if (files !== undefined) {
             for (const entry of files) {
@@ -200,15 +207,15 @@ export class OneDrive {
                     console.error(`${values}`);
                     continue;
                 }
-                if (output !== undefined) {
-                    if (metadata_runtime) {
-                        outputResults(values, "onedrive_accounts", output);
-                    } else {
-                        dumpData(values, "onedrive_accounts", output);
-                    }
+
+                if (format !== undefined && manager !== undefined) {
+                    manager.write_artifact(values, "onedrive_accounts")
                     continue;
                 }
                 configs = configs.concat(values);
+            }
+            if (manager !== undefined) {
+                manager.finalize();
             }
             return configs;
         }
@@ -221,16 +228,15 @@ export class OneDrive {
                     console.error(`${values}`);
                     continue;
                 }
-                if (output !== undefined) {
-                    if (metadata_runtime) {
-                        outputResults(values, "onedrive_accounts", output);
-                    } else {
-                        dumpData(values, "onedrive_accounts", output);
-                    }
+                if (format !== undefined && manager !== undefined) {
+                    manager.write_artifact(values, "onedrive_accounts")
                     continue;
                 }
                 configs = configs.concat(values);
             }
+        }
+        if (manager !== undefined) {
+            manager.finalize();
         }
         return configs;
     }
@@ -240,12 +246,15 @@ export class OneDrive {
      * By default all database entries are returned. You may provide an optional `Output` object to instead output the results to a file  
      * If results are outputted to a file. An empty array is returned
      * @param files Optional array of specific db files to query
-     * @param output Optional `Output` object to output results instead of returning them to the caller
-     * @param [metadata_runtime=false] Append runtime metadata to the output. Default is false. Only applicable if the Output.Format is JSON or JSONL
+     * @param format Optional `Output` object to output results instead of returning them to the caller
      * @returns Array of `OneDriveSyncEngineRecord`
      */
-    public oneDriveSyncDatabase(files?: string[], output?: Output, metadata_runtime = false): OneDriveSyncEngineRecord[] {
+    public oneDriveSyncDatabase(files?: string[], format?: Output): OneDriveSyncEngineRecord[] {
         let db: OneDriveSyncEngineRecord[] = [];
+        let manager: OutputManager | undefined = undefined;
+        if (format !== undefined) {
+            manager = new OutputManager(format);
+        }
         // Check if we only want to parse a specific database
         if (files !== undefined) {
             for (const entry of files) {
@@ -254,15 +263,15 @@ export class OneDrive {
                     console.error(`${values}`);
                     continue;
                 }
-                if (output !== undefined) {
-                    if (metadata_runtime) {
-                        outputResults(values, "onedrive_syncdb", output);
-                    } else {
-                        dumpData(values, "onedrive_syncdb", output);
-                    }
+
+                if (format !== undefined && manager !== undefined) {
+                    manager.write_artifact(values, "onedrive_syncdb")
                     continue;
                 }
                 db = db.concat(values);
+            }
+            if (manager !== undefined) {
+                manager.finalize();
             }
             return db;
         }
@@ -275,16 +284,15 @@ export class OneDrive {
                     console.error(`${values}`);
                     continue;
                 }
-                if (output !== undefined) {
-                    if (metadata_runtime) {
-                        outputResults(values, "onedrive_syncdb", output);
-                    } else {
-                        dumpData(values, "onedrive_syncdb", output);
-                    }
+                if (format !== undefined && manager !== undefined) {
+                    manager.write_artifact(values, "onedrive_syncdb")
                     continue;
                 }
                 db = db.concat(values);
             }
+        }
+        if (manager !== undefined) {
+            manager.finalize();
         }
         return db;
     }
@@ -438,8 +446,8 @@ export function testOneDrive(): void {
         throw `Got '${account.length}' expected "1".......OneDrive ❌`;
     }
 
-    if (plat === PlatformType.Darwin && account[ 0 ]?.account_id !== "aaaaaaaaa") {
-        throw `Got '${account[ 0 ]?.account_id}' expected "aaaaaaaaa".......OneDrive ❌`;
+    if (plat === PlatformType.Darwin && account[0]?.account_id !== "aaaaaaaaa") {
+        throw `Got '${account[0]?.account_id}' expected "aaaaaaaaa".......OneDrive ❌`;
     }
 
     const key = client.oneDriveKeys();

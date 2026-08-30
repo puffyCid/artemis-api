@@ -17,6 +17,7 @@ Artemis supports parsing the following artifacts from Firefox.
 - Website storage
 - Favicons
 - Form history
+- Permissions
 
 Other parsers:
 
