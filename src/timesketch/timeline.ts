@@ -15,7 +15,7 @@ import { WindowsFileInfo } from "../../types/windows/files";
 import { LinuxFileInfo } from "../../types/linux/files";
 import { SafariDownloads, SafariHistory } from "../../types/macos/safari";
 import { Launchd } from "../../types/macos/launchd";
-import { Emond } from "../../types/macos/emond";
+import { Emond } from "../../types/macos/plist/emond";
 import { Spotlight } from "../../types/macos/spotlight";
 import { Prefetch } from "../../types/windows/prefetch";
 import { Amcache } from "../../types/windows/amcache";

@@ -51,16 +51,16 @@ the firewall plist file.
 | ----- | ---------- | --------------- |
 | data  | Uint8Array | Raw alias bytes |
 
-### getEmond(path) -> Emond[] | MacosError
+### emondRules(alt_glob) -> Emond[] | MacosError
 
 Get all [Emond](../../Artifacts/macOS%20Artifacts/emond.md) rules on macOS. FYI
 Emond was removed on Ventura. Can provide an optional alternative path to
 directory containing emond rules. Otherwise will parse emond config on system to
 try to find rules
 
-| Param | Type   | Description                              |
-| ----- | ------ | ---------------------------------------- |
-| path  | String | Optional alternative path to emond rules |
+| Param     | Type   | Description                              |
+| --------- | ------ | ---------------------------------------- |
+| alt_glob  | String | Optional alternative glob to emond rules |
 
 ### execPolicy(path) -> ExecPolicy[] | MacosError
 

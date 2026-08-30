@@ -1,4 +1,4 @@
-import { Emond } from "../../../../types/macos/emond";
+import { Emond } from "../../../../types/macos/plist/emond";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**

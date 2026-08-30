@@ -719,7 +719,6 @@ When you timeline an artifact using a TOML file or cli, you can only timeline th
   mft                  windows: Parse MFT file
   users-macos          macos: Collect local users
   fsevents             macos: Parse FsEvents entries
-  emond                macos: Parse Emond persistence. Removed in Ventura
   loginitems           macos: Parse LoginItems
   launchd              macos: Parse Launch Daemons and Agents
   groups-macos         macos: Collect local groups

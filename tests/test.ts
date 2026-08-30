@@ -53,6 +53,7 @@ export { testUserAccessLogging } from "../src/windows/ese/ual";
 export { testHomebrew } from "../src/macos/homebrew";
 export { testParseBom } from "../src/macos/bom";
 export { testLuluRules } from "../src/macos/plist/lulu";
+export { testEmondRules } from "../src/macos/plist/emond";
 
 /**
  * HTTP exported test functions
