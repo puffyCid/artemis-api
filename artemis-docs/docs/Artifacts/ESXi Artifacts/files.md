@@ -47,7 +47,7 @@ start_path = "C:\\Windows" # Where to start the listing
 # Optional
 depth = 1        # How many sub directories to descend
 # Optional
-metadata = true  # Get PE metadata
+metadata = true  # Get ELF metadata
 # Optional
 md5 = true       # MD5 all files
 # Optional
@@ -70,7 +70,7 @@ source = "host:" # What type of filelisting to perform
 - `depth` Specify how many directories to descend from the `start_path`. Default
   is one (1). Must be a postive number. Max value is 255. This configuration is
   **optional**
-- `metadata` Get [PE](pe.md) data from `PE` files. This configuration is
+- `metadata` Get [ELF](elf) data from `ELF` files. This configuration is
   **optional**. Default is **false**
 - `md5` Boolean value to enable MD5 hashing on all files. This configuration is
   **optional**. Default is **false**
