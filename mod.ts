@@ -26,9 +26,9 @@ export { getPacmanInfo } from "./src/linux/pacman";
  */
 export { parseAlias } from "./src/macos/alias";
 export { parseBom } from "./src/macos/bom";
-export { getEmond } from "./src/macos/emond";
+export { emondRules } from "./src/macos/plist/emond";
 export { getLoginitems } from "./src/macos/loginitems";
-export { getLaunchdAgents, getLaunchdDaemons } from "./src/macos/launchd";
+export { getLaunchd } from "./src/macos/launchd";
 export { getGroups, getUsers } from "./src/macos/accounts";
 export { execPolicy } from "./src/macos/sqlite/execpolicy";
 export { getFsevents } from "./src/macos/fsevents";
