@@ -20,7 +20,6 @@ import { Spotlight } from "../../types/macos/spotlight";
 import { Prefetch } from "../../types/windows/prefetch";
 import { Amcache } from "../../types/windows/amcache";
 import { Shimcache } from "../../types/windows/shimcache";
-import { Bits } from "../../types/windows/bits";
 import { EventLogRecord } from "../../types/windows/eventlogs";
 import { Jumplists } from "../../types/windows/jumplists";
 import { Shortcut } from "../../types/windows/shortcuts";
@@ -28,7 +27,6 @@ import { RecycleBin } from "../../types/windows/recyclebin";
 import { Registry } from "../../types/windows/registry";
 import { Services } from "../../types/windows/services";
 import { Shellbags } from "../../types/windows/shellbags";
-import { RawFileInfo } from "../../types/windows/ntfs";
 import { Shimdb } from "../../types/windows/shimdb";
 import {
   ApplicationInfo,
@@ -41,7 +39,6 @@ import {
   NotificationInfo,
 } from "../../types/windows/srum";
 import { SearchEntry } from "../../types/windows/search";
-import { TaskData } from "../../types/windows/tasks";
 import { UserAssist } from "../../types/windows/userassist";
 import { UserInfo } from "../../types/windows/users";
 import { UsnJrnl } from "../../types/windows/usnjrnl";
@@ -94,16 +91,15 @@ import { timelineRecycleBin } from "./artifacts/windows/recyclebin";
 import { timelineRegistry } from "./artifacts/windows/registry";
 import { timelineShellbags } from "./artifacts/windows/shellbags";
 import { timelineServices } from "./artifacts/windows/services";
-import { timelineRawFiles } from "./artifacts/windows/ntfs";
 import { timelineShimdb } from "./artifacts/windows/shimdb";
 import { timelineSearch } from "./artifacts/windows/search";
 import { timelineSrum } from "./artifacts/windows/srum";
-import { timelineTasks } from "./artifacts/windows/tasks";
 import { timelineUserAssist } from "./artifacts/windows/userassist";
 import { timelineUsersWindows } from "./artifacts/windows/users";
 import { timelineUsnJrnl } from "./artifacts/windows/usnjrnl";
 import { timelineWmiPersist } from "./artifacts/windows/wmi";
 import { timelineLogonsWindows } from "./artifacts/windows/eventlogs/logons";
+import { BitsInfo } from "../../types/windows/bits";
 
 /**
  * Function to timeline artifacts parsed by artemis
@@ -157,7 +153,7 @@ export function timelineArtifact(
     case TimesketchArtifact.PREFETCH:
       return timelinePrefetch(data as Prefetch[]);
     case TimesketchArtifact.BITS:
-      return timelineBits(data as Bits);
+      return timelineBits(data as BitsInfo[]);
     case TimesketchArtifact.EVENTLOGS:
       return timelineEventLogs(data as EventLogRecord[]);
     case TimesketchArtifact.JUMPLISTS:
@@ -172,8 +168,6 @@ export function timelineArtifact(
       return timelineShellbags(data as Shellbags[]);
     case TimesketchArtifact.SERVICES:
       return timelineServices(data as Services[]);
-    case TimesketchArtifact.RAWFILES:
-      return timelineRawFiles(data as RawFileInfo[]);
     case TimesketchArtifact.SHIMDB:
       return timelineShimdb(data as Shimdb[]);
     case TimesketchArtifact.SRUM:
@@ -190,8 +184,6 @@ export function timelineArtifact(
       );
     case TimesketchArtifact.SEARCH:
       return timelineSearch(data as SearchEntry[]);
-    case TimesketchArtifact.TASKS:
-      return timelineTasks(data as TaskData);
     case TimesketchArtifact.USERASSIST:
       return timelineUserAssist(data as UserAssist[]);
     case TimesketchArtifact.USERS_WINDOWS:

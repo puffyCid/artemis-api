@@ -47,16 +47,16 @@ artifact_name = "eventlogs"
 [artifacts.eventlogs]
 
 [[artifacts]]
-artifact_name = "rawfiles"
-[artifacts.rawfiles]
-drive_letter = 'C'
+artifact_name = "files"
+[artifacts.files]
 start_path = "C:\\"
 depth = 40
-recover_indx = true
 md5 = true
 sha1 = false
 sha256 = false
 metadata = true
+verbose = false
+source = "ntfs:C"
 
 [[artifacts]]
 artifact_name = "registry" # Parses the whole Registry file
