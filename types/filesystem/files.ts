@@ -123,6 +123,7 @@ export interface FileNtfsInfo {
   user_sid: string;
   group_sid: string;
   drive: string;
+  is_indx: boolean;
   evidence: string;
 }
 

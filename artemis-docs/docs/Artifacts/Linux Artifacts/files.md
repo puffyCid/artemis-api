@@ -61,6 +61,7 @@ file_regex = ""  # Regex for files
 # Optional
 yara = ""        # Base64 encoded Yara rule or a remote Yara rule
 source = "host:" # What type of filelisting to perform
+verbose = false
 ```
 
 ## Collection Options
@@ -87,7 +88,8 @@ source = "host:" # What type of filelisting to perform
   - `host:` - Represents a live filelisting
   - `ntfs:C` - Represents a NTFS filelisting against the C drive
   - `zip:/full/path/to/file.zip` - Represents a ZIP filelisting against file.zip
-
+- `verbose` - Include additional entries in the filelisting
+  - Currently this only affects the NTFS filelisting. This option carves INDX entries from INDX slack space
 ## Output Structure
 
 Depends on the `source` value
@@ -218,6 +220,7 @@ export interface FileNtfsInfo {
   user_sid: string;
   group_sid: string;
   drive: string;
+  is_indx: bool;
   evidence: string;
 }
 
