@@ -697,7 +697,6 @@ When you timeline an artifact using a TOML file or cli, you can only timeline th
   systeminfo           Get systeminfo
   prefetch             windows: Parse Prefetch
   eventlogs            windows: Parse EventLogs
-  rawfilelisting       windows: Parse NTFS to get filelisting
   shimdb               windows: Parse ShimDatabase
   registry             windows: Parse Registry
   userassist           windows: Parse Userassist
@@ -884,4 +883,38 @@ Notice it has four different timestamps. When you timeline this data artemis wil
         "timestamp_desc": "Changed"
     }
 ]
+```
+
+### Time Filtering
+
+If you select the timeline output format you can provide two optional parameters to filter by timestamps
+
+- start_time_filter - Include events after provided RFC 3339 timestamp
+- end_time_filter - Include events before provided RFC 3339 timestamp
+
+Using the artemis cli the command would be:
+
+- artemis acquire --format timeline --start 2026-09-01T00:00:00Z processes
+
+The TOML file would look like something below
+
+```toml
+[output]
+name = "linux_collection"
+directory = "./tmp"
+format = "timeline"
+compress = true
+endpoint_id = "abdc"
+collection_id = 1
+destination = "local"
+start_time_filter = "2026-09-01T00:00:00Z"
+end_time_filter = "2026-09-19T00:00:00Z"
+
+[[artifacts]]
+artifact_name = "processes"
+[artifacts.processes]
+md5 = true
+sha1 = false
+sha256 = false
+metadata = false
 ```
