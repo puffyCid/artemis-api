@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkartemis_docs=globalThis.webpackChunkartemis_docs||[]).push([[5390],{75390(e,s,c){c.d(s,{createArchitectureServices:()=>a.S});var a=c(65530);c(72519)}}]);

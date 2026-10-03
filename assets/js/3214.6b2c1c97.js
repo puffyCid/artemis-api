@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkartemis_docs=globalThis.webpackChunkartemis_docs||[]).push([[3214],{53214(e,s,a){a.d(s,{createPacketServices:()=>c.$});var c=a(75893);a(72519)}}]);
