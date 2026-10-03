@@ -22,7 +22,7 @@ One of the benefits of parsing ESXi data with artemis is that the data can be sa
 An example ESXi parsing script (`main.ts`) is below. It parses several ESXi artifacts.
 
 ```typescript
-import { dumpData, esxiAccounts, Format, getVibs, Output, OutputType, shellLogHistory, sysLogEsxi } from "./artemis-api/mod";
+import { OutputManager, esxiAccounts, Format, getVibs, Output, OutputType, shellLogHistory, sysLogEsxi } from "./artemis-api/mod";
 import { EsxiError } from "./artemis-api/src/esxi/error";
 
 function main() {
@@ -31,14 +31,14 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        timeline: false,
         endpoint_id: "",
         collection_id: 0,
         /**
         * Remote uploads are not supported when **running** on ESXi
         */
-        output: OutputType.LOCAL
+        destination: OutputType.LOCAL
     };
+    const manager = new OutputManager(out);
 
     console.log("Parsing VIBs...");
     const vib_results = getVibs();
@@ -47,7 +47,7 @@ function main() {
         return;
     }
 
-    dumpData(vib_results, "esxi_vibs", out);
+    manager.write_artifact(vib_results, "esxi_vibs");
 
     console.log("Parsing syslog...");
     const log_results = sysLogEsxi();
@@ -56,7 +56,7 @@ function main() {
         return;
     }
 
-    dumpData(log_results, "esxi_syslog", out);
+    manager.write_artifact(log_results, "esxi_syslog");
 
     console.log("Parsing shell.log...");
     const shell_log = shellLogHistory();
@@ -65,7 +65,7 @@ function main() {
         return;
     }
 
-    dumpData(shell_log, "esxi_shelllog", out);
+    manager.write_artifact(shell_log, "esxi_shelllog");
 
     console.log("Parsing ESXi accounts...");
     const accounts = esxiAccounts();
@@ -74,7 +74,9 @@ function main() {
         return;
     }
 
-    dumpData(accounts, "esxi_accounts", out);
+    manager.write_artifact(accounts, "esxi_accounts");
+    manager.finalize();
+
 }
 
 main();
@@ -121,7 +123,7 @@ Every ESXi artifact function accepts an optional alternative path to the artifac
 For example:
 
 ```typescript
-import { dumpData, Format, getVibs, Output, OutputType } from "./artemis-api/mod";
+import { OutputManager, Format, getVibs, Output, OutputType } from "./artemis-api/mod";
 import { EsxiError } from "./artemis-api/src/esxi/error";
 
 function main() {
@@ -130,13 +132,12 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        timeline: false,
         endpoint_id: "",
         collection_id: 0,
         /**
         * Remote uploads are not supported when **running** on ESXi
         */
-        output: OutputType.LOCAL
+        destination: OutputType.LOCAL
     };
 
     console.log("Grabbing VIBs...");
@@ -147,7 +148,9 @@ function main() {
         return;
     }
 
-    dumpData(vib_results, "esxi_vibs", out);
+    const manager = new OutputManager(out);
+    manager.write_artifact(vib_results, "esxi_vibs");
+    manager.finalize();
 }
 
 main();
@@ -274,10 +277,9 @@ name = "acquire_syslogs"
 directory = "./tmp"
 format = "json"
 compress = true
-timeline = false
 endpoint_id = "13ba1e33-4899-4843-adf1-c7e6b20d759a"
 collection_id = 1
-output = "local"
+destination= "local"
 
 [[artifacts]]
 artifact_name = "triage"

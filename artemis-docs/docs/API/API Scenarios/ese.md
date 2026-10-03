@@ -42,7 +42,8 @@ import { EseDatabase } from "./artemis-api/src/windows/ese";
 
 function main() {
   // Provide path to the UAL file
-  const path = "C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
+  // Prefix the path with "ntfs:" to use the NTFS reader
+  const path = "ntfs:C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
 
   const ese = new EseDatabase(path);
 }
@@ -99,7 +100,7 @@ import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
-  const path = "C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
+  const path = "ntfs:C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
 
   const ese = new EseDatabase(path);
 
@@ -205,7 +206,7 @@ import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
-  const path = "C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
+  const path = "ntfs:C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
 
   const ese = new EseDatabase(path);
 
@@ -243,7 +244,7 @@ import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
-  const path = "C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
+  const path = "ntfs:C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
 
   const ese = new EseDatabase(path);
 
@@ -302,7 +303,7 @@ import { WindowsError } from "./artemis-api/src/windows/errors";
 
 function main() {
   // Provide path to the UAL file
-  const path = "C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
+  const path = "ntfs:C:\\Windows\\System32\\LogFiles\\sum\\Current.mdb";
 
   const ese = new EseDatabase(path);
 

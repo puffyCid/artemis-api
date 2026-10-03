@@ -11,7 +11,7 @@ import {
   nomUnsignedTwoBytes,
 } from "../nom/helpers";
 import { take } from "../nom/parsers";
-import { hfsToUnixEpoch, unixEpochToISO } from "../time/conversion";
+import { hfsToIso } from "../time/conversion";
 import { MacosError } from "./errors";
 
 /**
@@ -255,13 +255,13 @@ export function parseAlias(data: Uint8Array): Alias | MacosError {
   const alias: Alias = {
     kind,
     volume_name,
-    volume_created: unixEpochToISO(hfsToUnixEpoch(volume_created)),
+    volume_created: hfsToIso(volume_created),
     filesystem_type,
     disk_type,
     cnid,
     target_name,
     target_cnid,
-    target_created: unixEpochToISO(hfsToUnixEpoch(target_created)),
+    target_created: hfsToIso(target_created),
     target_creator_code,
     target_type_code,
     number_directory_levels_from_alias_to_root,

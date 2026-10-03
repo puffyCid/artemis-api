@@ -1,5 +1,5 @@
 ---
-description: ESXi file metadata
+description: ESXi Filesystem metadata
 keywords:
   - esxi
   - file meta
@@ -7,12 +7,18 @@ keywords:
 
 # Files
 
-A regular ESXi filelisting. Artemis uses the
-[walkdir](https://crates.io/crates/walkdir) crate to recursively walk the files
-and directories on the system.
+A filelisting against a system. The files artifact is a unique compared to other artifacts.  
+Depending on the `source` option, artemis will return different type of filelisting. 
+
+Artemis currently supports 3 different types of filelisting:
+- Host - Filelisting against a live system
+- Zip - Filelisting against a zip file
+- NTFS - Filelisting against a NTFS drive
+
 
 Since a filelisting can be extremely large, every 10k entries artemis will
-output the data and then continue.
+output the data and then continue. However, iff binary parsing or timelining is enabled, 
+then every 1k entries artemis will output the data and then continue.
 
 Other Parsers:
 
@@ -32,39 +38,40 @@ format = "json"
 compress = false
 endpoint_id = "abdc"
 collection_id = 1
-output = "local"
-timeline = false
+destination= "local"
 
 [[artifacts]]
 artifact_name = "files" # Name of artifact
 [artifacts.files]
-start_path = "/usr/bin" # Start of file listing
+start_path = "C:\\Windows" # Where to start the listing
 # Optional
-depth = 5 # How many sub directories to descend
+depth = 1        # How many sub directories to descend
 # Optional
-metadata = true # Get executable metadata
+metadata = true  # Get ELF metadata
 # Optional
-md5 = true # MD5 all files
+md5 = true       # MD5 all files
 # Optional
-sha1 = false # SHA1 all files
+sha1 = false     # SHA1 all files
 # Optional
-sha256 = false # SHA256 all files
+sha256 = false   # SHA256 all files
 # Optional
-path_regex = "" # Regex for paths
+path_regex = ""  # Regex for paths
 # Optional
-file_regex = "" # Regex for files
+file_regex = ""  # Regex for files
 # Optional
-yara = "" # Base64 encoded Yara rule or a remote Yara rule
+yara = ""        # Base64 encoded Yara rule or a remote Yara rule
+source = "host:" # What type of filelisting to perform
+verbose = false
 ```
 
 ## Collection Options
 
 - `start_path` Where to start the file listing. Must exist on the endpoint. To
-  start at root use `/`. This configuration is **required**
+  start at root use `C:\\`. This configuration is **required**
 - `depth` Specify how many directories to descend from the `start_path`. Default
   is one (1). Must be a postive number. Max value is 255. This configuration is
   **optional**
-- `metadata` Get [ELF](elf.md) data from `ELF` files. This configuration is
+- `metadata` Get [ELF](elf) data from `ELF` files. This configuration is
   **optional**. Default is **false**
 - `md5` Boolean value to enable MD5 hashing on all files. This configuration is
   **optional**. Default is **false**
@@ -74,57 +81,188 @@ yara = "" # Base64 encoded Yara rule or a remote Yara rule
   configuration is **optional**. Default is **false**
 - `path_regex` Only descend into paths (directories) that match the provided
   regex. This configuration is **optional**. Default is no Regex
-- `file_regex` Only return entries that match the provided regex. This
+- `file_regex` Only return entres that match the provided regex. This
   configuration is **optional**. Default is no Regex
-- `yara` A base64 encoded Yara rule
+- `yara` Either a base64 encoded Yara rule or a Yara rule hosted on a remote server
+- `source` What type of filelisting to perform. This value can be:
+  - `host:` - Represents a live filelisting
+  - `ntfs:C` - Represents a NTFS filelisting against the C drive
+  - `zip:/full/path/to/file.zip` - Represents a ZIP filelisting against file.zip
+- `verbose` - Include additional entries in the filelisting
+  - Currently this only affects the NTFS filelisting. This option carves INDX entries from INDX slack space
 
 ## Output Structure
 
-An array of `LinuxFileInfo` entries
+Depends on the `source` value
 
 ```typescript
-export interface LinuxFileInfo {
-  /**Full path to file or directory */
-  full_path: string;
-  /**Directory path */
-  directory: string;
-  /**Filename */
-  filename: string;
-  /**Extension of file if any */
-  extension: string;
-  /**Created timestamp */
-  created: string;
-  /**Modified timestamp */
-  modified: string;
-  /**Changed timestamp */
-  changed: string;
-  /**Accessed timestamp */
-  accessed: string;
-  /**Size of file in bytes */
-  size: number;
-  /**Inode associated with entry */
-  inode: number;
-  /**Mode of file entry */
-  mode: number;
-  /**User ID associated with file */
-  uid: number;
-  /**Group ID associated with file */
-  gid: number;
-  /**MD5 of file */
+/**
+ * Hashing algorithms supported by the Runtime
+ */
+export interface Hashes {
+  /**MD5 hash value */
   md5: string;
-  /**SHA1 of file */
+  /**SHA1 hash value */
   sha1: string;
-  /**SHA256 of file */
+  /**SHA256 value */
   sha256: string;
-  /**Is the entry a file */
-  is_file: boolean;
-  /**Is the entry a directory */
-  is_directory: boolean;
-  /**Is the entry a symbolic links */
-  is_symlink: boolean;
-  /**Depth the file from provided start point */
+}
+
+export interface FileHostInfo {
+  full_path: string;
+  directory: string;
+  filename: string;
+  extension: string;
+  created: string;
+  modified: string;
+  changed: string;
+  accessed: string;
+  uid: string;
+  gid: string;
+  inode: number,
+  attributes: Attributes[],
+  size: number,
+  md5: string;
+  sha1: string;
+  sha256: string;
+  kind: EntryKind,
+  depth: number,
+  yara_hits: string[],
+  binary_info: Record<string, unknown>,
+  display_path: string;
+  evidence: string;
+}
+
+export enum EntryKind {
+  File = "File",
+  Directory = "Directory",
+  Symlink = "Symlink",
+  Socket = "Socket",
+  BlockDevice = "BlockDevice",
+  Pipe = "Pipe",
+  CharDevice = "CharDevice",
+  Unsupported = "Unsupported",
+}
+
+export enum Attributes {
+  // Windows
+  ReadOnly = "ReadOnly",
+  Hidden = "Hidden",
+  System = "System",
+  Directory = "Directory",
+  Archive = "Archive",
+  Device = "Device",
+  Normal = "Normal",
+  Temporary = "Temporary",
+  Sparse = "Sparse",
+  ReparsePoint = "ReparsePoint",
+  Compressed = "Compressed",
+  Offline = "Offline",
+  NotContentIndexed = "NotContentIndexed",
+  Encrypted = "Encrypted",
+  IntegritySystem = "IntegritySystem",
+  Virtual = "Virtual",
+  NoScrubData = "NoScrubData",
+  ExtendedAttributes = "ExtendedAttributes",
+  Pinned = "Pinned",
+  Unpinned = "Unpinned",
+  RecallOnOpen = "RecallOnOpen",
+  RecallOnDataAccess = "RecallOnDataAccess",
+
+  // Unix
+  UserRead = "UserRead",
+  GroupRead = "GroupRead",
+  OtherRead = "OtherRead",
+  UserWrite = "UserWrite",
+  GroupWrite = "GroupWrite",
+  OtherWrite = "OtherWrite",
+  UserExecute = "UserExecute",
+  GroupExecute = "GroupExecute",
+  OtherExecute = "OtherExecute",
+  SetUid = "SetUid",
+  SetGid = "SetGid",
+  Sticky = "Sticky",
+}
+
+export interface FileNtfsInfo {
+  full_path: string;
+  directory: string;
+  filename: string;
+  extension: string;
+  created: string;
+  modified: string;
+  changed: string;
+  accessed: string;
+  filename_created: string;
+  filename_modified: string;
+  filename_changed: string;
+  filename_accessed: string;
+  attributes: Attributes[];
+  size: number;
+  md5: string;
+  sha1: string;
+  sha256: string;
+  kind: EntryKind;
   depth: number;
-  /**ELF binary metadata */
-  binary_info: ElfInfo;
+  yara_hits: string[],
+  binary_info: Record<string, unknown>,
+  display_path: string;
+  compressed_size: number;
+  compression_type: CompressionType,
+  inode: number;
+  sequence_number: number,
+  parent_sequence_number: number,
+  parent_mft_reference: number,
+  owner: number,
+  namespace: Namespace,
+  ads_info: ADSInfo[];
+  usn: number;
+  sid: number;
+  user_sid: string;
+  group_sid: string;
+  drive: string;
+  is_indx: bool;
+  evidence: string;
+}
+
+export enum CompressionType {
+  NTFSCompressed = "NTFSCompressed",
+  WofCompressed = "WofCompressed",
+  None = "None"
+}
+
+export enum Namespace {
+  Posix = "Posix",
+  Windows = "Windows",
+  Dos = "Dos",
+  WindowsDos = "WindowsDos",
+  Unknown = "Unknown",
+}
+
+export interface ADSInfo {
+  name: string;
+  size: number;
+}
+
+export interface FilesZipInfo {
+  full_path: string;
+  directory: string;
+  filename: string;
+  extension: string;
+  modified: string;
+  size: number;
+  compressed_size: number;
+  compression: string;
+  crc32: number;
+  encrypted: boolean;
+  md5: string;
+  sha1: string;
+  sha256: string;
+  kind: EntryKind,
+  depth: number;
+  yara_hits: string[];
+  binary_info: Record<string, unknown>;
+  display_path: string;
+  evidence: string;
 }
 ```

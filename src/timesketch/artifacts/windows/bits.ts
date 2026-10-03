@@ -1,7 +1,5 @@
-import { Bits } from "../../../../types/windows/bits";
-import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 import { BitsInfo } from "../../../../types/windows/bits";
-import { Jobs } from "../../../../types/windows/bits";
+import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**
  * Function to timeline BITS
@@ -9,11 +7,11 @@ import { Jobs } from "../../../../types/windows/bits";
  * @returns Array `TimesketchTimeline` of BITS
  */
 export function timelineBits(
-  data: Bits,
+  data: BitsInfo[],
 ): TimesketchTimeline[] {
   const entries: TimesketchTimeline[] = [];
 
-  for (const item of data.bits) {
+  for (const item of data) {
     let entry: TimesketchTimeline = {
       datetime: "",
       timestamp_desc: "",
@@ -32,38 +30,6 @@ export function timelineBits(
     }
   }
 
-  for (const item of data.carved_jobs) {
-    let entry: TimesketchTimeline = {
-      datetime: "",
-      timestamp_desc: "",
-      message: `Job: ${item.job_name} - Target Path: ${item.target_path}`,
-      artifact: "BITS Carved Job",
-      data_type: "windows:ese:bits:carve:job",
-    };
-    entry = { ...entry, ...item };
-
-    // Extract each unique timestamp to their own entry
-    const time_entries = extractTimes(item);
-    for (const time_entry of time_entries) {
-      entry.datetime = time_entry.datetime;
-      entry.timestamp_desc = `Carved ${time_entry.desc}`;
-      entries.push(Object.assign({}, entry));
-    }
-  }
-
-  for (const item of data.carved_files) {
-    let entry: TimesketchTimeline = {
-      datetime: "1970-01-01T00:00:00.000Z",
-      timestamp_desc: "Carved BITS File",
-      message: `File: ${item.full_path} - URL: ${item.url}`,
-      artifact: "BITS Carved File",
-      data_type: "windows:ese:bits:carve:file",
-    };
-    entry = { ...entry, ...item };
-
-    entries.push(entry);
-  }
-
   return entries;
 }
 
@@ -74,10 +40,10 @@ interface TimeEntries {
 
 /**
  * Function to extract timestamps from BITS
- * @param entry A `BitsInfo` or `Jobs` object
+ * @param entry A `BitsInfo`
  * @returns Array of `TimeEntries`
  */
-function extractTimes(entry: BitsInfo | Jobs): TimeEntries[] {
+function extractTimes(entry: BitsInfo ): TimeEntries[] {
   const entries: TimeEntries[] = [];
   const check_times: Record<string, string> = {};
 
@@ -99,7 +65,7 @@ function extractTimes(entry: BitsInfo | Jobs): TimeEntries[] {
   for (const value in check_times) {
     const entry: TimeEntries = {
       datetime: value,
-      desc: check_times[ value ],
+      desc: check_times[ value ] ?? "",
     };
     entries.push(entry);
   }

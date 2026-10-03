@@ -240,11 +240,9 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
-        timeline: false,
         endpoint_id: "abc",
         collection_id: 0,
-        output: OutputType.LOCAL,
+        destination: OutputType.LOCAL,
     }
 
     // No data is returned. Our results and errors will appear at `./tmp/epiphany_timeline`
@@ -333,11 +331,9 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        // We can set this to false because the TypeScript/JavaScript API will timeline for us instead of using the Rust code
-        timeline: false,
         endpoint_id: "abc",
         collection_id: 0,
-        output: OutputType.LOCAL,
+        destination: OutputType.LOCAL,
     }
 
     // No data is returned. Our results and errors will appear at `./tmp/falkon_timeline`
@@ -387,3 +383,15 @@ You may provide a starting to begin the search. The path string may be any valid
 | path   | string | Path to file read       |
 | start  | string | Path to start searching |
 | device | string | Path to device file     |
+
+
+### getPacmanInfo(alt_glob) -> PacmanPackages[] | LinuxError
+
+Get list of installed Pacman packages on the system. Can provide an alternative
+glob to the Pacman desc file.
+
+Uses /var/lib/pacman/local/*/desc by default
+
+| Param    | Type   | Description           |
+| -------- | ------ | --------------------- |
+| alt_glob | string | Alt glob to desc file |

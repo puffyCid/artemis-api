@@ -1,4 +1,4 @@
-import type { RecentFiles } from "../../../types/linux/gnome/gedit";
+import type { RawGeditRecentFiles, RecentFiles } from "../../../types/linux/gnome/gedit";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/mod";
 import { FileError } from "../../filesystem/errors";
@@ -40,25 +40,17 @@ export function geditRecentFiles(
       continue;
     }
 
-    const meta = data[ "metadata" ] as Record<
-      string,
-      Record<string, Record<string, string>>[]
-    >;
-
-    const docs = meta[ "document" ];
-    if (docs === undefined) {
-      continue;
+    const gedit_json = data as unknown as RawGeditRecentFiles;
+    if (!Array.isArray(gedit_json.metadata.document)) {
+      gedit_json.metadata.document = [ gedit_json.metadata.document ];
     }
-    for (const doc of docs) {
-      if (doc[ "$" ] === undefined) {
-        continue;
-      }
+    for (const value of gedit_json.metadata.document) {
       const recent: RecentFiles = {
-        path: doc[ "$" ][ "uri" ] ?? "",
-        accessed: unixEpochToISO(Number(doc[ "$" ][ "atime" ])),
+        path: value[ "@uri" ],
+        accessed: unixEpochToISO(Number(value[ "@atime" ])),
         evidence: entry.full_path,
-        message: `Accessed: ${doc[ "$" ][ "uri" ] ?? ""}`,
-        datetime: `${unixEpochToISO(Number(doc[ "$" ][ "atime" ])) ?? "1970-01-01T00:00:00.000Z"}`,
+        message: `Accessed: ${value[ "@uri" ]}`,
+        datetime: unixEpochToISO(Number(value[ "@atime" ])),
         timestamp_desc: "Last Accessed",
         artifact: "Gedit",
         data_type: "linux:gedit:entry"

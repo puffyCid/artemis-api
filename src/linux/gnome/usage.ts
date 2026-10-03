@@ -1,4 +1,4 @@
-import type { AppUsage } from "../../../types/linux/gnome/usage";
+import type { AppUsage, RawAppUsage } from "../../../types/linux/gnome/usage";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/mod";
 import { FileError } from "../../filesystem/errors";
@@ -37,45 +37,25 @@ export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
       continue;
     }
 
-    const context = data[ "application-state" ] as Record<string, unknown[]>;
-
-    const context_entries = context[ "context" ];
-    if (context_entries === undefined) {
-      continue;
+    const usage_json = data as unknown as RawAppUsage;
+    if (!Array.isArray(usage_json[ "application-state" ].context.application)) {
+      usage_json[ "application-state" ].context.application = [ usage_json[ "application-state" ].context.application ];
     }
 
-    for (const value of context_entries) {
-      const applications = value as Record<
-        string,
-        unknown[]
-      >;
-      if (applications[ "application" ] === undefined) {
-        continue;
-      }
+    for (const value of usage_json[ "application-state" ].context.application) {
+      const app_usage: AppUsage = {
+        id: value[ "@id" ],
+        score: Number(value[ "@score" ]),
+        "last-seen": unixEpochToISO(Number(value[ "@last-seen" ])),
+        evidence: entry.full_path,
+        message: value[ "@id" ],
+        datetime: unixEpochToISO(Number(value[ "@last-seen" ])),
+        timestamp_desc: "Last Seen",
+        artifact: "GNOME Application Usage",
+        data_type: "linux:gnome:usage:entry"
+      };
 
-      for (const app_entry of applications[ "application" ]) {
-        const app = app_entry as Record<
-          string,
-          Record<string, string>
-        >;
-        if (app[ "$" ] === undefined) {
-          continue;
-        }
-
-        const app_usage: AppUsage = {
-          id: app[ "$" ][ "id" ] ?? "",
-          score: Number(app[ "$" ][ "score" ]),
-          "last-seen": unixEpochToISO(Number(app[ "$" ][ "last-seen" ])),
-          evidence: entry.full_path,
-          message: app[ "$" ][ "id" ] ?? "",
-          datetime: unixEpochToISO(Number(app[ "$" ][ "last-seen" ])),
-          timestamp_desc: "Last Seen",
-          artifact: "GNOME Application Usage",
-          data_type: "linux:gnome:usage:entry"
-        };
-
-        apps.push(app_usage);
-      }
+      apps.push(app_usage);
     }
   }
 

@@ -5,7 +5,7 @@ import { FileError } from "../filesystem/errors";
 import { glob, readFile } from "../filesystem/files";
 import { NomError } from "../nom/error";
 import { Endian, nomUnsignedTwoBytes } from "../nom/helpers";
-import { filetimeToUnixEpoch, unixEpochToISO } from "../time/conversion";
+import { filetimeToIso } from "../time/conversion";
 import { WindowsError } from "./errors";
 
 /**
@@ -68,7 +68,7 @@ export function extractAppCrash(alt_path?: string): AppCrash[] | WindowsError {
                 crash.report_type = Number(line.split("=").at(1) ?? 0);
             } else if (line.startsWith("EventTime")) {
                 const timestamp = BigInt(line.split("=").at(1) ?? 0n);
-                crash.datetime = unixEpochToISO(filetimeToUnixEpoch(timestamp));
+                crash.datetime = filetimeToIso(timestamp);
             }
         }
         values.push(crash);

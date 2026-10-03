@@ -10,10 +10,9 @@ function main() {
         directory: "./tmp",
         format: Format.JSONL,
         compress: false,
-        timeline: false,
         endpoint_id: "",
         collection_id: 0,
-        output: OutputType.LOCAL
+        destination: OutputType.LOCAL
     };
     client.retrospect(out);
 

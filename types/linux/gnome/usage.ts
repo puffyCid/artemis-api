@@ -16,3 +16,18 @@ export interface AppUsage {
   artifact: "GNOME Application Usage";
   data_type: "linux:gnome:usage:entry",
 }
+
+
+export interface RawAppUsage {
+  "application-state": {
+    context: {
+      application: RawAppUsageApp | RawAppUsageApp[];
+    };
+  };
+}
+
+interface RawAppUsageApp {
+  "@id": string;
+  "@score": string;
+  "@last-seen": string;
+}

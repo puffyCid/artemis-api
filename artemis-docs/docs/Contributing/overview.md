@@ -26,6 +26,7 @@ From the `forensics/src/` directory
 
 | Directory  | Description                                                                                                                                                                                                            |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| accessor   | Contains the code related to accessing forensic data. We can use the accessor to read data from different sources
 | artifacts  | Contains the code related to parsing forensic artifacts.<br/> It is broken down by OS and application artifacts                                                                                                        |
 | filesystem | Contains code to help interact with the filesystem. It contains helper functions that can be used when adding new artifacts/features. <br/>Ex: reading/hashing files, getting file timestamps, listing files, etc      |
 | output     | Contains code related to outputting parsed data                                                                                                                                                                        |
@@ -115,40 +116,35 @@ FsEvents is the first artifact created for artemis. Its the oldest code in the p
 
 ## Useful Helper Functions
 
-The artemis codebase contains a handful of artifacts (ex: `Registry`) that
-expose helper functions that allow other artifacts to reuse parts of that
-artifact to help get artifact specific data.
+### Artemis Accessor 
 
-For example the Windows Registry artifact exposes a helper function that other
-Registry based artifacts can leverage to help parse the Registry:
+Starting in artemis version 0.20.0 a generic accessor has added to abstract reading forensic data.  
+It can be used to read data from a variety of sources such as:
 
-- `pub(crate) fn get_registry_keys(start_path: &str, regex: &Regex, file_path: &str)`
-  will read a Registry file at provided file_path and filter to based on
-  start_path and regex. If start_path and regex are empty a full Registry
-  listing is returned. All Regex comparisons are done in lowercase.
+- Live system
+- Raw NTFS disk
+- Zip file
 
-Some other examples listed below:
 
-- `/filesystem` contains code to help interact with the filesystem.
+For example to read a file called `test.txt` from a zip:
 
-  - `pub(crate) fn list_files(path: &str)` returns list of files
-  - `pub(crate) fn read_file(path: &str)` reads a file
-  - `pub(crate) fn hash_file(hashes: &Hashes, path: &str)` hashes a file based
-    on selected hashes (MD5, SHA1, SHA256)
+```rust
+let mut accessor = Accessor::with_defaults();
+let bytes = accessor.read_file("zip:test.zip!/test.txt);
+```
 
-- `/filesystem/ntfs` contains code to help interact with the raw NTFS
-  filesystem. It lets us bypass locked files. This is only available on Windows
+The `Accessor` can also be used to list files and glob for files and directories.
 
-  - `pub(crate) fn raw_read_file(path: &str)` reads a file. Will bypass file
-    locks
-  - `pub(crate) fn read_attribute(path: &str, attribute: &str)` can read an
-    Alternative Data Stream (ADS)
-  - `pub(crate) fn get_user_registry_files(drive: &char)` returns a Vector that
-    contains references to all user Registry files (NTUSER.DAT and
-    UsrClass.dat). It does **not** read the files, it just provides all the data
-    needed to start reading them.
+For to glob for all evtx files in a zip file:
 
-- `/src/artifacts/os/macos/plist/property_list.rs` contains code help parse
-  plist files.
-  - `pub(crate) fn parse_plist_file(path: &str)` will parse a plist file and
-    return it as a serde Value
+```rust
+let mut accessor = Accessor::with_defaults();
+let bytes = accessor.globfs("zip:test.zip!/**/*.evtx);
+```
+
+If you want to read a locked file on a Windows system:
+
+```rust
+let mut accessor = Accessor::with_defaults();
+let bytes = accessor.read_file("ntfs:C:\\Users\dev\\NTUSER.dat);
+```

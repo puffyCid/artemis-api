@@ -1,6 +1,6 @@
 import { ApplicationError } from "../../../applications/errors";
 import { querySqlite } from "../../../applications/sqlite";
-import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../../time/conversion";
+import { cocoatimeToIso } from "../../../time/conversion";
 import { IosError } from "../../error";
 
 interface DataUsage {
@@ -29,7 +29,7 @@ export function extractDataUsage(path: string): DataUsage[] | IosError {
 
     for (const entry of results) {
         const usage: DataUsage = {
-            datetime: unixEpochToISO(cocoatimeToUnixEpoch(entry[ "ZTIMESTAMP" ] as number | undefined ?? 0)),
+            datetime: cocoatimeToIso(entry[ "ZTIMESTAMP" ] as number | undefined ?? 0),
             process_name: entry[ "ZPROCNAME" ] as string | undefined ?? "",
             bundle: entry[ "ZBUNDLENAME" ] as string | undefined ?? "",
         };

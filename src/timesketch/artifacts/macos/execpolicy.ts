@@ -1,4 +1,4 @@
-import { ExecPolicy } from "../../../../types/macos/execpolicy";
+import { ExecPolicy } from "../../../../types/macos/sqlite/execpolicy";
 import { TimesketchTimeline } from "../../../../types/timesketch/timeline";
 
 /**

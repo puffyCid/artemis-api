@@ -25,7 +25,7 @@ export class ADCertificates extends EseDatabase {
             if (drive === "") {
                 drive = "C:";
             }
-            path = `${drive}${path}`;
+            path = `ntfs:${drive}${path}`;
             const paths = glob(path);
             if (paths instanceof FileError) {
                 console.error(`Could not glob for EDB at ${path}`);

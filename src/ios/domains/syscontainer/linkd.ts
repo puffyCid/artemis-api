@@ -2,7 +2,7 @@ import { FileType, ManifestApp } from "../../../../types/ios/itunes/manifest";
 import { parseBiome } from "../../../macos/biome";
 import { MacosError } from "../../../macos/errors";
 import { getPlist } from "../../../macos/plist";
-import { Output, outputResults } from "../../../system/output";
+import { OutputManager } from "../../../system/output";
 import { IosError } from "../../error";
 import { parseManifestAppPlist } from "../../itunes/apps";
 
@@ -10,12 +10,12 @@ import { parseManifestAppPlist } from "../../itunes/apps";
  * Function to extract Linkd data
  * @param app_paths Array of `ManifestApp`
  * @param db_path iTunes backup directory
- * @param output `Output` configuration object
+ * @param format `OutputManager` configuration object
  */
 export function extractAppleLinkd(
     app_paths: ManifestApp[],
     db_path: string,
-    output: Output
+    manager: OutputManager
 ) {
     for (const path of app_paths) {
         if (path.file_type !== FileType.IsFile) {
@@ -33,20 +33,12 @@ export function extractAppleLinkd(
             if (plist_data instanceof MacosError) {
                 continue;
             }
-            outputResults(
-                JSON.stringify(plist_data),
-                "apple_linkd_metadata",
-                output,
-            );
+            manager.write_artifact(plist_data, "apple_linkd_metadata")
             continue;
         } else if (path.hash_path.endsWith("lock")) {
             continue;
         }
         const biome_data = parseBiome(false, target);
-        outputResults(
-            biome_data,
-            "apple_linkd_biome",
-            output,
-        );
+        manager.write_artifact(biome_data, "apple_linkd_biome")
     }
 }

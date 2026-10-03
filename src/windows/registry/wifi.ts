@@ -1,4 +1,3 @@
-import { Registry } from "../../../types/windows/registry";
 import { NameType, Wifi, WifiCategory } from "../../../types/windows/registry/wifi";
 import { decode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
@@ -22,7 +21,7 @@ export function wifiNetworksWindows(alt_path?: string): Wifi[] | WindowsError {
         if (drive === "") {
             drive = "C:";
         }
-        path = `${drive}${path}`;
+        path = `ntfs:${drive}${path}`;
     }
 
     const reg_entries = getRegistry(path, "\\\\currentversion\\\\networklist\\\\profiles\\\\\\{");
@@ -30,9 +29,8 @@ export function wifiNetworksWindows(alt_path?: string): Wifi[] | WindowsError {
         return new WindowsError(`WIFI`, `could not parse the SOFTWARE Registry file ${reg_entries}`);
     }
 
-    const profiles: Registry[] = [];
     const networks: Wifi[] = [];
-    for (const entry of profiles) {
+    for (const entry of reg_entries) {
         const net: Wifi = {
             name: "",
             description: "",

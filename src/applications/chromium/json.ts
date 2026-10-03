@@ -2,7 +2,7 @@ import { BookmarkType, BrowserType, ChromiumBookmarks, ChromiumProfiles, Extensi
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile, stat } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
-import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
+import { webkitToIso } from "../../time/conversion";
 
 /**
  * Get installed Chromium extensions
@@ -132,16 +132,11 @@ function getBookmarkChildren(
     if (typeof book === "undefined") {
         return books;
     }
-    const adjust_time = 1000000n;
     for (const entry of book) {
         if (typeof entry["children"] === "undefined") {
             const book_entry: ChromiumBookmarks = {
-                date_added: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry["date_added"] as string) / adjust_time)
-                )),
-                date_last_used: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry["date_last_used"] as string) / adjust_time)
-                )),
+                date_added: webkitToIso(BigInt(entry["date_added"] as string)),
+                date_last_used: webkitToIso(BigInt(entry["date_last_used"] as string)),
                 guid: entry["guid"] as string,
                 id: Number(entry["id"] as string),
                 name: entry["name"] as string,
@@ -151,9 +146,7 @@ function getBookmarkChildren(
                 evidence: path,
                 version,
                 message: `Bookmark - ${entry["name"] as string}`,
-                datetime: unixEpochToISO(webkitToUnixEpoch(
-                    Number(BigInt(entry["date_added"] as string) / adjust_time)
-                )),
+                datetime: webkitToIso(BigInt(entry["date_added"] as string)),
                 timestamp_desc: "Bookmark Added",
                 artifact: "Browser Bookmark",
                 data_type: `applications:${browser.toLowerCase()}:bookmark:entry`,
@@ -208,8 +201,8 @@ export function testChromiumJsonFiles(): void {
         throw `Got message ${book[0]?.message} expected "Bookmark - Download the DuckDuckGo Browser for Mac".......chromiumBookmarks ❌`;
     }
 
-    if (book[0]?.date_added != "2025-11-02T22:47:41.000Z") {
-        throw `Got date ${book[0]?.date_added} expected "2025-11-02T22:47:41.000Z".......chromiumBookmarks ❌`;
+    if (book[0]?.date_added != "2025-11-02T22:47:41.328Z") {
+        throw `Got date ${book[0]?.date_added} expected "2025-11-02T22:47:41.328Z".......chromiumBookmarks ❌`;
     }
 
     console.info(`  Function chromiumBookmarks ✅`);

@@ -221,7 +221,7 @@ function main() {
   }
 
   // Convert FILETIME unsigned 64 bit value to unixepoch seconds
-  let unix_time = filetimeToUnixEpoch(time_data.value);
+  let unix_time = filetimeToIso(time_data.value);
   const pretty_data = new Date(unix_time * 1000);
   const utcString = pretty_data.toUtcString();
   console.log(`${utcString}`);
@@ -267,8 +267,8 @@ function main() {
 
   // Our complex file uses both Big and Little Endian!
   const time_data = nomUnsignedEightBytes(padding_data.remaining, Endian.Le);
-  const time = filetimeToUnixEpoch(time_data.value);
-  console.lot(time);
+  const time = filetimeToIso(time_data.value);
+  console.log(time);
 
   const unknown_data = nomUnsignedFourBytes(time_data.remaining, Endian.Be);
   // Continue parsing the file

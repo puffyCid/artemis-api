@@ -1,6 +1,6 @@
 /**
  * Function to return current time
- * @returns Current time in UNIXEPOCH seconds
+ * @returns Current time in ISO8601 format with millisecond precision
  */
 export function timeNow(): number {
   // @ts-expect-error: Custom Artemis function
@@ -9,82 +9,92 @@ export function timeNow(): number {
 }
 
 /**
- * Convert Windows FILETIME to UNIXEPOCH seconds
+ * Convert Windows FILETIME to ISO8601 format with millisecond precision
  * @param filetime FILETIME timestamp
- * @returns UNIXEPOCH seconds
+ * @returns ISO8601 format with millisecond precision
  */
-export function filetimeToUnixEpoch(filetime: bigint): number {
+export function filetimeToIso(filetime: bigint): string {
   // @ts-expect-error: Custom Artemis function
-  const data: bigint = js_filetime_to_unixepoch(filetime);
-  return Number(data);
+  const data: string = js_filetime_to_iso(filetime);
+  return data;
 }
 
 /**
- * Convert macOS Cocoa time to UNIXEPOCH seconds
+ * Convert macOS Cocoa time to ISO8601 format with millisecond precision
  * @param cocoatime Cocoa timestamp
- * @returns UNIXEPOCH seconds
+ * @returns ISO8601 format with millisecond precision
  */
-export function cocoatimeToUnixEpoch(cocoatime: number): number {
+export function cocoatimeToIso(cocoatime: number): string {
   // @ts-expect-error: Custom Artemis function
-  const data: bigint = js_cocoatime_to_unixepoch(cocoatime);
-  return Number(data);
+  const data: string = js_cocoatime_to_iso(cocoatime);
+  return data;
 }
 
 /**
- * Convert macOS HFS+ time to UNIXEPOCH seconds
+ * Convert macOS HFS+ time to ISO8601 format with millisecond precision
  * @param hfstime HFS+ timestamp
- * @returns UNIXEPOCH seconds
+ * @returns ISO8601 format with millisecond precision
  */
-export function hfsToUnixEpoch(hfstime: number): number {
-  // @ts-expect-error: Custom Artemis function
-  const data: bigint = js_hfs_to_unixepoch(hfstime);
-  return Number(data);
+export function hfsToIso(hfstime: number): string {
+  const hfs_offset = 2082844800;
+  const milli_precision = 1000;
+  const timestamp = (hfstime - hfs_offset) * milli_precision;
+  return new Date(timestamp).toISOString();
 }
 
 /**
- * Convert Windows OLE time to UNIXEPOCH seconds
+ * Convert Windows OLE time to ISO8601 format with millisecond precision
  * @param oletime OLE timestamp
- * @returns UNIXEPOCH seconds
+ * @returns ISO8601 format with millisecond precision
  */
-export function oleToUnixEpoch(oletime: number): number {
+export function oleToIso(oletime: bigint): string {
   // @ts-expect-error: Custom Artemis function
-  const data: bigint = js_ole_automationtime_to_unixepoch(oletime);
-  return Number(data);
+  const data: string = js_ole_automationtime_to_iso(oletime);
+  return data;
 }
 
 /**
  * Convert browser WebKit time to UNIXEPOCH. You will want to ensure you webkittime is in seconds! (Divide by 1000000n)
- * @param webkittime WebKit timestamp in **seconds**
- * @returns UNIXEPOCH seconds
+ * @param webkittime WebKit timestamp
+ * @returns ISO8601 format with millisecond precision
  */
-export function webkitToUnixEpoch(webkittime: number): number {
-  // @ts-expect-error: Custom Artemis function
-  const data: bigint = js_webkit_time_to_unixepoch(webkittime);
-  return Number(data);
+export function webkitToIso(webkittime: bigint): string {
+  if (typeof webkittime === 'number') {
+    webkittime = BigInt(webkittime);
+  }
+  const webkit_offset = 11644473600000000n;
+  const milli_precision = 1000n;
+  const timestamp = (webkittime - webkit_offset) / milli_precision;
+  try {
+    return new Date(Number(timestamp)).toISOString();
+  } catch (err) {
+    console.error(`Bad timestamp ${webkittime}: ${err}`);
+    return "1970-01-01T00:00:00.000Z";
+  }
 }
 
 /**
  * Convert Windows FAT time bytes to UNIXEPOCH
  * @param fattime FAT timestamp bytes
- * @returns UNIXEPOCH seconds
+ * @returns ISO8601 format with millisecond precision
  */
-export function fatToUnixEpoch(fattime: Uint8Array): number {
+export function fatToIso(fattime: Uint8Array): string {
   // @ts-expect-error: Custom Artemis function
-  const data: bigint = js_fat_time_utc_to_unixepoch(fattime);
-  return Number(data);
+  const data: string = js_fat_time_to_iso(fattime);
+  return data;
 }
 
 /**
  * Convert Julian timestamp to UnixExoch
  * @param days Days in Julian timestamp
- * @returns UnixEpoch milliseconds
+ * @returns ISO8601 format with millisecond precision
  */
-export function julianToUnixEpoch(days: number): number {
+export function julianToIso(days: number): string {
   const epoch = 2440587.5;
   const epoch_milli = 86400000;
   const milli = (days - epoch) * epoch_milli;
 
-  return new Date(milli).getTime();
+  return new Date(milli).toISOString();
 }
 
 /**

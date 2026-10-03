@@ -1,14 +1,14 @@
-import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxProfiles, FirefoxSession, FirefoxStorage } from "../../../types/applications/firefox";
+import { FirefoxAddons, FirefoxBookmark, FirefoxCookies, FirefoxDownloads, FirefoxFavicons, FirefoxFormHistory, FirefoxHistory, FirefoxPermissions, FirefoxProfiles, FirefoxSession, FirefoxStorage } from "../../../types/applications/firefox";
 import { GlobInfo } from "../../../types/filesystem/globs";
 import { getEnvValue } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
 import { glob, readTextFile } from "../../filesystem/files";
 import { SystemError } from "../../system/error";
-import { dumpData, Output } from "../../system/output";
+import { Output, OutputManager } from "../../system/output";
 import { PlatformType } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { firefoxAddons, firefoxBookmark, firefoxSessions } from "./json";
-import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxStorage } from "./sqlite";
+import { firefoxCookies, firefoxDownloads, firefoxFavicons, firefoxFormhistory, firefoxHistory, firefoxPermissions, firefoxStorage } from "./sqlite";
 
 /**
  * Class to extract Firefox information
@@ -25,7 +25,7 @@ export class FireFox {
      * @param alt_path Optional alternative path to directory contain FireFox data
      * @returns `FireFox` instance class
      */
-    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
         this.platform = platform;
         this.unfold = unfold;
         if (alt_path === undefined) {
@@ -41,10 +41,10 @@ export class FireFox {
             return;
         }
 
-        this.paths = [ {
+        this.paths = [{
             full_path: alt_path,
             version: fox_version
-        } ];
+        }];
     }
 
     /**
@@ -132,12 +132,23 @@ export class FireFox {
     }
 
     /**
+     * Function to extract permissions entries
+     * @param [offset=0] Starting db offset. Default is zero
+     * @param [limit=100] How many records to return. Default is 100
+     * @returns Array of `FirefoxPermissions`
+     */
+    public permissions(offset = 0, limit = 100): FirefoxPermissions[] {
+        return firefoxPermissions(this.paths, this.platform, offset, limit);
+    }
+
+    /**
     * Function to timeline all Firefox artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
-    * @param output `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+    * @param format `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
     */
-    public retrospect(output: Output): void {
+    public retrospect(format: Output): void {
         let offset = 0;
         const limit = 100;
+        const manager = new OutputManager(format);
 
         while (true) {
             const entries = this.history(offset, limit);
@@ -145,9 +156,9 @@ export class FireFox {
                 break;
             }
             if (!this.unfold) {
-                entries.forEach(x => delete x[ "unfold" ]);
+                entries.forEach(x => delete x["unfold"]);
             }
-            const status = dumpData(entries, `retrospect_firefox_history`, output);
+            const status = manager.write_artifact(entries, `retrospect_firefox_history`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox history: ${status}`);
             }
@@ -161,7 +172,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_cookies`, output);
+            const status = manager.write_artifact(entries, `retrospect_firefox_cookies`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox cookies: ${status}`);
             }
@@ -174,7 +185,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_favicons`, output);
+            const status = manager.write_artifact(entries, `retrospect_firefox_favicons`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox favicons: ${status}`);
             }
@@ -187,7 +198,7 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_storage`, output);
+            const status = manager.write_artifact(entries, `retrospect_firefox_storage`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox storage: ${status}`);
             }
@@ -200,29 +211,48 @@ export class FireFox {
             if (entries.length === 0) {
                 break;
             }
-            const status = dumpData(entries, `retrospect_firefox_formhistory`, output);
+            const status = manager.write_artifact(entries, `retrospect_firefox_formhistory`);
             if (status instanceof SystemError) {
                 console.error(`Failed timeline firefox form history: ${status}`);
             }
             offset += limit;
         }
 
+        offset = 0;
+        while (true) {
+            const entries = this.permissions(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+            const status = manager.write_artifact(entries, `retrospect_firefox_permissions`);
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline firefox permissions: ${status}`);
+            }
+            offset += limit;
+        }
+
         const ext = this.addons();
-        let status = dumpData(ext, `retrospect_firefox_extensions`, output);
+        let status = manager.write_artifact(ext, `retrospect_firefox_extensions`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox extensions: ${status}`);
         }
 
         const books = this.bookmarks();
-        status = dumpData(books, `retrospect_firefox_bookmarks`, output);
+        status = manager.write_artifact(books, `retrospect_firefox_bookmarks`);
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox bookmarks: ${status}`);
         }
 
         const sess = this.sessions();
-        status = dumpData(sess, `retrospect_firefox_sessions`, output);
+        status = manager.write_artifact(sess, `retrospect_firefox_sessions`);
+
         if (status instanceof SystemError) {
             console.error(`Failed timeline firefox sessions: ${status}`);
+        }
+
+        status = manager.finalize();
+        if (status instanceof SystemError) {
+            console.error(`Failed to finalize output for firefox: ${status}`);
         }
     }
 
@@ -265,8 +295,8 @@ export class FireFox {
                 break;
             }
             case PlatformType.Linux: {
-                // FireFox can now exist in two possible locations. Newer versions are under .config
-                const config_paths = [ `/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/` ];
+                // FireFox can now exist in two possible locations. Newer versions are under .config. Ubuntu by default uses Snap version of Firefox
+                const config_paths = [`/home/*/.mozilla/firefox/*/`, `/home/*/.config/mozilla/firefox/*/`, `/home/*/snap/firefox/common/.mozilla/firefox/*/`, `/home/*/snap/firefox/common/.config/mozilla/firefox/*/`];
                 for (const entry of config_paths) {
                     const linux_paths = glob(entry);
                     if (linux_paths instanceof FileError) {

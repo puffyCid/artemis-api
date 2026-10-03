@@ -6,7 +6,7 @@ import { BufReader } from "../../filesystem/reader";
 import { NomError } from "../../nom/error";
 import { Endian, nomUnsignedEightBytes, nomUnsignedFourBytes, nomUnsignedOneBytes, nomUnsignedTwoBytes } from "../../nom/helpers";
 import { take, takeUntil } from "../../nom/parsers";
-import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
+import { webkitToIso } from "../../time/conversion";
 import { ApplicationError } from "../errors";
 
 /**
@@ -272,7 +272,6 @@ function parseIndex(path: string): Index | ApplicationError {
         }
         cache_entries.push(cache);
     }
-    const adjust_time = 1000000n;
     const index: Index = {
         sig: sig.value,
         minor_version: minor.value,
@@ -285,7 +284,7 @@ function parseIndex(path: string): Index | ApplicationError {
         table_size: table.value,
         crash: crash.value,
         experiment_id: experiment_id.value,
-        created: unixEpochToISO(webkitToUnixEpoch(Number(created.value / adjust_time))),
+        created: webkitToIso(created.value),
         filled: filled.value,
         sizes,
         head_cache,
@@ -654,7 +653,6 @@ function getCacheEntry(block_number: number, data: DataBlock): CacheEntry | Appl
         return new ApplicationError(`CHROMIUM`, `Failed to parse data cache furl ${data.data_path}: ${url}`);
     }
 
-    const adjust_time = 1000000n;
     const entry: CacheEntry = {
         hash: hash.value,
         next_address: getCacheAddress(next_address.value),
@@ -662,7 +660,7 @@ function getCacheEntry(block_number: number, data: DataBlock): CacheEntry | Appl
         reuse: reuse.value,
         refetch: refetch.value,
         state: getState(cache_state.value),
-        created: unixEpochToISO(webkitToUnixEpoch(Number(created.value / adjust_time))),
+        created: webkitToIso(created.value),
         key_size: key_size.value,
         long_address: getCacheAddress(long_address.value),
         stream_sizes,
@@ -794,12 +792,11 @@ function getResponseCache(block_number: number, data: DataBlock): CacheResponse 
     // Such as HTTPS cert info
     // Could be interesting to parse later
 
-    const adjust_time = 1000000n;
     const cache_response: CacheResponse = {
         hash: hash.value,
-        request: unixEpochToISO(webkitToUnixEpoch(Number(request.value / adjust_time))),
-        response: unixEpochToISO(webkitToUnixEpoch(Number(response.value / adjust_time))),
-        timestamp: unixEpochToISO(webkitToUnixEpoch(Number(timestamp.value / adjust_time))),
+        request: webkitToIso(request.value),
+        response: webkitToIso(response.value),
+        timestamp: webkitToIso(timestamp.value),
         size: size.value,
         headers,
     };
@@ -859,8 +856,8 @@ export function testChromiumCache(): void {
         throw `Got header hash ${headers.hash} expected "4536".......getResponseCache ❌`;
     }
 
-    if (headers.request !== "2025-12-16T22:18:30.000Z") {
-        throw `Got header request ${headers.request} expected "2025-12-16T22:18:30.000Z".......getResponseCache ❌`;
+    if (headers.request !== "2025-12-16T22:18:30.135Z") {
+        throw `Got header request ${headers.request} expected "2025-12-16T22:18:30.135Z".......getResponseCache ❌`;
     }
 
     if (headers.headers.length !== 24) {
@@ -908,8 +905,8 @@ export function testChromiumCache(): void {
         throw `Got entry hash ${entry.hash} expected "475660310".......getCacheEntry ❌`;
     }
 
-    if (entry.created !== "2025-12-16T22:18:30.000Z") {
-        throw `Got entry created ${entry.created} expected "2025-12-16T22:18:30.000Z".......getCacheEntry ❌`;
+    if (entry.created !== "2025-12-16T22:18:30.134Z") {
+        throw `Got entry created ${entry.created} expected "2025-12-16T22:18:30.134Z".......getCacheEntry ❌`;
     }
 
     if (entry.url !== "1/0/_dk_https://brave.com https://brave.com https://cdn.search.brave.com/serp/v3/_app/immutable/chunks/BEuplZ1t.js") {
@@ -966,8 +963,8 @@ export function testChromiumCache(): void {
 
     console.info(`  Function getFileType ✅`);
 
-    if (index.created !== "2025-12-16T22:18:27.000Z") {
-        throw `Got index created ${index.created} expected "2025-12-16T22:18:27.000Z".......parseIndex ❌`;
+    if (index.created !== "2025-12-16T22:18:27.220Z") {
+        throw `Got index created ${index.created} expected "2025-12-16T22:18:27.220Z".......parseIndex ❌`;
     }
 
     if (index.entries !== 334) {

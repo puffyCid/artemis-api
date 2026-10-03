@@ -35,10 +35,18 @@ export function getDebInfo(alt_path?: string): DebPackages[] | LinuxError {
     priority: "",
     homepage: "",
     dependencies: [],
+    message: "",
+    timestamp_desc: "None",
+    artifact: "DEB Package",
+    data_type: "linux:deb:entry",
+    evidence: path,
+    datetime: "1970-01-01T00:00:00.000Z"
   };
   for (const line of package_lines) {
+
     if (line.startsWith("Package: ")) {
       deb.name = line.substring("Package: ".length);
+      deb.message = `DEB package '${deb.name}'`;
     } else if (line.startsWith("Status: ")) {
       deb.status = line.substring("Status: ".length);
     } else if (line.startsWith("Priority: ")) {
@@ -58,7 +66,7 @@ export function getDebInfo(alt_path?: string): DebPackages[] | LinuxError {
     } else if (line.startsWith("Depends: ")) {
       const depends = line.substring("Depends: ".length);
       deb.dependencies = depends.split(", ");
-    } else if (line == "" && deb.name !== "") {
+    } else if (line === "" && deb.name !== "") {
       packages.push(deb);
       deb = {
         name: "",
@@ -71,9 +79,49 @@ export function getDebInfo(alt_path?: string): DebPackages[] | LinuxError {
         priority: "",
         homepage: "",
         dependencies: [],
+        message: "",
+        timestamp_desc: "None",
+        artifact: "DEB Package",
+        data_type: "linux:deb:entry",
+        evidence: path,
+        datetime: "1970-01-01T00:00:00.000Z"
       };
     }
   }
 
   return packages;
+}
+
+/**
+ * Function to test DEB package parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the DEB package parsing
+ */
+export function testDebInfo(): void {
+  const deb = "../../test_data/linux/deb/status";
+  const results = getDebInfo(deb);
+  if (results instanceof LinuxError) {
+    throw results;
+  }
+
+  if (results.length !== 327) {
+    throw `Got ${results.length} expected 327.......getDebInfo ❌`;
+  }
+
+  if (results[ 0 ] === undefined) {
+    throw `Got undefined name expected adduser.......getRpmInfo ❌`;
+  }
+
+
+  if (results[ 0 ].name != "adduser") {
+    throw `Got ${results[ 0 ].name} expected adduser.......getDebInfo ❌`;
+  }
+
+  if (results[ 0 ].datetime != "1970-01-01T00:00:00.000Z") {
+    throw `Got ${results[ 0 ].datetime} expected "1970-01-01T00:00:00.000Z".......getDebInfo ❌`;
+  }
+
+  if (results[ 0 ].message != "DEB package 'adduser'") {
+    throw `Got ${results[ 0 ].message} expected DEB package 'adduser'.......getDebInfo ❌`;
+  }
 }

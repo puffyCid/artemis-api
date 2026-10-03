@@ -14,3 +14,14 @@ export interface RecentFiles {
   artifact: "Gedit";
   data_type: "linux:gedit:entry",
 }
+
+export interface RawGeditRecentFiles {
+  metadata: {
+    document: RawGeditRecentFilesDocument | RawGeditRecentFilesDocument[];
+  };
+}
+
+interface RawGeditRecentFilesDocument {
+  "@uri": string;
+  "@atime": string;
+}

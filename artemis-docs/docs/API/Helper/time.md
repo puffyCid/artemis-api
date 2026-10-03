@@ -10,49 +10,49 @@ Functions to help convert various time formats to UnixEpoch
 
 Return current time in UnixEpoch seconds
 
-### filetimeToUnixEpoch(filetime) -> number
+### filetimeToIso(filetime) -> string
 
-Convert Windows FILETIME to UnixEpoch seconds
+Convert Windows FILETIME to ISO 8801 string
 
 | Param    | Type   | Description        |
 | -------- | ------ | ------------------ |
 | filetime | bigint | FILETIME timestamp |
 
-### cocoatimeToUnixEpoch(cocoatime) -> number
+### cocoatimeToIso(cocoatime) -> string
 
-Convert macOS Cocoa time to UnixEpoch seconds
+Convert macOS Cocoa time to ISO 8801 string
 
 | Param     | Type   | Description     |
 | --------- | ------ | --------------- |
 | cocoatime | number | Cocoa timestamp |
 
-### hfsToUnixEpoch(hfstime) -> number
+### hfsToIso(hfstime) -> string
 
-Convert macOS HFS+ time to UnixEpoch seconds
+Convert macOS HFS+ time to ISO 8801 string
 
 | Param   | Type   | Description    |
 | ------- | ------ | -------------- |
 | hfstime | number | HFS+ timestamp |
 
-### oleToUnixEpoch(oletime) -> number
+### oleToIso(oletime) -> numstringber
 
-Convert Windows OLE time to UnixEpoch seconds
+Convert Windows OLE time to ISO 8801 string
 
 | Param   | Type   | Description   |
 | ------- | ------ | ------------- |
 | oletime | number | OLE timestamp |
 
-### webkitToUnixEpoch(webkttime) -> number
+### webkitToIso(webkttime) -> string
 
-Convert browser WebKit time to UnixEpoch
+Convert browser WebKit time to ISO 8801 string
 
 | Param      | Type   | Description      |
 | ---------- | ------ | ---------------- |
 | webkittime | number | WebKit timestamp |
 
-### fatToUnixEpoch(fattime) -> number
+### fatToIso(fattime) -> string
 
-Convert Windows FAT time bytes to UnixEpoch
+Convert Windows FAT time bytes to ISO 8801 string
 
 | Param   | Type       | Description         |
 | ------- | ---------- | ------------------- |

@@ -11,7 +11,7 @@ import {
   takeUntil,
 } from "../../nom/mod";
 import { PlatformType } from "../../system/systeminfo";
-import { cocoatimeToUnixEpoch, unixEpochToISO } from "../../time/conversion";
+import { cocoatimeToIso } from "../../time/conversion";
 import { MacosError } from "../errors";
 
 export function safariCookies(paths: SafariProfile[], platform: PlatformType): Cookie[] {
@@ -254,22 +254,18 @@ function parseRecord(data: Uint8Array, evidence: string): Cookie | NomError {
     return time;
   }
 
-  const expiration = unixEpochToISO(
-    cocoatimeToUnixEpoch(
+  const expiration = cocoatimeToIso(
       new DataView((time.nommed as Uint8Array).buffer).getFloat64(0, true),
-    ),
-  );
+    );
 
   time = take(time.remaining, time_size);
   if (time instanceof NomError) {
     return time;
   }
 
-  const created = unixEpochToISO(
-    cocoatimeToUnixEpoch(
+  const created = cocoatimeToIso(
       new DataView((time.nommed as Uint8Array).buffer).getFloat64(0, true),
-    ),
-  );
+    );
 
   const name = extractOffsets(data, name_offset);
   if (name instanceof NomError) {

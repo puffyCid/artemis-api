@@ -11,16 +11,14 @@ import { WindowsError } from "./errors";
 
 export class Outlook {
   private path: string;
-  private use_ntfs: boolean;
 
   /**
    * Construct a Outlook class to interact with a Windows OST file
    * @param path Path to the Outlook OST file
    * @param ntfs Should NTFS parser be used. Only works on **Windows**. Required if you want to parse a locked OST file
    */
-  constructor (path: string, ntfs = false) {
+  constructor (path: string) {
     this.path = path;
-    this.use_ntfs = ntfs;
   }
 
   /**
@@ -32,7 +30,6 @@ export class Outlook {
       // @ts-expect-error: Custom Artemis function
       const data: FolderInfo = js_root_folder(
         this.path,
-        this.use_ntfs,
       );
 
       return data;
@@ -54,7 +51,6 @@ export class Outlook {
       // @ts-expect-error: Custom Artemis function
       const data: FolderInfo = js_read_folder(
         this.path,
-        this.use_ntfs,
         folder,
       );
 
@@ -77,7 +73,6 @@ export class Outlook {
       // @ts-expect-error: Custom Artemis function
       const data: FolderMetadata = js_folder_meta(
         this.path,
-        this.use_ntfs,
         folder,
       );
 
@@ -99,7 +94,6 @@ export class Outlook {
       // @ts-expect-error: Custom Artemis function
       const data: PropertyContext[] = js_message_store(
         this.path,
-        this.use_ntfs,
       );
 
       return data;
@@ -120,7 +114,6 @@ export class Outlook {
       // @ts-expect-error: Custom Artemis function
       const data: Record<number, NameEntry> = js_name_map(
         this.path,
-        this.use_ntfs,
       );
 
       return data;
@@ -155,7 +148,6 @@ export class Outlook {
       // @ts-expect-error: Custom Artemis function
       const data: MessageDetails[] = js_read_messages(
         this.path,
-        this.use_ntfs,
         table,
         offset,
       );
@@ -183,7 +175,6 @@ export class Outlook {
       // @ts-expect-error: Custom Artemis function
       const data: Attachment = js_read_attachment(
         this.path,
-        this.use_ntfs,
         block_id,
         descriptor_id,
       );

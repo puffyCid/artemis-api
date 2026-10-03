@@ -876,7 +876,11 @@ function assembleBom(files: Map<number, BomData>): BomFiles[] {
   return boms;
 }
 
-
+/**
+ * Function to test BOM parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the BOM parsing
+ */
 export function testParseBom(): void {
   const bom_test = "../../test_data/macos/bom/io.osquery.agent.bom";
   const results = parseBom(bom_test);

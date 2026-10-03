@@ -4,7 +4,7 @@ import { ProtoTag } from "../../../types/encoding/protobuf";
 import { FileError } from "../../filesystem/errors";
 import { glob } from "../../filesystem/files";
 import { PlatformType } from "../../system/systeminfo";
-import { unixEpochToISO, webkitToUnixEpoch } from "../../time/conversion";
+import { webkitToIso } from "../../time/conversion";
 import { ApplicationError } from "../errors";
 import { LevelDb } from "../leveldb/level";
 
@@ -70,7 +70,6 @@ export function chromiumLocalStorage(paths: ChromiumProfiles[], platform: Platfo
             // LDB entries are typically written in batches
             // Since we sorted entries by sequence above, we should in theory be able to associate by timestamp
             let default_time = "1970-01-01T00:00:00.000Z";
-            const adjust_time = 1000000n;
             for (let i = 0; i < entries.length; i++) {
                 const entry = entries[i];
                 if (entry === undefined) {
@@ -84,7 +83,7 @@ export function chromiumLocalStorage(paths: ChromiumProfiles[], platform: Platfo
                         continue;
                     }
                     if (typeof time_value.value === 'number') {
-                        default_time = unixEpochToISO(webkitToUnixEpoch(Number(BigInt(time_value.value) / adjust_time)));
+                        default_time = webkitToIso(BigInt(time_value.value));
                     }
                 }
 

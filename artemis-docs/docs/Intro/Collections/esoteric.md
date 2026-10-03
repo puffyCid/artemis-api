@@ -94,14 +94,11 @@ Remove artemis once you are done:
 Artemis has only been tested on development/test instances of ESXi devices.
 Unsigned 3rd party binaries are discouraged on ESXi appliances.
 
-Currently [UAC](https://github.com/tclahr/uac) is suggested if you want to collect data
-
 You should only consider using artemis if you want todo the following:
 
 - Run yara rules against ESXi appliance
 - Generate a filelisting timeline
 - Develop additional artifact parsers
-- Run it on a test ESXi instance
 
 :::
 

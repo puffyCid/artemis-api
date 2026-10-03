@@ -14,11 +14,9 @@ name = "windows_collection"
 directory = "./tmp"
 format = "jsonl"
 compress = true
-timeline = false
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
-timeline = false
+destination= "local"
 
 [[artifacts]]
 artifact_name = "prefetch"
@@ -49,16 +47,16 @@ artifact_name = "eventlogs"
 [artifacts.eventlogs]
 
 [[artifacts]]
-artifact_name = "rawfiles"
-[artifacts.rawfiles]
-drive_letter = 'C'
+artifact_name = "files"
+[artifacts.files]
 start_path = "C:\\"
 depth = 40
-recover_indx = true
 md5 = true
 sha1 = false
 sha256 = false
 metadata = true
+verbose = false
+source = "ntfs:C"
 
 [[artifacts]]
 artifact_name = "registry" # Parses the whole Registry file
@@ -110,8 +108,7 @@ format = "jsonl"
 compress = true
 endpoint_id = "6c51b123-1522-4572-9f2a-0bd5abd81b82"
 collection_id = 1
-output = "local"
-timeline = false
+destination= "local"
 
 [[artifacts]]
 artifact_name = "processes"

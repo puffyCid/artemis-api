@@ -16,6 +16,7 @@ export type ErrorName =
   | "FIRMWARE_HISTORY"
   | "FALKON"
   | "WTMPDB"
-  | "EXT4";
+  | "EXT4"
+  | "PACMAN";
 
 export class LinuxError extends ErrorBase<ErrorName> { }

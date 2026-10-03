@@ -6,7 +6,7 @@ async function main() {
     console.log(' Starting live test....');
     const results = await extractAbrt();
     if (results instanceof LinuxError) {
-        throw results;
+        throw console.log(JSON.stringify(results));
     }
 
     if (results.length === 0) {
