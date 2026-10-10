@@ -204,3 +204,4 @@ export { extractBackup } from "./src/ios/itunes/backup";
  */
 export { readDir } from "./src/filesystem/directory";
 export { glob, hash, readTextFile, stat, readFile, readLines } from "./src/filesystem/files";
+export { Accessor } from "./src/filesystem/accessor";

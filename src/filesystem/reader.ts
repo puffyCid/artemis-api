@@ -5,11 +5,12 @@ import { FileError } from "./errors";
  */
 export class BufReader {
     private reader: unknown;
+
     /**
      * Start reading a file
      * @param path Full path to file that should be streamed
      */
-    constructor(path: string) {
+    constructor (path: string) {
         // @ts-expect-error: Custom Artemis class
         this.reader = new JsBufReader(path);
     }
