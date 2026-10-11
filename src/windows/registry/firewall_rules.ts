@@ -1,131 +1,150 @@
+import { Accessor } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Direction, FirewallRules, Protocol } from "../../../types/windows/registry/firewall_rules";
 import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { WindowsError } from "../errors";
 import { getRegistry } from "../registry";
 
 /**
  * Function to extract Windows Firewall rules in the Registry
- * @param alt_file Alternative path to `SYSTEM` Registry file
+ * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` The default is `AccesssorProtocol.Ntfs`.
+ * @param alt_path Alternative path to `SYSTEM` Registry file
  * @returns Array of `FirewallRules` or `WindowsError`
  */
-export function firewallRules(alt_file?: string): FirewallRules[] | WindowsError {
-    let path = `ntfs:${getSystemDrive()}\\Windows\\System32\\config\\SYSTEM`;
-    if (alt_file !== undefined) {
-        path = alt_file;
+export function firewallRules(protocol = AccessorProtocol.Ntfs, alt_path?: string): FirewallRules[] | WindowsError {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
+
+    let path = `${drive}\\Windows\\System32\\config\\SYSTEM`;
+    if (alt_path !== undefined) {
+        path = alt_path;
     }
 
-    const reg_data = getRegistry(path);
-    if (reg_data instanceof WindowsError) {
-        return new WindowsError(`FIREWALL_RULES`, `failed to parse ${path}: ${reg_data}`);
+    // Based on the `AccessorProtocol` glob for SYSTEM files
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new WindowsError('FIREWALL_RULES', `failed to glob for ${path}: ${matches}`);
     }
 
     const rules: FirewallRules[] = [];
-    for (const entry of reg_data) {
-        if (!entry.path.endsWith("\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\FirewallRules")) {
+
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
+        const reg_data = getRegistry(entry.handle as FileHandle);
+        if (reg_data instanceof WindowsError) {
+            return new WindowsError(`FIREWALL_RULES`, `failed to parse ${path}: ${reg_data}`);
+        }
 
-        for (const value of entry.values) {
-            if (value.data_type !== "REG_SZ") {
+        for (const reg of reg_data) {
+            if (!reg.path.endsWith("\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\FirewallRules")) {
                 continue;
             }
-            const entries = value.data.split("|");
-            const rule: FirewallRules = {
-                action: "",
-                active: false,
-                direction: Direction.Unknown,
-                protocol: Protocol.Unknown,
-                protocol_number: 0,
-                local_port: 0,
-                remote_port: 0,
-                name: "",
-                description: "",
-                application: "",
-                evidence: entry.evidence,
-                key_path: entry.path,
-                last_modified: entry.last_modified,
-                rule_version: "",
-                profile: "",
-                service: "",
-                remote_address: [],
-                registry_key_name: value.value,
-                local_address: [],
-                message: "",
-                datetime: entry.last_modified,
-                timestamp_desc: "Registry Last Modified",
-                artifact: "Windows Firewall Rule",
-                data_type: "windows:registry:firewallrule:entry"
-            };
 
-            for (const rule_values of entries) {
-                if (rule_values.startsWith("v") && !rule_values.includes("=")) {
-                    rule.rule_version = rule_values;
+            for (const value of reg.values) {
+                if (value.data_type !== "REG_SZ") {
                     continue;
                 }
+                const entries = value.data.split("|");
+                const rule: FirewallRules = {
+                    action: "",
+                    active: false,
+                    direction: Direction.Unknown,
+                    protocol: Protocol.Unknown,
+                    protocol_number: 0,
+                    local_port: 0,
+                    remote_port: 0,
+                    name: "",
+                    description: "",
+                    application: "",
+                    evidence: entry.meta.display_path,
+                    key_path: reg.path,
+                    last_modified: reg.last_modified,
+                    rule_version: "",
+                    profile: "",
+                    service: "",
+                    remote_address: [],
+                    registry_key_name: value.value,
+                    local_address: [],
+                    message: "",
+                    datetime: reg.last_modified,
+                    timestamp_desc: "Registry Last Modified",
+                    artifact: "Windows Firewall Rule",
+                    data_type: "windows:registry:firewallrule:entry"
+                };
 
-                const key_value = rule_values.split("=");
-                const key = key_value.at(0);
-                if (key === "") {
-                    continue;
+                for (const rule_values of entries) {
+                    if (rule_values.startsWith("v") && !rule_values.includes("=")) {
+                        rule.rule_version = rule_values;
+                        continue;
+                    }
+
+                    const key_value = rule_values.split("=");
+                    const key = key_value.at(0);
+                    if (key === "") {
+                        continue;
+                    }
+
+                    switch (key) {
+                        case "Action":
+                            rule.action = key_value.at(1) ?? "";
+                            break;
+                        case "Active":
+                            rule.active = JSON.parse(key_value.at(1)?.toLowerCase() ?? "false");
+                            break;
+                        case "Dir":
+                            rule.direction = getDirection(key_value.at(1) ?? "");
+                            break;
+                        case "Protocol":
+                            rule.protocol = getProtocol(key_value.at(1) ?? "");
+                            rule.protocol_number = Number(key_value.at(1));
+                            break;
+                        case "Profile":
+                            rule.profile = key_value.at(1) ?? "";
+                            break;
+                        case "RPort":
+                            rule.remote_port = Number(key_value.at(1));
+                            break;
+                        case "LPort":
+                            rule.local_port = Number(key_value.at(1));
+                            break;
+                        case "App":
+                            rule.application = key_value.at(1) ?? "";
+                            break;
+                        case "Svc":
+                            rule.service = key_value.at(1) ?? "";
+                            break;
+                        case "Name":
+                            rule.name = key_value.at(1) ?? "";
+                            rule.message = `Firewall Rule: ${rule.name}`;
+                            break;
+                        case "Desc":
+                            rule.description = key_value.at(1) ?? "";
+                            break;
+                        case "RA4":
+                            rule.remote_address.push(key_value.at(1) ?? "");
+                            break;
+                        case "RA6":
+                            rule.remote_address.push(key_value.at(1) ?? "");
+                            break;
+                        case "LA4":
+                            rule.local_address.push(key_value.at(1) ?? "");
+                            break;
+                        case "LA6":
+                            rule.local_address.push(key_value.at(1) ?? "");
+                            break;
+                        case undefined:
+                            break;
+                        default:
+                            rule[key] = key_value.at(1) ?? "";
+                            break;
+                    }
                 }
 
-                switch (key) {
-                    case "Action":
-                        rule.action = key_value.at(1) ?? "";
-                        break;
-                    case "Active":
-                        rule.active = JSON.parse(key_value.at(1)?.toLowerCase() ?? "false");
-                        break;
-                    case "Dir":
-                        rule.direction = getDirection(key_value.at(1) ?? "");
-                        break;
-                    case "Protocol":
-                        rule.protocol = getProtocol(key_value.at(1) ?? "");
-                        rule.protocol_number = Number(key_value.at(1));
-                        break;
-                    case "Profile":
-                        rule.profile = key_value.at(1) ?? "";
-                        break;
-                    case "RPort":
-                        rule.remote_port = Number(key_value.at(1));
-                        break;
-                    case "LPort":
-                        rule.local_port = Number(key_value.at(1));
-                        break;
-                    case "App":
-                        rule.application = key_value.at(1) ?? "";
-                        break;
-                    case "Svc":
-                        rule.service = key_value.at(1) ?? "";
-                        break;
-                    case "Name":
-                        rule.name = key_value.at(1) ?? "";
-                        rule.message = `Firewall Rule: ${rule.name}`;
-                        break;
-                    case "Desc":
-                        rule.description = key_value.at(1) ?? "";
-                        break;
-                    case "RA4":
-                        rule.remote_address.push(key_value.at(1) ?? "");
-                        break;
-                    case "RA6":
-                        rule.remote_address.push(key_value.at(1) ?? "");
-                        break;
-                    case "LA4":
-                        rule.local_address.push(key_value.at(1) ?? "");
-                        break;
-                    case "LA6":
-                        rule.local_address.push(key_value.at(1) ?? "");
-                        break;
-                    case undefined:
-                        break;
-                    default:
-                        rule[ key ] = key_value.at(1) ?? "";
-                        break;
-                }
+                rules.push(rule);
             }
-
-            rules.push(rule);
         }
     }
 
