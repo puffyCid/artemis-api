@@ -1,6 +1,5 @@
 import { AccessorProtocol, AccessorReader, DirEntry, DirHandle, EntryMeta, FileHandle, GlobMatch, SourceHandle } from "../../types/filesystem/accessor";
 import { FileError } from "./errors";
-import { Reader } from "./reader";
 
 /**
  * Class that exposes the artemis `Accessor`
@@ -191,7 +190,7 @@ export class Accessor {
      * @param handle `FileHandle` to read
      * @returns `Reader` or `FileError`
      */
-    public openReaderHandle(handle: FileHandle): Reader | FileError {
+    public openReaderHandle(handle: FileHandle): AccessorReader | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
             const results = this.accessor.open_reader_handle(handle.File);
@@ -208,7 +207,7 @@ export class Accessor {
      * 
      * For example, opening a NTFS live volume, globbing for files, and then reading them
      * @param path Path to accessor source
-     * @param protocol `AccessorProtocol` to use for the source
+     * @param protocol `AccessorProtocol` to use for the source. Default is `AccessorProtocol.Host`
      * @returns `SourceHandle` or `FileError`
      */
     public openSource(path: string, protocol = AccessorProtocol.Host): SourceHandle | FileError {
@@ -315,7 +314,7 @@ export class Accessor {
     * @param protocol `AccessorProtocol` to use use for the `Reader`
     * @returns `Reader` or `FileError`
     */
-    public sourceOpenReader(source: SourceHandle, path: string): Reader | FileError {
+    public sourceOpenReader(source: SourceHandle, path: string): AccessorReader | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
             const results = this.accessor.source_open_reader(source, path);

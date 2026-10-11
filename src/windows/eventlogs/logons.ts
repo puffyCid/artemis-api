@@ -1,3 +1,4 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import {
   LogonsWindows,
   LogonType,
@@ -5,127 +6,162 @@ import {
   Raw4625FailedLogons,
   Raw4634Logoffs,
 } from "../../../types/windows/eventlogs/logons";
+import { getSystemDrive } from "../../environment/env";
+import { Accessor } from "../../filesystem/accessor";
+import { FileError } from "../../filesystem/errors";
 import { WindowsError } from "../errors";
 import { getEventlogs } from "../eventlogs";
 
 /**
- * Function to parse Logon, Logoff, and Failed Logon events from Security.evtx file
- * @param path Path to Security.evtx file
+ * Function to parse Logon, Logoff, and Failed Logon events from Security.evtx file.
+ * 
+ * By default this will parse the Security.evtx on a live Windows system.
+ * However you can override this by provide custom `AccessorProtocol` and/or alternative path.
+ * 
+ * For example to parse a Security.evtx file on a NTFS disk image
+ * 
+ * Use `AccessorProtocol.Raw` and set the `alt_path = /path/to/windows.raw!/Windows/**\/Security.evtx` 
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Alternative path to the Security.evtx file. This can be a glob that points to multiple Security.evtx files
  * @param [limit=10000] How many EventLog entries to query at a time. Default is 10,000
  * @returns Array of `LogonsWindows` entries
  */
-export function logonsWindows(path: string, limit = 10000): LogonsWindows[] | WindowsError {
-  let offset = 0;
+export function logonsWindows(protocol = AccessorProtocol.Host, alt_path?: string, limit = 10000): LogonsWindows[] | WindowsError {
+  const accessor = new Accessor();
+  const drive = getSystemDrive();
+
+  let path = `${drive}\\Windows\\System32\\winevt\\Logs\\Security.evtx`;
+  if (alt_path !== undefined) {
+    path = alt_path;
+  }
+
+  // Based on the `AccessorProtocol` glob for Security.evtx files
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new WindowsError('LOGONS', `failed to glob for ${path}: ${matches}`);
+  }
   const logon_entries: LogonsWindows[] = [];
 
-  const logon_eid = 4624;
-  const logoff_eid = 4634;
-  const failed_logon_eid = 4625;
-
-  while (true) {
-    // Get records 10000 at a time
-    const logs = getEventlogs(path, offset, limit);
-    if (logs instanceof WindowsError) {
-      return new WindowsError(
-        "LOGONS",
-        `failed to parse eventlog ${path}: ${logs}`,
-      );
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
     }
-    const recordsData = logs[1];
-    if (recordsData.length === 0) {
-      break;
-    }
+    let offset = 0;
 
-    offset += limit;
+    const logon_eid = 4624;
+    const logoff_eid = 4634;
+    const failed_logon_eid = 4625;
 
-    const records = recordsData as unknown as Raw4624Logons[] | Raw4634Logoffs[] | Raw4625FailedLogons[];
-    // Loop through Event Log entries
-    for (const record of records) {
-      // Parse Logon entries
-      if (record.data.Event.System.EventID === logon_eid && isLogon(record)) {
-        const logon_event = record.data.Event.EventData;
-        const system_event = record.data.Event.System;
-        const entry: LogonsWindows = {
-          logon_type: checkLogonType(logon_event.LogonType),
-          sid: logon_event.TargetUserSid,
-          account_name: logon_event.TargetUserName,
-          account_domain: logon_event.TargetDomainName,
-          logon_id: logon_event.TargetLogonId,
-          logon_process: logon_event.LogonProcessName,
-          authentication_package: logon_event.AuthenticationPackageName,
-          source_ip: logon_event.IpAddress,
-          source_workstation: logon_event.WorkstationName,
-          eventlog_generated: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
-          message: `Logon by '${logon_event.TargetUserName}' from '${logon_event.IpAddress}'`,
-          datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
-          timestamp_desc: "Account Logon",
-          artifact: "Logon EventLog",
-          data_type: "windows:eventlogs:logon:entry",
-          evidence: path,
-          activity_id: system_event.Correlation === null ? "" : system_event.Correlation["#attributes"].ActivityID,
-          computer: record.data.Event.System.Computer,
-          channel: record.data.Event.System.Channel,
-          provider: record.data.Event.System.Provider["#attributes"].Name,
-          provider_guid: record.data.Event.System.Provider["#attributes"].Guid,
-        };
-        logon_entries.push(entry);
-      } else if (
-        record.data.Event.System.EventID === logoff_eid && isLogoff(record)
-      ) {
-        const logon_event = record.data.Event.EventData;
-        const entry: LogonsWindows = {
-          logon_type: checkLogonType(logon_event.LogonType),
-          sid: logon_event.TargetUserSid,
-          account_name: logon_event.TargetUserName,
-          account_domain: logon_event.TargetDomainName,
-          logon_id: logon_event.TargetLogonId,
-          logon_process: "",
-          authentication_package: "",
-          source_ip: "",
-          source_workstation: "",
-          eventlog_generated: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
-          message: `Logoff by '${logon_event.TargetUserName}'`,
-          datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
-          timestamp_desc: "Account Logoff",
-          artifact: "Logoff EventLog",
-          data_type: "windows:eventlogs:logoff:entry",
-          evidence: path,
-          activity_id: "",
-          computer: record.data.Event.System.Computer,
-          channel: record.data.Event.System.Channel,
-          provider: record.data.Event.System.Provider["#attributes"].Name,
-          provider_guid: record.data.Event.System.Provider["#attributes"].Guid,
-        };
-        logon_entries.push(entry);
-      } else if (record.data.Event.System.EventID === failed_logon_eid && isFailedLogon(record)) {
-        const failed_event = record.data.Event.EventData;
-        const entry: LogonsWindows = {
-          logon_type: checkLogonType(failed_event.LogonType),
-          sid: failed_event.TargetUserSid,
-          account_name: failed_event.TargetUserName,
-          account_domain: failed_event.TargetDomainName,
-          logon_process: failed_event.LogonProcessName,
-          authentication_package: failed_event.AuthenticationPackageName,
-          source_ip: failed_event.IpAddress,
-          source_workstation: failed_event.WorkstationName,
-          eventlog_generated: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
-          message: `Failed Logon by '${failed_event.TargetUserName}' from '${failed_event.IpAddress}'`,
-          datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
-          evidence: path,
-          timestamp_desc: "Account Failed Logon",
-          artifact: "Failed Logon EventLog",
-          data_type: "windows:eventlogs:logon:failed:entry",
-          provider: record.data.Event.System.Provider["#attributes"].Name,
-          provider_guid: record.data.Event.System.Provider["#attributes"].Guid,
-          activity_id: record.data.Event.System.Correlation["#attributes"].ActivityID,
-          computer: record.data.Event.System.Computer,
-          channel: record.data.Event.System.Channel,
-          logon_id: ""
-        };
-        logon_entries.push(entry);
+    while (true) {
+      // Get records 10000 at a time
+      const logs = getEventlogs(entry.handle as FileHandle, offset, limit);
+      if (logs instanceof WindowsError) {
+        return new WindowsError(
+          "LOGONS",
+          `failed to parse eventlog ${path}: ${logs}`,
+        );
+      }
+      const recordsData = logs[1];
+      if (recordsData.length === 0) {
+        break;
+      }
+
+      offset += limit;
+
+      const records = recordsData as unknown as Raw4624Logons[] | Raw4634Logoffs[] | Raw4625FailedLogons[];
+      // Loop through Event Log entries
+      for (const record of records) {
+        // Parse Logon entries
+        if (record.data.Event.System.EventID === logon_eid && isLogon(record)) {
+          const logon_event = record.data.Event.EventData;
+          const system_event = record.data.Event.System;
+
+          const event: LogonsWindows = {
+            logon_type: checkLogonType(logon_event.LogonType),
+            sid: logon_event.TargetUserSid,
+            account_name: logon_event.TargetUserName,
+            account_domain: logon_event.TargetDomainName,
+            logon_id: logon_event.TargetLogonId,
+            logon_process: logon_event.LogonProcessName,
+            authentication_package: logon_event.AuthenticationPackageName,
+            source_ip: logon_event.IpAddress,
+            source_workstation: logon_event.WorkstationName,
+            eventlog_generated: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            message: `Logon by '${logon_event.TargetUserName}' from '${logon_event.IpAddress}'`,
+            datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            timestamp_desc: "Account Logon",
+            artifact: "Logon EventLog",
+            data_type: "windows:eventlogs:logon:entry",
+            evidence: entry.meta.display_path,
+            activity_id: system_event.Correlation === null ? "" : system_event.Correlation["#attributes"].ActivityID,
+            computer: record.data.Event.System.Computer,
+            channel: record.data.Event.System.Channel,
+            provider: record.data.Event.System.Provider["#attributes"].Name,
+            provider_guid: record.data.Event.System.Provider["#attributes"].Guid,
+          };
+          logon_entries.push(event);
+        } else if (
+          record.data.Event.System.EventID === logoff_eid && isLogoff(record)
+        ) {
+          const logon_event = record.data.Event.EventData;
+
+          const event: LogonsWindows = {
+            logon_type: checkLogonType(logon_event.LogonType),
+            sid: logon_event.TargetUserSid,
+            account_name: logon_event.TargetUserName,
+            account_domain: logon_event.TargetDomainName,
+            logon_id: logon_event.TargetLogonId,
+            logon_process: "",
+            authentication_package: "",
+            source_ip: "",
+            source_workstation: "",
+            eventlog_generated: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            message: `Logoff by '${logon_event.TargetUserName}'`,
+            datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            timestamp_desc: "Account Logoff",
+            artifact: "Logoff EventLog",
+            data_type: "windows:eventlogs:logoff:entry",
+            evidence: entry.meta.display_path,
+            activity_id: "",
+            computer: record.data.Event.System.Computer,
+            channel: record.data.Event.System.Channel,
+            provider: record.data.Event.System.Provider["#attributes"].Name,
+            provider_guid: record.data.Event.System.Provider["#attributes"].Guid,
+          };
+          logon_entries.push(event);
+        } else if (record.data.Event.System.EventID === failed_logon_eid && isFailedLogon(record)) {
+          const failed_event = record.data.Event.EventData;
+
+          const event: LogonsWindows = {
+            logon_type: checkLogonType(failed_event.LogonType),
+            sid: failed_event.TargetUserSid,
+            account_name: failed_event.TargetUserName,
+            account_domain: failed_event.TargetDomainName,
+            logon_process: failed_event.LogonProcessName,
+            authentication_package: failed_event.AuthenticationPackageName,
+            source_ip: failed_event.IpAddress,
+            source_workstation: failed_event.WorkstationName,
+            eventlog_generated: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            message: `Failed Logon by '${failed_event.TargetUserName}' from '${failed_event.IpAddress}'`,
+            datetime: record.data.Event.System.TimeCreated["#attributes"].SystemTime,
+            evidence: entry.meta.display_path,
+            timestamp_desc: "Account Failed Logon",
+            artifact: "Failed Logon EventLog",
+            data_type: "windows:eventlogs:logon:failed:entry",
+            provider: record.data.Event.System.Provider["#attributes"].Name,
+            provider_guid: record.data.Event.System.Provider["#attributes"].Guid,
+            activity_id: record.data.Event.System.Correlation["#attributes"].ActivityID,
+            computer: record.data.Event.System.Computer,
+            channel: record.data.Event.System.Channel,
+            logon_id: ""
+          };
+          logon_entries.push(event);
+        }
       }
     }
+
   }
+
 
   return logon_entries;
 }
@@ -218,7 +254,7 @@ function checkLogonType(logon_type: number): LogonType {
  */
 export function testLogonsWindows(): void {
   const test = "../../tests/test_data/windows/eventlogs/Security.evtx";
-  const results = logonsWindows(test);
+  const results = logonsWindows(AccessorProtocol.Host, test);
   if (results instanceof WindowsError) {
     throw results;
   }
@@ -234,7 +270,7 @@ export function testLogonsWindows(): void {
     throw `Got ${results[1].eventlog_generated} for logon time, expected "2022-10-31T03:30:46.218854Z".......logonsWindows ❌`;
   }
 
-    if (results[127]?.message != "Logon by 'SYSTEM' from '-'") {
+  if (results[127]?.message != "Logon by 'SYSTEM' from '-'") {
     throw `Got ${results[127]?.message} for message, expected "Logon by 'SYSTEM' from '-'".......logonsWindows ❌`;
   }
 

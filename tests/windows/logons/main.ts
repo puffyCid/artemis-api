@@ -5,7 +5,7 @@ import { testLogonsWindows } from "../../test";
 function main() {
   console.log('Running Windows Logons tests....');
   console.log(' Starting live test....');
-  const results = logonsWindows("C:\\Windows\\System32\\winevt\\Logs\\Security.evtx");
+  const results = logonsWindows();
   if (results instanceof WindowsError) {
     throw results;
   }

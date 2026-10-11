@@ -95,7 +95,6 @@ export class Reader {
      * @returns `Uint8Array` or `FileError`
      */
     public read(bytes: number): Uint8Array | FileError {
-        console.log("hi");
         if (bytes < 0) {
             return new FileError(`READER`, `Cannot read to negative bytes ${bytes}`);
         }

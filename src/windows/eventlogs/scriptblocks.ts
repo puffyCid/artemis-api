@@ -1,89 +1,106 @@
+import { Accessor } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { RawBlock, Scriptblock } from "../../../types/windows/eventlogs/scriptblocks";
-import { getEnvValue } from "../../environment/mod";
+import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { WindowsError } from "../errors";
 import { getEventlogs } from "../eventlogs";
 
 /**
  * Function to assemble PowerShell scriptblocks
- * @param path Optional path to PowerShell Operational evtx file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional path to PowerShell Operational evtx file
  * @returns Array of `Scriptblock` or `WindowsError`
  */
-export function assembleScriptblocks(path?: string): Scriptblock[] | WindowsError {
-    let log_path = path;
-    if (log_path === undefined) {
-        let drive = getEnvValue("SystemDrive");
-        if (drive === "") {
-            drive = "C:";
-        }
-        log_path = `${drive}\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-PowerShell%4Operational.evtx`;
+export function assembleScriptblocks(protocol = AccessorProtocol.Host, alt_path?: string): Scriptblock[] | WindowsError {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
+
+    let path = `${drive}\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-PowerShell%4Operational.evtx`;
+    if (alt_path !== undefined) {
+        path = alt_path;
     }
 
-    let offset = 0;
-    const limit = 500;
-    const eid = 4104;
+    // Based on the `AccessorProtocol` glob for Security.evtx files
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new WindowsError('SCRIPTBLOCK', `failed to glob for ${path}: ${matches}`);
+    }
 
     let entries: Scriptblock[] = [];
-    // Track scriptblocks
-    const blocks: Record<string, RawBlock[]> = {};
-    while (true) {
-        const logs = getEventlogs(log_path, offset, limit);
-        if (logs instanceof WindowsError) {
-            return new WindowsError(
-                "SCRIPTBLOCK",
-                `failed to parse eventlog ${path}: ${logs}`,
-            );
-        }
 
-        // If empty we are done. No more entries are in the log
-        if (logs[ 1 ].length === 0) {
-            break;
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
+            continue;
         }
+        let offset = 0;
+        const limit = 500;
+        const eid = 4104;
 
-        // Increase to next chunk of entries
-        offset += limit;
-        const data = logs[ 1 ] as unknown as RawBlock[];
-        for (const entry of data) {
-            if (entry.data.Event.System.EventID !== eid) {
-                continue;
+        // Track scriptblocks
+        const blocks: Record<string, RawBlock[]> = {};
+        while (true) {
+            const logs = getEventlogs(entry.handle as FileHandle, offset, limit);
+            if (logs instanceof WindowsError) {
+                return new WindowsError(
+                    "SCRIPTBLOCK",
+                    `failed to parse eventlog ${path}: ${logs}`,
+                );
             }
 
-            if (entry.data.Event.EventData.MessageTotal === 1) {
-                const record: Scriptblock = {
-                    total_parts: entry.data.Event.EventData.MessageTotal,
-                    message: entry.data.Event.EventData.ScriptBlockText,
-                    datetime: entry.timestamp,
-                    timestamp_desc: "EventLog Entry Created",
-                    data_type: "windows:eventlogs:powershell:scriptblock:entry",
-                    id: entry.data.Event.EventData.ScriptBlockId,
-                    path: entry.data.Event.EventData.Path,
-                    script_length: entry.data.Event.EventData.ScriptBlockText.length,
-                    has_signature_block: entry.data.Event.EventData.ScriptBlockText.includes("# SIG # End signature block"),
-                    has_copyright_string: entry.data.Event.EventData.ScriptBlockText.includes("# Copyright "),
-                    hostname: entry.data.Event.System.Computer,
-                    version: entry.data.Event.System.Version,
-                    activity_id: entry.data.Event.System.Correlation[ "#attributes" ].ActivityID,
-                    channel: entry.data.Event.System.Channel,
-                    user_id: entry.data.Event.System.Security[ "#attributes" ].UserID,
-                    process_id: entry.data.Event.System.Execution[ "#attributes" ].ProcessID,
-                    threat_id: entry.data.Event.System.Execution[ "#attributes" ].ThreadID,
-                    system_time: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
-                    created_time: entry.timestamp,
-                    artifact: "Windows PowerShell Scriptblock",
-                    evidence: log_path,
-                };
-                entries.push(record);
-                continue;
+            // If empty we are done. No more entries are in the log
+            if (logs[1].length === 0) {
+                break;
             }
 
-            if (blocks[ entry.data.Event.EventData.ScriptBlockId ] !== undefined) {
-                blocks[ entry.data.Event.EventData.ScriptBlockId ].push(entry);
-                continue;
+            // Increase to next chunk of entries
+            offset += limit;
+            const data = logs[1] as unknown as RawBlock[];
+            for (const event of data) {
+                if (event.data.Event.System.EventID !== eid) {
+                    continue;
+                }
+
+                if (event.data.Event.EventData.MessageTotal === 1) {
+                    const record: Scriptblock = {
+                        total_parts: event.data.Event.EventData.MessageTotal,
+                        message: event.data.Event.EventData.ScriptBlockText,
+                        datetime: event.timestamp,
+                        timestamp_desc: "EventLog Entry Created",
+                        data_type: "windows:eventlogs:powershell:scriptblock:entry",
+                        id: event.data.Event.EventData.ScriptBlockId,
+                        path: event.data.Event.EventData.Path,
+                        script_length: event.data.Event.EventData.ScriptBlockText.length,
+                        has_signature_block: event.data.Event.EventData.ScriptBlockText.includes("# SIG # End signature block"),
+                        has_copyright_string: event.data.Event.EventData.ScriptBlockText.includes("# Copyright "),
+                        hostname: event.data.Event.System.Computer,
+                        version: event.data.Event.System.Version,
+                        activity_id: event.data.Event.System.Correlation["#attributes"].ActivityID,
+                        channel: event.data.Event.System.Channel,
+                        user_id: event.data.Event.System.Security["#attributes"].UserID,
+                        process_id: event.data.Event.System.Execution["#attributes"].ProcessID,
+                        threat_id: event.data.Event.System.Execution["#attributes"].ThreadID,
+                        system_time: event.data.Event.System.TimeCreated["#attributes"].SystemTime,
+                        created_time: event.timestamp,
+                        artifact: "Windows PowerShell Scriptblock",
+                        evidence: entry.meta.display_path,
+                    };
+                    entries.push(record);
+                    continue;
+                }
+
+                if (blocks[event.data.Event.EventData.ScriptBlockId] !== undefined) {
+                    blocks[event.data.Event.EventData.ScriptBlockId].push(event);
+                    continue;
+                }
+                blocks[event.data.Event.EventData.ScriptBlockId] = [event];
             }
-            blocks[ entry.data.Event.EventData.ScriptBlockId ] = [ entry ];
         }
+        entries = entries.concat(constructBlocks(blocks, entry.meta.display_path));
     }
 
-    entries = entries.concat(constructBlocks(blocks, log_path));
+
+
 
     return entries;
 }
@@ -98,11 +115,11 @@ function constructBlocks(data: Record<string, RawBlock[]>, evidence: string): Sc
     const results: Scriptblock[] = [];
 
     for (const entry in data) {
-        if (data[ entry ] === undefined) {
+        if (data[entry] === undefined) {
             continue;
         }
         // Sort our blocks by block number. We do this to make sure we reassemble in correct order
-        data[ entry ].sort((x, y) => x.data.Event.EventData.MessageNumber - y.data.Event.EventData.MessageNumber);
+        data[entry].sort((x, y) => x.data.Event.EventData.MessageNumber - y.data.Event.EventData.MessageNumber);
         const value: Scriptblock = {
             total_parts: 0,
             message: "",
@@ -127,7 +144,7 @@ function constructBlocks(data: Record<string, RawBlock[]>, evidence: string): Sc
             data_type: "windows:eventlogs:powershell:scriptblock:entry"
         };
         let message = "";
-        for (const script of data[ entry ]) {
+        for (const script of data[entry]) {
             // Only need this info once
             if (message.length === 0) {
                 value.total_parts = script.data.Event.EventData.MessageTotal;
@@ -136,12 +153,12 @@ function constructBlocks(data: Record<string, RawBlock[]>, evidence: string): Sc
                 value.path = script.data.Event.EventData.Path;
                 value.hostname = script.data.Event.System.Computer;
                 value.version = script.data.Event.System.Version;
-                value.activity_id = script.data.Event.System.Correlation[ "#attributes" ].ActivityID;
+                value.activity_id = script.data.Event.System.Correlation["#attributes"].ActivityID;
                 value.channel = script.data.Event.System.Channel;
-                value.user_id = script.data.Event.System.Security[ "#attributes" ].UserID;
-                value.process_id = script.data.Event.System.Execution[ "#attributes" ].ProcessID;
-                value.threat_id = script.data.Event.System.Execution[ "#attributes" ].ThreadID;
-                value.system_time = script.data.Event.System.TimeCreated[ "#attributes" ].SystemTime;
+                value.user_id = script.data.Event.System.Security["#attributes"].UserID;
+                value.process_id = script.data.Event.System.Execution["#attributes"].ProcessID;
+                value.threat_id = script.data.Event.System.Execution["#attributes"].ThreadID;
+                value.system_time = script.data.Event.System.TimeCreated["#attributes"].SystemTime;
                 value.created_time = script.timestamp;
             }
             message = message.concat(script.data.Event.EventData.ScriptBlockText);
