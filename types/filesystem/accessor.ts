@@ -18,14 +18,14 @@ export enum AccessorProtocol {
     Ntfs,
     /**
      * Read a file inside a zip file. The path to
-     * the zip file must absolute path (no **relative** paths!)
+     * the zip file must be an absolute path (no **relative** paths!)
      * 
      * Example: `zip:/home/user/Downloads/file.zip!/test/file.txt`
      */
     Zip,
     /**
      * Read a raw disk image. The path to
-     * the zip file must absolute path (no **relative** paths!)
+     * the raw disk must be an absolute path (no **relative** paths!)
      * 
      * Example: `raw:/home/user/Downloads/file.raw!/test/file.txt`
      */
@@ -165,4 +165,22 @@ export interface Timestamp {
 export interface GlobMatch {
     handle: FileHandle | DirHandle;
     meta: EntryMeta;
+}
+
+export interface SourceHandle {
+    id: SourceId;
+}
+
+export interface SourceId {
+    Host: string | undefined;
+    Ntfs: string | undefined;
+    Zip: string | undefined;
+    Disk: {
+        format: DiskFormat;
+        path: string;
+    } | undefined;
+}
+
+export enum AccessorReader {
+    Reader
 }

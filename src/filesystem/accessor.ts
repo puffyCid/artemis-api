@@ -1,5 +1,6 @@
-import { AccessorProtocol, DirEntry, DirHandle, EntryMeta, FileHandle, GlobMatch } from "../../types/filesystem/accessor";
+import { AccessorProtocol, AccessorReader, DirEntry, DirHandle, EntryMeta, FileHandle, GlobMatch, SourceHandle } from "../../types/filesystem/accessor";
 import { FileError } from "./errors";
+import { Reader } from "./reader";
 
 /**
  * Class that exposes the artemis `Accessor`
@@ -21,8 +22,8 @@ export class Accessor {
      * @param protocol `AccessorProtocol` to use when reading the file. Default is `AccessorProtocol.Host`
      * @returns File content bytes or `FileError`
      */
-    public read_file(path: string, protocol = AccessorProtocol.Host): Uint8Array | FileError {
-        const target = this.set_target(path, protocol);
+    public readFile(path: string, protocol = AccessorProtocol.Host): Uint8Array | FileError {
+        const target = this.setTarget(path, protocol);
 
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -43,7 +44,7 @@ export class Accessor {
      * @param handle `FileHandle` to read
      * @returns File content bytes or `FileError`
      */
-    public read_file_handle(handle: FileHandle): Uint8Array | FileError {
+    public readFileHandle(handle: FileHandle): Uint8Array | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
             const results = this.accessor.read_file_handle(handle.File);
@@ -59,8 +60,8 @@ export class Accessor {
      * @param protocol `AccessorProtocol` to use when reading the file. Default is `AccessorProtocol.Host`
      * @returns Array of `DirEntry` or `FileError`
      */
-    public read_dir(path: string, protocol = AccessorProtocol.Host): DirEntry[] | FileError {
-        const target = this.set_target(path, protocol);
+    public readDir(path: string, protocol = AccessorProtocol.Host): DirEntry[] | FileError {
+        const target = this.setTarget(path, protocol);
 
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -81,7 +82,7 @@ export class Accessor {
      * @param handle `DirHandle` to read
      * @returns Array of `DirEntry` or `FileError`
      */
-    public read_dir_handle(handle: DirHandle): DirEntry[] | FileError {
+    public readDirHandle(handle: DirHandle): DirEntry[] | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
             const results = this.accessor.read_dir_handle(handle.Directory);
@@ -98,7 +99,7 @@ export class Accessor {
      * @returns `EntryMeta` value or `FileError`
      */
     public stat(path: string, protocol = AccessorProtocol.Host): EntryMeta | FileError {
-        const target = this.set_target(path, protocol);
+        const target = this.setTarget(path, protocol);
 
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -119,7 +120,7 @@ export class Accessor {
      * @param handle `FileHandle` to read
      * @returns `EntryMeta` value or `FileError`
      */
-    public stat_handle(handle: FileHandle): EntryMeta | FileError {
+    public statHandle(handle: FileHandle): EntryMeta | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
             const results = this.accessor.stat_handle(handle.File);
@@ -139,7 +140,7 @@ export class Accessor {
      * @param handle `DirHandle` to stat
      * @returns `EntryMeta` value or `FileError`
      */
-    public stat_dir_handle(handle: DirHandle): Uint8Array | FileError {
+    public statDirHandle(handle: DirHandle): Uint8Array | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
             const results = this.accessor.stat_dir_handle(handle.Directory);
@@ -156,7 +157,7 @@ export class Accessor {
      * @returns Array of `GlobMatch` or `FileError`
      */
     public globfs(path: string, protocol = AccessorProtocol.Host): GlobMatch[] | FileError {
-        const target = this.set_target(path, protocol);
+        const target = this.setTarget(path, protocol);
 
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -167,8 +168,14 @@ export class Accessor {
         }
     }
 
-    public open_reader(path: string, protocol = AccessorProtocol.Host) {
-        const target = this.set_target(path, protocol);
+    /**
+     * Open a file for reading. You can stream a file with this function
+     * @param path Path to file to return a initialized `Reader` for
+     * @param protocol `AccessorProtocol` to use use for the `Reader`
+     * @returns `Reader` or `FileError`
+     */
+    public openReader(path: string, protocol = AccessorProtocol.Host): AccessorReader | FileError {
+        const target = this.setTarget(path, protocol);
 
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -179,7 +186,161 @@ export class Accessor {
         }
     }
 
-    private set_target(path: string, protocol: AccessorProtocol): string {
+    /**
+     * Open a `FileHandle` for reading. You can stream a file with this function
+     * @param handle `FileHandle` to read
+     * @returns `Reader` or `FileError`
+     */
+    public openReaderHandle(handle: FileHandle): Reader | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.open_reader_handle(handle.File);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not open reader for handle '${JSON.stringify(handle.File)}': ${err}`);
+        }
+    }
+
+    /**
+     * Open a source based on the `AccessorProtocol`.
+     * 
+     * This can be used to open a source for multiple actions.
+     * 
+     * For example, opening a NTFS live volume, globbing for files, and then reading them
+     * @param path Path to accessor source
+     * @param protocol `AccessorProtocol` to use for the source
+     * @returns `SourceHandle` or `FileError`
+     */
+    public openSource(path: string, protocol = AccessorProtocol.Host): SourceHandle | FileError {
+        const target = this.setTarget(path, protocol);
+
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.open_source(target);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not open source for path ${target}: ${err}`);
+        }
+    }
+
+    /**
+     * Read a file from an open source
+     * @param source `SourceHandle` object
+     * @param path Path to file to read
+     * @returns `Uint8Array` or `FileError`
+     */
+    public sourceReadFile(source: SourceHandle, path: string): Uint8Array | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_read_file(source, path);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not read file ${path} with source handle: ${err}`);
+        }
+    }
+
+    public sourceReadFileHandle(source: SourceHandle, handle: FileHandle): Uint8Array | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_read_file_handle(source, handle.File);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not read FIleHandle ${JSON.stringify(handle.File)} with source handle: ${err}`);
+        }
+    }
+
+    public sourceReadDir(source: SourceHandle, path: string): DirEntry[] | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_read_dir(source, path);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not read directory ${path} with source handle: ${err}`);
+        }
+    }
+
+    public sourceReadDirHandle(source: SourceHandle, handle: DirHandle): DirEntry[] | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_read_dir_handle(source, handle.Directory);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not read DirHandle ${JSON.stringify(handle.Directory)} with source handle: ${err}`);
+        }
+    }
+
+    public sourceStat(source: SourceHandle, path: string): EntryMeta | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_stat(source, path);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not stat ${path} with source handle: ${err}`);
+        }
+    }
+
+    public sourceStatHandle(source: SourceHandle, handle: FileHandle): EntryMeta | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_stat_handle(source, handle.File);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not stat FIleHandle ${JSON.stringify(handle.File)} with source handle: ${err}`);
+        }
+    }
+
+    public sourceStatDirHandle(source: SourceHandle, handle: DirHandle): EntryMeta | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_stat_dir_handle(source, handle.Directory);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not stat DirHandle ${JSON.stringify(handle.Directory)} with source handle: ${err}`);
+        }
+    }
+
+    public sourceGlobfs(source: SourceHandle, path: string): GlobMatch[] | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_globfs(source, path);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not glob ${path} with source handle: ${err}`);
+        }
+    }
+
+    /**
+    * Open a file for reading. You can stream a file with this function
+    * @param path Path to file to return a initialized `Reader` for
+    * @param protocol `AccessorProtocol` to use use for the `Reader`
+    * @returns `Reader` or `FileError`
+    */
+    public sourceOpenReader(source: SourceHandle, path: string): Reader | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_open_reader(source, path);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not open reader for path ${path} with source handle: ${err}`);
+        }
+    }
+
+    /**
+     * Open a `FileHandle` for reading. You can stream a file with this function
+     * @param handle `FileHandle` to read
+     * @returns `Reader` or `FileError`
+     */
+    public sourceOpenReaderHandle(source: SourceHandle, handle: FileHandle): AccessorReader | FileError {
+        try {
+            // @ts-expect-error: Custom Artemis class function
+            const results = this.accessor.source_open_reader_handle(source, handle.File);
+            return results;
+        } catch (err) {
+            return new FileError(`ACCESSOR`, `could not open reader for handle '${JSON.stringify(handle.File)}' with source handle: ${err}`);
+        }
+    }
+
+    private setTarget(path: string, protocol: AccessorProtocol): string {
         let target = path;
 
         switch (protocol) {
@@ -200,8 +361,4 @@ export class Accessor {
 
         return target;
     }
-}
-
-export class AccessorReader {
-    private reader: unknown;
 }
