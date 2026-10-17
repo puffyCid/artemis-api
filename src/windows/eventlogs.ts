@@ -1,3 +1,4 @@
+import { FileHandle } from "../../types/filesystem/accessor";
 import {
   EventLogMessage,
   EventLogRecord,
@@ -15,7 +16,7 @@ import { WindowsError } from "./errors";
  * @returns A tuple containing an Array of `EventLogMessage` if `include_templates` is `true` or `EventLogRecord` if `include_temp` is `false` or `WindowsError`
  */
 export function getEventlogs(
-  path: string,
+  handle: FileHandle,
   offset: number,
   limit: number,
   include_templates = false,
@@ -34,7 +35,7 @@ export function getEventlogs(
   try {
     // @ts-expect-error: Custom Artemis function
     const results = js_eventlogs(
-      path,
+      handle.File,
       offset,
       limit,
       include_templates,
@@ -49,7 +50,7 @@ export function getEventlogs(
   } catch (err) {
     return new WindowsError(
       "EVENTLOG",
-      `failed to parse eventlog ${path}: ${err}`,
+      `failed to parse eventlog ${JSON.stringify(handle.File)}: ${err}`,
     );
   }
 }

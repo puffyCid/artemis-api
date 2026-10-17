@@ -1,121 +1,144 @@
+import { Accessor } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Registry } from "../../../types/windows/registry";
 import { ChannelType, RegistryEventlogProviders } from "../../../types/windows/registry/eventlog_providers";
+import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { WindowsError } from "../errors";
 import { getRegistry } from "../registry";
 
 /**
  * Function to list registered Windows EventLog providers
- * @param alt_path Optional alternative path to the Windows Registry file
+ * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` The default is `AccesssorProtocol.Ntfs`.
+ * @param alt_path Optional alternative path to the Windows Registry files
  * @returns Array of `RegistryEventlogProviders`
  */
-export function getEventlogProviders(alt_path?: string): RegistryEventlogProviders[] {
-    let default_paths = ["ntfs:C:\\Windows\\System32\\config\\SYSTEM", "ntfs:C:\\Windows\\System32\\config\\SOFTWARE"];
+export function getEventlogProviders(protocol = AccessorProtocol.Ntfs, alt_path?: [string, string]): RegistryEventlogProviders[] | WindowsError {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
+
+    let paths = [`${drive}\\Windows\\System32\\config\\SOFTWARE`, `${drive}\\Windows\\System32\\config\\SYSTEM`];
     if (alt_path !== undefined) {
-        default_paths = [alt_path];
+        paths = alt_path;
     }
 
     const providers: RegistryEventlogProviders[] = [];
-    const pub: Record<string, Publisher> = {};
-    for (const entry of default_paths) {
-        if (entry.endsWith("SYSTEM")) {
-            const system_filter = ".*ControlSet.*\\\\Services\\\\EventLog\\\\.*";
-            const results = getRegistry(entry, system_filter);
-            if (results instanceof WindowsError) {
-                continue;
-            }
-            for (const value of results) {
-                if (value.values.length === 0) {
-                    continue;
-                }
-                const info = extractProviderInfo(value);
-                if (info.message_file === "" && info.parameter_file === "" && info.guid === "") {
-                    continue;
-                }
-                providers.push(info);
-            }
-        } else if (entry.endsWith("SOFTWARE")) {
-            const system_filter = ".*CurrentVersion.*\\\\WINEVT\\\\Channels|Publishers\\\\.*";
-            const results = getRegistry(entry, system_filter);
-            if (results instanceof WindowsError) {
-                continue;
-            }
-            for (const value of results) {
-                if (value.values.length === 0) {
-                    continue;
-                }
-                const info = extractPublisherInfo(value);
-                if (info.guid === "") {
-                    continue;
-                }
-                const pub_value = pub[info.guid];
-                if (pub_value !== undefined) {
-                    pub_value.names = pub_value.names.concat(info.names);
-                    pub_value.channel_types = pub_value.channel_types.concat(info.channel_types);
-                    if (pub_value.message_file === "") {
-                        pub_value.message_file = info.message_file;
-                    } else if (pub_value.parameter_file === "") {
-                        pub_value.parameter_file = info.parameter_file;
-                    }
-                    if(info.enabled) {
-                        pub_value.enabled = info.enabled;
-                    }
-                    continue;
-                }
 
-                pub[info.guid] = info;
-            }
-        }
-    }
-
-    for (let i = 0; i < providers.length; i++) {
-        const entry = providers[i];
-        if (entry === undefined) {
+    for (const path of paths) {
+        // Based on the `AccessorProtocol` glob for SYSTEM and SOFTWARE files
+        const matches = accessor.globfs(path, protocol);
+        if (matches instanceof FileError) {
             continue;
         }
-        if (entry.guid === "") {
-            const value = pub[entry.name.toLowerCase()];
-            if (value === undefined) {
+
+
+        for (const entry of matches) {
+            if (entry.meta.kind !== EntryKind.File) {
                 continue;
             }
-            entry.guid = value.guid;
-            entry.enabled = value.enabled;
-            entry.channel_types = value.channel_types;
-            entry.channel_names = value.names;
-        } else {
-            const value = pub[entry.guid.toLowerCase()];
-            if (value === undefined) {
-                continue;
+
+            const pub: Record<string, Publisher> = {};
+            if (entry.meta.filename === "SYSTEM") {
+                const system_filter = ".*ControlSet.*\\\\Services\\\\EventLog\\\\.*";
+                const results = getRegistry(entry.handle as FileHandle, system_filter);
+                if (results instanceof WindowsError) {
+                    continue;
+                }
+                for (const value of results) {
+                    if (value.values.length === 0) {
+                        continue;
+                    }
+                    const info = extractProviderInfo(value);
+                    if (info.message_file === "" && info.parameter_file === "" && info.guid === "") {
+                        continue;
+                    }
+                    providers.push(info);
+                }
+            } else if (entry.meta.filename === "SOFTWARE") {
+                const system_filter = ".*CurrentVersion.*\\\\WINEVT\\\\Channels|Publishers\\\\.*";
+                const results = getRegistry(entry.handle as FileHandle, system_filter);
+                if (results instanceof WindowsError) {
+                    continue;
+                }
+                for (const value of results) {
+                    if (value.values.length === 0) {
+                        continue;
+                    }
+                    const info = extractPublisherInfo(value);
+                    if (info.guid === "") {
+                        continue;
+                    }
+                    const pub_value = pub[info.guid];
+                    if (pub_value !== undefined) {
+                        pub_value.names = pub_value.names.concat(info.names);
+                        pub_value.channel_types = pub_value.channel_types.concat(info.channel_types);
+                        if (pub_value.message_file === "") {
+                            pub_value.message_file = info.message_file;
+                        } else if (pub_value.parameter_file === "") {
+                            pub_value.parameter_file = info.parameter_file;
+                        }
+                        if (info.enabled) {
+                            pub_value.enabled = info.enabled;
+                        }
+                        continue;
+                    }
+
+                    pub[info.guid] = info;
+                }
             }
-            entry.guid = value.guid;
-            entry.enabled = value.enabled;
-            entry.channel_types = value.channel_types;
-            entry.channel_names = value.names;
+
+
+            for (let i = 0; i < providers.length; i++) {
+                const entry = providers[i];
+                if (entry === undefined) {
+                    continue;
+                }
+                if (entry.guid === "") {
+                    const value = pub[entry.name.toLowerCase()];
+                    if (value === undefined) {
+                        continue;
+                    }
+                    entry.guid = value.guid;
+                    entry.enabled = value.enabled;
+                    entry.channel_types = value.channel_types;
+                    entry.channel_names = value.names;
+                } else {
+                    const value = pub[entry.guid.toLowerCase()];
+                    if (value === undefined) {
+                        continue;
+                    }
+                    entry.guid = value.guid;
+                    entry.enabled = value.enabled;
+                    entry.channel_types = value.channel_types;
+                    entry.channel_names = value.names;
+                }
+            }
+
+            Object.keys(pub).forEach(key => {
+                const value = pub[key];
+                if (value !== undefined && (value.message_file !== "" || value.parameter_file !== "")) {
+                    const prov_value: RegistryEventlogProviders = {
+                        evidence: entry.meta.display_path,
+                        key_path: value.key_path.split("/").at(0) ?? "",
+                        name: value.names.at(0) ?? "Unknown",
+                        channel_names: value.names,
+                        message_file: value.message_file,
+                        last_modified: value.last_modified,
+                        parameter_file: value.parameter_file,
+                        guid: value.guid,
+                        enabled: value.enabled,
+                        channel_types: value.channel_types,
+                        message: `EventLog Provider: ${value.names.at(0) ?? "Unknown"}`,
+                        datetime: value.last_modified,
+                        timestamp_desc: "Registry Last Modified",
+                        artifact: "Windows EventLog Provider",
+                        data_type: "windows:registry:eventlogprovider:entry"
+                    };
+                    providers.push(prov_value);
+                }
+            })
         }
     }
-
-    Object.keys(pub).forEach(key => {
-        const value = pub[key];
-        if (value !== undefined && (value.message_file !== "" || value.parameter_file !== "")) {
-            const prov_value: RegistryEventlogProviders = {
-                evidence: value.evidence,
-                key_path: value.key_path.split("/").at(0) ?? "",
-                name: value.names.at(0) ?? "Unknown",
-                channel_names: value.names,
-                message_file: value.message_file,
-                last_modified: value.last_modified,
-                parameter_file: value.parameter_file,
-                guid: value.guid,
-                enabled: value.enabled,
-                channel_types: value.channel_types,
-                message: `EventLog Provider: ${value.names.at(0) ?? "Unknown"}`,
-                datetime: value.last_modified,
-                timestamp_desc: "Registry Last Modified",
-                artifact: "Windows EventLog Provider",
-                data_type: "windows:registry:eventlogprovider:entry"
-            };
-            providers.push(prov_value);
-        }
-    })
 
     return providers;
 }

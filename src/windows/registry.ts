@@ -1,23 +1,24 @@
+import { FileHandle } from "../../types/filesystem/accessor";
 import { Registry, SecurityKey } from "../../types/windows/registry";
 import { WindowsError } from "./errors";
 
 /**
  * Function to parse a `Registry` file
- * @param path Full path to a `Registry` file
+ * @param handle `FileHandle` pointing to a `Registry` file
  * @param [regex=""] Optional Rust compatible regular expression to filter Registry Key paths. All regex comparisons are done in lowercase. Registry values are not filtered
  * @param [start_path=""] Optional Registry Key path to start
  * @returns `Registry` array or `WindowsError`
  */
-export function getRegistry(path: string, regex = "", start_path = ""): Registry[] | WindowsError {
+export function getRegistry(handle: FileHandle, regex = "", start_path = ""): Registry[] | WindowsError {
   try {
     // @ts-expect-error: Custom Artemis function
-    const data = js_registry(path, regex.toLowerCase(), start_path);
+    const data = js_registry(handle.File, regex.toLowerCase(), start_path);
 
     return data;
   } catch (err) {
     return new WindowsError(
       "REGISTRY",
-      `failed to parse registry file ${path}: ${err}`,
+      `failed to parse registry file ${JSON.stringify(handle.File)}: ${err}`,
     );
   }
 }

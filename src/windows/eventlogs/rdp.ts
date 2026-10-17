@@ -1,30 +1,50 @@
+import { Accessor } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Raw21Logons, Raw23Logoff, Raw25Reconnect, Raw24Disconnect, Raw41SessionStart, Raw42SessionEnd, RdpActivity } from "../../../types/windows/eventlogs/rdp";
-import { getEnvValue } from "../../environment/mod";
+import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { WindowsError } from "../errors";
 import { getEventlogs } from "../eventlogs";
 
 /**
  * Function to parse RDP logons
- * @param alt_file Optional alternative path to `Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx`
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to `Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx`
  * @returns Array of `RdpActivity` or `WindowsError`
  */
-export function rdpLogons(alt_file?: string): RdpActivity[] | WindowsError {
-    let path = alt_file;
-    // If no evtx file provided. Then try to find it on local system
-    if (path === undefined) {
-        let drive = getEnvValue("SystemDrive");
-        if (drive === "") {
-            drive = "C:";
+export function rdpLogons(protocol = AccessorProtocol.Host, alt_path?: string): RdpActivity[] | WindowsError {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
+
+    let path = `${drive}\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx`;
+    if (alt_path !== undefined) {
+        path = alt_path;
+    }
+
+    // Based on the `AccessorProtocol` glob for Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx files
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new WindowsError('RDPLOGONS', `failed to glob for ${path}: ${matches}`);
+    }
+
+    let rdp: RdpActivity[] = [];
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
+            continue;
         }
-        path = `${drive}\\Windows\\System32\\winevt\\Logs\\Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx`;
+
+        const logs = rdpLogs(entry.handle as FileHandle);
+        if (logs instanceof WindowsError) {
+            console.error(logs);
+            continue;
+        }
+
+        rdp = rdp.concat(extractRdp(logs, entry.meta.display_path));
     }
 
-    const logs = rdpLogs(path);
-    if (logs instanceof WindowsError) {
-        return new WindowsError(`RDPLOGONS`, `failed to parse RDP eventlogs: ${logs}`);
-    }
 
-    return extractRdp(logs, path);
+
+    return rdp;
 }
 
 interface RdpEvents {
@@ -38,10 +58,10 @@ interface RdpEvents {
 
 /**
  * Parse the EventLog and extract specific RDP log entries
- * @param path Path to the `Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx` file
+ * @param handle A file `FileHandle that points to `Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx` file
  * @returns Parsed `RdpEvents` or `WindowsError`
  */
-function rdpLogs(path: string): RdpEvents | WindowsError {
+function rdpLogs(handle: FileHandle): RdpEvents | WindowsError {
     const rdp_events: RdpEvents = {
         logons: [],
         reconnects: [],
@@ -55,7 +75,7 @@ function rdpLogs(path: string): RdpEvents | WindowsError {
     const limit = 500;
     while (true) {
         // We do not need the EventLog provider strings. The raw RDP logs will be sufficient
-        const events = getEventlogs(path, offset, limit);
+        const events = getEventlogs(handle, offset, limit);
         if (events instanceof WindowsError) {
             return events;
         }
@@ -63,7 +83,7 @@ function rdpLogs(path: string): RdpEvents | WindowsError {
 
         // `getEventlogs` returns a tuple. The second value contains our raw eventlog data
         // First value is empty because we did not enable provider strings
-        const records = events[ 1 ];
+        const records = events[1];
         if (records.length === 0) {
             break;
         }
@@ -184,9 +204,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: data.Address,
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
             message: `RDP Logon by ${data.User} from ${data.Address}`,
-            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Logon",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -204,9 +224,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: "None",
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
             message: `RDP Logoff by ${data.User}`,
-            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Logoff",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -224,9 +244,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: data.Address,
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
             message: `RDP Disconnect by ${data.User} from ${data.Address}`,
-            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Disconnect",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -244,9 +264,9 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
             account: data.User.split("\\").at(1) ?? "Unknown",
             source_ip: data.Address,
             hostname: entry.data.Event.System.Computer,
-            activity_id: entry.data.Event.System.Correlation?.[ "#attributes" ].ActivityID ?? "None",
+            activity_id: entry.data.Event.System.Correlation?.["#attributes"].ActivityID ?? "None",
             message: `RDP Reconnect by ${data.User} from ${data.Address}`,
-            datetime: entry.data.Event.System.TimeCreated[ "#attributes" ].SystemTime,
+            datetime: entry.data.Event.System.TimeCreated["#attributes"].SystemTime,
             timestamp_desc: "RDP Reconnect",
             artifact: "RDP EventLog",
             data_type: "windows:eventlogs:rdp:entry",
@@ -266,7 +286,7 @@ function extractRdp(events: RdpEvents, evidence: string): RdpActivity[] {
  */
 export function testRdpLogons(): void {
     const test = "../../tests/test_data/windows/eventlogs/Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx";
-    const results = rdpLogons(test);
+    const results = rdpLogons(AccessorProtocol.Host, test);
     if (results instanceof WindowsError) {
         throw results;
     }
@@ -274,12 +294,12 @@ export function testRdpLogons(): void {
     if (results.length != 59) {
         throw `Got ${results.length} RDP events, expected 59.......rdpLogons ❌`;
     }
-    if (results[ 1 ] === undefined) {
+    if (results[1] === undefined) {
         throw `Got undefined RDP event.......rdpLogons ❌`;
     }
 
-    if (results[ 1 ].datetime != "2025-07-10T00:36:56.762711Z") {
-        throw `Got ${results[ 1 ].datetime} for logon time, expected "2025-07-10T00:36:56.762711Z".......rdpLogons ❌`;
+    if (results[1].datetime != "2025-07-10T00:36:56.762711Z") {
+        throw `Got ${results[1].datetime} for logon time, expected "2025-07-10T00:36:56.762711Z".......rdpLogons ❌`;
     }
 
     console.info(`  Function rdpLogons ✅`);
@@ -313,7 +333,7 @@ export function testRdpLogons(): void {
     console.info(`  Function isReconnect ✅`);
 
     const mock = extractRdp({
-        logons: [ {
+        logons: [{
             event_record_id: 0,
             timestamp: "",
             data: {
@@ -357,7 +377,7 @@ export function testRdpLogons(): void {
                     }
                 }
             }
-        } ],
+        }],
         reconnects: [],
         disconnect: [],
         logoffs: [],

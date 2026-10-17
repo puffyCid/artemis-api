@@ -36,6 +36,7 @@ export type ErrorName =
   | "OUTLOOK"
   | "WORDWHEEL"
   | "BAM"
+  | "PROVIDERS"
   | "SCRIPTBLOCK"
   | "FIREWALL_RULES"
   | "EVENTLOG_PROCESSTREE"

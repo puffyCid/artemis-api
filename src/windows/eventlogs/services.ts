@@ -1,69 +1,89 @@
+import { Accessor } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import {
   RawService7045,
   ServiceInstalls,
 } from "../../../types/windows/eventlogs/services";
+import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { WindowsError } from "../errors";
 import { getEventlogs } from "../eventlogs";
 
 /**
  * Function to extract Service install events from EventLog
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Optional alternative path to System.evtx. Default is path `C:\Windows\System32\winevt\Logs\System.evtx`
  * @returns Array of `ServiceInstalls` or `WindowsError`
  */
-export function serviceInstalls(
-  alt_path?: string,
-): ServiceInstalls[] | WindowsError {
-  let path = "C:\\Windows\\System32\\winevt\\Logs\\System.evtx";
+export function serviceInstalls(protocol = AccessorProtocol.Host, alt_path?: string): ServiceInstalls[] | WindowsError {
+  const accessor = new Accessor();
+  const drive = getSystemDrive();
+
+  let path = `${drive}\\Windows\\System32\\winevt\\Logs\\System.evtx`;
   if (alt_path !== undefined) {
-    path = alt_path
+    path = alt_path;
   }
-  let offset = 0;
-  const limit = 10000;
-  const events = [];
 
-  while (true) {
-    // Get records 10000 at a time
-    const logs = getEventlogs(path, offset, limit);
-    if (logs instanceof WindowsError) {
-      return new WindowsError(
-        "SERVICEINSTALL",
-        `failed to parse eventlog ${path}: ${logs}`,
-      );
-    }
-    const recordsData = logs[1];
-    if (recordsData.length === 0) {
-      break;
+  // Based on the `AccessorProtocol` glob for Security.evtx files
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new WindowsError('SERVICEINSTALL', `failed to glob for ${path}: ${matches}`);
+  }
+  const events: ServiceInstalls[] = [];
+
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
     }
 
-    offset += limit;
+    let offset = 0;
+    const limit = 10000;
 
-    const records = recordsData as unknown as RawService7045[];
-    for (const entry of records) {
-      if (!isInstall(entry)) {
-        continue;
+    while (true) {
+      // Get records 10000 at a time
+      const logs = getEventlogs(entry.handle as FileHandle, offset, limit);
+      if (logs instanceof WindowsError) {
+        return new WindowsError(
+          "SERVICEINSTALL",
+          `failed to parse eventlog ${path}: ${logs}`,
+        );
+      }
+      const recordsData = logs[1];
+      if (recordsData.length === 0) {
+        break;
       }
 
-      const service: ServiceInstalls = {
-        name: entry.data.Event.EventData["ServiceName"],
-        image_path: entry.data.Event.EventData["ImagePath"],
-        service_type: entry.data.Event.EventData["ServiceType"],
-        account: entry.data.Event.EventData["AccountName"],
-        start_type: entry.data.Event.EventData["StartType"],
-        hostname: entry.data.Event.System.Computer,
-        timestamp: entry.timestamp,
-        process_id: entry.data.Event.System.Execution["#attributes"].ProcessID,
-        thread_id: entry.data.Event.System.Execution["#attributes"].ThreadID,
-        sid: entry.data.Event.System.Security["#attributes"].UserID,
-        message: `Service "${entry.data.Event.EventData["ServiceName"]}" installed`,
-        datetime: entry.timestamp,
-        timestamp_desc: "Windows Service Installed",
-        artifact: "EventLog Service 7045",
-        data_type: "windows:eventlog:system:service",
-        evidence: path,
-      };
-      events.push(service);
+      offset += limit;
+
+      const records = recordsData as unknown as RawService7045[];
+      for (const event of records) {
+        if (!isInstall(event)) {
+          continue;
+        }
+
+        const service: ServiceInstalls = {
+          name: event.data.Event.EventData["ServiceName"],
+          image_path: event.data.Event.EventData["ImagePath"],
+          service_type: event.data.Event.EventData["ServiceType"],
+          account: event.data.Event.EventData["AccountName"],
+          start_type: event.data.Event.EventData["StartType"],
+          hostname: event.data.Event.System.Computer,
+          timestamp: event.timestamp,
+          process_id: event.data.Event.System.Execution["#attributes"].ProcessID,
+          thread_id: event.data.Event.System.Execution["#attributes"].ThreadID,
+          sid: event.data.Event.System.Security["#attributes"].UserID,
+          message: `Service "${event.data.Event.EventData["ServiceName"]}" installed`,
+          datetime: event.timestamp,
+          timestamp_desc: "Windows Service Installed",
+          artifact: "EventLog Service 7045",
+          data_type: "windows:eventlog:system:service",
+          evidence: entry.meta.display_path,
+        };
+        events.push(service);
+      }
     }
   }
+
 
   return events;
 }
@@ -100,7 +120,7 @@ function isInstall(record: RawService7045): record is RawService7045 {
  */
 export function testServiceInstalls(): void {
   const test = "../../tests/test_data/windows/eventlogs/System.evtx";
-  const results = serviceInstalls(test);
+  const results = serviceInstalls(AccessorProtocol.Host, test);
   if (results instanceof WindowsError) {
     throw results;
   }
