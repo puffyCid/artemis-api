@@ -239,6 +239,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Read a file from an open source by `FileHandle`
+     * @param source `SourceHandle` object
+     * @param handle `FileHandle` object
+     * @returns `Uint8Array` or `FileError`
+     */
     public sourceReadFileHandle(source: SourceHandle, handle: FileHandle): Uint8Array | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -249,6 +255,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Read a directory from an open source
+     * @param source `SourceHandle` object
+     * @param path Path to file to read
+     * @returns Array of `DirEntry` or `FileError`
+     */
     public sourceReadDir(source: SourceHandle, path: string): DirEntry[] | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -259,6 +271,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Read a file from an open source by `DirHandle`
+     * @param source `SourceHandle` object
+     * @param handle `DirHandle` object
+     * @returns Array of `DirEntry` or `FileError`
+     */
     public sourceReadDirHandle(source: SourceHandle, handle: DirHandle): DirEntry[] | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -269,6 +287,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Stat a file from an open source
+     * @param source `SourceHandle` object
+     * @param path Path to file to stat
+     * @returns `EntryMeta` or `FileError`
+     */
     public sourceStat(source: SourceHandle, path: string): EntryMeta | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -279,6 +303,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Stat a file from an open source by `FileHandle`
+     * @param source `SourceHandle` object
+     * @param handle `FileHandle` object
+     * @returns `EntryMeta` or `FileError`
+     */
     public sourceStatHandle(source: SourceHandle, handle: FileHandle): EntryMeta | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -289,6 +319,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Stat a file from an open source by `DirHandle`
+     * @param source `SourceHandle` object
+     * @param handle `DirHandle` object
+     * @returns `EntryMeta` or `FileError`
+     */
     public sourceStatDirHandle(source: SourceHandle, handle: DirHandle): EntryMeta | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -299,6 +335,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Glob files from an open source by path
+     * @param source `SourceHandle` object
+     * @param path Path pattern to glob
+     * @returns Array of `GlobMatch` or `FileError`
+     */
     public sourceGlobfs(source: SourceHandle, path: string): GlobMatch[] | FileError {
         try {
             // @ts-expect-error: Custom Artemis class function
@@ -340,6 +382,12 @@ export class Accessor {
         }
     }
 
+    /**
+     * Craft the full path to target file and select the correct accessor
+     * @param path Path to target
+     * @param protocol `AccessorProtocol` to use to open the target
+     * @returns Path to target file with the correct accessor protocol
+     */
     private setTarget(path: string, protocol: AccessorProtocol): string {
         let target = path;
 
@@ -354,6 +402,14 @@ export class Accessor {
             }
             case AccessorProtocol.Raw: {
                 target = `raw:${target}`;
+                break;
+            }
+            case AccessorProtocol.Qcow: {
+                target = `qcow:${target}`;
+                break;
+            }
+            case AccessorProtocol.Host: {
+                target = `host:${target}`;
                 break;
             }
             default: break;

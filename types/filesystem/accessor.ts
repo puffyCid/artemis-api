@@ -29,7 +29,14 @@ export enum AccessorProtocol {
      * 
      * Example: `raw:/home/user/Downloads/file.raw!/test/file.txt`
      */
-    Raw
+    Raw,
+    /**
+     * Read a QCOW disk image. The path to
+     * the raw disk must be an absolute path (no **relative** paths!)
+     * 
+     * Example: `qcow:/home/user/Downloads/file.qcow!/test/file.txt`
+     */
+    Qcow,
 }
 
 /**
