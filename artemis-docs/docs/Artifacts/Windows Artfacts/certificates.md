@@ -29,11 +29,13 @@ function main() {
     if (catalog instanceof WindowsError) {
         return;
     }
+
     const first_page = client.tableInfo(catalog, "Certificates").table_page;
     const cert_pages = client.getPages(first_page);
     if (cert_pages instanceof WindowsError) {
         return;
     }
+    
     // Depending on size of EDB file you should customize the number of pages you use
     // The larger the pages array the more memory required
     const certs = client.getCertificates(cert_pages, client.tableInfo(catalog, "Certificates"))

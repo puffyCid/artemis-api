@@ -17,6 +17,10 @@ export enum AccessorProtocol {
      */
     Ntfs,
     /**
+     * Read a raw ext4 filesystem
+     */
+    Ext4,
+    /**
      * Read a file inside a zip file. The path to
      * the zip file must be an absolute path (no **relative** paths!)
      * 
@@ -26,6 +30,8 @@ export enum AccessorProtocol {
     /**
      * Read a raw disk image. The path to
      * the raw disk must be an absolute path (no **relative** paths!)
+     * 
+     * Supports both logical and full disk image
      * 
      * Example: `raw:/home/user/Downloads/file.raw!/test/file.txt`
      */
@@ -48,7 +54,7 @@ export interface DirEntry {
      */
     name: string;
     handle: FileHandle | DirHandle;
-    meta: EntryMeta;
+    meta: Meta;
     times: Timestamp;
 }
 
@@ -100,7 +106,7 @@ export enum DiskEntryRef {
     PartitionRoot = "PartitionRoot"
 }
 
-export interface EntryMeta {
+export interface Meta {
     kind: EntryKind;
     size: bigint;
     full_path: string;
@@ -112,6 +118,10 @@ export interface EntryMeta {
     gid: number;
     attributes: Attributes[];
     display_path: string;
+}
+
+export interface EntryMeta {
+    meta: Meta;
 }
 
 export enum EntryKind {
@@ -171,7 +181,7 @@ export interface Timestamp {
 
 export interface GlobMatch {
     handle: FileHandle | DirHandle;
-    meta: EntryMeta;
+    meta: Meta;
 }
 
 export interface SourceHandle {

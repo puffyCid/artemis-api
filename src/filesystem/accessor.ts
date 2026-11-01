@@ -10,7 +10,7 @@ export class Accessor {
     /**
      * Create the `Accessor`
      */
-    constructor () {
+    constructor() {
         // @ts-expect-error: Custom Artemis class
         this.accessor = new JsAccessor();
     }
@@ -157,7 +157,6 @@ export class Accessor {
      */
     public globfs(path: string, protocol = AccessorProtocol.Host): GlobMatch[] | FileError {
         const target = this.setTarget(path, protocol);
-
         try {
             // @ts-expect-error: Custom Artemis class function
             const results = this.accessor.globfs(target);
@@ -395,6 +394,10 @@ export class Accessor {
                 target = `ntfs:${target}`;
                 break;
             }
+            case AccessorProtocol.Ext4: {
+                target = `ext4:${target}`;
+                break;
+            }
             case AccessorProtocol.Zip: {
                 target = `zip:${target}`;
                 break;
@@ -408,7 +411,7 @@ export class Accessor {
                 break;
             }
             case AccessorProtocol.Host: {
-                target = `host:${target}`;
+                // host accessor is the default. We do not need to set it
                 break;
             }
             default: break;

@@ -1,57 +1,54 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Hashes } from "../../../types/filesystem/files";
 import { Registry } from "../../../types/windows/registry";
 import { RegistryRunKey } from "../../../types/windows/registry/run";
 import { getEnvValue, getSystemDrive } from "../../environment/env";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob, hash, stat } from "../../filesystem/files";
+import { hash, stat } from "../../filesystem/files";
 import { WindowsError } from "../errors";
 import { getPe } from "../pe";
 import { getRegistry } from "../registry";
 
+
 /**
  * Function to extract Registry Run key information
- * @param alt_path Optional alternative path to a Registry file
- * @returns Array of `RegistryRunKey`
+ * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` The default is `AccesssorProtocol.Ntfs`.
+ * @param alt_path Alternative path to Registry file
+ * @returns Array of `RegistryRunKey` 
  */
-export function getRunKeys(alt_path?: string): RegistryRunKey[] {
-    let drive = getSystemDrive();
-    if (drive === "") {
-        drive = "C:";
-    }
-    let paths = [`ntfs:${drive}\\Users\\*\\NTUSER.*`, `ntfs:${drive}\\Windows\\System32\\config\\SOFTWARE`];
+export function getRunKeys(protocol = AccessorProtocol.Ntfs, alt_path?: string): RegistryRunKey[] {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
+
+    let paths = [`${drive}\\Windows\\System32\\config\\SOFTWARE`, `${drive}\\Users\\*\\[Nn][Tt][Uu][Ss][Ee][Rr].[Dd][Aa][Tt]`];
     if (alt_path !== undefined) {
         paths = [alt_path];
     }
 
-    const glob_paths: string[] = [];
-    // Try to get all the Registry files that Run keys for persistence
+    let run_values: RegistryRunKey[] = [];
     for (const path of paths) {
-        const results = glob(path);
-        if (results instanceof FileError) {
+        // Based on the `AccessorProtocol` glob for Registry files
+        const matches = accessor.globfs(path, protocol);
+        if (matches instanceof FileError) {
+            console.error(matches);
             continue;
         }
-        for (const entry of results) {
-            if (!entry.is_file) {
+
+        for (const entry of matches) {
+            if (entry.meta.kind !== EntryKind.File) {
                 continue;
             }
-            glob_paths.push(entry.full_path);
-        }
-    }
 
-    let run_values: RegistryRunKey[] = [];
-    // Now parse each Registry file
-    for (const entry of glob_paths) {
-        if (entry.toLowerCase().includes("ntuser") && !entry.toLowerCase().endsWith(".dat")) {
-            continue;
-        }
-        const results = getRegistry(entry, ".*CurrentVersion\\\\Run.*");
-        if (results instanceof WindowsError) {
-            continue;
-        }
+            const results = getRegistry(entry.handle as FileHandle, ".*CurrentVersion\\\\Run.*");
+            if (results instanceof WindowsError) {
+                continue;
+            }
 
-        for (const reg of results) {
-            const values = parseKeys(reg);
-            run_values = run_values.concat(values);
+            for (const reg of results) {
+                const values = parseKeys(reg);
+                run_values = run_values.concat(values);
+            }
         }
     }
 
@@ -206,7 +203,7 @@ function getPeInfo(path: string): boolean {
  */
 export function testGetRunKeys(): void {
     const test = "../../tests/test_data/windows/registry/NTUSER.DAT";
-    const results = getRunKeys(test);
+    const results = getRunKeys(AccessorProtocol.Host, test);
     if (results instanceof WindowsError) {
         throw results;
     }

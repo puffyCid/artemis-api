@@ -1,8 +1,9 @@
+import { AccessorProtocol } from "../../../types/filesystem/accessor";
 import { TableInfo } from "../../../types/windows/ese";
 import { Certificates, RequestAttributes, Requests, RequestType, StatusCode } from "../../../types/windows/ese/certs";
-import { getEnvValue } from "../../environment/mod";
+import { getSystemDrive } from "../../environment/env";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob } from "../../filesystem/files";
 import { WindowsError } from "../errors";
 import { EseDatabase } from "../ese";
 
@@ -14,31 +15,31 @@ import { EseDatabase } from "../ese";
 export class ADCertificates extends EseDatabase {
     /**
      * Construct a `ADCertificates` object. By default it will parse the EDB file on the SystemDrive.
+     * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` to use for accessing the EDB file. Default is `AccessorProtocol.Ntfs`
      * @param alt_path Optional alternative path the CertLog EDB file
      */
-    constructor (alt_path?: string) {
-        let path = "\\Windows\\System32\\CertLog\\*.edb";
+    constructor(protocol = AccessorProtocol.Ntfs, alt_path?: string) {
+        const accessor = new Accessor();
+        const drive = getSystemDrive();
+
+        let path = `${drive}\\Windows\\System32\\CertLog\\*.edb`;
+
         if (alt_path !== undefined) {
             path = alt_path;
-        } else {
-            let drive = getEnvValue("SystemDrive");
-            if (drive === "") {
-                drive = "C:";
-            }
-            path = `ntfs:${drive}${path}`;
-            const paths = glob(path);
-            if (paths instanceof FileError) {
-                console.error(`Could not glob for EDB at ${path}`);
-                return;
-            }
-            if (paths.length < 1 || paths[ 0 ] === undefined) {
-                console.error(`No EDB files found`);
-                return;
-            }
-            path = paths[ 0 ].full_path;
         }
 
-        super(path);
+        const matches = accessor.globfs(path, protocol);
+        if (matches instanceof FileError) {
+            console.error(`Could not glob for EDB at ${path}`);
+            return;
+        }
+        if (matches.length < 1 || matches[0] === undefined) {
+            console.error(`No EDB files found`);
+            return;
+        }
+
+        let edb_file = matches[0].meta.display_path;
+        super(edb_file);
     }
 
     /**
@@ -54,7 +55,7 @@ export class ADCertificates extends EseDatabase {
         }
 
         const certs: Certificates[] = [];
-        const cert_data = rows[ "Certificates" ];
+        const cert_data = rows["Certificates"];
         if (cert_data === undefined) {
             return new WindowsError(`ADCERTIFICATES`, `Could not find "Certificates" table`);
         }
@@ -115,7 +116,7 @@ export class ADCertificates extends EseDatabase {
         }
 
         const reqs: Requests[] = [];
-        const req_data = rows[ "Requests" ];
+        const req_data = rows["Requests"];
         if (req_data === undefined) {
             return new WindowsError(`ADCERTIFICATES`, `Could not find "Requests" table`);
         }
@@ -181,7 +182,7 @@ export class ADCertificates extends EseDatabase {
         }
 
         const reqs: RequestAttributes[] = [];
-        const req_data = rows[ "RequestAttributes" ];
+        const req_data = rows["RequestAttributes"];
         if (req_data === undefined) {
             return new WindowsError(`ADCERTIFICATES`, `Could not find "RequestAttributes" table`);
         }

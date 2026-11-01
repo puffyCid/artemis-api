@@ -1,10 +1,12 @@
-import { getRegistry } from "../../../mod";
+import { Accessor, getRegistry } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Registry } from "../../../types/windows/registry";
 import { UsbDevices } from "../../../types/windows/registry/usb";
 import { EncodingError } from "../../encoding/errors";
 import { decode } from "../../encoding/mod";
 import { extractUtf16String } from "../../encoding/strings";
-import { getEnvValue } from "../../environment/mod";
+import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { NomError } from "../../nom/error";
 import { Endian } from "../../nom/helpers";
 import { nomUnsignedEightBytes } from "../../nom/mod";
@@ -13,34 +15,53 @@ import { WindowsError } from "../errors";
 
 /**
  * Function to parse Windows Registry files to get list of USB devices that have been connected
- * @param alt_file Alternative path to a SYSTEM Registry file
+ * @param alt_path Alternative path to a SYSTEM Registry file
  * @returns Array of `UsbDevices` or `WindowsError`
  */
-export function listUsbDevices(alt_file?: string): UsbDevices[] | WindowsError {
-  if (alt_file !== undefined) {
-    return usbSystem(alt_file);
+export function listUsbDevices(protocol = AccessorProtocol.Ntfs, alt_path?: string): UsbDevices[] | WindowsError {
+  const accessor = new Accessor();
+  const drive = getSystemDrive();
+
+  let path = `${drive}\\Windows\\System32\\config\\SYSTEM`;
+  if (alt_path !== undefined) {
+    path = alt_path;
   }
 
-  const volume = getEnvValue("SystemDrive");
-  if (volume === "") {
-    return new WindowsError(`USB`, `no SystemDrive found`);
+  // Based on the `AccessorProtocol` glob for SYSTEM files
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new WindowsError('USB', `failed to glob for ${path}: ${matches}`);
   }
 
-  const system = `ntfs:${volume}\\Windows\\System32\\config\\SYSTEM`;
-  return usbSystem(system);
+  let usbs: UsbDevices[] = [];
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
+    }
+
+    const results = usbSystem(entry.handle as FileHandle, entry.meta.display_path);
+    if (results instanceof WindowsError) {
+      continue;
+    }
+
+    usbs = usbs.concat(results);
+  }
+
+  return usbs;
 }
 
 /**
  * Function to get USB information from the SYSTEM Registry file
+ * @param handle `FileHandle` object
  * @param path Full path to the SYSTEM Registry file
  * @returns Array of `UsbDevices` or `WindowsError`
  */
-function usbSystem(path: string): UsbDevices[] | WindowsError {
+function usbSystem(handle: FileHandle, path: string): UsbDevices[] | WindowsError {
   const usbstor = "Control\\DeviceMigration\\Devices\\USBSTOR\\";
   const usbstor_legacy = "\\Enum\\USBSTOR\\";
   const mounts = "MountedDevices";
 
-  const reg_data = getRegistry(path);
+  const reg_data = getRegistry(handle);
   if (reg_data instanceof WindowsError) {
     return new WindowsError(`USB`, `failed to parse ${path}: ${reg_data}`);
   }

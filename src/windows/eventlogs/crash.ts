@@ -81,9 +81,6 @@ export function crashEvents(protocol = AccessorProtocol.Host, alt_path?: string,
         }
 
     }
-
-
-
-
+    
     return values;
 } 

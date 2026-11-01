@@ -1,7 +1,10 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { NameType, Wifi, WifiCategory } from "../../../types/windows/registry/wifi";
 import { decode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
-import { getEnvValue } from "../../environment/mod";
+import { getSystemDrive } from "../../environment/env";
+import { Accessor } from "../../filesystem/accessor";
+import { FileError } from "../../filesystem/errors";
 import { NomError } from "../../nom/error";
 import { Endian, nomUnsignedTwoBytes } from "../../nom/helpers";
 import { WindowsError } from "../errors";
@@ -9,113 +12,123 @@ import { getRegistry } from "../registry";
 
 /**
  * Function to list connected Windows WiFi networks
- * @param alt_path Optional alternative path to the `SOFTWARE` Registry file
+ * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` The default is `AccesssorProtocol.Ntfs`.
+ * @param alt_path Alternative path to `SOFTWARE` Registry file
  * @returns Array of `Wifi` entries or `WindowsError`
  */
-export function wifiNetworksWindows(alt_path?: string): Wifi[] | WindowsError {
-    let path = "\\Windows\\System32\\config\\SOFTWARE";
+export function wifiNetworksWindows(protocol = AccessorProtocol.Ntfs, alt_path?: string): Wifi[] | WindowsError {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
+
+    let path = `${drive}\\Windows\\System32\\config\\SOFTWARE`;
     if (alt_path !== undefined) {
         path = alt_path;
-    } else {
-        let drive = getEnvValue("SystemDrive");
-        if (drive === "") {
-            drive = "C:";
-        }
-        path = `ntfs:${drive}${path}`;
     }
 
-    const reg_entries = getRegistry(path, "\\\\currentversion\\\\networklist\\\\profiles\\\\\\{");
-    if (reg_entries instanceof WindowsError) {
-        return new WindowsError(`WIFI`, `could not parse the SOFTWARE Registry file ${reg_entries}`);
+    // Based on the `AccessorProtocol` glob for SOFTWARE files
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new WindowsError('WIFI', `failed to glob for ${path}: ${matches}`);
     }
 
     const networks: Wifi[] = [];
-    for (const entry of reg_entries) {
-        const net: Wifi = {
-            name: "",
-            description: "",
-            managed: false,
-            category: WifiCategory.Unknown,
-            created_local_time: "",
-            name_type: NameType.Unknown,
-            id: entry.name.replace("{", "").replace("}", ""),
-            last_connected_local_time: "",
-            registry_path: entry.path,
-            message: "",
-            datetime: entry.last_modified,
-            timestamp_desc: "Registry Key Modified",
-            artifact: "WiFi Network",
-            data_type: "windows:registry:wifi:entry",
-            evidence: path,
-        };
-
-        for (const value of entry.values) {
-            if (value.value.toLowerCase() === "profilename") {
-                net.name = value.data;
-            } else if (value.value.toLowerCase() === "description") {
-                net.description = value.data;
-                net.message = `WiFi network '${value.data}'`;
-            } else if (value.value.toLowerCase() === "managed") {
-                net.managed = Boolean(Number(value.data));
-            } else if (value.value.toLowerCase() === "category") {
-                switch (value.data) {
-                    case "0": {
-                        net.category = WifiCategory.Public;
-                        break;
-                    }
-                    case "1": {
-                        net.category = WifiCategory.Private;
-                        break;
-                    }
-                    case "2": {
-                        net.category = WifiCategory.Domain;
-                        break;
-                    }
-                    default: net.category = WifiCategory.Unknown;
-                }
-            } else if (value.value.toLowerCase() === "datecreated") {
-                const bytes = decode(value.data);
-                if (bytes instanceof EncodingError) {
-                    continue;
-                }
-                const time_value = decodeTime(bytes);
-                if (time_value instanceof NomError) {
-                    continue;
-                }
-                net.created_local_time = time_value;
-            } else if (value.value.toLowerCase() === "nametype") {
-                switch (value.data) {
-                    case "6": {
-                        net.name_type = NameType.Wired;
-                        break;
-                    }
-                    case "23": {
-                        net.name_type = NameType.Vpn;
-                        break;
-                    }
-                    case "71": {
-                        net.name_type = NameType.Wireless;
-                        break;
-                    }
-                    case "243": {
-                        net.name_type = NameType.Mobile;
-                        break;
-                    }
-                    default: net.name_type = NameType.Unknown;
-                }
-            } else if (value.value.toLowerCase() === "datelastconnected") {
-                const bytes = decode(value.data);
-                if (bytes instanceof EncodingError) {
-                    continue;
-                }
-                const time_value = decodeTime(bytes);
-                if (time_value instanceof NomError) {
-                    continue;
-                }
-                net.last_connected_local_time = time_value;
-            }
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
+            continue;
         }
-        networks.push(net);
+
+        const reg_entries = getRegistry(entry.handle as FileHandle, "\\\\currentversion\\\\networklist\\\\profiles\\\\\\{");
+        if (reg_entries instanceof WindowsError) {
+            return new WindowsError(`WIFI`, `failed to parse ${entry.meta.display_path}: ${reg_entries}`);
+        }
+
+        for (const value of reg_entries) {
+            const net: Wifi = {
+                name: "",
+                description: "",
+                managed: false,
+                category: WifiCategory.Unknown,
+                created_local_time: "",
+                name_type: NameType.Unknown,
+                id: value.name.replace("{", "").replace("}", ""),
+                last_connected_local_time: "",
+                registry_path: value.path,
+                message: "",
+                datetime: value.last_modified,
+                timestamp_desc: "Registry Key Modified",
+                artifact: "WiFi Network",
+                data_type: "windows:registry:wifi:entry",
+                evidence: entry.meta.display_path,
+            };
+
+            for (const data of value.values) {
+                if (data.value.toLowerCase() === "profilename") {
+                    net.name = data.data;
+                } else if (data.value.toLowerCase() === "description") {
+                    net.description = data.data;
+                    net.message = `WiFi network '${data.data}'`;
+                } else if (data.value.toLowerCase() === "managed") {
+                    net.managed = Boolean(Number(data.data));
+                } else if (data.value.toLowerCase() === "category") {
+                    switch (data.data) {
+                        case "0": {
+                            net.category = WifiCategory.Public;
+                            break;
+                        }
+                        case "1": {
+                            net.category = WifiCategory.Private;
+                            break;
+                        }
+                        case "2": {
+                            net.category = WifiCategory.Domain;
+                            break;
+                        }
+                        default: net.category = WifiCategory.Unknown;
+                    }
+                } else if (data.value.toLowerCase() === "datecreated") {
+                    const bytes = decode(data.data);
+                    if (bytes instanceof EncodingError) {
+                        continue;
+                    }
+                    const time_value = decodeTime(bytes);
+                    if (time_value instanceof NomError) {
+                        continue;
+                    }
+                    net.created_local_time = time_value;
+                } else if (data.value.toLowerCase() === "nametype") {
+                    switch (data.data) {
+                        case "6": {
+                            net.name_type = NameType.Wired;
+                            break;
+                        }
+                        case "23": {
+                            net.name_type = NameType.Vpn;
+                            break;
+                        }
+                        case "71": {
+                            net.name_type = NameType.Wireless;
+                            break;
+                        }
+                        case "243": {
+                            net.name_type = NameType.Mobile;
+                            break;
+                        }
+                        default: net.name_type = NameType.Unknown;
+                    }
+                } else if (data.value.toLowerCase() === "datelastconnected") {
+                    const bytes = decode(data.data);
+                    if (bytes instanceof EncodingError) {
+                        continue;
+                    }
+                    const time_value = decodeTime(bytes);
+                    if (time_value instanceof NomError) {
+                        continue;
+                    }
+                    net.last_connected_local_time = time_value;
+                }
+            }
+            networks.push(net);
+        }
     }
 
     return networks;

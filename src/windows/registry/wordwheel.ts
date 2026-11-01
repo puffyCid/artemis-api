@@ -1,41 +1,49 @@
-import { getRegistry } from "../../../mod";
+import { Accessor, getRegistry } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Registry } from "../../../types/windows/registry";
 import { WordWheelEntry } from "../../../types/windows/registry/wordwheel";
 import { EncodingError } from "../../encoding/errors";
 import { decode } from "../../encoding/mod";
 import { extractUtf16String } from "../../encoding/strings";
+import { getSystemDrive } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
-import { glob } from "../../filesystem/files";
 import { WindowsError } from "../errors";
 
 /**
  * Fucntion to parse user WordWheel searches in Windows Explorer
- * @param path Path to NTUSER.dat file. Can also provide a glob to NTUSER.dat files
+ * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` The default is `AccesssorProtocol.Ntfs`.
+ * @param alt_path Path to NTUSER.dat file. Can also provide a glob to NTUSER.dat files
  * @returns Array of `WordWheelEntry` or `WindowsError`
  */
-export function parseWordWheel(path: string): WordWheelEntry[] | WindowsError {
-  const globs = glob(path);
-  if (globs instanceof FileError) {
-    return new WindowsError(
-      "WORDWHEEL",
-      `Could not glob registry path ${path}: ${globs}`,
-    );
+export function parseWordWheel(protocol = AccessorProtocol.Ntfs, alt_path?: string): WordWheelEntry[] | WindowsError {
+  const accessor = new Accessor();
+  const drive = getSystemDrive();
+
+  let path = `${drive}\\Users\\*\\[Nn][Tt][Uu][Ss][Ee][Rr].[Dd][Aa][Tt]`;
+  if (alt_path !== undefined) {
+    path = alt_path;
+  }
+
+  // Based on the `AccessorProtocol` glob for Registry file
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new WindowsError('WORDWHEEL', `failed to glob for ${path}: ${matches}`);
   }
 
   let wheels: WordWheelEntry[] = [];
-  for (const glob_path of globs) {
-    if (!glob_path.is_file) {
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
       continue;
     }
 
-    const reg_data = getRegistry(glob_path.full_path);
+    const reg_data = getRegistry(entry.handle as FileHandle);
     if (reg_data instanceof WindowsError) {
-      console.warn(`Could not parse Registry file ${glob_path.full_path}`);
-      continue;
+      return new WindowsError(`WORDWHEEL`, `failed to parse ${path}: ${reg_data}`);
     }
 
     wheels = wheels.concat(extractWheel(reg_data));
   }
+
   return wheels;
 }
 

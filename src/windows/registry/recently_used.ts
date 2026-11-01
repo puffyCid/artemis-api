@@ -1,3 +1,5 @@
+import { Accessor } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Registry } from "../../../types/windows/registry";
 import {
   Mru,
@@ -5,6 +7,8 @@ import {
   MruValues,
 } from "../../../types/windows/registry/recently_used";
 import { ShellItems } from "../../../types/windows/shellitems";
+import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { WindowsError } from "../errors";
 import { getRegistry } from "../registry";
 import { lastVisitMru, openSaveMru } from "./mru/common";
@@ -12,99 +16,116 @@ import { recentDocs } from "./mru/recent_docs";
 
 /**
  * Parse common Most Recently Used (MRU) Registry keys
- * @param ntuser_path Path to NTUSER.DAT file
+ * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` The default is `AccesssorProtocol.Ntfs`.
+ * @param alt_path Alternative path to `NTUSER.DAT` Registry file
  * @returns Array of common `Mru` entries or `WindowsError`
  */
-export function parseMru(ntuser_path: string): Mru[] | WindowsError {
-  const reg_data = getRegistry(ntuser_path);
-  if (reg_data instanceof WindowsError) {
-    return new WindowsError(
-      "MRU",
-      `Could not parse Registry ${ntuser_path}: ${reg_data}`,
-    );
+export function parseMru(protocol = AccessorProtocol.Ntfs, alt_path?: string): Mru[] | WindowsError {
+  const accessor = new Accessor();
+  const drive = getSystemDrive();
+
+  let path = `${drive}\\Users\\*\\[Nn][Tt][Uu][Ss][Ee][Rr].[Dd][Aa][Tt]`;
+  if (alt_path !== undefined) {
+    path = alt_path;
   }
 
-  const common = openSaveMru(reg_data);
-  if (common instanceof WindowsError) {
-    return new WindowsError(
-      "MRU",
-      `Could not get OpenSave MRU entries: ${common}`,
-    );
+  // Based on the `AccessorProtocol` glob for Registry file
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new WindowsError('MRU', `failed to glob for ${path}: ${matches}`);
   }
 
   const mrus: Mru[] = [];
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
+    }
 
-  for (const entry of common) {
-    const open_save_mru: Mru = {
-      kind: MruType.OPENSAVE,
-      filename: entry.filename,
-      path: entry.path,
-      created: entry.created,
-      modified: entry.modified,
-      accessed: entry.accessed,
-      items: entry.items,
-      message: `MRU value: ${entry.path}`,
-      datetime: entry.created,
-      timestamp_desc: "MRU Entry Created",
-      artifact: "MRU Open Save",
-      data_type: "windows:registry:mru:entry",
-      evidence: ntuser_path,
-    };
-    mrus.push(open_save_mru);
-  }
+    const reg_data = getRegistry(entry.handle as FileHandle);
+    if (reg_data instanceof WindowsError) {
+      return new WindowsError(`MRU`, `failed to parse ${path}: ${reg_data}`);
+    }
 
-  const last_visit = lastVisitMru(reg_data);
-  if (last_visit instanceof WindowsError) {
-    return new WindowsError(
-      "MRU",
-      `Could not get LastVisited MRU entries: ${last_visit}`,
-    );
-  }
+    const common = openSaveMru(reg_data);
+    if (common instanceof WindowsError) {
+      return new WindowsError(
+        "MRU",
+        `Could not get OpenSave MRU entries: ${common}`,
+      );
+    }
 
-  for (const entry of last_visit) {
-    const last_visit_mru: Mru = {
-      kind: MruType.OPENSAVE,
-      filename: entry.filename,
-      path: entry.path,
-      created: entry.created,
-      modified: entry.modified,
-      accessed: entry.accessed,
-      items: entry.items,
-      message: `MRU value: ${entry.path}`,
-      datetime: entry.created,
-      timestamp_desc: "MRU Entry Created",
-      artifact: "MRU Last Visit",
-      data_type: "windows:registry:mru:entry",
-      evidence: ntuser_path,
-    };
-    mrus.push(last_visit_mru);
-  }
+    for (const value of common) {
+      const open_save_mru: Mru = {
+        kind: MruType.OPENSAVE,
+        filename: value.filename,
+        path: value.path,
+        created: value.created,
+        modified: value.modified,
+        accessed: value.accessed,
+        items: value.items,
+        message: `MRU value: ${value.path}`,
+        datetime: value.created,
+        timestamp_desc: "MRU Entry Created",
+        artifact: "MRU Open Save",
+        data_type: "windows:registry:mru:entry",
+        evidence: entry.meta.display_path,
+      };
+      mrus.push(open_save_mru);
+    }
 
-  const recent_docs = recentDocs(reg_data);
-  if (recent_docs instanceof WindowsError) {
-    return new WindowsError(
-      "MRU",
-      `Could not get RecentDocs MRU entries: ${recent_docs}`,
-    );
-  }
+    const last_visit = lastVisitMru(reg_data);
+    if (last_visit instanceof WindowsError) {
+      return new WindowsError(
+        "MRU",
+        `Could not get LastVisited MRU entries: ${last_visit}`,
+      );
+    }
 
-  for (const entry of recent_docs) {
-    const recent_docs_mru: Mru = {
-      evidence: ntuser_path,
-      kind: MruType.OPENSAVE,
-      filename: entry.filename,
-      path: entry.path,
-      created: entry.created,
-      modified: entry.modified,
-      accessed: entry.accessed,
-      items: entry.items,
-      message: `MRU value: ${entry.path}`,
-      datetime: entry.created,
-      timestamp_desc: "MRU Entry Created",
-      artifact: "MRU Recent Docs",
-      data_type: "windows:registry:mru:entry"
-    };
-    mrus.push(recent_docs_mru);
+    for (const value of last_visit) {
+      const last_visit_mru: Mru = {
+        kind: MruType.OPENSAVE,
+        filename: value.filename,
+        path: value.path,
+        created: value.created,
+        modified: value.modified,
+        accessed: value.accessed,
+        items: value.items,
+        message: `MRU value: ${value.path}`,
+        datetime: value.created,
+        timestamp_desc: "MRU Entry Created",
+        artifact: "MRU Last Visit",
+        data_type: "windows:registry:mru:entry",
+        evidence: entry.meta.display_path,
+      };
+      mrus.push(last_visit_mru);
+    }
+
+    const recent_docs = recentDocs(reg_data);
+    if (recent_docs instanceof WindowsError) {
+      return new WindowsError(
+        "MRU",
+        `Could not get RecentDocs MRU entries: ${recent_docs}`,
+      );
+    }
+
+    for (const value of recent_docs) {
+      const recent_docs_mru: Mru = {
+        evidence: entry.meta.display_path,
+        kind: MruType.OPENSAVE,
+        filename: value.filename,
+        path: value.path,
+        created: value.created,
+        modified: value.modified,
+        accessed: value.accessed,
+        items: value.items,
+        message: `MRU value: ${value.path}`,
+        datetime: value.created,
+        timestamp_desc: "MRU Entry Created",
+        artifact: "MRU Recent Docs",
+        data_type: "windows:registry:mru:entry"
+      };
+      mrus.push(recent_docs_mru);
+    }
   }
 
   return mrus;
@@ -163,8 +184,9 @@ export function assembleMru(items: ShellItems[]): MruValues {
  */
 export function testParseMru(): void {
   const test = "../../tests/test_data/windows/registry/NTUSER.DAT";
-  const results = parseMru(test);
+  const results = parseMru(AccessorProtocol.Host, test);
   if (results instanceof WindowsError) {
+    console.log(results);
     throw results;
   }
 

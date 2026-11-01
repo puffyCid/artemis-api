@@ -35,7 +35,7 @@ export function firewallRules(protocol = AccessorProtocol.Ntfs, alt_path?: strin
         }
         const reg_data = getRegistry(entry.handle as FileHandle);
         if (reg_data instanceof WindowsError) {
-            return new WindowsError(`FIREWALL_RULES`, `failed to parse ${path}: ${reg_data}`);
+            return new WindowsError(`FIREWALL_RULES`, `failed to parse ${entry.meta.display_path}: ${reg_data}`);
         }
 
         for (const reg of reg_data) {

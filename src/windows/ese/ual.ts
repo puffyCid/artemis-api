@@ -4,6 +4,9 @@ import { UserAccessLog } from "../../../types/windows/ese/ual";
 import { EseTable, TableInfo } from "../../../types/windows/ese";
 import { decode } from "../../encoding/base64";
 import { EncodingError } from "../../encoding/errors";
+import { AccessorProtocol } from "../../../types/filesystem/accessor";
+import { Accessor } from "../../../mod";
+import { FileError } from "../../filesystem/errors";
 
 interface RoleIds {
   guid: string;
@@ -14,16 +17,31 @@ interface RoleIds {
  * Class to parse Windows User Access Log
  */
 export class UserAccessLogging extends EseDatabase {
-  private info: TableInfo;
+  private info?: TableInfo;
   /**Pages associated with the table */
-  pages: number[];
+  pages: number[] = [];
 
   /**
    * Construct a `UserAccessLogging` object based on the provided UAL file. Client.mdb and <GUID>.mdb files contain the logon information. SystemIdentity.mdb contains role information
+   * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` to use for accessing the EDB file. Default is `AccessorProtocol.Ntfs`
    * @param path Path to UAL related file. Such as SystemIdentity.mdb or Current.mdb or <GUID>.mdb.
    */
-  constructor(path: string) {
-    super(path);
+  constructor(path: string, protocol = AccessorProtocol.Ntfs) {
+    const accessor = new Accessor();
+
+    const result = accessor.stat(path, protocol);
+    if (result instanceof FileError) {
+      console.error(`Could not stat for EDB at ${path}: ${result}`);
+      return;
+    }
+
+    if (protocol !== AccessorProtocol.Host) {
+      super(result.meta.display_path);
+    } else {
+      super(result.meta.full_path);
+    }
+
+
     this.info = {
       obj_id_table: 0,
       table_page: 0,
@@ -46,7 +64,7 @@ export class UserAccessLogging extends EseDatabase {
    * @returns Array of `RoleIds` or `WindowsError`
    */
   public getRoleIds(pages: number[]): RoleIds[] | WindowsError {
-    if (this.info.table_name === "") {
+    if (this.info === undefined) {
       return new WindowsError(
         `UAL`,
         `RoleIds info object not initialized property. Table name is empty`,
@@ -80,7 +98,7 @@ export class UserAccessLogging extends EseDatabase {
     roles_ual?: UserAccessLogging,
     role_page_chunk = 30,
   ): UserAccessLog[] | WindowsError {
-    if (this.info.table_name === "") {
+    if (this.info === undefined) {
       return new WindowsError(
         `UAL`,
         `Clients info object not initialized property. Table name is empty`,
@@ -294,13 +312,14 @@ export class UserAccessLogging extends EseDatabase {
  * Or want to validate the Windows UAL parsing
  */
 export function testUserAccessLogging(): void {
-  const id = "../../../tests/test_data/DFIRArtifactMuseum/ual/SystemIdentity.mdb";
-  const current = "../../../tests/test_data/DFIRArtifactMuseum/ual/Current.mdb";
-  const roles = new UserAccessLogging(id);
+  const id = "../../tests/test_data/DFIRArtifactMuseum/ual/SystemIdentity.mdb";
+  const current = "../../tests/test_data/DFIRArtifactMuseum/ual/Current.mdb";
+  const roles = new UserAccessLogging(id, AccessorProtocol.Host);
 
-  const clients = new UserAccessLogging(current);
+  const clients = new UserAccessLogging(current, AccessorProtocol.Host);
   const data = clients.getUserAccessLog(clients.pages, roles);
   if (data instanceof WindowsError) {
+    console.error(data);
     throw data;
   }
 
@@ -312,6 +331,7 @@ export function testUserAccessLogging(): void {
 
   const info = roles.getRoleIds(roles.pages);
   if (info instanceof WindowsError) {
+    console.error(info);
     throw info;
   }
 
