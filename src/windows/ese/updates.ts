@@ -34,7 +34,7 @@ export class Updates extends EseDatabase {
     const accessor = new Accessor();
     const drive = getSystemDrive();
 
-    let path = `${drive}\\Windows\\System32\\CertLog\\*.edb`;
+    let path = `${drive}\\Windows\\SoftwareDistribution\\DataStore\\DataStore.edb`;;
 
     if (alt_path !== undefined) {
       path = alt_path;

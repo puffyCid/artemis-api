@@ -1,8 +1,10 @@
+import { AccessorProtocol, FileHandle } from "../../types/filesystem/accessor";
+import { EntryKind } from "../../types/filesystem/files";
 import { AppCrash } from "../../types/windows/appcrash";
 import { extractUtf16String } from "../encoding/strings";
 import { getSystemDrive } from "../environment/env";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readFile } from "../filesystem/files";
 import { NomError } from "../nom/error";
 import { Endian, nomUnsignedTwoBytes } from "../nom/helpers";
 import { filetimeToIso } from "../time/conversion";
@@ -10,33 +12,39 @@ import { WindowsError } from "./errors";
 
 /**
  * Function to parse Application crashes associated with Report.wer files
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use. Default is `AccessorProtocol.Host`
  * @param alt_path Optional glob to alternative directory containing Application crashes (Report.wer files)
  * @returns Array of `AppCrash` or `WindowsError`
  */
-export function extractAppCrash(alt_path?: string): AppCrash[] | WindowsError {
+export function extractAppCrash(protocol = AccessorProtocol.Host, alt_path?: string): AppCrash[] | WindowsError {
+    const accessor = new Accessor();
     const drive = getSystemDrive();
+
     let path = `${drive}\\ProgramData\\Microsoft\\Windows\\WER\\ReportArchive\\*\\Report.wer`;
     if (alt_path !== undefined) {
         path = alt_path;
     }
 
-    const glob_paths = glob(path);
-    if (glob_paths instanceof FileError) {
-        return new WindowsError(`APPCRASH`, `Failed to glob ${path}: ${glob_paths.message}`);
+    // Based on the `AccessorProtocol` glob for Report.wer files
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new WindowsError('APPCRASH', `failed to glob for ${path}: ${matches}`);
     }
 
+
     const values: AppCrash[] = [];
-    for (const entry of glob_paths) {
-        if (!entry.is_file) {
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
 
         // Crash Report.wer files are pretty small. But are usually UTF16 encoded
         // Quick and lazy work around
-        const bytes = readFile(entry.full_path);
+        const bytes = accessor.readFileHandle(entry.handle as FileHandle)
         if (bytes instanceof FileError) {
             continue;
         }
+
         // Nom the BOM mark
         const remaining = nomUnsignedTwoBytes(bytes, Endian.Le);
         if (remaining instanceof NomError) {
@@ -48,7 +56,7 @@ export function extractAppCrash(alt_path?: string): AppCrash[] | WindowsError {
             timestamp_desc: "Application Crash",
             artifact: "AppCrash File",
             data_type: "windows:app:crash:entry",
-            evidence: entry.full_path,
+            evidence: entry.meta.display_path,
             message: "",
             path: "",
             datetime: "",
@@ -84,16 +92,16 @@ export function extractAppCrash(alt_path?: string): AppCrash[] | WindowsError {
  */
 export function testExtractAppCrash(): void {
     const test = "../../tests/test_data/windows/appcrashes/*";
-    const results = extractAppCrash(test);
+    const results = extractAppCrash(AccessorProtocol.Host, test);
     if (results instanceof WindowsError) {
         throw results;
     }
 
-    if(results[0]?.path !== "C:\\Windows\\System32\\dllhost.exe") {
+    if (results[0]?.path !== "C:\\Windows\\System32\\dllhost.exe") {
         throw `Got ${results[0]?.path} expected 'C:\\Windows\\System32\\dllhost.exe'.......extractAppCrash ❌`;
     }
 
-        if(results[0]?.message !== `Application 'C:\\Windows\\System32\\dllhost.exe' crashed`) {
+    if (results[0]?.message !== `Application 'C:\\Windows\\System32\\dllhost.exe' crashed`) {
         throw `Got ${results[0]?.message} expected 'Application 'C:\\Windows\\System32\\dllhost.exe' crashed'.......extractAppCrash ❌`;
     }
 }
