@@ -25,6 +25,12 @@ export interface UpdateHistoryV2 {
   reboot: boolean | null;
   for_os: boolean | null;
   metadata: Record<string, unknown> | null;
+  evidence: string;
+  message: string;
+  datetime: string;
+  timestamp_desc: "Last Updated";
+  artifact: "Windows Update History";
+  data_type: "windows:sqlite:updates:entry";
 }
 
 export enum ServerSelection {

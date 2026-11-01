@@ -15,7 +15,6 @@ export class Outlook {
   /**
    * Construct a Outlook class to interact with a Windows OST file
    * @param path Path to the Outlook OST file
-   * @param ntfs Should NTFS parser be used. Only works on **Windows**. Required if you want to parse a locked OST file
    */
   constructor (path: string) {
     this.path = path;

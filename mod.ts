@@ -168,6 +168,7 @@ export { bitsEvents } from "./src/windows/eventlogs/bits";
 export { veloCommands } from "./src/windows/eventlogs/velociraptor";
 export { crashEvents } from "./src/windows/eventlogs/crash";
 export { extractAppCrash } from "./src/windows/appcrash";
+export { windowsUpdatesSqlite } from "./src/windows/sqlite/updates";
 
 /**
  * FreeBSD
