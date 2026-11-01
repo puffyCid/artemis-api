@@ -1,3 +1,5 @@
+import { Accessor } from "../../../mod";
+import { AccessorProtocol } from "../../../types/filesystem/accessor";
 import { EseTable, TableInfo } from "../../../types/windows/ese";
 import {
   Operation,
@@ -7,7 +9,8 @@ import {
 import { EncodingError } from "../../encoding/errors";
 import { decode } from "../../encoding/mod";
 import { formatGuid } from "../../encoding/uuid";
-import { getEnvValue } from "../../environment/env";
+import { getSystemDrive } from "../../environment/env";
+import { FileError } from "../../filesystem/errors";
 import { Endian } from "../../nom/helpers";
 import { nomUnsignedFourBytes, take } from "../../nom/mod";
 import { WindowsError } from "../errors";
@@ -17,24 +20,37 @@ import { EseDatabase } from "../ese";
  * Class to parse history of Windows Updates
  */
 export class Updates extends EseDatabase {
-  private info: TableInfo;
-  pages: number[];
+  private info?: TableInfo;
+  pages: number[] = [];
 
   private table = "tbHistory";
 
   /**
    * Construct `Updates` to parse Windows Updates history. By default will parse updates at `\Windows\SoftwareDistribution\DataStore\DataStore.edb`. Unless you specify alternative file.
+   * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` to use for accessing the EDB file. Default is `AccessorProtocol.Ntfs`
    * @param alt_path Optional alternative path to `DataStore.edb`
    */
-  constructor(alt_path?: string) {
-    const default_path = getEnvValue("SystemDrive");
-    let path =
-      `ntfs:${default_path}\\Windows\\SoftwareDistribution\\DataStore\\DataStore.edb`;
-    if (alt_path !== undefined && alt_path.endsWith("DataStore.edb")) {
+  constructor(protocol = AccessorProtocol.Ntfs, alt_path?: string) {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
+
+    let path = `${drive}\\Windows\\System32\\CertLog\\*.edb`;
+
+    if (alt_path !== undefined) {
       path = alt_path;
     }
 
-    super(path);
+    const result = accessor.stat(path, protocol);
+    if (result instanceof FileError) {
+      console.error(`Could not stat for EDB at ${path}: ${result}`);
+      return;
+    }
+
+    if (protocol !== AccessorProtocol.Host) {
+      super(result.meta.display_path);
+    } else {
+      super(result.meta.full_path);
+    }
     this.info = {
       obj_id_table: 0,
       table_page: 0,
@@ -52,7 +68,7 @@ export class Updates extends EseDatabase {
    * @returns Array of `UpdateHistory` or `WindowsError`
    */
   public updateHistory(pages: number[]): UpdateHistory[] | WindowsError {
-    if (this.info.table_name === "") {
+    if (this.info === undefined) {
       return new WindowsError(
         `UPDATESHISTORY`,
         `tbHistory info object not initialized property. Table name is empty`,

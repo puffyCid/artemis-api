@@ -38,8 +38,13 @@ export class ADCertificates extends EseDatabase {
             return;
         }
 
-        let edb_file = matches[0].meta.display_path;
-        super(edb_file);
+        if (protocol !== AccessorProtocol.Host) {
+            let edb_file = matches[0].meta.display_path;
+            super(edb_file);
+        } else {
+            let edb_file = matches[0].meta.full_path;
+            super(edb_file);
+        }
     }
 
     /**
