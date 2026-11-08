@@ -55,6 +55,7 @@ export enum PlatformType {
   Darwin,
   Windows,
   Linux,
+  Unknown,
 }
 
 /**
@@ -65,4 +66,19 @@ export function platform(): string {
   // @ts-expect-error: Custom Artemis function
   const data: string = js_platform();
   return data;
+}
+
+/**
+ * Function to detect platform. This just calls `platform()` and maps results to 
+ * `PlatformType`
+ * @returns `PlatformType`
+ */
+export function detectPlatform(): PlatformType {
+  const plat = platform().toLowerCase();
+  switch (plat){
+    case "windows": return PlatformType.Windows;
+    case "darwin": return PlatformType.Darwin;
+    case "linux": return PlatformType.Linux;
+    default: return PlatformType.Unknown
+  }
 }
