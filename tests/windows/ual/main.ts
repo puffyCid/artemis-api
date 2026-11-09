@@ -9,7 +9,7 @@ function main() {
     console.log(' Starting live test....');
 
     const accessor = new Accessor();
-    let matches = accessor.globfs("C:\\Windows\\System32\\LogFiles\\Sum\\*.mdb", AccessorProtocol.Ntfs);
+    const matches = accessor.globfs("C:\\Windows\\System32\\LogFiles\\Sum\\*.mdb", AccessorProtocol.Ntfs);
     if (!(matches instanceof FileError)) {
         let role = undefined;
         for (const path of matches) {

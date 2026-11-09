@@ -18,7 +18,7 @@ export class ADCertificates extends EseDatabase {
      * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` to use for accessing the EDB file. Default is `AccessorProtocol.Ntfs`
      * @param alt_path Optional alternative path the CertLog EDB file
      */
-    constructor(protocol = AccessorProtocol.Ntfs, alt_path?: string) {
+    constructor (protocol = AccessorProtocol.Ntfs, alt_path?: string) {
         const accessor = new Accessor();
         const drive = getSystemDrive();
 
@@ -33,16 +33,16 @@ export class ADCertificates extends EseDatabase {
             console.error(`Could not glob for EDB at ${path}`);
             return;
         }
-        if (matches.length < 1 || matches[0] === undefined) {
+        if (matches.length < 1 || matches[ 0 ] === undefined) {
             console.error(`No EDB files found`);
             return;
         }
 
         if (protocol !== AccessorProtocol.Host) {
-            let edb_file = matches[0].meta.display_path;
+            const edb_file = matches[ 0 ].meta.display_path;
             super(edb_file);
         } else {
-            let edb_file = matches[0].meta.full_path;
+            const edb_file = matches[ 0 ].meta.full_path;
             super(edb_file);
         }
     }
@@ -60,7 +60,7 @@ export class ADCertificates extends EseDatabase {
         }
 
         const certs: Certificates[] = [];
-        const cert_data = rows["Certificates"];
+        const cert_data = rows[ "Certificates" ];
         if (cert_data === undefined) {
             return new WindowsError(`ADCERTIFICATES`, `Could not find "Certificates" table`);
         }
@@ -121,7 +121,7 @@ export class ADCertificates extends EseDatabase {
         }
 
         const reqs: Requests[] = [];
-        const req_data = rows["Requests"];
+        const req_data = rows[ "Requests" ];
         if (req_data === undefined) {
             return new WindowsError(`ADCERTIFICATES`, `Could not find "Requests" table`);
         }
@@ -187,7 +187,7 @@ export class ADCertificates extends EseDatabase {
         }
 
         const reqs: RequestAttributes[] = [];
-        const req_data = rows["RequestAttributes"];
+        const req_data = rows[ "RequestAttributes" ];
         if (req_data === undefined) {
             return new WindowsError(`ADCERTIFICATES`, `Could not find "RequestAttributes" table`);
         }

@@ -67,24 +67,6 @@ users at default system drive.  You may also provide an optional alternative pat
 | ----- | ------ | ------------------------------ |
 | path  | string | Optional path to Jumplist file |
 
-### readRawFile(path) -> Uint8Array | WindowsError
-
-Read a file at provided path by parsing the NTFS. You can read locked files with
-this function.
-
-| Param | Type   | Description       |
-| ----- | ------ | ----------------- |
-| path  | string | Path to file read |
-
-### readAdsData(path, ads_name) -> Uint8Array | WindowsError
-
-Read an Alternative Data Stream at provided file path.
-
-| Param    | Type   | Description       |
-| -------- | ------ | ----------------- |
-| path     | string | Path to file read |
-| ads_name | string | ADS data to read  |
-
 ### getPe(path) -> PeInfo | WindowsError
 
 Parse PE file at provided path.

@@ -1,17 +1,20 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import type { RawGeditRecentFiles, RecentFiles } from "../../../types/linux/gnome/gedit";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/mod";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob } from "../../filesystem/files";
 import { unixEpochToISO } from "../../time/conversion";
 import { LinuxError } from "../errors";
 
 /**
  * Function to extract recently open files by gedit
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Optional path to `gedit-metadata.xml`
  * @returns Array of `RecentFiles` or `LinuxError`
  */
 export function geditRecentFiles(
+  protocol = AccessorProtocol.Host,
   alt_path?: string,
 ): RecentFiles[] | LinuxError {
   let path = "/home/*/.local/share/gedit/gedit-metadata.xml";
@@ -20,22 +23,25 @@ export function geditRecentFiles(
     path = alt_path;
   }
 
-  const glob_paths = glob(path);
-  if (glob_paths instanceof FileError) {
-    console.warn(`Could not glob ${path}: ${glob_paths}`);
-    return new LinuxError(
-      `GEDIT`,
-      "could not get recent files",
-    );
+  const accessor = new Accessor();
+  // Based on the `AccessorProtocol` glob for gedit files
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new LinuxError('GEDIT', `failed to glob for ${path}: ${matches}`);
   }
+
 
   const files: RecentFiles[] = [];
 
-  for (const entry of glob_paths) {
-    const data = readXml(entry.full_path);
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
+    }
+
+    const data = readXml(entry.handle as FileHandle);
     if (data instanceof EncodingError) {
       console.warn(
-        `Could not read ${entry.full_path}: ${data}`,
+        `Could not read ${entry.meta.display_path}: ${data}`,
       );
       continue;
     }
@@ -48,7 +54,7 @@ export function geditRecentFiles(
       const recent: RecentFiles = {
         path: value[ "@uri" ],
         accessed: unixEpochToISO(Number(value[ "@atime" ])),
-        evidence: entry.full_path,
+        evidence: entry.meta.display_path,
         message: `Accessed: ${value[ "@uri" ]}`,
         datetime: unixEpochToISO(Number(value[ "@atime" ])),
         timestamp_desc: "Last Accessed",
@@ -69,7 +75,7 @@ export function geditRecentFiles(
  */
 export function testGeditRecentFiles(): void {
   const test = "../../test_data/linux/gnome/gedit_recent.xml";
-  const result = geditRecentFiles(test);
+  const result = geditRecentFiles(AccessorProtocol.Host, test);
   if (result instanceof LinuxError) {
     throw result;
   }

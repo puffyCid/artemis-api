@@ -29,20 +29,27 @@ export enum AccessorProtocol {
     Zip,
     /**
      * Read a raw disk image. The path to
-     * the raw disk must be an absolute path (no **relative** paths!)
+     * the raw disk must be an absolute path (no **relative** paths!).
      * 
      * Supports both logical and full disk image
      * 
-     * Example: `raw:/home/user/Downloads/file.raw!/test/file.txt`
+     * Example: `raw:/home/user/Downloads/file.raw`
      */
     Raw,
     /**
      * Read a QCOW disk image. The path to
-     * the raw disk must be an absolute path (no **relative** paths!)
+     * the QCOW disk must be an absolute path (no **relative** paths!)
      * 
-     * Example: `qcow:/home/user/Downloads/file.qcow!/test/file.txt`
+     * Example: `qcow:/home/user/Downloads/file.qcow`
      */
     Qcow,
+    /**
+     * Read a VHDX disk image. The path to
+     * the VHDX disk must be an absolute path (no **relative** paths!)
+     * 
+     * Example: `vhdx:/home/user/Downloads/file.vhdx`
+     */
+    Vhdx,
 }
 
 /**
@@ -79,6 +86,11 @@ export interface HandleLocator {
         file_ref: NtfsEntryRef;
         display_path: string;
     } | undefined;
+    Ext4: {
+        label: string;
+        entry: Ext4EntryRef;
+        display_path: string;
+    } | undefined;
     Zip: {
         archive: string;
         entry_index: number;
@@ -98,8 +110,15 @@ export interface NtfsEntryRef {
     sequence_number: number;
 }
 
+export interface Ext4EntryRef {
+    inode: bigint;
+    generation: number;
+}
+
 export enum DiskFormat {
     Raw = "Raw",
+    Qcow = "Qcow",
+    Vhdx = "Vhdx",
 }
 
 export enum DiskEntryRef {

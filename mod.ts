@@ -18,7 +18,6 @@ export { firmwareHistory } from "./src/linux/firmware";
 export { kateRecentFiles } from "./src/linux/kde/kate";
 export { Falkon } from "./src/linux/kde/falkon/falkon";
 export { queryLogons } from "./src/linux/sqlite/wtmpdb";
-export { readRawFileExt4, readRawDirExt4, readRawInodeExt4 } from "./src/linux/ext4";
 export { getPacmanInfo } from "./src/linux/pacman";
 
 /**
@@ -114,7 +113,6 @@ export { RustDesk } from "./src/applications/rustdesk/rmm";
 export { getAmcache } from "./src/windows/amcache";
 export { getBits } from "./src/windows/bits";
 export { getEventlogs } from "./src/windows/eventlogs";
-export { readAdsData, readRawFile } from "./src/windows/ntfs";
 export { getPe } from "./src/windows/pe";
 export { getPrefetch } from "./src/windows/prefetch";
 export { getRegistry } from "./src/windows/registry";

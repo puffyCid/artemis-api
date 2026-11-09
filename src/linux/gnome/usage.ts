@@ -1,8 +1,9 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import type { AppUsage, RawAppUsage } from "../../../types/linux/gnome/usage";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/mod";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob } from "../../filesystem/files";
 import { unixEpochToISO } from "../../time/conversion";
 import { LinuxError } from "../errors";
 
@@ -11,28 +12,31 @@ import { LinuxError } from "../errors";
  * @param alt_path Optional path to `application_state`
  * @returns Array of `AppUsage` or `LinuxError`
  */
-export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
+export function gnomeAppUsage(protocol = AccessorProtocol.Host, alt_path?: string): AppUsage[] | LinuxError {
   let path = "/home/*/.local/share/gnome-shell/application_state";
 
   if (alt_path !== undefined) {
     path = alt_path;
   }
 
-  const glob_paths = glob(path);
-  if (glob_paths instanceof FileError) {
-    console.warn(`Could not glob ${path}: ${glob_paths}`);
-    return new LinuxError(
-      `GNOME_APP_USAGE`,
-      "could not get application_state",
-    );
+  const accessor = new Accessor();
+  // Based on the `AccessorProtocol` glob for application_state files
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new LinuxError('GNOME_APP_USAGE', `failed to glob for ${path}: ${matches}`);
   }
 
+
   const apps: AppUsage[] = [];
-  for (const entry of glob_paths) {
-    const data = readXml(entry.full_path);
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
+    }
+
+    const data = readXml(entry.handle as FileHandle);
     if (data instanceof EncodingError) {
       console.warn(
-        `Could not read ${entry.full_path}: ${data}`,
+        `Could not read ${entry.meta.display_path}: ${data}`,
       );
       continue;
     }
@@ -47,7 +51,7 @@ export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
         id: value[ "@id" ],
         score: Number(value[ "@score" ]),
         "last-seen": unixEpochToISO(Number(value[ "@last-seen" ])),
-        evidence: entry.full_path,
+        evidence: entry.meta.display_path,
         message: value[ "@id" ],
         datetime: unixEpochToISO(Number(value[ "@last-seen" ])),
         timestamp_desc: "Last Seen",
@@ -69,7 +73,7 @@ export function gnomeAppUsage(alt_path?: string): AppUsage[] | LinuxError {
  */
 export function testGnomeAppUsage(): void {
   const app = "../../test_data/linux/gnome/usage.xml";
-  const results = gnomeAppUsage(app);
+  const results = gnomeAppUsage(AccessorProtocol.Host, app);
   if (results instanceof LinuxError) {
     throw results;
   }
