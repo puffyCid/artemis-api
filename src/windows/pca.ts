@@ -1,41 +1,46 @@
+import { AccessorProtocol, EntryKind, FileHandle, GlobMatch } from "../../types/filesystem/accessor";
 import { PcaType, ProgramCompatibilityAssist } from "../../types/windows/pca";
 import { extractUtf16String } from "../encoding/strings";
-import { getEnvValue } from "../environment/mod";
+import { getSystemDrive } from "../environment/env";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readFile, readLines } from "../filesystem/files";
+import { readLines } from "../filesystem/files";
 import { WindowsError } from "./errors";
 
 /**
  * Extract Program Compatibility Assist entries
- * @param alt_dir Optional alternative glob to folder that contains PCA files
+ * @param alt_path Optional alternative glob to folder that contains PCA files
  * @returns Array of `ProgramCompatibilityAssist` or `WindowsError`
  */
-export function parsePca(alt_dir?: string): ProgramCompatibilityAssist[] | WindowsError {
-    let path = alt_dir;
-    if (path === undefined) {
-        const volume = getEnvValue("SystemDrive");
-        if (volume === "") {
-            return new WindowsError(`PCA`, `no SystemDrive found`);
-        }
+export function parsePca(protocol = AccessorProtocol.Host, alt_path?: string): ProgramCompatibilityAssist[] | WindowsError {
+    const accessor = new Accessor();
+    const drive = getSystemDrive();
 
-        path = `${volume}\\Windows\\appcompat\\pca\\*`;
+    let path = `${drive}\\Windows\\appcompat\\pca\\*`;
+    if (alt_path !== undefined) {
+        path = alt_path;
     }
 
-    const globs = glob(path);
-    if (globs instanceof FileError) {
-        return new WindowsError(`PCA`, `failed to glob ${path}: ${globs}`);
+    // Based on the `AccessorProtocol` glob for PCA files
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new WindowsError('PCA', `failed to glob for ${path}: ${matches}`);
     }
 
     let values: ProgramCompatibilityAssist[] = [];
-    for (const entry of globs) {
-        if (entry.filename === "PcaAppLaunchDic.txt") {
-            const value = parseDict(entry.full_path);
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
+            continue;
+        }
+
+        if (entry.meta.filename === "PcaAppLaunchDic.txt") {
+            const value = parseDict(entry);
             if (value instanceof WindowsError) {
                 continue;
             }
             values = values.concat(value);
-        } else if (entry.filename.includes("General")) {
-            const value = parseGeneral(entry.full_path);
+        } else if (entry.meta.filename.includes("General")) {
+            const value = parseGeneral(entry, accessor);
             if (value instanceof WindowsError) {
                 continue;
             }
@@ -49,16 +54,20 @@ export function parsePca(alt_dir?: string): ProgramCompatibilityAssist[] | Windo
 
 /**
  * Parse Application Launch PCA file
- * @param path Path to PcaAppLaunchDic.txt
+ * @param entry `GlobMatch` for PcaAppLaunchDic.txt
  * @returns Array of `ProgramCompatibilityAssist` or `WindowsError`
  */
-function parseDict(path: string): ProgramCompatibilityAssist[] | WindowsError {
+function parseDict(entry: GlobMatch): ProgramCompatibilityAssist[] | WindowsError {
     const limit = 1000;
     let offset = 0;
 
     const values: ProgramCompatibilityAssist[] = [];
+
+    if (entry.meta.kind !== EntryKind.File) {
+        return values;
+    }
     while (true) {
-        const lines = readLines(path, offset, limit);
+        const lines = readLines(entry.handle as FileHandle, offset, limit);
         if (lines instanceof FileError) {
             break;
         }
@@ -83,7 +92,7 @@ function parseDict(path: string): ProgramCompatibilityAssist[] | WindowsError {
                 timestamp_desc: "Last Run",
                 artifact: "Windows Program Compatibility Assist",
                 data_type: "windows:pca:entry",
-                evidence: path,
+                evidence: entry.meta.display_path,
             };
             values.push(value);
         }
@@ -97,17 +106,22 @@ function parseDict(path: string): ProgramCompatibilityAssist[] | WindowsError {
 
 /**
  * Parse Application Launch PCA file
- * @param path Path to PcaGeneralDb0.txt or PcaGeneralDb1.txt
+ * @param entry `GlobMatch` to PcaGeneralDb0.txt or PcaGeneralDb1.txt
  * @returns Array of `ProgramCompatibilityAssist` or `WindowsError`
  */
-function parseGeneral(path: string): ProgramCompatibilityAssist[] | WindowsError {
-    const bytes = readFile(path);
+function parseGeneral(entry: GlobMatch, accessor: Accessor): ProgramCompatibilityAssist[] | WindowsError {
+    const values: ProgramCompatibilityAssist[] = [];
+    if (entry.meta.kind !== EntryKind.File) {
+        return values;
+    }
+
+
+    const bytes = accessor.readFileHandle(entry.handle as FileHandle);
     if (bytes instanceof FileError) {
-        return new WindowsError(`PCA`, `failed to read file ${path}: ${bytes}`);
+        return new WindowsError(`PCA`, `failed to read file ${entry.meta.display_path}: ${bytes}`);
     }
     const lines = extractUtf16String(bytes).split("\n");
 
-    const values: ProgramCompatibilityAssist[] = [];
     for (const line of lines) {
         const entries = line.split("|");
         const timestamp = `${entries.at(0)?.replace(" ", "T") ?? "1970-01-01T00:00:00.000"}Z`;
@@ -124,7 +138,7 @@ function parseGeneral(path: string): ProgramCompatibilityAssist[] | WindowsError
             pca_type: PcaType.General,
             message: `PCA general launch: ${entries.at(2) ?? "Unknown path"}`,
             datetime: timestamp,
-            evidence: path,
+            evidence: entry.meta.display_path,
             timestamp_desc: "Last Run",
             artifact: "Windows Program Compatibility Assist",
             data_type: "windows:pca:entry"
@@ -142,7 +156,7 @@ function parseGeneral(path: string): ProgramCompatibilityAssist[] | WindowsError
  */
 export function testParsePca(): void {
     const test = "../../tests/test_data/windows/pca/*";
-    const results = parsePca(test);
+    const results = parsePca(AccessorProtocol.Host, test);
     if (results instanceof WindowsError) {
         throw results;
     }
@@ -151,12 +165,18 @@ export function testParsePca(): void {
         throw `Got ${results.length} expected 567.......parsePca ❌`;
     }
 
-    if (results[ 4 ]?.message !== "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe") {
-        throw `Got ${results[ 4 ]?.message} expected "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe".......parsePca ❌`;
+    if (results[4]?.message !== "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe") {
+        throw `Got ${results[4]?.message} expected "PCA app launch: C:\\Program Files\\WindowsApps\\Microsoft.OutlookForWindows_1.0.0.0_neutral__8wekyb3d8bbwe\\olk.exe".......parsePca ❌`;
     }
     console.info(`  Function parsePca ✅`);
 
-    const apps = parseDict("../../tests/test_data/windows/pca/PcaAppLaunchDic.txt");
+    const accessor = new Accessor();
+    let matches = accessor.globfs("../../tests/test_data/windows/pca/PcaAppLaunchDic.txt");
+    if (matches instanceof FileError) {
+        throw `Failed to glob: ${matches}`;
+    }
+
+    const apps = parseDict(matches[0] as GlobMatch);
     if (apps instanceof WindowsError) {
         throw apps;
     }
@@ -165,13 +185,18 @@ export function testParsePca(): void {
         throw `Got ${apps.length} expected 192.......parseDict ❌`;
     }
 
-    if (apps[ 8 ]?.message !== "PCA app launch: C:\\Windows\\System32\\msiexec.exe") {
-        throw `Got ${apps[ 8 ]?.message} expected "PCA app launch: C:\\Windows\\System32\\msiexec.exe".......parseDict ❌`;
+    if (apps[8]?.message !== "PCA app launch: C:\\Windows\\System32\\msiexec.exe") {
+        throw `Got ${apps[8]?.message} expected "PCA app launch: C:\\Windows\\System32\\msiexec.exe".......parseDict ❌`;
     }
     console.info(`  Function parseDict ✅`);
 
 
-    const general = parseGeneral("../../tests/test_data/windows/pca/PcaGeneralDb0.txt");
+    matches = accessor.globfs("../../tests/test_data/windows/pca/PcaGeneralDb0.txt");
+    if (matches instanceof FileError) {
+        throw `Failed to glob: ${matches}`;
+    }
+
+    const general = parseGeneral(matches[0] as GlobMatch, accessor);
     if (general instanceof WindowsError) {
         throw general;
     }
@@ -180,8 +205,8 @@ export function testParsePca(): void {
         throw `Got ${general.length} expected 375.......parseGeneral ❌`;
     }
 
-    if (general[ 8 ]?.message !== "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe") {
-        throw `Got ${general[ 8 ]?.message} expected "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe".......parseGeneral ❌`;
+    if (general[8]?.message !== "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe") {
+        throw `Got ${general[8]?.message} expected "PCA general launch: %USERPROFILE%\\Downloads\\LLVM-18.1.8-woa64.exe".......parseGeneral ❌`;
     }
 
     console.info(`  Function parseGeneral ✅`);
