@@ -44,18 +44,18 @@ export function hash(
 
 /**
  * Read a text file. Currently only files less than 2GB in size can be read
- * @param path Text file to read
+ * @param handle `FileHandle` to text file to read
  * @returns String containing text of file
  */
-export function readTextFile(path: string): string | FileError {
+export function readTextFile(handle: FileHandle): string | FileError {
   try {
     // @ts-expect-error: Custom Artemis function
-    const result = js_read_text_file(path);
+    const result = js_read_text_file(handle.File);
     return result;
   } catch (err) {
     return new FileError(
       "READ_TEXT_FILE",
-      `failed to read text file ${path}: ${err}`,
+      `failed to read text file ${JSON.stringify(handle.File)}: ${err}`,
     );
   }
 }
