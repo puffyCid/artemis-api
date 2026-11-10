@@ -30,7 +30,6 @@ export function geditRecentFiles(
     return new LinuxError('GEDIT', `failed to glob for ${path}: ${matches}`);
   }
 
-
   const files: RecentFiles[] = [];
 
   for (const entry of matches) {

@@ -1,8 +1,9 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import type { GvfsEntry } from "../../../types/linux/gnome/gvfs";
 import { extractUtf8String } from "../../encoding/mod";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
 import { readFile } from "../../filesystem/files";
-import { glob } from "../../filesystem/files";
 import { NomError } from "../../nom/error";
 import { Endian } from "../../nom/helpers";
 import {
@@ -17,36 +18,36 @@ import { LinuxError } from "../errors";
 
 /**
  * Function to parse GVFS metadata files. By default will parse all GVFS metadata files at `/home/%/.local/share/gvfs-metadata/*`
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Alternative path (or glob) to a GVFS file
  * @returns Array of `GVFSEntry` or `LinuxError`
  */
-export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
+export function parseGvfs(protocol = AccessorProtocol.Host, alt_path?: string): GvfsEntry[] | LinuxError {
   let path = "/home/*/.local/share/gvfs-metadata/*";
 
   if (alt_path !== undefined) {
     path = alt_path;
   }
-
-  const glob_paths = glob(path);
-  if (glob_paths instanceof FileError) {
-    console.warn(`Could not glob ${path}: ${glob_paths}`);
-    return new LinuxError(
-      `GVFS`,
-      "could not get recent files",
-    );
+  const accessor = new Accessor();
+  // Based on the `AccessorProtocol` glob for GVFS files
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new LinuxError('GVFS', `failed to glob for ${path}: ${matches}`);
   }
 
   let entries: GvfsEntry[] = [];
 
-  for (const entry of glob_paths) {
-    // Skip GVFS journal files
-    if (entry.full_path.endsWith(".log")) {
+  for (const entry of matches) {
+
+    // Skip GVFS journal files and non-files
+    if (entry.meta.kind !== EntryKind.File || entry.meta.extension == "log") {
       continue;
     }
-    const data = readFile(entry.full_path);
+
+    const data = accessor.readFileHandle(entry.handle as FileHandle);
     if (data instanceof FileError) {
       console.warn(
-        `Could not read ${entry.full_path}: ${data}`,
+        `Could not read ${entry.meta.display_path}: ${data}`,
       );
       continue;
     }
@@ -54,7 +55,7 @@ export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
     const header = extractHeader(data);
     if (header instanceof NomError) {
       console.warn(
-        `Could not parse header for ${entry.full_path}: ${header}`,
+        `Could not parse header for ${entry.meta.display_path}: ${header}`,
       );
       continue;
     }
@@ -65,7 +66,7 @@ export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
     );
     if (keywords instanceof NomError) {
       console.warn(
-        `Could not get keywords for ${entry.full_path}: ${keywords}`,
+        `Could not get keywords for ${entry.meta.display_path}: ${keywords}`,
       );
       continue;
     }
@@ -77,7 +78,7 @@ export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
     );
     if (root instanceof NomError) {
       console.warn(
-        `Could not get root start for ${entry.full_path}: ${root}`,
+        `Could not get root start for ${entry.meta.display_path}: ${root}`,
       );
       continue;
     }
@@ -88,11 +89,11 @@ export function parseGvfs(alt_path?: string): GvfsEntry[] | LinuxError {
       [ root.name ],
       header.base_time,
       keywords,
-      entry.full_path,
+      entry.meta.display_path,
     );
     if (children instanceof NomError) {
       console.warn(
-        `Could not get children for root at ${entry.full_path}: ${children}`,
+        `Could not get children for root at ${entry.meta.display_path}: ${children}`,
       );
       continue;
     }
@@ -574,7 +575,7 @@ function getName(offset: number, data: Uint8Array): string | NomError {
  */
 export function testParseGvfs(): void {
   const test = "../../test_data/linux/gnome/gvfs.raw";
-  const result = parseGvfs(test);
+  const result = parseGvfs(AccessorProtocol.Host, test);
   if (result instanceof LinuxError) {
     throw result;
   }

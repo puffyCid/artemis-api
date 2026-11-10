@@ -35,7 +35,7 @@ export class Sqlite {
    * @param protocol `AccessorProtocol` to use to read the sqlite file
    * @param path Path to sqlite database
    */
-  constructor(handle: FileHandle) {
+  constructor (handle: FileHandle) {
     // @ts-expect-error: Custom Artemis class
     this.connection = new JsSqlite(handle.File);
   }
