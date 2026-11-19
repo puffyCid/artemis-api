@@ -6,7 +6,7 @@ function main() {
     console.log('Running firmware history tests....');
     console.log(' Starting live test....');
     const results = firmwareHistory();
-    if (results instanceof LinuxError && !results.message.includes("unable to open database file")) {
+    if (results instanceof LinuxError && !results.message.includes("failed to glob for /var/lib/fwupd")) {
         throw results;
     }
     console.log(' Live test passed! 🥳\n');

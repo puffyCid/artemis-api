@@ -1,43 +1,42 @@
 import { Abrt } from "../../types/linux/abrt";
 import { LinuxError } from "./errors";
-import { readDir } from "../filesystem/directory";
 import { readTextFile } from "../filesystem/files";
 import { FileError } from "../filesystem/errors";
 import { unixEpochToISO } from "../time/conversion";
+import { AccessorProtocol, DirHandle, EntryKind, FileHandle } from "../../types/filesystem/accessor";
+import { Accessor } from "../filesystem/accessor";
 
 /**
  * Extract crash information from abrt directory. Typically at `/var/spool/abrt`. Root is required
- * @param alt_dir Optional path to directory contain abrt information
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional path to directory contain abrt information
  * @returns Array of `Abrt` or `LinuxError`
  */
-export async function extractAbrt(alt_dir?: string): Promise<Abrt[] | LinuxError> {
-    let dir = "/var/spool/abrt";
-    if (alt_dir !== undefined) {
-        dir = alt_dir;
-        const result = await readAbrtDir(dir);
-        if (result instanceof LinuxError) {
-            return result;
-        }
-        return [ result ];
+export function extractAbrt(protocol = AccessorProtocol.Host, alt_path?: string): Abrt[] | LinuxError {
+    let path = "/var/spool/abrt/*";
+
+    if (alt_path !== undefined) {
+        path = alt_path;
     }
 
-    const crashes = await readDir(dir);
-    if (crashes instanceof FileError) {
-        return new LinuxError(`ABRT`, `failed to read abrt directory ${dir}: ${crashes}`);
+    const accessor = new Accessor();
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new LinuxError(`ABRT`, `failed to glob abrt files ${path}: ${matches}`);
     }
 
     const abrts: Abrt[] = [];
-    for (const entry of crashes) {
-        if (!entry.is_directory) {
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.Directory) {
             continue;
         }
 
-        const result = await readAbrtDir(entry.full_path);
-        if (result instanceof LinuxError) {
+        const results = readAbrtDir(accessor, entry.handle as DirHandle, entry.meta.display_path);
+        if (results instanceof LinuxError) {
             continue;
         }
 
-        abrts.push(result);
+        abrts.push(results);
     }
 
     return abrts;
@@ -48,10 +47,10 @@ export async function extractAbrt(alt_dir?: string): Promise<Abrt[] | LinuxError
  * @param path Path to abrt crash directory
  * @returns `Abrt` object or `LinuxError`
  */
-async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
-    const entries = await readDir(path);
-    if (entries instanceof FileError) {
-        return new LinuxError(`ABRT`, `failed to read abrt directory ${path}: ${entries}`);
+function readAbrtDir(accessor: Accessor, handle: DirHandle, evidence: string): Abrt | LinuxError {
+    const abrt_files = accessor.readDirHandle(handle);
+    if (abrt_files instanceof FileError) {
+        return new LinuxError(`ABRT`, `failed to read abor DirHandle '${handle}': ${abrt_files}`);
     }
 
     const abrt_entry: Abrt = {
@@ -62,7 +61,7 @@ async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
         hostname: "",
         last_occurrence: "",
         user: "",
-        evidence: path,
+        evidence,
         backtrace: "",
         environment: "",
         home: "",
@@ -72,56 +71,56 @@ async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
         artifact: "Abrt",
         data_type: "linux:abrt:entry"
     };
-    for (const entry of entries) {
-        if (!entry.is_file) {
+    for (const entry of abrt_files) {
+        if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
 
-        switch (entry.filename) {
+        switch (entry.meta.filename) {
             case "executable": {
-                abrt_entry.executable = readLine(entry.full_path);
+                abrt_entry.executable = readLine(entry.handle as FileHandle);
                 abrt_entry.message = `${abrt_entry.executable} crashed`;
                 break;
             }
             case "cmdline": {
-                abrt_entry.cmdline = readLine(entry.full_path);
+                abrt_entry.cmdline = readLine(entry.handle as FileHandle);
                 break;
             }
             case "pid": {
-                abrt_entry.pid = Number(readLine(entry.full_path));
+                abrt_entry.pid = Number(readLine(entry.handle as FileHandle));
                 break;
             }
             case "hostname": {
-                abrt_entry.hostname = readLine(entry.full_path);
+                abrt_entry.hostname = readLine(entry.handle as FileHandle);
                 break;
             }
             case "reason": {
-                abrt_entry.reason = readLine(entry.full_path);
+                abrt_entry.reason = readLine(entry.handle as FileHandle);
                 break;
             }
             case "pwd": {
-                abrt_entry.home = readLine(entry.full_path);
+                abrt_entry.home = readLine(entry.handle as FileHandle);
                 break;
             }
             case "username": {
-                abrt_entry.user = readLine(entry.full_path).trimEnd();
+                abrt_entry.user = readLine(entry.handle as FileHandle).trimEnd();
                 break;
             }
             case "last_occurrence": {
-                abrt_entry.last_occurrence = unixEpochToISO(Number(readLine(entry.full_path)));
+                abrt_entry.last_occurrence = unixEpochToISO(Number(readLine(entry.handle as FileHandle)));
                 abrt_entry.datetime = abrt_entry.last_occurrence;
                 break;
             }
             case "backtrace": {
-                abrt_entry.backtrace = readLine(entry.full_path);
+                abrt_entry.backtrace = readLine(entry.handle as FileHandle);
                 break;
             }
             case "core_backtrace": {
-                abrt_entry.backtrace = JSON.parse(readLine(entry.full_path));
+                abrt_entry.backtrace = JSON.parse(readLine(entry.handle as FileHandle));
                 break;
             }
             case "environ": {
-                abrt_entry.environment = readLine(entry.full_path);
+                abrt_entry.environment = readLine(entry.handle as FileHandle);
                 break;
             }
             default: {
@@ -135,11 +134,11 @@ async function readAbrtDir(path: string): Promise<Abrt | LinuxError> {
 
 /**
  * Attempt to read abrt text files
- * @param path Path to abrt related file
+ * @param handle `FileHandle` abrt related file
  * @returns Contents of file
  */
-function readLine(path: string): string {
-    const result = readTextFile(path);
+function readLine(handle: FileHandle): string {
+    const result = readTextFile(handle);
     if (result instanceof FileError) {
         return "";
     }

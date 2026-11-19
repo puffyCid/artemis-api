@@ -1,10 +1,10 @@
 import { extractAbrt } from "../../../mod";
 import { LinuxError } from "../../../src/linux/errors";
 
-async function main() {
+function main() {
     console.log('Running Linux Abrt tests....');
     console.log(' Starting live test....');
-    const results = await extractAbrt();
+    const results = extractAbrt();
     if (results instanceof LinuxError) {
         throw console.log(JSON.stringify(results));
     }
