@@ -11,6 +11,7 @@ export interface SnapState {
   channel: string;
   /**Last refresh timestamp in UTC */
   "last-refresh-time": string;
+  evidence: string;
   [key: string]: unknown;
 }
 

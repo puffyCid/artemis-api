@@ -6,6 +6,7 @@ function main() {
   if (results instanceof LinuxError) {
     throw results;
   }
+
 }
 
 main();
