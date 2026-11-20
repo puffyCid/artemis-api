@@ -5,7 +5,6 @@ import { InfoPlist, StatusPlist } from "../../../types/ios/itunes/backup";
 import { extractAppInfo, getAppPaths, parseAppItunesMetadata } from "./apps";
 import { ManifestPlist } from "../../../types/ios/itunes/manifest";
 import { queryDomains } from "./manifest";
-import { Output } from "../../system/output";
 
 /**
  * Resources:

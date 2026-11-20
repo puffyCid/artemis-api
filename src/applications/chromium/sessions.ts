@@ -36,7 +36,7 @@ export function chromiumSessions(paths: ChromiumProfiles[], platform: PlatformTy
             if (entry.full_path.includes("Tabs_")) {
                 session_type = SessionType.Tab;
             }
-            const status = parseSession(entry.full_path, session_type, path, platform);
+            const status = parseSession(entry.full_path, session_type, path);
             if (status instanceof ApplicationError) {
                 console.warn(`Failed to parse session for ${entry.full_path}: ${status}`);
                 continue;
@@ -54,7 +54,7 @@ export function chromiumSessions(paths: ChromiumProfiles[], platform: PlatformTy
  * @param profile `ChromiumProfiles` object
  * @returns Array of `ChromiumSession` or `ApplicationError`
  */
-function parseSession(path: string, session_type: SessionType, profile: ChromiumProfiles, platform: PlatformType): ChromiumSession[] | ApplicationError {
+function parseSession(path: string, session_type: SessionType, profile: ChromiumProfiles): ChromiumSession[] | ApplicationError {
     const bytes = readFile(path);
     if (bytes instanceof FileError) {
         return new ApplicationError(`CHROMIUM`, `Failed to read session file ${path}: ${bytes}`);
@@ -1242,7 +1242,7 @@ export function testChromiumSessions(): void {
     console.info(`  Function chromiumSessions ✅`);
 
     const sess_file = "../../test_data/edge/v141/Sessions/Session_13406596486318013";
-    const results = parseSession(sess_file, SessionType.Session, path, PlatformType.Darwin);
+    const results = parseSession(sess_file, SessionType.Session, path);
     if (results instanceof ApplicationError) {
         throw results.message;
     }
