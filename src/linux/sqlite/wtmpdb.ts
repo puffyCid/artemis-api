@@ -32,6 +32,7 @@ export function queryLogons(protocol = AccessorProtocol.Host, alt_path?: string)
         if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
+
         let results;
         if (protocol === AccessorProtocol.Host) {
             results = querySqlite(path, query);
@@ -39,22 +40,23 @@ export function queryLogons(protocol = AccessorProtocol.Host, alt_path?: string)
             const client = new Sqlite(entry.handle as FileHandle);
             results = client.query(query);
         }
+
         if (results instanceof ApplicationError) {
             continue;
         }
 
         for (const values of results) {
             const logon: LastLogons = {
-                id: values["ID"] as number,
-                type: values["Type"] as number ?? 0,
-                user: values["User"] as string,
-                login: unixEpochToISO(values["Login"] as number ?? 0),
-                logout: unixEpochToISO(values["Logout"] as number ?? 0),
-                tty: values["TTY"] as string ?? "",
-                remote: values["RemoteHost"] as string ?? "",
-                service: values["Service"] as string ?? "",
-                message: `Logon by ${values["User"] as string}`,
-                datetime: unixEpochToISO(values["Login"] as number ?? 0),
+                id: values[ "ID" ] as number,
+                type: values[ "Type" ] as number ?? 0,
+                user: values[ "User" ] as string,
+                login: unixEpochToISO(values[ "Login" ] as number ?? 0),
+                logout: unixEpochToISO(values[ "Logout" ] as number ?? 0),
+                tty: values[ "TTY" ] as string ?? "",
+                remote: values[ "RemoteHost" ] as string ?? "",
+                service: values[ "Service" ] as string ?? "",
+                message: `Logon by ${values[ "User" ] as string}`,
+                datetime: unixEpochToISO(values[ "Login" ] as number ?? 0),
                 timestamp_desc: "User Logon",
                 artifact: "wtmpdb Logons",
                 data_type: "linux:wtmpdb:entry",
@@ -79,12 +81,12 @@ export function testQueryLogons(): void {
         throw result;
     }
 
-    if (result[0] === undefined) {
+    if (result[ 0 ] === undefined) {
         throw `Got logon undefined.......testQueryLogons ❌`;
     }
 
-    if (result[0].user != "reboot") {
-        throw `Got extension name ${result[0].user} expected reboot.......testQueryLogons ❌`;
+    if (result[ 0 ].user != "reboot") {
+        throw `Got extension name ${result[ 0 ].user} expected reboot.......testQueryLogons ❌`;
     }
 
     console.info(`  Function testQueryLogons ✅`);

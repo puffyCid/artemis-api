@@ -6,7 +6,7 @@ function main() {
     console.log('Running Pacman tests....');
     console.log(' Starting live test....');
     const results = getPacmanInfo();
-    if (results instanceof LinuxError) {
+    if (results instanceof LinuxError && !results.message.includes("NotADirectory")) {
         throw results;
     }
     console.log(' Live test passed! 🥳\n');

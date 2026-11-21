@@ -6,7 +6,7 @@ export { getJournal } from "./src/linux/journal";
 export { getLogon } from "./src/linux/logon";
 export { getSudoLogsLinux } from "./src/linux/sudo";
 export { getDebInfo } from "./src/linux/deb";
-export { getRpmInfo } from "./src/linux/rpm";
+export { getRpmInfo } from "./src/linux/sqlite/rpm";
 export { listSnaps } from "./src/linux/snap";
 export { getGnomeExtensions } from "./src/linux/gnome/extensions";
 export { geditRecentFiles } from "./src/linux/gnome/gedit";

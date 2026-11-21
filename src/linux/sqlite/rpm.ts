@@ -1,149 +1,169 @@
-import { LinuxError } from "./errors";
-import { RpmPackages } from "../../types/linux/rpm";
-import { querySqlite } from "../applications/sqlite";
-import { ApplicationError } from "../applications/errors";
-import { decode, encode } from "../encoding/base64";
-import { EncodingError } from "../encoding/errors";
-import { NomError } from "../nom/error";
-import { extractUtf8String } from "../encoding/strings";
+import { LinuxError } from "../errors";
+import { RpmPackages } from "../../../types/linux/rpm";
+import { querySqlite, Sqlite } from "../../applications/sqlite";
+import { ApplicationError } from "../../applications/errors";
+import { decode, encode } from "../../encoding/base64";
+import { EncodingError } from "../../encoding/errors";
+import { NomError } from "../../nom/error";
+import { extractUtf8String } from "../../encoding/strings";
 import {
   Endian,
   nomSignedFourBytes,
   nomUnsignedFourBytes,
   nomUnsignedOneBytes,
-} from "../nom/helpers";
-import { takeUntil } from "../nom/parsers";
-import { unixEpochToISO } from "../time/conversion";
-import { readFile } from "../filesystem/files";
-import { FileError } from "../filesystem/errors";
+} from "../../nom/helpers";
+import { takeUntil } from "../../nom/parsers";
+import { unixEpochToISO } from "../../time/conversion";
+import { readFile } from "../../filesystem/files";
+import { FileError } from "../../filesystem/errors";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
+import { Accessor } from "../../filesystem/accessor";
 
 /**
  * Function to get installed RPM packages. This function only supports getting packages from the sqlite database. The historical Berkley database is not supported.
- * @param offset What offset to start the query at
- * @param limit How many packages to return
- * @param alt_path Optional path to the RPM sqlite database. Will default to `/var/lib/rpm/rpmdb.sqlite`
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param offset What offset to start the query at. Default is 0
+ * @param limit How many packages to return. Default is 100.
+ * @param alt_path Optional path to the RPM sqlite database. Will default to `/usr/lib/sysimage/rpm/rpmdb.sqlite`
  * @returns Array of `RpmPackages` or `LinuxError`
  */
 export function getRpmInfo(
-  offset: number,
-  limit: number,
+  protocol = AccessorProtocol.Host,
+  offset = 0,
+  limit = 100,
   alt_path?: string,
 ): RpmPackages[] | LinuxError {
   const query = `SELECT * FROM Packages LIMIT ${limit} OFFSET ${offset}`;
-  let path = "/var/lib/rpm/rpmdb.sqlite";
+  let path = "/usr/lib/sysimage/rpm/rpmdb.sqlite";
   if (alt_path !== undefined) {
     path = alt_path;
   }
 
-  const results = querySqlite(path, query);
-  if (results instanceof ApplicationError) {
-    return new LinuxError(
-      `RPMPACKAGES`,
-      `failed to query RPM DB ${results}`,
-    );
+  const accessor = new Accessor();
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new LinuxError(`RPMPACKAGES`, `failed to glob for '${path}': ${matches}`);
   }
 
   const rpm_entries: RpmPackages[] = [];
-
-  for (const entry of results) {
-    // Packages are base64 encoded binary blobs that need to be parsed
-    const raw_bytes = decode(entry[ "blob" ] as string);
-    if (raw_bytes instanceof EncodingError) {
-      console.error(`Could not base64 decode RPM binary date: ${raw_bytes}`);
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
       continue;
     }
 
-    const header = parseHeader(raw_bytes);
-    if (header instanceof LinuxError) {
-      console.error(`Could not parse RPM header: ${header}`);
+    let results;
+    if (protocol === AccessorProtocol.Host) {
+      results = querySqlite(path, query);
+    } else {
+      const client = new Sqlite(entry.handle as FileHandle);
+      results = client.query(query);
+    }
+
+    if (results instanceof ApplicationError) {
       continue;
     }
 
-    const rpm_tags = parseTags(raw_bytes, header);
-    if (rpm_tags instanceof LinuxError) {
-      continue;
-    }
+    for (const values of results) {
+      // Packages are base64 encoded binary blobs that need to be parsed
+      const raw_bytes = decode(values[ "blob" ] as string);
+      if (raw_bytes instanceof EncodingError) {
+        console.error(`Could not base64 decode RPM binary date: ${raw_bytes}`);
+        continue;
+      }
 
-    const rpm: RpmPackages = {
-      evidence: path,
-      name: "",
-      version: "",
-      release: "",
-      source: "",
-      size: 0,
-      sha1: "",
-      arch: "",
-      install_time: "",
-      vendor: "",
-      package_group: "",
-      summary: "",
-      url: "",
-      message: "",
-      datetime: "",
-      timestamp_desc: "RPM Package Installed",
-      artifact: "RPM Package",
-      data_type: "linux:rpm:entry"
-    };
+      const header = parseHeader(raw_bytes);
+      if (header instanceof LinuxError) {
+        console.error(`Could not parse RPM header: ${header}`);
+        continue;
+      }
 
-    // Extract the tag values
-    for (const value in rpm_tags) {
-      switch (value) {
-        case `${TagName.Name}`: {
-          rpm.name = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.Version}`: {
-          rpm.version = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.Release}`: {
-          rpm.release = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.SourceRpm}`: {
-          rpm.source = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.Size}`: {
-          rpm.size = (rpm_tags[ value ] as number[]).at(0) ?? 0;
-          break;
-        }
-        case `${TagName.Sha1Header}`: {
-          rpm.sha1 = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.Arch}`: {
-          rpm.arch = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.InstallTime}`: {
-          rpm.install_time = unixEpochToISO(
-            (rpm_tags[ value ] as number[]).at(0) ?? 0,
-          );
-          break;
-        }
-        case `${TagName.Vendor}`: {
-          rpm.vendor = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.Group}`: {
-          rpm.package_group = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.Summary}`: {
-          rpm.summary = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
-        }
-        case `${TagName.Url}`: {
-          rpm.url = (rpm_tags[ value ] as string[]).at(0) ?? "";
-          break;
+      const rpm_tags = parseTags(raw_bytes, header);
+      if (rpm_tags instanceof LinuxError) {
+        continue;
+      }
+
+      const rpm: RpmPackages = {
+        evidence: entry.meta.display_path,
+        name: "",
+        version: "",
+        release: "",
+        source: "",
+        size: 0,
+        sha1: "",
+        arch: "",
+        install_time: "",
+        vendor: "",
+        package_group: "",
+        summary: "",
+        url: "",
+        message: "",
+        datetime: "",
+        timestamp_desc: "RPM Package Installed",
+        artifact: "RPM Package",
+        data_type: "linux:rpm:entry"
+      };
+
+      // Extract the tag values
+      for (const value in rpm_tags) {
+        switch (value) {
+          case `${TagName.Name}`: {
+            rpm.name = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.Version}`: {
+            rpm.version = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.Release}`: {
+            rpm.release = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.SourceRpm}`: {
+            rpm.source = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.Size}`: {
+            rpm.size = (rpm_tags[ value ] as number[]).at(0) ?? 0;
+            break;
+          }
+          case `${TagName.Sha1Header}`: {
+            rpm.sha1 = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.Arch}`: {
+            rpm.arch = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.InstallTime}`: {
+            rpm.install_time = unixEpochToISO(
+              (rpm_tags[ value ] as number[]).at(0) ?? 0,
+            );
+            break;
+          }
+          case `${TagName.Vendor}`: {
+            rpm.vendor = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.Group}`: {
+            rpm.package_group = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.Summary}`: {
+            rpm.summary = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
+          case `${TagName.Url}`: {
+            rpm.url = (rpm_tags[ value ] as string[]).at(0) ?? "";
+            break;
+          }
         }
       }
+
+      rpm.message = `${rpm.name}-v${rpm.version} installed`;
+      rpm.datetime = rpm.install_time;
+      rpm_entries.push(rpm);
     }
 
-    rpm.message = `${rpm.name}-v${rpm.version} installed`;
-    rpm.datetime = rpm.install_time;
-    rpm_entries.push(rpm);
   }
 
   return rpm_entries;
@@ -659,7 +679,7 @@ export function testRpmInfo(): void {
   console.info(`  Function parseHeader ✅`);
 
   const rpm = "../../test_data/linux/rpm/rpm.sqlite";
-  const rpm_result = getRpmInfo(0, 100, rpm);
+  const rpm_result = getRpmInfo(AccessorProtocol.Host, 0, 100, rpm);
   if (rpm_result instanceof LinuxError) {
     throw rpm_result;
   }

@@ -1,40 +1,42 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../types/filesystem/accessor";
 import { PacmanPackages, Reason } from "../../types/linux/pacman";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readTextFile } from "../filesystem/files";
+import { readTextFile } from "../filesystem/files";
 import { unixEpochToISO } from "../time/conversion";
 import { LinuxError } from "./errors";
 
 /**
  * Function to get installed Pacman packages
- * @param alt_glob Optional alternative glob to Pacman installed packages
+ * @param alt_path Optional alternative path to Pacman installed packages
  * @returns Array of `PacmanPackages` or `LinuxError`
  */
-export function getPacmanInfo(alt_glob?: string): PacmanPackages[] | LinuxError {
-    let path_glob = "/var/lib/pacman/local/*/desc";
-    if (alt_glob !== undefined) {
-        path_glob = alt_glob;
+export function getPacmanInfo(protocol = AccessorProtocol.Host, alt_path?: string): PacmanPackages[] | LinuxError {
+    let path = "/var/lib/pacman/local/*/desc";
+    if (alt_path !== undefined) {
+        path = alt_path;
     }
 
-    const package_paths = glob(path_glob);
-    if (package_paths instanceof FileError) {
-        return new LinuxError('PACMAN', `failed to glob pacman packages ${package_paths}`);
+    const accessor = new Accessor();
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new LinuxError(`PACMAN`, `failed to glob for '${path}': ${matches}`);
     }
 
     // Should return 3 values: `[ "%BASE%\nxz\n\n", "BASE", "xz\n\n" ]`
     const headers = /%([A-Z0-9_]+)%\n([\s\S]*?)(?=(?:%[A-Z0-9_]+%\n|$))/g;
-    const packages = [];
-    for (const entry of package_paths) {
-        if (!entry.is_file) {
+    const packages: PacmanPackages[] = [];
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
 
-        const text = readTextFile(entry.full_path);
+        const text = readTextFile(entry.handle as FileHandle);
         if (text instanceof FileError) {
-            console.warn(`Failed to read file ${entry.full_path}: ${text}`);
+            console.warn(`Failed to read file ${entry.meta.display_path}: ${text}`);
             continue;
         }
-
-        const data = parseDescription(text, headers, entry.full_path);
+        const data = parseDescription(text, headers, entry.meta.display_path);
         packages.push(data);
     }
 
@@ -63,27 +65,27 @@ function parseDescription(text: string, pattern: RegExp, evidence: string): Pacm
         }
 
         const lines = clean.split('\n');
-        json_data[header] = lines.length > 1 ? lines : lines[0];
+        json_data[ header ] = lines.length > 1 ? lines : lines[ 0 ];
     }
 
     return {
-        name: json_data["NAME"] as string ?? "Unknown",
-        version: json_data["VERSION"] as string ?? "Unknown",
-        url: json_data["URL"] as string ?? "Unknown",
-        build_date: unixEpochToISO(Number(json_data["BUILDDATE"] as string ?? 0)),
-        installed: unixEpochToISO(Number(json_data["INSTALLDATE"] as string ?? 0)),
-        author: json_data["PACKAGER"] as string ?? "Unknown",
-        size: Number(json_data["SIZE"] as string ?? 0),
-        description: json_data["DESC"] as string ?? "Unknown",
-        licenses: json_data["LICENSE"] as string | string[] ?? "Unknown",
-        reason: installReason(json_data["REASON"] as string ?? "Unknown"),
-        message: `${json_data["NAME"] as string ?? "Unknown"} installed`,
-        datetime: unixEpochToISO(Number(json_data["INSTALLDATE"] as string ?? 0)),
+        name: json_data[ "NAME" ] as string ?? "Unknown",
+        version: json_data[ "VERSION" ] as string ?? "Unknown",
+        url: json_data[ "URL" ] as string ?? "Unknown",
+        build_date: unixEpochToISO(Number(json_data[ "BUILDDATE" ] as string ?? 0)),
+        installed: unixEpochToISO(Number(json_data[ "INSTALLDATE" ] as string ?? 0)),
+        author: json_data[ "PACKAGER" ] as string ?? "Unknown",
+        size: Number(json_data[ "SIZE" ] as string ?? 0),
+        description: json_data[ "DESC" ] as string ?? "Unknown",
+        licenses: json_data[ "LICENSE" ] as string | string[] ?? "Unknown",
+        reason: installReason(json_data[ "REASON" ] as string ?? "Unknown"),
+        message: `${json_data[ "NAME" ] as string ?? "Unknown"} installed`,
+        datetime: unixEpochToISO(Number(json_data[ "INSTALLDATE" ] as string ?? 0)),
         timestamp_desc: "Pacman Package Installed",
         artifact: "Pacman Package",
         data_type: "linux:pacman:entry",
         evidence
-    }
+    };
 }
 
 /**
@@ -106,7 +108,7 @@ function installReason(value: string): Reason {
  */
 export function testPacmanInfo(): void {
     const alt_glob = "../../test_data/linux/pacman/desc";
-    const results = getPacmanInfo(alt_glob);
+    const results = getPacmanInfo(AccessorProtocol.Host, alt_glob);
     if (results instanceof LinuxError) {
         throw results;
     }
@@ -115,16 +117,16 @@ export function testPacmanInfo(): void {
         throw `Got ${results.length} entries expected 1.......getPacmanInfo ❌`;
     }
 
-    if (results[0]?.author !== "Jan Alexander Steffens (heftig) <heftig@archlinux.org>") {
-        throw `Got ${results[0]?.author} author expected "Jan Alexander Steffens (heftig) <heftig@archlinux.org>".......getPacmanInfo ❌`;
+    if (results[ 0 ]?.author !== "Jan Alexander Steffens (heftig) <heftig@archlinux.org>") {
+        throw `Got ${results[ 0 ]?.author} author expected "Jan Alexander Steffens (heftig) <heftig@archlinux.org>".......getPacmanInfo ❌`;
     }
 
-    if (results[0]?.message !== "avahi installed") {
-        throw `Got ${results[0]?.message} message expected "avahi installed".......getPacmanInfo ❌`;
+    if (results[ 0 ]?.message !== "avahi installed") {
+        throw `Got ${results[ 0 ]?.message} message expected "avahi installed".......getPacmanInfo ❌`;
     }
 
-    if (results[0]?.datetime !== "2026-05-31T23:41:19.000Z") {
-        throw `Got ${results[0]?.datetime} datetime expected "2026-05-31T23:41:19.000Z".......getPacmanInfo ❌`;
+    if (results[ 0 ]?.datetime !== "2026-05-31T23:41:19.000Z") {
+        throw `Got ${results[ 0 ]?.datetime} datetime expected "2026-05-31T23:41:19.000Z".......getPacmanInfo ❌`;
     }
 
     console.info(`  Function getPacmanInfo ✅`);
@@ -140,11 +142,11 @@ export function testPacmanInfo(): void {
 
 
     if (installReason("1") !== Reason.Dependency) {
-        throw `Got wrong install reason for "1".......installReason ❌`
+        throw `Got wrong install reason for "1".......installReason ❌`;
     }
 
     if (installReason("0") !== Reason.Explict) {
-        throw `Got wrong install reason for "0".......installReason ❌`
+        throw `Got wrong install reason for "0".......installReason ❌`;
     }
 
     console.info(`  Function installReason ✅`);
