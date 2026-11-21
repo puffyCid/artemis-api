@@ -101,7 +101,7 @@ export interface HandleLocator {
         format: DiskFormat;
         partition_id: string;
         filesystem_path: string;
-        entry: DiskEntryRef | NtfsEntryRef;
+        entry: DiskEntryRef | NtfsEntryRef | Ext4EntryRef | "PartitionRoot";
     } | undefined;
 }
 
@@ -111,7 +111,7 @@ export interface NtfsEntryRef {
 }
 
 export interface Ext4EntryRef {
-    inode: bigint;
+    inode: number;
     generation: number;
 }
 
@@ -127,12 +127,12 @@ export enum DiskEntryRef {
 
 export interface Meta {
     kind: EntryKind;
-    size: bigint;
+    size: number;
     full_path: string;
     filename: string;
     directory: string;
     extension: string;
-    inode: bigint;
+    inode: number;
     uid: number;
     gid: number;
     attributes: Attributes[];
@@ -210,6 +210,7 @@ export interface SourceHandle {
 export interface SourceId {
     Host: string | undefined;
     Ntfs: string | undefined;
+    Ext4: string | undefined;
     Zip: string | undefined;
     Disk: {
         format: DiskFormat;
