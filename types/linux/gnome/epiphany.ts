@@ -1,3 +1,5 @@
+import { Sqlite } from "../../../src/applications/sqlite";
+import { DirEntry, GlobMatch } from "../../filesystem/accessor";
 import { Url } from "../../http/unfold";
 
 export interface EpiphanyHistory {
@@ -67,6 +69,18 @@ export enum VisitType {
 export interface EpiphanyProfiles {
     full_path: string;
     version: number;
+    /**
+     * Full display path for the epiphany data
+     */
+    evidence: string;
+    /**
+     * `GlobMatch` to the base of the Epiphany directory
+     */
+    entry: GlobMatch;
+    /**
+     * Hashmap of opened Sqlite database files
+     */
+    database: Map<string, Sqlite | null>;
 }
 
 export interface EpiphanyPrint {
