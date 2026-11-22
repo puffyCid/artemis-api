@@ -10,7 +10,7 @@ import { AccessorProtocol, DirectoryEntry, DirEntry, DirHandle, EntryKind, FileE
  * @param entry `DirEntry` object
  * @returns boolean that guarantees the `DirEntry` value is a file
  */
-export function isFileEntry(entry: DirEntry | GlobMatch): entry is FileEntry {
+export function isFileEntry(entry: DirEntry): entry is FileEntry {
     return entry.meta.kind === EntryKind.File;
 }
 
@@ -19,10 +19,10 @@ export function isFileEntry(entry: DirEntry | GlobMatch): entry is FileEntry {
  * 
  * `DirEntry` is simply an object that represents what is inside a directory (or folder).  
  * It can be a file, socket, another directory, or anything represented by `EntryKind`
- * @param entry `DirEntry` or `GlobMatch` object
+ * @param entry `DirEntry`
  * @returns boolean that guarantees the `DirEntry` value is a directory
  */
-export function isDirectoryEntry(entry: DirEntry | GlobMatch): entry is DirectoryEntry {
+export function isDirectoryEntry(entry: DirEntry): entry is DirectoryEntry {
     return entry.meta.kind === EntryKind.Directory;
 }
 
@@ -65,11 +65,11 @@ export class DirectoryTree {
      * @returns `DirectoryTree` class or `FileError`
      */
     public static fromEntry(accessor: Accessor, source: SourceHandle, entry: GlobMatch | DirEntry, caseInsensitive = false): DirectoryTree | FileError {
-        if (!isDirectoryEntry(entry)) {
+        if (entry.meta.kind !== EntryKind.Directory) {
             return new FileError(`ACCESSOR`, `failed to create 'DirectoryTree'. '${entry.meta.display_path}' is not a directory`);
         }
 
-        return new DirectoryTree(accessor, source, entry.handle, entry.meta.display_path, caseInsensitive);
+        return new DirectoryTree(accessor, source, entry.handle as DirHandle, entry.meta.display_path, caseInsensitive);
     }
 
     /**
