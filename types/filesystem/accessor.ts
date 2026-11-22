@@ -141,6 +141,7 @@ export interface Meta {
 
 export interface EntryMeta {
     meta: Meta;
+    times: Timestamp;
 }
 
 export enum EntryKind {
