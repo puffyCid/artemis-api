@@ -1,36 +1,60 @@
+import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesystem/accessor";
 import { EpiphanyCookies, EpiphanyHistory, EpiphanyPermissions, EpiphanyPrint, EpiphanyProfiles, EpiphanySessions, RawEpiphanySessions, VisitType } from "../../../types/linux/gnome/epiphany";
 import { ApplicationError } from "../../applications/errors";
-import { querySqlite } from "../../applications/sqlite";
+import { querySqlite, Sqlite } from "../../applications/sqlite";
 import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/xml";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob, readTextFile } from "../../filesystem/files";
-import { SystemError } from "../../system/error";
-import { Output, OutputManager } from "../../system/output";
+import { readTextFile } from "../../filesystem/files";
+import { DirectoryTree } from "../../filesystem/tree";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
-import { LinuxError } from "../errors";
 
-/**
- * Class to parse GNOME Epiphany browser data
- */
 export class Epiphany {
-    private paths: EpiphanyProfiles[] = [];
-    private unfold: boolean;
+    private profiles: EpiphanyProfiles[] = [];
+    private unfold: boolean = false;
+    private protocol: AccessorProtocol = AccessorProtocol.Host;
+    private accessor = new Accessor();
+    private source: SourceHandle | FileError;
 
-    /**
-     * Create a new `Epiphany` instance to parse data
-     * @param unfold Enable `Unfold` parsing. Default is false
-     * @param alt_glob Provide an optional glob to an alternative Epiphany directory
-     */
-    constructor (unfold = false, alt_glob?: string) {
+    constructor (unfold = false, protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
         this.unfold = unfold;
-        const values = this.profiles(alt_glob);
-        if (values instanceof LinuxError) {
+        this.protocol = protocol;
+        const pattern = alt_path ?? "/home/*/.local/share/epiphany";
+
+        this.source = this.accessor.openSource(source_path, this.protocol);
+        if (this.source instanceof FileError) {
             return;
         }
-        this.paths = values;
+
+        const matches = this.accessor.sourceGlobfs(this.source, pattern);
+        if (matches instanceof FileError) {
+            return;
+        }
+
+        for (const entry of matches) {
+            // We want the base directory for Epiphany artifacts
+            if (entry.meta.kind !== EntryKind.Directory) {
+                continue;
+            }
+
+            const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+            if (tree instanceof FileError) {
+                continue;
+            }
+
+            const profile: EpiphanyProfiles = {
+                full_path: entry.meta.full_path,
+                version: 0,
+                evidence: entry.meta.display_path,
+                tree,
+                database: new Map(),
+            };
+
+            this.profiles.push(profile);
+        }
     }
 
     /**
@@ -40,58 +64,38 @@ export class Epiphany {
      * @returns Array of `EpiphanyHistory`
      */
     public history(offset = 0, limit = 100): EpiphanyHistory[] {
-        const query = `SELECT 
-                        urls.id AS url_id, 
-                        host, 
-                        urls.url AS url, 
-                        title, 
-                        sync_id, 
-                        visit_count, 
-                        typed_count, 
-                        last_visit_time, 
-                        thumbnail_update_time, 
-                        hidden_from_overview, 
-                        visit_type, 
-                        referring_visit 
-                       FROM 
-                        urls 
-                       INNER JOIN visits ON urls.host = visits.url LIMIT ${limit} OFFSET ${offset}`;
+        const query = `SELECT
+                        visits.id AS visit_id,
+                        visits.visit_time AS visit_time,
+                        visits.visit_type AS visit_type,
+                        visits.referring_visit AS referring_visit,
+                        urls.id AS url_id,
+                        urls.host AS host,
+                        urls.url AS url,
+                        urls.title AS title,
+                        urls.sync_id AS sync_id,
+                        urls.visit_count AS visit_count,
+                        urls.typed_count AS typed_count,
+                        urls.last_visit_time AS last_visit_time,
+                        urls.thumbnail_update_time AS thumbnail_update_time,
+                        urls.hidden_from_overview AS hidden_from_overview
+                    FROM visits
+                    INNER JOIN urls ON urls.id = visits.url
+                    ORDER BY visits.id
+                    LIMIT ${limit} OFFSET ${offset}`;
 
+        const client = this.unfold ? new Unfold() : undefined;
         const results: EpiphanyHistory[] = [];
-        let client: Unfold | undefined = undefined;
-        if (this.unfold) {
-            client = new Unfold();
-        }
-        for (const entry of this.paths) {
-            const db = `${entry.full_path}/ephy-history.db`;
-            const data = querySqlite(db, query);
+
+        for (const profile of this.profiles) {
+            const data = this.query(profile, "ephy-history.db", query);
             if (data instanceof ApplicationError) {
                 continue;
             }
 
-            for (const entry of data) {
-                const value: EpiphanyHistory = {
-                    url_id: entry[ "url_id" ] as number,
-                    host_id: entry[ "host" ] as number,
-                    visit_count: entry[ "visit_count" ] as number,
-                    typed_count: entry[ "typed_count" ] as number,
-                    last_visit_time: unixEpochToISO(entry[ "last_visit_time" ] as bigint),
-                    thumbnail_update_time: unixEpochToISO(entry[ "thumbnail_update_time" ] as bigint),
-                    hidden_from_overview: Boolean(entry[ "hidden_from_overview" ] as number),
-                    visit_type: this.visitType(entry[ "visit_type" ] as number),
-                    evidence: db,
-                    target_url: entry[ "url" ] as string | null ?? "",
-                    title: entry[ "title" ] as string | null ?? "",
-                    referring_visit: entry[ "referring_visit" ] as string | null,
-                    sync_id: entry[ "sync_id" ] as string | null,
-                    message: entry[ "url" ] as string | null ?? "",
-                    datetime: unixEpochToISO(entry[ "last_visit_time" ] as bigint),
-                    timestamp_desc: "URL Visited",
-                    artifact: "URL History",
-                    data_type: "linux:gnome:epiphany:history:entry"
-                };
-
-                if (this.unfold && client !== undefined && value.target_url !== null) {
+            for (const row of data.rows) {
+                const value = this.historyEntry(row, data.evidence);
+                if (client !== undefined && value.target_url !== null && value.target_url !== "") {
                     const status = client.parseUrl(value.target_url);
                     if (!(status instanceof UnfoldError)) {
                         value.unfold = status;
@@ -100,7 +104,6 @@ export class Epiphany {
                 results.push(value);
             }
         }
-
         return results;
     }
 
@@ -111,52 +114,17 @@ export class Epiphany {
      * @returns Array of `EpiphanyCookies`
      */
     public cookies(offset = 0, limit = 100): EpiphanyCookies[] {
-        const query = `SELECT * FROM moz_cookies LIMIT ${limit} OFFSET ${offset}`;
+        const query = `SELECT * FROM moz_cookies ORDER BY id LIMIT ${limit} OFFSET ${offset}`;
         const results: EpiphanyCookies[] = [];
 
-        for (const entry of this.paths) {
-            const db = `${entry.full_path}/cookies.sqlite`;
-            const data = querySqlite(db, query);
+        for (const profile of this.profiles) {
+            const data = this.query(profile, "cookies.sqlite", query);
             if (data instanceof ApplicationError) {
                 continue;
             }
 
-            for (const entry of data) {
-                const value: EpiphanyCookies = {
-                    id: entry[ "id" ] as number,
-                    name: entry[ "name" ] as string | null,
-                    value: entry[ "value" ] as string | null,
-                    host: entry[ "host" ] as string | null,
-                    path: entry[ "path" ] as string | null,
-                    expiry: "",
-                    last_accessed: "",
-                    is_secure: false,
-                    is_http_only: false,
-                    same_site: false,
-                    evidence: db,
-                    message: `Cookie for ${entry[ "host" ] as string | null} | ${entry[ "name" ] as string | null ?? ""}`,
-                    datetime: "",
-                    timestamp_desc: "Cookie Expires",
-                    artifact: "Website Cookie",
-                    data_type: "linux:browser:epiphany:cookie:entry"
-                };
-
-                if (entry[ "lastAccessed" ] !== null) {
-                    value.last_accessed = unixEpochToISO(entry[ "last_access" ] as number);
-                }
-                if (entry[ "isSecure" ] !== null) {
-                    value.is_secure = Boolean(entry[ "is_secure" ] as number);
-                }
-                if (entry[ "isHttpOnly" ] !== null) {
-                    value.is_http_only = Boolean(entry[ "is_http_only" ] as number);
-                }
-                if (entry[ "sameSite" ] !== null) {
-                    value.same_site = Boolean(entry[ "same_site" ] as number);
-                }
-                if (entry[ "expiry" ] !== null) {
-                    value.expiry = unixEpochToISO(entry[ "expiry" ] as number);
-                    value.datetime = value.expiry;
-                }
+            for (const row of data.rows) {
+                const value = this.cookieEntry(row, data.evidence);
                 results.push(value);
             }
         }
@@ -170,83 +138,35 @@ export class Epiphany {
      */
     public sessions(): EpiphanySessions[] {
         const results: EpiphanySessions[] = [];
-        for (const entry of this.paths) {
-            const xml_file = `${entry.full_path}/session_state.xml`;
-            const xml_data = readXml(xml_file);
+
+        for (const profile of this.profiles) {
+            const entry = profile.tree.file("session_state.xml");
+            if (entry instanceof FileError) {
+                continue;
+            }
+
+            const xml_data = readXml(entry.handle);
             if (xml_data instanceof EncodingError) {
                 continue;
             }
 
-            const json_data = xml_data as unknown as RawEpiphanySessions;
-            if (!Array.isArray(json_data.session.window.embed)) {
-                json_data.session.window.embed = [ json_data.session.window.embed ];
-            }
-            for (const value of json_data.session.window.embed) {
-                const session: EpiphanySessions = {
-                    url: value[ "@url" ],
-                    title: value[ "@title" ],
-                    history: value[ "@history" ],
-                    evidence: xml_file,
-                    message: `Session for ${value[ "@url" ]}`,
-                    datetime: "1970-01-01T00:00:00.000Z",
-                    timestamp_desc: "N/A",
-                    artifact: "GNOME Epiphany Session",
-                    data_type: "linux:browser:epiphany:session:entry"
-                };
+            const raw = xml_data as unknown as RawEpiphanySessions;
+            for (const window of this.asArray(raw.session?.window)) {
+                for (const value of this.asArray(window.embed)) {
+                    const session: EpiphanySessions = {
+                        url: value[ "@url" ],
+                        title: value[ "@title" ],
+                        history: value[ "@history" ],
+                        evidence: entry.meta.display_path,
+                        message: `Session for ${value[ "@url" ]}`,
+                        datetime: "1970-01-01T00:00:00.000Z",
+                        timestamp_desc: "N/A",
+                        artifact: "GNOME Epiphany Session",
+                        data_type: "linux:browser:epiphany:session:entry"
+                    };
 
-                results.push(session);
-            }
-        }
-
-        return results;
-    }
-
-    /**
-     * Function to extract website permissions
-     * @returns Array of `EpiphanyPermissions`
-     */
-    public permissions(): EpiphanyPermissions[] {
-        const results: EpiphanyPermissions[] = [];
-        for (const entry of this.paths) {
-            const perm_file = `${entry.full_path}/permissions.ini`;
-            let perm_data = readTextFile(perm_file);
-            if (perm_data instanceof FileError) {
-                continue;
-            }
-            // Make sure our regex captures everything
-            perm_data = perm_data.concat("\n");
-            const pattern = /\S.+?(?:^$)/gms;
-            const matches = perm_data.match(pattern);
-            if (matches === null) {
-                continue;
-            }
-
-            for (const value of matches) {
-                const lines = value.split("\n");
-                const perms: EpiphanyPermissions = {
-                    url: "",
-                    permissions: {},
-                    evidence: perm_file,
-                    message: "",
-                    datetime: "1970-01-01T00:00:00.000Z",
-                    timestamp_desc: "N/A",
-                    artifact: "GNOME Epiphany Site Permission",
-                    data_type: "linux:browser:epiphany:permissions:entry"
-                };
-
-                for (const line of lines) {
-                    if (line.startsWith("[")) {
-                        perms.url = line.replace("[org/gnome/epiphany/permissions/", "").replaceAll("/", ":").replace("http:", "http://").replace("https:", "https://").replace("]", "").replace(":0", "");
-                        perms.message = perms.url;
-                    } else if (line.includes("=")) {
-                        const perm_line = line.replace("'", "");
-                        const perm_types = perm_line.split("=");
-                        if (perm_types.length > 1 && perm_types[ 0 ] !== undefined) {
-                            perms.permissions[ perm_types[ 0 ] ] = perm_types.at(1) ?? "";
-                        }
-                    }
+                    results.push(session);
                 }
-                results.push(perms);
             }
         }
 
@@ -259,9 +179,14 @@ export class Epiphany {
      */
     public lastPrint(): EpiphanyPrint[] {
         const results: EpiphanyPrint[] = [];
-        for (const entry of this.paths) {
-            const print_file = `${entry.full_path}/print-settings.ini`;
-            const print_data = readTextFile(print_file);
+
+        for (const profile of this.profiles) {
+            const entry = profile.tree.file("print-settings.ini");
+            if (entry instanceof FileError) {
+                continue;
+            }
+
+            const print_data = readTextFile(entry.handle);
             if (print_data instanceof FileError) {
                 continue;
             }
@@ -277,7 +202,7 @@ export class Epiphany {
                 printer: "",
                 pages: "",
                 collate: false,
-                evidence: print_file,
+                evidence: entry.meta.display_path,
                 message: "",
                 datetime: "1970-01-01T00:00:00.000Z",
                 timestamp_desc: "N/A",
@@ -312,6 +237,7 @@ export class Epiphany {
                     print.pages = value;
                 }
             }
+
             results.push(print);
         }
 
@@ -319,72 +245,196 @@ export class Epiphany {
     }
 
     /**
-     * Function to timeline all Epiphany artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
-     * @param format `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     * Function to extract website permissions
+     * @returns Array of `EpiphanyPermissions`
      */
-    public retrospect(format: Output): void {
-        let offset = 0;
-        const limit = 100;
-        const manager = new OutputManager(format);
-        // Get all history info
-        while (true) {
-            const entries = this.history(offset, limit);
-            if (entries.length === 0) {
-                break;
+    public permissions(): EpiphanyPermissions[] {
+        const results: EpiphanyPermissions[] = [];
+
+        for (const profile of this.profiles) {
+            const entry = profile.tree.file("permissions.ini");
+            if (entry instanceof FileError) {
+                continue;
             }
 
-            const status = manager.write_artifact(entries, "retrospect_epiphany_history");
-            if (status instanceof SystemError) {
-                console.error(`Failed timeline Epiphany history: ${status}`);
-            }
-            offset += limit;
-        }
-
-        offset = 0;
-
-        // Get all Cookies
-        while (true) {
-            const entries = this.cookies(offset, limit);
-            if (entries.length === 0) {
-                break;
+            let perm_data = readTextFile(entry.handle);
+            if (perm_data instanceof FileError) {
+                continue;
             }
 
-            const status = manager.write_artifact(entries, "retrospect_epiphany_cookies");
-            if (status instanceof SystemError) {
-                console.error(`Failed timeline Epiphany cookies: ${status}`);
+            // Make sure our regex captures everything
+            perm_data = perm_data.concat("\n");
+            const pattern = /\S.+?(?:^$)/gms;
+            const matches = perm_data.match(pattern);
+            if (matches === null) {
+                continue;
             }
-            offset += limit;
-        }
 
-        const sessions = this.sessions();
-        let status = manager.write_artifact(sessions, "retrospect_epiphany_sessions");
-        if (status instanceof SystemError) {
-            console.error(`Failed timeline Epiphany sessions: ${status}`);
-        }
+            for (const value of matches) {
+                const lines = value.split("\n");
+                const perms: EpiphanyPermissions = {
+                    url: "",
+                    permissions: {},
+                    evidence: entry.meta.display_path,
+                    message: "",
+                    datetime: "1970-01-01T00:00:00.000Z",
+                    timestamp_desc: "N/A",
+                    artifact: "GNOME Epiphany Site Permission",
+                    data_type: "linux:browser:epiphany:permissions:entry"
+                };
 
-        const permissions = this.permissions();
-        status = manager.write_artifact(permissions, "retrospect_epiphany_permissions");
-        if (status instanceof SystemError) {
-            console.error(`Failed timeline Epiphany permissions: ${status}`);
+                for (const line of lines) {
+                    if (line.startsWith("[")) {
+                        perms.url = line.replace("[org/gnome/epiphany/permissions/", "").replaceAll("/", ":").replace("http:", "http://").replace("https:", "https://").replace("]", "").replace(":0", "");
+                        perms.message = `Permissions for site '${perms.url}'`;
+                    } else if (line.includes("=")) {
+                        const perm_line = line.replace("'", "");
+                        const perm_types = perm_line.split("=");
+                        if (perm_types.length > 1 && perm_types[ 0 ] !== undefined) {
+                            perms.permissions[ perm_types[ 0 ] ] = perm_types.at(1) ?? "";
+                        }
+                    }
+                }
+                results.push(perms);
+            }
         }
-
-        const print_page = this.lastPrint();
-        status = manager.write_artifact(print_page, "retrospect_epiphany_lastprint");
-        if (status instanceof SystemError) {
-            console.error(`Failed timeline Epiphany last print: ${status}`);
-        }
-
-        status = manager.finalize();
-        if (status instanceof SystemError) {
-            console.error(`Failed to finalize output for epiphany: ${status}`);
-        }
+        return results;
     }
 
+    /**
+     * Function to query sqlite database file
+     * @param profile `EpiphanyProfiles` object
+     * @param name Target database file to query
+     * @param sql SQL query to execute
+     * @returns DB rows and source database evidence
+     */
+    private query(profile: EpiphanyProfiles, name: string, sql: string): { evidence: string; rows: Record<string, unknown>[]; } | ApplicationError {
+        const file = profile.tree.file(name);
+        if (file instanceof FileError) {
+            return new ApplicationError(`SQLITE`, `could not find ${name}: ${file}`);
+        }
+
+        const evidence = file.meta.display_path;
+        if (this.protocol === AccessorProtocol.Host) {
+            const rows = querySqlite(file.meta.full_path, sql);
+            return rows instanceof ApplicationError ? rows : { evidence, rows };
+        }
+
+        let db = profile.database.get(name);
+        if (db === undefined) {
+            const opened = Sqlite.fromHandle(file.handle);
+            if (opened instanceof ApplicationError) {
+                console.warn(`Could not open ${name} from ${evidence}: ${opened}`);
+            }
+
+            db = opened instanceof ApplicationError ? null : opened;
+            profile.database.set(name, db);
+        }
+
+        if (db === null) {
+            return new ApplicationError(`SQLITE`, `could not open ${evidence}. Database is null for ${name}`);
+        }
+
+        const rows = db.query(sql);
+        return rows instanceof ApplicationError ? rows : { evidence, rows };
+    }
+
+    /**
+     * Function to extract sqlite history row values
+     * @param row Single sqlite history row from `ephy-history.db`
+     * @param evidence Source to `ephy-history.db`
+     * @returns `EpiphanyHistory` object
+     */
+    private historyEntry(row: Record<string, unknown>, evidence: string): EpiphanyHistory {
+        const url = row[ "url" ] as string | null ?? "";
+        return {
+            url_id: row[ "url_id" ] as number,
+            host_id: row[ "host" ] as number,
+            visit_count: row[ "visit_count" ] as number,
+            typed_count: row[ "typed_count" ] as number,
+            last_visit_time: this.toIso(row[ "last_visit_time" ]),
+            thumbnail_update_time: this.toIso(row[ "thumbnail_update_time" ]),
+            hidden_from_overview: Boolean(row[ "hidden_from_overview" ] as number),
+            visit_type: this.visitType(row[ "visit_type" ] as number),
+            evidence,
+            target_url: url,
+            title: row[ "title" ] as string | null ?? "",
+            referring_visit: row[ "referring_visit" ] as string | null,
+            sync_id: row[ "sync_id" ] as string | null,
+            message: url,
+            datetime: this.toIso(row[ "visit_time" ]),
+            timestamp_desc: "URL Visited",
+            artifact: "URL History",
+            data_type: "linux:gnome:epiphany:history:entry",
+        };
+    }
+
+    /**
+     * Function to extract sqlite cookie row values
+     * @param row Single sqlite cookie row from `cookies.sqlite`
+     * @param evidence Source to `cookies.sqlite`
+     * @returns `EpiphanyCookies` object
+     */
+    private cookieEntry(row: Record<string, unknown>, evidence: string): EpiphanyCookies {
+        const value: EpiphanyCookies = {
+            id: row[ "id" ] as number,
+            name: row[ "name" ] as string | null,
+            value: row[ "value" ] as string | null,
+            host: row[ "host" ] as string | null,
+            path: row[ "path" ] as string | null,
+            expiry: "",
+            last_accessed: "",
+            is_secure: false,
+            is_http_only: false,
+            same_site: false,
+            evidence,
+            message: `Cookie for ${row[ "host" ] as string | null} | ${row[ "name" ] as string | null ?? ""}`,
+            datetime: "1970-01-01T00:00:00.000Z",
+            timestamp_desc: "Cookie Expires",
+            artifact: "Website Cookie",
+            data_type: "linux:browser:epiphany:cookie:entry"
+        };
+
+        if (row[ "lastAccessed" ] !== null) {
+            value.last_accessed = this.toIso(row[ "lastAccessed" ]);
+        }
+
+        if (row[ "isSecure" ] !== null) {
+            value.is_secure = Boolean(row[ "isSecure" ] as number);
+        }
+
+        if (row[ "isHttpOnly" ] !== null) {
+            value.is_http_only = Boolean(row[ "isHttpOnly" ] as number);
+        }
+
+        if (row[ "sameSite" ] !== null) {
+            value.same_site = Boolean(row[ "sameSite" ] as number);
+        }
+
+        if (row[ "expiry" ] !== null) {
+            value.expiry = this.toIso(row[ "expiry" ]);
+            value.datetime = value.expiry;
+        }
+
+        return value;
+    }
+
+    /**
+     * Convert timestamps to ISO8601
+     * @param value Timestamp value from sqlite database
+     * @returns ISO8601 string with millisecond precision
+     */
+    private toIso(value: unknown) {
+        if (typeof value === "number" || typeof value === "bigint") {
+            return unixEpochToISO(value);
+        }
+
+        return unixEpochToISO(0);
+    }
 
     /**
      * Determine the URL visit type
-     * From: https://github.com/GNOME/epiphany/blob/main/lib/history/ephy-history-types.h#L28
-     * @param visit Visit type number
+     * @param visit Epiphany visit type as number
      * @returns `VisitType` enum value
      */
     private visitType(visit: number): VisitType {
@@ -399,31 +449,16 @@ export class Epiphany {
     }
 
     /**
-     * Function to get all user paths to Epiphany data
-     * @param alt_glob Alternative glob to directory containing Epiphany data
-     * @returns Array of `EpiphanyProfiles` or `LinuxError`
+     * Return a array based on provided `T` type
+     * @param value A non-undefined or null value
+     * @returns Array of `T`
      */
-    private profiles(alt_glob?: string): EpiphanyProfiles[] | LinuxError {
-        let pattern = "/home/*/.local/share/epiphany/";
-        if (alt_glob !== undefined) {
-            pattern = alt_glob;
-        }
-        const paths = glob(pattern);
-        if (paths instanceof FileError) {
-            return new LinuxError(`EPIPHANY`, `failed to find epiphany paths`);
+    private asArray<T>(value: T | T[] | undefined): T[] {
+        if (value === undefined || value === null) {
+            return [];
         }
 
-        const profiles: EpiphanyProfiles[] = [];
-        for (const entry of paths) {
-            const profile: EpiphanyProfiles = {
-                full_path: entry.full_path,
-                version: 0,
-            };
-
-            profiles.push(profile);
-        }
-
-        return profiles;
+        return Array.isArray(value) ? value : [ value ];
     }
 }
 
@@ -434,11 +469,15 @@ export class Epiphany {
  */
 export function testEpiphany(): void {
     const test = "../../test_data/linux/epiphany";
-    const client = new Epiphany(false, test);
+    const client = new Epiphany(false, AccessorProtocol.Host, "host:", test);
 
     const history = client.history(0, 100);
-    if (history.length !== 15) {
-        throw `Got ${history.length} expected 15.......history ❌`;
+    if (history.length !== 13) {
+        throw `Got ${history.length} expected 13.......history ❌`;
+    }
+
+    if (!history[ 1 ]?.evidence.startsWith("host:")) {
+        throw `Got non host accessor evidence ${history[ 1 ]?.evidence} expected "host:" 13.......history ❌`;
     }
 
     console.info(`  Function history ✅`);
