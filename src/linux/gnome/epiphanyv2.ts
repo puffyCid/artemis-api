@@ -2,6 +2,7 @@ import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesy
 import { EpiphanyProfiles } from "../../../types/linux/gnome/epiphany";
 import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
+import { DirectoryTree } from "../../filesystem/tree";
 
 export class Epiphany {
     private profiles: EpiphanyProfiles[] = [];
@@ -31,11 +32,16 @@ export class Epiphany {
                 continue;
             }
 
+            const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+            if (tree instanceof FileError) {
+                continue;
+            }
+
             const profile: EpiphanyProfiles = {
                 full_path: entry.meta.full_path,
                 version: 0,
                 evidence: entry.meta.display_path,
-                entry,
+                tree,
                 database: new Map(),
             };
 

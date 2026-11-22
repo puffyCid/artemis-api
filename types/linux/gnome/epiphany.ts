@@ -1,5 +1,5 @@
 import { Sqlite } from "../../../src/applications/sqlite";
-import { GlobMatch } from "../../filesystem/accessor";
+import { DirectoryTree } from "../../../src/filesystem/tree";
 import { Url } from "../../http/unfold";
 
 export interface EpiphanyHistory {
@@ -74,9 +74,9 @@ export interface EpiphanyProfiles {
      */
     evidence: string;
     /**
-     * `GlobMatch` to the base of the Epiphany directory
+     * `DirectoryTree` to the base of the Epiphany directory
      */
-    entry: GlobMatch;
+    tree: DirectoryTree;
     /**
      * Hashmap of opened Sqlite database files
      */

@@ -31,13 +31,25 @@ export class Sqlite {
   private connection: unknown;
 
   /**
-   * Open a sqlite file using the `Accessor`. This reads the **WHOLE** file into memory!
-   * @param protocol `AccessorProtocol` to use to read the sqlite file
-   * @param path Path to sqlite database
+   * Initialize `Sqlite` class
+   * @param handle `FileHandle` object
    */
   constructor (handle: FileHandle) {
     // @ts-expect-error: Custom Artemis class
     this.connection = new JsSqlite(handle.File);
+  }
+
+  /**
+   * 
+   * @param handle `FileHandle` to the sqlite database
+   * @returns `Sqlite` class or `ApplicationError`
+   */
+  public static fromHandle(handle: FileHandle): Sqlite | ApplicationError {
+    try {
+      return new Sqlite(handle);
+    } catch (err) {
+      return new ApplicationError(`SQLITE`, `failed to open ${JSON.stringify(handle.File)}: ${err}`);
+    }
   }
 
   /**
