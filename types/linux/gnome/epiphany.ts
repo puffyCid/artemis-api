@@ -1,5 +1,5 @@
 import { Sqlite } from "../../../src/applications/sqlite";
-import { DirEntry, GlobMatch } from "../../filesystem/accessor";
+import { GlobMatch } from "../../filesystem/accessor";
 import { Url } from "../../http/unfold";
 
 export interface EpiphanyHistory {

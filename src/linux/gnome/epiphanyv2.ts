@@ -41,6 +41,5 @@ export class Epiphany {
 
             this.profiles.push(profile);
         }
-
     }
 }

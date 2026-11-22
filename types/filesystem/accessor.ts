@@ -221,3 +221,11 @@ export interface SourceId {
 export enum AccessorReader {
     Reader
 }
+
+export interface FileEntry extends DirEntry {
+    handle: FileHandle;
+}
+
+export interface DirectoryEntry extends DirEntry {
+    handle: DirHandle;
+}
