@@ -8,6 +8,8 @@ import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
 import { readTextFile } from "../../filesystem/files";
 import { DirectoryTree } from "../../filesystem/tree";
+import { SystemError } from "../../system/error";
+import { Output, OutputManager } from "../../system/output";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
@@ -46,9 +48,6 @@ export class Epiphany {
             }
 
             const profile: EpiphanyProfiles = {
-                full_path: entry.meta.full_path,
-                version: 0,
-                evidence: entry.meta.display_path,
                 tree,
                 database: new Map(),
             };
@@ -207,7 +206,7 @@ export class Epiphany {
                 datetime: "1970-01-01T00:00:00.000Z",
                 timestamp_desc: "N/A",
                 artifact: "GNOME Epiphany Last Print",
-                data_type: "linux:browser:epiphany:cookie:entry"
+                data_type: "linux:browser:epiphany:last_print:entry"
             };
 
             for (const line of lines) {
@@ -220,7 +219,7 @@ export class Epiphany {
                 } else if (line.startsWith("reverse=")) {
                     print.reverse = Boolean(line.replace("reverse=", "") === 'true');
                 } else if (line.startsWith("collate=")) {
-                    print.collate = Boolean(line.replace("collate=", ""));
+                    print.collate = Boolean(line.replace("collate=", "") === 'true');
                 } else if (line.startsWith("printer=")) {
                     print.printer = line.replace("printer=", "");
                 } else if (line.startsWith("page-set=")) {
@@ -299,6 +298,67 @@ export class Epiphany {
             }
         }
         return results;
+    }
+
+    /**
+     * Function to timeline all Epiphany artifacts. Similar to [Hindsight](https://github.com/obsidianforensics/hindsight)
+     * @param format `Output` structure object. Format type should be either `JSON` or `JSONL`. `JSONL` is recommended
+     */
+    public retrospect(format: Output): void {
+        let offset = 0;
+        const limit = 100;
+
+        const manager = new OutputManager(format);
+        while (true) {
+            const entries = this.history(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+
+            const status = manager.write_artifact(entries, "retrospect_epiphany_history");
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline Epiphany history: ${status}`);
+            }
+            offset += limit;
+        }
+
+        offset = 0;
+
+        while (true) {
+            const entries = this.cookies(offset, limit);
+            if (entries.length === 0) {
+                break;
+            }
+
+            const status = manager.write_artifact(entries, "retrospect_epiphany_cookies");
+            if (status instanceof SystemError) {
+                console.error(`Failed timeline Epiphany cookies: ${status}`);
+            }
+            offset += limit;
+        }
+
+        const sessions = this.sessions();
+        let status = manager.write_artifact(sessions, "retrospect_epiphany_sessions");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline Epiphany sessions: ${status}`);
+        }
+
+        const permissions = this.permissions();
+        status = manager.write_artifact(permissions, "retrospect_epiphany_permissions");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline Epiphany permissions: ${status}`);
+        }
+
+        const print_page = this.lastPrint();
+        status = manager.write_artifact(print_page, "retrospect_epiphany_lastprint");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline Epiphany last print: ${status}`);
+        }
+
+        status = manager.finalize();
+        if (status instanceof SystemError) {
+            console.error(`Failed to finalize output for epiphany: ${status}`);
+        }
     }
 
     /**

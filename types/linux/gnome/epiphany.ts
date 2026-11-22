@@ -67,12 +67,6 @@ export enum VisitType {
 }
 
 export interface EpiphanyProfiles {
-    full_path: string;
-    version: number;
-    /**
-     * Full display path for the epiphany data
-     */
-    evidence: string;
     /**
      * `DirectoryTree` to the base of the Epiphany directory
      */
@@ -98,7 +92,7 @@ export interface EpiphanyPrint {
     datetime: "1970-01-01T00:00:00.000Z",
     timestamp_desc: "N/A";
     artifact: "GNOME Epiphany Last Print";
-    data_type: "linux:browser:epiphany:cookie:entry",
+    data_type: "linux:browser:epiphany:last_print:entry",
 }
 
 export interface EpiphanySessions {
