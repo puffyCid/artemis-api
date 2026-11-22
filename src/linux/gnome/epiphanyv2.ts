@@ -1,9 +1,11 @@
 import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesystem/accessor";
-import { EpiphanyCookies, EpiphanyHistory, EpiphanyProfiles, VisitType } from "../../../types/linux/gnome/epiphany";
+import { EpiphanyCookies, EpiphanyHistory, EpiphanyPermissions, EpiphanyProfiles, EpiphanySessions, RawEpiphanySessions, VisitType } from "../../../types/linux/gnome/epiphany";
 import { ApplicationError } from "../../applications/errors";
 import { querySqlite, Sqlite } from "../../applications/sqlite";
+import { readXml } from "../../encoding/xml";
 import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
+import { readTextFile } from "../../filesystem/files";
 import { DirectoryTree } from "../../filesystem/tree";
 import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
@@ -126,6 +128,101 @@ export class Epiphany {
             }
         }
 
+        return results;
+    }
+
+    /**
+     * Function to parse session xml data
+     * @returns Array of `Record<string, unknown>`
+     */
+    public sessions(): EpiphanySessions[] {
+        const results: EpiphanySessions[] = [];
+
+        for (const profile of this.profiles) {
+            const entry = profile.tree.file("session_state.xml");
+            if (entry instanceof FileError) {
+                continue;
+            }
+
+            const xml_data = readXml(entry.handle);
+            const json_data = xml_data as unknown as RawEpiphanySessions;
+            if (!Array.isArray(json_data.session.window.embed)) {
+                json_data.session.window.embed = [ json_data.session.window.embed ];
+            }
+            for (const value of json_data.session.window.embed) {
+                const session: EpiphanySessions = {
+                    url: value[ "@url" ],
+                    title: value[ "@title" ],
+                    history: value[ "@history" ],
+                    evidence: entry.meta.display_path,
+                    message: `Session for ${value[ "@url" ]}`,
+                    datetime: "1970-01-01T00:00:00.000Z",
+                    timestamp_desc: "N/A",
+                    artifact: "GNOME Epiphany Session",
+                    data_type: "linux:browser:epiphany:session:entry"
+                };
+
+                results.push(session);
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * Function to extract website permissions
+     * @returns Array of `EpiphanyPermissions`
+     */
+    public permissions(): EpiphanyPermissions[] {
+        const results: EpiphanyPermissions[] = [];
+
+        for (const profile of this.profiles) {
+            const entry = profile.tree.file("permissions.ini");
+            if (entry instanceof FileError) {
+                continue;
+            }
+
+            let perm_data = readTextFile(entry.handle);
+            if (perm_data instanceof FileError) {
+                continue;
+            }
+
+            // Make sure our regex captures everything
+            perm_data = perm_data.concat("\n");
+            const pattern = /\S.+?(?:^$)/gms;
+            const matches = perm_data.match(pattern);
+            if (matches === null) {
+                continue;
+            }
+
+            for (const value of matches) {
+                const lines = value.split("\n");
+                const perms: EpiphanyPermissions = {
+                    url: "",
+                    permissions: {},
+                    evidence: entry.meta.display_path,
+                    message: "",
+                    datetime: "1970-01-01T00:00:00.000Z",
+                    timestamp_desc: "N/A",
+                    artifact: "GNOME Epiphany Site Permission",
+                    data_type: "linux:browser:epiphany:permissions:entry"
+                };
+
+                for (const line of lines) {
+                    if (line.startsWith("[")) {
+                        perms.url = line.replace("[org/gnome/epiphany/permissions/", "").replaceAll("/", ":").replace("http:", "http://").replace("https:", "https://").replace("]", "").replace(":0", "");
+                        perms.message = `Permissions for site '${perms.url}'`;
+                    } else if (line.includes("=")) {
+                        const perm_line = line.replace("'", "");
+                        const perm_types = perm_line.split("=");
+                        if (perm_types.length > 1 && perm_types[ 0 ] !== undefined) {
+                            perms.permissions[ perm_types[ 0 ] ] = perm_types.at(1) ?? "";
+                        }
+                    }
+                }
+                results.push(perms);
+            }
+        }
         return results;
     }
 
