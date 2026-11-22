@@ -6,7 +6,7 @@ import type { Url } from "../../../types/http/unfold";
 export class DuckDuckGo {
   private url: Url;
 
-  constructor(url: Url) {
+  constructor (url: Url) {
     this.url = url;
   }
 
@@ -20,39 +20,43 @@ export class DuckDuckGo {
 
       switch (key) {
         case "ia": {
-          this.url["search_type"] = param.at(1);
+          this.url[ "search_type" ] = param.at(1);
           break;
         }
         case "t": {
           if (param.at(1) === "h_") {
-            this.url["tracker"] = "homepage";
+            this.url[ "tracker" ] = "homepage";
             break;
           }
-          this.url["tracker"] = param.at(1);
+          this.url[ "tracker" ] = param.at(1);
           break;
         }
         case "q": {
-          this.url["search_query"] = param.at(1);
+          this.url[ "search_query" ] = param.at(1);
           break;
         }
         case "df": {
-          this.url["search_period"] = param.at(1);
+          this.url[ "search_period" ] = param.at(1);
           break;
         }
         case "iax": {
-          this.url["search_type_expanded_view"] = param.at(1);
+          this.url[ "search_type_expanded_view" ] = param.at(1);
           break;
         }
         case "iaxm": {
-          this.url["search_type_expanded_view_mobile"] = param.at(1);
+          this.url[ "search_type_expanded_view_mobile" ] = param.at(1);
           break;
         }
         case "bbox": {
-          this.url["bounding_box"] = param.at(1);
+          this.url[ "bounding_box" ] = param.at(1);
           break;
         }
         case "iar": {
-          this.url["search_referrer"] = param.at(1);
+          this.url[ "search_referrer" ] = param.at(1);
+          break;
+        }
+        case "origin": {
+          this.url[ "search_origin" ] = param.at(1);
           break;
         }
         case undefined: {

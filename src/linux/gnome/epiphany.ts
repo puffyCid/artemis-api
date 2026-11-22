@@ -14,6 +14,9 @@ import { unixEpochToISO } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
 
+/**
+ * Class to parse GNOME Epiphany browser data
+ */
 export class Epiphany {
     private profiles: EpiphanyProfiles[] = [];
     private unfold: boolean = false;
@@ -21,6 +24,14 @@ export class Epiphany {
     private accessor = new Accessor();
     private source: SourceHandle | FileError;
 
+    /**
+     * Create a new `Epiphany` instance to parse data
+     * @param unfold Enable `Unfold` parsing. Default is false
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing Epiphany data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing Epiphany data. Default is `host:` which represents a live system.  
+     * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
+     * @param alt_path Provide an optional glob to an alternative Epiphany directory
+     */
     constructor (unfold = false, protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
         this.unfold = unfold;
         this.protocol = protocol;

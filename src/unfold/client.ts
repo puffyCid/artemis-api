@@ -94,7 +94,7 @@ export class Unfold {
     } catch (err) {
       return new UnfoldError(
         "URL_PARSE",
-        `failed to parse url file ${url}: ${err}`,
+        `failed to parse url ${url}: ${err}`,
       );
     }
   }
