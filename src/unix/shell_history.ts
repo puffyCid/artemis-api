@@ -1,60 +1,60 @@
-import { GlobInfo } from "../../types/filesystem/globs";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../types/filesystem/accessor";
 import {
   AshHistory,
   BashHistory,
   ZshHistory,
 } from "../../types/unix/shellhistory";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readLines, readTextFile } from "../filesystem/files";
-import { PlatformType } from "../system/systeminfo";
+import { readLines, readTextFile } from "../filesystem/files";
+import { detectPlatform, PlatformType } from "../system/systeminfo";
 import { unixEpochToISO } from "../time/conversion";
 
 /**
  * Get bash history for users
- * @param platform `PlatformType` to extract bash history from
- * @param alt_file Optional alternative history files
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative history files
  * @returns Array of `BashHistory`
  */
-export function getBashHistory(platform: PlatformType.Linux | PlatformType.Darwin, alt_file?: string): BashHistory[] {
+export function getBashHistory(protocol = AccessorProtocol.Host, alt_path?: string): BashHistory[] {
   let paths: string[] = [ "/home/*/.bash_history" ];
-  if (platform === PlatformType.Darwin) {
+  if (detectPlatform() === PlatformType.Darwin) {
     paths.push("/home/*/.bash_sessions/*.history");
     paths.push("/var/root/.bash_history");
     paths.push("/var/root/.bash_sessions/*.history");
   }
 
-  if (alt_file !== undefined) {
-    paths = [ alt_file ];
+  if (alt_path !== undefined) {
+    paths = [ alt_path ];
   }
 
   let history: BashHistory[] = [];
-
-  let glob_paths: GlobInfo[] = [];
-  for (const path of paths) {
-    const info = glob(path);
-    if (info instanceof FileError) {
+  const accessor = new Accessor();
+  for (const entry of paths) {
+    const matches = accessor.globfs(entry, protocol);
+    if (matches instanceof FileError) {
+      console.warn(`Could not glob ${entry}: ${matches}`);
       continue;
     }
 
-    glob_paths = glob_paths.concat(info);
-  }
+    for (const file of matches) {
+      if (file.meta.kind !== EntryKind.File) {
+        continue;
+      }
 
-  for (const path of glob_paths) {
-    if (!path.is_file) {
-      continue;
-    }
-    if (path.full_path.includes("bash_sessions") && !path.full_path.endsWith(".history")) {
-      continue;
-    }
+      if (file.meta.directory.includes("bash_sessions") && file.meta.extension !== "history") {
+        continue;
+      }
 
-    const data = readTextFile(path.full_path);
-    if (data instanceof FileError) {
-      console.warn(`Could not read ${path.full_path}: ${data}`);
-      continue;
-    }
+      const data = readTextFile(file.handle as FileHandle);
+      if (data instanceof FileError) {
+        console.warn(`Could not read bash file ${file.meta.display_path}: ${data}`);
+        continue;
+      }
 
-    const values = parseBash(data, path.full_path);
-    history = history.concat(values);
+      const values = parseBash(data, file.meta.display_path);
+      history = history.concat(values);
+    }
   }
 
   return history;
@@ -62,49 +62,49 @@ export function getBashHistory(platform: PlatformType.Linux | PlatformType.Darwi
 
 /**
  * Get zsh history for users
- * @param platform `PlatformType` to extract zsh history from
- * @param alt_file Optional alternative history files
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative history files
  * @returns Array of `ZshHistory`
  */
-export function getZshHistory(platform: PlatformType.Linux | PlatformType.Darwin, alt_file?: string): ZshHistory[] {
+export function getZshHistory(protocol = AccessorProtocol.Host, alt_path?: string): ZshHistory[] {
   let paths: string[] = [ "/home/*/.zsh_history" ];
-  if (platform === PlatformType.Darwin) {
+  if (detectPlatform() === PlatformType.Darwin) {
     paths.push("/home/*/.zsh_sessions/*");
     paths.push("/var/root/.zsh_history");
     paths.push("/var/root/.zsh_sessions/*.history");
   }
 
-  if (alt_file !== undefined) {
-    paths = [ alt_file ];
+  if (alt_path !== undefined) {
+    paths = [ alt_path ];
   }
 
   let history: ZshHistory[] = [];
-  let glob_paths: GlobInfo[] = [];
-  for (const path of paths) {
-    const info = glob(path);
-    if (info instanceof FileError) {
+  const accessor = new Accessor();
+  for (const entry of paths) {
+    const matches = accessor.globfs(entry, protocol);
+    if (matches instanceof FileError) {
+      console.warn(`Could not glob ${entry}: ${matches}`);
       continue;
     }
 
-    glob_paths = glob_paths.concat(info);
-  }
+    for (const file of matches) {
+      if (file.meta.kind !== EntryKind.File) {
+        continue;
+      }
 
-  for (const path of glob_paths) {
-    if (!path.is_file) {
-      continue;
-    }
-    if (path.full_path.includes("zsh_sessions") && !path.full_path.endsWith(".history")) {
-      continue;
-    }
+      if (file.meta.directory.includes("zsh_sessions") && file.meta.extension !== "history") {
+        continue;
+      }
 
-    const data = readTextFile(path.full_path);
-    if (data instanceof FileError) {
-      console.warn(`Could not read ${path.full_path}: ${data}`);
-      continue;
-    }
+      const data = readTextFile(file.handle as FileHandle);
+      if (data instanceof FileError) {
+        console.warn(`Could not read zsh file ${file.meta.display_path}: ${data}`);
+        continue;
+      }
 
-    const values = parseZsh(data, path.full_path);
-    history = history.concat(values);
+      const values = parseZsh(data, file.meta.display_path);
+      history = history.concat(values);
+    }
   }
 
   return history;
@@ -112,63 +112,63 @@ export function getZshHistory(platform: PlatformType.Linux | PlatformType.Darwin
 
 /**
  * Get ash history for users
- * @param platform `PlatformType` to extract ash history from
- * @param alt_file Optional alternative history files
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative history files
  * @returns Array of `AshHistory`
  */
-export function getAshHistory(platform: PlatformType.Linux | PlatformType.Darwin, alt_file?: string): AshHistory[] {
+export function getAshHistory(protocol = AccessorProtocol.Host, alt_path?: string): AshHistory[] {
   let paths: string[] = [ "/home/*/.ash_history" ];
-  if (platform === PlatformType.Darwin) {
+  if (detectPlatform() === PlatformType.Darwin) {
     paths.push("/home/*/.ash_sessions/*");
     paths.push("/var/root/.ash_history");
     paths.push("/var/root/.ash_sessions/*.history");
   }
 
-  if (alt_file !== undefined) {
-    paths = [ alt_file ];
+  if (alt_path !== undefined) {
+    paths = [ alt_path ];
   }
 
   const history: AshHistory[] = [];
-  let glob_paths: GlobInfo[] = [];
-  for (const path of paths) {
-    const info = glob(path);
-    if (info instanceof FileError) {
+  const accessor = new Accessor();
+  for (const entry of paths) {
+    const matches = accessor.globfs(entry, protocol);
+    if (matches instanceof FileError) {
+      console.warn(`Could not glob ${entry}: ${matches}`);
       continue;
     }
 
-    glob_paths = glob_paths.concat(info);
-  }
-
-  for (const path of glob_paths) {
-    if (!path.is_file) {
-      continue;
-    }
-    if (path.full_path.includes("zsh_sessions") && !path.full_path.endsWith(".history")) {
-      continue;
-    }
-
-    let offset = 0;
-    const limit = 200;
-    while (true) {
-      const data = readLines(path.full_path, offset, limit);
-      if (data instanceof FileError) {
-        console.warn(`Could not read ${path.full_path}: ${data}`);
-        break;
+    for (const file of matches) {
+      if (file.meta.kind !== EntryKind.File) {
+        continue;
       }
-      offset += limit;
 
-      for (let i = 0; i < data.length; i++) {
-        const value: AshHistory = {
-          history: data[ i ] ?? "",
-          line: i,
-          evidence: path.full_path
-        };
-
-        history.push(value);
-
+      if (file.meta.directory.includes("ash_sessions") && file.meta.extension !== "history") {
+        continue;
       }
-      if (data.length < limit) {
-        break;
+
+      let offset = 0;
+      const limit = 200;
+      while (true) {
+        const data = readLines(file.handle as FileHandle, offset, limit);
+        if (data instanceof FileError) {
+          console.warn(`Could not read ${file.meta.display_path}: ${data}`);
+          break;
+        }
+        offset += limit;
+
+        for (let i = 0; i < data.length; i++) {
+          const value: AshHistory = {
+            history: data[ i ] ?? "",
+            line: i,
+            evidence: file.meta.display_path,
+          };
+
+          history.push(value);
+
+        }
+        if (data.length < limit) {
+          break;
+        }
       }
     }
   }

@@ -1,34 +1,42 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../types/filesystem/accessor";
 import { KnownHosts } from "../../types/unix/ssh";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readTextFile, stat } from "../filesystem/files";
-import { PlatformType } from "../system/systeminfo";
+import { readTextFile } from "../filesystem/files";
+import { detectPlatform, PlatformType } from "../system/systeminfo";
 import { UnixError } from "./errors";
 
 /**
  * Function to get known hosts entries for SSH
- * @param platform `PlatformType` to parse SSH config
- * @param alt_glob Optional alternative glob to `known_hosts` files
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alot_path Optional alternative path to `known_hosts` files
  * @returns Array of `KnownHosts` or `UnixError`
  */
-export function listKnownHosts(platform: PlatformType, alt_glob?: string): KnownHosts[] | UnixError {
-    let glob_path = "/home/*/.ssh/known_hosts*";
-    if (platform === PlatformType.Darwin) {
-        glob_path = "/Users/*/.ssh/known_hosts*";
-    }
-    if (alt_glob !== undefined) {
-        glob_path = alt_glob;
+export function listKnownHosts(protocol = AccessorProtocol.Host, alot_path?: string): KnownHosts[] | UnixError {
+    let path = "/home/*/.ssh/known_hosts*";
+    if (detectPlatform() === PlatformType.Darwin) {
+        path = "/Users/*/.ssh/known_hosts*";
     }
 
-    const paths = glob(glob_path);
-    if (paths instanceof FileError) {
-        return new UnixError(`SSH_KNOWN_HOSTS`, `failed to glob: ${glob_path}`);
+    if (alot_path !== undefined) {
+        path = alot_path;
+    }
+
+    const accessor = new Accessor();
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new UnixError('SSH_KNOWN_HOSTS', `failed to glob for ${path}: ${matches}`);
     }
 
     const values: KnownHosts[] = [];
-    for (const entry of paths) {
-        const data = readTextFile(entry.full_path);
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
+            continue;
+        }
+
+        const data = readTextFile(entry.handle as FileHandle);
         if (data instanceof FileError) {
-            console.warn(`Could not read ${entry.full_path}`);
+            console.warn(`Could not read '${entry.meta.display_path}': ${data}`);
             continue;
         }
 
@@ -43,7 +51,7 @@ export function listKnownHosts(platform: PlatformType, alt_glob?: string): Known
                 target: value.at(0) ?? "",
                 algorithm: value.at(1) ?? "",
                 data: value.at(2) ?? "",
-                source: entry.full_path,
+                source: entry.meta.display_path,
                 created: "1970-01-01T00:00:00.000Z",
                 modified: "1970-01-01T00:00:00.000Z",
                 accessed: "1970-01-01T00:00:00.000Z",
@@ -55,22 +63,20 @@ export function listKnownHosts(platform: PlatformType, alt_glob?: string): Known
                 data_type: "unix:ssh:config:entry"
             };
 
-            const meta = stat(entry.full_path);
+            const meta = accessor.statHandle(entry.handle as FileHandle);
             if (meta instanceof FileError) {
-                console.warn(`Could not stat ${entry.full_path}`);
                 values.push(host);
                 continue;
             }
 
-            host.created = meta.created;
-            host.modified = meta.modified;
-            host.accessed = meta.accessed;
-            host.changed = meta.changed;
-            host.datetime = meta.modified;
+            host.created = meta.times.created;
+            host.modified = meta.times.modified;
+            host.accessed = meta.times.accessed;
+            host.changed = meta.times.changed;
+            host.datetime = meta.times.modified;
 
             values.push(host);
         }
-
     }
 
     return values;

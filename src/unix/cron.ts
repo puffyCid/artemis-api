@@ -1,18 +1,20 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../types/filesystem/accessor";
 import { Cron } from "../../types/unix/cron";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readTextFile } from "../filesystem/files";
-import { PlatformType } from "../system/systeminfo";
+import { readTextFile } from "../filesystem/files";
+import { detectPlatform, PlatformType } from "../system/systeminfo";
 
 
 /**
  * Parse `Cron` files on an endpoint
- * @param platform Either `PlatformType.Darwin` or `PlatformType.Linux`
- * @param alt_path Optional alternative cron file or glob to cron files
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative cron file
  * @returns Array of `Cron` entries or `UnixError`
  */
-export function getCron(platform: PlatformType.Darwin | PlatformType.Linux, alt_path?: string): Cron[] {
+export function getCron(protocol = AccessorProtocol.Host, alt_path?: string): Cron[] {
   let paths = [ "/var/spool/cron/crontabs/*", "/var/spool/cron/*", "/etc/cron.d/*" ];
-  if (platform === PlatformType.Darwin) {
+  if (detectPlatform() === PlatformType.Darwin) {
     paths = [ "/private/var/at/jobs/*", "/private/var/at/tabs/*", "/var/cron/tabs/*", "/private/var/cron/tabs/*", "/usr/lib/cron/tabs/*", "/etc/crontab", "/private/etc/crontab", "/var/at/tabs/*" ];
   }
 
@@ -20,22 +22,25 @@ export function getCron(platform: PlatformType.Darwin | PlatformType.Linux, alt_
     paths = [ alt_path ];
   }
   const entries: Cron[] = [];
+  const accessor = new Accessor();
 
-  for (const path of paths) {
-    const glob_paths = glob(path);
-    if (glob_paths instanceof FileError) {
-      console.warn(`Failed to failed to glob cron jobs: ${glob_paths}`);
+  for (const entry of paths) {
+    const matches = accessor.globfs(entry, protocol);
+    if (matches instanceof FileError) {
+      console.warn(`Could not glob ${entry}: ${matches}`);
       continue;
     }
 
-    for (const cron_file of glob_paths) {
-      if (!cron_file.is_file) {
+    for (const cron of matches) {
+      if (cron.meta.kind !== EntryKind.File) {
         continue;
       }
 
-      const data = readTextFile(cron_file.full_path);
+      const data = readTextFile(cron.handle as FileHandle);
       if (data instanceof FileError) {
-        console.warn(`Failed to read ${cron_file.full_path}: ${data}`);
+        console.warn(
+          `Could not read ${cron.meta.display_path}: ${data}`,
+        );
         continue;
       }
 
@@ -54,14 +59,12 @@ export function getCron(platform: PlatformType.Darwin | PlatformType.Linux, alt_
           month: fields.at(3) ?? "",
           weekday: fields.at(4) ?? "",
           command: fields.at(5) ?? "",
-          path: cron_file.full_path,
+          path: cron.meta.display_path,
         };
         entries.push(value);
       }
     }
   }
-
-
 
   return entries;
 }

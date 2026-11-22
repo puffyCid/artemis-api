@@ -71,14 +71,16 @@ export function platform(): string {
 /**
  * Function to detect platform. This just calls `platform()` and maps results to 
  * `PlatformType`
+ * 
+ * **Only** Windows, macOS, and Linux platforms are supported!
  * @returns `PlatformType`
  */
 export function detectPlatform(): PlatformType {
   const plat = platform().toLowerCase();
-  switch (plat){
+  switch (plat) {
     case "windows": return PlatformType.Windows;
     case "darwin": return PlatformType.Darwin;
     case "linux": return PlatformType.Linux;
-    default: return PlatformType.Unknown
+    default: return PlatformType.Unknown;
   }
 }
