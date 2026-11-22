@@ -1,8 +1,11 @@
+import { Sqlite } from "../../../src/applications/sqlite";
+import { DirectoryTree } from "../../../src/filesystem/tree";
 import { ChromiumCookieType } from "../../applications/chromium";
 import { Url } from "../../http/unfold";
 
 export interface FalkonProfile {
-    full_path: string;
+    tree: DirectoryTree;
+    database: Map<string, Sqlite | null>;
     version: string;
 }
 

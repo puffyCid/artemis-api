@@ -1,47 +1,71 @@
-import { OutputManager, glob, Output, readTextFile, stat } from "../../../../mod";
+import { OutputManager, Output, readTextFile } from "../../../../mod";
+import { AccessorProtocol, EntryKind, SourceHandle } from "../../../../types/filesystem/accessor";
 import { BookmarkLocation, FalkonBookmark, FalkonCookie, FalkonHistory, FalkonProfile } from "../../../../types/linux/kde/falkon";
 import { FileError } from "../../../filesystem/errors";
 import { SystemError } from "../../../system/error";
-import { PlatformType } from "../../../system/systeminfo";
 import { LinuxError } from "../../errors";
 import { falkonCookie, falkonHistory } from "./sqlite";
+import { Accessor } from "../../../filesystem/accessor";
+import { DirectoryTree } from "../../../filesystem/tree";
+
 
 /**
  * Class to parse KDE Falkon browser data
  */
 export class Falkon {
-    protected paths: FalkonProfile[] = [];
-    protected platform: PlatformType;
+    protected profiles: FalkonProfile[] = [];
     protected unfold: boolean;
+    protected protocol: AccessorProtocol = AccessorProtocol.Host;
+    protected accessor = new Accessor();
+    protected source: SourceHandle | FileError;
 
     /**
-     * Construct a `Falkon` object that can be used to parse browser data
-     * @param platform OS `PlatformType`
-     * @param unfold Attempt to parse URLs. Default is `false`
-     * @param alt_path Optional alternative path to directory contain Falkon data
-     * @returns `Falkon` instance class
+     * Create a new `Falkon` instance to parse data
+     * @param unfold Enable `Unfold` parsing. Default is false
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing Falkon data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing Falkon data. Default is `host:` which represents a live system.  
+     * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
+     * @param alt_path Provide an optional glob to an alternative Falkon directory
      */
-    constructor (platform: PlatformType, unfold = false, alt_path?: string) {
-        this.platform = platform;
+    constructor (unfold = false, protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
         this.unfold = unfold;
+        this.protocol = protocol;
+        const pattern = alt_path ?? "/home/*/.config/falkon/profiles/*";
 
-        if (alt_path === undefined) {
-            const results = this.profiles(platform);
-            if (results instanceof LinuxError) {
+        this.source = this.accessor.openSource(source_path, this.protocol);
+        if (this.source instanceof FileError) {
+            return;
+        }
+
+        const matches = this.accessor.sourceGlobfs(this.source, pattern);
+        if (matches instanceof FileError) {
+            return;
+        }
+
+        for (const entry of matches) {
+            // We want the base directory for Falkon artifacts
+            if (entry.meta.kind !== EntryKind.Directory) {
+                continue;
+            }
+
+            const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+            if (tree instanceof FileError) {
+                continue;
+            }
+
+            const version = this.version(tree);
+            if (version instanceof LinuxError) {
                 return;
             }
-            this.paths = results;
-            return;
-        }
-        const browser_version = this.version(this.platform, alt_path);
-        if (browser_version instanceof LinuxError) {
-            return;
-        }
 
-        this.paths = [ {
-            full_path: alt_path,
-            version: browser_version,
-        } ];
+            const profile: FalkonProfile = {
+                tree,
+                database: new Map(),
+                version,
+            };
+
+            this.profiles.push(profile);
+        }
     }
 
     /**
@@ -51,8 +75,8 @@ export class Falkon {
      * @returns Array of `FalkonHistory`
      */
     public history(offset = 0, limit = 100): FalkonHistory[] {
-        const query = `SELECT id, url, title, date, count FROM history LIMIT ${limit} OFFSET ${offset}`;
-        return falkonHistory(this.paths, this.platform, this.unfold, query);
+        const sql = `SELECT id, url, title, date, count FROM history ORDER BY id LIMIT ${limit} OFFSET ${offset}`;
+        return falkonHistory(sql, this.unfold, this.protocol, this.profiles);
     }
 
     /**
@@ -62,7 +86,7 @@ export class Falkon {
      * @returns Array of `FalkonCookie`
      */
     public cookie(offset = 0, limit = 100): FalkonCookie[] {
-        const query = `SELECT 
+        const sql = `SELECT 
                         (creation_utc / 1000000) AS creation_utc, 
                         host_key, 
                         top_frame_site_key, 
@@ -87,7 +111,7 @@ export class Falkon {
                         cookies 
                     LIMIT 
                         ${limit} OFFSET ${offset}`;
-        return falkonCookie(this.paths, this.platform, query);
+        return falkonCookie(sql, this.protocol, this.profiles);
     }
 
     /**
@@ -96,35 +120,37 @@ export class Falkon {
      */
     public bookmark(): FalkonBookmark[] {
         const hits: FalkonBookmark[] = [];
-        for (const path of this.paths) {
-            let book_path = `${path.full_path}/bookmarks.json`;
-            if (this.platform === PlatformType.Windows) {
-                book_path = `${path.full_path}\\bookmarks.json`;
+        for (const profile of this.profiles) {
+            const entry = profile.tree.file("bookmarks.json");
+            if (entry instanceof FileError) {
+                continue;
             }
 
-            const text = readTextFile(book_path);
+            const text = readTextFile(entry.handle);
             if (text instanceof FileError) {
                 continue;
             }
-            const json_data = JSON.parse(text);
 
             let created = "1970-01-01T00:00:00.000Z";
-            const meta = stat(book_path);
-            if (!(meta instanceof FileError)) {
-                created = meta.created;
+            const stat = this.accessor.statHandle(entry.handle);
+            if (!(stat instanceof FileError)) {
+                created = stat.times.created;
             }
+
+            const json_data = JSON.parse(text);
+
             // Get bookmarks in bar
-            for (const entry of json_data[ "roots" ][ "bookmark_bar" ][ "children" ] as Record<string, string | number>[]) {
+            for (const data of json_data[ "roots" ][ "bookmark_bar" ][ "children" ] as Record<string, string | number>[]) {
                 const value: FalkonBookmark = {
-                    bookmark_type: entry[ "type" ] as string,
-                    description: entry[ "description" ] as string,
-                    name: entry[ "description" ] as string,
+                    bookmark_type: data[ "type" ] as string,
+                    description: data[ "description" ] as string,
+                    name: data[ "description" ] as string,
                     location: BookmarkLocation.Bar,
-                    url: entry[ "description" ] as string,
-                    visit_count: entry[ "visit_count" ] as number,
-                    evidence: book_path,
-                    version: path.version,
-                    message: entry[ "description" ] as string,
+                    url: data[ "description" ] as string,
+                    visit_count: data[ "visit_count" ] as number,
+                    evidence: entry.meta.display_path,
+                    version: profile.version,
+                    message: data[ "description" ] as string,
                     datetime: created,
                     timestamp_desc: "Falkon Bookmark File Created",
                     artifact: "KDE Falkon Bookmark",
@@ -134,17 +160,17 @@ export class Falkon {
             }
 
             // Get bookmarks in menu folder
-            for (const entry of json_data[ "roots" ][ "bookmark_menu" ][ "children" ] as Record<string, string | number>[]) {
+            for (const data of json_data[ "roots" ][ "bookmark_menu" ][ "children" ] as Record<string, string | number>[]) {
                 const value: FalkonBookmark = {
-                    bookmark_type: entry[ "type" ] as string,
-                    description: entry[ "description" ] as string,
-                    name: entry[ "name" ] as string,
+                    bookmark_type: data[ "type" ] as string,
+                    description: data[ "description" ] as string,
+                    name: data[ "name" ] as string,
                     location: BookmarkLocation.Menu,
-                    url: entry[ "url" ] as string,
-                    visit_count: entry[ "visit_count" ] as number,
-                    evidence: book_path,
-                    version: path.version,
-                    message: entry[ "url" ] as string,
+                    url: data[ "url" ] as string,
+                    visit_count: data[ "visit_count" ] as number,
+                    evidence: entry.meta.display_path,
+                    version: profile.version,
+                    message: data[ "url" ] as string,
                     datetime: created,
                     timestamp_desc: "Falkon Bookmark File Created",
                     artifact: "KDE Falkon Bookmark",
@@ -154,17 +180,17 @@ export class Falkon {
             }
 
             // Get bookmarks in other
-            for (const entry of json_data[ "roots" ][ "other" ][ "children" ] as Record<string, string | number>[]) {
+            for (const data of json_data[ "roots" ][ "other" ][ "children" ] as Record<string, string | number>[]) {
                 const value: FalkonBookmark = {
-                    bookmark_type: entry[ "type" ] as string,
-                    description: entry[ "description" ] as string,
-                    name: entry[ "description" ] as string,
+                    bookmark_type: data[ "type" ] as string,
+                    description: data[ "description" ] as string,
+                    name: data[ "description" ] as string,
                     location: BookmarkLocation.Other,
-                    url: entry[ "description" ] as string,
-                    visit_count: entry[ "visit_count" ] as number,
-                    evidence: book_path,
-                    version: path.version,
-                    message: entry[ "description" ] as string,
+                    url: data[ "description" ] as string,
+                    visit_count: data[ "visit_count" ] as number,
+                    evidence: entry.meta.display_path,
+                    version: profile.version,
+                    message: data[ "description" ] as string,
                     datetime: created,
                     timestamp_desc: "Falkon Bookmark File Created",
                     artifact: "KDE Falkon Bookmark",
@@ -227,54 +253,21 @@ export class Falkon {
     }
 
     /**
-     * Get base path for all browser data
-     * @param platform OS `PlatformType`
-     * @returns Array of `FalkonProfile` or `ApplicationError`
-     */
-    private profiles(platform: PlatformType): FalkonProfile[] | LinuxError {
-        const path = "/home/*/.config/falkon/profiles/*";
-        const user_paths = glob(path);
-        if (user_paths instanceof FileError) {
-            return new LinuxError(
-                `FALKON`,
-                `failed to glob ${platform} paths: ${user_paths}`,
-            );
-        }
-
-        const profile_paths: FalkonProfile[] = [];
-        for (const entry of user_paths) {
-            if (!entry.is_directory) {
-                continue;
-            }
-            const version = this.version(this.platform, entry.full_path);
-            if (version instanceof LinuxError) {
-                continue;
-            }
-            const value: FalkonProfile = {
-                full_path: entry.full_path,
-                version
-            };
-            profile_paths.push(value);
-        }
-        return profile_paths;
-    }
-
-    /**
      * Function to determine browser version
      * @param platform OS `PlatformType`
      * @param path Path to base browser user profile
      * @returns Version number  or `ApplicationError`
      */
-    private version(platform: PlatformType, path: string): string | LinuxError {
-        let version_path = `${path}/version`;
-        if (platform === PlatformType.Windows) {
-            version_path = `${path}\\version`;
+    private version(tree: DirectoryTree): string | LinuxError {
+        const version_handle = tree.file("version");
+        if (version_handle instanceof FileError) {
+            return new LinuxError(`FALKON`, `could not find version file: ${version_handle}`);
         }
 
         // Version is just a single line
-        const text_data = readTextFile(version_path);
+        const text_data = readTextFile(version_handle.handle);
         if (text_data instanceof FileError) {
-            return new LinuxError(`FALKON`, `could not read ${version_path}: ${text_data}`);
+            return new LinuxError(`FALKON`, `could not read ${version_handle.meta.display_path}: ${text_data}`);
         }
 
         return text_data;

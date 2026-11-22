@@ -10,7 +10,7 @@ import { readTextFile } from "../../filesystem/files";
 import { DirectoryTree } from "../../filesystem/tree";
 import { SystemError } from "../../system/error";
 import { Output, OutputManager } from "../../system/output";
-import { unixEpochToISO } from "../../time/conversion";
+import { toIso } from "../../time/conversion";
 import { Unfold } from "../../unfold/client";
 import { UnfoldError } from "../../unfold/error";
 
@@ -423,8 +423,8 @@ export class Epiphany {
             host_id: row[ "host" ] as number,
             visit_count: row[ "visit_count" ] as number,
             typed_count: row[ "typed_count" ] as number,
-            last_visit_time: this.toIso(row[ "last_visit_time" ]),
-            thumbnail_update_time: this.toIso(row[ "thumbnail_update_time" ]),
+            last_visit_time: toIso(row[ "last_visit_time" ]),
+            thumbnail_update_time: toIso(row[ "thumbnail_update_time" ]),
             hidden_from_overview: Boolean(row[ "hidden_from_overview" ] as number),
             visit_type: this.visitType(row[ "visit_type" ] as number),
             evidence,
@@ -433,7 +433,7 @@ export class Epiphany {
             referring_visit: row[ "referring_visit" ] as string | null,
             sync_id: row[ "sync_id" ] as string | null,
             message: url,
-            datetime: this.toIso(row[ "visit_time" ]),
+            datetime: toIso(row[ "visit_time" ]),
             timestamp_desc: "URL Visited",
             artifact: "URL History",
             data_type: "linux:gnome:epiphany:history:entry",
@@ -467,7 +467,7 @@ export class Epiphany {
         };
 
         if (row[ "lastAccessed" ] !== null) {
-            value.last_accessed = this.toIso(row[ "lastAccessed" ]);
+            value.last_accessed = toIso(row[ "lastAccessed" ]);
         }
 
         if (row[ "isSecure" ] !== null) {
@@ -483,24 +483,11 @@ export class Epiphany {
         }
 
         if (row[ "expiry" ] !== null) {
-            value.expiry = this.toIso(row[ "expiry" ]);
+            value.expiry = toIso(row[ "expiry" ]);
             value.datetime = value.expiry;
         }
 
         return value;
-    }
-
-    /**
-     * Convert timestamps to ISO8601
-     * @param value Timestamp value from sqlite database
-     * @returns ISO8601 string with millisecond precision
-     */
-    private toIso(value: unknown) {
-        if (typeof value === "number" || typeof value === "bigint") {
-            return unixEpochToISO(value);
-        }
-
-        return unixEpochToISO(0);
     }
 
     /**

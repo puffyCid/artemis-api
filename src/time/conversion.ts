@@ -54,7 +54,7 @@ export function oleToIso(oletime: bigint): string {
 }
 
 /**
- * Convert browser WebKit time to UNIXEPOCH. You will want to ensure you webkittime is in seconds! (Divide by 1000000n)
+ * Convert browser WebKit time to ISO8601
  * @param webkittime WebKit timestamp
  * @returns ISO8601 format with millisecond precision
  */
@@ -160,4 +160,17 @@ export function convertModifiedIso(timestamp: string): string {
 
   const utc_date = new Date(normal).toISOString();
   return utc_date;
+}
+
+/**
+ * Convert **UNIXEPOCH** timestamps to ISO8601
+ * @param value Timestamp value with unknown type. (Typically found when querying sqlite database)
+ * @returns ISO8601 string with millisecond precision
+ */
+export function toIso(value: unknown) {
+  if (typeof value === "number" || typeof value === "bigint") {
+    return unixEpochToISO(value);
+  }
+
+  return unixEpochToISO(0);
 }
