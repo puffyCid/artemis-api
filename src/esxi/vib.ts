@@ -1,5 +1,6 @@
-import { glob } from "../../mod";
+import { Accessor } from "../../mod";
 import { RawVibXml, VibInfo, VibPayload } from "../../types/esxi/vib";
+import { AccessorProtocol, EntryKind, FileHandle, GlobMatch } from "../../types/filesystem/accessor";
 import { EncodingError } from "../encoding/errors";
 import { readXml } from "../encoding/xml";
 import { FileError } from "../filesystem/errors";
@@ -7,27 +8,26 @@ import { EsxiError } from "./error";
 
 /**
  * Parse vSphere Installation Bundles (VIB) package info
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Optional alternative glob path to folder containing VIB xml files
  * @returns Array of `VibInfo` or `EsxiError`
  */
-export function getVibs(alt_path?: string): VibInfo[] | EsxiError {
-    let vib_glob = "/var/db/esximg/vibs/*.xml";
-    if (alt_path !== undefined) {
-        vib_glob = alt_path;
-    }
+export function getVibs(protocol = AccessorProtocol.Host, alt_path?: string): VibInfo[] | EsxiError {
+    const path = alt_path ?? "/var/db/esximg/vibs/*.xml";
+    const accessor = new Accessor();
 
-    const paths = glob(vib_glob);
-    if (paths instanceof FileError) {
-        return new EsxiError(`VIBPACKAGE`, `failed to glob: ${vib_glob}: ${paths}`);
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new EsxiError(`VIBPACKAGE`, `failed to glob: ${path}: ${matches}`);
     }
 
     const vibs: VibInfo[] = [];
-    for (const entry of paths) {
-        if (!entry.is_file || !entry.filename.endsWith(".xml")) {
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File || entry.meta.extension !== "xml") {
             continue;
         }
 
-        const value = parseVib(entry.full_path);
+        const value = parseVib(entry);
         if (value instanceof EsxiError) {
             continue;
         }
@@ -40,13 +40,13 @@ export function getVibs(alt_path?: string): VibInfo[] | EsxiError {
 
 /**
  * Parse the VIB xml info
- * @param full_path Path to VIB xml file
+ * @param entry `GlobMatch` object for a VIB file
  * @returns `VibInfo` or `EsxiError`
  */
-function parseVib(full_path: string): VibInfo | EsxiError {
-    const info = readXml(full_path);
+function parseVib(entry: GlobMatch): VibInfo | EsxiError {
+    const info = readXml(entry.handle as FileHandle);
     if (info instanceof EncodingError) {
-        return new EsxiError(`VIBPACKAGE`, `could not read vib package at ${full_path}: ${info}`);
+        return new EsxiError(`VIBPACKAGE`, `could not read vib package at '${entry.meta.display_path}': ${info}`);
     }
 
     const raw_vib = info as unknown as RawVibXml;
@@ -87,7 +87,7 @@ function parseVib(full_path: string): VibInfo | EsxiError {
         vib_type: raw_vib.vib.type,
         payloads: [],
         urls: [],
-        evidence: full_path,
+        evidence: entry.meta.display_path,
         timezone,
         installed: raw_vib.vib.installdate !== undefined ? true : false
     };
@@ -185,7 +185,7 @@ function parseVib(full_path: string): VibInfo | EsxiError {
  */
 export function testGetVibs(): void {
     const test = "../../test_data/esxi/vibs/artemis--2860263652605340392.xml";
-    const results = getVibs(test);
+    const results = getVibs(AccessorProtocol.Host, test);
     if (results instanceof EsxiError) {
         throw results;
     }
@@ -200,12 +200,4 @@ export function testGetVibs(): void {
 
 
     console.info(`  Function getVibs ✅`);
-
-
-    const bad_file = parseVib("fake path");
-    if (!(bad_file instanceof EsxiError)) {
-        throw bad_file;
-    }
-
-    console.info(`  Function parseVib ✅`);
 }

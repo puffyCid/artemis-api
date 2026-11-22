@@ -34,10 +34,7 @@ export function getRpmInfo(
   alt_path?: string,
 ): RpmPackages[] | LinuxError {
   const query = `SELECT * FROM Packages LIMIT ${limit} OFFSET ${offset}`;
-  let path = "/usr/lib/sysimage/rpm/rpmdb.sqlite";
-  if (alt_path !== undefined) {
-    path = alt_path;
-  }
+  const path = alt_path ?? "/usr/lib/sysimage/rpm/rpmdb.sqlite";
 
   const accessor = new Accessor();
   const matches = accessor.globfs(path, protocol);

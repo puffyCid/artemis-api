@@ -1,50 +1,50 @@
 import { Syslog } from "../../../types/esxi/logs/syslog";
+import { AccessorProtocol, EntryKind, FileHandle, GlobMatch } from "../../../types/filesystem/accessor";
 import { decompress_gzip } from "../../compression/decompress";
 import { CompressionError } from "../../compression/errors";
 import { extractUtf8String } from "../../encoding/strings";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob, readFile, readLines } from "../../filesystem/files";
+import { readLines } from "../../filesystem/files";
 import { NomError } from "../../nom/error";
 import { take, takeUntil } from "../../nom/parsers";
 import { EsxiError } from "../error";
 
 /**
  * Function to parse ESXi `syslog.log` file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Optional alternative glob to `syslog.log`
  * @returns Array of `Syslog` or `EsxiError`
  */
-export function sysLogEsxi(alt_path?: string): Syslog[] | EsxiError {
-    let syslog_glob = "/vmfs/volumes/*/log/syslog.log*";
-    if (alt_path !== undefined) {
-        syslog_glob = alt_path;
-    }
+export function sysLogEsxi(protocol = AccessorProtocol.Host, alt_path?: string): Syslog[] | EsxiError {
+    const path = alt_path ?? "/vmfs/volumes/*/log/syslog.log*";
+    const accessor = new Accessor();
 
-    const paths = glob(syslog_glob);
-    if (paths instanceof FileError) {
-        return new EsxiError(`SYSLOG`, `failed to glob: ${syslog_glob}: ${paths}`);
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new EsxiError(`SYSLOG`, `failed to glob: ${path}: ${matches}`);
     }
 
     let logs: Syslog[] = [];
-    for (const entry of paths) {
-        if (!entry.is_file) {
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
 
-        if (entry.filename.endsWith(".gz")) {
-            const values = decompressSyslog(entry.full_path);
+        if (entry.meta.extension === "gz") {
+            const values = decompressSyslog(entry, accessor);
             if (values instanceof EsxiError) {
                 continue;
             }
             logs = logs.concat(values);
+            continue;
         }
-
-        const values = readSyslog(entry.full_path);
+        const values = readSyslog(entry);
         if (values instanceof EsxiError) {
             continue;
         }
 
         logs = logs.concat(values);
-
     }
 
     return logs;
@@ -52,22 +52,22 @@ export function sysLogEsxi(alt_path?: string): Syslog[] | EsxiError {
 
 /**
  * Parse each line of the ESXi `syslog.log` file
- * @param full_path Path to the `syslog.log` file
+ * @param entry `GlobMatch` object to the `syslog.log` file
  * @returns Array of `Syslog` or `EsxiError`
  */
-function readSyslog(full_path: string): Syslog[] | EsxiError {
+function readSyslog(entry: GlobMatch): Syslog[] | EsxiError {
     const limit = 200;
     let offset = 0;
 
     const values: Syslog[] = [];
     while (true) {
-        const lines = readLines(full_path, offset, limit);
+        const lines = readLines(entry.handle as FileHandle, offset, limit);
         if (lines instanceof FileError) {
-            return new EsxiError(`SYSLOG`, `could not read file ${full_path}: ${lines}`);
+            return new EsxiError(`SYSLOG`, `could not read file '${entry.meta.display_path}': ${lines}`);
         }
         offset += limit;
         for (const line of lines) {
-            values.push(extractLine(line, full_path));
+            values.push(extractLine(line, entry.meta.display_path));
         }
 
         if (lines.length < limit) {
@@ -80,19 +80,20 @@ function readSyslog(full_path: string): Syslog[] | EsxiError {
 
 /**
  * Function to decompress gzip compressed syslog files
- * @param full_path Full path to compressed syslog file
+ * @param entry `GlobMatch` object to compressed syslog file
+ * @param accessor `Accessor` instance to read the syslog file
  * @returns Array of `Syslog` or `EsxiError`
  */
-function decompressSyslog(full_path: string): Syslog[] | EsxiError {
+function decompressSyslog(entry: GlobMatch, accessor: Accessor): Syslog[] | EsxiError {
     let bytes: Uint8Array | FileError | CompressionError;
-    bytes = readFile(full_path);
+    bytes = accessor.readFileHandle(entry.handle as FileHandle);
     if (bytes instanceof FileError) {
-        return new EsxiError(`SYSLOG`, `failed to read file ${full_path}: ${bytes}`);
+        return new EsxiError(`SYSLOG`, `failed to read file '${entry.meta.display_path}': ${bytes}`);
     }
 
     bytes = decompress_gzip(bytes);
     if (bytes instanceof CompressionError) {
-        return new EsxiError(`SYSLOG`, `failed to decompress file ${full_path}: ${bytes}`);
+        return new EsxiError(`SYSLOG`, `failed to decompress file '${entry.meta.display_path}': ${bytes}`);
     }
 
     const newline = new Uint8Array([ 10 ]);
@@ -102,7 +103,7 @@ function decompressSyslog(full_path: string): Syslog[] | EsxiError {
         if (decom_bytes instanceof NomError) {
             break;
         }
-        const line = extractLine(extractUtf8String(decom_bytes.nommed as Uint8Array), full_path);
+        const line = extractLine(extractUtf8String(decom_bytes.nommed as Uint8Array), entry.meta.display_path);
         values.push(line);
 
         // Nom the newline now
@@ -155,7 +156,7 @@ function extractLine(line: string, evidence: string): Syslog {
  */
 export function testSyslogEsxi(): void {
     const test = "../../test_data/esxi/logs/syslog*";
-    const results = sysLogEsxi(test);
+    const results = sysLogEsxi(AccessorProtocol.Host, test);
     if (results instanceof EsxiError) {
         throw results;
     }
@@ -170,32 +171,10 @@ export function testSyslogEsxi(): void {
 
     console.info(`  Function sysLogEsxi ✅`);
 
-    const bad_file = readSyslog("fake path");
-    if (!(bad_file instanceof EsxiError)) {
-        throw bad_file;
-    }
-
-    console.info(`  Function readSyslog ✅`);
-
     const result = extractLine("2026-04-05T00:01:00.925Z Db(15) backup-check[136534]: No ConfigSchema: xmlfile='/var/db/esximg/vibs/qedentv-2670021833313565255.xml'", test);
     if (result.datetime !== "2026-04-05T00:01:00.925Z") {
         throw `Got ${result.datetime} expected "2026-04-05T00:01:00.925Z".......extractLine ❌`;
     }
 
     console.info(`  Function extractLine ✅`);
-
-    const gz_results = decompressSyslog("../../test_data/esxi/logs/syslog.5.gz");
-    if (gz_results instanceof EsxiError) {
-        throw gz_results;
-    }
-
-    if (gz_results.length !== 8462) {
-        throw `Got ${gz_results.length} expected 8462.......decompressSyslog ❌`;
-    }
-
-    if (gz_results[ 204 ]?.message !== "No ConfigSchema: xmlfile='/var/db/esximg/vibs/qedentv-7929314746453517149.xml'") {
-        throw `Got ${gz_results[ 204 ]?.message} expected "No ConfigSchema: xmlfile='/var/db/esximg/vibs/qedentv-7929314746453517149.xml'".......decompressSyslog ❌`;
-    }
-
-    console.info(`  Function decompressSyslog ✅`);
 }

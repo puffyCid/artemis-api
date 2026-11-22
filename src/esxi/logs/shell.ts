@@ -1,37 +1,38 @@
 import { ShellHistory } from "../../../types/esxi/logs/shell";
+import { AccessorProtocol, EntryKind, FileHandle, GlobMatch } from "../../../types/filesystem/accessor";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob, readLines } from "../../filesystem/files";
+import { readLines } from "../../filesystem/files";
 import { EsxiError } from "../error";
 
 /**
  * Function to parse ESXi `shell.log` file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Optional alternative glob to `shell.log`
  * @returns Array of `ShellHistory` or `EsxiError`
  */
-export function shellLogHistory(alt_path?: string): ShellHistory[] | EsxiError {
-    let shell_glob = "/vmfs/volumes/*/log/shell.log";
-    if (alt_path !== undefined) {
-        shell_glob = alt_path;
-    }
+export function shellLogHistory(protocol = AccessorProtocol.Host, alt_path?: string): ShellHistory[] | EsxiError {
+    const path = alt_path ?? "/vmfs/volumes/*/log/shell.log";
+    const accessor = new Accessor();
 
-    const paths = glob(shell_glob);
-    if (paths instanceof FileError) {
-        return new EsxiError(`SHELLHISTORY`, `failed to glob: ${shell_glob}: ${paths}`);
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new EsxiError(`SHELLHISTORY`, `failed to glob: ${path}: ${matches}`);
     }
 
     let history: ShellHistory[] = [];
-    for (const entry of paths) {
-        if (!entry.is_file) {
+
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
 
-        const values = readHistory(entry.full_path);
+        const values = readHistory(entry);
         if (values instanceof EsxiError) {
             continue;
         }
 
         history = history.concat(values);
-
     }
 
     return history;
@@ -39,18 +40,18 @@ export function shellLogHistory(alt_path?: string): ShellHistory[] | EsxiError {
 
 /**
  * Parse each line of the ESXi `shell.log` file
- * @param full_path Path to the `shell.log` file
+ * @param entry `GlobMatch` object to the `shell.log` file
  * @returns Array of `ShellHistory` or `EsxiError`
  */
-function readHistory(full_path: string): ShellHistory[] | EsxiError {
+function readHistory(entry: GlobMatch): ShellHistory[] | EsxiError {
     const limit = 200;
     let offset = 0;
 
     const values: ShellHistory[] = [];
     while (true) {
-        const lines = readLines(full_path, offset, limit);
+        const lines = readLines(entry.handle as FileHandle, offset, limit);
         if (lines instanceof FileError) {
-            return new EsxiError(`SHELLHISTORY`, `could not read file ${full_path}: ${lines}`);
+            return new EsxiError(`SHELLHISTORY`, `could not read file '${entry.meta.display_path}': ${lines}`);
         }
         offset += limit;
         for (const line of lines) {
@@ -63,7 +64,7 @@ function readHistory(full_path: string): ShellHistory[] | EsxiError {
                 pid: 0,
                 account: "",
                 command: "",
-                evidence: full_path,
+                evidence: entry.meta.display_path,
                 category: "",
             };
 
@@ -91,16 +92,16 @@ function readHistory(full_path: string): ShellHistory[] | EsxiError {
                 continue;
             }
 
-            const entry = line.split(" ");
-            value.datetime = entry.at(0) ?? "1970-01-01T00:00:00.000Z";
-            value.category = entry.at(1) ?? "";
-            const pid_string = entry.at(2) ?? 0;
+            const line_value = line.split(" ");
+            value.datetime = line_value.at(0) ?? "1970-01-01T00:00:00.000Z";
+            value.category = line_value.at(1) ?? "";
+            const pid_string = line_value.at(2) ?? 0;
             if (pid_string !== 0) {
                 const pid_value = pid_string.split("[").at(1) ?? "0";
                 value.pid = Number(pid_value.replace("]:", ""));
             }
-            value.message = entry.slice(3).join(" ");
-            value.command = entry.slice(3).join(" ");
+            value.message = line_value.slice(3).join(" ");
+            value.command = line_value.slice(3).join(" ");
             values.push(value);
         }
 
@@ -120,7 +121,7 @@ function readHistory(full_path: string): ShellHistory[] | EsxiError {
  */
 export function testShellLogHistory(): void {
     const test = "../../test_data/esxi/logs/shell.log";
-    const results = shellLogHistory(test);
+    const results = shellLogHistory(AccessorProtocol.Host, test);
     if (results instanceof EsxiError) {
         throw results;
     }
@@ -134,12 +135,4 @@ export function testShellLogHistory(): void {
     }
 
     console.info(`  Function shellLogHistory ✅`);
-
-
-    const bad_file = readHistory("fake path");
-    if (!(bad_file instanceof EsxiError)) {
-        throw bad_file;
-    }
-
-    console.info(`  Function readHistory ✅`);
 }

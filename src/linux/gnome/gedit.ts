@@ -17,11 +17,7 @@ export function geditRecentFiles(
   protocol = AccessorProtocol.Host,
   alt_path?: string,
 ): RecentFiles[] | LinuxError {
-  let path = "/home/*/.local/share/gedit/gedit-metadata.xml";
-
-  if (alt_path !== undefined) {
-    path = alt_path;
-  }
+  const path = alt_path ?? "/home/*/.local/share/gedit/gedit-metadata.xml";
 
   const accessor = new Accessor();
   // Based on the `AccessorProtocol` glob for gedit files
