@@ -26,7 +26,7 @@ export class UserAccessLogging extends EseDatabase {
    * @param [protocol=AccessorProtocol.Ntfs] `AccessorProtocol` to use for accessing the EDB file. Default is `AccessorProtocol.Ntfs`
    * @param path Path to UAL related file. Such as SystemIdentity.mdb or Current.mdb or <GUID>.mdb.
    */
-  constructor(path: string, protocol = AccessorProtocol.Ntfs) {
+  constructor (path: string, protocol = AccessorProtocol.Ntfs) {
     const accessor = new Accessor();
 
     const result = accessor.stat(path, protocol);
@@ -75,7 +75,7 @@ export class UserAccessLogging extends EseDatabase {
       return rows;
     }
 
-    const row_data = rows["ROLE_IDS"];
+    const row_data = rows[ "ROLE_IDS" ];
     if (row_data === undefined) {
       return new WindowsError(
         `UAL`,
@@ -109,7 +109,7 @@ export class UserAccessLogging extends EseDatabase {
       return rows;
     }
 
-    const row_data = rows["CLIENTS"];
+    const row_data = rows[ "CLIENTS" ];
     if (row_data === undefined) {
       return new WindowsError(
         `UAL`,
@@ -312,8 +312,8 @@ export class UserAccessLogging extends EseDatabase {
  * Or want to validate the Windows UAL parsing
  */
 export function testUserAccessLogging(): void {
-  const id = "../../tests/test_data/DFIRArtifactMuseum/ual/SystemIdentity.mdb";
-  const current = "../../tests/test_data/DFIRArtifactMuseum/ual/Current.mdb";
+  const id = "../../../tests/test_data/DFIRArtifactMuseum/ual/SystemIdentity.mdb";
+  const current = "../../../tests/test_data/DFIRArtifactMuseum/ual/Current.mdb";
   const roles = new UserAccessLogging(id, AccessorProtocol.Host);
 
   const clients = new UserAccessLogging(current, AccessorProtocol.Host);
@@ -339,8 +339,8 @@ export function testUserAccessLogging(): void {
     throw `Got '${info.length}' expected "13".......getRoleIds ❌`;
   }
 
-  if (info[8]?.name !== "Windows Deployment Services") {
-    throw `Got '${info[8]?.name}' expected "Windows Deployment Services".......getRoleIds ❌`;
+  if (info[ 8 ]?.name !== "Windows Deployment Services") {
+    throw `Got '${info[ 8 ]?.name}' expected "Windows Deployment Services".......getRoleIds ❌`;
   }
 
   console.info(`  Function getRoleIds ✅`);
