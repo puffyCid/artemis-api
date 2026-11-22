@@ -111,7 +111,7 @@ export class DirectoryTree {
 
     /**
      * Search for a file starting from the relative directory from the `DirectoryTree`
-     * @param relative Path to start the file search
+     * @param relative File path to start the file search. Ex: `Cookies/cookie.sqlite` or `telemetry.db`
      * @returns `FileEntry` or `FileError`
      */
     public file(relative: string): FileEntry | FileError {

@@ -110,14 +110,19 @@ export class Epiphany {
      * @param [limit=100] How many records to return. Default is 100
      * @returns Array of `EpiphanyCookies`
      */
-    public cookie(offset = 0, limit = 100): EpiphanyCookies[] {
-        const query = `SELECT * FROM moz_cookies LIMIT ${limit} OFFSET ${offset}`;
+    public cookies(offset = 0, limit = 100): EpiphanyCookies[] {
+        const query = `SELECT * FROM moz_cookies ORDER BY id LIMIT ${limit} OFFSET ${offset}`;
         const results: EpiphanyCookies[] = [];
 
         for (const profile of this.profiles) {
             const data = this.query(profile, "cookies.sqlite", query);
             if (data instanceof ApplicationError) {
                 continue;
+            }
+
+            for (const row of data.rows) {
+                const value = this.cookieEntry(row, data.evidence);
+                results.push(value);
             }
         }
 
@@ -212,26 +217,26 @@ export class Epiphany {
             same_site: false,
             evidence,
             message: `Cookie for ${row[ "host" ] as string | null} | ${row[ "name" ] as string | null ?? ""}`,
-            datetime: "",
+            datetime: "1970-01-01T00:00:00.000Z",
             timestamp_desc: "Cookie Expires",
             artifact: "Website Cookie",
             data_type: "linux:browser:epiphany:cookie:entry"
         };
 
         if (row[ "lastAccessed" ] !== null) {
-            value.last_accessed = this.toIso(row[ "last_access" ]);
+            value.last_accessed = this.toIso(row[ "lastAccessed" ]);
         }
 
         if (row[ "isSecure" ] !== null) {
-            value.is_secure = Boolean(row[ "is_secure" ] as number);
+            value.is_secure = Boolean(row[ "isSecure" ] as number);
         }
 
         if (row[ "isHttpOnly" ] !== null) {
-            value.is_http_only = Boolean(row[ "is_http_only" ] as number);
+            value.is_http_only = Boolean(row[ "isHttpOnly" ] as number);
         }
 
         if (row[ "sameSite" ] !== null) {
-            value.same_site = Boolean(row[ "same_site" ] as number);
+            value.same_site = Boolean(row[ "sameSite" ] as number);
         }
 
         if (row[ "expiry" ] !== null) {
