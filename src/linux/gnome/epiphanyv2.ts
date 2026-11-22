@@ -1,7 +1,8 @@
 import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesystem/accessor";
-import { EpiphanyCookies, EpiphanyHistory, EpiphanyPermissions, EpiphanyProfiles, EpiphanySessions, RawEpiphanySessions, VisitType } from "../../../types/linux/gnome/epiphany";
+import { EpiphanyCookies, EpiphanyHistory, EpiphanyPermissions, EpiphanyPrint, EpiphanyProfiles, EpiphanySessions, RawEpiphanySessions, VisitType } from "../../../types/linux/gnome/epiphany";
 import { ApplicationError } from "../../applications/errors";
 import { querySqlite, Sqlite } from "../../applications/sqlite";
+import { EncodingError } from "../../encoding/errors";
 import { readXml } from "../../encoding/xml";
 import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
@@ -145,25 +146,99 @@ export class Epiphany {
             }
 
             const xml_data = readXml(entry.handle);
-            const json_data = xml_data as unknown as RawEpiphanySessions;
-            if (!Array.isArray(json_data.session.window.embed)) {
-                json_data.session.window.embed = [ json_data.session.window.embed ];
+            if (xml_data instanceof EncodingError) {
+                continue;
             }
-            for (const value of json_data.session.window.embed) {
-                const session: EpiphanySessions = {
-                    url: value[ "@url" ],
-                    title: value[ "@title" ],
-                    history: value[ "@history" ],
-                    evidence: entry.meta.display_path,
-                    message: `Session for ${value[ "@url" ]}`,
-                    datetime: "1970-01-01T00:00:00.000Z",
-                    timestamp_desc: "N/A",
-                    artifact: "GNOME Epiphany Session",
-                    data_type: "linux:browser:epiphany:session:entry"
-                };
 
-                results.push(session);
+            const raw = xml_data as unknown as RawEpiphanySessions;
+            for (const window of this.asArray(raw.session?.window)) {
+                for (const value of this.asArray(window.embed)) {
+                    const session: EpiphanySessions = {
+                        url: value[ "@url" ],
+                        title: value[ "@title" ],
+                        history: value[ "@history" ],
+                        evidence: entry.meta.display_path,
+                        message: `Session for ${value[ "@url" ]}`,
+                        datetime: "1970-01-01T00:00:00.000Z",
+                        timestamp_desc: "N/A",
+                        artifact: "GNOME Epiphany Session",
+                        data_type: "linux:browser:epiphany:session:entry"
+                    };
+
+                    results.push(session);
+                }
             }
+        }
+
+        return results;
+    }
+
+    /**
+     * Function to return last printed page
+     * @returns Array of `EpiphanyPrint`
+     */
+    public lastPrint(): EpiphanyPrint[] {
+        const results: EpiphanyPrint[] = [];
+
+        for (const profile of this.profiles) {
+            const entry = profile.tree.file("print-settings.ini");
+            if (entry instanceof FileError) {
+                continue;
+            }
+
+            const print_data = readTextFile(entry.handle);
+            if (print_data instanceof FileError) {
+                continue;
+            }
+
+            const lines = print_data.split("\n");
+            const print: EpiphanyPrint = {
+                scale: 0,
+                copies: 0,
+                number: 0,
+                reverse: false,
+                output: "",
+                page_set: "",
+                printer: "",
+                pages: "",
+                collate: false,
+                evidence: entry.meta.display_path,
+                message: "",
+                datetime: "1970-01-01T00:00:00.000Z",
+                timestamp_desc: "N/A",
+                artifact: "GNOME Epiphany Last Print",
+                data_type: "linux:browser:epiphany:cookie:entry"
+            };
+
+            for (const line of lines) {
+                if (line.startsWith("scale=")) {
+                    print.scale = Number(line.replace("scale=", ""));
+                } else if (line.startsWith("n-copies=")) {
+                    print.copies = Number(line.replace("n-copies=", ""));
+                } else if (line.startsWith("number-up=")) {
+                    print.number = Number(line.replace("number-up=", ""));
+                } else if (line.startsWith("reverse=")) {
+                    print.reverse = Boolean(line.replace("reverse=", "") === 'true');
+                } else if (line.startsWith("collate=")) {
+                    print.collate = Boolean(line.replace("collate=", ""));
+                } else if (line.startsWith("printer=")) {
+                    print.printer = line.replace("printer=", "");
+                } else if (line.startsWith("page-set=")) {
+                    print.page_set = line.replace("page-set=", "");
+                } else if (line.startsWith("output-uri=")) {
+                    print.output = line.replace("output-uri=", "");
+                    print.message = `Print page ${print.output}`;
+                } else if (line.startsWith("print-pages=")) {
+                    const value = line.replace("print-pages=", "");
+                    if (!Number.isNaN(Number(value))) {
+                        print.pages = Number(value);
+                        continue;
+                    }
+                    print.pages = value;
+                }
+            }
+
+            results.push(print);
         }
 
         return results;
@@ -372,4 +447,55 @@ export class Epiphany {
             default: return VisitType.Unknown;
         }
     }
+
+    /**
+     * Return a array based on provided `T` type
+     * @param value A non-undefined or null value
+     * @returns Array of `T`
+     */
+    private asArray<T>(value: T | T[] | undefined): T[] {
+        if (value === undefined || value === null) {
+            return [];
+        }
+
+        return Array.isArray(value) ? value : [ value ];
+    }
+}
+
+/**
+ * Function to test GNOME Epiphany parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the GNOME Epiphany parsing
+ */
+export function testEpiphany(): void {
+    const test = "../../test_data/linux/epiphany";
+    const client = new Epiphany(false, AccessorProtocol.Host, "host:", test);
+
+    const history = client.history(0, 100);
+    if (history.length !== 15) {
+        throw `Got ${history.length} expected 15.......history ❌`;
+    }
+
+    console.info(`  Function history ✅`);
+
+    const cookies = client.cookies(0, 100);
+    if (cookies.length !== 0) {
+        throw `Got ${cookies.length} expected 0.......cookies ❌`;
+    }
+
+    console.info(`  Function cookies ✅`);
+
+    const print = client.lastPrint();
+    if (print.length !== 1) {
+        throw `Got ${print.length} expected 1.......lastPrint ❌`;
+    }
+
+    console.info(`  Function lastPrint ✅`);
+
+    const sessions = client.sessions();
+    if (sessions.length !== 2) {
+        throw `Got ${sessions.length} expected 2.......sessions ❌`;
+    }
+
+    console.info(`  Function sessions ✅`);
 }

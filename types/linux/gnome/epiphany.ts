@@ -115,11 +115,13 @@ export interface EpiphanySessions {
 }
 
 export interface RawEpiphanySessions {
-    session: {
-        window: {
-            embed: RawEpiphanySessionsEmbed | RawEpiphanySessionsEmbed[];
-        };
+    session?: {
+        window?: RawEpiphanySessionsWindow | RawEpiphanySessionsWindow[];
     };
+}
+
+interface RawEpiphanySessionsWindow {
+    embed?: RawEpiphanySessionsEmbed | RawEpiphanySessionsEmbed[];
 }
 
 interface RawEpiphanySessionsEmbed {
