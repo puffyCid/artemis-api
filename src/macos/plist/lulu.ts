@@ -1,71 +1,90 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import {
   LuluAction,
   Rule,
 } from "../../../types/macos/plist/lulu";
+import { Accessor } from "../../filesystem/accessor";
+import { FileError } from "../../filesystem/errors";
 import { MacosError } from "../errors";
 import { getPlist } from "../plist";
 
 /**
  * Function to extract Lulu firewall rules.
- * @param alt_file Optional path to Lulu `rules.plist` file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional path to Lulu `rules.plist` file
  * @returns `LuluRules` object or `MacosError`
  */
-export function luluRules(alt_file?: string): Rule[] | MacosError {
-  let file = "/Library/Objective-See/LuLu/rules.plist";
-  if (alt_file !== undefined) {
-    file = alt_file;
+export function luluRules(protocol = AccessorProtocol.Host, alt_path?: string): Rule[] | MacosError {
+  const path = alt_path ?? "/Library/Objective-See/LuLu/rules.plist";
+  const accessor = new Accessor();
+
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new MacosError(`LULU`, `failed to glob for ${path}: ${matches}`);
   }
 
-  const plist_data = getPlist(file);
-  if (plist_data instanceof MacosError) {
-    return new MacosError(
-      `LULU`,
-      `failed to parse rules plist ${file}: ${plist_data}`,
-    );
-  }
-
-  // Rules format at: https://github.com/objective-see/LuLu/blob/master/LuLu/Extension/Rules.m#L33
-  const objects = plist_data as Record<string, unknown[]>;
-
-  const object_data = objects[ "$objects" ];
-  if (object_data === undefined) {
-    return new MacosError(`LULU`, `Got undefined for LuLu FW objects`);
-  }
   const rules: Rule[] = [];
-  for (const entry of object_data) {
-    if (typeof entry !== "object") {
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
       continue;
     }
 
-    // We are looking for entries that have same object interface as `Rule`
-    const rule_value = entry as unknown as Record<string, number | boolean>;
-    if (rule_value[ "uuid" ] === undefined) {
+    const bytes = accessor.readFileHandle(entry.handle as FileHandle);
+    if (bytes instanceof FileError) {
+      console.warn(`Failed to read ${entry.meta.display_path}: ${bytes}`);
       continue;
     }
 
-    const rule: Rule = {
-      file: object_data[ rule_value[ "name" ] as number ] as string,
-      uuid: object_data[ rule_value[ "uuid" ] as number ] as string,
-      endpoint_addr:
-        object_data[ rule_value[ "endpointAddr" ] as number ] as string,
-      is_regex: rule_value[ "isEndpointAddrRegex" ] as boolean,
-      scope: object_data[ rule_value[ "scope" ] as number ] as string,
-      type: object_data[ rule_value[ "type" ] as number ] as string,
-      key: object_data[ rule_value[ "key" ] as number ] as string,
-      action: getAction(object_data[ rule_value[ "action" ] as number ] as number),
-      endpoint_host:
-        object_data[ rule_value[ "endpointHost" ] as number ] as string,
-      code_signing_info: getCodeSigning(
-        object_data[ rule_value[ "csInfo" ] as number ] as LuluSigning | string,
-        object_data,
-      ),
-      pid: object_data[ rule_value[ "pid" ] as number ] as number,
-      endpoint_port:
-        object_data[ rule_value[ "endpointPort" ] as number ] as number,
-      evidence: file,
-    };
+    const plist_data = getPlist(bytes);
+    if (plist_data instanceof MacosError) {
+      console.warn(`Failed to parse ${entry.meta.display_path}: ${plist_data}`);
+      continue;
+    }
 
-    rules.push(rule);
+    // Rules format at: https://github.com/objective-see/LuLu/blob/master/LuLu/Extension/Rules.m#L33
+    const objects = plist_data as Record<string, unknown[]>;
+
+    const object_data = objects[ "$objects" ];
+    if (object_data === undefined) {
+      console.warn(`Got undefined for LuLu FW objects`);
+      continue;
+    }
+
+    for (const value of object_data) {
+      if (typeof value !== "object") {
+        continue;
+      }
+
+      // We are looking for entries that have same object interface as `Rule`
+      const rule_value = value as unknown as Record<string, number | boolean>;
+      if (rule_value[ "uuid" ] === undefined) {
+        continue;
+      }
+
+      const rule: Rule = {
+        file: object_data[ rule_value[ "name" ] as number ] as string,
+        uuid: object_data[ rule_value[ "uuid" ] as number ] as string,
+        endpoint_addr:
+          object_data[ rule_value[ "endpointAddr" ] as number ] as string,
+        is_regex: rule_value[ "isEndpointAddrRegex" ] as boolean,
+        scope: object_data[ rule_value[ "scope" ] as number ] as string,
+        type: object_data[ rule_value[ "type" ] as number ] as string,
+        key: object_data[ rule_value[ "key" ] as number ] as string,
+        action: getAction(object_data[ rule_value[ "action" ] as number ] as number),
+        endpoint_host:
+          object_data[ rule_value[ "endpointHost" ] as number ] as string,
+        code_signing_info: getCodeSigning(
+          object_data[ rule_value[ "csInfo" ] as number ] as LuluSigning | string,
+          object_data,
+        ),
+        pid: object_data[ rule_value[ "pid" ] as number ] as number,
+        endpoint_port:
+          object_data[ rule_value[ "endpointPort" ] as number ] as number,
+        evidence: entry.meta.display_path,
+      };
+
+      rules.push(rule);
+    }
   }
 
   return rules;
@@ -188,7 +207,7 @@ function getSignStatus(status: number): Signer {
  */
 export function testLuluRules(): void {
   const lulu_test = "../../test_data/macos/lulu/rules.plist";
-  const results = luluRules(lulu_test);
+  const results = luluRules(AccessorProtocol.Host, lulu_test);
   if (results instanceof MacosError) {
     throw console.log(results);
   }
