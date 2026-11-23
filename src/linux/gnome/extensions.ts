@@ -18,14 +18,10 @@ export function getGnomeExtensions(
   protocol = AccessorProtocol.Host,
   alt_path?: string,
 ): Extension[] | LinuxError {
-  let paths = [
+  const paths = alt_path ? [ alt_path ] : [
     "/home/*/.local/share/gnome-shell/extensions/*/metadata.json",
     "/usr/share/gnome-shell/extensions/*/metadata.json",
   ];
-
-  if (alt_path !== undefined) {
-    paths = [ alt_path ];
-  }
 
   const accessor = new Accessor();
 
@@ -90,7 +86,7 @@ export function testGetGnomeExtensions(): void {
     throw result;
   }
 
-  if (result[ 0 ] === undefined) {
+  if (result[ 0 ]?.name === undefined) {
     throw `Got extension name undefined expected GSConnect.......getGnomeExtensions ❌`;
   }
 

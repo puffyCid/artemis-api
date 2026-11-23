@@ -1,5 +1,4 @@
 import { FileError } from "../filesystem/errors";
-import { glob, readFile, stat } from "../filesystem/files";
 import { MacosError } from "./errors";
 import { take } from "../nom/parsers";
 import { NomError } from "../nom/error";
@@ -10,100 +9,90 @@ import { Biome } from "../../types/macos/biome";
 import { encode } from "../encoding/base64";
 import { parseProtobuf } from "../encoding/protobuf";
 import { getPlist } from "./plist";
+import { AccessorProtocol, EntryKind, FileHandle, GlobMatch } from "../../types/filesystem/accessor";
+import { Accessor } from "../filesystem/accessor";
 
 /**
  * A **very** experimental and simple function to parse BIOME data
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param [app_focus_only=true] Only parse App.InFocus Biome files. Default is true
- * @param alt_file Full path to alternative BIOME file
+ * @param alt_path Full path to alternative BIOME file
  * @returns Array of `Biome` objects
  */
-export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
-  let paths: string[] = [];
-  if (alt_file !== undefined) {
-    paths = [alt_file];
-  } else {
-    // Glob both local and tombstone entries
-    const glob_paths = [
-      "/Users/*/Library/Biome/streams/*/*/local/*",
-      "/Users/*/Library/Biome/streams/*/*/local/tombstone/*",
-      "/private/var/db/biome/streams/*/*/local/*",
-      "/private/var/db/biome/streams/*/*/local/tombstone/*",
-    ];
+export function parseBiome(protocol = AccessorProtocol.Host, app_focus_only = true, alt_path?: string): Biome[] {
+  const paths = alt_path ? [ alt_path ] : [
+    "/Users/*/Library/Biome/streams/*/*/local/*",
+    "/Users/*/Library/Biome/streams/*/*/local/tombstone/*",
+    "/private/var/db/biome/streams/*/*/local/*",
+    "/private/var/db/biome/streams/*/*/local/tombstone/*",
+  ];
 
-    for (const path of glob_paths) {
-      const results = glob(path);
-      if (results instanceof FileError) {
-        console.warn(`Could not glob ${path}: ${results}`);
-        continue;
-      }
-
-      for (const entry of results) {
-        paths.push(entry.full_path);
-      }
-    }
-  }
-
+  const accessor = new Accessor();
   const biome_array: Biome[] = [];
-  // Now loop through Biomes and parse supported entries
-  for (const entry of paths) {
-    if (app_focus_only && !entry.toLowerCase().includes("app.infocu")) {
+  for (const path of paths) {
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+      console.warn(`Could not glob ${path}: ${matches}`);
       continue;
     }
 
-    // Stat to avoid any directories
-    const stat_info = stat(entry);
-    if (stat_info instanceof FileError || stat_info.is_directory) {
-      continue;
-    }
-
-    const records = extractBiome(entry);
-    if (records instanceof MacosError) {
-      console.warn(`Did not extract BIOMEs from ${entry}: ${records}`);
-      continue;
-    }
-
-    const biome: Biome = {
-      path: entry,
-      raw: [],
-    };
-
-    for (const record of records) {
-      // Skip empty records
-      if (
-        record.protobuf_bytes.at(0) === undefined ||
-        record.protobuf_bytes.at(0) === 0
-      ) {
+    for (const entry of matches) {
+      if (entry.meta.kind !== EntryKind.File) {
         continue;
       }
 
-      if (record.protobuf_bytes.slice(0, 6).toString() === new Uint8Array([98, 112, 108, 105, 115, 116]).toString()) {
-        // Sometimes BIOME files will contain binary plist instead of Protobuf data
-        const plist_data = getPlist(record.protobuf_bytes);
-        if (plist_data instanceof MacosError) {
+      if (app_focus_only && !entry.meta.full_path.toLowerCase().includes("app.infocus")) {
+        continue;
+      }
+
+      const records = extractBiome(entry, accessor);
+      if (records instanceof MacosError) {
+        console.warn(`Did not extract BIOMEs from ${entry}: ${records}`);
+        continue;
+      }
+
+      const biome: Biome = {
+        path: entry.meta.display_path,
+        raw: [],
+      };
+      for (const record of records) {
+        // Skip empty records
+        if (
+          record.protobuf_bytes.at(0) === undefined ||
+          record.protobuf_bytes.at(0) === 0
+        ) {
           continue;
         }
-        if (Array.isArray(plist_data)) {
-          biome.plist_data = biome.plist_data?.concat(plist_data as Record<string, unknown>[]);
-          continue;
-        } else if (plist_data instanceof Uint8Array) {
+
+        if (record.protobuf_bytes.slice(0, 6).toString() === new Uint8Array([ 98, 112, 108, 105, 115, 116 ]).toString()) {
+          // Sometimes BIOME files will contain binary plist instead of Protobuf data
+          const plist_data = getPlist(record.protobuf_bytes);
+          if (plist_data instanceof MacosError) {
+            continue;
+          }
+          if (Array.isArray(plist_data)) {
+            biome.plist_data = biome.plist_data?.concat(plist_data as Record<string, unknown>[]);
+            continue;
+          } else if (plist_data instanceof Uint8Array) {
+            continue;
+          }
+          biome.plist_data?.push(plist_data);
           continue;
         }
-        biome.plist_data?.push(plist_data);
-        continue;
-      }
-      const results = parseProtobuf(record.protobuf_bytes);
-      if (results instanceof EncodingError) {
-        console.error(
-          `Failed to parse all protobuf data for ${entry}: ${results}`,
-        );
-        biome.raw.push({ "unknown": encode(record.protobuf_bytes) });
-        continue;
+        const results = parseProtobuf(record.protobuf_bytes);
+        if (results instanceof EncodingError) {
+          console.error(
+            `Failed to parse all protobuf data for ${entry}: ${results}`,
+          );
+          biome.raw.push({ "unknown": encode(record.protobuf_bytes) });
+          continue;
+        }
+
+        biome.raw.push(results);
       }
 
-      biome.raw.push(results);
+      biome_array.push(biome);
     }
-
-    biome_array.push(biome);
   }
 
   return biome_array;
@@ -111,20 +100,21 @@ export function parseBiome(app_focus_only = true, alt_file?: string): Biome[] {
 
 /**
  * Function to extract the bytes associated with the BIOME data
- * @param path Path to BIOME file
+ * @param entry `GlobMatch` object to BIOME file
+ * @param accessor `Accessor` instance to use to read BIOME data
  * @returns Array of `BiomeRecord` or `MacosError`
  */
-function extractBiome(path: string): BiomeRecord[] | MacosError {
-  const raw_bytes = readFile(path);
+function extractBiome(entry: GlobMatch, accessor: Accessor): BiomeRecord[] | MacosError {
+  const raw_bytes = accessor.readFileHandle(entry.handle as FileHandle);
   if (raw_bytes instanceof FileError) {
-    return new MacosError(`BIOME`, `failed to read ${path}: ${raw_bytes}`);
+    return new MacosError(`BIOME`, `failed to read '${entry.meta.display_path}': ${raw_bytes}`);
   }
 
   const check_sig = nomUnsignedFourBytes(raw_bytes, Endian.Le);
   if (check_sig instanceof NomError) {
     return new MacosError(
       `BIOME`,
-      `failed to get header sig for ${path}: ${check_sig}`,
+      `failed to get header sig for '${entry.meta.display_path}': ${check_sig}`,
     );
   }
   let header_size = 56;
@@ -137,7 +127,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
     if (header_bytes instanceof NomError) {
       return new MacosError(
         `BIOME`,
-        `failed to get header data for ${path}: ${header_bytes}`,
+        `failed to get header data for '${entry.meta.display_path}': ${header_bytes}`,
       );
     }
 
@@ -175,7 +165,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
   if (header_bytes instanceof NomError) {
     return new MacosError(
       `BIOME`,
-      `failed to get header v2 data for ${path}: ${header_bytes}`,
+      `failed to get header v2 data for '${entry.meta.display_path}': ${header_bytes}`,
     );
   }
 
@@ -183,7 +173,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
   if (sig instanceof NomError) {
     return new MacosError(
       `BIOME`,
-      `failed to get header sig for ${path}: ${sig}`,
+      `failed to get header sig for '${entry.meta.display_path}': ${sig}`,
     );
   }
 
@@ -191,7 +181,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
   if (entries instanceof NomError) {
     return new MacosError(
       `BIOME`,
-      `failed to get header v2 entries for ${path}: ${entries}`,
+      `failed to get header v2 entries for '${entry.meta.display_path}': ${entries}`,
     );
   }
 
@@ -203,7 +193,7 @@ function extractBiome(path: string): BiomeRecord[] | MacosError {
   if (total_size > raw_bytes.length) {
     return new MacosError(
       `BIOME`,
-      `failed to get header v2 entries data for ${path}. Total size too large`,
+      `failed to get header v2 entries data for '${entry.meta.display_path}'. Total size too large`,
     );
   }
 
