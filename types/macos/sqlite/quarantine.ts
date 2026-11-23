@@ -1,7 +1,3 @@
-export interface MacosQuarantine {
-  path: string;
-  events: QuarantineEvent[];
-}
 export interface QuarantineEvent {
   id: string;
   timestamp: string;
@@ -14,6 +10,7 @@ export interface QuarantineEvent {
   origin_title?: string;
   origin_url?: string;
   origin_alias?: string;
+  evidence: string;
 }
 
 export enum QuarantineType {

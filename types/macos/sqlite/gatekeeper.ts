@@ -26,7 +26,7 @@ export interface GatekeeperEntries {
   timestamp_desc: "Entry Created";
   artifact: "Gatekeeper";
   data_type: "macos:gatekeeper:entry";
-  source: string;
+  evidence: string;
 }
 
 export enum GkType {

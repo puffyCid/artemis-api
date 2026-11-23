@@ -1,57 +1,57 @@
 import { ApplicationError } from "../../applications/errors";
-import { querySqlite } from "../../applications/sqlite";
+import { querySqlite, Sqlite } from "../../applications/sqlite";
 import { MacosError } from "../errors";
-import { glob } from "../../filesystem/files";
 import { FileError } from "../../filesystem/errors";
-import { MacosQuarantine } from "../../../types/macos/sqlite/quarantine";
 import {
   QuarantineEvent,
   QuarantineType,
 } from "../../../types/macos/sqlite/quarantine";
 import { cocoatimeToIso } from "../../time/conversion";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
+import { Accessor } from "../../filesystem/accessor";
 
 /**
  * Function to extract macOS Quarantine Events
- * @param db Optional path to the `com.apple.LaunchServices.QuarantineEventsV2` file
- * @returns Array of `MacosQuarantine` or `MacosError`
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional path to the `com.apple.LaunchServices.QuarantineEventsV2` file
+ * @returns Array of `QuarantineEvent` or `MacosError`
  */
 export function quarantineEvents(
-  alt_file?: string,
-): MacosQuarantine[] | MacosError {
-  let paths: string[] = [];
-
-  if (alt_file !== undefined) {
-    paths = [ alt_file ];
-  } else {
-    const glob_path =
-      "/Users/*/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2";
-    const paths_results = glob(glob_path);
-    if (paths_results instanceof FileError) {
-      return new MacosError(
-        `QUARANTINE_EVENT`,
-        `failed to glob path: ${glob_path}: ${paths_results}`,
-      );
-    }
-
-    for (const entry of paths_results) {
-      paths.push(entry.full_path);
-    }
-  }
+  protocol = AccessorProtocol.Host,
+  alt_path?: string,
+): QuarantineEvent[] | MacosError {
+  const path = alt_path ?? "/Users/*/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2";
   const query = "select * from LSQuarantineEvent";
-  const events: MacosQuarantine[] = [];
 
-  for (const path of paths) {
-    const results = querySqlite(path, query);
-    if (results instanceof ApplicationError) {
-      return new MacosError(
-        `QUARANTINE_EVENT`,
-        `failed to query ${path}: ${results}`,
-      );
+  const accessor = new Accessor();
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new MacosError(
+      `QUARANTINE_EVENT`,
+      `failed to glob path: ${path}: ${matches}`,
+    );
+  }
+
+  const events: QuarantineEvent[] = [];
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
     }
 
-    const entries: QuarantineEvent[] = [];
+    let results;
+    if (protocol === AccessorProtocol.Host) {
+      results = querySqlite(path, query);
+    } else {
+      const client = new Sqlite(entry.handle as FileHandle);
+      results = client.query(query);
+    }
+
+    if (results instanceof ApplicationError) {
+      continue;
+    }
+
     for (const value of results) {
-      const entry: QuarantineEvent = {
+      const row: QuarantineEvent = {
         id: value[ "LSQuarantineEventIdentifier" ] as string,
         timestamp: cocoatimeToIso(
           value[ "LSQuarantineTimeStamp" ] as number,
@@ -89,24 +89,18 @@ export function quarantineEvents(
             value[ "LSQuarantineOriginURLString" ] === null
             ? ""
             : value[ "LSQuarantineOriginURLString" ] as string,
+        evidence: entry.meta.display_path
       };
 
-      entries.push(entry);
+      events.push(row);
     }
-
-    const event: MacosQuarantine = {
-      path,
-      events: entries,
-    };
-
-    events.push(event);
   }
 
   return events;
 }
 
 /**
- * Determin the quarantine type
+ * Determine the quarantine type
  * @param data Quarantine Type event number
  * @returns `QuarantineType` enum
  */

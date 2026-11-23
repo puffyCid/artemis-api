@@ -14,4 +14,5 @@ export interface MunkiApplicationUsage {
   last_time: string;
   /**Number of times of the event */
   number_times: number;
+  evidence: string;
 }

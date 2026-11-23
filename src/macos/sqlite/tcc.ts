@@ -5,9 +5,8 @@ import {
   Reason,
   TccData,
 } from "../../../types/macos/sqlite/tcc";
-import { glob } from "../../filesystem/files";
 import { FileError } from "../../filesystem/errors";
-import { querySqlite } from "../../applications/sqlite";
+import { querySqlite, Sqlite } from "../../applications/sqlite";
 import { ApplicationError } from "../../applications/errors";
 import { SingleRequirement } from "../../../types/macos/codesigning";
 import { decode } from "../../encoding/base64";
@@ -15,46 +14,48 @@ import { EncodingError } from "../../encoding/errors";
 import { parseRequirementBlob } from "../codesigning/blob";
 import { SigningError } from "../codesigning/errors";
 import { unixEpochToISO } from "../../time/conversion";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
+import { Accessor } from "../../filesystem/accessor";
 
 /**
  * Query all `TCC.db` files on the system. `TCC.db` contains granted permissions for applications.
- * An optional path to the `TCC.db` can be provided.
- * Otherwise will parse all user and System `TCC.db` files.
- * @param alt_db Optional alternative path to TCC.db files
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to TCC.db files
  * @returns Array of `TccData` or `MacosError`
  */
-export function queryTccDb(alt_db?: string): TccData[] | MacosError {
-  let dbs: string[] = [];
-  if (alt_db !== undefined) {
-    dbs = [ alt_db ];
-  } else {
-    // Glob for all users TCC.db files
-    const user_tcc = glob(
-      "/Users/*/Library/Application Support/com.apple.TCC/TCC.db",
-    );
-    if (user_tcc instanceof FileError) {
-      return new MacosError(
-        "TCC",
-        `failed to glob user TCC.db files ${user_tcc}`,
-      );
-    }
-    // Only one (1) System TCC.db file
-    dbs.push("/Library/Application Support/com.apple.TCC/TCC.db");
-    for (const entry of user_tcc) {
-      dbs.push(entry.full_path);
-    }
-  }
-
+export function queryTccDb(protocol = AccessorProtocol.Host, alt_path?: string): TccData[] | MacosError {
+  const paths = alt_path ? [ alt_path ] : [ "/Users/*/Library/Application Support/com.apple.TCC/TCC.db", "/Library/Application Support/com.apple.TCC/TCC.db" ];
   const query = "select * from access";
+
+  const accessor = new Accessor();
   let tcc_data: TccData[] = [];
-  for (const entry of dbs) {
-    const results = querySqlite(entry, query);
-    if (results instanceof ApplicationError) {
-      return new MacosError("TCC", `failed to query ${entry}: ${results}`);
+  for (const path of paths) {
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+      console.warn(`Could not glob ${path}: ${matches}`);
+      continue;
     }
 
-    
-    tcc_data = tcc_data.concat(getTccData(results, entry));
+    for (const entry of matches) {
+      if (entry.meta.kind !== EntryKind.File) {
+        continue;
+      }
+
+      let results;
+      if (protocol === AccessorProtocol.Host) {
+        results = querySqlite(path, query);
+      } else {
+        const client = new Sqlite(entry.handle as FileHandle);
+        results = client.query(query);
+      }
+
+      if (results instanceof ApplicationError) {
+        continue;
+      }
+
+      tcc_data = tcc_data.concat(getTccData(results, entry.meta.display_path));
+
+    }
   }
 
   return tcc_data;
@@ -70,26 +71,26 @@ function getTccData(data: Record<string, unknown>[], path: string): TccData[] {
   const tcc_array: TccData[] = [];
   for (const entry of data) {
     const tcc_data: TccData = {
-      service: entry["service"] as string,
-      client: entry["client"] as string,
-      client_type: clientType(entry["client_type"] as number),
-      auth_value: authValue(entry["auth_value"] as number),
-      auth_reason: authReason(entry["auth_reason"] as number),
-      auth_version: entry["auth_version"] as number,
+      service: entry[ "service" ] as string,
+      client: entry[ "client" ] as string,
+      client_type: clientType(entry[ "client_type" ] as number),
+      auth_value: authValue(entry[ "auth_value" ] as number),
+      auth_reason: authReason(entry[ "auth_reason" ] as number),
+      auth_version: entry[ "auth_version" ] as number,
       cert: undefined,
-      policy_id: entry["policy_id"] as number | undefined,
-      indirect_object_identifier_type: entry["indirect_object_identifier_type"] as number | undefined,
-      indirect_object_identifier: entry["indirect_object_identifier"] as string,
+      policy_id: entry[ "policy_id" ] as number | undefined,
+      indirect_object_identifier_type: entry[ "indirect_object_identifier_type" ] as number | undefined,
+      indirect_object_identifier: entry[ "indirect_object_identifier" ] as string,
       indirect_object_code_identity: undefined,
-      flags: entry["flags"] as number | undefined,
-      last_modified: unixEpochToISO(entry["last_modified"] as number),
-      pid: entry["pid"] as number | null,
-      pid_version: entry["pid_version"] as number | null,
-      boot_uuid: entry["boot_uuid"] as string,
-      last_reminded: unixEpochToISO(entry["last_reminded"] as number),
+      flags: entry[ "flags" ] as number | undefined,
+      last_modified: unixEpochToISO(entry[ "last_modified" ] as number),
+      pid: entry[ "pid" ] as number | null,
+      pid_version: entry[ "pid_version" ] as number | null,
+      boot_uuid: entry[ "boot_uuid" ] as string,
+      last_reminded: unixEpochToISO(entry[ "last_reminded" ] as number),
       evidence: path,
-      message: `TCC client entry '${entry["client"] as string}'`,
-      datetime: unixEpochToISO(entry["last_modified"] as number),
+      message: `TCC client entry '${entry[ "client" ] as string}'`,
+      datetime: unixEpochToISO(entry[ "last_modified" ] as number),
       timestamp_desc: "Last Modified",
       artifact: "TCC Database",
       data_type: "macos:sqlite:tcc:entry"
