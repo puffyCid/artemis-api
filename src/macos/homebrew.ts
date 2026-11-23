@@ -1,19 +1,22 @@
+import { AccessorProtocol, EntryKind, FileHandle, GlobMatch } from "../../types/filesystem/accessor";
 import {
   HomebrewData,
   HomebrewFormula,
   HomebrewReceipt,
 } from "../../types/macos/homebrew";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readTextFile } from "../filesystem/files";
+import { readTextFile } from "../filesystem/files";
 import { unixEpochToISO } from "../time/conversion";
 
 /**
  * Function to get Homebrew info on installed packages and Casks
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @returns `HomebrewData` which includes data on Homebrew packages and Casks
  */
-export function getHomebrewInfo(): HomebrewData {
-  const packages = getPackages();
-  const casks = getCasks();
+export function getHomebrewInfo(protocol = AccessorProtocol.Host): HomebrewData {
+  const packages = getPackages(protocol);
+  const casks = getCasks(protocol);
 
   const info: HomebrewData = {
     packages,
@@ -26,31 +29,30 @@ export function getHomebrewInfo(): HomebrewData {
 /**
  * Function to get installed Homebrew packages. Does **not** include Casks.
  * Use `getHomebrewInfo()` to get packages and Casks
- * @param glob_path Optional glob to use for Homebrew data
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional path to Homebrew data
  * @returns Array of `HomebrewReceipt`
  */
-export function getPackages(glob_path?: string): HomebrewReceipt[] {
+export function getPackages(protocol = AccessorProtocol.Host, alt_path?: string): HomebrewReceipt[] {
   // Default paths to glob if we are not provided a path
-  let paths = [
+  const paths = alt_path ? [ alt_path ] : [
     "/opt/homebrew/Cellar/*/*/INSTALL_RECEIPT.json",
     "/usr/local/Cellar/*/*/INSTALL_RECEIPT.json",
   ];
 
-  // Use user provided glob path
-  if (glob_path !== undefined) {
-    paths = [ glob_path ];
-  }
   const brew_receipts: HomebrewReceipt[] = [];
-
-  // Loop through all paths
+  const accessor = new Accessor();
   for (const path of paths) {
-    const globs = glob(path);
-    if (globs instanceof FileError) {
-      console.warn(`failed to glob ${path}: ${globs}`);
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
       continue;
     }
 
-    for (const entry of globs) {
+    for (const entry of matches) {
+      if (entry.meta.kind !== EntryKind.File) {
+        continue;
+      }
+
       const brew_info: HomebrewReceipt = {
         installedAsDependency: false,
         installedOnRequest: false,
@@ -65,27 +67,22 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
         caskName: "",
         formulaPath: "",
       };
-      // Get base path for ruby formulas
-      const dirs = entry.full_path.split("/");
-      dirs.pop();
-      dirs.push(".brew/*.rb");
 
-      const rb_glob = dirs.join("/");
-      // Now glob for ruby files
-      const rb_path = glob(rb_glob);
-      if (rb_path instanceof FileError) {
+      const ruby_file = `${entry.meta.directory}/.brew/*.rb`;
+      const ruby_match = accessor.globfs(ruby_file, protocol);
+      if (ruby_match instanceof FileError) {
         continue;
       }
 
       // Loop through the ruby file(s)
-      for (const rb of rb_path) {
-        if (!rb.is_file) {
+      for (const rb of ruby_match) {
+        if (rb.meta.kind !== EntryKind.File) {
           continue;
         }
-        const formula = parseRuby(rb.full_path);
+        const formula = parseRuby(rb);
         if (formula instanceof FileError) {
           console.warn(
-            `failed to parse ruby formula ${entry.full_path}: ${formula}`,
+            `failed to parse ruby formula ${rb.meta.display_path}: ${formula}`,
           );
           continue;
         }
@@ -97,13 +94,13 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
         brew_info.caskName = formula.caskName;
         brew_info.formulaPath = formula.formulaPath;
         brew_info.version = formula.version;
-        brew_info.name = rb.filename.substring(0, rb.filename.length - 3);
+        brew_info.name = rb.meta.filename.substring(0, rb.meta.filename.length - 3);
 
         // Parse the INSTALL_RECEIPT.json now
-        const receipt = readTextFile(entry.full_path);
+        const receipt = readTextFile(entry.handle as FileHandle);
         if (receipt instanceof FileError) {
           console.warn(
-            `failed to read install_receipt.json format ${entry.full_path}: ${receipt}`,
+            `failed to read install_receipt.json format ${entry.meta.display_path}: ${receipt}`,
           );
           continue;
         }
@@ -121,42 +118,44 @@ export function getPackages(glob_path?: string): HomebrewReceipt[] {
       brew_receipts.push(brew_info);
     }
   }
+
   return brew_receipts;
 }
 
 /**
  * Function to get Homebrew Casks. Does **not** include packages
  * Use `getHomebrewInfo()` to get packages and Casks
- * @param glob_path Optional glob to use for Homebrew Casks
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional path to use for Homebrew Casks
  * @returns Array of `HomebrewFormula`
  */
-export function getCasks(glob_path?: string): HomebrewFormula[] {
-  let paths = [
+export function getCasks(protocol = AccessorProtocol.Host, alt_path?: string): HomebrewFormula[] {
+  const paths = alt_path ? [ alt_path ] : [
     "/usr/local/Caskroom/*/.metadata/*/*/Casks/*.rb",
     "/opt/homebrew/Caskroom/*/.metadata/*/*/Casks/*.rb",
     "/usr/local/Caskroom/*/.metadata/*/*/Casks/*.json",
     "/opt/homebrew/Caskroom/*/.metadata/*/*/Casks/*.json",
   ];
-
-  if (glob_path !== undefined) {
-    paths = [ glob_path ];
-  }
+  const accessor = new Accessor();
 
   const casks: HomebrewFormula[] = [];
-
   for (const path of paths) {
-    const globs = glob(path);
-    if (globs instanceof FileError) {
-      console.warn(`failed to glob ${path}: ${globs}`);
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+      console.warn(`failed to glob ${path}: ${matches}`);
       continue;
     }
 
-    for (const entry of globs) {
-      if (entry.filename.endsWith(".json")) {
-        const text = readTextFile(entry.full_path);
+    for (const entry of matches) {
+      if (entry.meta.kind !== EntryKind.File) {
+        continue;
+      }
+
+      if (entry.meta.extension === "json") {
+        const text = readTextFile(entry.handle as FileHandle);
         if (text instanceof FileError) {
           console.warn(
-            `failed to read json ${entry.full_path}: ${text}`,
+            `failed to read json '${entry.meta.display_path}': ${text}`,
           );
           continue;
         }
@@ -168,49 +167,48 @@ export function getCasks(glob_path?: string): HomebrewFormula[] {
           url: data[ "url" ],
           license: "",
           caskName: data[ "name" ].join(" "),
-          formulaPath: entry.full_path,
+          formulaPath: entry.meta.display_path,
           version: data[ "version" ],
         };
         casks.push(formula);
-      }
-      if (!entry.filename.endsWith(".rb")) {
-        continue;
-      }
+      } else if (entry.meta.extension === "rb") {
+        const formula = parseRuby(entry);
+        if (formula instanceof FileError) {
+          console.warn(
+            `failed to parse ruby formula ${entry.meta.display_path}: ${formula}`,
+          );
+          continue;
+        }
+        casks.push(formula);
 
-      const formula = parseRuby(entry.full_path);
-      if (formula instanceof FileError) {
-        console.warn(
-          `failed to parse ruby formula ${entry.full_path}: ${formula}`,
-        );
-        continue;
       }
-      casks.push(formula);
     }
   }
+
   return casks;
 }
 
 /**
  * Function to parse the Ruby formula associated with Homebrew package
- * @param path Path to the Ruby file to parse
+ * @param entry `GlobMatch` object to the Ruby file to parse
  * @returns `HomebrewFormula` or FileError
  */
-function parseRuby(path: string): HomebrewFormula | FileError {
+function parseRuby(entry: GlobMatch): HomebrewFormula | FileError {
   const desc = /(?<=desc ).*$/m;
   const homepage_reg = /(?<=homepage ).*$/m;
   const reg_license = /(?<=license ).*$/m;
   const reg_url = /(?<=url ).*$/m;
   const reg_name = /(?<=name ).*$/m;
 
-  const version_value = path.split("/");
+  const version_value = entry.meta.full_path.split("/");
   let version;
-  if (path.includes("/Casks/")) {
+  if (entry.meta.full_path.includes("/Casks/")) {
     version = version_value[ version_value.length - 4 ] ?? "";
   } else {
     version = version_value[ version_value.length - 3 ] ?? "";
   }
 
-  const rubyText = readTextFile(path);
+  const rubyText = readTextFile(entry.handle as FileHandle);
   if (rubyText instanceof FileError) {
     return rubyText;
   }
@@ -222,7 +220,7 @@ function parseRuby(path: string): HomebrewFormula | FileError {
     url: "",
     license: "",
     caskName: "",
-    formulaPath: path,
+    formulaPath: entry.meta.display_path,
     version,
   };
   if (typeof description?.[ 0 ] === "string") {
@@ -245,7 +243,7 @@ function parseRuby(path: string): HomebrewFormula | FileError {
   }
 
   const name = rubyText.match(reg_name);
-  if (typeof name?.[ 0 ] === "string" && path.includes("Cask")) {
+  if (typeof name?.[ 0 ] === "string" && entry.meta.full_path.includes("Cask")) {
     receipt.caskName = name?.[ 0 ].replaceAll('"', "");
   }
 
@@ -259,7 +257,7 @@ function parseRuby(path: string): HomebrewFormula | FileError {
  */
 export function testHomebrew(): void {
   const install = "../../test_data/macos/homebrew/INSTALL_RECEIPT.json";
-  const results = getPackages(install);
+  const results = getPackages(AccessorProtocol.Host, install);
 
   if (results.length !== 1 || results[ 0 ] === undefined) {
     throw `Got ${results.length} expected 1.......getPackages ❌`;
@@ -271,9 +269,9 @@ export function testHomebrew(): void {
 
   console.info(`  Function getPackages ✅`);
 
-  const casks = "../../test_data/macos/homebrew/casks/.metadata/*/*/Casks/*";
+  const casks = "../../test_data/macos/homebrew/casks/.metadata/1.157.0,541/20250926015539.699/Casks/duckduckgo.json";
 
-  const results_casks = getCasks(casks);
+  const results_casks = getCasks(AccessorProtocol.Host, casks);
 
   if (results_casks.length !== 1 || results_casks[ 0 ] === undefined) {
     throw `Got ${results_casks.length} expected 1.......getCasks ❌`;
@@ -286,8 +284,12 @@ export function testHomebrew(): void {
   console.info(`  Function getCasks ✅`);
 
   const ruby = "../../test_data/macos/homebrew/.brew/typescript.rb";
+  const matches = new Accessor().globfs(ruby);
+  if (matches instanceof FileError) {
+    return;
+  }
 
-  const results_ruby = parseRuby(ruby);
+  const results_ruby = parseRuby(matches.at(0) as GlobMatch);
   if (results_ruby instanceof FileError) {
     throw results;
   }
