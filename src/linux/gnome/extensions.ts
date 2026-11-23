@@ -60,7 +60,7 @@ export function getGnomeExtensions(
 
       if (extension.meta.directory.includes("home")) {
         ext_data.extension_type = ExtensionType.User;
-      } else if (extension.meta.directory.includes("/usr/")) {
+      } else if (extension.meta.directory.includes("usr/")) {
         ext_data.extension_type = ExtensionType.System;
       } else {
         ext_data.extension_type = ExtensionType.Unknown;
