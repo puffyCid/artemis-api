@@ -22,4 +22,5 @@ export interface Authorizations {
     timestamp_desc: string;
     artifact: string;
     data_type: string;
+    evidence: string;
 }

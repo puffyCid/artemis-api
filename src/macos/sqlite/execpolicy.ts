@@ -1,20 +1,20 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { ExecPolicy } from "../../../types/macos/sqlite/execpolicy";
 import { ApplicationError } from "../../applications/errors";
-import { querySqlite } from "../../applications/sqlite";
+import { querySqlite, Sqlite } from "../../applications/sqlite";
+import { Accessor } from "../../filesystem/accessor";
+import { FileError } from "../../filesystem/errors";
 import { unixEpochToISO } from "../../time/conversion";
 import { MacosError } from "../errors";
 
 /**
  * Function to parse the `ExecPolicy` on a macOS system
- * @param path Optional alternative path to exec policy file. If none provided will use default file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to ExecPolicy file
  * @returns Array of `ExecPolicy` records or `MacosError`
  */
-export function execPolicy(alt_file?: string): ExecPolicy[] | MacosError {
-    let path = "/var/db/SystemPolicy/Configuration/ExecPolicy";
-    if (alt_file !== undefined) {
-        path = alt_file;
-    }
-
+export function execPolicy(protocol = AccessorProtocol.Host, alt_file?: string): ExecPolicy[] | MacosError {
+    const path = alt_file ?? "/var/db/SystemPolicy/Configuration/ExecPolicy";
     const query = `SELECT is_signed,
             file_identifier,
             bundle_identifier,
@@ -49,56 +49,72 @@ export function execPolicy(alt_file?: string): ExecPolicy[] | MacosError {
         LEFT JOIN policy_scan_cache
               ON policy_scan_cache.cdhash = executable_measurements_v2.cdhash`;
 
-    const entries: ExecPolicy[] = [];
-    const results = querySqlite(path, query);
-    if (results instanceof ApplicationError) {
-        return new MacosError(
-            `EXECPOLICY`,
-            `failed to query ${path}: ${results}`,
-        );
+    const accessor = new Accessor();
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new MacosError(`EXECPOLICY`, `failed to glob for '${path}': ${matches}`);
     }
 
-    for (const entry of results) {
-        const row: ExecPolicy = {
-            is_signed: entry["is_signed"] as number,
-            file_identifier: entry["file_identifier"] as string,
-            bundle_identifier: entry["bundle_identifier"] as string,
-            bundle_version: entry["bundle_version"] as string,
-            team_identifier: entry["team_identifier"] as string,
-            signing_identifier: entry["signing_identifier"] as string,
-            cdhash: entry["cdhash"] as string,
-            main_executable_hash: entry["main_executable_hash"] as string,
-            executable_timestamp: unixEpochToISO(entry["executable_timestamp"] as number),
-            file_size: entry["file_size"] as number,
-            is_library: entry["is_library"] as number,
-            is_used: entry["is_used"] as number,
-            responsible_file_identifier: entry["responsible_file_identifier"] as string,
-            is_valid: entry["is_valid"] as number,
-            is_quarantined: entry["is_quarantined"] as number,
-            executable_measurements_v2_timestamp: unixEpochToISO(entry["executable_measurements_v2_timestamp"] as number),
-            reported_timestamp: unixEpochToISO(entry["reported_timestamp"] as number),
-            pk: entry["pk"] as number,
-            volume_uuid: entry["volume_uuid"] as string,
-            object_id: entry["object_id"] as number,
-            fs_type_name: entry["fs_type_name"] as string,
-            bundle_id: entry["bundle_id"] as string,
-            policy_match: entry["policy_match"] as number,
-            malware_result: entry["malware_result"] as number,
-            flags: entry["flags"] as number,
-            mod_time: entry["mod_time"] as string,
-            policy_scan_cache_timestamp: unixEpochToISO(entry["policy_scan_cache_timestamp"] as number),
-            revocation_check_time: unixEpochToISO(entry["revocation_check_time"] as number),
-            scan_version: entry["scan_version"] as number,
-            top_policy_match: entry["top_policy_match"] as number,
-            evidence: path,
-            message: entry["file_identifier"] as string,
-            datetime: unixEpochToISO(entry["reported_timestamp"] as number),
-            timestamp_desc: "ExecPolicy Reported",
-            artifact: "ExecPolicy",
-            data_type: "macos:sqlite:execpolicy:entry"
-        };
+    const entries: ExecPolicy[] = [];
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
+            continue;
+        }
 
-        entries.push(row);
+        let results;
+        if (protocol === AccessorProtocol.Host) {
+            results = querySqlite(path, query);
+        } else {
+            const client = new Sqlite(entry.handle as FileHandle);
+            results = client.query(query);
+        }
+
+        if (results instanceof ApplicationError) {
+            continue;
+        }
+
+        for (const value of results) {
+            const row: ExecPolicy = {
+                is_signed: value[ "is_signed" ] as number,
+                file_identifier: value[ "file_identifier" ] as string,
+                bundle_identifier: value[ "bundle_identifier" ] as string,
+                bundle_version: value[ "bundle_version" ] as string,
+                team_identifier: value[ "team_identifier" ] as string,
+                signing_identifier: value[ "signing_identifier" ] as string,
+                cdhash: value[ "cdhash" ] as string,
+                main_executable_hash: value[ "main_executable_hash" ] as string,
+                executable_timestamp: unixEpochToISO(value[ "executable_timestamp" ] as number),
+                file_size: value[ "file_size" ] as number,
+                is_library: value[ "is_library" ] as number,
+                is_used: value[ "is_used" ] as number,
+                responsible_file_identifier: value[ "responsible_file_identifier" ] as string,
+                is_valid: value[ "is_valid" ] as number,
+                is_quarantined: value[ "is_quarantined" ] as number,
+                executable_measurements_v2_timestamp: unixEpochToISO(value[ "executable_measurements_v2_timestamp" ] as number),
+                reported_timestamp: unixEpochToISO(value[ "reported_timestamp" ] as number),
+                pk: value[ "pk" ] as number,
+                volume_uuid: value[ "volume_uuid" ] as string,
+                object_id: value[ "object_id" ] as number,
+                fs_type_name: value[ "fs_type_name" ] as string,
+                bundle_id: value[ "bundle_id" ] as string,
+                policy_match: value[ "policy_match" ] as number,
+                malware_result: value[ "malware_result" ] as number,
+                flags: value[ "flags" ] as number,
+                mod_time: value[ "mod_time" ] as string,
+                policy_scan_cache_timestamp: unixEpochToISO(value[ "policy_scan_cache_timestamp" ] as number),
+                revocation_check_time: unixEpochToISO(value[ "revocation_check_time" ] as number),
+                scan_version: value[ "scan_version" ] as number,
+                top_policy_match: value[ "top_policy_match" ] as number,
+                evidence: entry.meta.display_path,
+                message: value[ "file_identifier" ] as string,
+                datetime: unixEpochToISO(value[ "reported_timestamp" ] as number),
+                timestamp_desc: "ExecPolicy Reported",
+                artifact: "ExecPolicy",
+                data_type: "macos:sqlite:execpolicy:entry"
+            };
+
+            entries.push(row);
+        }
     }
 
     return entries;

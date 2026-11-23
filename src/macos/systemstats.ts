@@ -1,11 +1,11 @@
 import { ProtoTag } from "../../types/encoding/protobuf";
-import { GlobInfo } from "../../types/filesystem/globs";
+import { AccessorProtocol, EntryKind, FileHandle, GlobMatch } from "../../types/filesystem/accessor";
 import { SystemStats } from "../../types/macos/systemstats";
 import { EncodingError } from "../encoding/errors";
 import { parseProtobuf } from "../encoding/protobuf";
 import { extractUtf8String } from "../encoding/strings";
+import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { glob, readFile } from "../filesystem/files";
 import { NomError } from "../nom/error";
 import { Endian, nomUnsignedOneBytes, nomUnsignedTwoBytes } from "../nom/helpers";
 import { take } from "../nom/parsers";
@@ -30,63 +30,69 @@ import { MacosError } from "./errors";
 
 /**
  * Function to extract macOS system stats
- * @param alt_file Optional alternative path to stats file(safari)
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to stats file(safari)
  * @returns Array of `SystemStats` or `MacosError`
  */
-export function parseSystemStats(alt_file?: string): SystemStats[] | MacosError {
-    let path = "/var/db/systemstats/*";
-    if (alt_file !== undefined) {
-        path = alt_file;
-    }
-    const files = glob(path);
-    if (files instanceof FileError) {
-        return new MacosError(`STATS`, `failed to glob path to stats files: ${files}`);
+export function parseSystemStats(protocol = AccessorProtocol.Host, alt_path?: string): SystemStats[] | MacosError {
+    const path = alt_path ?? "/var/db/systemstats/*";
+    const accessor = new Accessor();
+
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new MacosError(`STATS`, `failed to glob ${path}: ${matches}`);
     }
 
     let stats: SystemStats[] = [];
-    for (const entry of files) {
-        if (entry.filename.endsWith(".stats")) {
-            const values = parseStats(entry);
-            if (values instanceof MacosError) {
-                continue;
-            }
-            stats = stats.concat(values);
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File && entry.meta.extension !== "stats") {
+            continue;
         }
+
+        const values = parseStats(entry, accessor);
+        if (values instanceof MacosError) {
+            continue;
+        }
+        stats = stats.concat(values);
     }
 
     return stats;
 }
 
-/// Parse the stats file header
-function parseStats(stats_file: GlobInfo): SystemStats[] | MacosError {
-    const path = stats_file.full_path;
-    const bytes = readFile(path);
+/**
+ * Parse the stats file
+ * @param entry `GlobMatch` object to the stats file
+ * @param accessor `Accessor` instance to use to read the file
+ * @returns Array of `SystemStats` or `MacosError`
+ */
+function parseStats(entry: GlobMatch, accessor: Accessor): SystemStats[] | MacosError {
+    const bytes = accessor.readFileHandle(entry.handle as FileHandle);
     if (bytes instanceof FileError) {
-        return new MacosError(`STATS`, `failed to read file ${path}: ${bytes}`);
+        return new MacosError(`STATS`, `failed to read file '${entry.meta.display_path}': ${bytes}`);
     }
 
     // Sig seems to be `bX`. Ex: b7, b8, b9
     // May vary by stats type?
     const sig = nomUnsignedTwoBytes(bytes, Endian.Le);
     if (sig instanceof NomError) {
-        return new MacosError(`STATS`, `failed to parse file ${path} sig: ${sig}`);
+        return new MacosError(`STATS`, `failed to parse file '${entry.meta.display_path}' sig: ${sig}`);
     }
 
     // Flag maybe? Always 0xA
     const unknown = nomUnsignedOneBytes(sig.remaining);
     if (unknown instanceof NomError) {
-        return new MacosError(`STATS`, `failed to parse file ${path} unknown byte: ${unknown}`);
+        return new MacosError(`STATS`, `failed to parse file '${entry.meta.display_path}' unknown byte: ${unknown}`);
     }
 
     // Size of next string value. Always 0xE. May be part of Unknown byte above (0xAE). But not 100% sure
     const size = nomUnsignedOneBytes(unknown.remaining);
     if (size instanceof NomError) {
-        return new MacosError(`STATS`, `failed to parse file ${path} size byte: ${size}`);
+        return new MacosError(`STATS`, `failed to parse file '${entry.meta.display_path}' size byte: ${size}`);
     }
 
     const version_bytes = take(size.remaining, size.value);
     if (version_bytes instanceof NomError) {
-        return new MacosError(`STATS`, `failed to parse file ${path} version byte: ${version_bytes}`);
+        return new MacosError(`STATS`, `failed to parse file '${entry.meta.display_path}' version byte: ${version_bytes}`);
     }
 
     // Only seen `systemstats_v1`
@@ -95,18 +101,18 @@ function parseStats(stats_file: GlobInfo): SystemStats[] | MacosError {
     // Remaining bytes are protobuf data_type
     const value = parseProtobuf(version_bytes.remaining as Uint8Array);
     if (value instanceof EncodingError) {
-        return new MacosError(`STATS`, `failed to parse file ${path} protobuf byte: ${value}`);
+        return new MacosError(`STATS`, `failed to parse file '${entry.meta.display_path}' protobuf byte: ${value}`);
     }
 
-    return extractInfo(value, stats_file, version);
+    return extractInfo(value, entry, version);
 }
 
 /// Try to extract Protobuf data into meaningful info
-function extractInfo(proto_data: Record<string, ProtoTag>, stats_file: GlobInfo, version: string): SystemStats[] {
+function extractInfo(proto_data: Record<string, ProtoTag>, entry: GlobMatch, version: string): SystemStats[] {
     const values: SystemStats[] = [];
     const stat: SystemStats = {
-        evidence: stats_file.full_path,
-        source_file: stats_file.filename,
+        evidence: entry.meta.display_path,
+        source_file: entry.meta.filename,
         version,
         message: "",
         datetime: "",
