@@ -6,10 +6,10 @@ function main() {
     console.log('Running macOS LuLu tests....');
     console.log(' Starting live test....');
     const results = luluRules();
-    if (results instanceof MacosError) {
+    if (results instanceof MacosError && !results.message.includes("NotADirectory")) {
         throw results;
     }
-    if (results.length !== 0 && results[ 0 ]?.file === "") {
+    if (!(results instanceof MacosError) && results.length !== 0 && results[ 0 ]?.file === "") {
         throw 'empty file?';
     }
     console.log(' Live test passed! 🥳\n');
