@@ -269,7 +269,7 @@ export function testHomebrew(): void {
 
   console.info(`  Function getPackages ✅`);
 
-  const casks = "../../test_data/macos/homebrew/casks/.metadata/1.157.0,541/20250926015539.699/Casks/duckduckgo.json";
+  const casks = "../../test_data/macos/homebrew/casks/.metadata/*/*/Casks/*.json";
 
   const results_casks = getCasks(AccessorProtocol.Host, casks);
 
