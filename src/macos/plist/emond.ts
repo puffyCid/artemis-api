@@ -1,42 +1,45 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import { Emond } from "../../../types/macos/plist/emond";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob } from "../../filesystem/files";
 import { MacosError } from "../errors";
 import { getPlist } from "../plist";
 
 /**
  * Function to parse the `Emond` rules on a macOS system
- * @param path Optional alternative glob to `Emond` files. If none provided will use default path
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to `Emond` files
  * @returns Array of `Emond` rules or `MacosError`
  */
-export function emondRules(alt_glob?: string): Emond[] | MacosError {
-    let path_glob = "/etc/emond.d/rules/*";
+export function emondRules(protocol = AccessorProtocol.Host, alt_path?: string): Emond[] | MacosError {
+    const path = alt_path ?? "/etc/emond.d/rules/*";
+    const accessor = new Accessor();
 
-    if (alt_glob !== undefined) {
-        path_glob = alt_glob;
-    }
-
-    const paths = glob(path_glob);
-    if (paths instanceof FileError) {
-        return new MacosError(`EMOND`, `Could not glob ${path_glob}: ${paths}`);
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+        return new MacosError(`EMOND`, `failed to glob for ${path}: ${matches}`);
     }
 
     const results: Emond[] = [];
-
-    for (const path of paths) {
-        if (!path.is_file) {
+    for (const entry of matches) {
+        if (entry.meta.kind !== EntryKind.File) {
             continue;
         }
 
-        const plist_data = getPlist(path.full_path);
+        const bytes = accessor.readFileHandle(entry.handle as FileHandle);
+        if (bytes instanceof FileError) {
+            continue;
+        }
+
+        const plist_data = getPlist(bytes);
         if (plist_data instanceof MacosError) {
-            console.error(`Failed to read plist file ${path.full_path}: ${plist_data}`);
+            console.error(`Failed to read plist file '${entry.meta.display_path}': ${plist_data}`);
             continue;
         }
 
         const value: Emond = {
             plist_data,
-            evidence: path.full_path,
+            evidence: entry.meta.display_path,
         };
 
         results.push(value);
@@ -52,7 +55,7 @@ export function emondRules(alt_glob?: string): Emond[] | MacosError {
  */
 export function testEmondRules(): void {
     const emond_test = "../../test_data/macos/emond/*";
-    const results = emondRules(emond_test);
+    const results = emondRules(AccessorProtocol.Host, emond_test);
     if (results instanceof MacosError) {
         throw console.log(results);
     }

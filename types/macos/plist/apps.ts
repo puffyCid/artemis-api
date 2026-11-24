@@ -8,7 +8,5 @@ export interface Applications {
   bundle_version: string;
   display_name: string;
   copyright: string;
-  /**Base64 encoded PNG file */
-  icon: string;
   evidence: string;
 }

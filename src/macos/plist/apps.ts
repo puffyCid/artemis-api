@@ -1,27 +1,29 @@
-import { getPlist } from "../../../mod";
+import { Accessor, getPlist } from "../../../mod";
 import { Applications } from "../../../types/macos/plist/apps";
 import { FileError } from "../../filesystem/errors";
-import { glob, readFile } from "../../filesystem/files";
-import { readDir } from "../../filesystem/directory";
-import { parseIcon } from "../../images/icns";
 import { MacosError } from "../errors";
+import { AccessorProtocol, DirHandle, EntryKind, FileHandle, GlobMatch } from "../../../types/filesystem/accessor";
 
 /**
  * Returns a very simple App listing on the system. Searches user installed Apps, System Apps, default Homebrew paths (/usr/local/Cellar, /opt/homebrew/Cellar).  
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * Use `scanApps()` if you want to scan the entire filesystem for Apps
- * @param [skip_icon=false] Skip parsing of the App icon. Default is false
+ * @param alt_path Optional path to App `Info.plist` file
  * @returns Array of `Applications`
  */
-export function listApps(skip_icon = false): Applications[] {
-  const app_paths = [
+export function listApps(protocol = AccessorProtocol.Host, alt_path?: string): Applications[] {
+  const app_paths = alt_path ? [alt_path] : [
     "/Applications/*/Contents/Info.plist",
     "/System/Applications/*/Contents/Info.plist",
     "/opt/homebrew/Cellar/*/*/*.app/Contents/Info.plist",
     "/usr/local/Cellar/*/*/*.app/Contents/Info.plist",
   ];
+
+  const accessor = new Accessor();
+
   let all_apps: Applications[] = [];
   for (const path of app_paths) {
-    const results = getApps(path, skip_icon);
+    const results = getApps(path, accessor, protocol);
     if (results instanceof MacosError) {
       continue;
     }
@@ -33,12 +35,36 @@ export function listApps(skip_icon = false): Applications[] {
 
 /**
  * Scans the entire filesystem under /System and tries to parse all Applications. Includes embedded Apps, Frameworks, and any file that ends with `%/Contents/Info.plist`
- * @param [skip_icon=false]  Skip parsing of the App icon. Default is false
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional path to to start the app scan. Will search for all paths that match `Contents/Info.plist`
  * @returns Array of `Applications`
  */
-export async function scanApps(skip_icon = false): Promise<Applications[]> {
+export function scanApps(protocol = AccessorProtocol.Host, alt_path?: string): Applications[] | MacosError {
   const apps: Applications[] = [];
-  await iterateVolumes("/System", apps, skip_icon);
+  const accessor = new Accessor();
+  const start = alt_path ?? "/System";
+
+  const results = accessor.readDir(start, protocol);
+  if (results instanceof FileError) {
+    return new MacosError(`PLIST`, `failed to start app scan at '${start}': ${results}`);
+  }
+
+  for (const entry of results) {
+    if (entry.meta.kind === EntryKind.File && entry.meta.full_path.endsWith("Contents/Info.plist")) {
+      const app = parsePlist(entry, accessor);
+      if (app instanceof MacosError) {
+        continue;
+      }
+      apps.push(app);
+      continue;
+    }
+
+    if (entry.meta.kind !== EntryKind.Directory) {
+      continue;
+    }
+
+    iterateVolumes(entry.handle as DirHandle, accessor, apps);
+  }
 
   return apps;
 }
@@ -47,48 +73,51 @@ export async function scanApps(skip_icon = false): Promise<Applications[]> {
  * Walk the entire filesystem to look for Applications
  * @param path Path to read
  * @param apps Array of `Applications` to track
- * @param skip_icon Skip parsing of the App icon data
  */
-async function iterateVolumes(path: string, apps: Applications[], skip_icon: boolean) {
-  const entries = await readDir(path);
-  if (entries instanceof FileError) {
+function iterateVolumes(handle: DirHandle, accessor: Accessor, apps: Applications[]): void {
+  const results = accessor.readDirHandle(handle);
+  if (results instanceof FileError) {
+    console.error(`Failed to read location '${JSON.stringify(handle)}': ${results}`)
     return;
   }
 
-  for (const entry of entries) {
-    if (entry.full_path.endsWith("Contents/Info.plist") && entry.is_file) {
-      try {
-        const app = parsePlist(entry.full_path, skip_icon);
-        if (app instanceof Error) {
-          continue;
-        }
-        apps.push(app);
-      } catch (err) {
-        console.warn(`Failed to parse plist ${entry.full_path}: ${err}`);
+  for (const entry of results) {
+    if (entry.meta.kind === EntryKind.File && entry.meta.full_path.endsWith("Contents/Info.plist")) {
+      const app = parsePlist(entry, accessor);
+      if (app instanceof MacosError) {
         continue;
       }
+      apps.push(app);
+      continue;
     }
 
-    if (entry.is_directory) {
-      await iterateVolumes(entry.full_path, apps, skip_icon);
+    if (entry.meta.kind !== EntryKind.Directory) {
+      continue;
     }
+
+    iterateVolumes(entry.handle as DirHandle, accessor, apps);
   }
 }
 
 /**
  * Get Application information by parse `Info.plist` file
  * @param path Path to glob for applications
- * @param skip_icon Skip parsing the App icon data
+ * @param accessor `Accessor` instance to use
+ * @param protocol `AccessorProtocol` to use
  * @returns Array of `Applications` or `MacosError`
  */
-function getApps(path: string, skip_icon: boolean): Applications[] | MacosError {
-  const glob_paths = glob(path);
-  if (glob_paths instanceof FileError) {
-    return new MacosError(`PLIST`, `Failed to glob for plists: ${glob_paths}`);
+function getApps(path: string, accessor: Accessor, protocol: AccessorProtocol): Applications[] | MacosError {
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new MacosError(`PLIST`, `Failed to glob for ${path}: ${matches}`);
   }
   const apps: Applications[] = [];
-  for (const entry of glob_paths) {
-    const app = parsePlist(entry.full_path, skip_icon);
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
+    }
+
+    const app = parsePlist(entry, accessor);
     if (app instanceof MacosError) {
       continue;
     }
@@ -99,75 +128,33 @@ function getApps(path: string, skip_icon: boolean): Applications[] | MacosError 
 
 /**
  * Parse the `Info.plist` file
- * @param path Path to `Info.plist`
- * @param skip_icon Skip parsing the App icon data
+ * @param entry `GlobMatch` object to `Info.plist`
+ * @param accessor `Accessor` instance to use
  * @returns `Applications` info or error
  */
-function parsePlist(path: string, skip_icon: boolean): Applications | MacosError {
-  let data = getPlist(path);
+function parsePlist(entry: GlobMatch, accessor: Accessor): Applications | MacosError {
+  const bytes = accessor.readFileHandle(entry.handle as FileHandle);
+  if (bytes instanceof FileError) {
+    return new MacosError(`PLIST`, `failed to read '${entry.meta.display_path}': ${bytes}`);
+  }
+  let data = getPlist(bytes);
   if (data instanceof Error || data instanceof Uint8Array) {
-    console.error(`Failed to parse plist ${path}: ${data}`);
-    return new MacosError(`PLIST`, `Failed to parse plist ${path}`);
+    return new MacosError(`PLIST`, `Failed to parse plist '${entry.meta.display_path}': ${data}`);
   }
   data = data as Record<string, string>;
 
-  let icon_file;
-  if (`${data[ "CFBundleIconFile" ]}`.includes("/")) {
-    icon_file = `${data[ "CFBundleIconFile" ]}`;
-  } else if (`${data[ "CFBundleIconFile" ]}`.includes("icns")) {
-    icon_file = path.replace(
-      "Info.plist",
-      `Resources/${data[ "CFBundleIconFile" ]}`,
-    );
-  } else {
-    icon_file = path.replace(
-      "Info.plist",
-      `Resources/${data[ "CFBundleIconFile" ]}.icns`,
-    );
-  }
-
   const app: Applications = {
-    filename: `${data[ "CFBundleName" ]}.app`,
-    full_path: path.replace("/Contents/Info.plist", ""),
-    bundle_executable: `${data[ "CFBundleExecutable" ]}`,
-    bundle_id: `${data[ "CFBundleIdentifier" ]}`,
-    bundle_name: `${data[ "CFBundleName" ]}`,
-    bundle_short_version: `${data[ "CFBundleShortVersionString" ]}`,
-    bundle_version: `${data[ "CFBundleVersion" ]}`,
-    display_name: `${data[ "CFBundleExecutable" ]}`,
-    copyright: `${data[ "NSHumanReadableCopyright" ]}`,
-    icon: !skip_icon ? readIcon(icon_file) : "",
-    evidence: path,
+    filename: `${data["CFBundleName"]}`,
+    full_path: entry.meta.full_path.replace("/Contents/Info.plist", ""),
+    bundle_executable: `${data["CFBundleExecutable"]}`,
+    bundle_id: `${data["CFBundleIdentifier"]}`,
+    bundle_name: `${data["CFBundleName"]}`,
+    bundle_short_version: `${data["CFBundleShortVersionString"]}`,
+    bundle_version: `${data["CFBundleVersion"]}`,
+    display_name: `${data["CFBundleExecutable"]}`,
+    copyright: `${data["NSHumanReadableCopyright"]}`,
+    evidence: entry.meta.display_path,
   };
 
   return app;
-}
-
-/**
- * Read and parse the icon file associated with the app
- * @param path Path to icns file
- * @returns Return base64 icon picture
- */
-function readIcon(path: string): string {
-  if (path.includes("undefined")) {
-    return "";
-  }
-  const data = readFile(path);
-  if (!(data instanceof Uint8Array)) {
-    console.error(`Could not read icns file at ${path}: ${data}`);
-    return "";
-  }
-  const icons = parseIcon(data);
-  if (icons instanceof Error) {
-    console.error(`Could not parse icns file at ${path}: ${data}`);
-    return "";
-  }
-
-  for (const icon of icons) {
-    if (icon.size == 128 || icon.size == 64) {
-      return icon.image;
-    }
-  }
-  console.warn("Could not find a good icon image to return");
-  return "";
 }
