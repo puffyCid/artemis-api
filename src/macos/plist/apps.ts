@@ -71,7 +71,8 @@ export function scanApps(protocol = AccessorProtocol.Host, alt_path?: string): A
 
 /**
  * Walk the entire filesystem to look for Applications
- * @param path Path to read
+ * @param handle `DirHandle` object to read
+ * @param accessor `Accessor` instance to use
  * @param apps Array of `Applications` to track
  */
 function iterateVolumes(handle: DirHandle, accessor: Accessor, apps: Applications[]): void {

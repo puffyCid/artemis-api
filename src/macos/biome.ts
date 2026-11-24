@@ -16,7 +16,7 @@ import { Accessor } from "../filesystem/accessor";
  * A **very** experimental and simple function to parse BIOME data
  * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param [app_focus_only=true] Only parse App.InFocus Biome files. Default is true
- * @param alt_path Full path to alternative BIOME file
+ * @param alt_path Optional path to alternative BIOME file
  * @returns Array of `Biome` objects
  */
 export function parseBiome(protocol = AccessorProtocol.Host, app_focus_only = true, alt_path?: string): Biome[] {

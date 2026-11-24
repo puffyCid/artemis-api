@@ -1,9 +1,8 @@
 import { Accessor, getPlist } from "../../../mod";
-import { AccessorProtocol } from "../../../types/filesystem/accessor";
+import { AccessorProtocol, DirHandle, EntryKind, FileHandle, GlobMatch } from "../../../types/filesystem/accessor";
 import { Applications } from "../../../types/macos/plist/apps";
 import { FileError } from "../../filesystem/errors";
 import { MacosError } from "../errors";
-import { scanApps } from "./apps";
 
 /**
  * Scan the filesystem for Applications that have DockTile persistence
@@ -12,53 +11,105 @@ import { scanApps } from "./apps";
  * @returns Array of `Applications` that contain DockTile entries
  */
 export function dockTiles(protocol = AccessorProtocol.Host, alt_path?: string): Applications[] | MacosError {
-  const apps = scanApps(protocol, alt_path);
-  if (apps instanceof MacosError) {
-    return apps;
-  }
-  const dockTileApps = checkDockPersistence(apps, protocol);
+  const apps: Applications[] = [];
+  const accessor = new Accessor();
+  const start = alt_path ?? "/System";
 
-  return dockTileApps;
+  const results = accessor.readDir(start, protocol);
+  if (results instanceof FileError) {
+    return new MacosError(`PLIST`, `failed to start app scan at '${start}': ${results}`);
+  }
+
+  for (const entry of results) {
+    if (entry.meta.kind === EntryKind.File) {
+      const app = parsePlist(entry, accessor);
+      if (app instanceof MacosError || app === undefined) {
+        continue;
+      }
+      apps.push(app);
+      continue;
+    }
+
+
+    if (entry.meta.kind !== EntryKind.Directory) {
+      continue;
+    }
+
+    iterateVolumes(entry.handle as DirHandle, accessor, apps);
+  }
+
+  return apps;
 }
 
 /**
- * Check for DockTile persistence in Applications
- * @param apps Array of `Applications` to check for DockTile PlugIn
- * @returns Array of `Applications` that contain DockTile PlugIn
+ * Walk the entire filesystem to look for Applications with DockTile plugin
+ * @param handle `DirHandle` object to read
+ * @param accessor `Accessor` instance to use
+ * @param apps Array of `Applications` to track
  */
-function checkDockPersistence(apps: Applications[], protocol: AccessorProtocol): Applications[] {
-  const dockTileApps: Applications[] = [];
-  const accessor = new Accessor();
-  for (const app of apps) {
-    // Only want to check Info.plist in PlugIns path
-    if (!app.evidence.toLowerCase().includes("plugins")) {
-      continue;
-    }
-
-    const source = app.evidence.split(":", 2).at(1);
-    if (source === undefined) {
-      continue;
-    }
-
-    const bytes = accessor.readFile(source, protocol);
-    if (bytes instanceof FileError) {
-      continue;
-    }
-
-    const data = getPlist(bytes);
-    if (data instanceof MacosError || data instanceof Uint8Array) {
-      console.error(`Failed to parse plist ${app.evidence}: ${data}`);
-      continue;
-    }
-
-    const check = JSON.stringify(data).toLowerCase();
-    // Easy way to check for any DockTile Plugins
-    if (!check.includes("docktileplugin") && !check.includes("docktile")) {
-      continue;
-    }
-
-    dockTileApps.push(app);
+function iterateVolumes(handle: DirHandle, accessor: Accessor, apps: Applications[]): void {
+  const results = accessor.readDirHandle(handle);
+  if (results instanceof FileError) {
+    console.error(`Failed to read location '${JSON.stringify(handle)}': ${results}`)
+    return;
   }
 
-  return dockTileApps;
+  for (const entry of results) {
+    if (entry.meta.kind === EntryKind.File) {
+      const app = parsePlist(entry, accessor);
+      if (app instanceof MacosError || app === undefined) {
+        continue;
+      }
+      apps.push(app);
+      continue;
+    }
+
+
+    if (entry.meta.kind !== EntryKind.Directory) {
+      continue;
+    }
+
+    iterateVolumes(entry.handle as DirHandle, accessor, apps);
+  }
+}
+
+/**
+ * Parse the `Info.plist` file
+ * @param entry `GlobMatch` object to `Info.plist`
+ * @param accessor `Accessor` instance to use
+ * @returns `Applications` info or error
+ */
+function parsePlist(entry: GlobMatch, accessor: Accessor): Applications | MacosError | undefined {
+  if (entry.meta.kind !== EntryKind.File || !entry.meta.full_path.endsWith("Contents/Info.plist") || !entry.meta.full_path.toLowerCase().includes("plugins")) {
+    return undefined;
+  }
+  const bytes = accessor.readFileHandle(entry.handle as FileHandle);
+  if (bytes instanceof FileError) {
+    return new MacosError(`PLIST`, `failed to read '${entry.meta.display_path}': ${bytes}`);
+  }
+  let data = getPlist(bytes);
+  if (data instanceof Error || data instanceof Uint8Array) {
+    return new MacosError(`PLIST`, `Failed to parse plist '${entry.meta.display_path}': ${data}`);
+  }
+  data = data as Record<string, string>;
+  const check = JSON.stringify(data).toLowerCase();
+  // Easy way to check for any DockTile Plugins
+  if (!check.includes("docktileplugin") && !check.includes("docktile")) {
+    return undefined;
+  }
+
+  const app: Applications = {
+    filename: `${data["CFBundleName"]}`,
+    full_path: entry.meta.full_path.replace("/Contents/Info.plist", ""),
+    bundle_executable: `${data["CFBundleExecutable"]}`,
+    bundle_id: `${data["CFBundleIdentifier"]}`,
+    bundle_name: `${data["CFBundleName"]}`,
+    bundle_short_version: `${data["CFBundleShortVersionString"]}`,
+    bundle_version: `${data["CFBundleVersion"]}`,
+    display_name: `${data["CFBundleExecutable"]}`,
+    copyright: `${data["NSHumanReadableCopyright"]}`,
+    evidence: entry.meta.display_path,
+  };
+
+  return app;
 }

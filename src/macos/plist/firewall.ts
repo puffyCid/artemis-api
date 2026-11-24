@@ -1,9 +1,12 @@
+import { AccessorProtocol, EntryKind, FileHandle } from "../../../types/filesystem/accessor";
 import {
   Firewall,
   FirewallApplication,
   FirewallExceptions,
   Services,
 } from "../../../types/macos/plist/firewall";
+import { Accessor } from "../../filesystem/accessor";
+import { FileError } from "../../filesystem/errors";
 import { parseAlias } from "../alias";
 import { parseRequirementBlob } from "../codesigning/blob";
 import { SigningError } from "../codesigning/errors";
@@ -12,75 +15,87 @@ import { getPlist } from "../plist";
 
 /**
  * Function to get the macOS Firewall status and metadata
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Optional path to `com.apple.alf.plist`
  * @returns Array of `Firewall` status or `MacosError`
  */
-export function firewallStatus(alt_path?: string): Firewall[] | MacosError {
-  let path = [
+export function firewallStatus(protocol = AccessorProtocol.Host, alt_path?: string): Firewall[] | MacosError {
+  const paths = alt_path ? [alt_path] : [
     "/Library/Preferences/com.apple.alf.plist",
     "/usr/libexec/ApplicationFirewall/com.apple.alf.plist",
   ];
-  if (alt_path !== undefined) {
-    path = [ alt_path ];
-  }
 
+  const accessor = new Accessor();
   const firewalls: Firewall[] = [];
-  for (const entry of path) {
-    const plist_results = getPlist(entry);
-    if (
-      plist_results instanceof MacosError || plist_results instanceof Uint8Array
-    ) {
-      return new MacosError(
-        "FIREWALL",
-        `failed to parse plist ${plist_results}`,
-      );
+  for (const path of paths) {
+    const matches = accessor.globfs(path, protocol);
+    if (matches instanceof FileError) {
+      continue;
     }
 
-    const results = plist_results as Record<string, string>;
+    for (const entry of matches) {
+      if (entry.meta.kind !== EntryKind.File) {
+        continue;
+      }
 
-    const firewall: Firewall = {
-      allow_signed_enabled: !!results[ "allowsignedenabled" ],
-      firewall_unload: !!results[ "firewallunload" ],
-      logging_enabled: !!results[ "loggingenabled" ],
-      global_state: !!results[ "globalstate" ],
-      logging_option: !!results[ "loggingoption" ],
-      stealth_enabled: !!results[ "stealthenabled" ],
-      version: results[ "version" ] ?? "",
-      applications: [],
-      exceptions: [],
-      explicit_auths: [],
-      services: [],
-    };
+      const bytes = accessor.readFileHandle(entry.handle as FileHandle);
+      if (bytes instanceof FileError) {
+        console.warn(`Failed to read '${entry.meta.display_path}': ${bytes}`);
+        continue;
+      }
 
-    const applications: Record<string, string | Uint8Array | number>[] =
-      results[ "applications" ] as unknown as Record<
-        string,
-        string | Uint8Array | number
-      >[];
-    for (const app of applications) {
-      const entry = parseApplications(app);
-      firewall.applications.push(entry);
+      const data = getPlist(bytes);
+      if (data instanceof MacosError) {
+        console.warn(`Failed to parse '${entry.meta.display_path}': ${bytes}`);
+        continue;
+      }
+
+      const results = data as Record<string, string>;
+
+      const firewall: Firewall = {
+        allow_signed_enabled: !!results["allowsignedenabled"],
+        firewall_unload: !!results["firewallunload"],
+        logging_enabled: !!results["loggingenabled"],
+        global_state: !!results["globalstate"],
+        logging_option: !!results["loggingoption"],
+        stealth_enabled: !!results["stealthenabled"],
+        version: results["version"] ?? "",
+        applications: [],
+        exceptions: [],
+        explicit_auths: [],
+        services: [],
+      };
+
+      const applications: Record<string, string | Uint8Array | number>[] =
+        results["applications"] as unknown as Record<
+          string,
+          string | Uint8Array | number
+        >[];
+      for (const app of applications) {
+        const entry = parseApplications(app);
+        firewall.applications.push(entry);
+      }
+
+      const exceptions: Record<string, string | number>[] =
+        results["exceptions"] as unknown as Record<string, string | number>[];
+      firewall.exceptions = getExceptions(exceptions);
+
+      const services: Record<string, object> =
+        results["firewall"] as unknown as Record<
+          string,
+          object
+        >;
+      firewall.services = getServices(services);
+
+      const auths: Record<string, string>[] =
+        results["explicitauths"] as unknown as Record<
+          string,
+          string
+        >[];
+      firewall.explicit_auths = getAuths(auths);
+
+      firewalls.push(firewall);
     }
-
-    const exceptions: Record<string, string | number>[] =
-      results[ "exceptions" ] as unknown as Record<string, string | number>[];
-    firewall.exceptions = getExceptions(exceptions);
-
-    const services: Record<string, object> =
-      results[ "firewall" ] as unknown as Record<
-        string,
-        object
-      >;
-    firewall.services = getServices(services);
-
-    const auths: Record<string, string>[] =
-      results[ "explicitauths" ] as unknown as Record<
-        string,
-        string
-      >[];
-    firewall.explicit_auths = getAuths(auths);
-
-    firewalls.push(firewall);
   }
 
   return firewalls;
@@ -125,8 +140,8 @@ function parseApplications(
   };
 
   // First get code signing data
-  if (typeof (app[ "reqdata" ]) === "object") {
-    const app_data = Uint8Array.from(app[ "reqdata" ]);
+  if (typeof (app["reqdata"]) === "object") {
+    const app_data = Uint8Array.from(app["reqdata"]);
     const single_requirement = parseRequirementBlob(app_data);
     if (single_requirement instanceof SigningError) {
       console.error(
@@ -138,8 +153,8 @@ function parseApplications(
   }
 
   // Now get Application info which is an embedded plist
-  if (typeof (app[ "alias" ]) === "object") {
-    const raw_plist = Uint8Array.from(app[ "alias" ]);
+  if (typeof (app["alias"]) === "object") {
+    const raw_plist = Uint8Array.from(app["alias"]);
     // Parse the embedded plist
     const embedded_plist = getPlist(raw_plist);
     if (embedded_plist instanceof MacosError) {
@@ -161,8 +176,8 @@ function parseApplications(
   }
 
   // Last part is state of Firewall for application
-  if (typeof (app[ "state" ]) === "number") {
-    firewall.block_incoming = !!app[ "state" ];
+  if (typeof (app["state"]) === "number") {
+    firewall.block_incoming = !!app["state"];
   }
 
   return firewall;
@@ -179,8 +194,8 @@ function getExceptions(
   const results: FirewallExceptions[] = [];
 
   for (const entry of exceptions) {
-    const path = entry[ "path" ] as string;
-    const state = entry[ "state" ] as number;
+    const path = entry["path"] as string;
+    const state = entry["state"] as number;
 
     const except: FirewallExceptions = {
       path,
@@ -201,11 +216,11 @@ function getExceptions(
 function getServices(services: Record<string, object>): Services[] {
   const service_entires: Services[] = [];
   for (const entry in services) {
-    const state = services[ entry ] as Record<string, string>;
+    const state = services[entry] as Record<string, string>;
 
     const service: Services = {
       name: entry,
-      allowed: !!state[ "state" ],
+      allowed: !!state["state"],
     };
 
     service_entires.push(service);
@@ -222,7 +237,7 @@ function getServices(services: Record<string, object>): Services[] {
 function getAuths(auths: Record<string, string>[]): string[] {
   const entries: string[] = [];
   for (const auth of auths) {
-    entries.push(auth[ "id" ] ?? "");
+    entries.push(auth["id"] ?? "");
   }
   return entries;
 }

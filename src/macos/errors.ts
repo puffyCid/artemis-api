@@ -31,6 +31,7 @@ export type ErrorName =
   | "SYSTEMSTATS"
   | "AUTHORIZATIONS"
   | "STATS"
-  | "SHARED_FILELIST";
+  | "SHARED_FILELIST"
+  | "WIFI";
 
 export class MacosError extends ErrorBase<ErrorName> { }
