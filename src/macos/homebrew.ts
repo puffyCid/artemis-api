@@ -35,7 +35,7 @@ export function getHomebrewInfo(protocol = AccessorProtocol.Host): HomebrewData 
  */
 export function getPackages(protocol = AccessorProtocol.Host, alt_path?: string): HomebrewReceipt[] {
   // Default paths to glob if we are not provided a path
-  const paths = alt_path ? [ alt_path ] : [
+  const paths = alt_path ? [alt_path] : [
     "/opt/homebrew/Cellar/*/*/INSTALL_RECEIPT.json",
     "/usr/local/Cellar/*/*/INSTALL_RECEIPT.json",
   ];
@@ -106,12 +106,12 @@ export function getPackages(protocol = AccessorProtocol.Host, alt_path?: string)
         }
         const receipt_data = JSON.parse(receipt);
 
-        brew_info.installTime = unixEpochToISO(receipt_data[ "time" ]);
+        brew_info.installTime = unixEpochToISO(receipt_data["time"]);
         brew_info.installedAsDependency =
-          receipt_data[ "installed_as_dependency" ];
-        brew_info.installedOnRequest = receipt_data[ "installed_on_request" ];
+          receipt_data["installed_as_dependency"];
+        brew_info.installedOnRequest = receipt_data["installed_on_request"];
         brew_info.sourceModified = unixEpochToISO(
-          receipt_data[ "source_modified_time" ],
+          receipt_data["source_modified_time"],
         );
       }
 
@@ -130,7 +130,7 @@ export function getPackages(protocol = AccessorProtocol.Host, alt_path?: string)
  * @returns Array of `HomebrewFormula`
  */
 export function getCasks(protocol = AccessorProtocol.Host, alt_path?: string): HomebrewFormula[] {
-  const paths = alt_path ? [ alt_path ] : [
+  const paths = alt_path ? [alt_path] : [
     "/usr/local/Caskroom/*/.metadata/*/*/Casks/*.rb",
     "/opt/homebrew/Caskroom/*/.metadata/*/*/Casks/*.rb",
     "/usr/local/Caskroom/*/.metadata/*/*/Casks/*.json",
@@ -159,18 +159,22 @@ export function getCasks(protocol = AccessorProtocol.Host, alt_path?: string): H
           );
           continue;
         }
+        try {
+          const data = JSON.parse(text);
+          const formula: HomebrewFormula = {
+            description: data["desc"],
+            homepage: data["homepage"],
+            url: data["url"],
+            license: "",
+            caskName: data["name"].join(" "),
+            formulaPath: entry.meta.display_path,
+            version: data["version"],
+          };
+          casks.push(formula);
+        } catch (e) {
+          continue;
+        }
 
-        const data = JSON.parse(text);
-        const formula: HomebrewFormula = {
-          description: data[ "desc" ],
-          homepage: data[ "homepage" ],
-          url: data[ "url" ],
-          license: "",
-          caskName: data[ "name" ].join(" "),
-          formulaPath: entry.meta.display_path,
-          version: data[ "version" ],
-        };
-        casks.push(formula);
       } else if (entry.meta.extension === "rb") {
         const formula = parseRuby(entry);
         if (formula instanceof FileError) {
@@ -203,9 +207,9 @@ function parseRuby(entry: GlobMatch): HomebrewFormula | FileError {
   const version_value = entry.meta.full_path.split("/");
   let version;
   if (entry.meta.full_path.includes("/Casks/")) {
-    version = version_value[ version_value.length - 4 ] ?? "";
+    version = version_value[version_value.length - 4] ?? "";
   } else {
-    version = version_value[ version_value.length - 3 ] ?? "";
+    version = version_value[version_value.length - 3] ?? "";
   }
 
   const rubyText = readTextFile(entry.handle as FileHandle);
@@ -223,28 +227,28 @@ function parseRuby(entry: GlobMatch): HomebrewFormula | FileError {
     formulaPath: entry.meta.display_path,
     version,
   };
-  if (typeof description?.[ 0 ] === "string") {
-    receipt.description = description?.[ 0 ].replaceAll('"', "");
+  if (typeof description?.[0] === "string") {
+    receipt.description = description?.[0].replaceAll('"', "");
   }
 
   const homepage = rubyText.match(homepage_reg);
-  if (typeof homepage?.[ 0 ] === "string") {
-    receipt.homepage = homepage?.[ 0 ].replaceAll('"', "");
+  if (typeof homepage?.[0] === "string") {
+    receipt.homepage = homepage?.[0].replaceAll('"', "");
   }
 
   const license = rubyText.match(reg_license);
-  if (typeof license?.[ 0 ] === "string") {
-    receipt.license = license?.[ 0 ].replaceAll('"', "");
+  if (typeof license?.[0] === "string") {
+    receipt.license = license?.[0].replaceAll('"', "");
   }
 
   const url = rubyText.match(reg_url);
-  if (typeof url?.[ 0 ] === "string") {
-    receipt.url = url?.[ 0 ].replaceAll('"', "");
+  if (typeof url?.[0] === "string") {
+    receipt.url = url?.[0].replaceAll('"', "");
   }
 
   const name = rubyText.match(reg_name);
-  if (typeof name?.[ 0 ] === "string" && entry.meta.full_path.includes("Cask")) {
-    receipt.caskName = name?.[ 0 ].replaceAll('"', "");
+  if (typeof name?.[0] === "string" && entry.meta.full_path.includes("Cask")) {
+    receipt.caskName = name?.[0].replaceAll('"', "");
   }
 
   return receipt;
@@ -259,12 +263,12 @@ export function testHomebrew(): void {
   const install = "../../test_data/macos/homebrew/INSTALL_RECEIPT.json";
   const results = getPackages(AccessorProtocol.Host, install);
 
-  if (results.length !== 1 || results[ 0 ] === undefined) {
+  if (results.length !== 1 || results[0] === undefined) {
     throw `Got ${results.length} expected 1.......getPackages ❌`;
   }
 
-  if (results[ 0 ].name != "typescript") {
-    throw `Got ${results[ 0 ].name} expected typescript.......getPackages ❌`;
+  if (results[0].name != "typescript") {
+    throw `Got ${results[0].name} expected typescript.......getPackages ❌`;
   }
 
   console.info(`  Function getPackages ✅`);
@@ -273,12 +277,12 @@ export function testHomebrew(): void {
 
   const results_casks = getCasks(AccessorProtocol.Host, casks);
 
-  if (results_casks.length !== 1 || results_casks[ 0 ] === undefined) {
+  if (results_casks.length !== 1 || results_casks[0] === undefined) {
     throw `Got ${results_casks.length} expected 1.......getCasks ❌`;
   }
 
-  if (results_casks[ 0 ].caskName != "DuckDuckGo") {
-    throw `Got ${results_casks[ 0 ].caskName} expected DuckDuckGo.......getCasks ❌`;
+  if (results_casks[0].caskName != "DuckDuckGo") {
+    throw `Got ${results_casks[0].caskName} expected DuckDuckGo.......getCasks ❌`;
   }
 
   console.info(`  Function getCasks ✅`);

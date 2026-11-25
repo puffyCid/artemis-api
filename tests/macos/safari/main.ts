@@ -1,9 +1,9 @@
-import { PlatformType, Safari } from "../../../mod";
+import { Safari } from "../../../mod";
 
 function main() {
     console.log('Running Safari tests....');
     console.log(' Starting Safari live test....');
-    const client = new Safari(PlatformType.Darwin);
+    const client = new Safari();
     const values = client.history();
     if (values.length === 0) {
         throw `Got no history?`;

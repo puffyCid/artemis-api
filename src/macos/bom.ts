@@ -7,12 +7,13 @@
  *  - https://github.com/iineva/bom
  *  - https://github.com/hogliux/bomutils
  */
-import { AccessorProtocol, EntryKind, FileHandle } from "../../types/filesystem/accessor";
+import { AccessorProtocol, EntryKind, FileEntry, FileHandle } from "../../types/filesystem/accessor";
 import { Bom, BomFiles } from "../../types/macos/bom";
 import { extractUtf8String } from "../encoding/mod";
 import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
-import { readFile, readTextFile } from "../filesystem/files";
+import { readTextFile } from "../filesystem/files";
+import { DirectoryTree, isFileEntry } from "../filesystem/tree";
 import { NomError } from "../nom/error";
 import {
   Endian,
@@ -27,12 +28,19 @@ import { getPlist } from "./plist";
 
 /**
  * Parse a Bill of Materials (BOM) file and get file paths described in the file. When an application (pkg) is install macOS creates a BOM file to track files the pkg creates
- * @param path Path to BOM file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param [source_path="host:"] Default source path to use when accessing Epiphany data. Default is `host:` which represents a live system.  
+ * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/bom.zip`
+ * @param alt_path Path to directory to BOM data
  * @returns `BOM` file or `MacosError`
  */
-export function parseBom(protocol = AccessorProtocol.Host, alt_path?: string): Bom[] | MacosError {
-  const path = alt_path ?? "/var/db/receipts/*.bom";
+export function parseBom(protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string): Bom[] | MacosError {
+  const path = alt_path ?? "/var/db/receipt?";
   const accessor = new Accessor();
+  const source = accessor.openSource(source_path);
+  if (source instanceof FileError) {
+    return new MacosError('BOM', `failed to open source for ${source_path}: ${source}`);
+  }
 
   const matches = accessor.globfs(path, protocol);
   if (matches instanceof FileError) {
@@ -41,144 +49,166 @@ export function parseBom(protocol = AccessorProtocol.Host, alt_path?: string): B
 
   const values: Bom[] = [];
   for (const entry of matches) {
-    if (entry.meta.kind !== EntryKind.File) {
+    if (entry.meta.kind !== EntryKind.Directory) {
       continue;
     }
 
-    const data = accessor.readFileHandle(entry.handle as FileHandle);
-    if (data instanceof FileError) {
-      return new MacosError("BOM", `failed to read '${entry.meta.display_path}': ${data}`);
+    const tree = DirectoryTree.fromEntry(accessor, source, entry);
+    if (tree instanceof FileError) {
+      continue;
     }
 
-    const header = parseHeader(data);
-    if (header instanceof MacosError) {
-      return new MacosError("BOM", `failed to parse header: ${header}`);
+    const boms_data = tree.glob("*.bom");
+    if (boms_data instanceof FileError) {
+      continue;
     }
 
-    const table_data = take(data, header.index_table_offset);
-    if (table_data instanceof NomError) {
-      return new MacosError("BOM", `failed to get table data: ${table_data}`);
-    }
-
-    const table = getPointers(table_data.remaining as Uint8Array);
-    if (table instanceof MacosError) {
-      return new MacosError("BOM", `failed to parse table: ${table_data}`);
-    }
-
-    const var_data = take(data, header.var_offset);
-    if (var_data instanceof NomError) {
-      return new MacosError("BOM", `failed to get var data: ${table_data}`);
-    }
-
-    const vars = getVars(var_data.remaining as Uint8Array);
-    if (vars instanceof MacosError) {
-      return new MacosError("BOM", `failed to parse vars: ${table_data}`);
-    }
-
-    let boms: BomFiles[] = [];
-    for (const entry of vars.vars) {
-      // Only Paths entry contains our data
-      if (entry.name !== "Paths") {
+    for (const bom_entry of boms_data) {
+      if (!isFileEntry(bom_entry) || bom_entry.meta.extension !== "bom") {
         continue;
       }
 
-      const tree_entry = parseTreeEntry(data, entry.index, table.pointers);
-      if (tree_entry instanceof MacosError) {
-        return new MacosError("BOM", `failed to get tree entry: ${tree_entry}`);
+      const data = accessor.readFileHandle(bom_entry.handle);
+      if (data instanceof FileError) {
+        return new MacosError("BOM", `failed to read '${bom_entry.meta.display_path}': ${data}`);
       }
 
-      let forward = tree_entry.index;
-      const index_list: TreeIndex[] = [];
-      while (forward !== 0) {
-        let tree = parseTree(data, forward, table.pointers);
-        if (tree instanceof MacosError) {
-          return new MacosError("BOM", `failed to get tree info: ${tree}`);
+      const header = parseHeader(data);
+      if (header instanceof MacosError) {
+        return new MacosError("BOM", `failed to parse header: ${header}`);
+      }
+
+      const table_data = take(data, header.index_table_offset);
+      if (table_data instanceof NomError) {
+        return new MacosError("BOM", `failed to get table data: ${table_data}`);
+      }
+
+      const table = getPointers(table_data.remaining as Uint8Array);
+      if (table instanceof MacosError) {
+        return new MacosError("BOM", `failed to parse table: ${table_data}`);
+      }
+
+      const var_data = take(data, header.var_offset);
+      if (var_data instanceof NomError) {
+        return new MacosError("BOM", `failed to get var data: ${table_data}`);
+      }
+
+      const vars = getVars(var_data.remaining as Uint8Array);
+      if (vars instanceof MacosError) {
+        return new MacosError("BOM", `failed to parse vars: ${table_data}`);
+      }
+
+      let boms: BomFiles[] = [];
+      for (const entry of vars.vars) {
+        // Only Paths entry contains our data
+        if (entry.name !== "Paths") {
+          continue;
         }
-        let index_data = tree.data;
 
-        // If entry is not a leaf get next Tree based on data
-        while (!tree.is_leaf) {
-          const index = parseTreeIndex(index_data);
-          if (index instanceof MacosError) {
-            return new MacosError("BOM", `failed to get tree index: ${index}`);
-          }
+        const tree_entry = parseTreeEntry(data, entry.index, table.pointers);
+        if (tree_entry instanceof MacosError) {
+          return new MacosError("BOM", `failed to get tree entry: ${tree_entry}`);
+        }
 
-          tree = parseTree(data, index.tree_index.value_index, table.pointers);
+        let forward = tree_entry.index;
+        const index_list: TreeIndex[] = [];
+        while (forward !== 0) {
+          let tree = parseTree(data, forward, table.pointers);
           if (tree instanceof MacosError) {
             return new MacosError("BOM", `failed to get tree info: ${tree}`);
           }
-          index_data = tree.data;
-        }
+          let index_data = tree.data;
 
-        let count = 0;
+          // If entry is not a leaf get next Tree based on data
+          while (!tree.is_leaf) {
+            const index = parseTreeIndex(index_data);
+            if (index instanceof MacosError) {
+              return new MacosError("BOM", `failed to get tree index: ${index}`);
+            }
 
-        while (count < tree.count) {
-          const index = parseTreeIndex(index_data);
-          if (index instanceof MacosError) {
-            return new MacosError("BOM", `failed to get tree index: ${index}`);
+            tree = parseTree(data, index.tree_index.value_index, table.pointers);
+            if (tree instanceof MacosError) {
+              return new MacosError("BOM", `failed to get tree info: ${tree}`);
+            }
+            index_data = tree.data;
           }
 
-          index_list.push(index.tree_index);
-          index_data = index.data;
+          let count = 0;
 
-          count++;
+          while (count < tree.count) {
+            const index = parseTreeIndex(index_data);
+            if (index instanceof MacosError) {
+              return new MacosError("BOM", `failed to get tree index: ${index}`);
+            }
+
+            index_list.push(index.tree_index);
+            index_data = index.data;
+
+            count++;
+          }
+
+          forward = tree.forward;
         }
 
-        forward = tree.forward;
+        // Track data used to assemble file paths
+        const bom_map = new Map<number, BomData>();
+        for (const tree_index of index_list) {
+          const key_data = getBlock(data, tree_index.key_index, table.pointers);
+          if (key_data instanceof MacosError) {
+            return new MacosError("BOM", `failed to get key data: ${key_data}`);
+          }
+
+          const bom_file = getFile(key_data);
+          if (bom_file instanceof MacosError) {
+            return new MacosError("BOM", `failed to get file: ${bom_file}`);
+          }
+
+          const value_data = getBlock(data, tree_index.value_index, table.pointers);
+          if (value_data instanceof MacosError) {
+            return new MacosError("BOM", `failed to get vale data: ${value_data}`);
+          }
+
+          const path = getPath(value_data);
+          if (path instanceof MacosError) {
+            return new MacosError(
+              "BOM",
+              `failed to get path id and index: ${value_data}`,
+            );
+          }
+
+          const bom_info = getPathInfo(data, path.index, table.pointers);
+          if (bom_info instanceof MacosError) {
+            return new MacosError("BOM", `failed to get path info: ${bom_info}`);
+          }
+          bom_info.parent = bom_file.parent;
+
+          const bom_data: BomData = {
+            bom_file,
+            bom_info,
+          };
+
+          bom_map.set(path.id, bom_data);
+        }
+        boms = boms.concat(...assembleBom(bom_map));
       }
 
-      // Track data used to assemble file paths
-      const bom_map = new Map<number, BomData>();
-      for (const tree_index of index_list) {
-        const key_data = getBlock(data, tree_index.key_index, table.pointers);
-        if (key_data instanceof MacosError) {
-          return new MacosError("BOM", `failed to get key data: ${key_data}`);
-        }
-
-        const bom_file = getFile(key_data);
-        if (bom_file instanceof MacosError) {
-          return new MacosError("BOM", `failed to get file: ${bom_file}`);
-        }
-
-        const value_data = getBlock(data, tree_index.value_index, table.pointers);
-        if (value_data instanceof MacosError) {
-          return new MacosError("BOM", `failed to get vale data: ${value_data}`);
-        }
-
-        const path = getPath(value_data);
-        if (path instanceof MacosError) {
-          return new MacosError(
-            "BOM",
-            `failed to get path id and index: ${value_data}`,
-          );
-        }
-
-        const bom_info = getPathInfo(data, path.index, table.pointers);
-        if (bom_info instanceof MacosError) {
-          return new MacosError("BOM", `failed to get path info: ${bom_info}`);
-        }
-        bom_info.parent = bom_file.parent;
-
-        const bom_data: BomData = {
-          bom_file,
-          bom_info,
-        };
-
-        bom_map.set(path.id, bom_data);
+      const receipt_filename = bom_entry.meta.filename.replace(".bom", ".plist");
+      const receipt_file = tree.file(receipt_filename);
+      if (receipt_file instanceof FileError) {
+        continue;
       }
-      boms = boms.concat(...assembleBom(bom_map));
+
+      const bom = parseReceipt(receipt_file, accessor);
+      if (bom instanceof MacosError) {
+        console.warn(`Failed to parse receipt for '${bom_entry.meta.display_path}': ${bom}`);
+        continue;
+      }
+
+      bom.files = boms;
+      bom.evidence = bom_entry.meta.display_path;
+
+      values.push(bom);
     }
-
-    const receipt_file = path.replace(".bom", ".plist");
-    const bom = parseReceipt(receipt_file);
-    if (bom instanceof MacosError) {
-      return new MacosError("BOM", `failed to parse receipt: ${table_data}`);
-    }
-
-    bom.files = boms;
-    bom.evidence = path;
-
-    values.push(bom);
   }
 
   return values;
@@ -189,25 +219,25 @@ export function parseBom(protocol = AccessorProtocol.Host, alt_path?: string): B
  * @param path Path to plist file containg BOM receipt
  * @returns `BOM` file or `MacosError`
  */
-export function parseReceipt(path: string): Bom | MacosError {
-  const data = readFile(path);
+export function parseReceipt(entry: FileEntry, accessor: Accessor): Bom | MacosError {
+  const data = accessor.readFileHandle(entry.handle);
   if (data instanceof FileError) {
-    return new MacosError("BOM", `failed to read ${path}: ${data}`);
+    return new MacosError("BOM", `failed to read ${entry.meta.display_path}: ${data}`);
   }
   const plist_data = getPlist(data);
   if (data instanceof MacosError) {
-    return new MacosError("BOM", `failed to parse ${path}: ${data}`);
+    return new MacosError("BOM", `failed to parse ${entry.meta.display_path}: ${data}`);
   }
 
   const receipt = plist_data as Record<string, string>;
   const bom: Bom = {
-    package_name: receipt[ "PackageFileName" ] ?? "",
-    install_data: receipt[ "InstallDate" ] ?? "",
-    package_id: receipt[ "PackageIdentifier" ] ?? "",
-    package_version: receipt[ "PackageVersion" ] ?? "",
-    install_process_name: receipt[ "InstallProcessName" ] ?? "",
-    install_prefix_path: receipt[ "InstallPrefixPath" ] ?? "",
-    path,
+    package_name: receipt["PackageFileName"] ?? "",
+    install_data: receipt["InstallDate"] ?? "",
+    package_id: receipt["PackageIdentifier"] ?? "",
+    package_version: receipt["PackageVersion"] ?? "",
+    install_process_name: receipt["InstallProcessName"] ?? "",
+    install_prefix_path: receipt["InstallPrefixPath"] ?? "",
+    path: entry.meta.display_path,
     evidence: "",
     files: [],
   };
@@ -438,7 +468,7 @@ function getBlock(
     return new MacosError("BOM", `index greater than pointers length`);
   }
 
-  const pointer = pointers[ index ];
+  const pointer = pointers[index];
   if (pointer === undefined) {
     return new MacosError("BOM", `got undefined pointer`);
   }
@@ -861,7 +891,7 @@ function assembleBom(files: Map<number, BomData>): BomFiles[] {
   const boms: BomFiles[] = [];
   const root = 0;
 
-  for (const [ key, value ] of files) {
+  for (const [key, value] of files) {
     // Root directory
     if (key === root) {
       continue;
@@ -901,23 +931,56 @@ function assembleBom(files: Map<number, BomData>): BomFiles[] {
  * Or want to validate the BOM parsing
  */
 export function testParseBom(): void {
-  const bom_test = "../../test_data/macos/bom/io.osquery.agent.bom";
-  const results = parseBom(AccessorProtocol.Host, bom_test);
+  const bom_test = "../../test_data/macos/bom";
+  const results = parseBom(AccessorProtocol.Host, "host:", bom_test);
   if (results instanceof MacosError) {
     throw console.log(results);
   }
-
+  console.log(results);
   if (results.at(0)?.files.length !== 266) {
     throw `Got ${results.at(0)?.files.length} wanted "266".......parseBom ❌`;
   }
 
-  if (results.at(0)?.files[ 3 ]?.path !== "./usr") {
-    throw `Got ${results.at(0)?.files[ 3 ]?.path} wanted "./usr".......parseBom ❌`;
+  if (results.at(0)?.files[3]?.path !== "./usr") {
+    throw `Got ${results.at(0)?.files[3]?.path} wanted "./usr".......parseBom ❌`;
   }
   console.info(`  Function parseBom ✅`);
 
   const test = "../../test_data/macos/bom/io.osquery.agent.plist";
-  const recpeit = parseReceipt(test);
+  const entry: FileEntry = {
+    handle: {
+      File: {
+        locator: {
+          Host: { path: test },
+          Ntfs: undefined,
+          Ext4: undefined,
+          Zip: undefined,
+          Disk: undefined
+        }
+      }
+    },
+    name: "",
+    meta: {
+      kind: EntryKind.File,
+      size: 0,
+      full_path: "",
+      filename: "",
+      directory: "",
+      extension: "",
+      inode: 0,
+      uid: 0,
+      gid: 0,
+      attributes: [],
+      display_path: ""
+    },
+    times: {
+      created: "",
+      modified: "",
+      accessed: "",
+      changed: ""
+    }
+  };
+  const recpeit = parseReceipt(entry, new Accessor());
   if (recpeit instanceof MacosError) {
     throw console.log(recpeit);
   }
@@ -927,7 +990,7 @@ export function testParseBom(): void {
   }
   console.info(`  Function parseReceipt ✅`);
 
-  const data = readFile(bom_test);
+  const data = new Accessor().readFile(`${bom_test}/io.osquery.agent.bom`);
   if (data instanceof FileError) {
     throw console.log(data);
   }
@@ -947,7 +1010,7 @@ export function testParseBom(): void {
   console.info(`  Function parseHeader ✅`);
 
   const pointers = "../../test_data/macos/bom/pointers.raw";
-  const point_data = readFile(pointers);
+  const point_data = new Accessor().readFile(pointers);
   if (point_data instanceof FileError) {
     throw console.log(point_data);
   }
@@ -961,14 +1024,14 @@ export function testParseBom(): void {
     throw `Got ${point_info.pointers.length} wanted "2730".......getPointers ❌`;
   }
 
-  if (point_info.pointers[ 280 ]?.address != 18646) {
-    throw `Got ${point_info.pointers[ 280 ]?.address} wanted "18646".......getPointers ❌`;
+  if (point_info.pointers[280]?.address != 18646) {
+    throw `Got ${point_info.pointers[280]?.address} wanted "18646".......getPointers ❌`;
   }
 
   console.info(`  Function getPointers ✅`);
 
   const vars = "../../test_data/macos/bom/vars.raw";
-  const vars_data = readFile(vars);
+  const vars_data = new Accessor().readFile(vars);
   if (vars_data instanceof FileError) {
     throw console.log(vars_data);
   }
@@ -982,8 +1045,8 @@ export function testParseBom(): void {
     throw `Got ${vars_info.vars.length} wanted "5".......getVars ❌`;
   }
 
-  if (vars_info.vars[ 3 ]?.name != "VIndex") {
-    throw `Got ${vars_info.vars[ 3 ]?.name} wanted "VIndex".......getVars ❌`;
+  if (vars_info.vars[3]?.name != "VIndex") {
+    throw `Got ${vars_info.vars[3]?.name} wanted "VIndex".......getVars ❌`;
   }
 
   console.info(`  Function getVars ✅`);
@@ -1020,7 +1083,7 @@ export function testParseBom(): void {
   console.info(`  Function parseTree ✅`);
 
   const index = "../../test_data/macos/bom/tree_index.raw";
-  const index_data = readFile(index);
+  const index_data = new Accessor().readFile(index);
   if (index_data instanceof FileError) {
     throw console.log(index_data);
   }
@@ -1038,7 +1101,7 @@ export function testParseBom(): void {
   }
   console.info(`  Function parseTreeIndex ✅`);
 
-  const file = getFile(new Uint8Array([ 0, 0, 0, 26, 103, 114, 117, 98, 101, 110, 118, 46, 97, 117, 103, 0 ]));
+  const file = getFile(new Uint8Array([0, 0, 0, 26, 103, 114, 117, 98, 101, 110, 118, 46, 97, 117, 103, 0]));
   if (file instanceof MacosError) {
     throw console.log(file);
   }
@@ -1051,7 +1114,7 @@ export function testParseBom(): void {
   }
   console.info(`  Function getFile ✅`);
 
-  const path = getPath(new Uint8Array([ 0, 0, 0, 1, 0, 0, 0, 11 ]));
+  const path = getPath(new Uint8Array([0, 0, 0, 1, 0, 0, 0, 11]));
   if (path instanceof MacosError) {
     throw console.log(path);
   }
@@ -1078,7 +1141,7 @@ export function testParseBom(): void {
   }
   console.info(`  Function getPathInfo ✅`);
 
-  const types = [ 1, 2, 3, 4 ];
+  const types = [1, 2, 3, 4];
   for (const entry of types) {
     if (getType(entry) === PathType.UNKNOWN) {
       throw `Got Unknown type!.......getType ❌`;
