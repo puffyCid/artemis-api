@@ -1,3 +1,5 @@
+import { Sqlite } from "../../src/applications/sqlite";
+import { DirectoryTree } from "../../src/filesystem/tree";
 import { Url } from "../http/unfold";
 import { CreationFlags, TargetFlags, VolumeFlags } from "./bookmark";
 
@@ -44,7 +46,7 @@ export interface SafariHistory {
   path: string;
   unfold: Url | undefined;
   /**Browser version */
-  version: number;
+  browser_version: number;
   message: string;
   datetime: string;
   timestamp_desc: "URL Visited";
@@ -131,8 +133,14 @@ export interface SafariDownloads {
 }
 
 export interface SafariProfile {
-  full_path: string;
-  container_path: string;
+  /**
+   * `DirectoryTree` to the base of the Safari directory
+   */
+  tree: DirectoryTree;
+  /**
+   * Hashmap of opened Sqlite database files
+   */
+  database: Map<string, Sqlite | null>;
   version: number;
 }
 
@@ -167,7 +175,7 @@ export interface SafariBookmark {
   /**Path to the Bookmarks.plist file */
   path: string;
   /**Browser version */
-  version: number;
+  browser_version: number;
   message: string;
   datetime: string;
   timestamp_desc: "Bookmark Created";
@@ -184,7 +192,7 @@ export interface SafariFavicon {
   /**Path to the favicons.db file */
   path: string;
   /**Browser version */
-  version: number;
+  browser_version: number;
   message: string;
   datetime: string;
   timestamp_desc: "Favicon Created";
@@ -204,7 +212,7 @@ export interface SafariExtensions {
   /**Path to the Extensions.plist file */
   path: string;
   /**Browser version */
-  version: number;
+  browser_version: number;
   message: string;
   datetime: string;
   timestamp_desc: "Extension Installed";

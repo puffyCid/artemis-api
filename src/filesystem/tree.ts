@@ -254,7 +254,7 @@ export class DirectoryTree {
             }
 
             if (!isDirectoryEntry(next)) {
-                return new FileError(`ACCESSOR`, `'${next.meta.display_path}' is not a directory. Looking for '${reported}' under '${this.rootKey}'`);
+                return new FileError(`ACCESSOR`, `'${next.meta.display_path}' is not a directory. Found ${next.meta.kind}. Looking for '${reported}' under '${this.rootKey}'`);
             }
 
             handle = next.handle;

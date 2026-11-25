@@ -1,7 +1,8 @@
 import { Cookie, CookieFlag, SafariProfile } from "../../../types/macos/safari";
 import { extractUtf8String } from "../../encoding/mod";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { readFile } from "../../filesystem/files";
+import { isFileEntry } from "../../filesystem/tree";
 import { NomError } from "../../nom/error";
 import { Endian } from "../../nom/helpers";
 import {
@@ -10,29 +11,38 @@ import {
   take,
   takeUntil,
 } from "../../nom/mod";
-import { PlatformType } from "../../system/systeminfo";
 import { cocoatimeToIso } from "../../time/conversion";
 import { MacosError } from "../errors";
 
-export function safariCookies(paths: SafariProfile[], platform: PlatformType): Cookie[] {
-  let hits: Cookie[] = [];
-  for (const path of paths) {
-    let full_path = `${path.container_path}/Library/Cookies/Cookies.binarycookies`;
-    if (platform === PlatformType.Windows) {
-      full_path = `${path.container_path}\\Library\\Cookies\\Cookies.binarycookies`;
-    }
+export function safariCookies(profile: SafariProfile, values: Cookie[], accessor: Accessor): void {
+  const target = "*/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies";
+  const paths = profile.tree.glob(target);
+  if (paths instanceof FileError) {
+    return;
+  }
 
-    const cookie = parseCookies(full_path);
-    if (cookie instanceof MacosError) {
-      console.warn(`failed to parse Safari cookie ${full_path}: ${cookie}`);
+  for (const path of paths) {
+    if (!isFileEntry(path)) {
       continue;
     }
 
-    cookie.forEach(x => x[ "version" ] = path.version);
-    hits = hits.concat(cookie);
+    const bytes = accessor.readFileHandle(path.handle);
+    if (bytes instanceof FileError) {
+      console.warn(`Failed to read Safari cookie file: '${path.meta.display_path}': ${bytes}`);
+      continue;
+    }
 
+    const cookie = parseCookies(bytes, path.meta.display_path);
+    if (cookie instanceof MacosError) {
+      console.warn(`failed to parse Safari cookie '${path.meta.display_path}': ${cookie}`);
+      continue;
+    }
+
+    cookie.forEach(x => {
+      x["browser_version"] = profile.version;
+      values.push(x);
+    });
   }
-  return hits;
 }
 
 /**
@@ -40,15 +50,7 @@ export function safariCookies(paths: SafariProfile[], platform: PlatformType): C
  * @param path Path to the binary cookie files
  * @returns Array of `Cookie` or `MacosError`
  */
-export function parseCookies(path: string): Cookie[] | MacosError {
-  const bytes = readFile(path);
-  if (bytes instanceof FileError) {
-    return new MacosError(
-      `COOKIES`,
-      `failed to read safari cookies at ${path}: ${bytes}`,
-    );
-  }
-
+export function parseCookies(bytes: Uint8Array, path: string): Cookie[] | MacosError {
   const header = parseHeader(bytes);
   if (header instanceof NomError) {
     return new MacosError(
@@ -68,7 +70,7 @@ export function parseCookies(path: string): Cookie[] | MacosError {
   let cookies: Cookie[] = [];
   let remaining = header.remaining_bytes;
   for (let i = 0; i < header.pages_count; i++) {
-    const page_size = header.page_sizes[ i ];
+    const page_size = header.page_sizes[i];
     if (page_size === undefined) {
       continue;
     }
@@ -255,8 +257,8 @@ function parseRecord(data: Uint8Array, evidence: string): Cookie | NomError {
   }
 
   const expiration = cocoatimeToIso(
-      new DataView((time.nommed as Uint8Array).buffer).getFloat64(0, true),
-    );
+    new DataView((time.nommed as Uint8Array).buffer).getFloat64(0, true),
+  );
 
   time = take(time.remaining, time_size);
   if (time instanceof NomError) {
@@ -264,8 +266,8 @@ function parseRecord(data: Uint8Array, evidence: string): Cookie | NomError {
   }
 
   const created = cocoatimeToIso(
-      new DataView((time.nommed as Uint8Array).buffer).getFloat64(0, true),
-    );
+    new DataView((time.nommed as Uint8Array).buffer).getFloat64(0, true),
+  );
 
   const name = extractOffsets(data, name_offset);
   if (name instanceof NomError) {
@@ -312,7 +314,7 @@ function extractOffsets(data: Uint8Array, offset: number): string | NomError {
     return start;
   }
 
-  const string_data = takeUntil(start.remaining, Uint8Array.from([ 0 ]));
+  const string_data = takeUntil(start.remaining, Uint8Array.from([0]));
   if (string_data instanceof NomError) {
     return string_data;
   }

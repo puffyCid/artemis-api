@@ -1,59 +1,62 @@
-import { getPlist, PlatformType, stat, Unfold } from "../../../mod";
+import { Accessor, getPlist, } from "../../../mod";
 import { SafariBookmark, SafariDownloads, SafariExtensions, SafariPlistBookmark, SafariProfile } from "../../../types/macos/safari";
 import { FileError } from "../../filesystem/errors";
-import { UnfoldError } from "../../unfold/error";
+import { isFileEntry } from "../../filesystem/tree";
 import { parseBookmark } from "../bookmark";
 import { MacosError } from "../errors";
 
 /**
  * Parse all Safari downloads
- * @param paths Array of `SafariProfile`
- * @param platform `PlatformType` enum value
- * @param unfold Enable unfold parsing
- * @returns Array of `SafariBookmark`
+ * @param profile `SafariProfile` object
+ * @param values Array of `SafariDownloads`
+ * @param accessor `Accessor` instance
+ * @returns Array of `SafariDownloads`
  */
-export function safariDownloads(paths: SafariProfile[], platform: PlatformType, unfold: boolean): SafariDownloads[] {
-    const hits: SafariDownloads[] = [];
-
-    let client: Unfold | undefined = undefined;
-    if (unfold) {
-        client = new Unfold();
+export function safariDownloads(profile: SafariProfile, values: SafariDownloads[], accessor: Accessor): void {
+    const target = "*/Library/Safari/Downloads.plist";
+    const paths = profile.tree.glob(target);
+    if (paths instanceof FileError) {
+        return;
     }
 
     for (const path of paths) {
-        let full_path = `${path.full_path}/Downloads.plist`;
-        if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\Downloads.plist`;
+        if (!isFileEntry(path)) {
+            continue;
         }
 
-        const results = getPlist(full_path);
+        const bytes = accessor.readFileHandle(path.handle);
+        if (bytes instanceof FileError) {
+            continue;
+        }
+
+        const results = getPlist(bytes);
         if (results instanceof MacosError) {
-            console.warn(`Failed to parse plist full_path: ${results}`);
+            console.warn(`Failed to parse Safari downloads '${path.meta.display_path}': ${results}`);
             continue;
         }
         if (Array.isArray(results)) {
-            console.warn(`Got array plist full_path: ${results}`);
+            console.warn(`Got array Safari downloads '${path.meta.display_path}'`);
             continue;
         }
-        if (!Array.isArray(results[ "DownloadHistory" ])) {
-            console.warn(`Did not get DownloadHistory array full_path: ${results}`);
+        if (!Array.isArray(results["DownloadHistory"])) {
+
             continue;
         }
 
-        for (const entry of results[ "DownloadHistory" ] as Record<string, unknown>[]) {
-            const bookmark = parseBookmark(new Uint8Array(entry[ "DownloadEntryBookmarkBlob" ] as number[]));
+        for (const entry of results["DownloadHistory"] as Record<string, unknown>[]) {
+            const bookmark = parseBookmark(new Uint8Array(entry["DownloadEntryBookmarkBlob"] as number[]));
             if (bookmark instanceof MacosError) {
                 console.warn(`Could not parse bookmark for full_path: ${results}`);
                 continue;
             }
             const download: SafariDownloads = {
-                source_url: entry[ "DownloadEntryURL" ] as string,
-                download_path: entry[ "DownloadEntryPath" ] as string,
-                sandbox_id: entry[ "DownloadEntrySandboxIdentifier" ] as string,
-                download_bytes: entry[ "DownloadEntryProgressTotalToLoad" ] as number,
-                download_id: entry[ "DownloadEntryIdentifier" ] as string,
-                download_entry_date: entry[ "DownloadEntryDateAddedKey" ] as string,
-                download_entry_finish: entry[ "DownloadEntryDateFinishedKey" ] as string,
+                source_url: entry["DownloadEntryURL"] as string,
+                download_path: entry["DownloadEntryPath"] as string,
+                sandbox_id: entry["DownloadEntrySandboxIdentifier"] as string,
+                download_bytes: entry["DownloadEntryProgressTotalToLoad"] as number,
+                download_id: entry["DownloadEntryIdentifier"] as string,
+                download_entry_date: entry["DownloadEntryDateAddedKey"] as string,
+                download_entry_finish: entry["DownloadEntryDateFinishedKey"] as string,
                 path: bookmark.path,
                 cnid_path: bookmark.cnid_path,
                 created: bookmark.created,
@@ -75,55 +78,55 @@ export function safariDownloads(paths: SafariProfile[], platform: PlatformType, 
                 creation_options: bookmark.creation_options,
                 is_executable: bookmark.is_executable,
                 file_ref_flag: bookmark.file_ref_flag,
-                plist_path: path.full_path,
+                plist_path: path.meta.full_path,
                 unfold: undefined,
-                version: path.version,
-                message: entry[ "DownloadEntryURL" ] as string,
+                version: profile.version,
+                message: entry["DownloadEntryURL"] as string,
                 datetime: bookmark.created,
                 timestamp_desc: "File Download Start",
                 artifact: "File Download",
                 data_type: "macos:safari:downloads:entry",
-                evidence: full_path,
+                evidence: path.meta.display_path,
             };
-            if (unfold && typeof client !== 'undefined') {
-                const result = client.parseUrl(download.source_url);
-                if (!(result instanceof UnfoldError)) {
-                    download.unfold = result;
-                }
-            }
-            hits.push(download);
+
+            values.push(download);
         }
     }
-
-    return hits;
 }
 
 /**
  * Parse all Safari bookmarks
- * @param paths Array of `SafariProfile`
- * @param platform `PlatformType` enum value
+ * @param profile `SafariProfile` object
+ * @param values Array of `SafariBookmark`
+ * @param accessor `Accessor` instance
  * @returns Array of `SafariBookmark`
  */
-export function safariBookmarks(paths: SafariProfile[], platform: PlatformType): SafariBookmark[] {
-    const hits: SafariBookmark[] = [];
+export function safariBookmarks(profile: SafariProfile, values: SafariBookmark[], accessor: Accessor): void {
+    const target = "*/Library/Safari/Bookmarks.plist";
+    const paths = profile.tree.glob(target);
+    if (paths instanceof FileError) {
+        return;
+    }
 
     for (const path of paths) {
-        let full_path = `${path.full_path}/Bookmarks.plist`;
-        if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\Bookmarks.plist`;
-        }
-        const meta = stat(full_path);
-        if (meta instanceof FileError) {
+        if (!isFileEntry(path)) {
             continue;
         }
 
-        const results = getPlist(full_path);
-        if (results instanceof MacosError) {
-            console.warn(`Failed to parse plist full_path: ${results}`);
+        const bytes = accessor.readFileHandle(path.handle);
+        if (bytes instanceof FileError) {
             continue;
         }
+
+        const results = getPlist(bytes);
+        if (results instanceof MacosError) {
+            console.warn(`Failed to parse Safari bookmarks '${path.meta.display_path}': ${results}`);
+            continue;
+        }
+
+        const meta = accessor.statHandle(path.handle);
+
         const bookmark_child = results as unknown as SafariPlistBookmark;
-        //const book_children = results["Children"] as Record<string, string | Record<string, unknown>[] | undefined>[];
         for (const entry of bookmark_child.Children) {
             if (entry.Title === "BookmarksBar" && Array.isArray(entry.Children)) {
                 for (const bar_child of entry.Children) {
@@ -131,60 +134,69 @@ export function safariBookmarks(paths: SafariProfile[], platform: PlatformType):
                         title: bar_child.URIDictionary?.title ?? "",
                         url: bar_child.URLString ?? "",
                         description: "",
-                        path: full_path,
-                        version: path.version,
+                        path: path.meta.full_path,
+                        browser_version: profile.version,
                         message: `Bookmark URL: '${bar_child.URLString ?? ""}'`,
-                        datetime: meta.created,
+                        datetime: meta instanceof FileError ? "1970-01-01T00:00:00.000Z" : meta.times.created,
                         timestamp_desc: "Bookmark Created",
                         artifact: "Website Bookmark",
                         data_type: "macos:safari:bookmark:entry",
-                        evidence: full_path,
+                        evidence: path.meta.display_path,
                     };
-                    hits.push(book);
+                    values.push(book);
                 }
                 continue;
             }
-            if (entry[ "URLString" ] === undefined) {
+
+            if (entry["URLString"] === undefined) {
                 continue;
             }
+
             const book: SafariBookmark = {
                 title: entry.URIDictionary?.title ?? "",
                 url: entry.URLString ?? "",
                 description: entry.previewText ?? "",
-                path: full_path,
-                version: path.version,
+                path: path.meta.full_path,
+                browser_version: profile.version,
                 message: `Bookmark URL: '${entry.URLString ?? ""}'`,
-                datetime: meta.created,
+                datetime: meta instanceof FileError ? "1970-01-01T00:00:00.000Z" : meta.times.created,
                 timestamp_desc: "Bookmark Created",
                 artifact: "Website Bookmark",
                 data_type: "macos:safari:bookmark:entry",
-                evidence: full_path,
+                evidence: path.meta.display_path,
             };
-            hits.push(book);
+            values.push(book);
         }
     }
-
-    return hits;
 }
 
 /**
- * Get all Safari bookmarks
- * @param paths Array of `SafariProfile`
- * @param platform `PlatformType` enum value
+ * Get all Safari Extensions
+ * @param profile `SafariProfile` object
+ * @param values Array of `SafariExtensions`
+ * @param accessor `Accessor` instance
  * @returns Array of `SafariExtensions`
  */
-export function safariExtensions(paths: SafariProfile[], platform: PlatformType): SafariExtensions[] {
-    const hits: SafariExtensions[] = [];
+export function safariExtensions(profile: SafariProfile, values: SafariExtensions[], accessor: Accessor): void {
+    const target = "*/Library/Containers/com.apple.Safari/Data/Library/Safari/WebExtensions/Extensions.plist";
+    const paths = profile.tree.glob(target);
+    if (paths instanceof FileError) {
+        return;
+    }
 
     for (const path of paths) {
-        let full_path = `${path.container_path}/Library/Safari/WebExtensions/Extensions.plist`;
-        if (platform === PlatformType.Windows) {
-            full_path = `${path.full_path}\\Library\\Safari\\WebExtensions\\Extensions.plist`;
+        if (!isFileEntry(path)) {
+            continue;
         }
 
-        const results = getPlist(full_path);
+        const bytes = accessor.readFileHandle(path.handle);
+        if (bytes instanceof FileError) {
+            continue;
+        }
+
+        const results = getPlist(bytes);
         if (results instanceof MacosError) {
-            console.warn(`Failed to parse plist full_path: ${results}`);
+            console.warn(`Failed to parse Safari downloads '${path.meta.display_path}': ${results}`);
             continue;
         }
 
@@ -194,23 +206,20 @@ export function safariExtensions(paths: SafariProfile[], platform: PlatformType)
                 name: key.split(" ").at(0) ?? "",
                 key,
                 team_id: (key.split(" ").at(1) ?? "").replace("(", "").replace(")", ""),
-                accessible_origins: exts[ key ][ "AccessibleOrigins" ] as string[],
-                added: exts[ key ][ "AddedDate" ].replace("Z", ".000Z"),
-                enabled: exts[ key ][ "Enabled" ],
-                permissions: exts[ key ][ "Permissions" ] as string[],
-                path: full_path,
-                version: path.version,
+                accessible_origins: exts[key]["AccessibleOrigins"] as string[],
+                added: exts[key]["AddedDate"].replace("Z", ".000Z"),
+                enabled: exts[key]["Enabled"],
+                permissions: exts[key]["Permissions"] as string[],
+                path: path.meta.full_path,
+                browser_version: profile.version,
                 message: key.split(" ").at(0) ?? "",
-                datetime: exts[ key ][ "AddedDate" ].replace("Z", ".000Z"),
+                datetime: exts[key]["AddedDate"].replace("Z", ".000Z"),
                 timestamp_desc: "Extension Installed",
                 artifact: "Browser Extension",
                 data_type: "macos:safari:extension:entry",
-                evidence: full_path,
+                evidence: path.meta.display_path,
             };
-            hits.push(value);
+            values.push(value);
         }
-
     }
-
-    return hits;
 }

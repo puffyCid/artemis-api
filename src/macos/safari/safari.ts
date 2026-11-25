@@ -1,7 +1,8 @@
-import { OutputManager, Output, PlatformType } from "../../../mod";
+import { OutputManager, Output, Accessor, Unfold } from "../../../mod";
+import { AccessorProtocol, EntryKind, FileHandle, SourceHandle } from "../../../types/filesystem/accessor";
 import { Cookie, SafariBookmark, SafariDownloads, SafariExtensions, SafariFavicon, SafariHistory, SafariProfile } from "../../../types/macos/safari";
 import { FileError } from "../../filesystem/errors";
-import { glob } from "../../filesystem/files";
+import { DirectoryTree } from "../../filesystem/tree";
 import { SystemError } from "../../system/error";
 import { MacosError } from "../errors";
 import { getPlist } from "../plist";
@@ -9,37 +10,77 @@ import { safariCookies } from "./cookies";
 import { safariBookmarks, safariDownloads, safariExtensions } from "./plist";
 import { safariFavicons, safariHistory } from "./sqlite";
 
+/**
+ * Class to parse Safari browser data
+ */
 export class Safari {
-    private paths: SafariProfile[] = [];
+    private profiles: SafariProfile[] = [];
     private unfold: boolean;
-    private platform: PlatformType;
+    private protocol: AccessorProtocol = AccessorProtocol.Host;
+    private accessor = new Accessor();
+    private source: SourceHandle | FileError;
 
 
     /**
      * Construct a `Safari` object that can be used to parse browser data
      * @param unfold Attempt to parse URLs. Default is `false`
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing Epiphany data. Default is `host:` which represents a live system.  
+     * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/safari.zip`
      * @param alt_path Optional alternative path to directory containing Safari data
      * @returns `Safari` instance class
      */
-    constructor(platform: PlatformType, unfold = false, alt_path?: string) {
+    constructor(unfold = false, protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
         this.unfold = unfold;
-        this.platform = platform;
-        if (alt_path === undefined) {
-            const results = this.profiles();
-            if (results instanceof MacosError) {
-                return;
-            }
-            this.paths = results;
+        this.protocol = protocol;
+        const pattern = alt_path ?? "/"
+
+        this.source = this.accessor.openSource(source_path, this.protocol);
+        if (this.source instanceof FileError) {
             return;
         }
 
-        this.paths = [{
-            full_path: alt_path,
-            container_path: alt_path,
-            version: 0
-        }];
+        const matches = this.accessor.globfs(pattern, this.protocol);
+        if (matches instanceof FileError) {
+            return;
+        }
 
+        let version: number | undefined | MacosError = undefined;
+        for (const entry of matches) {
+            if (entry.meta.kind !== EntryKind.Directory) {
+                continue;
+            }
+
+            if (entry.meta.filename === "System") {
+                const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+                if (tree instanceof FileError) {
+                    continue;
+                }
+
+                version = this.version(tree);
+                if (version instanceof MacosError) {
+                    continue;
+                }
+                continue;
+            }
+
+            if (entry.meta.filename === "Users") {
+                const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+                if (tree instanceof FileError) {
+                    continue;
+                }
+                const profile: SafariProfile = {
+                    tree,
+                    database: new Map(),
+                    version: version instanceof MacosError ? 0  : version ?? 0
+                };
+
+                this.profiles.push(profile);
+            }
+        }
     }
+
+
 
     /**
      * Extract Safari history
@@ -71,7 +112,14 @@ export class Safari {
                         FROM history_items
                             JOIN history_visits
                                 ON history_visits.history_item = history_items.id LIMIT ${limit} OFFSET ${offset}`;
-        return safariHistory(this.paths, query, this.platform, this.unfold);
+
+        const results: SafariHistory[] = [];
+        const client = this.unfold ? new Unfold() : undefined;
+        for (const entry of this.profiles) {
+            safariHistory(entry, query, client, results, this.protocol);
+        }
+
+        return results;
     }
 
     /**
@@ -82,7 +130,13 @@ export class Safari {
      */
     public favicons(offset = 0, limit = 100): SafariFavicon[] {
         const query = `SELECT icon_info.uuid AS uuid,icon_info.url AS favicon_url, timestamp, page_url.url AS url FROM icon_info INNER JOIN page_url ON icon_info.uuid = page_url.uuid LIMIT ${limit} OFFSET ${offset}`;
-        return safariFavicons(this.paths, query, this.platform);
+
+        const results: SafariFavicon[] = [];
+        for (const entry of this.profiles) {
+            safariFavicons(entry, query, results, this.protocol);
+        }
+
+        return results;
     }
 
     /**
@@ -90,7 +144,12 @@ export class Safari {
      * @returns Array of `SafariDownloads`
      */
     public downloads(): SafariDownloads[] {
-        return safariDownloads(this.paths, this.platform, this.unfold);
+        const results: SafariDownloads[] = [];
+        for (const entry of this.profiles) {
+            safariDownloads(entry, results, this.accessor);
+        }
+
+        return results;
     }
 
     /**
@@ -98,7 +157,12 @@ export class Safari {
      * @returns Array of `SafariBookmark`
      */
     public bookmarks(): SafariBookmark[] {
-        return safariBookmarks(this.paths, this.platform);
+        const results: SafariBookmark[] = [];
+        for (const entry of this.profiles) {
+            safariBookmarks(entry, results, this.accessor);
+        }
+
+        return results;
     }
 
     /**
@@ -106,7 +170,12 @@ export class Safari {
      * @returns Array of `Cookie`
      */
     public cookies(): Cookie[] {
-        return safariCookies(this.paths, this.platform);
+        const results: Cookie[] = [];
+        for (const entry of this.profiles) {
+            safariCookies(entry, results, this.accessor);
+        }
+
+        return results;
     }
 
     /**
@@ -114,7 +183,12 @@ export class Safari {
      * @returns Array of `SafariExtensions`
      */
     public extensions(): SafariExtensions[] {
-        return safariExtensions(this.paths, this.platform);
+        const results: SafariExtensions[] = [];
+        for (const entry of this.profiles) {
+            safariExtensions(entry, results, this.accessor);
+        }
+
+        return results;
     }
 
     /**
@@ -188,47 +262,29 @@ export class Safari {
     }
 
     /**
-     * Get base path for all Safari users
-     * @returns Array of `SafariProfile` or `MacosError`
-     */
-    private profiles(): SafariProfile[] | MacosError {
-        const paths = glob("/Users/*/Library/Safari/");
-        if (paths instanceof FileError) {
-            return new MacosError(`SAFARI`, `could not glob Safari profiles`);
-        }
-        const profiles: SafariProfile[] = [];
-        for (const path of paths) {
-            if (!path.is_directory) {
-                continue;
-            }
-
-            const version = this.version();
-            if (version instanceof MacosError) {
-                continue;
-            }
-            const profile: SafariProfile = {
-                full_path: path.full_path,
-                container_path: path.full_path.replace("Library/Safari", "Library/Containers/com.apple.Safari/Data"),
-                version
-            };
-
-            profiles.push(profile);
-        }
-
-        return profiles;
-    }
-
-    /**
      * Determine Safari version
+     * @param tree `DirectoryTree` object
      * @returns Safari version or `MacosError`
      */
-    private version(): number | MacosError {
-        const version_plist = "/Applications/Safari.app/Contents/Info.plist";
-        const info = getPlist(version_plist);
+    private version(tree: DirectoryTree): number | MacosError {
+        const version_path = "Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app/Contents/Info.plist";
+        const version_plist = tree.file(version_path);
+        if (version_plist instanceof FileError) {
+            return new MacosError(`SAFARI`, `failed to find '${version_path}': ${version_plist}`);
+        }
+
+        if (version_plist.meta.kind !== EntryKind.File) {
+            return new MacosError(`SAFARI`, `'${version_plist.meta.display_path}' not a file. Got '${version_plist.meta.kind}'`);
+        }
+        const bytes = this.accessor.readFileHandle(version_plist.handle as FileHandle);
+        if (bytes instanceof FileError) {
+            return new MacosError(`SAFARI`, `failed to read '${version_plist.meta.display_path}': ${bytes}`);
+        }
+        const info = getPlist(bytes);
         if (info instanceof MacosError) {
             return info;
         } else if (Array.isArray(info)) {
-            return new MacosError(`SAFARI`, `got array for Safari Info.plist`);
+            return new MacosError(`SAFARI`, `got array for '${version_plist.meta.display_path}'`);
         }
 
         const version = info["CFBundleShortVersionString"] as string;
