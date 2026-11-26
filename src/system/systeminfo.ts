@@ -77,10 +77,13 @@ export function platform(): string {
  */
 export function detectPlatform(): PlatformType {
   const plat = platform().toLowerCase();
+  if (plat.includes("linux")) {
+    return PlatformType.Linux;
+  }
+
   switch (plat) {
     case "windows": return PlatformType.Windows;
     case "darwin": return PlatformType.Darwin;
-    case "linux": return PlatformType.Linux;
     default: return PlatformType.Unknown;
   }
 }

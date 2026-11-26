@@ -1,11 +1,16 @@
-export interface SyncthingClient {
-    full_path: string;
+import { DirectoryTree } from "../../src/filesystem/tree";
+
+export interface SyncthingProfile {
+    /**
+     * `DirectoryTree` to the base of the Epiphany directory
+     */
+    tree: DirectoryTree;
 }
 
 export interface SyncthingLogs {
     tag: string;
     datetime: string;
-    timestamp_desc: "Syncthing Log Entry";
+    timestamp_desc: "Syncthing Log Entry (Local Time)";
     level: string;
     message: string;
     artifact: "Syncthing Log";

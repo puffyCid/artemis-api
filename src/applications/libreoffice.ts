@@ -10,7 +10,7 @@ import { ApplicationError } from "./errors";
 
 /**
  * Return a list of files opened by LibreOffice for all users
- * @param platform OS Platform type to lookup
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
  * @param alt_path Optional alternative path to registrymodifications.xcu
  * @returns Array of `History` entries or `ApplicationError`
  */
@@ -63,21 +63,21 @@ export function recentFiles(
 
     const recent_json = xml_result as unknown as RawLibreOfficeRecent;
 
-    if (!Array.isArray(recent_json["oor:items"].item)) {
-      recent_json["oor:items"].item = [recent_json["oor:items"].item];
+    if (!Array.isArray(recent_json[ "oor:items" ].item)) {
+      recent_json[ "oor:items" ].item = [ recent_json[ "oor:items" ].item ];
     }
 
     // Loop through the JSON arrays and objects
-    for (const entry of recent_json["oor:items"].item) {
+    for (const entry of recent_json[ "oor:items" ].item) {
       if (entry.node === undefined
         || entry.node.prop === undefined
-        || entry.node["@oor:name"] === undefined
-        || !entry["@oor:path"].includes("HistoryInfo['PickList']/ItemList")) {
+        || entry.node[ "@oor:name" ] === undefined
+        || !entry[ "@oor:path" ].includes("HistoryInfo['PickList']/ItemList")) {
         continue;
       }
 
       const office: RecentFilesLibreOffice = {
-        path: entry.node["@oor:name"],
+        path: entry.node[ "@oor:name" ],
         title: "",
         filter: "",
         pinned: false,
@@ -85,7 +85,7 @@ export function recentFiles(
         readonly: false,
         thumbnail: "",
         evidence: value.meta.display_path,
-        message: `Recent file opened by LibreOffice '${entry.node["@oor:name"]}'`,
+        message: `Recent file opened by LibreOffice '${entry.node[ "@oor:name" ]}'`,
         timestamp_desc: "N/A",
         artifact: "LibreOffice Recent Files",
         data_type: "application:libreoffice:recentfiles:entry",
@@ -93,7 +93,7 @@ export function recentFiles(
       };
 
       for (const prop of entry.node.prop) {
-        switch (prop["@oor:name"]) {
+        switch (prop[ "@oor:name" ]) {
           case "Title": {
             office.title = prop.value as string;
             break;
@@ -103,7 +103,7 @@ export function recentFiles(
             break;
           }
           case "Pinned": {
-            office.pinned = Boolean(prop.value as Record<string, string>["@xsi.nil"]);
+            office.pinned = Boolean(prop.value as Record<string, string>[ "@xsi.nil" ]);
             break;
           }
           case "ReadOnly": {
@@ -140,15 +140,15 @@ export function testRecentFiles(): void {
     throw result;
   }
 
-  if (result[0]?.title === undefined) {
+  if (result[ 0 ]?.title === undefined) {
     throw `Got title undefined expected Hindsight Report (2025-09-18T00-18-20).......recentFiles ❌`;
   }
 
-  if (result[0].title != "Hindsight Report (2025-09-18T00-18-20)") {
-    throw `Got title ${result[0].title} expected Hindsight Report (2025-09-18T00-18-20).......recentFiles ❌`;
+  if (result[ 0 ].title != "Hindsight Report (2025-09-18T00-18-20)") {
+    throw `Got title ${result[ 0 ].title} expected Hindsight Report (2025-09-18T00-18-20).......recentFiles ❌`;
   }
-  if (result[0].message != "Recent file opened by LibreOffice 'file:///home/test/Downloads/Hindsight%20Report%20(2025-09-18T00-18-20).xlsx'") {
-    throw `Got message ${result[0].message} expected "Recent file opened by LibreOffice 'file:///home/test/Downloads/Hindsight%20Report%20(2025-09-18T00-18-20).xlsx'").......recentFiles ❌`;
+  if (result[ 0 ].message != "Recent file opened by LibreOffice 'file:///home/test/Downloads/Hindsight%20Report%20(2025-09-18T00-18-20).xlsx'") {
+    throw `Got message ${result[ 0 ].message} expected "Recent file opened by LibreOffice 'file:///home/test/Downloads/Hindsight%20Report%20(2025-09-18T00-18-20).xlsx'").......recentFiles ❌`;
   }
 
   console.info(`  Function recentFiles ✅`);

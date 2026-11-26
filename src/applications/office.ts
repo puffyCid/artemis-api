@@ -1,80 +1,72 @@
-import { getRegistry, PlatformType } from "../../mod";
+import { Accessor, getRegistry, PlatformType } from "../../mod";
 import { FileError } from "../filesystem/errors";
-import { glob } from "../filesystem/files";
 import { parseBookmark } from "../macos/bookmark";
 import { BookmarkData as OfficeRecentFilesMacos } from "../../types/macos/bookmark";
 import { MacosError } from "../macos/errors";
 import { getPlist } from "../macos/plist";
 import { ApplicationError } from "./errors";
-import { getEnvValue } from "../environment/mod";
 import { WindowsError } from "../windows/errors";
 import { Registry } from "../../types/windows/registry";
-import { filetimeToIso, unixEpochToISO } from "../time/conversion";
+import { filetimeToIso } from "../time/conversion";
 import { OfficeRecentFilesWindows } from "../../types/applications/office";
 import { OfficeApp } from "../../types/applications/office";
+import { AccessorProtocol, EntryKind, FileHandle } from "../../types/filesystem/accessor";
+import { detectPlatform } from "../system/systeminfo";
+import { getSystemDrive } from "../environment/env";
 
 /**
  * Function to extract Microsoft Office MRU files
- * @param platform OS `PlatformType`. Only Windows or Darwin is supported
- * @param alt_file Optional alternative path to NTUSER.DAT or plist file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to NTUSER.DAT or `com.microsoft.*.securebookmarks.plist` file
  * @returns Array of `OfficeRecentFilesMacos` or `OfficeRecentFilesWindows` or `ApplicationError`
  */
 export function officeMruFiles(
-  platform: PlatformType.Darwin | PlatformType.Windows,
-  alt_file?: string,
+  protocol = AccessorProtocol.Host,
+  alt_path?: string,
 ): OfficeRecentFilesMacos[] | OfficeRecentFilesWindows[] | ApplicationError {
-  switch (platform) {
+  switch (detectPlatform()) {
     case PlatformType.Darwin:
-      return officeBookmarks(alt_file);
+      return officeBookmarks(protocol, alt_path);
     case PlatformType.Windows:
-      return officeMru(alt_file);
+      return officeMru(protocol, alt_path);
+    default: return new ApplicationError(`OFFICE`, `unsupported platform for Office`);
   }
 }
 
 /**
  * Function to parse NTUSER.DAT Registry file to extract Office MRU entries
- * @param alt_file Optional alternative path to NTUSER.DAT
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to NTUSER.DAT file
  * @returns Array of `OfficeRecentFilesWindows` or `ApplicationError`
  */
 function officeMru(
-  alt_file?: string,
+  protocol = AccessorProtocol.Host,
+  alt_path?: string,
 ): OfficeRecentFilesWindows[] | ApplicationError {
-  const paths: string[] = [];
-  if (alt_file !== undefined) {
-    paths.push(alt_file);
-  } else {
-    const volume = getEnvValue("SystemDrive");
-    if (volume === "") {
-      return new ApplicationError(`OFFICE`, `no SystemDrive found`);
-    }
+  const path = alt_path ?? `${getSystemDrive()}\\Users\\*\\[Nn][Tt][Uu][Ss][Ee][Rr].[Dd][Aa][Tt]`;
+  const accessor = new Accessor();
 
-    const glob_office = `${volume}\\Users\\*\\NTUSER.*`;
-    const glob_paths = glob(glob_office);
-    if (glob_paths instanceof FileError) {
-      return new ApplicationError(
-        `OFFICE`,
-        `failed to glob office paths for macOS: ${glob_paths}`,
-      );
-    }
-    for (const entry of glob_paths) {
-      if (!entry.is_file || entry.full_path.includes("Default User") || !entry.filename.toLowerCase().endsWith(".dat")) {
-        continue;
-      }
-      paths.push(entry.full_path);
-    }
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new ApplicationError('OFFICE', `failed to glob for ${path}: ${matches}`);
   }
 
   let all_values: OfficeRecentFilesWindows[] = [];
-  for (const reg of paths) {
-    const reg_data = getRegistry(reg);
-    if (reg_data instanceof WindowsError) {
-      console.warn(`failed to parse Windows Registry ${reg}: ${reg_data}`);
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
       continue;
     }
 
-    const values = extractMruRegistry(reg_data);
+    const reg = getRegistry(entry.handle as FileHandle);
+    if (reg instanceof WindowsError) {
+      console.warn(`Failed to read Registry file '${entry.meta.display_path}': ${reg}`);
+      continue;
+    }
+
+    const values = extractMruRegistry(reg);
     all_values = all_values.concat(values);
   }
+
   return all_values;
 }
 
@@ -85,7 +77,7 @@ function officeMru(
  */
 function extractMruRegistry(data: Registry[]): OfficeRecentFilesWindows[] {
   const mrus: Registry[] = [];
-  const filter = ["\\Office\\", "\\File MRU"];
+  const filter = [ "\\Office\\", "\\File MRU" ];
   for (const entries of data) {
     if (
       !filter.every((item) => entries.path.includes(item)) ||
@@ -113,7 +105,7 @@ function extractMruRegistry(data: Registry[]): OfficeRecentFilesWindows[] {
       }
 
       const match = /T0.*]\[/;
-      let time_data = timestamp.match(match)?.[0];
+      let time_data = timestamp.match(match)?.[ 0 ];
       if (time_data === undefined) {
         console.warn(`could not match MRU path properly: ${timestamp}`);
         continue;
@@ -121,7 +113,7 @@ function extractMruRegistry(data: Registry[]): OfficeRecentFilesWindows[] {
 
       time_data = time_data.replace("T", "").replace("]", "").replace("[", "");
       const filetime = BigInt(`0x${time_data}`);
-      const last_opened = unixEpochToISO(filetimeToIso(filetime));
+      const last_opened = filetimeToIso(filetime);
 
       const mru_entry: OfficeRecentFilesWindows = {
         path,
@@ -159,35 +151,39 @@ function officeType(path: string): OfficeApp {
 
 /**
  * Function to parse Office bookmark data on macOS
- * @param alt_file Optional alternative path to Office plist file
+ * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` The default is `AccesssorProtocol.Host`.
+ * @param alt_path Optional alternative path to`com.microsoft.*.securebookmarks.plist` file
  * @returns Array of `OfficeRecentFilesMacos` or `OfficeRecentFilesWindows` or `ApplicationError`
  */
 function officeBookmarks(
-  alt_file?: string,
+  protocol = AccessorProtocol.Host,
+  alt_path?: string,
 ): OfficeRecentFilesMacos[] | ApplicationError {
-  const paths: string[] = [];
-  if (alt_file !== undefined) {
-    paths.push(alt_file);
-  } else {
-    const glob_office =
-      "/Users/*/Library/Containers/com.microsoft*/Data/Library/Preferences/com.microsoft.*.securebookmarks.plist";
-    const glob_paths = glob(glob_office);
-    if (glob_paths instanceof FileError) {
-      return new ApplicationError(
-        `OFFICE`,
-        `failed to glob office paths for macOS: ${glob_paths}`,
-      );
-    }
-    for (const entry of glob_paths) {
-      paths.push(entry.full_path);
-    }
+  const path = alt_path ?? "/Users/*/Library/Containers/com.microsoft*/Data/Library/Preferences/com.microsoft.*.securebookmarks.plist";
+  const accessor = new Accessor();
+
+  const matches = accessor.globfs(path, protocol);
+  if (matches instanceof FileError) {
+    return new ApplicationError('OFFICE', `failed to glob for ${path}: ${matches}`);
   }
 
   const office_files: OfficeRecentFilesMacos[] = [];
-  for (const entry of paths) {
-    const plist_data = getPlist(entry);
+
+
+  for (const entry of matches) {
+    if (entry.meta.kind !== EntryKind.File) {
+      continue;
+    }
+
+    const bytes = accessor.readFileHandle(entry.handle as FileHandle);
+    if (bytes instanceof FileError) {
+      console.warn(`Failed to read '${entry.meta.display_path}': ${bytes}`);
+      continue;
+    }
+
+    const plist_data = getPlist(bytes);
     if (plist_data instanceof MacosError) {
-      console.warn(`failed to parse ${entry}: ${plist_data}`);
+      console.warn(`Failed to parse '${entry.meta.display_path}': ${plist_data}`);
       continue;
     }
 
@@ -196,11 +192,11 @@ function officeBookmarks(
     }
 
     for (const value in plist_data) {
-      const bookmark_values = plist_data[value] as Record<
+      const bookmark_values = plist_data[ value ] as Record<
         string,
         number[] | string
       >;
-      const data = bookmark_values["kBookmarkDataKey"];
+      const data = bookmark_values[ "kBookmarkDataKey" ];
       if (typeof data === "string") {
         console.warn(`got string for kBookmarkDataKey? It should be bytes`);
         continue;
@@ -208,6 +204,7 @@ function officeBookmarks(
         console.warn(`got undefined for kBookmarkDataKey? It should be bytes`);
         continue;
       }
+
       const book_data = Uint8Array.from(data);
 
       const book = parseBookmark(book_data);
@@ -218,5 +215,6 @@ function officeBookmarks(
       office_files.push(book);
     }
   }
+
   return office_files;
 }
