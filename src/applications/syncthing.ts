@@ -38,7 +38,7 @@ export class Syncthing {
         }
 
         for (const entry of matches) {
-            // We want the base directory for Epiphany artifacts
+            // We want the base directory for Syncthing artifacts
             if (entry.meta.kind !== EntryKind.Directory) {
                 continue;
             }

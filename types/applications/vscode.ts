@@ -1,3 +1,12 @@
+import { DirectoryTree } from "../../src/filesystem/tree";
+
+export interface VscodeProfile {
+  /**
+   * `DirectoryTree` to the base of the Vscode directory
+   */
+  tree: DirectoryTree;
+}
+
 /**History of files in VSCode */
 export interface FileHistory {
   /**Version of History format */
@@ -17,8 +26,6 @@ export interface FileHistory {
   id: string;
   /**Time when file was saved */
   file_saved: number | string;
-  /**Based64 encoded file content */
-  content?: string;
   source?: string;
   sourceDescription?: string;
   [ key: string ]: unknown;
@@ -37,12 +44,6 @@ export interface Entries {
   source?: string;
   sourceDescription?: string;
 }
-
-export interface Extensions {
-  evidence: string;
-  data: Record<string, unknown>[];
-}
-
 
 export interface RecentFiles {
   path_type: RecentType;

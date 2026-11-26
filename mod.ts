@@ -93,7 +93,7 @@ export { FireFox } from "./src/applications/firefox/fox";
 export { Edge } from "./src/applications/edge";
 export { Chrome } from "./src/applications/chrome";
 export { Chromium } from "./src/applications/chromium/cr";
-export { fileHistory, getExtensions, vscodeRecentFiles } from "./src/applications/vscode";
+export { Vscode } from "./src/applications/vscode";
 export { recentFiles } from "./src/applications/libreoffice";
 export { querySqlite } from "./src/applications/sqlite";
 export { NextcloudClient } from "./src/applications/nextcloud/cloud";

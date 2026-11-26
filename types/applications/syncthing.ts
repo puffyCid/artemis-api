@@ -2,7 +2,7 @@ import { DirectoryTree } from "../../src/filesystem/tree";
 
 export interface SyncthingProfile {
     /**
-     * `DirectoryTree` to the base of the Epiphany directory
+     * `DirectoryTree` to the base of the Syncthing directory
      */
     tree: DirectoryTree;
 }
