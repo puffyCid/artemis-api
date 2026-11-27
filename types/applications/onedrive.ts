@@ -1,3 +1,5 @@
+import { DirectoryTree } from "../../src/filesystem/tree";
+
 export interface OneDriveLog {
   filename: string;
   created: string;
@@ -77,13 +79,11 @@ export interface OneDriveAccount {
 }
 
 export interface KeyInfo {
-  path: string;
+  evidence: string;
   key: string;
 }
 
 export interface OnedriveProfile {
-  sync_db: string[];
-  odl_files: string[];
-  key_file: string[];
-  config_file: string[];
+  tree: DirectoryTree;
+
 }

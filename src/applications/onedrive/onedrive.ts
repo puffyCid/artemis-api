@@ -1,7 +1,11 @@
-import { OutputManager, glob, Output, platform, PlatformType, readTextFile } from "../../../mod";
+import { Output, PlatformType, readTextFile, Accessor, OutputManager } from "../../../mod";
 import { KeyInfo, OneDriveAccount, OneDriveLog, OnedriveProfile, OneDriveSyncEngineRecord } from "../../../types/applications/onedrive";
-import { getEnvValue } from "../../environment/mod";
+import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesystem/accessor";
+import { getSystemDrive } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
+import { DirectoryTree, isFileEntry } from "../../filesystem/tree";
+import { SystemError } from "../../system/error";
+import { detectPlatform } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { accountMacos, accountWindows } from "./config";
 import { readOdlFiles } from "./odl";
@@ -11,406 +15,224 @@ import { extractSyncEngine } from "./sqlite";
  * Class to parse OneDrive artifacts
  */
 export class OneDrive {
-    private platform: PlatformType;
-    private user = "";
     private profiles: OnedriveProfile[] = [];
+    private protocol: AccessorProtocol = AccessorProtocol.Host;
+    private accessor = new Accessor();
+    private source: SourceHandle | FileError;
+    private platform: PlatformType = PlatformType.Windows;
 
     /**
      * Construct an `OneDrive` object that can parse all OneDrive supported artifacts for all users
-     * @param platform OS `PlatformType`
-     * @param [user="*"] Optional specific user to parse OneDrive info. Default is all users
-     * @param alt_path Optional directory that contains *all* OneDrive related artifact files
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing OneDrive data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing OneDrive data. Default is `host:` which represents a live system.  
+     * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
+     * @param alt_path Optional alternative path to OneDrive directory
+     * @returns `OneDrive` instance class
      */
-    constructor(platform: PlatformType.Darwin | PlatformType.Windows, user = "*", alt_path?: string) {
-        this.platform = platform;
-        this.user = user;
+    constructor (protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
+        this.protocol = protocol;
+        const pattern = alt_path ?? this.profilePath();
 
-        if (alt_path !== undefined) {
-            let separator = "/";
-            let config = "*.OneDriveStandaloneSuite.plist";
-            if (this.platform === PlatformType.Windows) {
-                separator = "\\";
-                config = "NTUSER.DAT";
+        this.source = this.accessor.openSource(source_path, this.protocol);
+        if (this.source instanceof FileError) {
+            return;
+        }
+
+        const matches = this.accessor.sourceGlobfs(this.source, pattern);
+        if (matches instanceof FileError) {
+            return;
+        }
+
+        for (const entry of matches) {
+            // We want the base directory for OneDrive artifacts
+            if (entry.meta.kind !== EntryKind.Directory) {
+                continue;
+            }
+
+            const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+            if (tree instanceof FileError) {
+                continue;
             }
 
             const profile: OnedriveProfile = {
-                sync_db: this.getFiles(`${alt_path}${separator}SyncEngineDatabase.db`),
-                odl_files: this.getFiles(`${alt_path}${separator}*odl*`),
-                key_file: this.getFiles(`${alt_path}${separator}general.keystore`),
-                config_file: this.getFiles(`${alt_path}${separator}${config}`),
+                tree,
             };
+
             this.profiles.push(profile);
-            return;
         }
-        this.setupProfiles();
     }
 
     /**
-     * View all artifacts the `OneDrive` object found related to OneDrive
-     * @returns Array of `OnedriveProfile`
+     * Function to parse OneDrive key files. 
+    * @returns Array of `KeyInfo`
      */
-    public oneDriveProfiles(): OnedriveProfile[] {
-        return this.profiles;
-    }
-
-    /**
-     * Function to parse OneDrive key files. By default all keys are parsed based on how the `OneDrive` class was initialized  
-     * By default all key entries are returned. You may provide an optional `Output` object to instead output the results to a file  
-     * If results are outputted to a file. An empty array is returned
-     * @param files Optional array of specific keys files to parse
-     * @param format Optional `Output` object to output results instead of returning them to the caller
-     * @returns Array of `KeyInfo`
-     */
-    public oneDriveKeys(files?: string[], format?: Output): KeyInfo[] {
+    public keys(): KeyInfo[] {
         const keys: KeyInfo[] = [];
-        let manager: OutputManager | undefined = undefined;
-        if (format !== undefined) {
-            manager = new OutputManager(format);
-        }
+        const pattern = this.platform === PlatformType.Windows ? "AppData\\Local\\Microsoft\\OneDrive\\logs\\*\\general.keystore" : "Library/Logs/OneDrive/*/general.keystore";
 
-        // If we only want to parse a subset of keys
-        if (files !== undefined) {
-            for (const entry of files) {
-                const key: KeyInfo = {
-                    path: entry,
-                    key: "",
-                };
-                const data = readTextFile(entry);
-                if (data instanceof FileError) {
-                    console.warn(`failed to read file ${entry}: ${data.message}`);
-                    continue;
-                }
-
-                const values = JSON.parse(data) as Record<string, string | number>[];
-                for (const value of values) {
-                    key.key = value["Key"] as string;
-                    break;
-                }
-                keys.push(key);
-            }
-            if (format !== undefined && manager !== undefined) {
-                manager.write_artifact(keys, "onedrive_keys")
-                return [];
-            }
-            if (manager !== undefined) {
-                manager.finalize();
-            }
-            return keys;
-        }
-
-        // Parse all keys
         for (const profile of this.profiles) {
-            for (const entry of profile.key_file) {
-                const key: KeyInfo = {
-                    path: entry,
-                    key: "",
-                };
-                const data = readTextFile(entry);
-                if (data instanceof FileError) {
-                    console.warn(`failed to read file ${entry}: ${data.message}`);
+            const matches = profile.tree.glob(pattern);
+            if (matches instanceof FileError) {
+                continue;
+            }
+
+            for (const entry of matches) {
+                if (!isFileEntry(entry)) {
                     continue;
                 }
 
-                const values = JSON.parse(data) as Record<string, string | number>[];
-                for (const value of values) {
-                    key.key = value["Key"] as string;
-                    break;
+                const text = readTextFile(entry.handle);
+                if (text instanceof FileError) {
+                    console.warn(`Failed to read OneDrive key file '${entry.meta.display_path}': ${text}`);
+                    continue;
                 }
-                keys.push(key);
-            }
-            if (format !== undefined && manager !== undefined) {
-                manager.write_artifact(keys, "onedrive_keys")
 
-                return [];
+                const key: KeyInfo = {
+                    evidence: entry.meta.display_path,
+                    key: "",
+                };
+
+                try {
+                    const values = JSON.parse(text) as Record<string, string | number>[];
+                    for (const value of values) {
+                        if (typeof value[ "key" ] === 'string') {
+                            key.key = value[ "key" ];
+                            break;
+                        }
+                    }
+                } catch (e) {
+                    console.warn(`Failed to parse OneDrive key file '${entry.meta.display_path}': ${e}`);
+                    continue;
+                }
             }
-        }
-        if (manager !== undefined) {
-            manager.finalize();
         }
         return keys;
     }
 
     /**
-     * Function to parse OneDrive Log (ODL) files. By default all logs are parsed based on how the `OneDrive` class was initialized  
-     * By default all log entries are returned. You may provide an optional `Output` object to instead output the results to a file  
-     * If results are outputted to a file. An empty array is returned
-     * @param files Optional array of specific ODL files to parse
-     * @param format Optional `Output` object to output results instead of returning them to the caller
+     * Function to parse OneDrive Log (ODL) files
      * @returns Array of `OneDriveLog`
      */
-    public oneDriveLogs(files?: string[], format?: Output): OneDriveLog[] {
+    public logs(): OneDriveLog[] {
         let logs: OneDriveLog[] = [];
-        let manager: OutputManager | undefined = undefined;
-        if (format !== undefined) {
-            manager = new OutputManager(format);
-        }
-        // Check if we only want to parse a subset of logs
-        if (files !== undefined) {
-            for (const entry of files) {
-                const values = readOdlFiles(entry);
-                if (values instanceof ApplicationError) {
-                    console.error(`${values}`);
+        const pattern = this.platform === PlatformType.Windows ? "AppData\\Local\\Microsoft\\OneDrive\\logs\\*\\*odl*" : "Library/Logs/OneDrive/*/*odl*";
+
+        for (const profile of this.profiles) {
+            const matches = profile.tree.glob(pattern);
+            if (matches instanceof FileError) {
+                continue;
+            }
+
+            for (const entry of matches) {
+                if (!isFileEntry(entry) || this.source instanceof FileError) {
                     continue;
                 }
-                if (format !== undefined && manager !== undefined) {
-                    manager.write_artifact(values, "onedrive_odl_logs")
+
+                const values = readOdlFiles(entry, this.source, this.accessor);
+                if (values instanceof ApplicationError) {
                     continue;
                 }
                 logs = logs.concat(values);
+
             }
-            if (manager !== undefined) {
-                manager.finalize();
-            }
-            return logs;
         }
 
-        // Parse all logs
-        for (const profile of this.profiles) {
-            for (const entry of profile.odl_files) {
-                const values = readOdlFiles(entry);
-                if (values instanceof ApplicationError) {
-                    console.error(`${values}`);
-                    continue;
-                }
-                if (format !== undefined && manager !== undefined) {
-                    manager.write_artifact(values, "onedrive_odl_logs")
-                    continue;
-                }
-                logs = logs.concat(values);
-            }
-        }
-        if (manager !== undefined) {
-            manager.finalize();
-        }
         return logs;
     }
 
     /**
-     * Function to parse OneDrive Account info. By default all accounts are parsed based on how the `OneDrive` class was initialized  
-     * By default all account entries are returned. You may provide an optional `Output` object to instead output the results to a file  
-     * If results are outputted to a file. An empty array is returned
-     * @param files Optional array of specific account configs files to parse. Windows will be NTUSER.DAT. macOS will be plist files
-     * @param format Optional `Output` object to output results instead of returning them to the caller
+     * Function to parse OneDrive Account info
      * @returns Array of `OneDriveAccount`
      */
-    public oneDriveAccounts(files?: string[], format?: Output): OneDriveAccount[] {
-        let configs: OneDriveAccount[] = [];
-        let manager: OutputManager | undefined = undefined;
-        if (format !== undefined) {
-            manager = new OutputManager(format);
-        }
-        // Check if we only want to parse a subset of accounts
-        if (files !== undefined) {
-            for (const entry of files) {
-                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry);
-                if (values instanceof ApplicationError) {
-                    console.error(`${values}`);
-                    continue;
-                }
+    public accounts(): OneDriveAccount[] {
+        let accounts: OneDriveAccount[] = [];
+        const pattern = this.platform === PlatformType.Windows ? " [Nn][Tt][Uu][Ss][Ee][Rr].[Dd][Aa][Tt]" : "Library/Group Containers/*.OneDriveStandaloneSuite/Library/Preferences/*.OneDriveStandaloneSuite.plist";
 
-                if (format !== undefined && manager !== undefined) {
-                    manager.write_artifact(values, "onedrive_accounts")
-                    continue;
-                }
-                configs = configs.concat(values);
-            }
-            if (manager !== undefined) {
-                manager.finalize();
-            }
-            return configs;
-        }
-
-        // Parse all configs
         for (const profile of this.profiles) {
-            for (const entry of profile.config_file) {
-                const values = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry);
-                if (values instanceof ApplicationError) {
-                    console.error(`${values}`);
+            const matches = profile.tree.glob(pattern);
+            if (matches instanceof FileError) {
+                continue;
+            }
+
+            for (const entry of matches) {
+                if (!isFileEntry(entry) || this.source instanceof FileError) {
                     continue;
                 }
-                if (format !== undefined && manager !== undefined) {
-                    manager.write_artifact(values, "onedrive_accounts")
+
+                const account = this.platform === PlatformType.Windows ? accountWindows(entry) : accountMacos(entry, this.accessor, this.source);
+                if (account instanceof ApplicationError) {
+                    console.warn(`Failed to parse OneDrive account '${entry.meta.display_path}': ${account}`);
                     continue;
                 }
-                configs = configs.concat(values);
+
+                accounts = accounts.concat(account);
             }
         }
-        if (manager !== undefined) {
-            manager.finalize();
-        }
-        return configs;
+        return accounts;
     }
 
     /**
-     * Function to parse OneDrive Sync databases. By default all databases are parsed based on how the `OneDrive` class was initialized  
-     * By default all database entries are returned. You may provide an optional `Output` object to instead output the results to a file  
-     * If results are outputted to a file. An empty array is returned
-     * @param files Optional array of specific db files to query
-     * @param format Optional `Output` object to output results instead of returning them to the caller
+     * Function to parse OneDrive Sync databases
      * @returns Array of `OneDriveSyncEngineRecord`
      */
-    public oneDriveSyncDatabase(files?: string[], format?: Output): OneDriveSyncEngineRecord[] {
+    public syncDatabase(): OneDriveSyncEngineRecord[] {
         let db: OneDriveSyncEngineRecord[] = [];
-        let manager: OutputManager | undefined = undefined;
-        if (format !== undefined) {
-            manager = new OutputManager(format);
-        }
-        // Check if we only want to parse a specific database
-        if (files !== undefined) {
-            for (const entry of files) {
-                const values = extractSyncEngine(entry);
-                if (values instanceof ApplicationError) {
-                    console.error(`${values}`);
-                    continue;
-                }
+        const pattern = this.platform === PlatformType.Windows ? "AppData\\Local\\Microsoft\\OneDrive\\settings\\*\\SyncEngineDatabase.db" : "Library/Application Support/OneDrive/settings/*/SyncEngineDatabase.db";
 
-                if (format !== undefined && manager !== undefined) {
-                    manager.write_artifact(values, "onedrive_syncdb")
-                    continue;
-                }
-                db = db.concat(values);
-            }
-            if (manager !== undefined) {
-                manager.finalize();
-            }
-            return db;
-        }
-
-        // Parse all databases
         for (const profile of this.profiles) {
-            for (const entry of profile.sync_db) {
-                const values = extractSyncEngine(entry);
-                if (values instanceof ApplicationError) {
-                    console.error(`${values}`);
-                    continue;
-                }
-                if (format !== undefined && manager !== undefined) {
-                    manager.write_artifact(values, "onedrive_syncdb")
-                    continue;
-                }
-                db = db.concat(values);
+            const db_file = profile.tree.file(pattern);
+            if (db_file instanceof FileError) {
+                continue;
             }
+
+            const values = extractSyncEngine(db_file, this.protocol);
+            if (values instanceof ApplicationError) {
+                console.warn(`Failed to query OneDrive Sync Engine '${db_file.meta.display_path}': ${values}`);
+                continue;
+            }
+            db = db.concat(values);
         }
-        if (manager !== undefined) {
-            manager.finalize();
-        }
+
         return db;
     }
 
     /**
      * Function that parses and timelines all OneDrive artifacts
-     * @param output `Object` object to output results
+     * @param format `Output` object to output results
      */
-    public retrospect(output: Output): void {
-        this.oneDriveLogs(undefined, output);
-        this.oneDriveSyncDatabase(undefined, output);
-        this.oneDriveAccounts(undefined, output);
+    public retrospect(format: Output): void {
+        const manager = new OutputManager(format);
+
+        const logs = this.logs();
+        let status = manager.write_artifact(logs, "retrospect_onedrive_logs");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline OneDrive logs: ${status}`);
+        }
+
+        const sync = this.syncDatabase();
+        status = manager.write_artifact(sync, "retrospect_onedrive_sync_database");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline OneDrive sync database: ${status}`);
+        }
+
+        const accounts = this.accounts();
+        status = manager.write_artifact(accounts, "retrospect_onedrive_accounts");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline OneDrive accounts: ${status}`);
+        }
     }
 
-    /**
-     * Setup OneDrive paths for all users or specific user if provided
-     * @returns Nothing
-     */
-    private setupProfiles(): void {
-        if (this.platform === PlatformType.Darwin) {
-            const base_users = `/Users/${this.user}`;
-            const all_users = glob(base_users);
-            if (all_users instanceof FileError) {
-                return;
-            }
-
-            for (const user of all_users) {
-                const profile: OnedriveProfile = {
-                    sync_db: [],
-                    odl_files: [],
-                    key_file: [],
-                    config_file: [],
-                };
-                const odl_glob = `${user.full_path}/Library/Logs/OneDrive/*/*odl*`;
-                profile.odl_files = this.getFiles(odl_glob);
-
-                const sync_glob = `${user.full_path}/Library/Application Support/OneDrive/settings/*/SyncEngineDatabase.db`;
-                profile.sync_db = this.getFiles(sync_glob);
-
-                const key_glob = `${user.full_path}/Library/Logs/OneDrive/*/general.keystore`;
-                profile.key_file = this.getFiles(key_glob);
-
-                const config_glob = `${user.full_path}/Library/Group Containers/*.OneDriveStandaloneSuite/Library/Preferences/*.OneDriveStandaloneSuite.plist`;
-                profile.config_file = this.getFiles(config_glob);
-
-                if (profile.config_file.length === 0 &&
-                    profile.key_file.length === 0 &&
-                    profile.odl_files.length === 0 &&
-                    profile.sync_db.length === 0) {
-                    continue;
-                }
-                this.profiles.push(profile);
+    private profilePath(): string {
+        const platform = detectPlatform();
+        this.platform = platform;
+        switch (this.platform) {
+            case PlatformType.Windows: return `${getSystemDrive()}\\Users\\*`;
+            case PlatformType.Darwin: return "/Users/*";
+            default: {
+                console.warn(`Unsupported platform. Defaulting to '${getSystemDrive()}\\Users\\*`);
+                return `${getSystemDrive()}\\Users\\*`;
             }
         }
-
-        let drive = getEnvValue("HOMEDRIVE");
-        if (drive === "") {
-            drive = "C:";
-        }
-        const base_users = `${drive}\\Users\\${this.user}`;
-        const all_users = glob(base_users);
-        if (all_users instanceof FileError) {
-            return;
-        }
-
-        for (const user of all_users) {
-            const profile: OnedriveProfile = {
-                sync_db: [],
-                odl_files: [],
-                key_file: [],
-                config_file: [],
-            };
-
-            const odl_glob = `${user.full_path}\\AppData\\Local\\Microsoft\\OneDrive\\logs\\*\\*odl*`;
-            profile.odl_files = this.getFiles(odl_glob);
-
-            const sync_glob = `${user.full_path}\\AppData\\Local\\Microsoft\\OneDrive\\settings\\*\\SyncEngineDatabase.db`;
-            profile.sync_db = this.getFiles(sync_glob);
-
-            const key_glob = `${user.full_path}\\AppData\\Local\\Microsoft\\OneDrive\\logs\\*\\general.keystore`;
-            profile.key_file = this.getFiles(key_glob);
-
-            const config_glob = `${user.full_path}\\NTUSER.*`;
-
-            profile.config_file = this.getFiles(config_glob);
-            if (profile.key_file.length === 0 &&
-                profile.odl_files.length === 0 &&
-                profile.sync_db.length === 0) {
-                continue;
-            }
-            this.profiles.push(profile);
-        }
-
-
-    }
-
-    /**
-     * Function to get file artifacts associated with OneDrive
-     * @param glob_string Glob string that points to files associated with OneDrive artifacts
-     * @returns Array of strings
-     */
-    private getFiles(glob_string: string): string[] {
-        const files: string[] = [];
-        const glob_files = glob(glob_string);
-        if (glob_files instanceof FileError) {
-            return [];
-        }
-
-        for (const entry of glob_files) {
-            // When globbing for user profile on Windows. Make sure to not get transaction files
-            if (entry.filename.toLowerCase().includes("ntuser.dat") &&
-                !entry.filename.toLowerCase().endsWith("dat")) {
-                continue;
-            }
-            files.push(entry.full_path);
-        }
-
-        return files;
     }
 }
 
@@ -420,37 +242,29 @@ export class OneDrive {
  * Or want to validate the OneDrive parsing
  */
 export function testOneDrive(): void {
-    let test = "../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock";
-    let plat = PlatformType.Windows;
-    if (platform().toLowerCase() === "darwin") {
-        plat = PlatformType.Darwin;
-        test = "../../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock";
-    }
+    //let test = "../../tests/test_data/DFIRArtifactMuseum/onedrive/24.175.0830.0001/mock";
+    const client = new OneDrive();
 
-    const client = new OneDrive(plat, undefined, test);
-
-    const status = client.oneDriveLogs();
+    const status = client.logs();
     if (status.length !== 367) {
         throw `Got '${status.length}' expected "367".......OneDrive ❌`;
     }
 
-    const sync = client.oneDriveSyncDatabase();
+    const sync = client.syncDatabase();
     if (sync.length !== 43) {
         throw `Got '${sync.length}' expected "43".......OneDrive ❌`;
     }
 
-    const account = client.oneDriveAccounts();
-    if (account.length !== 0 && plat === PlatformType.Windows) {
-        throw `Got '${account.length}' expected "0".......OneDrive ❌`;
-    } else if (account.length !== 1 && plat === PlatformType.Darwin) {
+    const account = client.accounts();
+    if (account.length !== 1) {
         throw `Got '${account.length}' expected "1".......OneDrive ❌`;
     }
 
-    if (plat === PlatformType.Darwin && account[0]?.account_id !== "aaaaaaaaa") {
-        throw `Got '${account[0]?.account_id}' expected "aaaaaaaaa".......OneDrive ❌`;
+    if (account[ 0 ]?.account_id !== "aaaaaaaaa") {
+        throw `Got '${account[ 0 ]?.account_id}' expected "aaaaaaaaa".......OneDrive ❌`;
     }
 
-    const key = client.oneDriveKeys();
+    const key = client.keys();
     if (key.length !== 1) {
         throw `Got '${key.length}' expected "1"......OneDrive ❌`;
     }

@@ -1,5 +1,7 @@
-import { getPlist, getRegistry } from "../../../mod";
+import { Accessor, getPlist, getRegistry } from "../../../mod";
 import { OneDriveAccount } from "../../../types/applications/onedrive";
+import { FileEntry, SourceHandle } from "../../../types/filesystem/accessor";
+import { FileError } from "../../filesystem/errors";
 import { MacosError } from "../../macos/errors";
 import { unixEpochToISO } from "../../time/conversion";
 import { WindowsError } from "../../windows/errors";
@@ -10,11 +12,11 @@ import { ApplicationError } from "../errors";
  * @param path Path to NTUSER.DAT file
  * @returns Array of `OneDriveAccount`
  */
-export function accountWindows(path: string): OneDriveAccount[] | ApplicationError {
+export function accountWindows(entry: FileEntry): OneDriveAccount[] | ApplicationError {
     const accounts: OneDriveAccount[] = [];
-    const values = getRegistry(path, "\\\\software\\\\microsoft\\\\onedrive\\\\accounts");
+    const values = getRegistry(entry.handle, "\\\\software\\\\microsoft\\\\onedrive\\\\accounts");
     if (values instanceof WindowsError) {
-        return new ApplicationError(`ONEDRIVE`, `Failed to parse ${path}: ${values.message}`);
+        return new ApplicationError(`ONEDRIVE`, `Failed to parse '${entry.meta.display_path}': ${values.message}`);
     }
 
 
@@ -38,7 +40,7 @@ export function accountWindows(path: string): OneDriveAccount[] | ApplicationErr
             timestamp_desc: "OneDrive Last Signin",
             artifact: "OneDrive Account Info",
             data_type: "applications:onedrive:account:entry",
-            evidence: path,
+            evidence: entry.meta.display_path,
         };
         for (const value of reg.values) {
             switch (value.value) {
@@ -73,11 +75,16 @@ export function accountWindows(path: string): OneDriveAccount[] | ApplicationErr
  * @param path Path to OneDriveStandaloneSuite.plist plist file
  * @returns Array of `OneDriveAccount`
  */
-export function accountMacos(path: string): OneDriveAccount[] | ApplicationError {
+export function accountMacos(entry: FileEntry, accessor: Accessor, source: SourceHandle): OneDriveAccount[] | ApplicationError {
     const accounts: OneDriveAccount[] = [];
-    const values = getPlist(path);
+    const bytes = accessor.sourceReadFileHandle(source, entry.handle);
+    if (bytes instanceof FileError) {
+        return new ApplicationError(`ONEDRIVE`, `Failed to read '${entry.meta.display_path}': ${bytes}`);
+
+    }
+    const values = getPlist(bytes);
     if (values instanceof MacosError) {
-        return new ApplicationError(`ONEDRIVE`, `Failed to parse ${path}: ${values.message}`);
+        return new ApplicationError(`ONEDRIVE`, `Failed to parse '${entry.meta.display_path}': ${values}`);
 
     }
 
@@ -87,23 +94,23 @@ export function accountMacos(path: string): OneDriveAccount[] | ApplicationError
 
     for (const key in values) {
         // Lazy check if the plist data contains the data we want
-        if (!JSON.stringify(values[key]).includes("UserEmail")) {
+        if (!JSON.stringify(values[ key ]).includes("UserEmail")) {
             continue;
         }
-        const account_value = values[key] as Record<string, string | number | undefined>;
+        const account_value = values[ key ] as Record<string, string | number | undefined>;
 
         const account: OneDriveAccount = {
-            email: account_value["UserEmail"] as string | undefined ?? "",
-            device_id: account_value["OneDriveDeviceId"] as string | undefined ?? "",
-            account_id: account_value["OneAuthAccountId"] as string | undefined ?? "",
+            email: account_value[ "UserEmail" ] as string | undefined ?? "",
+            device_id: account_value[ "OneDriveDeviceId" ] as string | undefined ?? "",
+            account_id: account_value[ "OneAuthAccountId" ] as string | undefined ?? "",
             last_signin: "1970-01-01T00:00:00.000Z",
-            cid: account_value["cid"] as string | undefined ?? "",
-            message: account_value["UserEmail"] as string | undefined ?? "",
+            cid: account_value[ "cid" ] as string | undefined ?? "",
+            message: account_value[ "UserEmail" ] as string | undefined ?? "",
             datetime: "1970-01-01T00:00:00.000Z",
             timestamp_desc: "OneDrive Last Signin",
             artifact: "OneDrive Account Info",
             data_type: "applications:onedrive:account:entry",
-            evidence: path,
+            evidence: entry.meta.display_path,
         };
         accounts.push(account);
     }

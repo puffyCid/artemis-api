@@ -25,8 +25,8 @@ export class NextcloudClient {
 
     /**
      * Construct a `NextcloudClient` object that can be used to parse NextcloudClient logs
-     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing Epiphany data. Default is `AccessorProtocol.Host`
-     * @param [source_path="host:"] Default source path to use when accessing Epiphany data. Default is `host:` which represents a live system.  
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing NextCloud data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing NextCloud data. Default is `host:` which represents a live system.  
      * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
      * @param alt_path Optional alternative path to NextcloudClient directory
      * @returns `NextcloudClient` instance class
