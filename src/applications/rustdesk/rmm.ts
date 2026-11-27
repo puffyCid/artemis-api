@@ -18,8 +18,8 @@ export class RustDesk {
 
     /**
      * Construct a `RustDesk` object that can be used to parse RustDesk data
-     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing Epiphany data. Default is `AccessorProtocol.Host`
-     * @param [source_path="host:"] Default source path to use when accessing Epiphany data. Default is `host:` which represents a live system.  
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing RustDesk data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing RustDesk data. Default is `host:` which represents a live system.  
      * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
      * @param alt_path Optional alternative path to RustDesk directory
      * @returns `RustDesk` instance class

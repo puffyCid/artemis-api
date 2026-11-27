@@ -1,5 +1,7 @@
-export interface AnyDeskUsers {
-    user_path: string;
+import { DirectoryTree } from "../../src/filesystem/tree";
+
+export interface AnyDeskProfile {
+    tree: DirectoryTree;
     version: string;
     account: string;
     id: string;

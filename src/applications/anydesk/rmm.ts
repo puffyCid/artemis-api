@@ -1,6 +1,10 @@
-import { glob, PlatformType, readTextFile } from "../../../mod";
-import { AnyDeskUsers, Config, TraceEntry } from "../../../types/applications/anydesk";
+import { Accessor, glob, PlatformType, readTextFile } from "../../../mod";
+import { AnyDeskProfile, Config, TraceEntry } from "../../../types/applications/anydesk";
+import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesystem/accessor";
+import { getSystemDrive } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
+import { DirectoryTree } from "../../filesystem/tree";
+import { detectPlatform } from "../../system/systeminfo";
 import { ApplicationError } from "../errors";
 import { readConfig } from "./conf";
 import { readTrace } from "./trace";
@@ -9,44 +13,54 @@ import { readTrace } from "./trace";
  * Class to parse AnyDesk data
  */
 export class AnyDesk {
-    private paths: AnyDeskUsers[] = [];
-    private platform: PlatformType;
+    private profiles: AnyDeskProfile[] = [];
+    private protocol: AccessorProtocol = AccessorProtocol.Host;
+    private accessor = new Accessor();
+    private source: SourceHandle | FileError;
 
     /**
      * Construct a `AnyDesk` object that can be used to parse AnyDesk data
-     * @param platform OS `PlatformType`
-     * @param alt_path Optional alternative directory that contains all AnyDesk related files including configs
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing AnyDesk data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing AnyDesk data. Default is `host:` which represents a live system.  
+     * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
+     * @param alt_path Optional alternative path to AnyDesk directory
      * @returns `AnyDesk` instance class
      */
-    constructor (platform: PlatformType, alt_path?: string) {
-        this.platform = platform;
+    constructor (protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
+        this.protocol = protocol;
+        const pattern = alt_path ?? this.profilePath();
 
-        // Get AnyDesk data based on PlatformType
-        if (alt_path === undefined) {
-            const results = this.profiles(platform);
-            if (results instanceof ApplicationError) {
-                return;
+        this.source = this.accessor.openSource(source_path, this.protocol);
+        if (this.source instanceof FileError) {
+            return;
+        }
+
+        const matches = this.accessor.sourceGlobfs(this.source, pattern);
+        if (matches instanceof FileError) {
+            return;
+        }
+
+        for (const entry of matches) {
+            // We want the base directory for AnyDesk artifacts
+            if (entry.meta.kind !== EntryKind.Directory) {
+                continue;
             }
 
-            this.paths = results;
-            return;
-        }
+            const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+            if (tree instanceof FileError) {
+                continue;
+            }
 
-        // Use provided directory any get some info
-        const client_version = this.version(this.platform, alt_path);
-        if (client_version instanceof ApplicationError) {
-            return;
-        }
-        const client_account = this.account(this.platform, alt_path);
-        if (client_account instanceof ApplicationError) {
-            return;
-        }
-        const client_id = this.id(this.platform, alt_path);
-        if (client_id instanceof ApplicationError) {
-            return;
-        }
+            const version_account = this.version(tree);
+            const profile: AnyDeskProfile = {
+                tree,
+                version: version_account.version,
+                account: version_account.account,
+                id: this.id(tree),
+            };
 
-        this.paths = [ { user_path: alt_path, version: client_version, account: client_account, id: client_id } ];
+            this.profiles.push(profile);
+        }
     }
 
     /**
@@ -193,83 +207,16 @@ export class AnyDesk {
         return hits;
     }
 
-    /**
-    * Get base path for all AnyDesk data
-    * @param platform OS `PlatformType`
-    * @returns Array of `AnyDeskUsers` or `ApplicationError`
-    */
-    private profiles(platform: PlatformType): AnyDeskUsers[] | ApplicationError {
-        let paths;
-        switch (platform) {
-            case PlatformType.Linux: {
-                const linux_paths = glob("/home/*/.anydesk");
-                if (linux_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "ANYDESK",
-                        `failed to glob linux paths: ${linux_paths}`,
-                    );
-                }
-                paths = linux_paths;
-                break;
-            }
-            case PlatformType.Darwin: {
-                const mac_paths = glob("/Users/*/.anydesk");
-                if (mac_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "ANYDESK",
-                        `failed to glob macOS paths: ${mac_paths}`,
-                    );
-                }
-                paths = mac_paths;
-                break;
-            }
-            case PlatformType.Windows: {
-                const win_paths = glob("C:\\Users\\*\\AppData\\Roaming\\AnyDesk");
-                if (win_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "ANYDESK",
-                        `failed to glob Windows paths: ${win_paths}`,
-                    );
-                }
-                paths = win_paths;
-                break;
-            }
+    private profilePath(): string {
+        switch (detectPlatform()) {
+            case PlatformType.Linux: return "/home/*/.anydesk";
+            case PlatformType.Windows: return `${getSystemDrive()}\\Users\\*\\AppData\\Roaming\\AnyDesk`;
+            case PlatformType.Darwin: return "/Users/*/.anydesk";
             default: {
-                console.warn(`Unsupported platform: ${platform}`);
-                return [];
+                console.warn(`Unsupported platform. Defaulting to '/home/*/.anydesk'`);
+                return "/home/*/.anydesk";
             }
         }
-
-        const clients: AnyDeskUsers[] = [];
-        for (const entry of paths) {
-            if (!entry.is_directory) {
-                continue;
-            }
-            const client_version = this.version(this.platform, entry.full_path);
-            if (client_version instanceof ApplicationError) {
-                continue;
-            }
-
-            const client_account = this.account(this.platform, entry.full_path);
-            if (client_account instanceof ApplicationError) {
-                continue;
-            }
-
-            const client_id = this.id(this.platform, entry.full_path);
-            if (client_id instanceof ApplicationError) {
-                continue;
-            }
-
-            const profile: AnyDeskUsers = {
-                user_path: entry.full_path,
-                version: client_version,
-                account: client_account,
-                id: client_id
-            };
-
-            clients.push(profile);
-        }
-        return clients;
     }
 
     /**
@@ -278,103 +225,82 @@ export class AnyDesk {
      * @param path Path to base AnyDesk user config
      * @returns Version string or `ApplicationError`
      */
-    private version(platform: PlatformType, path: string): string | ApplicationError {
-        let version_path = `${path}/user.conf`;
-        if (platform === PlatformType.Windows) {
-            version_path = `${path}\\user.conf`;
+    private version(tree: DirectoryTree): { version: string, account: string; } {
+        const file = tree.file("user.conf");
+        if (file instanceof FileError) {
+            return { version: "Unknown version", account: "Unknown Account" };
         }
 
-        const text_data = readTextFile(version_path);
-        if (text_data instanceof FileError) {
-            return new ApplicationError(`ANYDESK`, `could not read ${version_path}: ${text_data}`);
+        const text = readTextFile(file.handle);
+        if (text instanceof FileError) {
+            return { version: "Unknown version", account: "Unknown Account" };
         }
 
         const version_regex = /ad\.ui\.install\.new_update=.*/;
-        const match = text_data.match(version_regex);
+        let match = text.match(version_regex);
         if (match === null) {
-            return new ApplicationError(`ANYDESK`, `could not match version regex`);
+            return { version: "Unknown version", account: "Unknown Account" };
         }
 
         const version_line = match?.at(0);
         if (version_line === undefined) {
-            return new ApplicationError(`ANYDESK`, `could not find version line got undefined`);
+            return { version: "Unknown version", account: "Unknown Account" };
         }
 
-        const version_string = version_line.split("=").at(1);
-        if (version_string === undefined) {
-            return new ApplicationError(`ANYDESK`, `could not find version got undefined`);
-        }
-
-        return version_string;
-    }
-
-    /**
-     * Function to determine AnyDesk client account
-     * @param platform OS `PlatformType`
-     * @param path Path to base AnyDesk user config
-     * @returns Account string or `ApplicationError`
-     */
-    private account(platform: PlatformType, path: string): string | ApplicationError {
-        let account_path = `${path}/user.conf`;
-        if (platform === PlatformType.Windows) {
-            account_path = `${path}\\user.conf`;
-        }
-
-        const text_data = readTextFile(account_path);
-        if (text_data instanceof FileError) {
-            return new ApplicationError(`ANYDESK`, `could not read ${account_path}: ${text_data}`);
+        const version = version_line.split("=").at(1);
+        if (version === undefined) {
+            return { version: "Unknown version", account: "Unknown Account" };
         }
 
         const account_regex = /ad\.account\.recent_logged_in_user=.*/;
-        const match = text_data.match(account_regex);
+        match = text.match(account_regex);
         if (match === null) {
-            return new ApplicationError(`ANYDESK`, `could not match account regex`);
+            return { version, account: "Unknown Account" };
         }
 
         const account_line = match?.at(0);
         if (account_line === undefined) {
-            return new ApplicationError(`ANYDESK`, `could not find account line got undefined`);
+            return { version, account: "Unknown Account" };
         }
 
-        const account_string = account_line.split("=").at(1);
-        if (account_string === undefined) {
-            return new ApplicationError(`ANYDESK`, `could not find account got undefined`);
+        const account = account_line.split("=").at(1);
+        if (account === undefined) {
+            return { version, account: "Unknown Account" };
         }
 
-        return account_string;
+        return { version, account };
     }
 
     /**
      * Function to determine AnyDesk client ID
-     * @param platform OS `PlatformType`
-     * @param path Path to base AnyDesk user config
-     * @returns ID string or `ApplicationError`
+     * @param tree `DirectoryTree` object
+     * @returns ID string
      */
-    private id(platform: PlatformType, path: string): string | ApplicationError {
-        let id_path = `${path}/system.conf`;
-        if (platform === PlatformType.Windows) {
-            id_path = `${path}\\system.conf`;
+    private id(tree: DirectoryTree): string {
+        const file = tree.file("system.conf");
+        if (file instanceof FileError) {
+            return "Unknown ID";
         }
 
-        const text_data = readTextFile(id_path);
+        const text_data = readTextFile(file.handle);
         if (text_data instanceof FileError) {
-            return new ApplicationError(`ANYDESK`, `could not read ${id_path}: ${text_data}`);
+            return "Unknown ID";
         }
 
         const id_regex = /ad\.anynet\.id=.*/;
         const match = text_data.match(id_regex);
         if (match === null) {
-            return new ApplicationError(`ANYDESK`, `could not match id regex`);
+            return "Unknown ID";
         }
 
         const id_line = match?.at(0);
         if (id_line === undefined) {
-            return new ApplicationError(`ANYDESK`, `could not find id line got undefined`);
+            return "Unknown ID";
         }
 
         const id_string = id_line.split("=").at(1);
         if (id_string === undefined) {
-            return new ApplicationError(`ANYDESK`, `could not find id got undefined`);
+            return "Unknown ID";
         }
 
         return id_string;
