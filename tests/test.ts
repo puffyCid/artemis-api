@@ -17,6 +17,7 @@ export { testChromiumSqlite } from "../src/applications/chromium/sqlite";
 export { testFirefoxJsonFiles } from "../src/applications/firefox/json";
 export { testChromiumCache } from "../src/applications/chromium/cache";
 export { testRustDeskLogs } from "../src/applications/rustdesk/logs";
+export { testRustDesk } from "../src/applications/rustdesk/rmm";
 
 /**
  * Linux exported test functions

@@ -1,43 +1,61 @@
-import { glob, PlatformType, readTextFile } from "../../../mod";
-import { RustDeskLogs, RustDeskUsers } from "../../../types/applications/rustdesk";
+import { Accessor, PlatformType, readTextFile } from "../../../mod";
+import { RustDeskLogs, RustDeskProfiles } from "../../../types/applications/rustdesk";
+import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesystem/accessor";
+import { getSystemDrive } from "../../environment/env";
 import { FileError } from "../../filesystem/errors";
-import { ApplicationError } from "../errors";
+import { DirectoryTree } from "../../filesystem/tree";
+import { detectPlatform } from "../../system/systeminfo";
 import { readLogs } from "./logs";
 
 /**
  * Class to extract artifacts from RustDesk application
  */
 export class RustDesk {
-    private paths: RustDeskUsers[] = [];
-    private platform: PlatformType;
+    private profiles: RustDeskProfiles[] = [];
+    private protocol: AccessorProtocol = AccessorProtocol.Host;
+    private accessor = new Accessor();
+    private source: SourceHandle | FileError;
 
     /**
-     * 
-     * @param platform `PlatformType` enum value
-     * @param alt_path Optional alternative path to folder containing all RustDesk files. Overides `PlatformType`
-     * @returns `RustDesk` class instance
+     * Construct a `RustDesk` object that can be used to parse RustDesk data
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing Epiphany data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing Epiphany data. Default is `host:` which represents a live system.  
+     * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
+     * @param alt_path Optional alternative path to RustDesk directory
+     * @returns `RustDesk` instance class
      */
-    constructor(platform: PlatformType, alt_path?: string) {
-        this.platform = platform;
+    constructor (protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
+        this.protocol = protocol;
+        const pattern = alt_path ?? this.profilePath();
 
-        // Get AnyDesk data based on PlatformType
-        if (alt_path === undefined) {
-            const results = this.profiles();
-            if (results instanceof ApplicationError) {
-                return;
+        this.source = this.accessor.openSource(source_path, this.protocol);
+        if (this.source instanceof FileError) {
+            return;
+        }
+
+        const matches = this.accessor.sourceGlobfs(this.source, pattern);
+        if (matches instanceof FileError) {
+            return;
+        }
+
+        for (const entry of matches) {
+            // We want the base directory for RustDesk artifacts
+            if (entry.meta.kind !== EntryKind.Directory) {
+                continue;
             }
 
-            this.paths = results;
-            console.log(JSON.stringify(this.paths));
-            return;
-        }
+            const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+            if (tree instanceof FileError) {
+                continue;
+            }
 
-        const remote_id = this.id(this.platform, alt_path);
-        if (remote_id instanceof ApplicationError) {
-            return;
-        }
-        this.paths = [{ config_path: alt_path, version: '', logs_path: alt_path, remote_id }];
+            const profile: RustDeskProfiles = {
+                tree,
+                remote_id: this.id(tree)
+            };
 
+            this.profiles.push(profile);
+        }
     }
 
     /**
@@ -45,133 +63,30 @@ export class RustDesk {
      * @param is_alt If optional alternative path was provided
      * @returns Array of `RustDeskLogs`
      */
-    public logs(is_alt = false): RustDeskLogs[] {
-        let separator = "/";
-        if (this.platform === PlatformType.Windows) {
-            separator = "\\";
-        }
-        let hits: RustDeskLogs[] = [];
+    public logs(): RustDeskLogs[] {
+        const results: RustDeskLogs[] = [];
 
-        if (is_alt && this.paths[0] !== undefined) {
-            const entries = glob(`${this.paths[0].logs_path}${separator}*.log`);
-            if (entries instanceof FileError) {
-                console.error(entries);
-                return hits;
-            }
-            for (const entry of entries) {
-                if (!entry.is_file) {
-                    continue;
-                }
-                const values = readLogs(entry.full_path, this.paths[0]);
-                if (values instanceof ApplicationError) {
-                    console.error(values);
-                    return hits;
-                }
-                hits = hits.concat(values);
-            }
-            return hits;
+        for (const profile of this.profiles) {
+            readLogs(profile, results);
         }
 
-        // Try parsing log files at default paths
-        for (const entry of this.paths) {
-            const path = `${entry.logs_path}${separator}*${separator}*`;
-            const entries = glob(path);
-            if (entries instanceof FileError) {
-                console.error(entries);
-                continue;
-            }
-            for (const log_file of entries) {
-                if (!log_file.is_file) {
-                    continue;
-                }
-                const values = readLogs(log_file.full_path, entry);
-                if (values instanceof ApplicationError) {
-                    console.error(values);
-                    return hits;
-                }
-                hits = hits.concat(values);
-            }
-        }
-
-        return hits;
+        return results;
     }
 
     /**
      * Grab basic profile information for installed RustDesk application
      * @returns Array of `RustDeskUsers` or `ApplicationError`
      */
-    private profiles(): RustDeskUsers[] | ApplicationError {
-        let paths;
-        switch (this.platform) {
-            case PlatformType.Linux: {
-                const platform_paths = glob("/home/*/.config/rustdesk");
-                if (platform_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "RUSTDESK",
-                        `failed to glob linux config paths: ${platform_paths}`,
-                    );
-                }
-                paths = platform_paths;
-                break;
-            }
-            case PlatformType.Windows: {
-                const platform_paths = glob("C:\\Users\\*\\AppData\\Roaming\\RustDesk");
-                if (platform_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "RUSTDESK",
-                        `failed to glob windows config paths: ${platform_paths}`,
-                    );
-                }
-                paths = platform_paths;
-                break;
-            }
-            case PlatformType.Darwin: {
-                const platform_paths = glob("/Users/*/Library/Preferences/RustDesk");
-                if (platform_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "RUSTDESK",
-                        `failed to glob macOS config paths: ${platform_paths}`,
-                    );
-                }
-                paths = platform_paths;
-                break;
-            }
+    private profilePath(): string {
+        switch (detectPlatform()) {
+            case PlatformType.Linux: return "/home/*/.config/rustdesk";
+            case PlatformType.Darwin: return "/Users/*/Library/Preferences/RustDesk";
+            case PlatformType.Windows: return `${getSystemDrive()}\\Users\\*\\AppData\\Roaming\\RustDesk`;
             default: {
-                return new ApplicationError(
-                    "RUSTDESK",
-                    `platform not supported: ${this.platform}`,
-                );
+                console.warn(`Unsupported platform. Defaulting to '/home/*/.config/rustdesk'`);
+                return "/home/*/.config/rustdesk";
             }
         }
-
-        const clients: RustDeskUsers[] = [];
-
-        for (const entry of paths) {
-            if (!entry.is_directory) {
-                continue;
-            }
-
-            const remote_id = this.id(this.platform, entry.full_path);
-            if (remote_id instanceof ApplicationError) {
-                continue;
-            }
-
-            const profile: RustDeskUsers = {
-                config_path: entry.full_path,
-                logs_path: entry.full_path.replace(".config/rustdesk", ".local/share/logs/RustDesk"),
-                version: '',
-                remote_id,
-            };
-
-            if (this.platform === PlatformType.Windows) {
-                profile.logs_path = `${entry.full_path}\\log`
-            } else if (this.platform === PlatformType.Darwin) {
-                profile.logs_path = entry.full_path.replace("Library/Preferences/RustDesk", "Library/logs/RustDesk")
-            }
-
-            clients.push(profile);
-        }
-        return clients;
     }
 
     /**
@@ -180,33 +95,56 @@ export class RustDesk {
      * @param path Base path to RustDesk application
      * @returns 
      */
-    private id(platform: PlatformType, path: string): string | ApplicationError {
-        let id_path = `${path}/RustDesk_local.toml`;
-        if (platform === PlatformType.Windows) {
-            id_path = `${path}\\RustDesk_local.toml`;
+    private id(tree: DirectoryTree): string {
+        const id_file = tree.file("RustDesk_local.toml");
+        if (id_file instanceof FileError || this.source instanceof FileError) {
+            return "Unknown ID";
         }
 
-        const text_data = readTextFile(id_path);
-        if (text_data instanceof FileError) {
-            return new ApplicationError(`RUSTDESK`, `could not read ${id_path}: ${text_data}`);
+        const text = readTextFile(id_file.handle);
+        if (text instanceof FileError) {
+            return "Unknown ID";
         }
+
 
         const id_regex = /remote_id.*/;
-        const match = text_data.match(id_regex);
+        const match = text.match(id_regex);
         if (match === null) {
-            return new ApplicationError(`RUSTDESK`, `could not match id regex`);
+            return "Unknown ID";
         }
 
         const id_line = match?.at(0);
         if (id_line === undefined) {
-            return new ApplicationError(`RUSTDESK`, `could not find id line got undefined`);
+            return "Unknown ID";
         }
 
         const id_string = id_line.split("=").at(1);
         if (id_string === undefined) {
-            return new ApplicationError(`RUSTDESK`, `could not find id got undefined`);
+            return "Unknown ID";
         }
 
         return id_string.trim().replaceAll("'", "");
     }
+}
+
+/**
+ * Function to test the RustDesk parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the RustDesk parsing
+ */
+export function testRustDesk(): void {
+    const test = "../../test_data/rustdesk/1.4.6";
+    const client = new RustDesk(AccessorProtocol.Host, "host:", test);
+
+    const results = client.logs();
+
+    if (results.length !== 148) {
+        throw `Got length ${results.length} expected 51.......readLogs ❌`;
+    }
+
+    if (results[ 23 ]?.message !== "Latency of rs-ny.rustdesk.com:21116: 115.89ms") {
+        throw `Got message '${results[ 23 ]?.message}' expected "Latency of rs-ny.rustdesk.com:21116: 115.89ms".......readLogs ❌`;
+    }
+
+    console.info(`  Function readLogs ✅`);
 }

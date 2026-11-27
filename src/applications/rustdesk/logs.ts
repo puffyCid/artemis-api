@@ -1,6 +1,7 @@
-import { RustDeskLogs, RustDeskUsers } from "../../../types/applications/rustdesk";
+import { RustDeskLogs, RustDeskProfiles } from "../../../types/applications/rustdesk";
 import { FileError } from "../../filesystem/errors";
 import { readLines } from "../../filesystem/files";
+import { isFileEntry } from "../../filesystem/tree";
 import { convertModifiedIso } from "../../time/conversion";
 import { ApplicationError } from "../errors";
 
@@ -10,45 +11,54 @@ import { ApplicationError } from "../errors";
  * @param user `RustDeskUsers` object
  * @returns Array of `RustDeskLogs` or `ApplicationError`
  */
-export function readLogs(path: string, user: RustDeskUsers): RustDeskLogs[] | ApplicationError {
-    // Files not that large?
-    const lines = readLines(path, 0, 1000);
-    if (lines instanceof FileError) {
-        return new ApplicationError(`RUSTDESK`, `failed to read file ${path}: ${lines}`);
+export function readLogs(profile: RustDeskProfiles, logs: RustDeskLogs[]) {
+    const pattern = "log/*.log";
+    const matches = profile.tree.glob(pattern);
+    if (matches instanceof FileError) {
+        console.warn(`Failed to glob for RustDesk logs: ${matches}`);
+        return;
     }
 
-    const logs: RustDeskLogs[] = [];
-    let multiline_log = "";
-    for (let i = 0; i < lines.length; i++) {
-        const line_value = lines[i];
-
-        if (line_value === "" || line_value === undefined) {
-            continue;
-        }
-        if (!line_value.startsWith("[")) {
-            multiline_log += `${line_value}\n`;
+    for (const entry of matches) {
+        if (!isFileEntry(entry)) {
             continue;
         }
 
-        if (multiline_log !== "") {
-            const previous_line = logs[logs.length - 1];
-            if (previous_line !== undefined) {
-                previous_line.message = previous_line.message.concat(multiline_log);
-                logs[logs.length - 1] = previous_line;
+        const lines = readLines(entry.handle);
+        if (lines instanceof FileError) {
+            continue;
+        }
+
+        let multiline_log = "";
+        for (let i = 0; i < lines.length; i++) {
+            const line_value = lines[ i ];
+
+            if (line_value === "" || line_value === undefined) {
+                continue;
+            }
+            if (!line_value.startsWith("[")) {
+                multiline_log += `${line_value}\n`;
+                continue;
             }
 
-            multiline_log = "";
-            continue;
-        }
+            if (multiline_log !== "") {
+                const previous_line = logs[ logs.length - 1 ];
+                if (previous_line !== undefined) {
+                    previous_line.message = previous_line.message.concat(multiline_log);
+                    logs[ logs.length - 1 ] = previous_line;
+                }
 
-        const value = extractDetails(line_value, path, user.remote_id);
-        if (value instanceof ApplicationError) {
-            continue;
+                multiline_log = "";
+                continue;
+            }
+
+            const value = extractDetails(line_value, entry.meta.display_path, profile.remote_id);
+            if (value instanceof ApplicationError) {
+                continue;
+            }
+            logs.push(value);
         }
-        logs.push(value);
     }
-
-    return logs;
 }
 
 /**
@@ -98,23 +108,14 @@ function extractDetails(log: string, evidence: string, remote_id: string): RustD
     return value;
 }
 
+/**
+ * Function to test the RustDesk logs parsing  
+ * This function should not be called unless you are developing the artemis-api  
+ * Or want to validate the RustDesk logs parsing
+ */
 export function testRustDeskLogs(): void {
     const test = "../../test_data/rustdesk/1.4.6/rustdesk_r2026-04-12_17-11-54.log";
-    const results = readLogs(test, { logs_path: "", remote_id: "1234", config_path: "test", version: "" });
 
-    if (results instanceof ApplicationError) {
-        throw results;
-    }
-
-    if (results.length !== 51) {
-        throw `Got lenght ${results.length} expected 51.......readLogs ❌`;
-    }
-
-    if (results[23]?.message !== "Clipboard listener subscribed: client-clipboard") {
-        throw `Got message ${results[23]?.message} expected "Clipboard listener subscribed: client-clipboard".......readLogs ❌`;
-    }
-
-    console.info(`  Function readLogs ✅`);
 
     const test_value = "[2025-11-23 19:44:47.656957 -05:00] INFO [src/core_main.rs:360] start --server with user centos";
     const value = extractDetails(test_value, test, "1234");

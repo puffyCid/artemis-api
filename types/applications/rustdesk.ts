@@ -1,7 +1,10 @@
-export interface RustDeskUsers {
-    config_path: string;
-    logs_path: string;
-    version: string;
+import { DirectoryTree } from "../../src/filesystem/tree";
+
+export interface RustDeskProfiles {
+    /**
+     * `DirectoryTree` to the base of the RustDesk directory
+     */
+    tree: DirectoryTree;
     /** Remote ID associated with application */
     remote_id: string;
 }
