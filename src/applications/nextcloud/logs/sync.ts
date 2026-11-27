@@ -8,7 +8,7 @@ import { unixEpochToISO } from "../../../time/conversion";
  * @param sync_log_path Source of the log file
  * @returns Array of `NextcloudClientSyncLog`
  */
-export function nextcloudSyncLogs(text: string, version: string, sync_log_path: string): NextcloudClientSyncLog[] {
+export function nextcloudSyncLogs(text: string, version: string, evidence: string): NextcloudClientSyncLog[] {
     const lines = text.split("\n");
     const logs: NextcloudClientSyncLog[] = [];
     let start_time = "1970-01-01T00:00:00.000Z";
@@ -45,8 +45,8 @@ export function nextcloudSyncLogs(text: string, version: string, sync_log_path: 
                 other_size: getNumberValue(fields.at(12) ?? ""),
                 other_modified: fields.at(13) ?? "",
                 x_request_id: fields.at(14) ?? "",
-                sync_log_path,
-                data_type: "cloud:nextcloud:log:sync",
+                evidence,
+                data_type: "application:nextcloud:client:log:sync",
                 timestamp_desc: "File Sync",
                 artifact: "Nextcloud Sync Log",
                 message: fields.at(2) ?? "",

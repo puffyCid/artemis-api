@@ -1,5 +1,7 @@
-export interface NextcloudClientUsers {
-    full_path: string;
+import { DirectoryTree } from "../../src/filesystem/tree";
+
+export interface NextcloudClientProfile {
+    tree: DirectoryTree;
     version: string;
 }
 
@@ -9,7 +11,7 @@ export interface NextcloudClientConfig {
     user: string;
     display_name: string;
     local_path: string;
-    config_path: string;
+    evidence: string;
 }
 
 /**
@@ -32,11 +34,11 @@ export interface NextcloudClientSyncLog {
     other_size: number;
     other_modified: string;
     x_request_id: string;
-    sync_log_path: string;
+    evidence: string;
     message: string;
-    timestamp_desc: string;
-    artifact: string;
-    data_type: string;
+    timestamp_desc: "File Sync";
+    artifact: "Nextcloud Sync Log";
+    data_type: "application:nextcloud:client:log:sync";
 }
 
 /**
@@ -73,8 +75,8 @@ export interface NextcloudClientActivityLog {
     source_file: string;
     source_file_line: number;
     message: string;
-    log_source: string;
-    timestamp_desc: string;
-    artifact: string;
-    data_type: string;
+    evidence: string;
+    timestamp_desc: "Activity Generated";
+    artifact: "Nextcloud Activity Log";
+    data_type: "application:nextcloud:client:log:activity";
 }

@@ -3,10 +3,10 @@ import { NextcloudClientActivityLog } from "../../../../types/applications/nextc
 /**
  * Parse the Nextcloud client activity logs
  * @param text Activity log text data
- * @param log_source Source of the log file
+ * @param evidence Source of the log file
  * @returns Array of `NextcloudClientActivityLog`
  */
-export function nextcloudActivityLogs(text: string, log_source: string): NextcloudClientActivityLog[] {
+export function nextcloudActivityLogs(text: string, evidence: string): NextcloudClientActivityLog[] {
     const lines = text.split("\n");
     const logs: NextcloudClientActivityLog[] = [];
 
@@ -18,8 +18,8 @@ export function nextcloudActivityLogs(text: string, log_source: string): Nextclo
             source_file: "",
             source_file_line: 0,
             message: "",
-            log_source,
-            data_type: "cloud:nextcloud:log:activity",
+            evidence,
+            data_type: "application:nextcloud:client:log:activity",
             artifact: "Nextcloud Activity Log",
             timestamp_desc: "Activity Generated"
         };

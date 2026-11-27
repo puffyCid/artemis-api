@@ -5,6 +5,8 @@ import { Accessor } from "../filesystem/accessor";
 import { FileError } from "../filesystem/errors";
 import { readTextFile } from "../filesystem/files";
 import { DirectoryTree, isFileEntry } from "../filesystem/tree";
+import { SystemError } from "../system/error";
+import { Output, OutputManager } from "../system/output";
 import { detectPlatform, PlatformType } from "../system/systeminfo";
 import { unixEpochToISO } from "../time/conversion";
 
@@ -229,6 +231,27 @@ export class Vscode {
     }
 
     return recents;
+  }
+
+  public retrospect(format: Output): void {
+    const manager = new OutputManager(format);
+    const files = this.history();
+    let status = manager.write_artifact(files, "retrospect_vscode_file_history");
+    if (status instanceof SystemError) {
+      console.error(`Failed timeline VSCode file history cookies: ${status}`);
+    }
+
+    const ext = this.extensions();
+    status = manager.write_artifact(ext, "retrospect_vscode_extensions");
+    if (status instanceof SystemError) {
+      console.error(`Failed timeline VSCode extensions: ${status}`);
+    }
+
+    const recent = this.recent();
+    status = manager.write_artifact(recent, "retrospect_vscode_recent_files");
+    if (status instanceof SystemError) {
+      console.error(`Failed timeline VSCode Recent Files: ${status}`);
+    }
   }
 
   /**

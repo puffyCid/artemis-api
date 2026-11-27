@@ -75,7 +75,7 @@ export class RustDesk {
 
     /**
      * Grab basic profile information for installed RustDesk application
-     * @returns Array of `RustDeskUsers` or `ApplicationError`
+     * @returns Base path to RustDesk application
      */
     private profilePath(): string {
         switch (detectPlatform()) {

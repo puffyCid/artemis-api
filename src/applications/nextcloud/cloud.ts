@@ -1,11 +1,16 @@
-import { NextcloudClientActivityLog, NextcloudClientConfig, NextcloudClientSyncLog, NextcloudClientUsers } from "../../../types/applications/nextcloud";
+import { NextcloudClientActivityLog, NextcloudClientConfig, NextcloudClientProfile, NextcloudClientSyncLog } from "../../../types/applications/nextcloud";
+import { AccessorProtocol, EntryKind, SourceHandle } from "../../../types/filesystem/accessor";
 import { decompress_gzip } from "../../compression/decompress";
 import { CompressionError } from "../../compression/errors";
 import { extractUtf8String } from "../../encoding/strings";
+import { getSystemDrive } from "../../environment/env";
+import { Accessor } from "../../filesystem/accessor";
 import { FileError } from "../../filesystem/errors";
-import { glob, readFile, readTextFile, stat } from "../../filesystem/files";
-import { PlatformType } from "../../system/systeminfo";
-import { ApplicationError } from "../errors";
+import { readTextFile } from "../../filesystem/files";
+import { DirectoryTree, isFileEntry } from "../../filesystem/tree";
+import { SystemError } from "../../system/error";
+import { Output, OutputManager } from "../../system/output";
+import { detectPlatform, PlatformType } from "../../system/systeminfo";
 import { nextcloudActivityLogs } from "./logs/activity";
 import { nextcloudSyncLogs } from "./logs/sync";
 
@@ -13,141 +18,85 @@ import { nextcloudSyncLogs } from "./logs/sync";
  * Class to extract NextCloud client information
  */
 export class NextcloudClient {
-    private paths: NextcloudClientUsers[] = [];
-    private platform: PlatformType;
+    private profiles: NextcloudClientProfile[] = [];
+    private protocol: AccessorProtocol = AccessorProtocol.Host;
+    private accessor = new Accessor();
+    private source: SourceHandle | FileError;
 
     /**
-     * Construct a `NextcloudClient` object that can be used to parse client data
-     * @param platform OS `PlatformType`
-     * @param alt_path Optional alternative to Nextcloud client config directory
+     * Construct a `NextcloudClient` object that can be used to parse NextcloudClient logs
+     * @param [protocol=AccessorProtocol.Host] `AccessorProtocol` to use when accessing Epiphany data. Default is `AccessorProtocol.Host`
+     * @param [source_path="host:"] Default source path to use when accessing Epiphany data. Default is `host:` which represents a live system.  
+     * For disk image source the `source_path` should be absolute path to the disk image. Ex: `/evidence/fedora.qcow2`
+     * @param alt_path Optional alternative path to NextcloudClient directory
      * @returns `NextcloudClient` instance class
      */
-    constructor (platform: PlatformType.Linux, alt_path?: string) {
-        this.platform = platform;
+    constructor (protocol = AccessorProtocol.Host, source_path = "host:", alt_path?: string) {
+        this.protocol = protocol;
+        const pattern = alt_path ?? this.profilePath();
 
-        if (alt_path === undefined) {
-            const results = this.profiles();
-            if (results instanceof ApplicationError) {
-                return;
-            }
-
-            this.paths = results;
+        this.source = this.accessor.openSource(source_path, this.protocol);
+        if (this.source instanceof FileError) {
             return;
         }
 
-        const client_version = this.version(this.platform, alt_path);
-        if (client_version instanceof ApplicationError) {
+        const matches = this.accessor.sourceGlobfs(this.source, pattern);
+        if (matches instanceof FileError) {
             return;
         }
 
-        this.paths = [ { full_path: alt_path, version: client_version } ];
-    }
-
-    /**
-    * Get base path for all Nextcloud clients data
-    * @returns Array of `NextcloudClientUsers` or `ApplicationError`
-    */
-    private profiles(): NextcloudClientUsers[] | ApplicationError {
-        let paths;
-        switch (this.platform) {
-            case PlatformType.Linux: {
-                const linux_paths = glob("/home/*/.config/Nextcloud");
-                if (linux_paths instanceof FileError) {
-                    return new ApplicationError(
-                        "NEXTCLOUD_CLIENT",
-                        `failed to glob linux paths: ${linux_paths}`,
-                    );
-                }
-                paths = linux_paths;
-                break;
-            }
-            default: {
-                return [];
-            }
-        }
-
-        const clients: NextcloudClientUsers[] = [];
-        for (const entry of paths) {
-            if (!entry.is_directory) {
-                continue;
-            }
-            const client_version = this.version(this.platform, entry.full_path);
-            if (client_version instanceof ApplicationError) {
+        for (const entry of matches) {
+            // We want the base directory for NextCloud client artifacts
+            if (entry.meta.kind !== EntryKind.Directory) {
                 continue;
             }
 
-            const profile: NextcloudClientUsers = {
-                full_path: entry.full_path,
-                version: client_version,
+            const tree = DirectoryTree.fromEntry(this.accessor, this.source, entry);
+            if (tree instanceof FileError) {
+                continue;
+            }
+
+            const profile: NextcloudClientProfile = {
+                tree,
+                version: this.version(tree)
             };
 
-            clients.push(profile);
+            this.profiles.push(profile);
         }
-        return clients;
     }
 
     /**
-     * Function to determine Nextcloud client version
-     * @param platform OS `PlatformType`
-     * @param path Path to base Nextcloud user config
-     * @returns Version string or `ApplicationError`
-     */
-    private version(platform: PlatformType, path: string): string | ApplicationError {
-        let version_path = `${path}/nextcloud.cfg`;
-        if (platform === PlatformType.Windows) {
-            version_path = `${path}\\nextcloud.cfg`;
-        }
-
-        const text_data = readTextFile(version_path);
-        if (text_data instanceof FileError) {
-            return new ApplicationError(`NEXTCLOUD_CLIENT`, `could not read ${version_path}: ${text_data}`);
-        }
-
-        const version_regex = /clientVersion=.*/;
-        const match = text_data.match(version_regex);
-        if (match === null) {
-            return new ApplicationError(`NEXTCLOUD_CLIENT`, `could not match version regex`);
-        }
-
-        const version_line = match?.at(0);
-        if (version_line === undefined) {
-            return new ApplicationError(`NEXTCLOUD_CLIENT`, `could not find version line got undefined`);
-        }
-
-        const version_string = version_line.split("=").at(1);
-        if (version_string === undefined) {
-            return new ApplicationError(`NEXTCLOUD_CLIENT`, `could not find version got undefined`);
-        }
-
-        return version_string;
-    }
-
-    /**
-     * Parses the most recent Nextcloud client config file
+     * Parses the most recent NextCloud client config file
      * @returns Array of `NextcloudConfig`
      */
     public config(): NextcloudClientConfig[] {
         const configs: NextcloudClientConfig[] = [];
 
-        for (const entry of this.paths) {
-            let target = `${entry.full_path}/nextcloud.cfg`;
-            if (this.platform === PlatformType.Windows) {
-                target = `${entry.full_path}\\nextcloud.cfg`;
+        for (const profile of this.profiles) {
+            const cfg_file = profile.tree.file("nextcloud.cfg");
+            if (cfg_file instanceof FileError) {
+                continue;
+            }
+            const text = readTextFile(cfg_file.handle);
+            if (text instanceof FileError) {
+                console.warn(`Failed to read NextCloud client config '${cfg_file.meta.display_path}': ${text}`);
+                continue;
             }
 
-            const text_data = readTextFile(target);
+            const text_data = readTextFile(cfg_file.handle);
             if (text_data instanceof FileError) {
                 continue;
             }
 
             const client_config: NextcloudClientConfig = {
-                client_version: entry.version,
+                client_version: profile.version,
                 url: "",
                 user: "",
                 display_name: "",
                 local_path: "",
-                config_path: target,
+                evidence: cfg_file.meta.display_path,
             };
+
             const regex_strings: RegExp[] = [ /localPath=.*/, /webflow_user=.*/, /url=.*/, /displayName=.*/ ];
             for (let i = 0; i < regex_strings.length; i++) {
                 const regex_value = regex_strings[ i ];
@@ -190,50 +139,33 @@ export class NextcloudClient {
                 }
             }
             configs.push(client_config);
-
         }
 
         return configs;
     }
 
     /**
-     * Parse Nextcloud client sync logs
+     * Parse NextCloud client sync logs
      * @param max_size Specify max log size to parse. Default is 15MB
      * @returns Array of `NextcloudClientSyncLog`
      */
     public syncLogs(max_size = 15728640): NextcloudClientSyncLog[] {
         let sync: NextcloudClientSyncLog[] = [];
-
-        for (const entry of this.paths) {
-            let target = `${entry.full_path}/Nextcloud_sync.log`;
-            if (this.platform === PlatformType.Windows) {
-                target = `${entry.full_path}\\Nextcloud_sync.log`;
-            }
-
-            const value = stat(target);
-            if (value instanceof FileError || value.size > max_size) {
+        for (const profile of this.profiles) {
+            const log = profile.tree.file("Nextcloud_sync.log");
+            if (log instanceof FileError || log.meta.size > max_size) {
                 continue;
             }
 
-            const text_data = readTextFile(target);
-            if (text_data instanceof FileError) {
+            const text = readTextFile(log.handle);
+            if (text instanceof FileError) {
                 continue;
             }
 
-            sync = sync.concat(nextcloudSyncLogs(text_data, entry.version, target));
-
-            // Nextcloud logs may also be at $HOME/.local/share/Nextcloud/Nexcloud_sync.log
-            if (this.platform === PlatformType.Linux) {
-                const local_path = target.replace(".config", ".local/share");
-                const text_data = readTextFile(target);
-                if (text_data instanceof FileError) {
-                    continue;
-                }
-
-                sync = sync.concat(nextcloudSyncLogs(text_data, entry.version, local_path));
-            }
+            sync = sync.concat(nextcloudSyncLogs(text, profile.version, log.meta.display_path));
 
         }
+
         return sync;
     }
 
@@ -245,51 +177,108 @@ export class NextcloudClient {
      */
     public activityLogs(max_size = 18874368): NextcloudClientActivityLog[] {
         let activity: NextcloudClientActivityLog[] = [];
-        for (const entry of this.paths) {
-            let target = `${entry.full_path}/logs/*nextcloud*.log*`;
-            if (this.platform === PlatformType.Windows) {
-                target = `${entry.full_path}\\logs\\*nextcloud*.log*`;
-            }
-
-            const hits = glob(target);
-            if (hits instanceof FileError) {
+        for (const profile of this.profiles) {
+            const matches = profile.tree.glob("logs/*nextcloud*.log*");
+            if (matches instanceof FileError) {
                 continue;
             }
 
-            for (const hit of hits) {
-                const value = stat(hit.full_path);
-                if (value instanceof FileError || value.size > max_size) {
+            for (const entry of matches) {
+                if (!isFileEntry(entry) || this.source instanceof FileError || entry.meta.size > max_size) {
                     continue;
                 }
 
-                // Older log files will be compressed
-                if (hit.full_path.includes(".gz")) {
-                    const compressed_bytes = readFile(hit.full_path);
-                    if (compressed_bytes instanceof FileError) {
+                if (entry.meta.extension === "gz") {
+                    const bytes = this.accessor.sourceReadFileHandle(this.source, entry.handle);
+                    if (bytes instanceof FileError) {
                         continue;
                     }
 
-                    const bytes = decompress_gzip(compressed_bytes);
-                    if (bytes instanceof CompressionError) {
+                    const decom_bytes = decompress_gzip(bytes);
+                    if (decom_bytes instanceof CompressionError) {
                         continue;
                     }
 
-                    const text = extractUtf8String(bytes);
-                    activity = activity.concat(nextcloudActivityLogs(text, hit.full_path));
+                    const text = extractUtf8String(decom_bytes);
+                    activity = activity.concat(nextcloudActivityLogs(text, entry.meta.display_path));
                     continue;
                 }
 
-                const text_data = readTextFile(hit.full_path);
+                const text_data = readTextFile(entry.handle);
                 if (text_data instanceof FileError) {
                     continue;
                 }
 
-                activity = activity.concat(nextcloudActivityLogs(text_data, hit.full_path));
+                activity = activity.concat(nextcloudActivityLogs(text_data, entry.meta.display_path));
             }
-
-
-
         }
+
         return activity;
+    }
+
+    public retrospect(format: Output): void {
+        const manager = new OutputManager(format);
+        const sync = this.syncLogs();
+        let status = manager.write_artifact(sync, "retrospect_nextcloud_client_sync");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline NextCloud client sync logs: ${status}`);
+        }
+
+        const activity = this.activityLogs();
+        status = manager.write_artifact(activity, "retrospect_nextcloud_client_activity");
+        if (status instanceof SystemError) {
+            console.error(`Failed timeline NextCloud client activity logs: ${status}`);
+        }
+    }
+
+    /**
+     * Grab basic profile information for installed NextCloud client application
+     * @returns Base path to NextCloud client application
+     */
+    private profilePath(): string {
+        switch (detectPlatform()) {
+            case PlatformType.Linux: return "/home/*/.config/Nextcloud";
+            case PlatformType.Windows: return `${getSystemDrive()}\\Users\\*\\AppData\\Roaming\\Nextcloud`;
+            case PlatformType.Darwin: return "/Users/*/Library/Containers/com.nextcloud.desktopclient/Data/Library/Preferences/Nextcloud/";
+            default: {
+                console.warn(`Unsupported platform. Defaulting to '/home/*/.config/Nextcloud'`);
+                return "/home/*/.config/Nextcloud";
+            }
+        }
+    }
+
+    /**
+ * Function to determine Nextcloud client version
+ * @param tree `DirectoryTree` object
+ * @returns Version string or `ApplicationError`
+ */
+    private version(tree: DirectoryTree): string {
+        const cfg_file = tree.file("nextcloud.cfg");
+        if (cfg_file instanceof FileError) {
+            return "Unknown";
+        }
+        const text = readTextFile(cfg_file.handle);
+        if (text instanceof FileError) {
+            console.warn(`Failed to read NextCloud client config '${cfg_file.meta.display_path}': ${text}`);
+            return "Unknown";
+        }
+
+        const version_regex = /clientVersion=.*/;
+        const match = text.match(version_regex);
+        if (match === null) {
+            return "Unknown";
+        }
+
+        const version_line = match?.at(0);
+        if (version_line === undefined) {
+            return "Unknown";
+        }
+
+        const version_string = version_line.split("=").at(1);
+        if (version_string === undefined) {
+            return "Unknown";
+        }
+
+        return version_string;
     }
 }
